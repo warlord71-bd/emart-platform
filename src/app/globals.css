@@ -1,0 +1,99 @@
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --pk: #e8197a;
+  --pk-d: #c01264;
+  --pk-l: #fce7f0;
+  --dark: #1a1a2e;
+  --bd: #ede0e8;
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-poppins), 'Noto Sans Bengali', sans-serif;
+    color: #333;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-poppins), sans-serif;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#e8197a] text-white font-semibold px-6 py-3 rounded-lg
+           hover:bg-[#c01264] transition-colors duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply border-2 border-[#e8197a] text-[#e8197a] font-semibold px-6 py-3 rounded-lg
+           hover:bg-[#e8197a] hover:text-white transition-colors duration-200;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+
+  .badge-sale {
+    @apply badge bg-[#e8197a] text-white;
+  }
+
+  .badge-new {
+    @apply badge bg-[#1a1a2e] text-white;
+  }
+
+  .badge-stock {
+    @apply badge bg-green-100 text-green-800;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100
+           hover:shadow-md transition-shadow duration-200;
+  }
+
+  .section-title {
+    @apply text-2xl md:text-3xl font-bold text-[#1a1a2e]
+           border-b-4 border-[#e8197a] pb-2 inline-block;
+  }
+
+  .price {
+    @apply text-[#e8197a] font-bold;
+  }
+
+  .price-old {
+    @apply text-gray-400 line-through text-sm;
+  }
+
+  /* Product image container — always square */
+  .product-img-wrap {
+    @apply relative w-full aspect-square overflow-hidden bg-gray-50 rounded-lg;
+  }
+
+  .product-img-wrap img {
+    @apply w-full h-full object-cover object-center
+           transition-transform duration-300 group-hover:scale-105;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #e8197a; border-radius: 3px; }
+
+/* Mobile bottom nav safe area */
+@media (max-width: 768px) {
+  body { padding-bottom: 64px; }
+}
