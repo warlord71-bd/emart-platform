@@ -310,6 +310,40 @@ export default function ProductDetail({ product }: Props) {
           />
         </div>
       )}
+
+      {/* ── PRODUCT METADATA/SPECS ── */}
+      {(brandName || otherAttributes.length > 0) && (
+        <div className="col-span-1 lg:col-span-2 border-t border-gray-100 pt-8">
+          <h2 className="text-xl font-bold text-[#1a1a2e] mb-6">Product Information</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Brand Card */}
+            {brandName && (
+              <div className="bg-gradient-to-br from-[#fce7f0] to-[#fff0f6] rounded-xl p-5 border border-[#e8197a]/20">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Brand</p>
+                <Link
+                  href={`/brands/${brandSlug}`}
+                  className="text-xl font-bold text-[#e8197a] hover:underline transition-colors"
+                >
+                  {brandName}
+                </Link>
+              </div>
+            )}
+
+            {/* Other Attributes as Cards */}
+            {otherAttributes.map((attr) => (
+              <div key={attr.id} className="bg-gray-50 rounded-xl p-5 border border-gray-200">
+                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+                  {attr.name}
+                </p>
+                <p className="text-base font-semibold text-[#1a1a2e]">
+                  {attr.options.join(', ')}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
