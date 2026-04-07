@@ -3,7 +3,7 @@
 
 import axios from 'axios';
 
-const WOO_URL = process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd';
+const WOO_URL = process.env.NEXT_PUBLIC_WOO_URL || 'http://5.189.188.229';
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
 

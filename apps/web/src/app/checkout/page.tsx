@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
-import { createOrder, formatPrice } from '@/lib/woocommerce';
+import { formatPrice } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 
 const DISTRICTS = [
@@ -93,29 +93,35 @@ export default function CheckoutPage() {
         email: form.email || `${form.phone}@emart.bd`,
       };
 
-      const order = await createOrder({
-        payment_method: paymentMethod,
-        billing,
-        shipping: billing,
-        line_items: items.map((i) => ({
-          product_id: i.id,
-          quantity: i.quantity,
-        })),
-        customer_note: [
-          form.note,
-          paymentMethod !== 'cod' ? `TxnID: ${txnId}` : '',
-        ].filter(Boolean).join(' | '),
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          payment_method: paymentMethod,
+          billing,
+          shipping: billing,
+          line_items: items.map((i) => ({
+            product_id: i.id,
+            quantity: i.quantity,
+          })),
+          customer_note: [
+            form.note,
+            paymentMethod !== 'cod' ? `TxnID: ${txnId}` : '',
+          ].filter(Boolean).join(' | '),
+        }),
       });
 
-      if (order) {
+      const data = await res.json();
+
+      if (res.ok && data.order) {
         clearCart();
         toast.success('Order placed successfully! 🎉');
-        router.push(`/order-success?id=${order.id}`);
+        router.push(`/order-success?id=${data.order.id}`);
       } else {
-        throw new Error('Order creation failed');
+        throw new Error(data.error || 'Order creation failed');
       }
-    } catch (err) {
-      toast.error('Something went wrong. Please try again or call us.');
+    } catch (err: any) {
+      toast.error(err.message || 'Something went wrong. Please try again or call us.');
     } finally {
       setLoading(false);
     }
