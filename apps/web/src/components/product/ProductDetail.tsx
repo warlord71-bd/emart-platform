@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ShoppingCart, Heart, Share2, Shield, Truck, RotateCcw } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice, getDiscountPercent, isInStock } from '@/lib/woocommerce';
@@ -242,15 +243,69 @@ export default function ProductDetail({ product }: Props) {
           </p>
         </div>
 
-        {/* Attributes */}
+        {/* Attributes — clickable tags */}
         {product.attributes.length > 0 && (
-          <div className="space-y-2 border-t border-gray-100 pt-4">
-            {product.attributes.map((attr) => (
-              <div key={attr.id} className="flex gap-2 text-sm">
-                <span className="font-medium text-gray-600 min-w-[80px]">{attr.name}:</span>
-                <span className="text-gray-500">{attr.options.join(', ')}</span>
-              </div>
-            ))}
+          <div className="space-y-3 border-t border-gray-100 pt-4">
+            {product.attributes.map((attr) => {
+              const attrName = attr.name.toLowerCase();
+              const isBrand = attrName === 'brand';
+              const isConcern = attrName.includes('concern');
+              const isSkinType = attrName.includes('skin type') || attrName.includes('skin_type');
+
+              return (
+                <div key={attr.id} className="flex flex-wrap items-center gap-2 text-sm">
+                  <span className="font-semibold text-gray-500 min-w-[80px] text-xs uppercase tracking-wide">
+                    {attr.name}:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {attr.options.map((opt) => {
+                      const slug = opt.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                      if (isBrand) {
+                        return (
+                          <Link
+                            key={opt}
+                            href={`/brands/${slug}`}
+                            className="px-3 py-1 rounded-full text-xs font-semibold border border-[#e8197a] text-[#e8197a] hover:bg-[#e8197a] hover:text-white transition-colors"
+                          >
+                            {opt}
+                          </Link>
+                        );
+                      }
+                      if (isConcern) {
+                        return (
+                          <Link
+                            key={opt}
+                            href={`/shop?search=${encodeURIComponent(opt)}`}
+                            className="px-3 py-1 rounded-full text-xs font-medium bg-purple-50 border border-purple-200 text-purple-700 hover:bg-purple-100 transition-colors"
+                          >
+                            {opt}
+                          </Link>
+                        );
+                      }
+                      if (isSkinType) {
+                        return (
+                          <Link
+                            key={opt}
+                            href={`/shop?search=${encodeURIComponent(opt)}`}
+                            className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 transition-colors"
+                          >
+                            {opt}
+                          </Link>
+                        );
+                      }
+                      return (
+                        <span
+                          key={opt}
+                          className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600"
+                        >
+                          {opt}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

@@ -1,7 +1,8 @@
 // src/app/page.tsx
 import Link from 'next/link';
-import { getFeaturedProducts, getSaleProducts, getNewArrivals } from '@/lib/woocommerce';
+import { getFeaturedProducts, getSaleProducts, getNewArrivals, getProducts } from '@/lib/woocommerce';
 import BrandImage from '@/components/brand/BrandImage';
+import ShopByCategoryTabs from '@/components/home/ShopByCategoryTabs';
 import ProductCard from '@/components/product/ProductCard';
 import FlashDealsTimer from '@/components/home/FlashDealsTimer';
 import type { Metadata } from 'next';
@@ -59,10 +60,11 @@ const CONCERNS = [
 ];
 
 export default async function HomePage() {
-  const [featured, onSale, newArrivals] = await Promise.all([
+  const [featured, onSale, newArrivals, firstCatProducts] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
     getNewArrivals(8),
+    getProducts({ category: 'face-care', per_page: 10 }).then(r => r.products).catch(() => []),
   ]);
 
   return (
@@ -171,30 +173,14 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── 3. SHOP BY CATEGORY ── */}
+      {/* ── 3. SHOP BY CATEGORY (tabbed) ── */}
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="section-title mb-8">Shop by Category</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/category/${cat.slug}`}
-                className="flex flex-col items-center justify-center gap-2
-                           py-6 px-3 rounded-xl border-2 border-transparent
-                           hover:border-[#e8197a] hover:shadow-md transition-all
-                           group text-center"
-                style={{ background: cat.color }}
-              >
-                <span className="text-4xl group-hover:scale-110 transition-transform">
-                  {cat.emoji}
-                </span>
-                <span className="text-sm font-semibold text-[#1a1a2e]">
-                  {cat.name}
-                </span>
-              </Link>
-            ))}
-          </div>
+          <h2 className="section-title mb-6">🛍️ Shop by Category</h2>
+          <ShopByCategoryTabs
+            categories={CATEGORIES}
+            initialProducts={firstCatProducts}
+          />
         </div>
       </section>
 

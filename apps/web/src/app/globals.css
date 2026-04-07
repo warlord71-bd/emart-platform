@@ -105,6 +105,15 @@
   animation-play-state: paused;
 }
 
+/* Hide scrollbar but keep scrollable */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Mobile bottom nav safe area */
 @media (max-width: 768px) {
   body { padding-bottom: 64px; }
