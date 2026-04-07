@@ -159,6 +159,16 @@ export default function ProductDetail({ product }: Props) {
           />
         )}
 
+        {/* SKU */}
+        {product.sku && (
+          <div className="flex items-center gap-2 text-xs text-gray-400">
+            <span className="font-semibold uppercase tracking-wide">SKU:</span>
+            <span className="font-mono bg-gray-50 border border-gray-200 px-2 py-0.5 rounded text-gray-500">
+              {product.sku}
+            </span>
+          </div>
+        )}
+
         {/* Stock Status */}
         <div className={`flex items-center gap-2 text-sm font-medium ${
           inStock ? 'text-green-600' : 'text-red-500'
