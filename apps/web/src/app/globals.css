@@ -93,6 +93,18 @@
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: #e8197a; border-radius: 3px; }
 
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 /* Mobile bottom nav safe area */
 @media (max-width: 768px) {
   body { padding-bottom: 64px; }

@@ -7,17 +7,32 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ShoppingCart, Search, User, Menu, X, Heart } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
+import type { WooCategory } from '@/lib/woocommerce';
 
-const NAV_LINKS = [
+const FALLBACK_NAV = [
   { label: 'Shop', href: '/shop' },
-  { label: 'Face Care', href: '/category/face-care' },
+  { label: 'Face Care', href: '/category/face-cleansers' },
   { label: 'Sunscreen', href: '/category/sunscreen' },
-  { label: 'Serum & Toner', href: '/category/serum-toner' },
+  { label: 'Serum & Toner', href: '/category/serums-ampoules-essences' },
   { label: 'Sale 🔥', href: '/sale', className: 'text-[#e8197a]' },
   { label: 'New ✨', href: '/new-arrivals', className: 'text-[#e8197a]' },
 ];
 
-export default function Header() {
+const MARQUEE_ITEMS = [
+  '🚚 Free Delivery above ৳3,000',
+  '✅ 100% Authentic Products',
+  '💳 COD Available Nationwide',
+  '📦 Track Your Order',
+  '🇰🇷 Korean & Japanese Skincare',
+  '↩️ Easy Returns',
+  '⚡ Dhaka Next Day Delivery',
+];
+
+interface Props {
+  navCategories?: WooCategory[];
+}
+
+export default function Header({ navCategories = [] }: Props) {
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -39,24 +54,39 @@ export default function Header() {
     }
   };
 
+  // Build nav from real categories or fallback
+  const navLinks = navCategories.length > 0
+    ? [
+        { label: 'Shop', href: '/shop' },
+        ...navCategories.slice(0, 6).map((cat) => ({
+          label: cat.name,
+          href: `/category/${cat.slug}`,
+          className: '',
+        })),
+        { label: 'Sale 🔥', href: '/sale', className: 'text-[#e8197a]' },
+      ]
+    : FALLBACK_NAV;
+
   return (
     <>
-      {/* ── Announcement Bar ── */}
-      <div className="bg-[#1a1a2e] text-gray-300 text-xs py-2 px-4 text-center">
-        🚚 Free Delivery above <strong className="text-white">৳3,000</strong>
-        &nbsp;|&nbsp;
-        <span className="bg-[#e8197a] text-white px-2 py-0.5 rounded-full text-xs">✓ 100% Authentic</span>
-        &nbsp;|&nbsp;
-        COD Nationwide
-        &nbsp;|&nbsp;
-        <Link href="/track-order" className="hover:text-[#e8197a]">📦 Track Order</Link>
+      {/* ── Announcement Marquee ── */}
+      <div className="bg-[#1a1a2e] text-gray-300 text-xs py-2 overflow-hidden">
+        <div className="flex animate-marquee whitespace-nowrap">
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+            <span key={i} className="mx-8 flex-shrink-0">
+              {item}
+              {i === 3 && (
+                <Link href="/track-order" className="ml-1 underline hover:text-[#e8197a]">
+                  Track Now
+                </Link>
+              )}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* ── Main Header ── */}
-      <header
-        className={`sticky top-0 z-50 bg-white border-b border-gray-100
-          ${scrolled ? 'shadow-md' : 'shadow-sm'} transition-shadow duration-300`}
-      >
+      <header className={`sticky top-0 z-50 bg-white border-b border-gray-100 ${scrolled ? 'shadow-md' : 'shadow-sm'} transition-shadow duration-300`}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center gap-4 h-16">
 
@@ -71,12 +101,8 @@ export default function Header() {
                 priority
               />
               <div className="hidden sm:block">
-                <div className="font-extrabold text-[#1a1a2e] text-base leading-tight">
-                  Emart Skincare
-                </div>
-                <div className="text-[#e8197a] text-[10px] font-bold tracking-widest uppercase">
-                  Bangladesh
-                </div>
+                <div className="font-extrabold text-[#1a1a2e] text-base leading-tight">Emart Skincare</div>
+                <div className="text-[#e8197a] text-[10px] font-bold tracking-widest uppercase">Bangladesh</div>
               </div>
             </Link>
 
@@ -105,54 +131,34 @@ export default function Header() {
 
             {/* Right Actions */}
             <div className="flex items-center gap-2">
-              <Link
-                href="/account"
-                className="p-2 text-gray-600 hover:text-[#e8197a] transition-colors
-                           hidden sm:flex items-center gap-1"
-              >
+              <Link href="/account" className="p-2 text-gray-600 hover:text-[#e8197a] transition-colors hidden sm:flex items-center gap-1">
                 <User size={20} />
                 <span className="text-xs font-medium hidden md:block">Account</span>
               </Link>
-
-              <Link
-                href="/wishlist"
-                className="p-2 text-gray-600 hover:text-[#e8197a] transition-colors hidden sm:block"
-              >
+              <Link href="/wishlist" className="p-2 text-gray-600 hover:text-[#e8197a] transition-colors hidden sm:block">
                 <Heart size={20} />
               </Link>
-
-              {/* Cart Button */}
-              <button
-                onClick={toggleCart}
-                className="relative p-2 text-gray-600 hover:text-[#e8197a] transition-colors"
-              >
+              <button onClick={toggleCart} className="relative p-2 text-gray-600 hover:text-[#e8197a] transition-colors">
                 <ShoppingCart size={22} />
                 {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#e8197a] text-white
-                                   text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-[#e8197a] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                     {totalItems > 99 ? '99+' : totalItems}
                   </span>
                 )}
               </button>
-
-              {/* Mobile Menu */}
-              <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className="p-2 text-gray-600 lg:hidden"
-              >
+              <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-gray-600 lg:hidden">
                 {mobileOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
             </div>
           </div>
 
           {/* ── Desktop Nav ── */}
-          <nav className="hidden lg:flex items-center gap-6 py-2 border-t border-gray-50">
-            {NAV_LINKS.map((link) => (
+          <nav className="hidden lg:flex items-center gap-6 py-2 border-t border-gray-50 overflow-x-auto">
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium text-gray-600 hover:text-[#e8197a]
-                           transition-colors ${link.className || ''}`}
+                className={`text-sm font-medium text-gray-600 hover:text-[#e8197a] transition-colors whitespace-nowrap ${link.className || ''}`}
               >
                 {link.label}
               </Link>
@@ -164,24 +170,17 @@ export default function Header() {
         {mobileOpen && (
           <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4">
             <nav className="flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`py-3 px-4 text-sm font-medium text-gray-700
-                             hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg
-                             transition-colors ${link.className || ''}`}
+                  className={`py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg transition-colors ${link.className || ''}`}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/account"
-                onClick={() => setMobileOpen(false)}
-                className="py-3 px-4 text-sm font-medium text-gray-700
-                           hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg"
-              >
+              <Link href="/account" onClick={() => setMobileOpen(false)} className="py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg">
                 👤 My Account
               </Link>
             </nav>
@@ -190,8 +189,7 @@ export default function Header() {
       </header>
 
       {/* ── Mobile Bottom Nav ── */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200
-                      flex items-center justify-around py-2 z-50 lg:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex items-center justify-around py-2 z-50 lg:hidden">
         <Link href="/" className="flex flex-col items-center gap-0.5 text-gray-500 hover:text-[#e8197a]">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -207,14 +205,10 @@ export default function Header() {
           </svg>
           <span className="text-[10px]">Shop</span>
         </Link>
-        <button
-          onClick={toggleCart}
-          className="flex flex-col items-center gap-0.5 text-gray-500 hover:text-[#e8197a] relative"
-        >
+        <button onClick={toggleCart} className="flex flex-col items-center gap-0.5 text-gray-500 hover:text-[#e8197a] relative">
           <ShoppingCart size={22} />
           {totalItems > 0 && (
-            <span className="absolute -top-1 right-0 bg-[#e8197a] text-white
-                             text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+            <span className="absolute -top-1 right-0 bg-[#e8197a] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
               {totalItems}
             </span>
           )}

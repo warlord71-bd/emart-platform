@@ -1,5 +1,4 @@
 // src/app/page.tsx
-import Image from 'next/image';
 import Link from 'next/link';
 import { getFeaturedProducts, getSaleProducts } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
@@ -25,16 +24,16 @@ const CATEGORIES = [
 ];
 
 const BRANDS = [
-  { name: 'COSRX', slug: 'cosrx', emoji: '🇰🇷', color: '#eff6ff' },
-  { name: 'Missha', slug: 'missha', emoji: '🌙', color: '#f5f3ff' },
-  { name: 'Innisfree', slug: 'innisfree', emoji: '🌿', color: '#f0fdf4' },
-  { name: 'Maybelline', slug: 'maybelline', emoji: '💋', color: '#fff1f2' },
-  { name: 'The Ordinary', slug: 'the-ordinary', emoji: '🧪', color: '#f0fdf4' },
-  { name: 'Cetaphil', slug: 'cetaphil', emoji: '🧴', color: '#eff6ff' },
-  { name: 'Laneige', slug: 'laneige', emoji: '💧', color: '#eff6ff' },
-  { name: 'Some By Mi', slug: 'some-by-mi', emoji: '✨', color: '#fefce8' },
-  { name: 'CeraVe', slug: 'cerave', emoji: '🛡️', color: '#f0fdf4' },
-  { name: 'Hada Labo', slug: 'hada-labo', emoji: '🇯🇵', color: '#fff7ed' },
+  { name: 'COSRX', slug: 'cosrx', abbr: 'CX', color: '#eff6ff', textColor: '#1e40af' },
+  { name: 'Missha', slug: 'missha', abbr: 'MS', color: '#f5f3ff', textColor: '#6d28d9' },
+  { name: 'Innisfree', slug: 'innisfree', abbr: 'IF', color: '#f0fdf4', textColor: '#166534' },
+  { name: 'Maybelline', slug: 'maybelline', abbr: 'MB', color: '#fff1f2', textColor: '#be123c' },
+  { name: 'The Ordinary', slug: 'the-ordinary', abbr: 'TO', color: '#f9fafb', textColor: '#111827' },
+  { name: 'Cetaphil', slug: 'cetaphil', abbr: 'CF', color: '#eff6ff', textColor: '#1d4ed8' },
+  { name: 'Laneige', slug: 'laneige', abbr: 'LG', color: '#eff6ff', textColor: '#0369a1' },
+  { name: 'Some By Mi', slug: 'some-by-mi', abbr: 'SBM', color: '#fefce8', textColor: '#92400e' },
+  { name: 'CeraVe', slug: 'cerave', abbr: 'CV', color: '#f0fdf4', textColor: '#065f46' },
+  { name: 'Hada Labo', slug: 'hada-labo', abbr: 'HL', color: '#fff7ed', textColor: '#c2410c' },
 ];
 
 const CONCERNS = [
@@ -94,16 +93,26 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Hero Image */}
-          <div className="flex-shrink-0 relative">
-            <div className="w-72 h-72 md:w-96 md:h-96 relative">
-              <Image
-                src="/images/hero-products.png"
-                alt="Korean Skincare Products"
-                fill
-                className="object-contain drop-shadow-2xl"
-                priority
-              />
+          {/* Hero Visual */}
+          <div className="flex-shrink-0">
+            <div className="w-72 h-72 md:w-80 md:h-80 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-sm flex flex-col items-center justify-center gap-4 p-6">
+              <div className="grid grid-cols-2 gap-3 w-full">
+                {[
+                  { emoji: '🧴', name: 'COSRX', color: '#fce7f0' },
+                  { emoji: '💧', name: 'Laneige', color: '#eff6ff' },
+                  { emoji: '✨', name: 'Innisfree', color: '#f0fdf4' },
+                  { emoji: '🌿', name: 'Some By Mi', color: '#fefce8' },
+                ].map((b) => (
+                  <div key={b.name} className="rounded-xl p-3 flex flex-col items-center gap-1" style={{ background: b.color + '33' }}>
+                    <span className="text-3xl">{b.emoji}</span>
+                    <span className="text-white text-xs font-semibold text-center">{b.name}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="text-center">
+                <div className="text-white/80 text-xs">🇰🇷 K-Beauty · 🇯🇵 J-Beauty</div>
+                <div className="text-[#e8197a] font-bold text-sm mt-1">100% Authentic</div>
+              </div>
             </div>
           </div>
         </div>
@@ -167,12 +176,17 @@ export default async function HomePage() {
               <Link
                 key={brand.slug}
                 href={`/shop?search=${encodeURIComponent(brand.name)}`}
-                className="flex items-center gap-3 py-4 px-4 rounded-xl border-2 border-transparent
+                className="flex items-center gap-3 py-4 px-4 rounded-xl border border-gray-100
                            hover:border-[#e8197a] hover:shadow-md transition-all group"
                 style={{ background: brand.color }}
               >
-                <span className="text-2xl">{brand.emoji}</span>
-                <span className="text-sm font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors">
+                <div
+                  className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 font-extrabold text-xs"
+                  style={{ background: brand.textColor + '18', color: brand.textColor }}
+                >
+                  {brand.abbr}
+                </div>
+                <span className="text-sm font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors leading-tight">
                   {brand.name}
                 </span>
               </Link>

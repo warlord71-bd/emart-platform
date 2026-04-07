@@ -61,7 +61,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         </aside>
 
         {/* Product Grid */}
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           {products.length > 0 ? (
             <>
               <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">

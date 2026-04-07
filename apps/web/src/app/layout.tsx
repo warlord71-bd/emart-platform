@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { Toaster } from 'react-hot-toast';
 import Providers from './providers';
+import { getCategories } from '@/lib/woocommerce';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -43,52 +44,28 @@ export const metadata: Metadata = {
     locale: 'en_BD',
     url: 'https://e-mart.com.bd',
     siteName: 'Emart Skincare Bangladesh',
-    images: [
-      {
-        url: 'https://e-mart.com.bd/wp-content/uploads/2026/03/logo.png',
-        width: 600,
-        height: 600,
-        alt: 'Emart Skincare Bangladesh',
-      },
-    ],
+    images: [{ url: 'https://e-mart.com.bd/wp-content/uploads/2026/03/logo.png', width: 600, height: 600, alt: 'Emart Skincare Bangladesh' }],
   },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@emartbd',
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true },
-  },
+  twitter: { card: 'summary_large_image', site: '@emartbd' },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const navCategories = await getCategories({ per_page: 8, hide_empty: true }).catch(() => []);
+
   return (
-    <html
-      lang="en"
-      className={`${poppins.variable} ${notoSansBengali.variable}`}
-    >
+    <html lang="en" className={`${poppins.variable} ${notoSansBengali.variable}`}>
       <body className="font-poppins bg-white text-gray-800 antialiased">
         <Providers>
-          <Header />
+          <Header navCategories={navCategories} />
           <main className="min-h-screen">{children}</main>
           <Footer />
           <CartDrawer />
           <Toaster
             position="top-center"
             toastOptions={{
-              style: {
-                fontFamily: 'Poppins, sans-serif',
-                borderRadius: '10px',
-              },
-              success: {
-                iconTheme: { primary: '#e8197a', secondary: '#fff' },
-              },
+              style: { fontFamily: 'Poppins, sans-serif', borderRadius: '10px' },
+              success: { iconTheme: { primary: '#e8197a', secondary: '#fff' } },
             }}
           />
         </Providers>
