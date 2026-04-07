@@ -13,14 +13,33 @@ function getTimeLeft() {
 }
 
 export default function FlashDealsTimer() {
-  const [time, setTime] = useState(getTimeLeft);
+  const [mounted, setMounted] = useState(false);
+  const [time, setTime] = useState({ h: 0, m: 0, s: 0 });
 
   useEffect(() => {
+    setMounted(true);
+    setTime(getTimeLeft());
     const id = setInterval(() => setTime(getTimeLeft()), 1000);
     return () => clearInterval(id);
   }, []);
 
   const pad = (n: number) => String(n).padStart(2, '0');
+
+  if (!mounted) {
+    return (
+      <div className="flex items-center gap-1 text-sm">
+        <span className="text-gray-500 hidden sm:inline">Ends in</span>
+        {[0, 0, 0].map((_, i) => (
+          <span key={i} className="flex items-center gap-1">
+            <span className="bg-[#1a1a2e] text-white font-bold px-2 py-1 rounded text-xs min-w-[28px] text-center">
+              --
+            </span>
+            {i < 2 && <span className="text-gray-400 font-bold">:</span>}
+          </span>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center gap-1 text-sm">

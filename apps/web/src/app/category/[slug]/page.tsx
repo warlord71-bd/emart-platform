@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { getCategoryBySlug, getProducts } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
 import SortControl from '@/components/product/SortControl';
@@ -56,7 +57,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           <h1 className="text-2xl md:text-3xl font-bold text-[#1a1a2e]">{category.name}</h1>
           <p className="text-gray-500 text-sm mt-1">{total} products found</p>
         </div>
-        <SortControl currentOrderby={searchParams.orderby} currentOrder={searchParams.order} />
+        <Suspense fallback={<div className="h-10 w-36 bg-gray-100 rounded-lg animate-pulse" />}>
+          <SortControl currentOrderby={searchParams.orderby} currentOrder={searchParams.order} />
+        </Suspense>
       </div>
 
       {products.length > 0 ? (
