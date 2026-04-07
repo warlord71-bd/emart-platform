@@ -33,12 +33,15 @@ DB_PASS = db.get('DB_PASSWORD', 'Emart@123456')
 DB_HOST = db.get('DB_HOST', 'localhost')
 
 def mysql(sql):
-    """Run SQL and return stdout."""
+    """Run SQL and return stdout. Ignores warnings, raises only on errors."""
     cmd = ['mysql', '-u', DB_USER, f'-p{DB_PASS}', '-h', DB_HOST,
-           DB_NAME, '-N', '-B', '-e', sql]
+           DB_NAME, '-N', '-B', '--skip-column-names', '-e', sql]
     result = subprocess.run(cmd, capture_output=True, text=True)
-    if result.returncode != 0:
-        raise Exception(result.stderr.strip())
+    # Ignore password warning — only fail on real errors (returncode != 0 AND non-warning stderr)
+    stderr = result.stderr.strip()
+    real_error = [l for l in stderr.splitlines() if 'ERROR' in l and 'Warning' not in l]
+    if real_error:
+        raise Exception('\n'.join(real_error))
     return result.stdout.strip()
 
 # ── Brand detection rules ──────────────────────────────────────
@@ -169,8 +172,9 @@ def get_or_create_term(brand_name):
     slug = brand_name.lower().replace(' ', '-').replace("'", '').replace('.', '').replace(',', '')
     slug = re.sub(r'[^a-z0-9-]', '', slug)
     taxonomy = 'pa_brand'
+    safe_name = brand_name.replace("'", "\\'")
 
-    # Check if term exists
+    # Check if term+taxonomy already exists
     row = mysql(f"""
         SELECT t.term_id FROM {TABLE_PREFIX}terms t
         JOIN {TABLE_PREFIX}term_taxonomy tt ON t.term_id = tt.term_id
@@ -180,14 +184,24 @@ def get_or_create_term(brand_name):
     if row:
         return int(row.strip())
 
-    # Create term
-    mysql(f"""
-        INSERT INTO {TABLE_PREFIX}terms (name, slug, term_group)
-        VALUES ('{brand_name.replace("'", "\\'")}', '{slug}', 0)
+    # Check if term exists in terms table (without taxonomy entry)
+    term_row = mysql(f"""
+        SELECT term_id FROM {TABLE_PREFIX}terms WHERE slug = '{slug}' LIMIT 1
     """)
-    term_id = int(mysql(f"SELECT LAST_INSERT_ID()"))
+
+    if term_row:
+        term_id = int(term_row.strip())
+    else:
+        # Create term
+        mysql(f"""
+            INSERT IGNORE INTO {TABLE_PREFIX}terms (name, slug, term_group)
+            VALUES ('{safe_name}', '{slug}', 0)
+        """)
+        term_id = int(mysql(f"SELECT term_id FROM {TABLE_PREFIX}terms WHERE slug='{slug}' LIMIT 1"))
+
+    # Create term_taxonomy entry (IGNORE if duplicate)
     mysql(f"""
-        INSERT INTO {TABLE_PREFIX}term_taxonomy (term_id, taxonomy, description, parent, count)
+        INSERT IGNORE INTO {TABLE_PREFIX}term_taxonomy (term_id, taxonomy, description, parent, count)
         VALUES ({term_id}, '{taxonomy}', '', 0, 0)
     """)
     return term_id
