@@ -251,17 +251,85 @@ BRAND_RULES = [
     ('Youth To The People', ['youth to the people']),
     # Additional unmatched brands
     ('Nella White Snow', ['nella white snow', 'nella white']),
-    ('Mise-En-Scene', ['mise-en-scene', 'mise en scene', 'miseen']),
+    ('Mise-En-Scene', ['mise-en-scene', 'mise en scene', 'mise -en-scene', 'miseen']),
     ('The Body Shop', ['the body shop', 'body shop']),
-    ('Simple', ['simple kind to skin', 'simple kind', 'simple purifying', 'simple daily', 'simple regeneration', 'simple replenishing', 'simple detox', 'simple skin', 'simple kindness', 'simple cleansing', 'simple toning']),
+    ('Simple', ['simple kind to skin', 'simple kind', 'simple purifying', 'simple daily',
+                'simple regeneration', 'simple replenishing', 'simple detox', 'simple skin',
+                'simple kindness', 'simple cleansing', 'simple toning', 'simple micellar',
+                'simple facial', 'simple eye']),
 ]
+
+# Words that are NOT brand names when they appear as first word
+_SKIP_FIRST = {
+    'korean', 'japanese', 'french', 'natural', 'organic', 'premium', 'original',
+    'new', 'best', 'mini', 'travel', 'sample', 'set', 'kit', 'duo', 'trial',
+    'anti', 'ultra', 'super', 'deep', 'pure', 'fresh', 'daily', 'gentle',
+    'herbal', 'ginseng', 'green', 'red', 'black', 'white', 'blue', 'pink',
+    'collagen', 'vitamin', 'retinol', 'niacinamide', 'hyaluronic', 'ceramide',
+    'aha', 'bha', 'pha', 'spf',
+}
+
+# Words that signal end of brand name (start of product description)
+_PRODUCT_WORDS = {
+    'serum', 'cream', 'toner', 'lotion', 'essence', 'mask', 'cleanser', 'moisturizer',
+    'moisturiser', 'gel', 'oil', 'foam', 'wash', 'scrub', 'mist', 'spray', 'sheet',
+    'patch', 'ampoule', 'emulsion', 'balm', 'treatment', 'shampoo', 'conditioner',
+    'hair', 'body', 'hand', 'foot', 'sunscreen', 'sunblock', 'cushion', 'foundation',
+    'bb', 'cc', 'powder', 'lip', 'eye', 'pore', 'peeling', 'exfoliant', 'booster',
+    'capsule', 'tablet', 'tea', 'bags', 'drink', 'supplement', 'soap', 'bar',
+    'wipe', 'tissue', 'cotton', 'sponge', 'brush', 'tool', 'device', 'roller',
+    'whitening', 'brightening', 'firming', 'lifting', 'soothing', 'calming',
+    'hydrating', 'nourishing', 'purifying', 'detox', 'repair', 'recovery',
+    'acne', 'blemish', 'pimple', 'spot', 'pore', 'dark', 'glow', 'radiant',
+    'fermented', 'charcoal', 'clay', 'mugwort', 'centella', 'snail', 'propolis',
+    'kind', 'regeneration', 'replenishing', 'daily', 'gentle', 'micellar',
+    'perfume', 'fragrance', 'deodorant', 'antiperspirant', 'underarm',
+    'sachet', 'pack', '50', '100', '150', '200', '250', '30ml', '50ml', '120ml',
+}
+
+def _fallback_brand(name: str):
+    """Extract brand from product name using first-word heuristic.
+    Most beauty products follow: [Brand] [Product description]
+    """
+    words = name.split()
+    if not words:
+        return None
+
+    # If starts with 'The' + next word not generic, treat 'The X' as brand
+    if words[0].lower() == 'the' and len(words) >= 2:
+        candidate = f"The {words[1]}"
+        if words[1].lower() not in _PRODUCT_WORDS and words[1].lower() not in _SKIP_FIRST:
+            return candidate
+
+    brand_words = []
+    for word in words:
+        wl = word.lower().rstrip('.,')
+        if wl in _PRODUCT_WORDS:
+            break
+        if wl in _SKIP_FIRST and not brand_words:
+            return None  # first word is generic, skip
+        brand_words.append(word)
+        if len(brand_words) >= 3:
+            break
+
+    if not brand_words:
+        return None
+
+    # Single-word brand must be capitalised (not all-lower or all-digits)
+    result = ' '.join(brand_words)
+    if len(brand_words) == 1 and brand_words[0].islower():
+        return None
+
+    return result
+
 
 def detect_brand(name):
     n = name.lower()
     for brand, keywords in BRAND_RULES:
         if any(k in n for k in keywords):
             return brand
-    return None
+    # Fallback: extract from product name
+    return _fallback_brand(name)
 
 # ── Test DB connection ─────────────────────────────────────────
 print("=" * 55)
