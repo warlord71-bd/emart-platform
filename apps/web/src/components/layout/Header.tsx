@@ -59,7 +59,7 @@ export default function Header({ navCategories = [] }: Props) {
     ? [
         { label: 'Shop', href: '/shop' },
         ...navCategories.slice(0, 6).map((cat) => ({
-          label: cat.name,
+          label: cat.name.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n)),
           href: `/category/${cat.slug}`,
           className: '',
         })),
