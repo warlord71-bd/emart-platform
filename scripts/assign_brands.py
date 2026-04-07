@@ -250,7 +250,7 @@ BRAND_RULES = [
     ('Tatcha', ['tatcha']),
     ('Youth To The People', ['youth to the people']),
     # Additional unmatched brands
-    ('Nella White Snow', ['nella white snow', 'nella white']),
+    ('Nella', ['nella white snow', 'nella white', 'nella ']),
     ('Mise-En-Scene', ['mise-en-scene', 'mise en scene', 'mise -en-scene', 'miseen']),
     ('The Body Shop', ['the body shop', 'body shop']),
     ('Simple', ['simple kind to skin', 'simple kind', 'simple purifying', 'simple daily',
