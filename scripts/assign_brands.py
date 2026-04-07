@@ -64,7 +64,7 @@ BRAND_RULES = [
     ('Dear, Klairs', ['klairs']),
     ('Etude House', ['etude house', 'etude']),
     ('Holika Holika', ['holika holika']),
-    ("I'm From", ["i'm from", 'im from']),
+    ("I'm From", ["i'm from", 'im from', 'i m from']),
     ('Klavuu', ['klavuu']),
     ("Ma:nyo", ["ma:nyo", 'manyo']),
     ('Mediheal', ['mediheal']),
@@ -249,6 +249,11 @@ BRAND_RULES = [
     ('St. Ives', ['st. ives', 'st ives']),
     ('Tatcha', ['tatcha']),
     ('Youth To The People', ['youth to the people']),
+    # Additional unmatched brands
+    ('Nella White Snow', ['nella white snow', 'nella white']),
+    ('Mise-En-Scene', ['mise-en-scene', 'mise en scene', 'miseen']),
+    ('The Body Shop', ['the body shop', 'body shop']),
+    ('Simple', ['simple kind to skin', 'simple kind', 'simple purifying', 'simple daily', 'simple regeneration', 'simple replenishing', 'simple detox', 'simple skin', 'simple kindness', 'simple cleansing', 'simple toning']),
 ]
 
 def detect_brand(name):
