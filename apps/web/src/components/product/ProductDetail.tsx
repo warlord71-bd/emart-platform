@@ -2,8 +2,9 @@
 // src/components/product/ProductDetail.tsx
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingCart, Heart, Share2, Shield, Truck, RotateCcw } from 'lucide-react';
+import { ShoppingCart, Heart, Share2, Shield, Truck, RotateCcw, Building2 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice, getDiscountPercent, isInStock } from '@/lib/woocommerce';
 import type { WooProduct } from '@/lib/woocommerce';
@@ -41,6 +42,18 @@ export default function ProductDetail({ product }: Props) {
       toast.success('Link copied!');
     }
   };
+
+  // Extract brand from attributes
+  const brandAttr = product.attributes?.find(
+    (attr) => attr.name.toLowerCase() === 'brand' || attr.name.toLowerCase() === 'pa_brand'
+  );
+  const brandName = brandAttr?.options?.[0];
+  const brandSlug = brandName?.toLowerCase().replace(/\s+/g, '-');
+
+  // Filter out brand from other attributes for display
+  const otherAttributes = product.attributes?.filter(
+    (attr) => attr.name.toLowerCase() !== 'brand' && attr.name.toLowerCase() !== 'pa_brand'
+  ) || [];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
@@ -242,15 +255,47 @@ export default function ProductDetail({ product }: Props) {
           </p>
         </div>
 
-        {/* Attributes */}
-        {product.attributes.length > 0 && (
-          <div className="space-y-2 border-t border-gray-100 pt-4">
-            {product.attributes.map((attr) => (
-              <div key={attr.id} className="flex gap-2 text-sm">
-                <span className="font-medium text-gray-600 min-w-[80px]">{attr.name}:</span>
-                <span className="text-gray-500">{attr.options.join(', ')}</span>
+        {/* Brand Highlight */}
+        {brandName && (
+          <div className="bg-gradient-to-r from-[#fce7f0] to-[#fff0f6] rounded-xl p-4 border-2 border-[#e8197a]/20">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-white rounded-lg">
+                <Building2 size={24} className="text-[#e8197a]" />
               </div>
-            ))}
+              <div className="flex-1">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Brand</p>
+                <Link
+                  href={`/brands/${brandSlug}`}
+                  className="text-lg font-bold text-[#e8197a] hover:underline transition-colors"
+                >
+                  {brandName}
+                </Link>
+              </div>
+              <Link
+                href={`/brands/${brandSlug}`}
+                className="px-3 py-2 bg-white text-[#e8197a] text-xs font-semibold rounded-lg
+                           hover:bg-[#e8197a] hover:text-white transition-all border border-[#e8197a]"
+              >
+                View Brand →
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Other Attributes */}
+        {otherAttributes.length > 0 && (
+          <div className="space-y-3 border-t border-gray-100 pt-4">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Product Details</p>
+            <div className="grid grid-cols-2 gap-3">
+              {otherAttributes.map((attr) => (
+                <div key={attr.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs font-semibold text-gray-600 mb-1">{attr.name}</p>
+                  <p className="text-sm font-medium text-gray-800">
+                    {attr.options.join(', ')}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
