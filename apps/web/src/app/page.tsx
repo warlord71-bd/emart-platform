@@ -1,6 +1,6 @@
 // src/app/page.tsx
 import Link from 'next/link';
-import { getFeaturedProducts, getSaleProducts } from '@/lib/woocommerce';
+import { getFeaturedProducts, getSaleProducts, getNewArrivals } from '@/lib/woocommerce';
 import BrandImage from '@/components/brand/BrandImage';
 import ProductCard from '@/components/product/ProductCard';
 import FlashDealsTimer from '@/components/home/FlashDealsTimer';
@@ -49,9 +49,10 @@ const CONCERNS = [
 ];
 
 export default async function HomePage() {
-  const [featured, onSale] = await Promise.all([
+  const [featured, onSale, newArrivals] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
+    getNewArrivals(8),
   ]);
 
   return (
@@ -119,36 +120,28 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── SHOP BY CATEGORY ── */}
-      <section className="py-12 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="section-title mb-8">Shop by Category</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/category/${cat.slug}`}
-                className="flex flex-col items-center justify-center gap-2
-                           py-5 px-3 rounded-xl border-2 border-transparent
-                           hover:border-[#e8197a] hover:shadow-md transition-all
-                           group text-center"
-                style={{ background: cat.color }}
-              >
-                <span className="text-3xl group-hover:scale-110 transition-transform">
-                  {cat.emoji}
-                </span>
-                <span className="text-sm font-semibold text-[#1a1a2e]">
-                  {cat.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FLASH DEALS ── */}
-      {onSale.length > 0 && (
+      {/* ── 1. NEW ARRIVALS ── */}
+      {newArrivals.length > 0 && (
         <section className="py-12 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="section-title">🆕 New Arrivals</h2>
+              <Link href="/new-arrivals" className="text-[#e8197a] font-semibold text-sm hover:underline">
+                See All →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {newArrivals.slice(0, 8).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── 2. FLASH DEALS ── */}
+      {onSale.length > 0 && (
+        <section className="py-12 px-4 bg-gray-50">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-3">
               <div className="flex items-center gap-3">
@@ -160,7 +153,7 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {onSale.slice(0, 4).map((product) => (
+              {onSale.slice(0, 8).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -168,8 +161,59 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── TOP BRANDS ── */}
+      {/* ── 3. SHOP BY CATEGORY ── */}
+      <section className="py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="section-title mb-8">Shop by Category</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+            {CATEGORIES.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/category/${cat.slug}`}
+                className="flex flex-col items-center justify-center gap-2
+                           py-6 px-3 rounded-xl border-2 border-transparent
+                           hover:border-[#e8197a] hover:shadow-md transition-all
+                           group text-center"
+                style={{ background: cat.color }}
+              >
+                <span className="text-4xl group-hover:scale-110 transition-transform">
+                  {cat.emoji}
+                </span>
+                <span className="text-sm font-semibold text-[#1a1a2e]">
+                  {cat.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 4. SHOP BY CONCERN ── */}
       <section className="py-12 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="section-title mb-2">Shop by Concern</h2>
+          <p className="text-gray-500 text-sm mb-8">Find products for your skin type</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+            {CONCERNS.map((concern) => (
+              <Link
+                key={concern.slug}
+                href={`/shop?search=${encodeURIComponent(concern.name.split(' & ')[0])}`}
+                className="flex items-center gap-3 py-4 px-4 rounded-xl border-2 border-transparent
+                           hover:border-[#e8197a] hover:shadow-md transition-all group"
+                style={{ background: concern.color }}
+              >
+                <span className="text-2xl">{concern.emoji}</span>
+                <span className="text-sm font-semibold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors">
+                  {concern.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5. SHOP BY BRAND ── */}
+      <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <h2 className="section-title">Shop by Brand</h2>
@@ -177,7 +221,7 @@ export default async function HomePage() {
               All Brands →
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
             {BRANDS.map((brand) => (
               <Link
                 key={brand.slug}
@@ -201,80 +245,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── FEATURED PRODUCTS ── */}
+      {/* ── 6. FEATURED PRODUCTS ── */}
       {featured.length > 0 && (
-        <section className="py-12 px-4">
+        <section className="py-12 px-4 bg-gray-50">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="section-title">Featured Products</h2>
+              <h2 className="section-title">⭐ Featured Products</h2>
               <Link href="/shop?featured=true" className="text-[#e8197a] font-semibold text-sm hover:underline">
                 View All →
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {featured.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── SKINCARE CONCERNS ── */}
-      <section className="py-12 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="section-title mb-3">Shop by Concern</h2>
-          <p className="text-gray-500 text-sm mb-8">Find the right products for your skin</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
-            {CONCERNS.map((concern) => (
-              <Link
-                key={concern.slug}
-                href={`/shop?search=${encodeURIComponent(concern.name.split(' & ')[0])}`}
-                className="flex items-center gap-3 py-4 px-4 rounded-xl border-2 border-transparent
-                           hover:border-[#e8197a] hover:shadow-md transition-all group"
-                style={{ background: concern.color }}
-              >
-                <span className="text-2xl">{concern.emoji}</span>
-                <span className="text-sm font-semibold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors">
-                  {concern.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── BANNER — B2B ── */}
-      <section className="py-8 px-4 bg-[#fce7f0]">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center
-                        justify-between gap-4 text-center sm:text-left">
-          <div>
-            <h3 className="text-xl font-bold text-[#1a1a2e]">🏪 Wholesale / B2B?</h3>
-            <p className="text-gray-600 mt-1">Korean & Japanese cosmetics for retailers across Bangladesh</p>
-          </div>
-          <a
-            href="https://kcoswbd.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary whitespace-nowrap"
-          >
-            Visit kcoswbd.com →
-          </a>
-        </div>
-      </section>
-
-      {/* ── MORE ON SALE ── */}
-      {onSale.length > 4 && (
-        <section className="py-12 px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="section-title">🔥 More Deals</h2>
-              <Link href="/sale" className="text-[#e8197a] font-semibold text-sm hover:underline">
-                View All →
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {onSale.slice(4).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>

@@ -191,6 +191,11 @@ export async function getFeaturedProducts(limit = 8): Promise<WooProduct[]> {
   return products;
 }
 
+export async function getNewArrivals(limit = 8): Promise<WooProduct[]> {
+  const { products } = await getProducts({ per_page: limit, orderby: 'date', order: 'desc' });
+  return products;
+}
+
 export async function getSaleProducts(limit = 8): Promise<WooProduct[]> {
   const { products } = await getProducts({ on_sale: true, per_page: limit });
   return products;
