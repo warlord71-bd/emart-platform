@@ -208,4 +208,7 @@ auto-save-list
 tramp
 .\#*
 # Local variables:
-# End:apps/web/tsconfig.tsbuildinfo
+# End:
+
+# TypeScript build cache
+apps/web/tsconfig.tsbuildinfo
