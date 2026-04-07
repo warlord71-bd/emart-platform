@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import { getCategories, getFeaturedProducts, getSaleProducts } from '@/lib/woocommerce';
+import { getCategories, getFeaturedProducts, getSaleProducts, getBrands } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
 import type { Metadata } from 'next';
 
@@ -24,10 +24,31 @@ const CATEGORIES = [
   { name: 'Makeup', slug: 'makeup', emoji: '💄', color: '#fdf4ff' },
 ];
 
+function BrandLogoPlaceholder({ name }: { name: string }) {
+  const initial = name.charAt(0).toUpperCase();
+  const colors = [
+    '#FF6B9D', '#C44569', '#FFA07A', '#FFB6C1',
+    '#DDA0DD', '#EE82EE', '#BA55D3', '#9370DB',
+    '#8A2BE2', '#4169E1', '#1E90FF', '#00BFFF',
+  ];
+  const colorIndex = name.charCodeAt(0) % colors.length;
+  const bgColor = colors[colorIndex];
+
+  return (
+    <div
+      className="w-full h-28 rounded-lg flex items-center justify-center text-white font-bold text-2xl"
+      style={{ backgroundColor: bgColor }}
+    >
+      {initial}
+    </div>
+  );
+}
+
 export default async function HomePage() {
-  const [featured, onSale] = await Promise.all([
+  const [featured, onSale, brands] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
+    getBrands(),
   ]);
 
   return (
@@ -125,6 +146,41 @@ export default async function HomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {featured.map((product) => (
                 <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── SHOP BY BRANDS ── */}
+      {brands.length > 0 && (
+        <section className="py-12 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="section-title">🏢 Shop by Brand</h2>
+              <Link href="/brands" className="text-[#e8197a] font-semibold text-sm hover:underline">
+                View All Brands →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+              {brands.slice(0, 12).map((brand) => (
+                <Link
+                  key={brand.slug}
+                  href={`/brands/${brand.slug}`}
+                  className="group"
+                >
+                  <div className="bg-white rounded-lg overflow-hidden border-2 border-transparent
+                                hover:border-[#e8197a] transition-all shadow-sm hover:shadow-lg
+                                p-3 h-full">
+                    <div className="mb-2 flex-shrink-0">
+                      <BrandLogoPlaceholder name={brand.name} />
+                    </div>
+                    <h3 className="font-semibold text-xs md:text-sm text-[#1a1a2e]
+                                 group-hover:text-[#e8197a] transition-colors line-clamp-2 text-center">
+                      {brand.name}
+                    </h3>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>

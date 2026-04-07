@@ -70,6 +70,13 @@ export interface WooAttribute {
   options: string[];
 }
 
+export interface Brand {
+  name: string;
+  slug: string;
+  logo?: string;
+  productCount: number;
+}
+
 export interface WooOrder {
   id: number;
   status: string;
@@ -232,6 +239,85 @@ export async function getCategoryBySlug(slug: string): Promise<WooCategory | nul
   } catch (error) {
     console.error('getCategoryBySlug error:', error);
     return null;
+  }
+}
+
+// ══════════════════════════════
+// BRANDS API (Product Attributes)
+// ══════════════════════════════
+
+export async function getBrands(): Promise<Brand[]> {
+  try {
+    const response = await wooClient.get('/products', {
+      params: {
+        per_page: 100,
+        status: 'publish',
+      },
+    });
+
+    const brandsMap = new Map<string, number>();
+
+    // Extract brands from product attributes
+    response.data.forEach((product: WooProduct) => {
+      product.attributes?.forEach((attr: WooAttribute) => {
+        if (attr.name.toLowerCase() === 'brand' || attr.name.toLowerCase() === 'pa_brand') {
+          attr.options?.forEach((brandName: string) => {
+            const brandSlug = brandName.toLowerCase().replace(/\s+/g, '-');
+            brandsMap.set(brandName, (brandsMap.get(brandName) || 0) + 1);
+          });
+        }
+      });
+    });
+
+    // Convert to Brand array and sort alphabetically
+    const brands = Array.from(brandsMap.entries())
+      .map(([name, count]) => ({
+        name,
+        slug: name.toLowerCase().replace(/\s+/g, '-'),
+        productCount: count,
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    return brands;
+  } catch (error) {
+    console.error('getBrands error:', error);
+    return [];
+  }
+}
+
+export async function getProductsByBrand(brand: string): Promise<{
+  products: WooProduct[];
+  total: number;
+  totalPages: number;
+}> {
+  try {
+    // Get all products and filter by brand attribute
+    const response = await wooClient.get('/products', {
+      params: {
+        per_page: 100,
+        status: 'publish',
+      },
+    });
+
+    const filteredProducts = response.data.filter((product: WooProduct) => {
+      return product.attributes?.some((attr: WooAttribute) => {
+        if (attr.name.toLowerCase() === 'brand' || attr.name.toLowerCase() === 'pa_brand') {
+          return attr.options?.some((option: string) =>
+            option.toLowerCase() === brand.toLowerCase()
+          );
+        }
+        return false;
+      });
+    });
+
+    return {
+      products: filteredProducts,
+      total: filteredProducts.length,
+      totalPages: Math.ceil(filteredProducts.length / 20),
+    };
+  } catch (error) {
+    console.error('getProductsByBrand error:', error);
+    return { products: [], total: 0, totalPages: 0 };
   }
 }
 

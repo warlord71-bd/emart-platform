@@ -10,6 +10,7 @@ import { useCartStore } from '@/store/cartStore';
 
 const NAV_LINKS = [
   { label: 'Shop', href: '/shop' },
+  { label: 'Brands 🏢', href: '/brands' },
   { label: 'Face Care', href: '/category/face-care' },
   { label: 'Sunscreen', href: '/category/sunscreen' },
   { label: 'Serum & Toner', href: '/category/serum-toner' },
