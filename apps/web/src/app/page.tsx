@@ -26,15 +26,25 @@ const CATEGORIES = [
 
 const BRANDS = [
   { name: 'COSRX', slug: 'cosrx', abbr: 'CX', color: '#eff6ff', textColor: '#1e40af' },
-  { name: 'Missha', slug: 'missha', abbr: 'MS', color: '#f5f3ff', textColor: '#6d28d9' },
+  { name: 'Laneige', slug: 'laneige', abbr: 'LG', color: '#eff6ff', textColor: '#0369a1' },
   { name: 'Innisfree', slug: 'innisfree', abbr: 'IF', color: '#f0fdf4', textColor: '#166534' },
-  { name: 'Maybelline', slug: 'maybelline', abbr: 'MB', color: '#fff1f2', textColor: '#be123c' },
+  { name: 'Some By Mi', slug: 'some-by-mi', abbr: 'SBM', color: '#fefce8', textColor: '#92400e' },
+  { name: 'Missha', slug: 'missha', abbr: 'MS', color: '#f5f3ff', textColor: '#6d28d9' },
+  { name: 'Isntree', slug: 'isntree', abbr: 'IT', color: '#f0fdf4', textColor: '#065f46' },
+  { name: 'Bioderma', slug: 'bioderma', abbr: 'BD', color: '#eff6ff', textColor: '#1e40af' },
+  { name: 'Garnier', slug: 'garnier', abbr: 'GN', color: '#f0fdf4', textColor: '#166534' },
+  { name: 'Jumiso', slug: 'jumiso', abbr: 'JU', color: '#fefce8', textColor: '#b45309' },
+  { name: 'Banila Co', slug: 'banila-co', abbr: 'BC', color: '#fdf4ff', textColor: '#7c3aed' },
   { name: 'The Ordinary', slug: 'the-ordinary', abbr: 'TO', color: '#f9fafb', textColor: '#111827' },
   { name: 'Cetaphil', slug: 'cetaphil', abbr: 'CF', color: '#eff6ff', textColor: '#1d4ed8' },
-  { name: 'Laneige', slug: 'laneige', abbr: 'LG', color: '#eff6ff', textColor: '#0369a1' },
-  { name: 'Some By Mi', slug: 'some-by-mi', abbr: 'SBM', color: '#fefce8', textColor: '#92400e' },
   { name: 'CeraVe', slug: 'cerave', abbr: 'CV', color: '#f0fdf4', textColor: '#065f46' },
   { name: 'Hada Labo', slug: 'hada-labo', abbr: 'HL', color: '#fff7ed', textColor: '#c2410c' },
+  { name: 'Maybelline', slug: 'maybelline', abbr: 'MB', color: '#fff1f2', textColor: '#be123c' },
+  { name: 'Skinfood', slug: 'skinfood', abbr: 'SF', color: '#fefce8', textColor: '#92400e' },
+  { name: 'JNH', slug: 'jnh', abbr: 'JN', color: '#fee2e2', textColor: '#991b1b' },
+  { name: 'Simple', slug: 'simple', abbr: 'SM', color: '#f0fdf4', textColor: '#166534' },
+  { name: 'Vanicream', slug: 'vanicream', abbr: 'VC', color: '#eff6ff', textColor: '#1d4ed8' },
+  { name: 'Revolution', slug: 'revolution-skincare', abbr: 'RV', color: '#f5f3ff', textColor: '#6d28d9' },
 ];
 
 const CONCERNS = [
