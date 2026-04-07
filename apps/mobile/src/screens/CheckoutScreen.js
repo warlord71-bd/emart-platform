@@ -27,7 +27,7 @@ const CheckoutScreen = ({ navigation }) => {
   const [couponApplied, setCouponApplied] = useState(null);
   const [couponLoading, setCouponLoading] = useState(false);
 
-  const deliveryFee = cartTotal >= 2000 ? 0 : 80;
+  const deliveryFee = cartTotal >= 3000 ? 0 : 80;
   const total = Math.max(0, cartTotal - couponDiscount + deliveryFee);
 
   const paymentMethods = [

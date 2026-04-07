@@ -1,8 +1,9 @@
 // src/app/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import { getCategories, getFeaturedProducts, getSaleProducts } from '@/lib/woocommerce';
+import { getFeaturedProducts, getSaleProducts } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
+import FlashDealsTimer from '@/components/home/FlashDealsTimer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,7 +11,6 @@ export const metadata: Metadata = {
   description: "Bangladesh's #1 Korean & Japanese skincare destination. 100% authentic, COD available, fast delivery.",
 };
 
-// Revalidate every hour
 export const revalidate = 3600;
 
 const CATEGORIES = [
@@ -22,6 +22,30 @@ const CATEGORIES = [
   { name: 'Hair Care', slug: 'hair-care', emoji: '💆', color: '#fff1f2' },
   { name: 'Body Care', slug: 'body-care', emoji: '🌸', color: '#fefce8' },
   { name: 'Makeup', slug: 'makeup', emoji: '💄', color: '#fdf4ff' },
+];
+
+const BRANDS = [
+  { name: 'COSRX', slug: 'cosrx', emoji: '🇰🇷', color: '#eff6ff' },
+  { name: 'Missha', slug: 'missha', emoji: '🌙', color: '#f5f3ff' },
+  { name: 'Innisfree', slug: 'innisfree', emoji: '🌿', color: '#f0fdf4' },
+  { name: 'Maybelline', slug: 'maybelline', emoji: '💋', color: '#fff1f2' },
+  { name: 'The Ordinary', slug: 'the-ordinary', emoji: '🧪', color: '#f0fdf4' },
+  { name: 'Cetaphil', slug: 'cetaphil', emoji: '🧴', color: '#eff6ff' },
+  { name: 'Laneige', slug: 'laneige', emoji: '💧', color: '#eff6ff' },
+  { name: 'Some By Mi', slug: 'some-by-mi', emoji: '✨', color: '#fefce8' },
+  { name: 'CeraVe', slug: 'cerave', emoji: '🛡️', color: '#f0fdf4' },
+  { name: 'Hada Labo', slug: 'hada-labo', emoji: '🇯🇵', color: '#fff7ed' },
+];
+
+const CONCERNS = [
+  { name: 'Acne & Breakouts', slug: 'acne', emoji: '🔴', color: '#fee2e2' },
+  { name: 'Dark Spots', slug: 'dark-spots', emoji: '🌑', color: '#f3e8ff' },
+  { name: 'Dry Skin', slug: 'dry-skin', emoji: '💧', color: '#dbeafe' },
+  { name: 'Oily Skin', slug: 'oily-skin', emoji: '✨', color: '#fef9c3' },
+  { name: 'Anti-Aging', slug: 'anti-aging', emoji: '⏳', color: '#fce7f0' },
+  { name: 'Sun Protection', slug: 'sun-protection', emoji: '☀️', color: '#fff7ed' },
+  { name: 'Sensitive Skin', slug: 'sensitive-skin', emoji: '🌸', color: '#fce7f3' },
+  { name: 'Pore Care', slug: 'pore-care', emoji: '🔍', color: '#ecfdf5' },
 ];
 
 export default async function HomePage() {
@@ -46,7 +70,7 @@ export default async function HomePage() {
               <span className="text-[#e8197a]"> The Best</span>
             </h1>
             <p className="text-gray-300 text-base md:text-lg mb-8 max-w-lg">
-              Bangladesh's #1 destination for genuine K-Beauty & J-Beauty.
+              Bangladesh&apos;s #1 destination for genuine K-Beauty & J-Beauty.
               Fast delivery, COD available, 100% authentic.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
@@ -112,6 +136,51 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── FLASH DEALS ── */}
+      {onSale.length > 0 && (
+        <section className="py-12 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-3">
+              <div className="flex items-center gap-3">
+                <h2 className="section-title">⚡ Flash Deals</h2>
+                <FlashDealsTimer />
+              </div>
+              <Link href="/sale" className="text-[#e8197a] font-semibold text-sm hover:underline">
+                View All →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {onSale.slice(0, 4).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── TOP BRANDS ── */}
+      <section className="py-12 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="section-title mb-8">Top Brands</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            {BRANDS.map((brand) => (
+              <Link
+                key={brand.slug}
+                href={`/shop?search=${encodeURIComponent(brand.name)}`}
+                className="flex items-center gap-3 py-4 px-4 rounded-xl border-2 border-transparent
+                           hover:border-[#e8197a] hover:shadow-md transition-all group"
+                style={{ background: brand.color }}
+              >
+                <span className="text-2xl">{brand.emoji}</span>
+                <span className="text-sm font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors">
+                  {brand.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FEATURED PRODUCTS ── */}
       {featured.length > 0 && (
         <section className="py-12 px-4">
@@ -130,6 +199,30 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* ── SKINCARE CONCERNS ── */}
+      <section className="py-12 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="section-title mb-3">Shop by Concern</h2>
+          <p className="text-gray-500 text-sm mb-8">Find the right products for your skin</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+            {CONCERNS.map((concern) => (
+              <Link
+                key={concern.slug}
+                href={`/shop?search=${encodeURIComponent(concern.name.split(' & ')[0])}`}
+                className="flex items-center gap-3 py-4 px-4 rounded-xl border-2 border-transparent
+                           hover:border-[#e8197a] hover:shadow-md transition-all group"
+                style={{ background: concern.color }}
+              >
+                <span className="text-2xl">{concern.emoji}</span>
+                <span className="text-sm font-semibold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors">
+                  {concern.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── BANNER — B2B ── */}
       <section className="py-8 px-4 bg-[#fce7f0]">
@@ -150,18 +243,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── ON SALE ── */}
-      {onSale.length > 0 && (
-        <section className="py-12 px-4 bg-gray-50">
+      {/* ── MORE ON SALE ── */}
+      {onSale.length > 4 && (
+        <section className="py-12 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="section-title">🔥 On Sale</h2>
+              <h2 className="section-title">🔥 More Deals</h2>
               <Link href="/sale" className="text-[#e8197a] font-semibold text-sm hover:underline">
                 View All →
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {onSale.map((product) => (
+              {onSale.slice(4).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -172,7 +265,7 @@ export default async function HomePage() {
       {/* ── WHY EMART ── */}
       <section className="py-12 px-4 bg-[#1a1a2e] text-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-10">Why Choose Emart?</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-10 text-white">Why Choose Emart?</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { icon: '✅', title: '100% Authentic', desc: 'Directly sourced from Korea & Japan' },

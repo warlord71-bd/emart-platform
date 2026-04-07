@@ -11,7 +11,7 @@ const CartScreen = ({ navigation }) => {
   const { t } = useLanguage();
   const { items, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount } = useCart();
 
-  const deliveryFee = cartTotal >= 2000 ? 0 : 80;
+  const deliveryFee = cartTotal >= 3000 ? 0 : 80;
   const total = cartTotal + deliveryFee;
 
   if (items.length === 0) {
