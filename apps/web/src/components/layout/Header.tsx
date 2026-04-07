@@ -92,13 +92,13 @@ export default function Header({ navCategories = [] }: Props) {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/images/logo.png"
                 alt="Emart Skincare Bangladesh"
                 width={44}
                 height={44}
                 className="rounded-xl"
-                priority
               />
               <div className="hidden sm:block">
                 <div className="font-extrabold text-[#1a1a2e] text-base leading-tight">Emart Skincare</div>

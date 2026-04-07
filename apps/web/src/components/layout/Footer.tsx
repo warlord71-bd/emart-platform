@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 const SHOP_LINKS = [
   { label: 'All Products', href: '/shop' },
@@ -41,7 +40,8 @@ export default function Footer() {
           {/* Brand Column */}
           <div>
             <Link href="/" className="flex items-center gap-3 mb-4">
-              <Image src="/images/logo.png" alt="Emart" width={44} height={44} className="rounded-xl" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/logo.png" alt="Emart" width={44} height={44} className="rounded-xl" />
               <div>
                 <div className="font-extrabold text-[#1a1a2e]">Emart Skincare</div>
                 <div className="text-[#e8197a] text-xs font-bold tracking-widest uppercase">Bangladesh</div>
