@@ -9,6 +9,9 @@ import subprocess
 import json
 import re
 import time
+import urllib.request
+import urllib.parse
+import os
 
 # ── DB Config (from wp-config.php) ──────────────────────────────
 WP_CONFIG = "/var/www/wordpress/wp-config.php"
@@ -323,13 +326,71 @@ def _fallback_brand(name: str):
     return result
 
 
+# ── Online brand lookup (Open Beauty Facts) ───────────────────────────────────
+CACHE_FILE = '/tmp/brand_online_cache.json'
+_online_cache = {}
+
+def _load_cache():
+    global _online_cache
+    if os.path.exists(CACHE_FILE):
+        try:
+            _online_cache = json.load(open(CACHE_FILE, encoding='utf-8'))
+            print(f"  Loaded {len(_online_cache)} cached online lookups")
+        except Exception:
+            _online_cache = {}
+
+def _save_cache():
+    with open(CACHE_FILE, 'w', encoding='utf-8') as f:
+        json.dump(_online_cache, f, ensure_ascii=False, indent=2)
+
+def lookup_brand_online(product_name):
+    """Search Open Beauty Facts for the brand of a product."""
+    key = product_name.lower().strip()
+    if key in _online_cache:
+        return _online_cache[key]  # may be None (cached miss)
+
+    # Try a short version: first 4 words (avoids size/weight noise)
+    short_name = ' '.join(product_name.split()[:4])
+    query = urllib.parse.quote(short_name)
+    url = (
+        'https://world.openbeautyfacts.org/cgi/search.pl'
+        f'?search_terms={query}&search_simple=1&json=1&page_size=5'
+    )
+    brand = None
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={'User-Agent': 'EmartBD-BrandBot/1.0 (contact@e-mart.com.bd)'}
+        )
+        with urllib.request.urlopen(req, timeout=8) as r:
+            data = json.loads(r.read().decode('utf-8'))
+            for prod in data.get('products', []):
+                b = (prod.get('brands') or '').strip()
+                if b:
+                    brand = b.split(',')[0].strip()
+                    break
+    except Exception:
+        pass
+
+    _online_cache[key] = brand
+    return brand
+
+
 def detect_brand(name):
     n = name.lower()
+    # 1. Explicit rules (fastest, most accurate)
     for brand, keywords in BRAND_RULES:
         if any(k in n for k in keywords):
             return brand
-    # Fallback: extract from product name
+    # 2. Online lookup via Open Beauty Facts
+    brand = lookup_brand_online(name)
+    if brand:
+        return brand
+    # 3. Heuristic: extract first word(s) from product name
     return _fallback_brand(name)
+
+# ── Load online cache ─────────────────────────────────────────
+_load_cache()
 
 # ── Test DB connection ─────────────────────────────────────────
 print("=" * 55)
@@ -503,6 +564,7 @@ skipped = []
 no_match = []
 term_cache = {}
 
+online_lookup_count = 0
 for i, p in enumerate(products):
     brand = detect_brand(p['name'])
 
@@ -519,12 +581,29 @@ for i, p in enumerate(products):
         term_cache[brand] = get_or_create_term(brand)
     term_id = term_cache[brand]
 
-    print(f"[{i+1}/{len(products)}] {brand}: {p['name'][:45]}...")
+    # Show online lookup indicator
+    cache_key = p['name'].lower().strip()
+    was_online = cache_key in _online_cache and _online_cache[cache_key]
+    src = '🌐' if was_online else '📋'
+    if was_online:
+        online_lookup_count += 1
+
+    print(f"[{i+1}/{len(products)}] {src} {brand}: {p['name'][:45]}...")
     assign_brand_to_product(p['id'], brand, term_id)
     assigned.append({'id': p['id'], 'name': p['name'], 'brand': brand})
 
+    # Save cache periodically
+    if (i + 1) % 50 == 0:
+        _save_cache()
+    # Throttle online requests to be respectful
+    time.sleep(0.3)
+
+# Save final cache
+_save_cache()
+print(f"  💾 Online cache saved: {len(_online_cache)} entries → {CACHE_FILE}")
+
 print("\n" + "=" * 55)
-print(f"✅ Assigned: {len(assigned)}")
+print(f"✅ Assigned: {len(assigned)} (🌐 {online_lookup_count} via online lookup)")
 print(f"⏭  Already had brand: {len(skipped)}")
 print(f"❓ No brand match: {len(no_match)}")
 
