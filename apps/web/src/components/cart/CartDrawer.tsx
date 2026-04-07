@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { X, Plus, Minus, ShoppingBag, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice } from '@/lib/woocommerce';
+import { formatPrice } from '@/lib/woo-helpers';
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalPrice } =

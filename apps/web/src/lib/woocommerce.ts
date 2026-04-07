@@ -7,14 +7,20 @@ const WOO_URL = process.env.NEXT_PUBLIC_WOO_URL || 'http://5.189.188.229';
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
 
+if (!CONSUMER_KEY || !CONSUMER_SECRET) {
+  console.warn('[WooCommerce] Missing API credentials. Check WOO_CONSUMER_KEY and WOO_CONSUMER_SECRET in .env.local');
+}
+
 // ── API Client ──
+// Use query-param auth (consumer_key/consumer_secret) instead of Basic Auth
+// because many Apache/Nginx setups strip the Authorization header.
 const wooClient = axios.create({
   baseURL: `${WOO_URL}/wp-json/wc/v3`,
-  auth: {
-    username: CONSUMER_KEY,
-    password: CONSUMER_SECRET,
-  },
   timeout: 15000,
+  params: {
+    consumer_key: CONSUMER_KEY,
+    consumer_secret: CONSUMER_SECRET,
+  },
 });
 
 // ══════════════════════════════
@@ -151,8 +157,8 @@ export async function getProducts(params: ProductsParams = {}): Promise<{
       total: parseInt(response.headers['x-wp-total'] || '0'),
       totalPages: parseInt(response.headers['x-wp-totalpages'] || '0'),
     };
-  } catch (error) {
-    console.error('getProducts error:', error);
+  } catch (error: any) {
+    console.error('[WooCommerce] getProducts error:', error?.response?.status, error?.response?.data || error?.message);
     return { products: [], total: 0, totalPages: 0 };
   }
 }
@@ -163,8 +169,8 @@ export async function getProduct(slug: string): Promise<WooProduct | null> {
       params: { slug, status: 'publish' },
     });
     return response.data[0] || null;
-  } catch (error) {
-    console.error('getProduct error:', error);
+  } catch (error: any) {
+    console.error('[WooCommerce] getProduct error:', error?.response?.status, error?.response?.data || error?.message);
     return null;
   }
 }
@@ -217,8 +223,8 @@ export async function getCategories(params: {
       },
     });
     return response.data;
-  } catch (error) {
-    console.error('getCategories error:', error);
+  } catch (error: any) {
+    console.error('[WooCommerce] getCategories error:', error?.response?.status, error?.response?.data || error?.message);
     return [];
   }
 }

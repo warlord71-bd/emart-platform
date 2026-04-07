@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice, getDiscountPercent, isInStock } from '@/lib/woocommerce';
+import { formatPrice, getDiscountPercent, isInStock } from '@/lib/woo-helpers';
 import type { WooProduct } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 

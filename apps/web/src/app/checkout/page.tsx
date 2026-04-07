@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice } from '@/lib/woocommerce';
+import { formatPrice } from '@/lib/woo-helpers';
 import toast from 'react-hot-toast';
 
 const DISTRICTS = [
