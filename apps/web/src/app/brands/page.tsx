@@ -1,6 +1,7 @@
 // src/app/brands/page.tsx
 import Link from 'next/link';
 import { getBrands } from '@/lib/woocommerce';
+import BrandImage from '@/components/brand/BrandImage';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,43 +11,6 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
-// Brand logo: use SVG file if exists, else colored letter fallback
-function BrandLogo({ name, slug }: { name: string; slug: string }) {
-  const colors = [
-    '#FF6B9D', '#C44569', '#FFA07A', '#FFB6C1',
-    '#DDA0DD', '#EE82EE', '#BA55D3', '#9370DB',
-    '#8A2BE2', '#4169E1', '#1E90FF', '#00BFFF',
-  ];
-  const colorIndex = name.charCodeAt(0) % colors.length;
-  const bgColor = colors[colorIndex];
-  const svgPath = `/images/brands/${slug}.svg`;
-
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={svgPath}
-      alt={name}
-      className="w-full h-28 object-contain rounded-lg"
-      onError={(e) => {
-        const target = e.currentTarget;
-        target.style.display = 'none';
-        const fallback = target.nextElementSibling as HTMLElement;
-        if (fallback) fallback.style.display = 'flex';
-      }}
-    />
-  );
-}
-
-function BrandLogoFallback({ name, bgColor }: { name: string; bgColor: string }) {
-  return (
-    <div
-      className="w-full h-28 rounded-lg items-center justify-center text-white font-bold text-3xl hidden"
-      style={{ backgroundColor: bgColor, display: 'none' }}
-    >
-      {name.charAt(0).toUpperCase()}
-    </div>
-  );
-}
 
 export default async function BrandsPage() {
   const brands = await getBrands();
@@ -82,9 +46,8 @@ export default async function BrandsPage() {
                                 hover:border-[#e8197a] transition-all shadow-sm hover:shadow-lg
                                 p-4 h-full flex flex-col">
                     {/* Logo Area */}
-                    <div className="mb-4 flex-shrink-0 bg-gray-50 rounded-lg overflow-hidden">
-                      <BrandLogo name={brand.name} slug={brand.slug} />
-                      <BrandLogoFallback name={brand.name} bgColor={['#FF6B9D','#C44569','#FFA07A','#DDA0DD','#9370DB','#4169E1'][brand.name.charCodeAt(0) % 6]} />
+                    <div className="mb-4 flex-shrink-0">
+                      <BrandImage slug={brand.slug} name={brand.name} />
                     </div>
 
                     {/* Brand Info */}

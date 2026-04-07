@@ -1,6 +1,7 @@
 // src/app/page.tsx
 import Link from 'next/link';
 import { getFeaturedProducts, getSaleProducts } from '@/lib/woocommerce';
+import BrandImage from '@/components/brand/BrandImage';
 import ProductCard from '@/components/product/ProductCard';
 import FlashDealsTimer from '@/components/home/FlashDealsTimer';
 import type { Metadata } from 'next';
@@ -184,23 +185,13 @@ export default async function HomePage() {
                 className="flex flex-col items-center rounded-xl border border-gray-200
                            hover:border-[#e8197a] hover:shadow-md transition-all group overflow-hidden bg-white"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`/images/brands/${brand.slug}.svg`}
-                  alt={brand.name}
-                  className="w-full h-20 object-cover"
-                  onError={(e) => {
-                    const el = e.currentTarget;
-                    el.style.display = 'none';
-                    (el.nextElementSibling as HTMLElement).style.display = 'flex';
-                  }}
+                <BrandImage
+                  slug={brand.slug}
+                  name={brand.name}
+                  bgColor={brand.color}
+                  textColor={brand.textColor}
+                  abbr={brand.abbr}
                 />
-                <div
-                  className="w-full h-20 items-center justify-center font-extrabold text-xl hidden"
-                  style={{ background: brand.color, color: brand.textColor, display: 'none' }}
-                >
-                  {brand.abbr}
-                </div>
                 <span className="text-xs font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors py-2 px-2 text-center">
                   {brand.name}
                 </span>
