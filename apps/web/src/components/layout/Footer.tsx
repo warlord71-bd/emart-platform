@@ -21,12 +21,12 @@ const HELP_LINKS = [
 ];
 
 const PAYMENT_METHODS = [
-  { name: 'bKash', bg: '#E2136E', text: '#fff', short: 'b' },
-  { name: 'Nagad', bg: '#F26522', text: '#fff', short: 'N' },
-  { name: 'Rocket', bg: '#8B2FC9', text: '#fff', short: 'R' },
-  { name: 'VISA', bg: '#1A1F71', text: '#fff', short: 'VISA' },
-  { name: 'Mastercard', bg: '#EB001B', text: '#fff', short: 'MC' },
-  { name: 'COD', bg: '#16a34a', text: '#fff', short: '₹' },
+  { name: 'bKash', slug: 'bkash' },
+  { name: 'Nagad', slug: 'nagad' },
+  { name: 'Rocket', slug: 'rocket' },
+  { name: 'VISA', slug: 'visa' },
+  { name: 'Mastercard', slug: 'mastercard' },
+  { name: 'COD', slug: 'cod' },
 ];
 
 export default function Footer() {
@@ -132,13 +132,15 @@ export default function Footer() {
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wide mr-1">We Accept:</span>
             {PAYMENT_METHODS.map((p) => (
-              <span
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
                 key={p.name}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold"
-                style={{ background: p.bg, color: p.text }}
-              >
-                {p.name}
-              </span>
+                src={`/images/payment/${p.slug}.svg`}
+                alt={p.name}
+                height={36}
+                className="h-9 w-auto rounded-md"
+                title={p.name}
+              />
             ))}
           </div>
           <div className="flex gap-3 text-xs text-gray-400">

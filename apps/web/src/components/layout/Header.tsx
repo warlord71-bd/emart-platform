@@ -11,6 +11,7 @@ import type { WooCategory } from '@/lib/woocommerce';
 
 const FALLBACK_NAV = [
   { label: 'Shop', href: '/shop' },
+  { label: 'Brands', href: '/brands' },
   { label: 'Face Care', href: '/category/face-cleansers' },
   { label: 'Sunscreen', href: '/category/sunscreen' },
   { label: 'Serum & Toner', href: '/category/serums-ampoules-essences' },
@@ -58,6 +59,7 @@ export default function Header({ navCategories = [] }: Props) {
   const navLinks = navCategories.length > 0
     ? [
         { label: 'Shop', href: '/shop' },
+        { label: 'Brands', href: '/brands' },
         ...navCategories.slice(0, 6).map((cat) => ({
           label: cat.name.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n)),
           href: `/category/${cat.slug}`,

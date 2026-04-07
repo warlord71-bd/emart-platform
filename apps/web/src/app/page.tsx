@@ -170,23 +170,38 @@ export default async function HomePage() {
       {/* ── TOP BRANDS ── */}
       <section className="py-12 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
-          <h2 className="section-title mb-8">Top Brands</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="section-title">Shop by Brand</h2>
+            <Link href="/brands" className="text-[#e8197a] font-semibold text-sm hover:underline">
+              All Brands →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {BRANDS.map((brand) => (
               <Link
                 key={brand.slug}
-                href={`/shop?search=${encodeURIComponent(brand.name)}`}
-                className="flex items-center gap-3 py-4 px-4 rounded-xl border border-gray-100
-                           hover:border-[#e8197a] hover:shadow-md transition-all group"
-                style={{ background: brand.color }}
+                href={`/brands/${brand.slug}`}
+                className="flex flex-col items-center rounded-xl border border-gray-200
+                           hover:border-[#e8197a] hover:shadow-md transition-all group overflow-hidden bg-white"
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`/images/brands/${brand.slug}.svg`}
+                  alt={brand.name}
+                  className="w-full h-20 object-cover"
+                  onError={(e) => {
+                    const el = e.currentTarget;
+                    el.style.display = 'none';
+                    (el.nextElementSibling as HTMLElement).style.display = 'flex';
+                  }}
+                />
                 <div
-                  className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 font-extrabold text-xs"
-                  style={{ background: brand.textColor + '18', color: brand.textColor }}
+                  className="w-full h-20 items-center justify-center font-extrabold text-xl hidden"
+                  style={{ background: brand.color, color: brand.textColor, display: 'none' }}
                 >
                   {brand.abbr}
                 </div>
-                <span className="text-sm font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors leading-tight">
+                <span className="text-xs font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors py-2 px-2 text-center">
                   {brand.name}
                 </span>
               </Link>

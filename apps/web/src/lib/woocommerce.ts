@@ -3,19 +3,17 @@
 
 import axios from 'axios';
 
-const WOO_URL = process.env.NEXT_PUBLIC_WOO_URL || 'http://127.0.0.1';
+const WOO_URL = process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd';
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
-const isHTTPS = WOO_URL.startsWith('https');
 
 // ── API Client ──
-// Use basic auth over HTTPS, query param auth over HTTP (WooCommerce requirement)
 const wooClient = axios.create({
   baseURL: `${WOO_URL}/wp-json/wc/v3`,
-  ...(isHTTPS
-    ? { auth: { username: CONSUMER_KEY, password: CONSUMER_SECRET } }
-    : { params: { consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET } }
-  ),
+  auth: {
+    username: CONSUMER_KEY,
+    password: CONSUMER_SECRET,
+  },
   timeout: 15000,
 });
 
@@ -70,6 +68,13 @@ export interface WooAttribute {
   id: number;
   name: string;
   options: string[];
+}
+
+export interface Brand {
+  name: string;
+  slug: string;
+  logo?: string;
+  productCount: number;
 }
 
 export interface WooOrder {
@@ -234,6 +239,85 @@ export async function getCategoryBySlug(slug: string): Promise<WooCategory | nul
   } catch (error) {
     console.error('getCategoryBySlug error:', error);
     return null;
+  }
+}
+
+// ══════════════════════════════
+// BRANDS API (Product Attributes)
+// ══════════════════════════════
+
+export async function getBrands(): Promise<Brand[]> {
+  try {
+    const response = await wooClient.get('/products', {
+      params: {
+        per_page: 100,
+        status: 'publish',
+      },
+    });
+
+    const brandsMap = new Map<string, number>();
+
+    // Extract brands from product attributes
+    response.data.forEach((product: WooProduct) => {
+      product.attributes?.forEach((attr: WooAttribute) => {
+        if (attr.name.toLowerCase() === 'brand' || attr.name.toLowerCase() === 'pa_brand') {
+          attr.options?.forEach((brandName: string) => {
+            const brandSlug = brandName.toLowerCase().replace(/\s+/g, '-');
+            brandsMap.set(brandName, (brandsMap.get(brandName) || 0) + 1);
+          });
+        }
+      });
+    });
+
+    // Convert to Brand array and sort alphabetically
+    const brands = Array.from(brandsMap.entries())
+      .map(([name, count]) => ({
+        name,
+        slug: name.toLowerCase().replace(/\s+/g, '-'),
+        productCount: count,
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    return brands;
+  } catch (error) {
+    console.error('getBrands error:', error);
+    return [];
+  }
+}
+
+export async function getProductsByBrand(brand: string): Promise<{
+  products: WooProduct[];
+  total: number;
+  totalPages: number;
+}> {
+  try {
+    // Get all products and filter by brand attribute
+    const response = await wooClient.get('/products', {
+      params: {
+        per_page: 100,
+        status: 'publish',
+      },
+    });
+
+    const filteredProducts = response.data.filter((product: WooProduct) => {
+      return product.attributes?.some((attr: WooAttribute) => {
+        if (attr.name.toLowerCase() === 'brand' || attr.name.toLowerCase() === 'pa_brand') {
+          return attr.options?.some((option: string) =>
+            option.toLowerCase() === brand.toLowerCase()
+          );
+        }
+        return false;
+      });
+    });
+
+    return {
+      products: filteredProducts,
+      total: filteredProducts.length,
+      totalPages: Math.ceil(filteredProducts.length / 20),
+    };
+  } catch (error) {
+    console.error('getProductsByBrand error:', error);
+    return { products: [], total: 0, totalPages: 0 };
   }
 }
 

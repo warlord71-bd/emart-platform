@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100">
+  <rect width="200" height="100" fill="#ffd700"/>
+  <text x="100" y="52" font-family="Arial,sans-serif" font-size="15" font-weight="bold" fill="#000" text-anchor="middle" letter-spacing="1">MAYBELLINE</text>
+  <text x="100" y="72" font-family="Arial,sans-serif" font-size="9" fill="#000" text-anchor="middle">NEW YORK</text>
+</svg>
