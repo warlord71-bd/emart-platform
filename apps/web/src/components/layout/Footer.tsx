@@ -140,7 +140,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="bg-[#1a1a2e] text-gray-400 py-4 px-4">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
-          <p>© 2025 <a href="/" className="text-[#e8197a] font-semibold">Emart Skincare Bangladesh</a>. All rights reserved.</p>
+          <p>© 2026 <a href="/" className="text-[#e8197a] font-semibold">Emart Skincare Bangladesh</a>. All rights reserved.</p>
           <div className="flex gap-4">
             {[
               { label: 'Privacy', href: '/privacy-policy' },

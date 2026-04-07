@@ -75,7 +75,7 @@ export default function CartDrawer() {
               {items.map((item) => (
                 <div key={item.id} className="flex gap-3 pb-4 border-b border-gray-100">
                   {/* Image */}
-                  <Link href={`/shop/${item.slug}`} onClick={closeCart}>
+                  <Link href={`/${item.slug}`} onClick={closeCart}>
                     <div className="w-16 h-16 relative flex-shrink-0 rounded-lg overflow-hidden bg-gray-50">
                       <Image
                         src={item.image}
@@ -89,7 +89,7 @@ export default function CartDrawer() {
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <Link
-                      href={`/shop/${item.slug}`}
+                      href={`/${item.slug}`}
                       onClick={closeCart}
                       className="text-sm font-medium text-gray-800 line-clamp-2 hover:text-[#e8197a]"
                     >

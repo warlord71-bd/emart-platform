@@ -58,11 +58,11 @@ export default function ProductCard({ product }: Props) {
         <Heart size={16} />
       </button>
 
-      <Link href={`/shop/${product.slug}`}>
+      <Link href={`/${product.slug}`}>
         {/* Image */}
         <div className="product-img-wrap">
           <Image
-            src={product.images[0]?.src || '/images/placeholder.jpg'}
+            src={product.images[0]?.src || '/images/placeholder.png'}
             alt={product.images[0]?.alt || product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

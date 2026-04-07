@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
+
   async redirects() {
     return [
       { source: '/category/face-care', destination: '/category/face-cleansers', permanent: false },
