@@ -44,23 +44,27 @@ def parse_wp_config(path):
 wp = parse_wp_config(WP_CONFIG)
 print(f"  DB: {wp['db_name']} on {wp['db_host']}, prefix: {wp['prefix']}")
 
-# ── Step 2: Connect to MySQL ────────────────────────────────────────────────
-print('\n[2/6] Connecting to MySQL...')
-try:
-    import pymysql
-except ImportError:
-    print('  pymysql not found, installing...')
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pymysql', '-q'])
-    import pymysql
+# ── Step 2: MySQL helper (uses CLI — no python packages needed) ────────────
+print('\n[2/6] Setting up MySQL connection...')
 
-conn = pymysql.connect(
-    host=wp['db_host'],
-    user=wp['db_user'],
-    password=wp['db_pass'],
-    database=wp['db_name'],
-    charset='utf8mb4',
-)
-cur = conn.cursor()
+def mysql(sql):
+    """Run SQL via mysql CLI, return stdout."""
+    result = subprocess.run(
+        ['mysql', '-u', wp['db_user'], f"-p{wp['db_pass']}", wp['db_name'],
+         '-sNe', sql],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        err = result.stderr.replace('mysql: [Warning] Using a password on the command line interface can be insecure.\n', '')
+        if err.strip():
+            print(f'  SQL error: {err.strip()}')
+    return result.stdout.strip()
+
+# Quick connectivity test
+test = mysql("SELECT 1")
+if test != '1':
+    print('  Cannot connect to MySQL. Check credentials.')
+    sys.exit(1)
 print('  Connected.')
 
 # ── Step 3: Get admin user ID ───────────────────────────────────────────────
@@ -70,7 +74,7 @@ table_meta  = f"{wp['prefix']}usermeta"
 table_keys  = f"{wp['prefix']}woocommerce_api_keys"
 
 # Find user with administrator role
-cur.execute(f"""
+out = mysql(f"""
     SELECT u.ID, u.user_login
     FROM {table_users} u
     JOIN {table_meta} m ON u.ID = m.user_id
@@ -78,13 +82,14 @@ cur.execute(f"""
       AND m.meta_value LIKE '%administrator%'
     LIMIT 1
 """)
-row = cur.fetchone()
-if not row:
-    # Fallback: smallest ID
-    cur.execute(f"SELECT ID, user_login FROM {table_users} ORDER BY ID LIMIT 1")
-    row = cur.fetchone()
+if not out:
+    out = mysql(f"SELECT ID, user_login FROM {table_users} ORDER BY ID LIMIT 1")
+if not out:
+    print('  No users found in DB.')
+    sys.exit(1)
 
-admin_id, admin_login = row
+parts = out.split('\t')
+admin_id, admin_login = parts[0], parts[1]
 print(f"  Admin: ID={admin_id}, login={admin_login}")
 
 # ── Step 4: Generate correct WooCommerce API keys ──────────────────────────
@@ -101,14 +106,20 @@ print(f"  consumer_secret: {raw_cs}")
 print(f"  stored hash:     {hashed_ck[:20]}...")
 
 # Remove old entries with same description, insert new
-cur.execute(f"DELETE FROM {table_keys} WHERE description = 'Next.js Frontend'")
-cur.execute(f"""
+mysql(f"DELETE FROM {table_keys} WHERE description = 'Next.js Frontend'")
+mysql(f"""
     INSERT INTO {table_keys}
         (user_id, description, permissions, consumer_key, consumer_secret, truncated_key)
-    VALUES (%s, %s, %s, %s, %s, %s)
-""", (admin_id, 'Next.js Frontend', 'read_write', hashed_ck, raw_cs, raw_ck[-7:]))
-conn.commit()
-print('  Keys inserted into DB.')
+    VALUES ({admin_id}, 'Next.js Frontend', 'read_write',
+            '{hashed_ck}', '{raw_cs}', '{raw_ck[-7:]}')
+""")
+# Verify insert
+check = mysql(f"SELECT COUNT(*) FROM {table_keys} WHERE description='Next.js Frontend'")
+if check == '1':
+    print('  Keys inserted into DB.')
+else:
+    print(f'  Insert may have failed (count={check}). Check errors above.')
+    sys.exit(1)
 
 # ── Step 5: Test the API ────────────────────────────────────────────────────
 print('\n[5/6] Testing WooCommerce API...')
@@ -144,5 +155,3 @@ print(f"  Written to {ENV_LOCAL}")
 # ── Done ────────────────────────────────────────────────────────────────────
 print('\n✓ API keys configured. Now run:')
 print(f'  cd {WEB_DIR} && npm run build && pm2 restart emartweb')
-cur.close()
-conn.close()
