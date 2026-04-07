@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Download real brand logos from official/Wikipedia sources.
+Download real brand logos from Wikimedia Commons and other public sources.
 Run on VPS: python3 scripts/download_brand_logos.py
 """
 
@@ -13,96 +13,40 @@ OUTPUT_DIR = "/var/www/emart-platform/apps/web/public/images/brands"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36',
-    'Accept': 'image/webp,image/png,image/svg+xml,image/*,*/*',
+    'User-Agent': 'Mozilla/5.0 (compatible; EmartBot/1.0)',
+    'Accept': 'image/png,image/svg+xml,image/jpeg,image/*',
 }
 
-# Official logo sources for each brand
+# Wikimedia Commons and other reliable public sources
 BRAND_LOGOS = {
-    'cosrx': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/COSRX_logo.svg/320px-COSRX_logo.svg.png',
-        'https://www.cosrx.com/cdn/shop/files/COSRX_Logo_Black.png',
-    ],
-    'laneige': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Laneige_logo.svg/320px-Laneige_logo.svg.png',
-        'https://www.laneige.com/common/img/common/logo.png',
-    ],
-    'innisfree': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Innisfree_Logo.svg/320px-Innisfree_Logo.svg.png',
-        'https://www.innisfree.com/images/en/common/logo.png',
-    ],
-    'some-by-mi': [
-        'https://www.somebymi.com/skin/somebymi_en/img/layout/logo.png',
-        'https://cdn.shopify.com/s/files/1/0565/3124/7001/files/somebymi_logo.png',
-    ],
-    'missha': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/MISSHA_logo.svg/320px-MISSHA_logo.svg.png',
-        'https://www.misshaus.com/wp-content/uploads/2020/10/missha-logo.png',
-    ],
-    'the-ordinary': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/The_Ordinary_logo.svg/320px-The_Ordinary_logo.svg.png',
-        'https://theordinary.com/on/demandware.static/Sites-deciem-US-Site/-/default/dw6f5d0b47/images/logo.svg',
-    ],
-    'cetaphil': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Cetaphil_logo.svg/320px-Cetaphil_logo.svg.png',
-        'https://www.cetaphil.com/dw/image/v2/BBZJ_PRD/on/demandware.static/-/Library-Sites-CetaphilSharedLibrary/default/dw0a79e7c8/images/logo.png',
-    ],
-    'cerave': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/CeraVe_logo.svg/320px-CeraVe_logo.svg.png',
-        'https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/cerave-logo.png',
-    ],
-    'maybelline': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Maybelline_logo.svg/320px-Maybelline_logo.svg.png',
-        'https://www.maybelline.com/~/media/mny/us/brand-assets/mny-logo.png',
-    ],
-    'garnier': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Garnier_logo.svg/320px-Garnier_logo.svg.png',
-        'https://www.garnier.com/~/media/project/loreal/brand-sites/garnier/americas/us/logos/garnier_logo.png',
-    ],
-    'bioderma': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Bioderma_logo.svg/320px-Bioderma_logo.svg.png',
-        'https://www.bioderma.com/sites/default/files/styles/logo/public/2019-11/bioderma-logo.png',
-    ],
-    'isntree': [
-        'https://www.isntree.com/web/product/extra/20220411130757_1lfFNnHy.jpg',
-        'https://cdn.shopify.com/s/files/1/0565/isntree-logo.png',
-    ],
-    'jumiso': [
-        'https://www.jumiso.com/web/upload/NNEditor/20220614/jumiso_logo.jpg',
-        'https://cdn.jumiso.com/logo.png',
-    ],
-    'hada-labo': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Hada_Labo_logo.svg/320px-Hada_Labo_logo.svg.png',
-        'https://www.hadalabo.co.jp/assets/img/common/logo.png',
-    ],
-    'banila-co': [
-        'https://www.banila.co/en/img/common/logo.png',
-        'https://cdn.shopify.com/s/files/banilaco-logo.png',
-    ],
-    'vanicream': [
-        'https://www.vanicream.com/wp-content/themes/vanicream/images/vanicream-logo.svg',
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/vanicream_logo.svg/320px-vanicream_logo.svg.png',
-    ],
-    'skinfood': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Skinfood_logo.svg/320px-Skinfood_logo.svg.png',
-        'https://www.skinfood.co.kr/eng/images/common/logo.png',
-    ],
-    'sulwhasoo': [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Sulwhasoo_Logo.svg/320px-Sulwhasoo_Logo.svg.png',
-        'https://www.sulwhasoo.com/content/dam/sulwhasoo/global/common/images/logo/sulwhasoo_logo.png',
-    ],
-    'revolution-skincare': [
-        'https://www.revolutionbeauty.com/cdn/shop/files/revolution-logo.svg',
-        'https://cdn.shopify.com/s/files/1/0270/revolution_logo.png',
-    ],
+    'cosrx': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/COSRX_logo.svg/400px-COSRX_logo.svg.png',
+    'laneige': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Laneige_logo.svg/400px-Laneige_logo.svg.png',
+    'innisfree': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Innisfree_Logo.svg/400px-Innisfree_Logo.svg.png',
+    'missha': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/MISSHA_logo.svg/400px-MISSHA_logo.svg.png',
+    'cetaphil': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Cetaphil_logo.svg/400px-Cetaphil_logo.svg.png',
+    'cerave': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/CeraVe_logo.svg/400px-CeraVe_logo.svg.png',
+    'maybelline': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Maybelline_logo.svg/400px-Maybelline_logo.svg.png',
+    'garnier': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Garnier_logo.svg/400px-Garnier_logo.svg.png',
+    'the-ordinary': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/The_Ordinary_logo.svg/400px-The_Ordinary_logo.svg.png',
+    'bioderma': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Bioderma_logo.svg/400px-Bioderma_logo.svg.png',
+    'sulwhasoo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Sulwhasoo_Logo.svg/400px-Sulwhasoo_Logo.svg.png',
+    'hada-labo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Hada_Labo_logo.svg/400px-Hada_Labo_logo.svg.png',
+    'skinfood': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Skinfood_logo.svg/400px-Skinfood_logo.svg.png',
+    'la-roche-posay': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/La_Roche-Posay_logo.svg/400px-La_Roche-Posay_logo.svg.png',
+    'neutrogena': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Neutrogena_logo.svg/400px-Neutrogena_logo.svg.png',
+    'olay': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Olay_logo.svg/400px-Olay_logo.svg.png',
+    'nivea': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/NIVEA_logo.svg/400px-NIVEA_logo.svg.png',
+    'shiseido': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Shiseido_logo.svg/400px-Shiseido_logo.svg.png',
+    'sk-ii': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/SK-II_logo.svg/400px-SK-II_logo.svg.png',
+    'loreal': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/L%27Or%C3%A9al_logo.svg/400px-L%27Or%C3%A9al_logo.svg.png',
 }
 
 def download(url, dest):
     req = urllib.request.Request(url, headers=HEADERS)
     try:
-        with urllib.request.urlopen(req, timeout=10) as r:
+        with urllib.request.urlopen(req, timeout=15) as r:
             data = r.read()
-            if len(data) > 1000:  # real image, not an error page
+            if len(data) > 500:
                 with open(dest, 'wb') as f:
                     f.write(data)
                 return True
@@ -110,36 +54,32 @@ def download(url, dest):
         pass
     return False
 
+print(f"Downloading brand logos to {OUTPUT_DIR}\n")
 downloaded = []
+skipped = []
 failed = []
 
-for brand_slug, urls in BRAND_LOGOS.items():
-    # Skip if we already have a non-SVG real logo
-    existing_files = [f for f in os.listdir(OUTPUT_DIR)
-                      if f.startswith(brand_slug + '.') and not f.endswith('.svg')]
-    if existing_files:
-        print(f"SKIP {brand_slug} (already have {existing_files[0]})")
+for slug, url in BRAND_LOGOS.items():
+    # Check if real image already exists (not SVG placeholder)
+    png_exists = os.path.exists(os.path.join(OUTPUT_DIR, f"{slug}.png"))
+    jpg_exists = os.path.exists(os.path.join(OUTPUT_DIR, f"{slug}.jpg"))
+    if png_exists or jpg_exists:
+        print(f"SKIP {slug} (already have real image)")
+        skipped.append(slug)
         continue
 
-    print(f"Downloading {brand_slug}...", end=' ', flush=True)
-    success = False
-    for url in urls:
-        ext = '.png'
-        if '.svg' in url.split('?')[0]:
-            ext = '.svg'
-        dest = os.path.join(OUTPUT_DIR, f"{brand_slug}{ext}")
-        if download(url, dest):
-            print(f"✓ ({url[:50]}...)")
-            downloaded.append(brand_slug)
-            success = True
-            break
-        time.sleep(0.3)
-
-    if not success:
-        print(f"✗ all sources failed")
-        failed.append(brand_slug)
+    dest = os.path.join(OUTPUT_DIR, f"{slug}.png")
+    print(f"Downloading {slug}...", end=' ', flush=True)
+    if download(url, dest):
+        size = os.path.getsize(dest)
+        print(f"✓ ({size/1024:.1f}KB)")
+        downloaded.append(slug)
+    else:
+        print("✗ failed")
+        failed.append(slug)
     time.sleep(0.5)
 
 print(f"\n✅ Downloaded: {len(downloaded)}: {downloaded}")
-print(f"✗ Failed: {len(failed)}: {failed}")
-print("\nFailed brands will use SVG placeholders already in the directory.")
+print(f"⏭  Skipped:    {len(skipped)}")
+print(f"✗  Failed:     {len(failed)}: {failed}")
+print("\nFailed brands will use SVG text placeholders already in the directory.")

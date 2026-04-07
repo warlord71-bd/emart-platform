@@ -27,7 +27,8 @@ if os.path.exists(ENV_FILE):
             k, v = line.split('=', 1)
             env[k.strip()] = v.strip()
 
-WOO_URL = env.get('NEXT_PUBLIC_WOO_URL', 'http://5.189.188.229')
+# Always use localhost when running on VPS (Cloudflare blocks direct IP requests)
+WOO_URL = 'http://127.0.0.1'
 CK = env.get('WOO_CONSUMER_KEY', '')
 CS = env.get('WOO_CONSUMER_SECRET', '')
 
