@@ -1,4 +1,4 @@
-// src/app/shop/[slug]/page.tsx
+// src/app/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getProduct, getProducts } from '@/lib/woocommerce';
@@ -13,8 +13,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProduct(params.slug);
   if (!product) return { title: 'Product Not Found' };
   return {
-    title: `${product.name} — Price in Bangladesh`,
-    description: (product.short_description?.replace(/<[^>]+>/g, '').substring(0, 160)) || product.name,
+    title: `${product.name} — Price in Bangladesh | Emart`,
+    description: product.short_description?.replace(/<[^>]+>/g, '').substring(0, 160) || product.name,
     openGraph: {
       images: [{ url: product.images[0]?.src || '' }],
     },
@@ -32,10 +32,9 @@ export default async function ProductPage({ params }: Props) {
   const product = await getProduct(params.slug);
   if (!product) notFound();
 
-  // Related products from same category
   const { products: related } = await getProducts({
     category: product.categories[0]?.id?.toString(),
-    per_page: 4,
+    per_page: 8,
     exclude: [product.id].join(','),
   });
 
@@ -43,11 +42,21 @@ export default async function ProductPage({ params }: Props) {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <ProductDetail product={product} />
 
-      {/* Related Products */}
+      {/* You May Also Like */}
       {related.length > 0 && (
-        <section className="mt-16">
-          <h2 className="section-title mb-6">Related Products</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <section className="mt-16 pt-10 border-t border-gray-100">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-[#1a1a2e]">You May Also Like</h2>
+            {product.categories[0] && (
+              <a
+                href={`/category/${product.categories[0].slug}`}
+                className="text-sm text-[#e8197a] font-semibold hover:underline"
+              >
+                View All →
+              </a>
+            )}
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
