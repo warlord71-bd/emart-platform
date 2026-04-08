@@ -144,19 +144,21 @@ export interface ProductsParams {
 
 // Transform image URLs to use VPS IP instead of old domain
 function transformImageUrls(products: any[]): WooProduct[] {
-  return products.map(p => ({
-    ...p,
-    images: (p.images || []).map((img: any) => {
-      let src = img.src || '';
-      if (src) {
-        src = src
-          .replace('https://e-mart.com.bd', WOO_URL)
-          .replace('http://e-mart.com.bd', WOO_URL)
-          .replace(/https?:\/\/[^/]+\/wp-content/, `${WOO_URL}/wp-content`);
-      }
-      return { ...img, src };
-    }),
-  }));
+  if (!Array.isArray(products)) return [];
+
+  return products.map(p => {
+    if (!p) return p;
+    return {
+      ...p,
+      images: Array.isArray(p.images) ? p.images.map((img: any) => {
+        if (!img || !img.src) return img;
+        let newSrc = String(img.src);
+        newSrc = newSrc.replace('https://e-mart.com.bd', WOO_URL);
+        newSrc = newSrc.replace('http://e-mart.com.bd', WOO_URL);
+        return { ...img, src: newSrc };
+      }) : p.images,
+    };
+  });
 }
 
 export async function getProducts(params: ProductsParams = {}): Promise<{
@@ -173,7 +175,7 @@ export async function getProducts(params: ProductsParams = {}): Promise<{
       },
     });
     return {
-      products: response.data, // TODO: Fix transformImageUrls function
+      products: transformImageUrls(response.data || []),
       total: parseInt(response.headers['x-wp-total'] || '0'),
       totalPages: parseInt(response.headers['x-wp-totalpages'] || '0'),
     };
@@ -188,8 +190,8 @@ export async function getProduct(slug: string): Promise<WooProduct | null> {
     const response = await wooClient.get('/products', {
       params: { slug, status: 'publish' },
     });
-    // TODO: Re-enable transformImageUrls after fixing
-    return response.data[0] || null;
+    const products = transformImageUrls(response.data || []);
+    return products[0] || null;
   } catch (error) {
     console.error('getProduct error:', error);
     return null;
@@ -199,8 +201,8 @@ export async function getProduct(slug: string): Promise<WooProduct | null> {
 export async function getProductById(id: number): Promise<WooProduct | null> {
   try {
     const response = await wooClient.get(`/products/${id}`);
-    // TODO: Re-enable transformImageUrls after fixing
-    return response.data || null;
+    const products = transformImageUrls(response.data ? [response.data] : []);
+    return products[0] || null;
   } catch (error) {
     console.error('getProductById error:', error);
     return null;
