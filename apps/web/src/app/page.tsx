@@ -15,14 +15,14 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 const CATEGORIES = [
-  { name: 'Face Care', slug: 'face-care', emoji: '✨', color: '#fce7f0' },
-  { name: 'Sunscreen', slug: 'sunscreen', emoji: '☀️', color: '#fff7ed' },
-  { name: 'Serum & Toner', slug: 'serum-toner', emoji: '💧', color: '#eff6ff' },
-  { name: 'Moisturizer', slug: 'moisturizer', emoji: '🧴', color: '#f0fdf4' },
-  { name: 'Cleanser', slug: 'cleanser', emoji: '🫧', color: '#f5f3ff' },
-  { name: 'Hair Care', slug: 'hair-care', emoji: '💆', color: '#fff1f2' },
-  { name: 'Body Care', slug: 'body-care', emoji: '🌸', color: '#fefce8' },
-  { name: 'Makeup', slug: 'makeup', emoji: '💄', color: '#fdf4ff' },
+  { name: 'Sunscreen',        slug: 'sunscreen',                emoji: '☀️', color: '#fff7ed' },
+  { name: 'Anti-Aging',       slug: 'anti-aging-repair',        emoji: '✨', color: '#fce7f0' },
+  { name: 'Serums',           slug: 'serums-ampoules-essences', emoji: '💧', color: '#eff6ff' },
+  { name: 'K-Beauty',         slug: 'k-beauty-j-beauty',        emoji: '🇰🇷', color: '#f0fdf4' },
+  { name: 'Face Cleansers',   slug: 'face-cleansers',           emoji: '🫧', color: '#f5f3ff' },
+  { name: 'Hair Care',        slug: 'hair-care',                emoji: '💆', color: '#fff1f2' },
+  { name: 'Toners & Mists',   slug: 'toners-mists',             emoji: '🌿', color: '#f0fdf4' },
+  { name: 'Acne Care',        slug: 'acne-blemish-care',        emoji: '🔴', color: '#fee2e2' },
 ];
 
 const BRANDS = [
@@ -69,7 +69,7 @@ export default async function HomePage() {
     getFeaturedProducts(8),
     getSaleProducts(8),
     getNewArrivals(8),
-    getProducts({ category: 'face-care', per_page: 10 }).then(r => r.products).catch(() => []),
+    getProducts({ category: 'sunscreen', per_page: 10 }).then(r => r.products).catch(() => []),
   ]);
 
   return (
