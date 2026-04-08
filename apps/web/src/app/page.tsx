@@ -222,26 +222,42 @@ export default async function HomePage() {
               All Brands →
             </Link>
           </div>
-          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
-            {BRANDS.map((brand) => (
+
+          {/* Top 2 rows — static 5-col grid */}
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-4 mb-4">
+            {BRANDS.slice(0, 10).map((brand) => (
               <Link
                 key={brand.slug}
                 href={`/brands/${brand.slug}`}
                 className="flex flex-col items-center rounded-xl border border-gray-200
                            hover:border-[#e8197a] hover:shadow-md transition-all group overflow-hidden bg-white"
               >
-                <BrandImage
-                  slug={brand.slug}
-                  name={brand.name}
-                  bgColor={brand.color}
-                  textColor={brand.textColor}
-                  abbr={brand.abbr}
-                />
+                <BrandImage slug={brand.slug} name={brand.name} bgColor={brand.color} textColor={brand.textColor} abbr={brand.abbr} />
                 <span className="text-xs font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors py-2 px-2 text-center">
                   {brand.name}
                 </span>
               </Link>
             ))}
+          </div>
+
+          {/* Remaining brands — infinite scrolling carousel */}
+          <div className="overflow-hidden">
+            <div className="flex gap-4 animate-marquee" style={{ width: 'max-content' }}>
+              {[...BRANDS.slice(10), ...BRANDS.slice(10)].map((brand, i) => (
+                <Link
+                  key={`${brand.slug}-${i}`}
+                  href={`/brands/${brand.slug}`}
+                  className="flex flex-col items-center rounded-xl border border-gray-200
+                             hover:border-[#e8197a] hover:shadow-md transition-all group overflow-hidden bg-white
+                             w-[140px] flex-shrink-0"
+                >
+                  <BrandImage slug={brand.slug} name={brand.name} bgColor={brand.color} textColor={brand.textColor} abbr={brand.abbr} />
+                  <span className="text-xs font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors py-2 px-2 text-center">
+                    {brand.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
