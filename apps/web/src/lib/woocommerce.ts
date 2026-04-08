@@ -247,15 +247,22 @@ export async function createOrder(orderData: {
   customer_note?: string;
 }): Promise<WooOrder | null> {
   try {
+    // Validate credentials are configured
+    if (!CONSUMER_KEY || !CONSUMER_SECRET) {
+      console.error('WooCommerce credentials not configured');
+      throw new Error('Payment system not configured. Contact support.');
+    }
+
     const response = await wooClient.post('/orders', {
       ...orderData,
       currency: 'BDT',
       status: 'pending',
     });
     return response.data;
-  } catch (error) {
-    console.error('createOrder error:', error);
-    return null;
+  } catch (error: any) {
+    const errorMsg = error?.response?.data?.message || error?.message || 'Unknown error';
+    console.error('createOrder error:', errorMsg, error);
+    throw error; // Re-throw for better error handling at caller
   }
 }
 

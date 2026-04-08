@@ -114,8 +114,10 @@ export default function CheckoutPage() {
       } else {
         throw new Error('Order creation failed');
       }
-    } catch (err) {
-      toast.error('Something went wrong. Please try again or call us.');
+    } catch (err: any) {
+      const errorMessage = err?.message || 'Something went wrong. Please try again or call us.';
+      toast.error(errorMessage);
+      console.error('Checkout error:', err);
     } finally {
       setLoading(false);
     }

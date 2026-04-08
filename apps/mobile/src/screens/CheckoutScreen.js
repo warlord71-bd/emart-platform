@@ -96,7 +96,9 @@ const CheckoutScreen = ({ navigation }) => {
       clearCart();
       navigation.navigate("OrderSuccess", { orderId: res.data?.id });
     } catch (error) {
-      Alert.alert("Order Error", "Failed to place order. Please try again.");
+      const errorMsg = error?.message || "Failed to place order. Please try again.";
+      Alert.alert("Order Error", errorMsg);
+      console.error("Checkout error:", error);
     } finally { setPlacing(false); }
   };
 
