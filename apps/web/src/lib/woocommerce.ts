@@ -8,7 +8,7 @@ const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
 
 // ── API Client ──
-const wooClient = axios.create({
+export const wooClient = axios.create({
   baseURL: `${WOO_URL}/wp-json/wc/v3`,
   auth: {
     username: CONSUMER_KEY,
