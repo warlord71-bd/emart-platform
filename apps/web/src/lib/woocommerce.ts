@@ -6,14 +6,23 @@ import axios from 'axios';
 const WOO_URL = process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd';
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
+const isHTTPS = WOO_URL.startsWith('https');
 
 // ── API Client ──
+// Use Basic Auth for HTTPS, query string auth for HTTP
 const wooClient = axios.create({
   baseURL: `${WOO_URL}/wp-json/wc/v3`,
-  auth: {
-    username: CONSUMER_KEY,
-    password: CONSUMER_SECRET,
-  },
+  ...(isHTTPS ? {
+    auth: {
+      username: CONSUMER_KEY,
+      password: CONSUMER_SECRET,
+    },
+  } : {
+    params: {
+      consumer_key: CONSUMER_KEY,
+      consumer_secret: CONSUMER_SECRET,
+    },
+  }),
   timeout: 15000,
 });
 
