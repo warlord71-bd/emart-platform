@@ -146,13 +146,16 @@ export interface ProductsParams {
 function transformImageUrls(products: any[]): WooProduct[] {
   return products.map(p => ({
     ...p,
-    images: (p.images || []).map((img: any) => ({
-      ...img,
-      src: img.src
-        ?.replace('https://e-mart.com.bd', WOO_URL)
-        ?.replace('http://e-mart.com.bd', WOO_URL)
-        ?.replace(/https?:\/\/[^\/]+\/wp-content/, `${WOO_URL}/wp-content`) || img.src,
-    })),
+    images: (p.images || []).map((img: any) => {
+      let src = img.src || '';
+      if (src) {
+        src = src
+          .replace('https://e-mart.com.bd', WOO_URL)
+          .replace('http://e-mart.com.bd', WOO_URL)
+          .replace(/https?:\/\/[^/]+\/wp-content/, `${WOO_URL}/wp-content`);
+      }
+      return { ...img, src };
+    }),
   }));
 }
 
