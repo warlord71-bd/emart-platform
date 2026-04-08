@@ -46,6 +46,11 @@ const BRANDS = [
   { name: 'Simple', slug: 'simple', abbr: 'SM', color: '#f0fdf4', textColor: '#166534' },
   { name: 'Vanicream', slug: 'vanicream', abbr: 'VC', color: '#eff6ff', textColor: '#1d4ed8' },
   { name: 'Revolution', slug: 'revolution-skincare', abbr: 'RV', color: '#f5f3ff', textColor: '#6d28d9' },
+  { name: 'Anua', slug: 'anua', abbr: 'AN', color: '#f0fdf4', textColor: '#047857' },
+  { name: 'Beauty of Joseon', slug: 'beauty-of-joseon', abbr: 'BJ', color: '#fefce8', textColor: '#92400e' },
+  { name: 'Round Lab', slug: 'round-lab', abbr: 'RL', color: '#eff6ff', textColor: '#1e40af' },
+  { name: 'Purito', slug: 'purito', abbr: 'PR', color: '#f0fdf4', textColor: '#166534' },
+  { name: 'Neutrogena', slug: 'neutrogena', abbr: 'NG', color: '#fff7ed', textColor: '#c2410c' },
 ];
 
 const CONCERNS = [
