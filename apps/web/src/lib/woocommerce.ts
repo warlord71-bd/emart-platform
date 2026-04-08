@@ -173,7 +173,7 @@ export async function getProducts(params: ProductsParams = {}): Promise<{
       },
     });
     return {
-      products: transformImageUrls(response.data),
+      products: response.data, // TODO: Fix transformImageUrls function
       total: parseInt(response.headers['x-wp-total'] || '0'),
       totalPages: parseInt(response.headers['x-wp-totalpages'] || '0'),
     };
@@ -188,8 +188,8 @@ export async function getProduct(slug: string): Promise<WooProduct | null> {
     const response = await wooClient.get('/products', {
       params: { slug, status: 'publish' },
     });
-    const products = transformImageUrls(response.data);
-    return products[0] || null;
+    // TODO: Re-enable transformImageUrls after fixing
+    return response.data[0] || null;
   } catch (error) {
     console.error('getProduct error:', error);
     return null;
@@ -199,8 +199,8 @@ export async function getProduct(slug: string): Promise<WooProduct | null> {
 export async function getProductById(id: number): Promise<WooProduct | null> {
   try {
     const response = await wooClient.get(`/products/${id}`);
-    const products = transformImageUrls([response.data]);
-    return products[0] || null;
+    // TODO: Re-enable transformImageUrls after fixing
+    return response.data || null;
   } catch (error) {
     console.error('getProductById error:', error);
     return null;
