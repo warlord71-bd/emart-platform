@@ -6,7 +6,8 @@ Before launching the site and apps, you need to configure WooCommerce API creden
 
 ### Step 1: Generate WooCommerce API Keys
 
-1. Log in to your WordPress Admin Dashboard at `https://e-mart.com.bd/wp-admin`
+1. Log in to your WordPress Admin Dashboard at `http://5.189.188.229/wp-admin`
+   - Or access via your domain if configured
 2. Navigate to **WooCommerce > Settings > Advanced > REST API**
 3. Click **Create an API key**
 4. Fill in the description (e.g., "Emart Mobile & Web App")
