@@ -19,6 +19,7 @@ interface ShopPageProps {
     orderby?: string;
     order?: string;
     on_sale?: string;
+    featured?: string;
     min_price?: string;
     max_price?: string;
   };
@@ -35,6 +36,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
       orderby: (searchParams.orderby || 'date') as 'date' | 'price' | 'popularity' | 'rating' | 'title',
       order: (searchParams.order || 'desc') as 'asc' | 'desc',
       on_sale: searchParams.on_sale === 'true',
+      featured: searchParams.featured === 'true',
       min_price: searchParams.min_price,
       max_price: searchParams.max_price,
     }),
@@ -46,7 +48,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#1a1a2e]">All Products</h1>
+          <h1 className="text-2xl font-bold text-[#1a1a2e]">
+            {searchParams.featured === 'true' ? 'Featured Products' : 'All Products'}
+          </h1>
           <p className="text-gray-500 text-sm mt-1">{total} products found</p>
         </div>
 
@@ -76,7 +80,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                     <a
                       key={p}
-                      href={`/shop?page=${p}${searchParams.category ? `&category=${searchParams.category}` : ''}`}
+                      href={`/shop?page=${p}${searchParams.category ? `&category=${searchParams.category}` : ''}${searchParams.featured === 'true' ? '&featured=true' : ''}`}
                       className={`w-10 h-10 flex items-center justify-center rounded-lg
                                   text-sm font-semibold border transition-colors
                                   ${p === page
