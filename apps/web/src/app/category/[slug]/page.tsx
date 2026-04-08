@@ -1,25 +1,21 @@
 import { Suspense } from 'react';
-import { getCategoryBySlug, getProducts } from '@/lib/woocommerce';
-import ProductCard from '@/components/product/ProductCard';
-import SortControl from '@/components/product/SortControl';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { getCategoryInfo, getProductsByCategory } from '@/lib/mysql';
+import ProductCard from '@/components/product/ProductCard';
+import SortControl from '@/components/product/SortControl';
 
 interface Props {
   params: { slug: string };
-  searchParams: {
-    page?: string;
-    orderby?: string;
-    order?: string;
-  };
+  searchParams: { page?: string; orderby?: string; order?: string };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const cat = await getCategoryBySlug(params.slug);
+  const cat = await getCategoryInfo(params.slug);
   if (!cat) return { title: 'Category Not Found' };
   return {
-    title: `${cat.name} — Korean & Japanese Skincare Bangladesh`,
+    title: `${cat.name} — Korean & Japanese Skincare Bangladesh | Emart`,
     description: `Shop ${cat.name} products. Authentic Korean & Japanese skincare in Bangladesh. COD available, fast delivery.`,
   };
 }
@@ -27,18 +23,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export const revalidate = 3600;
 
 export default async function CategoryPage({ params, searchParams }: Props) {
-  const category = await getCategoryBySlug(params.slug);
+  const category = await getCategoryInfo(params.slug);
   if (!category) notFound();
 
-  const page = parseInt(searchParams.page || '1');
+  const page     = parseInt(searchParams.page || '1');
+  const orderby  = searchParams.orderby || 'date';
+  const order    = searchParams.order   || 'desc';
+  const perPage  = 20;
 
-  const { products, total, totalPages } = await getProducts({
-    category: category.id.toString(),
-    page,
-    per_page: 20,
-    orderby: (searchParams.orderby || 'popularity') as 'date' | 'price' | 'popularity' | 'rating' | 'title',
-    order: (searchParams.order || 'desc') as 'asc' | 'desc',
-  });
+  const { products, total } = await getProductsByCategory(params.slug, page, perPage, orderby, order);
+  const totalPages = Math.ceil(total / perPage);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -65,25 +59,17 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       {products.length > 0 ? (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((p) => <ProductCard key={p.id} product={p} />)}
+            {products.map((p) => <ProductCard key={p.id} product={p as any} />)}
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center gap-2 mt-10">
               {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => i + 1).map((p) => (
-                <a
-                  key={p}
+                <a key={p}
                   href={`/category/${params.slug}?page=${p}${searchParams.orderby ? `&orderby=${searchParams.orderby}` : ''}${searchParams.order ? `&order=${searchParams.order}` : ''}`}
-                  className={`w-10 h-10 flex items-center justify-center rounded-lg
-                              text-sm font-semibold border transition-colors
-                              ${p === page
-                                ? 'bg-[#e8197a] text-white border-[#e8197a]'
-                                : 'border-gray-200 text-gray-600 hover:border-[#e8197a] hover:text-[#e8197a]'
-                              }`}
-                >
-                  {p}
-                </a>
+                  className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-semibold border transition-colors
+                    ${p === page ? 'bg-[#e8197a] text-white border-[#e8197a]' : 'border-gray-200 text-gray-600 hover:border-[#e8197a] hover:text-[#e8197a]'}`}
+                >{p}</a>
               ))}
             </div>
           )}
@@ -92,9 +78,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         <div className="text-center py-20 text-gray-400">
           <div className="text-5xl mb-4">🛍️</div>
           <p className="text-lg font-medium">No products in this category yet.</p>
-          <Link href="/shop" className="text-[#e8197a] hover:underline mt-2 block">
-            Browse All Products
-          </Link>
+          <Link href="/shop" className="text-[#e8197a] hover:underline mt-2 block">Browse All Products</Link>
         </div>
       )}
     </div>

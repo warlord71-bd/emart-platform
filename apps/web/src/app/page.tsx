@@ -1,7 +1,6 @@
 // src/app/page.tsx
 import Link from 'next/link';
 import { getFeaturedProducts, getSaleProducts, getNewArrivals, getProducts } from '@/lib/woocommerce';
-import BrandImage from '@/components/brand/BrandImage';
 import ShopByCategoryTabs from '@/components/home/ShopByCategoryTabs';
 import ProductCard from '@/components/product/ProductCard';
 import FlashDealsTimer from '@/components/home/FlashDealsTimer';
@@ -156,9 +155,20 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── 2. FLASH DEALS ── */}
+      {/* ── 2. SHOP BY CATEGORY (tabbed) ── */}
+      <section className="py-12 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="section-title mb-6">🛍️ Shop by Category</h2>
+          <ShopByCategoryTabs
+            categories={CATEGORIES}
+            initialProducts={firstCatProducts}
+          />
+        </div>
+      </section>
+
+      {/* ── 3. FLASH DEALS ── */}
       {onSale.length > 0 && (
-        <section className="py-12 px-4 bg-gray-50">
+        <section className="py-12 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-3">
               <div className="flex items-center gap-3">
@@ -177,17 +187,6 @@ export default async function HomePage() {
           </div>
         </section>
       )}
-
-      {/* ── 3. SHOP BY CATEGORY (tabbed) ── */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="section-title mb-6">🛍️ Shop by Category</h2>
-          <ShopByCategoryTabs
-            categories={CATEGORIES}
-            initialProducts={firstCatProducts}
-          />
-        </div>
-      </section>
 
       {/* ── 4. SHOP BY CONCERN ── */}
       <section className="py-12 px-4 bg-gray-50">
@@ -213,58 +212,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── 5. SHOP BY BRAND ── */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="section-title">Shop by Brand</h2>
-            <Link href="/brands" className="text-[#e8197a] font-semibold text-sm hover:underline">
-              All Brands →
-            </Link>
-          </div>
-
-          {/* Top 2 rows — static 5-col grid */}
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-4 mb-4">
-            {BRANDS.slice(0, 10).map((brand) => (
-              <Link
-                key={brand.slug}
-                href={`/brands/${brand.slug}`}
-                className="flex flex-col items-center rounded-xl border border-gray-200
-                           hover:border-[#e8197a] hover:shadow-md transition-all group overflow-hidden bg-white"
-              >
-                <BrandImage slug={brand.slug} name={brand.name} bgColor={brand.color} textColor={brand.textColor} abbr={brand.abbr} />
-                <span className="text-xs font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors py-2 px-2 text-center">
-                  {brand.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-
-          {/* Remaining brands — infinite scrolling carousel */}
-          <div className="overflow-hidden">
-            <div className="flex gap-4 animate-marquee" style={{ width: 'max-content' }}>
-              {[...BRANDS.slice(10), ...BRANDS.slice(10)].map((brand, i) => (
-                <Link
-                  key={`${brand.slug}-${i}`}
-                  href={`/brands/${brand.slug}`}
-                  className="flex flex-col items-center rounded-xl border border-gray-200
-                             hover:border-[#e8197a] hover:shadow-md transition-all group overflow-hidden bg-white
-                             w-[140px] flex-shrink-0"
-                >
-                  <BrandImage slug={brand.slug} name={brand.name} bgColor={brand.color} textColor={brand.textColor} abbr={brand.abbr} />
-                  <span className="text-xs font-bold text-[#1a1a2e] group-hover:text-[#e8197a] transition-colors py-2 px-2 text-center">
-                    {brand.name}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 6. FEATURED PRODUCTS ── */}
+      {/* ── 5. FEATURED PRODUCTS ── */}
       {featured.length > 0 && (
-        <section className="py-12 px-4 bg-gray-50">
+        <section className="py-12 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <h2 className="section-title">⭐ Featured Products</h2>
@@ -280,6 +230,42 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* ── 6. SHOP BY BRAND — 2-row infinite marquee ── */}
+      <section className="py-10 px-4 bg-gray-50 overflow-hidden">
+        <div className="max-w-6xl mx-auto mb-5">
+          <div className="flex items-center justify-between">
+            <h2 className="section-title">Shop by Brand</h2>
+            <Link href="/brands" className="text-[#e8197a] font-semibold text-sm hover:underline">All Brands →</Link>
+          </div>
+        </div>
+        {/* Row 1 — scroll left */}
+        <div className="overflow-hidden mb-3">
+          <div className="flex gap-3 animate-marquee" style={{ width: 'max-content' }}>
+            {[...BRANDS.slice(0, 13), ...BRANDS.slice(0, 13)].map((b, i) => (
+              <Link key={`r1-${b.slug}-${i}`} href={`/brands/${b.slug}`}
+                className="flex-shrink-0 px-4 py-2 rounded-full border border-gray-200 bg-white
+                           text-sm font-semibold text-[#1a1a2e] hover:border-[#e8197a] hover:text-[#e8197a]
+                           transition-colors whitespace-nowrap">
+                {b.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* Row 2 — scroll right */}
+        <div className="overflow-hidden">
+          <div className="flex gap-3 animate-marquee-reverse" style={{ width: 'max-content' }}>
+            {[...BRANDS.slice(13), ...BRANDS.slice(13)].map((b, i) => (
+              <Link key={`r2-${b.slug}-${i}`} href={`/brands/${b.slug}`}
+                className="flex-shrink-0 px-4 py-2 rounded-full border border-gray-200 bg-white
+                           text-sm font-semibold text-[#1a1a2e] hover:border-[#e8197a] hover:text-[#e8197a]
+                           transition-colors whitespace-nowrap">
+                {b.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── WHY EMART ── */}
       <section className="py-12 px-4 bg-[#1a1a2e] text-white">
