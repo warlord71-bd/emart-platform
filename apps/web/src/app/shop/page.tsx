@@ -1,52 +1,55 @@
-import { Suspense } from 'react';
-import Link from 'next/link';
-import { searchProducts } from '@/lib/woocommerce';
+import { getProducts } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
-import ProductFilters from '@/components/product/ProductFilters';
-
-interface ShopPageProps {
-  searchParams: { q?: string; category?: string; brand?: string; minPrice?: string; maxPrice?: string; sort?: string; page?: string };
-}
 
 export const metadata = {
-  title: 'Shop K-Beauty & J-Beauty | Emart',
-  description: 'Shop premium Korean and Japanese skincare. 100% authentic, COD available.',
+  title: 'Shop Korean & Japanese Skincare | Emart',
+  description: 'Browse our collection of authentic Korean and Japanese skincare products.',
 };
 
 export const revalidate = 3600;
 
-async function ShopContent({ searchParams }: ShopPageProps) {
-  const { q = '', category = '', minPrice = '0', maxPrice = '10000', sort = 'popularity', page = '1' } = searchParams;
-  const products = await searchProducts({ search: q, category, minPrice: parseInt(minPrice), maxPrice: parseInt(maxPrice), orderBy: sort, page: parseInt(page), perPage: 20 });
-
-  return (
-    <div className="flex gap-4 md:gap-6">
-      <aside className="w-64 flex-shrink-0 hidden md:block"><ProductFilters /></aside>
-      <main className="flex-1">
-        <div className="mb-6">
-          <h1 className="text-3xl font-serif font-bold text-lumiere-text-primary mb-2">{q ? `Search: "${q}"` : 'Shop All'}</h1>
-          <p className="text-lumiere-text-secondary">{products?.length || 0} products</p>
-        </div>
-        {products?.length ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((p) => <ProductCard key={p.id} product={p} />)}
-          </div>
-        ) : (
-          <div className="text-center py-12"><p className="text-lumiere-text-secondary">No products found</p></div>
-        )}
-      </main>
-    </div>
-  );
+interface ShopPageProps {
+  searchParams: {
+    page?: string;
+    category?: string;
+    sort?: string;
+  };
 }
 
-export default function ShopPage({ searchParams }: ShopPageProps) {
+export default async function ShopPage({ searchParams }: ShopPageProps) {
+  const page = parseInt(searchParams.page || '1');
+  
+  const { products = [] } = await getProducts({
+    page,
+    per_page: 20,
+    category: searchParams.category || '',
+    orderby: (searchParams.sort || 'date') as 'date' | 'price' | 'popularity' | 'rating',
+  });
+
+  const convertPrice = (p: any) => ({
+    ...p,
+    price: parseFloat(p.price || '0'),
+    regularPrice: p.regularPrice ? parseFloat(p.regularPrice) : undefined,
+  });
+
+  const productsConverted = (products || []).map(convertPrice);
+
   return (
-    <div className="min-h-screen bg-lumiere-background py-8 px-4">
-      <div className="max-w-7xl mx-auto">
-        <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
-          <ShopContent searchParams={searchParams} />
-        </Suspense>
-      </div>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-lumiere-text-primary mb-2">All Products</h1>
+      <p className="text-gray-500 text-sm mb-8">{productsConverted.length} products found</p>
+
+      {productsConverted.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {productsConverted.map((product: any) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-20 text-gray-400">
+          <p className="text-lg">No products found</p>
+        </div>
+      )}
     </div>
   );
 }
