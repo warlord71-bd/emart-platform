@@ -5,7 +5,7 @@ import { HeroBanner } from '@/components/home/HeroBanner';
 import { CategoriesGrid } from '@/components/home/CategoriesGrid';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
 import { ShopByConcern } from '@/components/home/ShopByConcern';
-import { BrandsShowcase } from '@/components/home/BrandsShowcase';
+import { BrandsShowcaseInteractive } from '@/components/home/BrandsShowcaseInteractive';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -36,18 +36,18 @@ const SKIN_CONCERNS = [
 ];
 
 const FEATURED_BRANDS = [
-  { id: 1, name: 'COSRX', slug: 'cosrx', logo: undefined },
-  { id: 2, name: 'ISNTREE', slug: 'isntree', logo: undefined },
-  { id: 3, name: 'PURITO', slug: 'purito', logo: undefined },
-  { id: 4, name: 'SOME BY MI', slug: 'some-by-mi', logo: undefined },
-  { id: 5, name: 'LANEIGE', slug: 'laneige', logo: undefined },
+  { id: 1, name: 'COSRX', slug: 'cosrx' },
+  { id: 2, name: 'TIAM', slug: 'tiam' },
+  { id: 3, name: 'JUMISO', slug: 'jumiso' },
+  { id: 4, name: 'ISNTREE', slug: 'isntree' },
+  { id: 5, name: 'CERAVE', slug: 'cerave' },
 ];
 
 export default async function HomePage() {
   const [featured, onSale, ...brandProducts] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
-    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.slug, 10)),
+    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.name, 5)),
   ]);
 
   return (
@@ -89,12 +89,12 @@ export default async function HomePage() {
       )}
 
       {/* ── BRANDS SHOWCASE ── */}
-      <BrandsShowcase
+      <BrandsShowcaseInteractive
         brands={FEATURED_BRANDS.map((brand, index) => ({
           ...brand,
           products: brandProducts[index] || [],
         }))}
-        title="Explore Top Brands"
+        title="Shop by Brands"
       />
 
       {/* ── BANNER — B2B ── */}
