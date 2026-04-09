@@ -1,6 +1,6 @@
 // src/app/page.tsx
 import Link from 'next/link';
-import { getFeaturedProducts, getSaleProducts } from '@/lib/woocommerce';
+import { getFeaturedProducts, getSaleProducts, getProductsByBrand } from '@/lib/woocommerce';
 import { HeroBanner } from '@/components/home/HeroBanner';
 import { CategoriesGrid } from '@/components/home/CategoriesGrid';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
@@ -36,17 +36,18 @@ const SKIN_CONCERNS = [
 ];
 
 const FEATURED_BRANDS = [
-  { id: 1, name: 'COSRX', slug: 'cosrx', logo: undefined, products: [] },
-  { id: 2, name: 'ISNTREE', slug: 'isntree', logo: undefined, products: [] },
-  { id: 3, name: 'PURITO', slug: 'purito', logo: undefined, products: [] },
-  { id: 4, name: 'SOME BY MI', slug: 'some-by-mi', logo: undefined, products: [] },
-  { id: 5, name: 'LANEIGE', slug: 'laneige', logo: undefined, products: [] },
+  { id: 1, name: 'COSRX', slug: 'cosrx', logo: undefined },
+  { id: 2, name: 'ISNTREE', slug: 'isntree', logo: undefined },
+  { id: 3, name: 'PURITO', slug: 'purito', logo: undefined },
+  { id: 4, name: 'SOME BY MI', slug: 'some-by-mi', logo: undefined },
+  { id: 5, name: 'LANEIGE', slug: 'laneige', logo: undefined },
 ];
 
 export default async function HomePage() {
-  const [featured, onSale] = await Promise.all([
+  const [featured, onSale, ...brandProducts] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
+    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.slug, 10)),
   ]);
 
   return (
@@ -88,7 +89,13 @@ export default async function HomePage() {
       )}
 
       {/* ── BRANDS SHOWCASE ── */}
-      <BrandsShowcase brands={FEATURED_BRANDS} title="Explore Top Brands" />
+      <BrandsShowcase
+        brands={FEATURED_BRANDS.map((brand, index) => ({
+          ...brand,
+          products: brandProducts[index] || [],
+        }))}
+        title="Explore Top Brands"
+      />
 
       {/* ── BANNER — B2B ── */}
       <section className="py-8 px-4 bg-lumiere-primary-light">

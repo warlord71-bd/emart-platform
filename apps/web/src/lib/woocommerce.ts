@@ -227,6 +227,11 @@ export async function searchProducts(query: string, page = 1): Promise<{
   return getProducts({ search: query, page, per_page: 20 });
 }
 
+export async function getProductsByBrand(brandSlug: string, limit = 10): Promise<WooProduct[]> {
+  const { products } = await getProducts({ category: brandSlug, per_page: limit });
+  return products;
+}
+
 // ══════════════════════════════
 // CATEGORIES API
 // ══════════════════════════════
