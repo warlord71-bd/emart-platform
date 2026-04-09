@@ -221,6 +221,16 @@ export async function getSaleProducts(limit = 8): Promise<WooProduct[]> {
   return products;
 }
 
+export async function getBestSellingProducts(limit = 8): Promise<WooProduct[]> {
+  const { products } = await getProducts({ orderby: 'rating', per_page: limit });
+  return products;
+}
+
+export async function getNewArrivals(limit = 8): Promise<WooProduct[]> {
+  const { products } = await getProducts({ orderby: 'date', order: 'desc', per_page: limit });
+  return products;
+}
+
 export async function searchProducts(query: string, page = 1): Promise<{
   products: WooProduct[];
   total: number;

@@ -1,9 +1,10 @@
 // src/app/page.tsx
 import Link from 'next/link';
-import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories } from '@/lib/woocommerce';
+import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories, getBestSellingProducts, getNewArrivals, getProducts } from '@/lib/woocommerce';
 import { HeroBanner } from '@/components/home/HeroBanner';
 import { CategoriesShowcaseInteractive } from '@/components/home/CategoriesShowcaseInteractive';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
+import { FlashSaleSection } from '@/components/home/FlashSaleSection';
 import { ShopByConcern } from '@/components/home/ShopByConcern';
 import { BrandsShowcaseInteractive } from '@/components/home/BrandsShowcaseInteractive';
 import type { Metadata } from 'next';
@@ -28,11 +29,11 @@ const CATEGORIES = [
 ];
 
 const SKIN_CONCERNS = [
-  { name: 'Acne & Breakouts', slug: 'acne', emoji: '🔴', color: 'acne' as const },
-  { name: 'Dry & Sensitive', slug: 'dry', emoji: '💧', color: 'dryness' as const },
-  { name: 'Anti-Aging', slug: 'anti-aging', emoji: '✨', color: 'antiaging' as const },
-  { name: 'Dark Spots', slug: 'dark-spots', emoji: '🌙', color: 'brightening' as const },
-  { name: 'Sensitivity', slug: 'sensitivity', emoji: '🌿', color: 'sensitivity' as const },
+  { name: 'Acne & Breakouts', slug: 'acne', emoji: '🔴' },
+  { name: 'Dry & Sensitive', slug: 'dry', emoji: '💧' },
+  { name: 'Anti-Aging', slug: 'anti-aging', emoji: '✨' },
+  { name: 'Dark Spots & Brightening', slug: 'dark-spots', emoji: '🌙' },
+  { name: 'Sensitivity', slug: 'sensitivity', emoji: '🌿' },
 ];
 
 const FEATURED_BRANDS = [
@@ -51,15 +52,19 @@ const FEATURED_BRANDS = [
 export default async function HomePage() {
   const categories = await getCategories({ per_page: 8, hide_empty: true });
 
-  const [featured, onSale, ...allProducts] = await Promise.all([
+  const [featured, onSale, bestSelling, newArrivals, ...allProducts] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
+    getBestSellingProducts(8),
+    getNewArrivals(8),
     ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.name, 5)),
     ...categories.map(cat => getProductsByCategory(cat.id, 5)),
+    ...SKIN_CONCERNS.map(concern => getProducts({ search: concern.slug, per_page: 8 }).then(r => r.products)),
   ]);
 
   const brandProducts = allProducts.slice(0, FEATURED_BRANDS.length);
-  const categoryProducts = allProducts.slice(FEATURED_BRANDS.length);
+  const categoryProducts = allProducts.slice(FEATURED_BRANDS.length, FEATURED_BRANDS.length + categories.length);
+  const concernProducts = allProducts.slice(FEATURED_BRANDS.length + categories.length);
 
   return (
     <div className="bg-white">
@@ -92,18 +97,22 @@ export default async function HomePage() {
         />
       )}
 
-      {/* ── SHOP BY SKIN CONCERN ── */}
-      <ShopByConcern concerns={SKIN_CONCERNS} title="Shop by Skin Concern" />
+      {/* ── TOP PICKS (FLASH SALE) ── */}
+      <FlashSaleSection
+        bestSelling={bestSelling}
+        newArrivals={newArrivals}
+        onSale={onSale}
+        title="Top Picks"
+      />
 
-      {/* ── ON SALE ── */}
-      {onSale.length > 0 && (
-        <FeaturedProductsSection
-          products={onSale}
-          title="Flash Sale"
-          subtitle="Limited time offers on premium brands"
-          variant="sale"
-        />
-      )}
+      {/* ── SHOP BY SKIN CONCERN ── */}
+      <ShopByConcern
+        concerns={SKIN_CONCERNS.map((concern, index) => ({
+          ...concern,
+          products: concernProducts[index] || [],
+        }))}
+        title="Shop by Concern"
+      />
 
       {/* ── BRANDS SHOWCASE ── */}
       <BrandsShowcaseInteractive

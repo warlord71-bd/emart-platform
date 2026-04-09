@@ -4,26 +4,35 @@ import { useState, useRef } from 'react';
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct } from '@/lib/woocommerce';
 
-interface ConcernWithProducts {
-  name: string;
-  slug: string;
-  emoji: string;
+interface Tab {
+  id: string;
+  label: string;
   products: WooProduct[];
 }
 
-interface ShopByConcernProps {
-  concerns: ConcernWithProducts[];
+interface FlashSaleSectionProps {
+  bestSelling: WooProduct[];
+  newArrivals: WooProduct[];
+  onSale: WooProduct[];
   title?: string;
 }
 
-export const ShopByConcern: React.FC<ShopByConcernProps> = ({
-  concerns,
-  title = 'Shop by Concern',
+export const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
+  bestSelling,
+  newArrivals,
+  onSale,
+  title = 'Top Picks',
 }) => {
-  const [selectedConcern, setSelectedConcern] = useState(concerns[0]?.slug || '');
+  const tabs: Tab[] = [
+    { id: 'best-selling', label: 'Best Selling', products: bestSelling },
+    { id: 'new-arrivals', label: 'New Arrivals', products: newArrivals },
+    { id: 'offer', label: 'Offer', products: onSale },
+  ];
+
+  const [selectedTab, setSelectedTab] = useState('best-selling');
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  const currentConcern = concerns.find(c => c.slug === selectedConcern);
+  const currentTab = tabs.find(t => t.id === selectedTab);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -41,37 +50,37 @@ export const ShopByConcern: React.FC<ShopByConcernProps> = ({
           {title}
         </h2>
 
-        {/* Concern Tabs */}
-        <div className="flex flex-wrap gap-3 mb-8">
-          {concerns.map(concern => (
+        {/* Tabs */}
+        <div className="flex gap-3 mb-8">
+          {tabs.map(tab => (
             <button
-              key={concern.slug}
-              onClick={() => setSelectedConcern(concern.slug)}
-              className={`px-5 py-2 rounded-lg font-medium text-sm transition-all ${
-                selectedConcern === concern.slug
+              key={tab.id}
+              onClick={() => setSelectedTab(tab.id)}
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                selectedTab === tab.id
                   ? 'bg-lumiere-primary text-white'
                   : 'bg-gray-100 text-lumiere-text-primary hover:bg-gray-200'
               }`}
             >
-              {concern.emoji} {concern.name}
+              {tab.label}
             </button>
           ))}
         </div>
 
         {/* Product Carousel */}
-        {currentConcern && currentConcern.products.length > 0 ? (
+        {currentTab && currentTab.products.length > 0 ? (
           <div className="relative">
             <div
               ref={carouselRef}
               className="flex gap-4 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory"
             >
-              {currentConcern.products.map(product => (
+              {currentTab.products.map(product => (
                 <div key={product.id} className="flex-shrink-0 w-48 md:w-56 snap-start">
                   <ProductCard product={product} />
                 </div>
               ))}
             </div>
-            {currentConcern.products.length > 5 && (
+            {currentTab.products.length > 5 && (
               <>
                 <button
                   onClick={() => scroll('left')}
@@ -98,4 +107,4 @@ export const ShopByConcern: React.FC<ShopByConcernProps> = ({
   );
 };
 
-export default ShopByConcern;
+export default FlashSaleSection;
