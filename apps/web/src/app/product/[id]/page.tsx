@@ -47,19 +47,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <div>
-            <p className="text-sm text-lumiere-text-secondary mb-2">{product.brand || 'Brand'}</p>
             <h1 className="text-3xl font-serif font-bold text-lumiere-text-primary mb-4">{product.name}</h1>
             
             <div className="mb-6">
               <p className="text-3xl font-bold text-lumiere-primary">৳{product.price}</p>
-              {product.regularPrice && (
-                <p className="text-lg text-lumiere-text-secondary line-through">৳{product.regularPrice}</p>
+              {product.regular_price && (
+                <p className="text-lg text-lumiere-text-secondary line-through">৳{product.regular_price}</p>
               )}
             </div>
 
-            {product.rating && (
+            {product.average_rating && (
               <div className="mb-6">
-                <p className="text-sm">⭐ {product.rating} ({product.reviewCount || 0} reviews)</p>
+                <p className="text-sm">⭐ {product.average_rating} ({product.rating_count || 0} reviews)</p>
               </div>
             )}
 
