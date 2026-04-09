@@ -128,6 +128,8 @@ export interface ProductsParams {
   search?: string;
   category?: string;
   tag?: string;
+  attribute?: string;
+  attribute_term?: string;
   orderby?: 'date' | 'price' | 'popularity' | 'rating' | 'title';
   order?: 'asc' | 'desc';
   on_sale?: boolean;
