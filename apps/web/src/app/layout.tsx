@@ -1,26 +1,11 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next';
-import { Poppins, Noto_Sans_Bengali } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { Toaster } from 'react-hot-toast';
 import Providers from './providers';
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-poppins',
-  display: 'swap',
-});
-
-const notoSansBengali = Noto_Sans_Bengali({
-  subsets: ['bengali'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-bengali',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://e-mart.com.bd'),
@@ -69,11 +54,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${poppins.variable} ${notoSansBengali.variable}`}
-    >
-      <body className="font-poppins bg-white text-gray-800 antialiased">
+    <html lang="en">
+      <body className="font-sans bg-white text-gray-800 antialiased">
         <Providers>
           <Header />
           <main className="min-h-screen">{children}</main>
