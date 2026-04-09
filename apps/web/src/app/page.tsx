@@ -9,8 +9,8 @@ import { BrandsShowcase } from '@/components/home/BrandsShowcase';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Lumière K-Beauty — Premium Korean & Japanese Skincare in Bangladesh',
-  description: 'Discover premium Korean and Japanese skincare at Lumière. 100% authentic, fast delivery, COD available. Shop K-Beauty brands like COSRX, ISNTREE, and more.',
+  title: 'Emart — Premium Korean & Japanese Skincare in Bangladesh',
+  description: 'Discover premium Korean and Japanese skincare at Emart. 100% authentic, fast delivery, COD available. Shop K-Beauty brands like COSRX, ISNTREE, and more.',
 };
 
 // Revalidate every hour
@@ -117,7 +117,7 @@ export default async function HomePage() {
       <section className="py-12 px-4 bg-lumiere-text-primary text-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-serif font-bold mb-10">
-            Why Choose Lumière?
+            Why Choose Emart?
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[

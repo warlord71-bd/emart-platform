@@ -9,7 +9,7 @@ interface ShopPageProps {
 }
 
 export const metadata = {
-  title: 'Shop K-Beauty & J-Beauty | Lumière',
+  title: 'Shop K-Beauty & J-Beauty | Emart',
   description: 'Shop premium Korean and Japanese skincare. 100% authentic, COD available.',
 };
 

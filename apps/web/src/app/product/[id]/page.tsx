@@ -9,7 +9,7 @@ interface ProductPageProps {
 export async function generateMetadata({ params }: ProductPageProps) {
   const product = await getProductById(parseInt(params.id));
   return {
-    title: `${product?.name || 'Product'} | Lumière`,
+    title: `${product?.name || 'Product'} | Emart`,
     description: product?.description?.substring(0, 160) || 'Premium K-Beauty product',
   };
 }
@@ -80,7 +80,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             <div className="mt-8 pt-8 border-t border-lumiere-border-light">
-              <p className="text-sm font-semibold text-lumiere-text-primary mb-3">Why Choose Lumière?</p>
+              <p className="text-sm font-semibold text-lumiere-text-primary mb-3">Why Choose Emart?</p>
               <div className="space-y-2 text-sm text-lumiere-text-secondary">
                 <p>✅ 100% Authentic</p>
                 <p>🚚 Fast Delivery</p>
