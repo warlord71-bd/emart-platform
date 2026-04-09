@@ -41,6 +41,11 @@ const FEATURED_BRANDS = [
   { id: 3, name: 'Cerave', slug: 'cerave' },
   { id: 4, name: 'Some By Mi', slug: 'some-by-mi' },
   { id: 5, name: 'Skin1004', slug: 'skin1004' },
+  { id: 6, name: 'Purito', slug: 'purito' },
+  { id: 7, name: 'Dear Klairs', slug: 'dear-klairs' },
+  { id: 8, name: 'Dr.Althea', slug: 'dr-althea' },
+  { id: 9, name: 'ANUA', slug: 'anua' },
+  { id: 10, name: 'APLB', slug: 'aplb' },
 ];
 
 export default async function HomePage() {
