@@ -54,7 +54,7 @@ export default async function HomePage() {
   const [featured, onSale, ...allProducts] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
-    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.slug, 5)),
+    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.name, 5)),
     ...categories.map(cat => getProductsByCategory(cat.id, 5)),
   ]);
 
