@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct } from '@/lib/woocommerce';
