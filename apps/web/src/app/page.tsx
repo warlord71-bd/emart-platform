@@ -49,6 +49,16 @@ export default async function HomePage() {
     getSaleProducts(8),
   ]);
 
+  // Convert WooCommerce string prices to numbers
+  const convertPrice = (p: any) => ({
+    ...p,
+    price: parseFloat(p.price || '0'),
+    regularPrice: p.regularPrice ? parseFloat(p.regularPrice) : undefined,
+  });
+
+  const featuredProducts = featured.map(convertPrice);
+  const saleProducts = onSale.map(convertPrice);
+
   return (
     <div className="bg-white">
       {/* ── HERO BANNER ── */}
@@ -66,9 +76,9 @@ export default async function HomePage() {
       <CategoriesGrid categories={CATEGORIES} title="Shop by Category" />
 
       {/* ── FEATURED PRODUCTS ── */}
-      {featured.length > 0 && (
+      {featuredProducts.length > 0 && (
         <FeaturedProductsSection
-          products={featured}
+          products={featuredProducts}
           title="Featured Products"
           subtitle="Curated selection of bestsellers"
           variant="featured"
@@ -79,9 +89,9 @@ export default async function HomePage() {
       <ShopByConcern concerns={SKIN_CONCERNS} title="Shop by Skin Concern" />
 
       {/* ── ON SALE ── */}
-      {onSale.length > 0 && (
+      {saleProducts.length > 0 && (
         <FeaturedProductsSection
-          products={onSale}
+          products={saleProducts}
           title="Flash Sale"
           subtitle="Limited time offers on premium brands"
           variant="sale"
