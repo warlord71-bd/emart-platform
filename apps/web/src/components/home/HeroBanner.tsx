@@ -86,9 +86,6 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               fill
               className="object-contain drop-shadow-2xl"
               priority
-              onError={(e) => {
-                console.error('Hero image failed to load:', heroImage);
-              }}
             />
           </div>
         </div>
