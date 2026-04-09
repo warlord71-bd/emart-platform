@@ -1,8 +1,8 @@
 // src/app/page.tsx
 import Link from 'next/link';
-import { getFeaturedProducts, getSaleProducts, getProductsByBrand } from '@/lib/woocommerce';
+import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories } from '@/lib/woocommerce';
 import { HeroBanner } from '@/components/home/HeroBanner';
-import { CategoriesGrid } from '@/components/home/CategoriesGrid';
+import { CategoriesShowcaseInteractive } from '@/components/home/CategoriesShowcaseInteractive';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
 import { ShopByConcern } from '@/components/home/ShopByConcern';
 import { BrandsShowcaseInteractive } from '@/components/home/BrandsShowcaseInteractive';
@@ -44,11 +44,17 @@ const FEATURED_BRANDS = [
 ];
 
 export default async function HomePage() {
-  const [featured, onSale, ...brandProducts] = await Promise.all([
+  const categories = await getCategories({ per_page: 8, hide_empty: true });
+
+  const [featured, onSale, ...allProducts] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
     ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.slug, 5)),
+    ...categories.map(cat => getProductsByCategory(cat.slug, 5)),
   ]);
+
+  const brandProducts = allProducts.slice(0, FEATURED_BRANDS.length);
+  const categoryProducts = allProducts.slice(FEATURED_BRANDS.length);
 
   return (
     <div className="bg-white">
@@ -63,7 +69,13 @@ export default async function HomePage() {
       />
 
       {/* ── SHOP BY CATEGORY ── */}
-      <CategoriesGrid categories={CATEGORIES} title="Shop by Category" />
+      <CategoriesShowcaseInteractive
+        categories={categories.map((cat, index) => ({
+          ...cat,
+          products: categoryProducts[index] || [],
+        }))}
+        title="Shop by Category"
+      />
 
       {/* ── FEATURED PRODUCTS ── */}
       {featured.length > 0 && (

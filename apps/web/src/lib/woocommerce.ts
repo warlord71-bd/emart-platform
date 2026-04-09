@@ -243,6 +243,19 @@ export async function getProductsByBrand(brandSlug: string, limit = 5): Promise<
   }
 }
 
+export async function getProductsByCategory(categorySlug: string, limit = 5): Promise<WooProduct[]> {
+  try {
+    const { products } = await getProducts({
+      category: categorySlug,
+      per_page: limit
+    });
+    return products;
+  } catch (error) {
+    console.error(`getProductsByCategory error for ${categorySlug}:`, error);
+    return [];
+  }
+}
+
 // ══════════════════════════════
 // CATEGORIES API
 // ══════════════════════════════
