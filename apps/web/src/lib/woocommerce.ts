@@ -243,15 +243,15 @@ export async function getProductsByBrand(brandSlug: string, limit = 5): Promise<
   }
 }
 
-export async function getProductsByCategory(categorySlug: string, limit = 5): Promise<WooProduct[]> {
+export async function getProductsByCategory(categoryId: number, limit = 5): Promise<WooProduct[]> {
   try {
     const { products } = await getProducts({
-      category: categorySlug,
+      category: categoryId.toString(),
       per_page: limit
     });
     return products;
   } catch (error) {
-    console.error(`getProductsByCategory error for ${categorySlug}:`, error);
+    console.error(`getProductsByCategory error for ${categoryId}:`, error);
     return [];
   }
 }

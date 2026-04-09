@@ -50,7 +50,7 @@ export default async function HomePage() {
     getFeaturedProducts(8),
     getSaleProducts(8),
     ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.slug, 5)),
-    ...categories.map(cat => getProductsByCategory(cat.slug, 5)),
+    ...categories.map(cat => getProductsByCategory(cat.id, 5)),
   ]);
 
   const brandProducts = allProducts.slice(0, FEATURED_BRANDS.length);
