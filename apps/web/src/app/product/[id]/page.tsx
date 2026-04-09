@@ -48,7 +48,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <div>
-            <p className="text-sm text-lumiere-text-secondary mb-2">{product.brand || 'Brand'}</p>
+            <p className="text-sm text-lumiere-text-secondary mb-2">'Brand'</p>
             <h1 className="text-2xl font-bold text-lumiere-text-primary mb-2">{product.name}</h1>
             <p className="text-3xl font-bold text-lumiere-primary mb-4">${product.price}</p>
             <p className="text-gray-600 mb-6">{product.description}</p>
