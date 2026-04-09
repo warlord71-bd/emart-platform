@@ -39,7 +39,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-lumiere-background rounded-lg p-6">
-            {product.images {product.image ?{product.image ? product.images[0] ? (
+            {product.images && product.images[0] ? (
               <Image src={product.images[0]} alt={product.name} width={400} height={400} className="w-full" />
             ) : (
               <div className="w-full h-96 bg-gray-200 rounded flex items-center justify-center">No image</div>
