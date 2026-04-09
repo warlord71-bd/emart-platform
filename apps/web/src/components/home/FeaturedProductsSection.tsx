@@ -1,19 +1,9 @@
 import Link from 'next/link';
 import ProductCard from '@/components/product/ProductCard';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  regularPrice?: number;
-  image?: string;
-  rating?: number;
-  reviewCount?: number;
-  brand?: string;
-}
+import type { WooProduct } from '@/lib/woocommerce';
 
 interface FeaturedProductsSectionProps {
-  products: Product[];
+  products: WooProduct[];
   title?: string;
   subtitle?: string;
   variant?: 'featured' | 'bestsellers' | 'sale';

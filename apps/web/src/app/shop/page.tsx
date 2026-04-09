@@ -18,7 +18,7 @@ interface ShopPageProps {
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
   const page = parseInt(searchParams.page || '1');
-  
+
   const { products = [] } = await getProducts({
     page,
     per_page: 20,
@@ -26,22 +26,14 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     orderby: (searchParams.sort || 'date') as 'date' | 'price' | 'popularity' | 'rating',
   });
 
-  const convertPrice = (p: any) => ({
-    ...p,
-    price: parseFloat(p.price || '0'),
-    regularPrice: p.regularPrice ? parseFloat(p.regularPrice) : undefined,
-  });
-
-  const productsConverted = (products || []).map(convertPrice);
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-lumiere-text-primary mb-2">All Products</h1>
-      <p className="text-gray-500 text-sm mb-8">{productsConverted.length} products found</p>
+      <p className="text-gray-500 text-sm mb-8">{products.length} products found</p>
 
-      {productsConverted.length > 0 ? (
+      {products.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {productsConverted.map((product: any) => (
+          {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
