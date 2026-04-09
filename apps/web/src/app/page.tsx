@@ -36,11 +36,11 @@ const SKIN_CONCERNS = [
 ];
 
 const FEATURED_BRANDS = [
-  { id: 1, name: 'CosRx', slug: 'cosrx' },
-  { id: 2, name: 'Innisfree', slug: 'innisfree' },
-  { id: 3, name: 'Jumiso', slug: 'jumiso' },
-  { id: 4, name: 'ISNTREE', slug: 'isntree' },
-  { id: 5, name: 'Cerave', slug: 'cerave' },
+  { id: 1, name: 'Dabo', slug: 'dabo' },
+  { id: 2, name: 'CosRx', slug: 'cosrx' },
+  { id: 3, name: 'Cerave', slug: 'cerave' },
+  { id: 4, name: 'Some By Mi', slug: 'some-by-mi' },
+  { id: 5, name: 'Skin1004', slug: 'skin1004' },
 ];
 
 export default async function HomePage() {
