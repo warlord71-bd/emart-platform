@@ -5,22 +5,55 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ShoppingCart, Search, User, Menu, X, Heart } from 'lucide-react';
+import { ShoppingCart, Search, User, Menu, X, Heart, ChevronDown } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 
-const NAV_LINKS = [
-  { label: 'Shop', href: '/shop' },
-  { label: 'Face Care', href: '/category/face-care' },
-  { label: 'Sunscreen', href: '/category/sunscreen' },
-  { label: 'Serum & Toner', href: '/category/serum-toner' },
-  { label: 'Sale 🔥', href: '/sale', className: 'text-[#e8197a]' },
-  { label: 'New ✨', href: '/new-arrivals', className: 'text-[#e8197a]' },
+const CATEGORIES = [
+  {
+    name: 'SKINCARE ESSENTIALS',
+    subcategories: [
+      { label: 'Face Cleansers', slug: 'face-care' },
+      { label: 'Moisturizer & Night Cream', slug: 'moisturizer' },
+      { label: 'Serums, Ampoules & Essences', slug: 'serum-toner' },
+      { label: 'Sheet Masks', slug: 'face-care' },
+      { label: 'Sunscreen & Sun Care', slug: 'sunscreen' },
+      { label: 'Toners & Mists', slug: 'serum-toner' },
+      { label: 'Eye Care', slug: 'face-care' },
+    ],
+  },
+  {
+    name: 'SHOP BY CONCERN',
+    subcategories: [
+      { label: 'Acne & Breakouts', slug: 'concern/acne' },
+      { label: 'Dry & Sensitive', slug: 'concern/dryness' },
+      { label: 'Anti-Aging', slug: 'concern/antiaging' },
+      { label: 'Dark Spots & Brightening', slug: 'concern/brightening' },
+      { label: 'Sensitivity', slug: 'concern/sensitivity' },
+    ],
+  },
+  {
+    name: 'HAIR & PERSONAL CARE',
+    subcategories: [
+      { label: 'Hair Care', slug: 'hair-care' },
+      { label: 'Body Care', slug: 'body-care' },
+      { label: 'Personal Care', slug: 'body-care' },
+    ],
+  },
+  {
+    name: 'MAKEUP & COSMETICS',
+    subcategories: [
+      { label: 'Makeup', slug: 'makeup' },
+      { label: 'Lipsticks', slug: 'makeup' },
+      { label: 'Eye Makeup', slug: 'makeup' },
+    ],
+  },
 ];
 
 export default function Header() {
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const totalItems = useCartStore((s) => s.totalItems());
   const toggleCart = useCartStore((s) => s.toggleCart);
@@ -54,11 +87,19 @@ export default function Header() {
 
       {/* ── Main Header ── */}
       <header
-        className={`sticky top-0 z-50 bg-white border-b border-gray-100
+        className={`sticky top-10 z-50 bg-white border-b border-gray-100
           ${scrolled ? 'shadow-md' : 'shadow-sm'} transition-shadow duration-300`}
       >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center gap-4 h-16">
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 text-gray-600 lg:hidden"
+            >
+              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 flex-shrink-0">
@@ -134,53 +175,108 @@ export default function Header() {
                   </span>
                 )}
               </button>
-
-              {/* Mobile Menu */}
-              <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className="p-2 text-gray-600 lg:hidden"
-              >
-                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
             </div>
           </div>
 
-          {/* ── Desktop Nav ── */}
-          <nav className="hidden lg:flex items-center gap-6 py-2 border-t border-gray-50">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium text-gray-600 hover:text-[#e8197a]
-                           transition-colors ${link.className || ''}`}
-              >
-                {link.label}
+          {/* ── Desktop Navigation (Left Sidebar Style) ── */}
+          <nav className="hidden lg:block border-t border-gray-50 py-2">
+            <div className="flex gap-6">
+              {CATEGORIES.map((category) => (
+                <div key={category.name} className="relative group">
+                  <button
+                    className="flex items-center gap-2 py-2 px-3 text-sm font-medium text-gray-700
+                             hover:text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    {category.name}
+                    <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />
+                  </button>
+
+                  {/* Desktop Dropdown */}
+                  <div className="hidden group-hover:block absolute left-0 top-full bg-white border border-gray-200
+                              rounded-lg shadow-lg py-2 min-w-56 z-50 mt-1">
+                    {category.subcategories.map((sub) => (
+                      <Link
+                        key={sub.slug}
+                        href={`/shop?category=${sub.slug}`}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50
+                                 hover:text-[#e8197a] transition-colors"
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              {/* Top Navigation Links */}
+              <Link href="/sale" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg">
+                Sale 🔥
               </Link>
-            ))}
+              <Link href="/new-arrivals" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg">
+                New ✨
+              </Link>
+            </div>
           </nav>
         </div>
 
-        {/* ── Mobile Menu ── */}
+        {/* ── Mobile Menu (Accordion) ── */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4">
+          <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4 pb-20">
             <nav className="flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`py-3 px-4 text-sm font-medium text-gray-700
-                             hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg
-                             transition-colors ${link.className || ''}`}
-                >
-                  {link.label}
-                </Link>
+              {CATEGORIES.map((category) => (
+                <div key={category.name}>
+                  <button
+                    onClick={() => setExpandedCategory(expandedCategory === category.name ? null : category.name)}
+                    className="w-full flex items-center justify-between py-3 px-4 text-sm font-medium
+                             text-gray-700 hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg transition-colors"
+                  >
+                    {category.name}
+                    <ChevronDown
+                      size={16}
+                      className={`transition-transform ${
+                        expandedCategory === category.name ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {/* Expanded Subcategories */}
+                  {expandedCategory === category.name && (
+                    <div className="bg-gray-50 rounded-lg my-1">
+                      {category.subcategories.map((sub) => (
+                        <Link
+                          key={sub.slug}
+                          href={`/shop?category=${sub.slug}`}
+                          onClick={() => setMobileOpen(false)}
+                          className="block py-2 px-8 text-sm text-gray-600 hover:text-[#e8197a]
+                                   border-l-2 border-transparent hover:border-[#e8197a] transition-colors"
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
+
+              {/* Mobile Top Links */}
+              <Link
+                href="/sale"
+                onClick={() => setMobileOpen(false)}
+                className="py-3 px-4 text-sm font-medium text-[#e8197a] hover:bg-[#fce7f0] rounded-lg transition-colors"
+              >
+                Sale 🔥
+              </Link>
+              <Link
+                href="/new-arrivals"
+                onClick={() => setMobileOpen(false)}
+                className="py-3 px-4 text-sm font-medium text-[#e8197a] hover:bg-[#fce7f0] rounded-lg transition-colors"
+              >
+                New ✨
+              </Link>
               <Link
                 href="/account"
                 onClick={() => setMobileOpen(false)}
-                className="py-3 px-4 text-sm font-medium text-gray-700
-                           hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg"
+                className="py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg"
               >
                 👤 My Account
               </Link>
