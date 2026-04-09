@@ -36,18 +36,18 @@ const SKIN_CONCERNS = [
 ];
 
 const FEATURED_BRANDS = [
-  { id: 1, name: 'COSRX', slug: 'cosrx' },
-  { id: 2, name: 'TIAM', slug: 'tiam' },
-  { id: 3, name: 'JUMISO', slug: 'jumiso' },
+  { id: 1, name: 'CosRx', slug: 'cosrx' },
+  { id: 2, name: 'Innisfree', slug: 'innisfree' },
+  { id: 3, name: 'Jumiso', slug: 'jumiso' },
   { id: 4, name: 'ISNTREE', slug: 'isntree' },
-  { id: 5, name: 'CERAVE', slug: 'cerave' },
+  { id: 5, name: 'Cerave', slug: 'cerave' },
 ];
 
 export default async function HomePage() {
   const [featured, onSale, ...brandProducts] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
-    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.name, 5)),
+    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.slug, 5)),
   ]);
 
   return (

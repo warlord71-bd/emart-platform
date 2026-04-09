@@ -229,16 +229,16 @@ export async function searchProducts(query: string, page = 1): Promise<{
   return getProducts({ search: query, page, per_page: 20 });
 }
 
-export async function getProductsByBrand(brandName: string, limit = 5): Promise<WooProduct[]> {
+export async function getProductsByBrand(brandSlug: string, limit = 5): Promise<WooProduct[]> {
   try {
     const { products } = await getProducts({
       attribute: 'pa_brand',
-      attribute_term: brandName.toLowerCase(),
+      attribute_term: brandSlug,
       per_page: limit
     });
     return products;
   } catch (error) {
-    console.error(`getProductsByBrand error for ${brandName}:`, error);
+    console.error(`getProductsByBrand error for ${brandSlug}:`, error);
     return [];
   }
 }
