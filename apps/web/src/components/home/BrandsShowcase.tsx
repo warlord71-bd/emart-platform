@@ -45,11 +45,11 @@ export const BrandsShowcase: React.FC<BrandsShowcaseProps> = ({
         </div>
 
         {/* Single Box Container */}
-        <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-          <div className="divide-y divide-gray-100">
-            {/* 5 Brands Vertically */}
+        <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow p-6 md:p-8">
+          {/* 5 Brands Vertically */}
+          <div className="space-y-8">
             {brands.slice(0, 5).map((brand) => (
-              <div key={brand.id} className="p-6 md:p-8">
+              <div key={brand.id}>
                 {/* Brand Name */}
                 <h3 className="text-lg md:text-xl font-bold text-lumiere-text-primary mb-4">
                   {brand.name}
@@ -69,16 +69,16 @@ export const BrandsShowcase: React.FC<BrandsShowcaseProps> = ({
                 )}
               </div>
             ))}
-          </div>
 
-          {/* See More Brands CTA */}
-          <div className="border-t border-gray-100 p-6 md:p-8 text-center">
-            <Link
-              href="/brands"
-              className="inline-block text-lumiere-primary hover:text-lumiere-primary-hover font-semibold transition-colors"
-            >
-              See More Brands →
-            </Link>
+            {/* See More Brands CTA */}
+            <div className="text-center pt-4 border-t border-gray-100">
+              <Link
+                href="/brands"
+                className="inline-block text-lumiere-primary hover:text-lumiere-primary-hover font-semibold transition-colors"
+              >
+                See More Brands →
+              </Link>
+            </div>
           </div>
         </div>
       </div>
