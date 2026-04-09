@@ -55,23 +55,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* APP DOWNLOAD BANNER */}
-      <div className="bg-gray-50 px-4 py-4 md:py-6">
-        <div className="max-w-7xl mx-auto">
-          <AppDownloadBanner />
-        </div>
-      </div>
-
       {/* MAIN CONTENT */}
       <div className="px-4 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           {/* BREADCRUMB */}
-          <div className="text-sm text-lumiere-text-secondary mb-8 flex items-center gap-2">
+          <div className="text-sm text-lumiere-text-secondary mb-6 flex items-center gap-2">
             <Link href="/" className="hover:text-lumiere-primary">Home</Link>
             <span>/</span>
             <Link href="/shop" className="hover:text-lumiere-primary">Shop</Link>
             <span>/</span>
             <span className="text-lumiere-text-primary">{product.name}</span>
+          </div>
+
+          {/* APP DOWNLOAD BANNER - AS STRIP BELOW BREADCRUMB */}
+          <div className="mb-8">
+            <AppDownloadBanner />
           </div>
 
           {/* PRODUCT SECTION */}
