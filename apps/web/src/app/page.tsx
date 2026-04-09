@@ -74,7 +74,7 @@ export default async function HomePage() {
           <div className="flex-shrink-0 relative">
             <div className="w-72 h-72 md:w-96 md:h-96 relative">
               <Image
-                src="/images/hero-products.png"
+                src="http://5.189.188.229/wp-content/uploads/0001_3W%20Clinic%20black%20Bean%20Vitalizing%20Shampoo%20500ml.jpg"
                 alt="Korean Skincare Products"
                 fill
                 className="object-contain drop-shadow-2xl"
