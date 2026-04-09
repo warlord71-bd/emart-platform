@@ -38,18 +38,16 @@ echo "🔧 FIX 2: Rebuilding image metadata from attachments"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 mysql emart_live << 'SQL'
--- Link products with attachments
+-- Link products with available image attachments
 INSERT IGNORE INTO wp4h_postmeta (post_id, meta_key, meta_value)
 SELECT
     p.ID,
     '_thumbnail_id',
-    a.ID
+    MIN(a.ID)
 FROM wp4h_posts p
-CROSS JOIN wp4h_posts a
+INNER JOIN wp4h_posts a ON a.post_type = 'attachment' AND a.post_mime_type LIKE 'image/%'
 WHERE p.post_type = 'product'
   AND p.post_status = 'publish'
-  AND a.post_type = 'attachment'
-  AND a.post_mime_type LIKE 'image/%'
   AND NOT EXISTS (
     SELECT 1 FROM wp4h_postmeta pm
     WHERE pm.post_id = p.ID
