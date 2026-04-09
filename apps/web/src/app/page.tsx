@@ -59,7 +59,6 @@ export default async function HomePage() {
         primaryCTA={{ text: 'Shop Now', href: '/shop' }}
         secondaryCTA={{ text: '🔥 View Sale', href: '/sale' }}
         trustBadges={['100% Authentic', 'COD Available', 'Fast Delivery', 'Easy Returns']}
-        heroImage="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop"
       />
 
       {/* ── SHOP BY CATEGORY ── */}
