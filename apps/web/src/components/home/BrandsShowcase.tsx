@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import ProductCard from '@/components/product/ProductCard';
+import type { WooProduct } from '@/lib/woocommerce';
 
 interface Brand {
   id: number;
@@ -8,19 +9,8 @@ interface Brand {
   slug: string;
 }
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  regularPrice?: number;
-  image?: string;
-  rating?: number;
-  reviewCount?: number;
-  brand?: string;
-}
-
 interface BrandShowcaseItem extends Brand {
-  products: Product[];
+  products: WooProduct[];
 }
 
 interface BrandsShowcaseProps {
