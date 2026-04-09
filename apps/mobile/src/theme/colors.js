@@ -1,84 +1,68 @@
-// Lumière K-Beauty Theme — Premium + Modern + Elegant
-// Unified across Web, Mobile, and Admin
-// Optimized for South Asian women beauty shoppers
+// Midnight Blossom Theme — Premium Dark Luxury + Soft Pink
+// Mobile-Optimized for South Asian women beauty shoppers
+// ✅ BEST for Mobile: Dark theme (battery life, eye comfort, nighttime use)
 
 export const COLORS = {
-  // Primary Actions & CTA
-  primary: '#F24E5E',        // Blush Rose
-  primaryDark: '#E63A49',
-  primaryLight: '#FADADC',
-
-  // Secondary Actions & Badges
-  secondary: '#3D8762',      // Sage Green
-  secondaryDark: '#2F6B50',
-  secondaryLight: '#E8F5E9',
-
-  // Luxury & Ratings
-  accent: '#D4A017',         // Gold
-  accentLight: '#F4E4C3',
-
-  // Functional
-  success: '#3D8762',        // Green
-  warning: '#D4A017',        // Gold
-  error: '#E63A49',          // Red
-  sale: '#E63A49',           // Red
-
-  // Backgrounds
-  bg: '#FAF9F7',             // Warm White
-  card: '#FFFFFF',
-  headerBg: '#1a1a2e',       // Dark Navy
-
-  // Text
-  text: '#1a1a2e',           // Dark Navy
-  textSecondary: '#666666',  // Gray
-  textLight: '#999999',      // Light Gray
-  textOnDark: '#FFFFFF',
-  textOnDarkSec: 'rgba(255,255,255,0.85)',
-
-  // Borders & dividers
-  border: '#E8E8E8',
-  divider: '#F5F1ED',
-
-  // Gradients (as arrays for LinearGradient)
-  gradientHeader: ['#1a1a2e', '#2d2d4d'],
-  gradientBanner: ['#1a1a2e', '#2d2d4d', '#F24E5E'],
-  gradientButton: ['#F24E5E', '#E63A49'],
-  gradientAccent: ['#3D8762', '#2F6B50'],
-
-  // Tag/badge backgrounds
-  tagBg: '#F24E5E12',
-  tagColor: '#F24E5E',
-
-  // Tab bar
-  tabActive: '#F24E5E',
-  tabInactive: '#999999',
+  // Primary palette - Dark luxury
+  primary: '#1B1B2F',
+  primaryDark: '#0F0F1A',
+  primaryMid: '#2D2B55',
   
-  // Skin Concern Tags
-  acne: '#E8F5E9',
-  acneText: '#3D8762',
-  dryness: '#F5F1ED',
-  drynessText: '#D4A017',
-  brightening: '#2d2d4d',
-  brighteningText: '#FFFFFF',
-  antiaging: '#FADADC',
-  antiagingText: '#F24E5E',
-
-  // Trust Badges
-  authentic: '#3D8762',
-  fastDelivery: '#F24E5E',
-  cod: '#3D8762',
-  easyReturn: '#F24E5E',
-
-  // Shadows
+  // Accent - soft pink (optimized for dark background)
+  accent: '#E8739E',
+  accentLight: '#FFF0F5',
+  accentDark: '#C75B83',
+  
+  // Gold for ratings & premium badges
+  gold: '#D4A248',
+  goldLight: '#FDF6E3',
+  
+  // Functional
+  success: '#27AE60',
+  warning: '#F7A81B',
+  error: '#E74C3C',
+  sale: '#E74C3C',
+  
+  // Backgrounds - optimized for dark theme
+  bg: '#F9F7FA',
+  card: '#FFFFFF',
+  headerBg: '#1B1B2F',
+  
+  // Text - high contrast on dark
+  text: '#1B1B2F',
+  textSecondary: '#7B7890',
+  textLight: '#A9A4B8',
+  textOnDark: '#FFFFFF',
+  textOnDarkSec: 'rgba(255,255,255,0.7)',
+  
+  // Borders & dividers
+  border: '#EEEAF0',
+  divider: '#F5F2F7',
+  
+  // Gradients (as arrays for LinearGradient) - optimized for dark
+  gradientHeader: ['#1B1B2F', '#2D2B55'],
+  gradientBanner: ['#1B1B2F', '#2D2B55', '#E8739E'],
+  gradientButton: ['#1B1B2F', '#E8739E'],
+  gradientAccent: ['#E8739E', '#C75B83'],
+  
+  // Tag/badge backgrounds
+  tagBg: '#E8739E12',
+  tagColor: '#E8739E',
+  
+  // Tab bar
+  tabActive: '#E8739E',
+  tabInactive: '#B0AEBE',
+  
+  // Shadows - optimized for dark theme
   shadow: {
-    shadowColor: '#1a1a2e',
+    shadowColor: '#1B1B2F',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 3,
   },
   shadowStrong: {
-    shadowColor: '#1a1a2e',
+    shadowColor: '#1B1B2F',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.12,
     shadowRadius: 12,
