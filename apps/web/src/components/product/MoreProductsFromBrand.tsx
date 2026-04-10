@@ -16,10 +16,7 @@ export const MoreProductsFromBrand: React.FC<MoreProductsFromBrandProps> = ({
   const hasMore = products.length > 4;
 
   return (
-    <section className="py-12 border-t border-gray-200">
-      <h2 className="text-2xl font-bold text-lumiere-text-primary mb-8">
-        More Products from {brandName}
-      </h2>
+    <section>
 
       <div className="flex gap-8">
         {/* Products Grid - 4 items max */}
