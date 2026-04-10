@@ -24,8 +24,13 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const brandName = product.categories?.[0]?.name || 'Emart';
   const categoryName = product.categories?.[0]?.name || 'Products';
   const madeIn = 'South Korea';
-  // Extract size from attributes or use default
-  const size = product.attributes?.find(attr => attr.name?.toLowerCase().includes('size'))?.options?.[0] || '75ml';
+
+  // Extract size from product name (e.g., "Dr. Althea 147 Barrier Cream 15ml" → "15ml")
+  const extractSize = (name: string): string => {
+    const match = name.match(/(\d+\s*(?:ml|g|oz|l|kg))\s*$/i);
+    return match ? match[1].trim() : '75ml';
+  };
+  const size = extractSize(product.name);
   const soldQty = Math.floor(Math.random() * 100) + 50;
 
   return (
