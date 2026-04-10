@@ -21,7 +21,7 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
         {title}
       </h2>
 
-      <div className="flex gap-8">
+      <div className="flex flex-col md:flex-row gap-8">
         {/* Products Grid - 4 items max */}
         <div className="flex-1">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -33,9 +33,9 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
           </div>
         </div>
 
-        {/* Load More Button - Right Side */}
+        {/* Load More Button - Right Side (Desktop) or Bottom Right (Mobile) */}
         {hasMore && (
-          <div className="flex items-center justify-center">
+          <div className="flex md:items-center md:justify-center justify-end">
             <Link
               href="/shop"
               className="flex flex-col items-center gap-2 px-4 py-6 hover:opacity-80 transition-opacity"
