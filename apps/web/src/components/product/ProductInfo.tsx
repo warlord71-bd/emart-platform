@@ -24,7 +24,8 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const brandName = product.categories?.[0]?.name || 'Emart';
   const categoryName = product.categories?.[0]?.name || 'Products';
   const madeIn = 'South Korea';
-  const size = product.short_description || 'Standard Size';
+  // Extract size from attributes or use default
+  const size = product.attributes?.find(attr => attr.name?.toLowerCase().includes('size'))?.options?.[0] || '75ml';
   const soldQty = Math.floor(Math.random() * 100) + 50;
 
   return (
