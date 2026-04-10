@@ -136,7 +136,6 @@ export default async function ProductPage({ params }: Props) {
           {/* MORE PRODUCTS FROM BRAND */}
           {brandProducts.length > 0 && (
             <div className="py-8 border-t border-gray-200">
-              <SectionHeader title={`More Products from ${brandName}`} icon="🏢" seeAllLink={`/shop?brand=${brandName}`} />
               <MoreProductsFromBrand products={brandProducts} brandName={brandName} />
             </div>
           )}
@@ -144,39 +143,11 @@ export default async function ProductPage({ params }: Props) {
           {/* RECOMMENDED FOR YOU / RELATED PRODUCTS */}
           {relatedProducts.length > 0 && (
             <div className="py-8 border-t border-gray-200">
-              <SectionHeader title="Recommended for You" icon="⭐" seeAllLink="/shop" />
-              <RelatedProducts products={relatedProducts} title="" />
+              <RelatedProducts products={relatedProducts} title="Recommended for You" />
             </div>
           )}
 
-          {/* BRANDS CAROUSEL - PREFOOTER */}
-          <div className="mt-8 border-t border-gray-200">
-            <BrandsCarousel brands={[
-              { id: 1, name: 'COSRX', logo: 'https://via.placeholder.com/128x64?text=COSRX' },
-              { id: 2, name: 'ISNTREE', logo: 'https://via.placeholder.com/128x64?text=ISNTREE' },
-              { id: 3, name: 'PURITO', logo: 'https://via.placeholder.com/128x64?text=PURITO' },
-              { id: 4, name: 'SOME BY MI', logo: 'https://via.placeholder.com/128x64?text=SOMEBYMI' },
-              { id: 5, name: 'LANEIGE', logo: 'https://via.placeholder.com/128x64?text=LANEIGE' },
-            ]} />
-          </div>
-
-          {/* CUSTOMER TESTIMONIAL SECTION */}
-          <div className="py-8 border-t border-gray-200">
-            <div className="max-w-4xl">
-              <h2 className="text-2xl font-bold text-lumiere-text-primary mb-6">
-                Customer Reviews
-              </h2>
-              <div className="space-y-4">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <p className="text-sm text-lumiere-text-secondary mb-2">⭐⭐⭐⭐⭐</p>
-                  <p className="font-semibold text-lumiere-text-primary">Amazing Product!</p>
-                  <p className="text-sm text-lumiere-text-secondary mt-2">This product has completely changed my skincare routine. Highly recommended!</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* TRUST BADGES - AFTER TESTIMONIAL */}
+          {/* TRUST BADGES - FOOTER */}
           <div className="mt-8 bg-lumiere-text-primary text-white rounded-lg p-8 text-center border-t border-gray-200">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>

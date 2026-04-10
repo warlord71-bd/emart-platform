@@ -7,6 +7,7 @@ import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSecti
 import { FlashSaleSection } from '@/components/home/FlashSaleSection';
 import { ShopByConcern } from '@/components/home/ShopByConcern';
 import { BrandsShowcaseInteractive } from '@/components/home/BrandsShowcaseInteractive';
+import { BrandsCarousel } from '@/components/product/BrandsCarousel';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -47,6 +48,17 @@ const FEATURED_BRANDS = [
   { id: 8, name: 'Dr.Althea', slug: 'dr-althea' },
   { id: 9, name: 'ANUA', slug: 'anua' },
   { id: 10, name: 'APLB', slug: 'aplb' },
+];
+
+const CAROUSEL_BRANDS = [
+  { id: 1, name: 'COSRX', logo: 'https://via.placeholder.com/128x64?text=COSRX' },
+  { id: 2, name: 'ISNTREE', logo: 'https://via.placeholder.com/128x64?text=ISNTREE' },
+  { id: 3, name: 'PURITO', logo: 'https://via.placeholder.com/128x64?text=PURITO' },
+  { id: 4, name: 'SOME BY MI', logo: 'https://via.placeholder.com/128x64?text=SOME+BY+MI' },
+  { id: 5, name: 'LANEIGE', logo: 'https://via.placeholder.com/128x64?text=LANEIGE' },
+  { id: 6, name: 'ANUA', logo: 'https://via.placeholder.com/128x64?text=ANUA' },
+  { id: 7, name: 'DABO', logo: 'https://via.placeholder.com/128x64?text=DABO' },
+  { id: 8, name: 'DR.G', logo: 'https://via.placeholder.com/128x64?text=DR.G' },
 ];
 
 export default async function HomePage() {
@@ -145,10 +157,57 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── WHY CHOOSE LUMIÈRE ── */}
-      <section className="py-12 px-4 bg-lumiere-text-primary text-white">
+      {/* ── PREFOOTER SECTION ── */}
+
+      {/* BRANDS CAROUSEL */}
+      <section className="py-8 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <BrandsCarousel brands={CAROUSEL_BRANDS} />
+        </div>
+      </section>
+
+      {/* CUSTOMER TESTIMONIALS */}
+      <section className="py-8 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-lumiere-text-primary mb-8">
+            ⭐ What Our Customers Say
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                text: "Amazing Product! This product has completely changed my skincare routine. Highly recommended!",
+                author: "Fatima R.",
+                rating: 5,
+              },
+              {
+                text: "Fast delivery and authentic products. The quality is excellent and price is competitive. Will order again!",
+                author: "Rahman K.",
+                rating: 5,
+              },
+              {
+                text: "Best K-Beauty products in Bangladesh. Customer service was helpful and delivery was on time. 10/10!",
+                author: "Asha T.",
+                rating: 5,
+              },
+            ].map((testimonial, idx) => (
+              <div key={idx} className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+                <div className="flex gap-1 mb-3">
+                  {Array(testimonial.rating).fill(0).map((_, i) => (
+                    <span key={i} className="text-yellow-400">⭐</span>
+                  ))}
+                </div>
+                <p className="text-gray-600 text-sm mb-4">"{testimonial.text}"</p>
+                <p className="font-semibold text-lumiere-text-primary">{testimonial.author}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHY CHOOSE EMART ── */}
+      <section className="py-8 px-4 bg-lumiere-text-primary text-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold mb-10">
+          <h2 className="text-2xl md:text-3xl font-serif font-bold mb-8">
             Why Choose Emart?
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
