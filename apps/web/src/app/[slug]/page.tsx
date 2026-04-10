@@ -3,12 +3,13 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getProduct, getProducts } from '@/lib/woocommerce';
-import { AppDownloadBanner } from '@/components/product/AppDownloadBanner';
 import { ProductImage } from '@/components/product/ProductImage';
 import { ProductInfo } from '@/components/product/ProductInfo';
-import { ConcernTags } from '@/components/product/ConcernTags';
+import { DetailsTabs } from '@/components/product/DetailsTabs';
+import { ReviewsSection } from '@/components/product/ReviewsSection';
 import { CollapsibleSection } from '@/components/product/CollapsibleSection';
 import { RelatedProducts } from '@/components/product/RelatedProducts';
+import { MoreProductsFromBrand } from '@/components/product/MoreProductsFromBrand';
 
 interface Props {
   params: { slug: string };
@@ -40,8 +41,8 @@ export default async function ProductPage({ params }: Props) {
   const product = await getProduct(params.slug);
   if (!product) notFound();
 
-  // Fetch related products (same category)
-  const relatedProducts = product.categories?.[0]
+  // Fetch more products from same brand/category
+  const brandProducts = product.categories?.[0]
     ? (await getProducts({
         category: product.categories[0].id.toString(),
         per_page: 8,
@@ -49,13 +50,26 @@ export default async function ProductPage({ params }: Props) {
       })).products.slice(0, 4)
     : [];
 
+  // Fetch recommended/related products (same category)
+  const relatedProducts = product.categories?.[0]
+    ? (await getProducts({
+        category: product.categories[0].id.toString(),
+        per_page: 8,
+        exclude: product.id.toString(),
+      })).products.slice(4, 8)
+    : [];
+
+  const brandName = product.categories?.[0]?.name || 'Emart';
+  const ingredients = product.attributes?.[0]?.options?.join(', ') || 'Water, Salicylic Acid, Natural Extracts, Glycerin, and more.';
+  const howToUse = product.short_description || '1. Wet face with lukewarm water\n2. Apply product to face\n3. Massage gently for 30 seconds\n4. Rinse thoroughly with water';
+
   return (
     <div className="min-h-screen bg-white">
       {/* MAIN CONTENT */}
       <div className="px-4 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           {/* BREADCRUMB */}
-          <div className="text-sm text-lumiere-text-secondary mb-6 flex items-center gap-2">
+          <div className="text-sm text-lumiere-text-secondary mb-8 flex items-center gap-2">
             <Link href="/" className="hover:text-lumiere-primary">Home</Link>
             <span>/</span>
             <Link href="/shop" className="hover:text-lumiere-primary">Shop</Link>
@@ -63,82 +77,74 @@ export default async function ProductPage({ params }: Props) {
             <span className="text-lumiere-text-primary">{product.name}</span>
           </div>
 
-          {/* APP DOWNLOAD BANNER - AS STRIP BELOW BREADCRUMB */}
-          <div className="mb-8">
-            <AppDownloadBanner />
-          </div>
-
-          {/* PRODUCT SECTION */}
+          {/* PRODUCT SECTION - 2 Column Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-12">
             {/* LEFT: PRODUCT IMAGE WITH GALLERY */}
             <div>
               <ProductImage images={product.images || []} productName={product.name} />
             </div>
 
-            {/* RIGHT: PRODUCT INFO */}
+            {/* RIGHT: PRODUCT INFO (includes Brand/Made In/Size, Title, Price, Description, Quantity, Buttons, Concern Tags, InfoBox, App Banner) */}
             <div>
               <ProductInfo product={product} />
             </div>
           </div>
 
-          {/* CONCERN TAGS */}
-          {product.tags && product.tags.length > 0 && (
-            <ConcernTags tags={product.tags} />
-          )}
-
-          {/* DESCRIPTION & COLLAPSIBLE SECTIONS */}
+          {/* DETAILS SECTION - Tabs (Description | Ingredients | How to use) */}
           <div className="py-12 border-t border-gray-200">
-            <div className="max-w-3xl">
-              {/* Main Description */}
-              {product.description && (
-                <div className="mb-8 pb-8 border-b border-gray-200">
-                  <h2 className="text-2xl font-serif font-bold text-lumiere-text-primary mb-4">
-                    Description
-                  </h2>
-                  <div
-                    className="text-lumiere-text-secondary prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{
-                      __html: product.description,
-                    }}
-                  />
-                </div>
-              )}
+            <div className="max-w-4xl">
+              <DetailsTabs
+                description={product.description || ''}
+                ingredients={ingredients}
+                howToUse={howToUse}
+              />
+            </div>
+          </div>
 
-              {/* Collapsible Sections */}
+          {/* REVIEWS SECTION */}
+          <div className="py-12 border-t border-gray-200">
+            <div className="max-w-4xl">
+              <ReviewsSection product={product} />
+            </div>
+          </div>
+
+          {/* FAQ SECTION - Collapsible */}
+          <div className="py-12 border-t border-gray-200">
+            <div className="max-w-4xl">
+              <h2 className="text-2xl font-bold text-lumiere-text-primary mb-6">
+                Frequently Asked Questions
+              </h2>
               <div className="space-y-0">
                 <CollapsibleSection
-                  title="INGREDIENTS"
-                  content={
-                    product.attributes?.[0]?.options?.join(', ') ||
-                    'Water, Salicylic Acid, Natural Extracts, Glycerin, and more.'
-                  }
+                  title="Is this product suitable for sensitive skin?"
+                  content="Yes, this product is formulated for all skin types, including sensitive skin. It has been dermatologically tested."
                 />
                 <CollapsibleSection
-                  title="HOW TO USE"
-                  content={
-                    product.short_description ||
-                    '1. Wet face with lukewarm water\n2. Apply product to face\n3. Massage gently for 30 seconds\n4. Rinse thoroughly with water'
-                  }
+                  title="When will I see results?"
+                  content="Results typically become visible within 2-4 weeks of regular use. For best results, use consistently as directed."
                 />
                 <CollapsibleSection
-                  title="FAQ"
-                  content={
-                    'Q: Is this product suitable for sensitive skin?\nA: Yes, this product is formulated for all skin types.\n\nQ: When will I see results?\nA: Results typically visible within 2-4 weeks of regular use.\n\nQ: Can I use this with other products?\nA: Yes, it works well in your skincare routine.'
-                  }
+                  title="Can I use this with other products?"
+                  content="Yes, this product works well in your skincare routine and can be combined with complementary products."
                 />
               </div>
             </div>
           </div>
 
-          {/* RELATED PRODUCTS */}
+          {/* MORE PRODUCTS FROM BRAND */}
+          {brandProducts.length > 0 && (
+            <MoreProductsFromBrand products={brandProducts} brandName={brandName} />
+          )}
+
+          {/* RECOMMENDED FOR YOU / RELATED PRODUCTS */}
           {relatedProducts.length > 0 && (
-            <div className="py-12">
-              <RelatedProducts products={relatedProducts} />
+            <div className="py-12 border-t border-gray-200">
+              <RelatedProducts products={relatedProducts} title="Recommended for You" />
             </div>
           )}
 
           {/* TRUST BADGES - FOOTER */}
-          <div className="bg-lumiere-text-primary text-white rounded-lg p-8 text-center">
+          <div className="mt-12 bg-lumiere-text-primary text-white rounded-lg p-8 text-center">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
                 <p className="text-2xl mb-2">✅</p>

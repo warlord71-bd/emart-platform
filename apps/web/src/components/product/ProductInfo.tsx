@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import type { WooProduct } from '@/lib/woocommerce';
 import { getDiscountPercent, formatPrice } from '@/lib/woocommerce';
+import { AppDownloadBanner } from './AppDownloadBanner';
 
 interface ProductInfoProps {
   product: WooProduct;
@@ -21,74 +21,63 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     setTimeout(() => setIsAdded(false), 2000);
   };
 
-  // Extract brand name from categories or attributes
   const brandName = product.categories?.[0]?.name || 'Emart';
+  const categoryName = product.categories?.[0]?.name || 'Products';
+  const madeIn = 'South Korea';
+  const size = product.short_description || 'Standard Size';
+  const soldQty = Math.floor(Math.random() * 100) + 50;
 
   return (
     <div className="space-y-6">
-      {/* NEW Badge */}
-      {product.featured && (
-        <div className="flex gap-2">
-          <span className="inline-block bg-black text-white text-xs font-semibold px-3 py-1 rounded">
-            NEW
-          </span>
+      {/* Brand / Made In / Size - With Icons */}
+      <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+        <div className="flex-1">
+          <p className="text-2xl">🏢</p>
+          <p className="text-xs text-lumiere-text-secondary mt-1">BRAND</p>
+          <p className="font-semibold text-lumiere-text-primary">{brandName}</p>
         </div>
-      )}
-
-      {/* Brand & Product Info */}
-      <div className="border-b pb-4">
-        <p className="text-sm text-lumiere-text-secondary mb-1">Brand</p>
-        <p className="font-semibold text-lumiere-text-primary">{brandName}</p>
-      </div>
-
-      {/* Made in & Size */}
-      <div className="grid grid-cols-2 gap-4 pb-4 border-b">
-        <div>
-          <p className="text-xs text-lumiere-text-secondary mb-1">MADE IN</p>
-          <p className="font-medium text-sm text-lumiere-text-primary">South Korea</p>
+        <div className="flex-1">
+          <p className="text-2xl">📍</p>
+          <p className="text-xs text-lumiere-text-secondary mt-1">MADE IN</p>
+          <p className="font-semibold text-lumiere-text-primary">{madeIn}</p>
         </div>
-        <div>
-          <p className="text-xs text-lumiere-text-secondary mb-1">SIZE</p>
-          <p className="font-medium text-sm text-lumiere-text-primary">
-            {product.short_description || '150ml'}
-          </p>
+        <div className="flex-1">
+          <p className="text-2xl">📦</p>
+          <p className="text-xs text-lumiere-text-secondary mt-1">SIZE</p>
+          <p className="font-semibold text-lumiere-text-primary">{size}</p>
         </div>
       </div>
 
-      {/* Product Title */}
+      {/* Product Title - H1 */}
       <h1 className="text-2xl md:text-3xl font-serif font-bold text-lumiere-text-primary">
         {product.name}
       </h1>
 
       {/* Rating & Stock */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         {product.average_rating && (
           <div className="flex items-center gap-2">
-            <span className="text-lg">
+            <span className="text-base">
               {'⭐'.repeat(Math.round(parseFloat(product.average_rating)))}
             </span>
             <span className="text-sm text-lumiere-text-secondary">
-              ({product.rating_count} reviews)
+              {product.average_rating} ({product.rating_count} Reviews)
             </span>
           </div>
         )}
-
-        {/* Stock Status */}
-        <div>
-          {product.stock_status === 'instock' ? (
-            <div className="inline-block bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded">
-              ✓ PRODUCT IN STOCK
-            </div>
-          ) : (
-            <div className="inline-block bg-red-100 text-red-700 text-xs font-semibold px-3 py-1 rounded">
-              OUT OF STOCK
-            </div>
-          )}
-        </div>
+        {product.stock_status === 'instock' ? (
+          <div className="inline-block w-fit bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded">
+            ✓ PRODUCT IN STOCK
+          </div>
+        ) : (
+          <div className="inline-block w-fit bg-red-100 text-red-700 text-xs font-semibold px-3 py-1 rounded">
+            OUT OF STOCK
+          </div>
+        )}
       </div>
 
-      {/* Price Section */}
-      <div className="space-y-2 py-4 border-y-2 border-gray-200">
+      {/* Price Box - Pink Border */}
+      <div className="border-2 border-lumiere-primary rounded-lg p-4 space-y-2">
         {isOnSale ? (
           <>
             <div className="flex items-baseline gap-3">
@@ -100,7 +89,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
               </span>
             </div>
             <div className="inline-block bg-lumiere-primary text-white text-xs font-semibold px-2 py-1 rounded">
-              SAVE {discountPercent}%
+              Save {discountPercent}%
             </div>
           </>
         ) : (
@@ -110,61 +99,96 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         )}
       </div>
 
-      {/* Quantity & Add to Cart */}
-      <div className="space-y-3">
-        <div className="flex items-center gap-4">
-          <span className="text-sm font-medium">Qty:</span>
-          <div className="flex items-center border border-gray-300 rounded-lg">
-            <button
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-            >
-              −
-            </button>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-              className="w-12 text-center border-0 focus:ring-0"
-            />
-            <button
-              onClick={() => setQuantity(quantity + 1)}
-              className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-            >
-              +
-            </button>
+      {/* Short Description with See More */}
+      {product.description && (
+        <div className="space-y-2">
+          <div className="text-sm text-lumiere-text-secondary">
+            <ul className="space-y-1">
+              {product.description.split('\n').slice(0, 2).map((line, idx) => (
+                <li key={idx} className="flex gap-2">
+                  <span>•</span>
+                  <span>{line.replace(/<[^>]*>/g, '').substring(0, 80)}...</span>
+                </li>
+              ))}
+            </ul>
           </div>
+          <button className="text-lumiere-primary hover:underline text-sm font-medium">
+            See more →
+          </button>
         </div>
+      )}
 
-        {/* Add to Cart Button */}
+      {/* Quantity Selector */}
+      <div className="flex items-center gap-4">
+        <span className="text-sm font-medium">Qty:</span>
+        <div className="flex items-center border border-gray-300 rounded-lg">
+          <button
+            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+            className="px-3 py-2 text-gray-600 hover:bg-gray-100"
+          >
+            −
+          </button>
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+            className="w-12 text-center border-0 focus:ring-0"
+          />
+          <button
+            onClick={() => setQuantity(quantity + 1)}
+            className="px-3 py-2 text-gray-600 hover:bg-gray-100"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      {/* Buttons - Side by side, 48px+ height */}
+      <div className="grid grid-cols-2 gap-3">
         <button
           onClick={handleAddToCart}
-          className="w-full bg-lumiere-primary hover:bg-lumiere-primary-hover text-white font-semibold py-3 rounded-lg transition-all duration-300"
+          className="bg-lumiere-text-primary hover:bg-gray-800 text-white font-semibold py-3 rounded-lg transition-all duration-300 text-sm md:text-base"
         >
-          {isAdded ? '✓ Added to Cart' : 'ADD TO CART'}
+          {isAdded ? '✓ Added' : 'Add to Cart'}
         </button>
+        <button className="border-2 border-lumiere-text-primary text-lumiere-text-primary hover:bg-lumiere-text-primary hover:text-white font-semibold py-3 rounded-lg transition-all duration-300 text-sm md:text-base">
+          Buy Now
+        </button>
+      </div>
 
-        {/* Wishlist & Share */}
-        <div className="flex gap-4 justify-center">
-          <button className="flex items-center gap-2 text-lumiere-primary hover:text-lumiere-primary-hover font-medium">
-            ♡ Add to Wishlist
-          </button>
-          <span className="text-gray-300">|</span>
-          <button className="flex items-center gap-2 text-lumiere-primary hover:text-lumiere-primary-hover font-medium">
-            📤 Share
-          </button>
+      {/* Concern Tags */}
+      {product.tags && product.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {product.tags.slice(0, 4).map((tag) => (
+            <span key={tag.id} className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+              ✓ {tag.name}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Info Box - 2x2 Grid */}
+      <div className="bg-blue-50 rounded-lg p-4 grid grid-cols-2 gap-4">
+        <div>
+          <p className="text-xs text-blue-600 font-semibold">SKU Code</p>
+          <p className="text-sm text-blue-900 font-medium">SKU-{product.id}</p>
+        </div>
+        <div>
+          <p className="text-xs text-blue-600 font-semibold">Stock</p>
+          <p className="text-sm text-blue-900 font-medium">{product.stock_quantity || 6} Pcs Available</p>
+        </div>
+        <div>
+          <p className="text-xs text-blue-600 font-semibold">Estimate Delivery</p>
+          <p className="text-sm text-blue-900 font-medium">Within 1-3 Days</p>
+        </div>
+        <div>
+          <p className="text-xs text-blue-600 font-semibold">Category</p>
+          <p className="text-sm text-blue-900 font-medium">{categoryName}</p>
         </div>
       </div>
 
-      {/* Delivery Info */}
-      <div className="bg-blue-50 rounded-lg p-4 space-y-2">
-        <p className="text-sm font-semibold text-blue-900">📍 Delivery Information</p>
-        <div className="text-sm text-blue-800 space-y-1">
-          <p>✓ Dhaka: Next Day Delivery</p>
-          <p>✓ Nationwide: 2-5 Days</p>
-          <p>✓ COD Available</p>
-        </div>
-      </div>
+      {/* App Download Banner */}
+      <AppDownloadBanner />
     </div>
   );
 };
