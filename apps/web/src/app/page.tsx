@@ -169,9 +169,14 @@ export default async function HomePage() {
       {/* CUSTOMER TESTIMONIALS */}
       <section className="py-8 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-lumiere-text-primary mb-8">
-            ⭐ What Our Customers Say
-          </h2>
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-amber-400 rounded-lg text-xl font-bold text-white">
+              💬
+            </div>
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-lumiere-text-primary">
+              What Our Customers Say
+            </h2>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
@@ -207,9 +212,14 @@ export default async function HomePage() {
       {/* ── WHY CHOOSE EMART ── */}
       <section className="py-8 px-4 bg-lumiere-text-primary text-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold mb-8">
-            Why Choose Emart?
-          </h2>
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-green-400 rounded-lg text-xl font-bold text-white">
+              ✨
+            </div>
+            <h2 className="text-2xl md:text-3xl font-serif font-bold">
+              Why Choose Emart?
+            </h2>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               {

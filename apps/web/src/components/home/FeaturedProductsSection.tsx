@@ -43,16 +43,21 @@ export const FeaturedProductsSection: React.FC<FeaturedProductsSectionProps> = (
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-8 md:mb-10">
-          <div>
-            <h2 className={`text-3xl md:text-4xl font-serif font-bold ${style.headerColor}`}>
-              {variant === 'sale' && '🔥 '}
-              {title}
-            </h2>
-            {subtitle && (
-              <p className="text-lumiere-text-secondary text-sm md:text-base mt-1">
-                {subtitle}
-              </p>
-            )}
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-pink-300 rounded-lg text-xl font-bold text-white">
+              ⭐
+            </div>
+            <div>
+              <h2 className={`text-3xl md:text-4xl font-serif font-bold ${style.headerColor}`}>
+                {variant === 'sale' && '🔥 '}
+                {title}
+              </h2>
+              {subtitle && (
+                <p className="text-lumiere-text-secondary text-sm md:text-base mt-1">
+                  {subtitle}
+                </p>
+              )}
+            </div>
           </div>
           <Link
             href={
