@@ -2,6 +2,7 @@
 // src/app/search/page.tsx
 // ═══════════════════════════════════════════
 import { searchProducts } from '@/lib/woocommerce';
+import { buildUrl } from '@/lib/url-utils';
 import ProductCard from '@/components/product/ProductCard';
 import type { Metadata } from 'next';
 
@@ -53,7 +54,7 @@ export default async function SearchPage({ searchParams }: Props) {
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                 <a
                   key={p}
-                  href={`/search?q=${encodeURIComponent(query)}&page=${p}`}
+                  href={buildUrl('/search', { q: query, page: p })}
                   className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-semibold border
                               ${p === page ? 'bg-[#e8197a] text-white border-[#e8197a]' : 'border-gray-200 hover:border-[#e8197a]'}`}
                 >

@@ -1,4 +1,5 @@
 import { getProducts, getCategories } from '@/lib/woocommerce';
+import { buildUrl } from '@/lib/url-utils';
 import ProductCard from '@/components/product/ProductCard';
 import ProductFilters from '@/components/product/ProductFilters';
 import type { Metadata } from 'next';
@@ -65,7 +66,7 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
                   {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => i + 1).map((p) => (
                     <a
                       key={p}
-                      href={`/new-arrivals?page=${p}${searchParams.category ? `&category=${searchParams.category}` : ''}`}
+                      href={buildUrl('/new-arrivals', { page: p, category: searchParams.category })}
                       className={`w-10 h-10 flex items-center justify-center rounded-lg
                                   text-sm font-semibold border transition-colors
                                   ${p === page
