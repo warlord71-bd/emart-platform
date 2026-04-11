@@ -7,47 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ShoppingCart, Search, User, Menu, X, Heart, ChevronDown } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
-
-const CATEGORIES = [
-  {
-    name: 'SKINCARE ESSENTIALS',
-    subcategories: [
-      { label: 'Face Cleansers', slug: 'face-care' },
-      { label: 'Moisturizer & Night Cream', slug: 'moisturizer' },
-      { label: 'Serums, Ampoules & Essences', slug: 'serum-toner' },
-      { label: 'Sheet Masks', slug: 'face-care' },
-      { label: 'Sunscreen & Sun Care', slug: 'sunscreen' },
-      { label: 'Toners & Mists', slug: 'serum-toner' },
-      { label: 'Eye Care', slug: 'face-care' },
-    ],
-  },
-  {
-    name: 'SHOP BY CONCERN',
-    subcategories: [
-      { label: 'Acne & Breakouts', slug: 'concern/acne' },
-      { label: 'Dry & Sensitive', slug: 'concern/dryness' },
-      { label: 'Anti-Aging', slug: 'concern/antiaging' },
-      { label: 'Dark Spots & Brightening', slug: 'concern/brightening' },
-      { label: 'Sensitivity', slug: 'concern/sensitivity' },
-    ],
-  },
-  {
-    name: 'HAIR & PERSONAL CARE',
-    subcategories: [
-      { label: 'Hair Care', slug: 'hair-care' },
-      { label: 'Body Care', slug: 'body-care' },
-      { label: 'Personal Care', slug: 'body-care' },
-    ],
-  },
-  {
-    name: 'MAKEUP & COSMETICS',
-    subcategories: [
-      { label: 'Makeup', slug: 'makeup' },
-      { label: 'Lipsticks', slug: 'makeup' },
-      { label: 'Eye Makeup', slug: 'makeup' },
-    ],
-  },
-];
+import type { WooCategory } from '@/lib/woocommerce';
 
 export default function Header() {
   const router = useRouter();
@@ -55,6 +15,8 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [categories, setCategories] = useState<WooCategory[]>([]);
+  const [loading, setLoading] = useState(true);
   const totalItems = useCartStore((s) => s.totalItems());
   const toggleCart = useCartStore((s) => s.toggleCart);
 
@@ -62,6 +24,24 @@ export default function Header() {
     const handler = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handler);
     return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  // Fetch categories from WooCommerce
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories');
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
   }, []);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -178,9 +158,9 @@ export default function Header() {
             </div>
           </div>
 
-          {/* ── Desktop Navigation (Left Sidebar Style) ── */}
+          {/* ── Desktop Navigation (Category Links) ── */}
           <nav className="hidden lg:block border-t border-gray-50 py-2">
-            <div className="flex gap-6">
+            <div className="flex gap-2 flex-wrap">
               {/* SHOP ALL - Main Menu Item */}
               <Link
                 href="/shop"
@@ -190,32 +170,19 @@ export default function Header() {
                 🛍️ SHOP ALL
               </Link>
 
-              {CATEGORIES.map((category) => (
-                <div key={category.name} className="relative group">
-                  <button
-                    className="flex items-center gap-2 py-2 px-3 text-sm font-medium text-gray-700
-                             hover:text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors"
+              {/* Dynamic Categories from WooCommerce */}
+              {!loading && categories.length > 0 ? (
+                categories.map((category) => (
+                  <Link
+                    key={category.id}
+                    href={`/shop?category=${category.slug}`}
+                    className="py-2 px-3 text-sm font-medium text-gray-700 hover:text-[#e8197a]
+                             hover:bg-gray-50 rounded-lg transition-colors"
                   >
                     {category.name}
-                    <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />
-                  </button>
-
-                  {/* Desktop Dropdown */}
-                  <div className="hidden group-hover:block absolute left-0 top-full bg-white border border-gray-200
-                              rounded-lg shadow-lg py-2 min-w-56 z-50 mt-1">
-                    {category.subcategories.map((sub) => (
-                      <Link
-                        key={sub.slug}
-                        href={`/shop?category=${sub.slug}`}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50
-                                 hover:text-[#e8197a] transition-colors"
-                      >
-                        {sub.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                  </Link>
+                ))
+              ) : null}
 
               {/* Top Navigation Links */}
               <Link href="/sale" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg">
@@ -242,40 +209,20 @@ export default function Header() {
                 🛍️ SHOP ALL
               </Link>
 
-              {CATEGORIES.map((category) => (
-                <div key={category.name}>
-                  <button
-                    onClick={() => setExpandedCategory(expandedCategory === category.name ? null : category.name)}
-                    className="w-full flex items-center justify-between py-3 px-4 text-sm font-medium
-                             text-gray-700 hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg transition-colors"
-                  >
-                    {category.name}
-                    <ChevronDown
-                      size={16}
-                      className={`transition-transform ${
-                        expandedCategory === category.name ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-
-                  {/* Expanded Subcategories */}
-                  {expandedCategory === category.name && (
-                    <div className="bg-gray-50 rounded-lg my-1">
-                      {category.subcategories.map((sub) => (
-                        <Link
-                          key={sub.slug}
-                          href={`/shop?category=${sub.slug}`}
-                          onClick={() => setMobileOpen(false)}
-                          className="block py-2 px-8 text-sm text-gray-600 hover:text-[#e8197a]
-                                   border-l-2 border-transparent hover:border-[#e8197a] transition-colors"
-                        >
-                          {sub.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+              {/* Dynamic Categories from WooCommerce - Mobile */}
+              {!loading && categories.length > 0
+                ? categories.map((category) => (
+                    <Link
+                      key={category.id}
+                      href={`/shop?category=${category.slug}`}
+                      onClick={() => setMobileOpen(false)}
+                      className="py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0]
+                               hover:text-[#e8197a] rounded-lg transition-colors"
+                    >
+                      {category.name}
+                    </Link>
+                  ))
+                : null}
 
               {/* Mobile Top Links */}
               <Link
