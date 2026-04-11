@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct } from '@/lib/woocommerce';
 
@@ -21,18 +21,8 @@ export const ShopByConcern: React.FC<ShopByConcernProps> = ({
   title = 'Shop by Concern',
 }) => {
   const [selectedConcern, setSelectedConcern] = useState(concerns[0]?.slug || '');
-  const carouselRef = useRef<HTMLDivElement>(null);
 
   const currentConcern = concerns.find(c => c.slug === selectedConcern);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({
-        left: direction === 'left' ? -300 : 300,
-        behavior: 'smooth',
-      });
-    }
-  };
 
   return (
     <section className="bg-white py-12 md:py-16 px-4">
@@ -58,34 +48,26 @@ export const ShopByConcern: React.FC<ShopByConcernProps> = ({
           ))}
         </div>
 
-        {/* Product Carousel */}
+        {/* Product Grid - Removed carousel, using responsive grid */}
         {currentConcern && currentConcern.products.length > 0 ? (
-          <div className="relative">
-            <div
-              ref={carouselRef}
-              className="flex gap-4 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory"
-            >
-              {currentConcern.products.map(product => (
-                <div key={product.id} className="flex-shrink-0 w-48 md:w-56 snap-start">
+          <div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {currentConcern.products.slice(0, 8).map(product => (
+                <div key={product.id}>
                   <ProductCard product={product} />
                 </div>
               ))}
             </div>
-            {currentConcern.products.length > 5 && (
-              <>
-                <button
-                  onClick={() => scroll('left')}
-                  className="absolute left-0 top-1/3 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 z-10"
+            {currentConcern.products.length > 8 && (
+              <div className="text-center mt-6">
+                <a
+                  href={`/search?q=${currentConcern.slug}`}
+                  className="inline-block px-6 py-2 bg-lumiere-primary text-white font-semibold rounded-lg
+                           hover:bg-lumiere-primary-hover transition-colors"
                 >
-                  ←
-                </button>
-                <button
-                  onClick={() => scroll('right')}
-                  className="absolute right-0 top-1/3 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 z-10"
-                >
-                  →
-                </button>
-              </>
+                  View All {currentConcern.name} →
+                </a>
+              </div>
             )}
           </div>
         ) : (
