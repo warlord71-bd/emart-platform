@@ -4,6 +4,22 @@ import { useState } from 'react';
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct, WooCategory } from '@/lib/woocommerce';
 
+// Helper to decode HTML entities
+function decodeHtmlEntities(text: string): string {
+  if (typeof document !== 'undefined') {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = text;
+    return textarea.value;
+  }
+  // Fallback for server-side
+  return text
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
 interface CategoryWithProducts extends WooCategory {
   products: WooProduct[];
 }
@@ -33,10 +49,14 @@ export const CategoriesShowcaseInteractive: React.FC<CategoriesShowcaseInteracti
   // Filter out Korean Beauty categories and map display names
   const filteredCategories = categories
     .filter(cat => !['Korean Beauty', 'K-Beauty & J-Beauty'].includes(cat.name))
-    .map(cat => ({
-      ...cat,
-      displayName: CATEGORY_NAME_MAP[cat.name] || cat.name,
-    }))
+    .map(cat => {
+      const decodedName = decodeHtmlEntities(cat.name);
+      return {
+        ...cat,
+        name: decodedName, // Update the name to be decoded
+        displayName: CATEGORY_NAME_MAP[decodedName] || CATEGORY_NAME_MAP[cat.name] || decodedName,
+      };
+    })
     .filter(cat => cat.displayName); // Remove empty display names
 
   const visibleCategories = isExpanded ? filteredCategories : filteredCategories.slice(0, 6);
@@ -50,7 +70,6 @@ export const CategoriesShowcaseInteractive: React.FC<CategoriesShowcaseInteracti
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-lumiere-text-primary mb-4">
             {title}
           </h2>
-          <p className="text-gray-500 text-sm">Best Sellers & Top Rated Products</p>
         </div>
 
         {/* Category Tabs - Smaller buttons to fit more */}

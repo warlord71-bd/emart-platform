@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct } from '@/lib/woocommerce';
 
@@ -30,18 +30,8 @@ export const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
   ];
 
   const [selectedTab, setSelectedTab] = useState('best-selling');
-  const carouselRef = useRef<HTMLDivElement>(null);
 
   const currentTab = tabs.find(t => t.id === selectedTab);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({
-        left: direction === 'left' ? -300 : 300,
-        behavior: 'smooth',
-      });
-    }
-  };
 
   return (
     <section className="bg-white py-12 md:py-16 px-4">
@@ -67,34 +57,26 @@ export const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
           ))}
         </div>
 
-        {/* Product Carousel */}
+        {/* Product Grid - Removed carousel, using responsive grid */}
         {currentTab && currentTab.products.length > 0 ? (
-          <div className="relative">
-            <div
-              ref={carouselRef}
-              className="flex gap-4 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory"
-            >
-              {currentTab.products.map(product => (
-                <div key={product.id} className="flex-shrink-0 w-48 md:w-56 snap-start">
+          <div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {currentTab.products.slice(0, 8).map(product => (
+                <div key={product.id}>
                   <ProductCard product={product} />
                 </div>
               ))}
             </div>
-            {currentTab.products.length > 5 && (
-              <>
-                <button
-                  onClick={() => scroll('left')}
-                  className="absolute left-0 top-1/3 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 z-10"
+            {currentTab.products.length > 8 && (
+              <div className="text-center mt-6">
+                <a
+                  href={`/sale`}
+                  className="inline-block px-6 py-2 bg-lumiere-primary text-white font-semibold rounded-lg
+                           hover:bg-lumiere-primary-hover transition-colors"
                 >
-                  ←
-                </button>
-                <button
-                  onClick={() => scroll('right')}
-                  className="absolute right-0 top-1/3 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 z-10"
-                >
-                  →
-                </button>
-              </>
+                  View All {currentTab && currentTab.label} →
+                </a>
+              </div>
             )}
           </div>
         ) : (
