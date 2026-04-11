@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { CheckCircle2 } from 'lucide-react';
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct, WooCategory } from '@/lib/woocommerce';
 
@@ -67,8 +68,8 @@ export const CategoriesShowcaseInteractive: React.FC<CategoriesShowcaseInteracti
       <div className="max-w-6xl mx-auto">
         {/* Section Header - With Decorative Element */}
         <div className="mb-8 flex items-center gap-4">
-          <div className="hidden md:flex items-center justify-center w-12 h-12 bg-yellow-400 rounded-lg text-xl font-bold text-white">
-            ✓
+          <div className="hidden md:flex items-center justify-center w-12 h-12 bg-amber-500 rounded-lg">
+            <CheckCircle2 size={24} className="text-white fill-white" />
           </div>
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-lumiere-text-primary">
             {title}

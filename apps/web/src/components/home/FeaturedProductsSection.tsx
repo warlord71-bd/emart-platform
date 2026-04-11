@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Star } from 'lucide-react';
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct } from '@/lib/woocommerce';
 
@@ -44,8 +45,8 @@ export const FeaturedProductsSection: React.FC<FeaturedProductsSectionProps> = (
         {/* Section Header */}
         <div className="flex items-center justify-between mb-8 md:mb-10">
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-pink-300 rounded-lg text-xl font-bold text-white">
-              ⭐
+            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-rose-500 rounded-lg">
+              <Star size={24} className="text-white fill-white" />
             </div>
             <div>
               <h2 className={`text-3xl md:text-4xl font-serif font-bold ${style.headerColor}`}>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Flame } from 'lucide-react';
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct } from '@/lib/woocommerce';
 
@@ -37,8 +38,8 @@ export const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
     <section className="bg-white py-12 md:py-16 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
-          <div className="hidden md:flex items-center justify-center w-12 h-12 bg-red-400 rounded-lg text-xl font-bold text-white">
-            🔥
+          <div className="hidden md:flex items-center justify-center w-12 h-12 bg-orange-500 rounded-lg">
+            <Flame size={24} className="text-white fill-white" />
           </div>
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-lumiere-text-primary">
             {title}

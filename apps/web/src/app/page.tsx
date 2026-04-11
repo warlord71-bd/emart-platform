@@ -1,5 +1,6 @@
 // src/app/page.tsx
 import Link from 'next/link';
+import { MessageSquare, Sparkles } from 'lucide-react';
 import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories, getBestSellingProducts, getNewArrivals, getProducts } from '@/lib/woocommerce';
 import { HeroBanner } from '@/components/home/HeroBanner';
 import { CategoriesShowcaseInteractive } from '@/components/home/CategoriesShowcaseInteractive';
@@ -170,8 +171,8 @@ export default async function HomePage() {
       <section className="py-8 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-amber-400 rounded-lg text-xl font-bold text-white">
-              💬
+            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-amber-500 rounded-lg">
+              <MessageSquare size={24} className="text-white fill-white" />
             </div>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-lumiere-text-primary">
               What Our Customers Say
@@ -213,8 +214,8 @@ export default async function HomePage() {
       <section className="py-8 px-4 bg-lumiere-text-primary text-white">
         <div className="max-w-6xl mx-auto text-center">
           <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-green-400 rounded-lg text-xl font-bold text-white">
-              ✨
+            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-emerald-500 rounded-lg">
+              <Sparkles size={24} className="text-white fill-white" />
             </div>
             <h2 className="text-2xl md:text-3xl font-serif font-bold">
               Why Choose Emart?
