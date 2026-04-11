@@ -53,11 +53,24 @@ export const CategoriesShowcaseInteractive: React.FC<CategoriesShowcaseInteracti
   };
 
   return (
-    <section className="bg-white py-12 md:py-16 px-4">
+    <section className="bg-white py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-serif font-bold text-lumiere-text-primary mb-8">
-          {title}
-        </h2>
+        {/* Section Header - Curved Yellow Banner Style */}
+        <div className="mb-8">
+          <div className="bg-gradient-to-r from-yellow-300 to-yellow-200 rounded-full px-6 py-3 flex items-center justify-between shadow-sm">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-3">
+              <span className="text-2xl">✨</span>
+              {title}
+            </h2>
+            <a
+              href="/shop"
+              className="text-gray-800 hover:text-gray-900 font-semibold text-sm md:text-base flex items-center gap-1 whitespace-nowrap"
+            >
+              See All
+              <span>→</span>
+            </a>
+          </div>
+        </div>
 
         {/* Category Tabs - Smaller buttons to fit more */}
         <div className="flex flex-wrap gap-2 mb-8">

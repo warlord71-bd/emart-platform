@@ -181,6 +181,15 @@ export default function Header() {
           {/* ── Desktop Navigation (Left Sidebar Style) ── */}
           <nav className="hidden lg:block border-t border-gray-50 py-2">
             <div className="flex gap-6">
+              {/* SHOP ALL - Main Menu Item */}
+              <Link
+                href="/shop"
+                className="flex items-center gap-2 py-2 px-3 text-sm font-semibold text-white
+                         bg-[#e8197a] hover:bg-[#c01264] rounded-lg transition-colors"
+              >
+                🛍️ SHOP ALL
+              </Link>
+
               {CATEGORIES.map((category) => (
                 <div key={category.name} className="relative group">
                   <button
@@ -223,6 +232,16 @@ export default function Header() {
         {mobileOpen && (
           <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4 pb-20">
             <nav className="flex flex-col gap-1">
+              {/* SHOP ALL - Mobile */}
+              <Link
+                href="/shop"
+                onClick={() => setMobileOpen(false)}
+                className="py-3 px-4 text-sm font-semibold text-white bg-[#e8197a]
+                         hover:bg-[#c01264] rounded-lg transition-colors text-center"
+              >
+                🛍️ SHOP ALL
+              </Link>
+
               {CATEGORIES.map((category) => (
                 <div key={category.name}>
                   <button

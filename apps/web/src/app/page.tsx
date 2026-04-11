@@ -8,6 +8,7 @@ import { FlashSaleSection } from '@/components/home/FlashSaleSection';
 import { ShopByConcern } from '@/components/home/ShopByConcern';
 import { BrandsShowcaseInteractive } from '@/components/home/BrandsShowcaseInteractive';
 import { BrandsCarousel } from '@/components/product/BrandsCarousel';
+import { BestSellersByCategory } from '@/components/home/BestSellersByCategory';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -108,6 +109,14 @@ export default async function HomePage() {
           variant="featured"
         />
       )}
+
+      {/* ── BEST SELLERS BY CATEGORY (WITH TABS) ── */}
+      <BestSellersByCategory
+        categories={categories.map((cat, index) => ({
+          ...cat,
+          products: categoryProducts[index] || [],
+        }))}
+      />
 
       {/* ── TOP PICKS (FLASH SALE) ── */}
       <FlashSaleSection
