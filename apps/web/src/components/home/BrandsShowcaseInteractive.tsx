@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct } from '@/lib/woocommerce';
 
@@ -21,18 +21,8 @@ export const BrandsShowcaseInteractive: React.FC<BrandsShowcaseInteractiveProps>
   title = 'Shop by Brands',
 }) => {
   const [selectedBrandId, setSelectedBrandId] = useState<number | null>(brands[0]?.id || null);
-  const carouselRef = useRef<HTMLDivElement>(null);
 
   const selectedBrand = brands.find(b => b.id === selectedBrandId);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({
-        left: direction === 'left' ? -300 : 300,
-        behavior: 'smooth',
-      });
-    }
-  };
 
   return (
     <section className="bg-white py-12 md:py-16 px-4">
@@ -58,34 +48,26 @@ export const BrandsShowcaseInteractive: React.FC<BrandsShowcaseInteractiveProps>
           ))}
         </div>
 
-        {/* Product Carousel */}
+        {/* Product Grid - Changed from carousel to grid layout */}
         {selectedBrand && selectedBrand.products && selectedBrand.products.length > 0 ? (
-          <div className="relative">
-            <div
-              ref={carouselRef}
-              className="flex gap-4 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory"
-            >
-              {selectedBrand.products.map((product) => (
-                <div key={product.id} className="flex-shrink-0 w-48 md:w-56 snap-start">
+          <div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {selectedBrand.products.slice(0, 10).map((product) => (
+                <div key={product.id}>
                   <ProductCard product={product} />
                 </div>
               ))}
             </div>
-            {selectedBrand.products.length > 5 && (
-              <>
-                <button
-                  onClick={() => scroll('left')}
-                  className="absolute left-0 top-1/3 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 z-10"
+            {selectedBrand.products.length > 10 && (
+              <div className="text-center mt-6">
+                <a
+                  href={`/shop?brand=${selectedBrand.slug}`}
+                  className="inline-block px-6 py-2 bg-lumiere-primary text-white font-semibold rounded-lg
+                           hover:bg-lumiere-primary-hover transition-colors"
                 >
-                  ←
-                </button>
-                <button
-                  onClick={() => scroll('right')}
-                  className="absolute right-0 top-1/3 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 z-10"
-                >
-                  →
-                </button>
-              </>
+                  View All {selectedBrand.name} →
+                </a>
+              </div>
             )}
           </div>
         ) : selectedBrand ? (
