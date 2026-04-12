@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Globe } from 'lucide-react';
 
 const ORIGINS = [
   { name: 'Korea', emoji: '🇰🇷', slug: 'korea' },
@@ -14,24 +15,25 @@ const ORIGINS = [
 
 export const OriginChips = () => {
   return (
-    <section className="py-6 px-4 bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50">
+    <section className="bg-white py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-6">
-          <h2 className="text-lg md:text-xl font-bold text-navy-950 mb-2">
+        {/* Section Header - Left-aligned with icon (matching CategoriesShowcaseInteractive) */}
+        <div className="mb-8 flex items-center gap-4">
+          <div className="hidden md:flex items-center justify-center w-12 h-12 bg-blue-500 rounded-lg">
+            <Globe size={24} className="text-white fill-white" />
+          </div>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-navy-950">
             Shop by Origin
           </h2>
-          <p className="text-sm text-gray-600">
-            Browse authentic beauty products from around the world
-          </p>
         </div>
 
-        {/* Origin Chips Grid */}
-        <div className="flex flex-wrap justify-center gap-3">
+        {/* Origin Chips Grid - Centered flex layout */}
+        <div className="flex flex-wrap justify-start gap-3">
           {ORIGINS.map((origin) => (
             <Link
               key={origin.slug}
               href={`/shop?origin=${encodeURIComponent(origin.slug)}`}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 hover:border-pink-400 hover:shadow-md rounded-full transition-all duration-200 group"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-200 hover:border-pink-400 hover:shadow-md rounded-full transition-all duration-200 group"
             >
               <span className="text-lg md:text-xl">{origin.emoji}</span>
               <span className="text-sm md:text-base font-semibold text-navy-950 group-hover:text-pink-500 transition-colors">
