@@ -73,6 +73,18 @@ const CAROUSEL_BRANDS = [
   { id: 8, name: 'DR.G', logo: 'https://via.placeholder.com/128x64?text=DR.G' },
 ];
 
+// Filter products to only include those with images
+function filterProductsWithImages(products: typeof getFeaturedProducts extends (...args: any[]) => Promise<infer T> ? T : never) {
+  return products.filter(p => p.images && p.images.length > 0);
+}
+
+// Fill empty section with best-selling fallback products
+function fillEmptySection(products: typeof getFeaturedProducts extends (...args: any[]) => Promise<infer T> ? T : never, fallback: typeof getFeaturedProducts extends (...args: any[]) => Promise<infer T> ? T : never, limit: number = 4) {
+  const filtered = filterProductsWithImages(products);
+  if (filtered.length > 0) return filtered.slice(0, limit);
+  return filterProductsWithImages(fallback).slice(0, limit);
+}
+
 export default async function HomePage() {
   const categories = await getCategories({ per_page: 8, hide_empty: true });
 
@@ -87,10 +99,22 @@ export default async function HomePage() {
     ...ORIGINS.map(origin => getProductsByOrigin(origin.slug, 4)),
   ]);
 
+  // Filter all main products to remove those without images
+  const filteredFeatured = filterProductsWithImages(featured);
+  const filteredOnSale = filterProductsWithImages(onSale);
+  const filteredBestSelling = filterProductsWithImages(bestSelling);
+  const filteredNewArrivals = filterProductsWithImages(newArrivals);
+
   const brandProducts = allProducts.slice(0, FEATURED_BRANDS.length);
   const categoryProducts = allProducts.slice(FEATURED_BRANDS.length, FEATURED_BRANDS.length + categories.length);
   const concernProducts = allProducts.slice(FEATURED_BRANDS.length + categories.length, FEATURED_BRANDS.length + categories.length + SKIN_CONCERNS.length);
   const originProducts = allProducts.slice(FEATURED_BRANDS.length + categories.length + SKIN_CONCERNS.length);
+
+  // Fill empty sections with best-selling products as fallback
+  const filledBrandProducts = brandProducts.map(products => fillEmptySection(products, filteredBestSelling, 4));
+  const filledCategoryProducts = categoryProducts.map(products => fillEmptySection(products, filteredBestSelling, 4));
+  const filledConcernProducts = concernProducts.map(products => fillEmptySection(products, filteredBestSelling, 4));
+  const filledOriginProducts = originProducts.map(products => fillEmptySection(products, filteredBestSelling, 4));
 
   return (
     <div className="bg-white">
@@ -101,7 +125,7 @@ export default async function HomePage() {
       <OriginShowcaseInteractive
         origins={ORIGINS.map((origin, index) => ({
           ...origin,
-          products: originProducts[index] || [],
+          products: filledOriginProducts[index] || [],
         }))}
         title="Shop by Origin"
       />
@@ -110,15 +134,15 @@ export default async function HomePage() {
       <CategoriesShowcaseInteractive
         categories={categories.map((cat, index) => ({
           ...cat,
-          products: categoryProducts[index] || [],
+          products: filledCategoryProducts[index] || [],
         }))}
         title="Shop by Category"
       />
 
       {/* ── FEATURED PRODUCTS ── */}
-      {featured.length > 0 && (
+      {filteredFeatured.length > 0 && (
         <FeaturedProductsSection
-          products={featured}
+          products={filteredFeatured}
           title="Featured Products"
           subtitle="Curated selection of bestsellers"
           variant="featured"
@@ -127,9 +151,9 @@ export default async function HomePage() {
 
       {/* ── TOP PICKS (FLASH SALE) ── */}
       <FlashSaleSection
-        bestSelling={bestSelling}
-        newArrivals={newArrivals}
-        onSale={onSale}
+        bestSelling={filteredBestSelling}
+        newArrivals={filteredNewArrivals}
+        onSale={filteredOnSale}
         title="Top Picks"
       />
 
@@ -137,7 +161,7 @@ export default async function HomePage() {
       <ShopByConcern
         concerns={SKIN_CONCERNS.map((concern, index) => ({
           ...concern,
-          products: concernProducts[index] || [],
+          products: filledConcernProducts[index] || [],
         }))}
         title="Shop by Concern"
       />
@@ -146,7 +170,7 @@ export default async function HomePage() {
       <BrandsShowcaseInteractive
         brands={FEATURED_BRANDS.map((brand, index) => ({
           ...brand,
-          products: brandProducts[index] || [],
+          products: filledBrandProducts[index] || [],
         }))}
         title="Shop by Brands"
       />
