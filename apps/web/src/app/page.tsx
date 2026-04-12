@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { MessageSquare, Sparkles } from 'lucide-react';
 import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories, getBestSellingProducts, getNewArrivals, getProducts } from '@/lib/woocommerce';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
-import { OriginChips } from '@/components/home/OriginChips';
 import { CategoriesShowcaseInteractive } from '@/components/home/CategoriesShowcaseInteractive';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
 import { FlashSaleSection } from '@/components/home/FlashSaleSection';
@@ -38,6 +37,16 @@ const SKIN_CONCERNS = [
   { name: 'Anti-Aging', slug: 'anti-aging', emoji: '✨' },
   { name: 'Dark Spots & Brightening', slug: 'dark-spots', emoji: '🌙' },
   { name: 'Sensitivity', slug: 'sensitivity', emoji: '🌿' },
+];
+
+const ORIGINS = [
+  { name: 'Korea', emoji: '🇰🇷', slug: 'korea' },
+  { name: 'Japan', emoji: '🇯🇵', slug: 'japan' },
+  { name: 'UK', emoji: '🇬🇧', slug: 'uk' },
+  { name: 'USA', emoji: '🇺🇸', slug: 'usa' },
+  { name: 'France', emoji: '🇫🇷', slug: 'france' },
+  { name: 'India', emoji: '🇮🇳', slug: 'india' },
+  { name: 'Bangladesh', emoji: '🇧🇩', slug: 'bangladesh' },
 ];
 
 const FEATURED_BRANDS = [
@@ -75,11 +84,13 @@ export default async function HomePage() {
     ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.name, 5)),
     ...categories.map(cat => getProductsByCategory(cat.id, 5)),
     ...SKIN_CONCERNS.map(concern => getProducts({ search: concern.slug, per_page: 8 }).then(r => r.products)),
+    ...ORIGINS.map(origin => getProducts({ search: origin.name, per_page: 5 }).then(r => r.products)),
   ]);
 
   const brandProducts = allProducts.slice(0, FEATURED_BRANDS.length);
   const categoryProducts = allProducts.slice(FEATURED_BRANDS.length, FEATURED_BRANDS.length + categories.length);
-  const concernProducts = allProducts.slice(FEATURED_BRANDS.length + categories.length);
+  const concernProducts = allProducts.slice(FEATURED_BRANDS.length + categories.length, FEATURED_BRANDS.length + categories.length + SKIN_CONCERNS.length);
+  const originProducts = allProducts.slice(FEATURED_BRANDS.length + categories.length + SKIN_CONCERNS.length);
 
   return (
     <div className="bg-white">
@@ -87,7 +98,13 @@ export default async function HomePage() {
       <HeroCarousel />
 
       {/* ── SHOP BY ORIGIN ── */}
-      <OriginChips />
+      <OriginShowcaseInteractive
+        origins={ORIGINS.map((origin, index) => ({
+          ...origin,
+          products: originProducts[index] || [],
+        }))}
+        title="Shop by Origin"
+      />
 
       {/* ── SHOP BY CATEGORY ── */}
       <CategoriesShowcaseInteractive
