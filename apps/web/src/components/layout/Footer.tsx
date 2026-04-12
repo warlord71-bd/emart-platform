@@ -22,47 +22,36 @@ const HELP_LINKS = [
 ];
 
 const SOCIALS = [
-  { label: 'Facebook', href: 'https://www.facebook.com/emartbd.official', color: '#1877f2', icon: 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z' },
-  { label: 'WhatsApp', href: 'https://wa.me/8801919797399', color: '#25d366', icon: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.57-.01-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z' },
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/emartbd.official',
+    color: '#1877f2',
+    emoji: '📘',
+  },
+  {
+    label: 'WhatsApp',
+    href: 'https://wa.me/8801919797399',
+    color: '#25d366',
+    emoji: '💬',
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/emartbd',
+    color: '#E4405F',
+    emoji: '📷',
+  },
 ];
 
 export default function Footer() {
+  const PAYMENT_METHODS = [
+    { name: 'bKash', emoji: '📱', color: 'text-pink-600' },
+    { name: 'Nagad', emoji: '💳', color: 'text-orange-600' },
+    { name: 'Visa', emoji: '💳', color: 'text-blue-600' },
+    { name: 'COD', emoji: '💵', color: 'text-green-600' },
+  ];
+
   return (
     <footer className="bg-white border-t border-gray-100">
-      {/* Trust Signals Strip */}
-      <div className="bg-gray-50 border-b border-gray-100 py-6 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          <div className="flex items-center gap-3">
-            <div className="text-2xl">✓</div>
-            <div>
-              <div className="text-xs font-bold text-gray-600 uppercase">100% Authentic</div>
-              <div className="text-xs text-gray-500">Direct import</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="text-2xl">🚚</div>
-            <div>
-              <div className="text-xs font-bold text-gray-600 uppercase">Free Delivery</div>
-              <div className="text-xs text-gray-500">৳1,499+</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="text-2xl">💵</div>
-            <div>
-              <div className="text-xs font-bold text-gray-600 uppercase">COD Available</div>
-              <div className="text-xs text-gray-500">Nationwide</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="text-2xl">↩️</div>
-            <div>
-              <div className="text-xs font-bold text-gray-600 uppercase">7-Day Returns</div>
-              <div className="text-xs text-gray-500">Unopened items</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -80,19 +69,18 @@ export default function Footer() {
               Bangladesh's #1 destination for authentic Korean & Japanese skincare.
               Every product 100% genuine.
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               {SOCIALS.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-white"
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg hover:scale-110 transition-transform"
                   style={{ background: s.color }}
+                  title={s.label}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-                    <path d={s.icon} />
-                  </svg>
+                  {s.emoji}
                 </a>
               ))}
             </div>
@@ -151,21 +139,33 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Payment Strip */}
-      <div className="border-t border-gray-100 bg-gray-50 py-4 px-4">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">We Accept:</span>
-            {['bKash', 'Nagad', 'Rocket', 'VISA', 'Mastercard', 'COD'].map((p) => (
-              <span key={p} className="text-xs font-bold border border-gray-300 rounded px-2 py-1 bg-white">
-                {p}
-              </span>
-            ))}
-          </div>
-          <div className="flex gap-3 text-xs text-gray-400">
-            <span>🚚 Free delivery ৳3,000+</span>
-            <span>⚡ Dhaka Next Day</span>
-            <span>🇧🇩 Nationwide</span>
+      {/* Payment Methods Strip */}
+      <div className="border-t border-gray-100 bg-white py-6 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            {/* Payment Methods */}
+            <div className="flex items-center gap-4">
+              <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">We Accept:</span>
+              <div className="flex flex-wrap gap-3">
+                {PAYMENT_METHODS.map((method) => (
+                  <div
+                    key={method.name}
+                    className="flex items-center justify-center w-14 h-10 border-2 border-gray-200 rounded-lg hover:border-[#e8197a] transition-colors bg-gray-50"
+                  >
+                    <div className={`text-lg font-bold ${method.color}`}>
+                      {method.emoji} {method.name === 'bKash' || method.name === 'Nagad' ? method.name.substring(0, 2) : method.emoji}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Delivery Info */}
+            <div className="flex gap-4 text-xs text-gray-500">
+              <span>🚚 Free ৳1,499+</span>
+              <span>⚡ Dhaka Next Day</span>
+              <span>🇧🇩 Nationwide</span>
+            </div>
           </div>
         </div>
       </div>
