@@ -43,6 +43,14 @@ export default function Navigation() {
               🛍️ SHOP ALL
             </Link>
 
+            {/* SKINCARE ESSENTIALS */}
+            <Link
+              href="/shop"
+              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors py-2 flex-shrink-0"
+            >
+              💧 SKINCARE ESSENTIALS
+            </Link>
+
             {/* SHOP BY CONCERN */}
             <Link
               href="/concerns"
@@ -54,12 +62,9 @@ export default function Navigation() {
             {/* ORIGINS */}
             <Link
               href="/origins"
-              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex items-center gap-0.5 flex-shrink-0"
+              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex items-center gap-1 flex-shrink-0"
             >
-              <span>🌍</span>
-              <span>
-                {origins.slice(0, 2).map((o) => o.code).join('')}
-              </span>
+              <span>🌍 ORIGINS</span>
             </Link>
 
             {/* BRANDS */}
@@ -128,6 +133,15 @@ export default function Navigation() {
                   🛍️ SHOP ALL
                 </Link>
 
+                {/* SKINCARE ESSENTIALS */}
+                <Link
+                  href="/shop"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors"
+                >
+                  💧 SKINCARE ESSENTIALS
+                </Link>
+
                 {/* Divider */}
                 <div className="border-t border-gray-200 my-2" />
 
@@ -146,7 +160,7 @@ export default function Navigation() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="block py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors"
                 >
-                  Origins {origins.slice(0, 2).map((o) => o.code).join(' ')}
+                  🌍 ORIGINS
                 </Link>
 
                 {/* BRANDS */}

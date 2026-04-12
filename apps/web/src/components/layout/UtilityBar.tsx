@@ -6,8 +6,18 @@ import Link from 'next/link';
  */
 export default function UtilityBar() {
   return (
-    <div className="sticky top-0 z-[100] bg-navy-950 text-white text-xs md:text-sm py-2.5 md:py-3 overflow-x-auto border-b border-navy-900 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-2 md:gap-4 whitespace-nowrap">
+    <>
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+        .marquee {
+          animation: marquee 20s linear infinite;
+        }
+      `}</style>
+      <div className="sticky top-0 z-[100] bg-navy-950 text-white text-xs md:text-sm py-2.5 md:py-3 overflow-hidden border-b border-navy-900 shadow-sm">
+        <div className="flex items-center gap-2 md:gap-4 whitespace-nowrap marquee">
         {/* Free Delivery */}
         <span className="flex items-center gap-1">
           <span>🚚</span>
@@ -46,7 +56,8 @@ export default function UtilityBar() {
           <span>📦</span>
           <span>Track Order</span>
         </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
