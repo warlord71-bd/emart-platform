@@ -1,6 +1,5 @@
 import { getProductById, getProducts } from '@/lib/woocommerce';
 import Link from 'next/link';
-import { AppDownloadBanner } from '@/components/product/AppDownloadBanner';
 import { ProductImage } from '@/components/product/ProductImage';
 import { ProductInfo } from '@/components/product/ProductInfo';
 import { ConcernTags } from '@/components/product/ConcernTags';
@@ -65,11 +64,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <Link href="/shop" className="hover:text-lumiere-primary">Shop</Link>
             <span>/</span>
             <span className="text-lumiere-text-primary">{product.name}</span>
-          </div>
-
-          {/* APP DOWNLOAD BANNER - AS STRIP BELOW BREADCRUMB */}
-          <div className="mb-8">
-            <AppDownloadBanner />
           </div>
 
           {/* PRODUCT SECTION */}

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { PaymentMethods } from './PaymentMethods';
 
 const SHOP_LINKS = [
   { label: 'All Products', href: '/shop' },
@@ -121,13 +122,9 @@ export default function Footer() {
       {/* Payment Strip */}
       <div className="border-t border-gray-100 bg-gray-50 py-4 px-4">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">We Accept:</span>
-            {['bKash', 'Nagad', 'Rocket', 'VISA', 'Mastercard', 'COD'].map((p) => (
-              <span key={p} className="text-xs font-bold border border-gray-300 rounded px-2 py-1 bg-white">
-                {p}
-              </span>
-            ))}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">We Accept:</span>
+            <PaymentMethods />
           </div>
           <div className="flex gap-3 text-xs text-gray-400">
             <span>🚚 Free delivery ৳3,000+</span>
