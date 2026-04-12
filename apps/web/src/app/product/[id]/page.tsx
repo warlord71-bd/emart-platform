@@ -106,7 +106,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <span className="text-lumiere-text-primary">{product.name}</span>
           </div>
 
-          {/* APP DOWNLOAD BANNER - AS STRIP BELOW BREADCRUMB */}
+          {/* APP DOWNLOAD BANNER - BELOW BREADCRUMB */}
           <div className="mb-8">
             <AppDownloadBanner />
           </div>
