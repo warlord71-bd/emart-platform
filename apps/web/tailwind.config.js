@@ -7,10 +7,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Brand colors
-        'navy-950': '#1a1a2e',
-        'navy-900': '#252540',
-        'gold-500': '#D4A248',
         // Legacy Emart colors (for backwards compatibility)
         'emart-pink': '#e8197a',
         'emart-dark': '#1a1a2e',

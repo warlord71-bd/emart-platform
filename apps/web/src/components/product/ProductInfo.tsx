@@ -21,32 +21,37 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     setTimeout(() => setIsAdded(false), 2000);
   };
 
-  // Extract attributes from product
-  const getAttributeValue = (attrName: string): string => {
-    const attr = product.attributes?.find((a) =>
-      a.name.toLowerCase().includes(attrName.toLowerCase())
-    );
-    return attr?.options?.[0] || '';
-  };
-
-  const brandName = getAttributeValue('brand') || product.categories?.[0]?.name || 'Emart';
-  const madeIn = getAttributeValue('made in') || getAttributeValue('country') || getAttributeValue('origin') || 'South Korea';
-  const size = getAttributeValue('size') || getAttributeValue('volume') || '75ml';
+  const brandName = product.categories?.[0]?.name || 'Emart';
   const categoryName = product.categories?.[0]?.name || 'Products';
+  const madeIn = 'South Korea';
+
+  // Extract size from product name (e.g., "Dr. Althea 147 Barrier Cream 15ml" → "15ml")
+  const extractSize = (name: string): string => {
+    const match = name.match(/(\d+\s*(?:ml|g|oz|l|kg))\s*$/i);
+    return match ? match[1].trim() : '75ml';
+  };
+  const size = extractSize(product.name);
+  const soldQty = Math.floor(Math.random() * 100) + 50;
 
   return (
-    <div className="space-y-4 md:space-y-6">
-      {/* 3 Compact Badges - Brand | Made In | Size */}
-      <div className="flex flex-wrap gap-2">
-        <span className="bg-pink-100 text-pink-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1">
-          🏷️ {brandName}
-        </span>
-        <span className="bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1">
-          📍 {madeIn}
-        </span>
-        <span className="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1">
-          📦 {size}
-        </span>
+    <div className="space-y-6">
+      {/* Brand / Made In / Size - With Icons */}
+      <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+        <div className="flex-1">
+          <p className="text-2xl">🏢</p>
+          <p className="text-xs text-lumiere-text-secondary mt-1">BRAND</p>
+          <p className="font-semibold text-lumiere-text-primary">{brandName}</p>
+        </div>
+        <div className="flex-1">
+          <p className="text-2xl">📍</p>
+          <p className="text-xs text-lumiere-text-secondary mt-1">MADE IN</p>
+          <p className="font-semibold text-lumiere-text-primary">{madeIn}</p>
+        </div>
+        <div className="flex-1">
+          <p className="text-2xl">📦</p>
+          <p className="text-xs text-lumiere-text-secondary mt-1">SIZE</p>
+          <p className="font-semibold text-lumiere-text-primary">{size}</p>
+        </div>
       </div>
 
       {/* Product Title - H1 */}
@@ -100,26 +105,22 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         )}
       </div>
 
-      {/* SEO Meta Description as Bullet Points */}
-      {(product.short_description || product.description) && (
-        <div className="space-y-2 bg-gray-50 p-4 rounded-lg">
-          <div className="text-sm text-gray-700">
-            <ul className="space-y-2">
-              {(product.short_description || product.description)
-                .split('\n')
-                .filter((line) => line.trim())
-                .slice(0, 3)
-                .map((line, idx) => {
-                  const cleanLine = line.replace(/<[^>]*>/g, '').trim();
-                  return cleanLine ? (
-                    <li key={idx} className="flex gap-2 items-start">
-                      <span className="text-lumiere-primary font-bold mt-0.5">•</span>
-                      <span>{cleanLine}</span>
-                    </li>
-                  ) : null;
-                })}
+      {/* Short Description with See More */}
+      {product.description && (
+        <div className="space-y-2">
+          <div className="text-sm text-lumiere-text-secondary">
+            <ul className="space-y-1">
+              {product.description.split('\n').slice(0, 2).map((line, idx) => (
+                <li key={idx} className="flex gap-2">
+                  <span>•</span>
+                  <span>{line.replace(/<[^>]*>/g, '').substring(0, 80)}...</span>
+                </li>
+              ))}
             </ul>
           </div>
+          <button className="text-lumiere-primary hover:underline text-sm font-medium">
+            See more →
+          </button>
         </div>
       )}
 
@@ -192,7 +193,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         </div>
       </div>
 
-      {/* App Download Banner - Below Info Box */}
+      {/* App Download Banner */}
       <AppDownloadBanner />
     </div>
   );
