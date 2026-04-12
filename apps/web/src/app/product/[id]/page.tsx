@@ -27,8 +27,8 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
 export const revalidate = 3600;
 
-// Generate product-specific FAQ based on product data
-function generateProductFAQ(product: any): string {
+// Generate product-specific FAQ items as array of questions and answers
+function generateProductFAQItems(product: any): Array<{ question: string; answer: string }> {
   const productName = product.name || 'product';
   const categories = product.categories?.map((c: any) => c.name.toLowerCase()) || [];
   const isSunscreen = categories.some((c: string) => c.includes('sunscreen') || c.includes('spf'));
@@ -38,52 +38,70 @@ function generateProductFAQ(product: any): string {
   const hasAcneConcern = product.tags?.some((t: any) => t.name?.toLowerCase().includes('acne')) || productName.toLowerCase().includes('acne');
   const hasSensitiveConcern = product.tags?.some((t: any) => t.name?.toLowerCase().includes('sensitive')) || productName.toLowerCase().includes('sensitive');
 
-  let faqContent = '';
+  const items: Array<{ question: string; answer: string }> = [];
 
   // Common question
-  faqContent += `Q: Is ${productName} suitable for my skin type?\n`;
-  if (hasSensitiveConcern) {
-    faqContent += `A: Yes, ${productName} is specially formulated for sensitive skin and can be used by those with reactive or delicate skin types. However, always perform a patch test first.\n\n`;
-  } else {
-    faqContent += `A: ${productName} is designed for all skin types, but works especially well for combination and normal skin. If you have sensitive skin, we recommend testing on a small area first.\n\n`;
-  }
+  items.push({
+    question: `Is ${productName} suitable for my skin type?`,
+    answer: hasSensitiveConcern
+      ? `Yes, ${productName} is specially formulated for sensitive skin and can be used by those with reactive or delicate skin types. However, always perform a patch test first.`
+      : `${productName} is designed for all skin types, but works especially well for combination and normal skin. If you have sensitive skin, we recommend testing on a small area first.`,
+  });
 
-  // Category-specific question
+  // Category-specific questions
   if (isSunscreen) {
-    faqContent += `Q: How often should I reapply ${productName}?\n`;
-    faqContent += `A: We recommend reapplying every 2 hours, or more frequently if you're swimming or sweating. Reapply after water activities even if the product is water-resistant.\n\n`;
-    faqContent += `Q: Can I use ${productName} under makeup?\n`;
-    faqContent += `A: Yes, absolutely. Apply ${productName} as the last step of your morning skincare routine, wait 15 minutes, then apply primer and makeup as usual.\n\n`;
+    items.push({
+      question: `How often should I reapply ${productName}?`,
+      answer: `We recommend reapplying every 2 hours, or more frequently if you're swimming or sweating. Reapply after water activities even if the product is water-resistant.`,
+    });
+    items.push({
+      question: `Can I use ${productName} under makeup?`,
+      answer: `Yes, absolutely. Apply ${productName} as the last step of your morning skincare routine, wait 15 minutes, then apply primer and makeup as usual.`,
+    });
   } else if (isSerum) {
-    faqContent += `Q: How should I use ${productName} in my routine?\n`;
-    faqContent += `A: Apply ${productName} after cleansing and toning, but before moisturizer. Use 2-3 drops and gently pat into skin. Follow with your regular moisturizer.\n\n`;
+    items.push({
+      question: `How should I use ${productName} in my routine?`,
+      answer: `Apply ${productName} after cleansing and toning, but before moisturizer. Use 2-3 drops and gently pat into skin. Follow with your regular moisturizer.`,
+    });
   } else if (isMoisturizer) {
-    faqContent += `Q: When should I use ${productName}?\n`;
-    faqContent += `A: Use ${productName} twice daily - morning and night - after cleansing and applying any serums or treatments. This helps lock in moisture.\n\n`;
+    items.push({
+      question: `When should I use ${productName}?`,
+      answer: `Use ${productName} twice daily - morning and night - after cleansing and applying any serums or treatments. This helps lock in moisture.`,
+    });
   } else if (isCleanser) {
-    faqContent += `Q: How often should I use ${productName}?\n`;
-    faqContent += `A: Use ${productName} twice daily in your morning and evening skincare routine. Adjust frequency based on your skin's needs.\n\n`;
+    items.push({
+      question: `How often should I use ${productName}?`,
+      answer: `Use ${productName} twice daily in your morning and evening skincare routine. Adjust frequency based on your skin's needs.`,
+    });
   }
 
   // Concern-specific question
   if (hasAcneConcern) {
-    faqContent += `Q: Will ${productName} help with acne?\n`;
-    faqContent += `A: Yes, ${productName} is specifically designed to help manage acne-prone skin. Results typically appear within 2-4 weeks of consistent use. Continue regular use for best results.\n\n`;
+    items.push({
+      question: `Will ${productName} help with acne?`,
+      answer: `Yes, ${productName} is specifically designed to help manage acne-prone skin. Results typically appear within 2-4 weeks of consistent use. Continue regular use for best results.`,
+    });
   }
 
   // Compatibility question
-  faqContent += `Q: Can I use ${productName} with other skincare products?\n`;
-  faqContent += `A: Yes, ${productName} works well with other skincare products. For best results, use with complementary products from the same line or brand. Introduce one new product at a time to monitor results.\n\n`;
+  items.push({
+    question: `Can I use ${productName} with other skincare products?`,
+    answer: `Yes, ${productName} works well with other skincare products. For best results, use with complementary products from the same line or brand. Introduce one new product at a time to monitor results.`,
+  });
 
   // Results timeline
-  faqContent += `Q: When will I see visible results from ${productName}?\n`;
-  faqContent += `A: Most users notice improvements within 2-4 weeks of consistent daily use. Some may see results sooner, while others may need 6-8 weeks. Patience and consistency are key for skincare products.\n\n`;
+  items.push({
+    question: `When will I see visible results from ${productName}?`,
+    answer: `Most users notice improvements within 2-4 weeks of consistent daily use. Some may see results sooner, while others may need 6-8 weeks. Patience and consistency are key for skincare products.`,
+  });
 
   // Storage question
-  faqContent += `Q: How should I store ${productName}?\n`;
-  faqContent += `A: Store ${productName} in a cool, dry place away from direct sunlight. Keep the cap tightly closed. Avoid storing in the bathroom if exposed to excessive moisture and heat.`;
+  items.push({
+    question: `How should I store ${productName}?`,
+    answer: `Store ${productName} in a cool, dry place away from direct sunlight. Keep the cap tightly closed. Avoid storing in the bathroom if exposed to excessive moisture and heat.`,
+  });
 
-  return faqContent;
+  return items;
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
@@ -216,10 +234,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     '1. Wet face with lukewarm water\n2. Apply product to face\n3. Massage gently for 30 seconds\n4. Rinse thoroughly with water'
                   }
                 />
-                <CollapsibleSection
-                  title="FREQUENTLY ASKED QUESTIONS"
-                  content={generateProductFAQ(product)}
-                />
+              </div>
+            </div>
+          </div>
+
+          {/* FREQUENTLY ASKED QUESTIONS - SEPARATE SECTION */}
+          <div className="py-12 border-t border-gray-200">
+            <div className="max-w-3xl">
+              <h2 className="text-2xl font-serif font-bold text-lumiere-text-primary mb-6">
+                Frequently Asked Questions
+              </h2>
+              <div className="space-y-3">
+                {generateProductFAQItems(product).map((item, index) => (
+                  <CollapsibleSection
+                    key={index}
+                    title={item.question}
+                    content={item.answer}
+                  />
+                ))}
               </div>
             </div>
           </div>
