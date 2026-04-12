@@ -2,13 +2,36 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 
 interface Origins {
   code: string;
   name: string;
   slug: string;
 }
+
+const SKINCARE_ESSENTIALS = [
+  { name: 'Face Cleanser', slug: 'cleanser' },
+  { name: 'Serum & Toner', slug: 'serum-toner' },
+  { name: 'Moisturizer', slug: 'moisturizer' },
+  { name: 'Sunscreen & SPF', slug: 'sunscreen' },
+  { name: 'Face Care', slug: 'face-care' },
+];
+
+const SKIN_CONCERNS = [
+  { name: 'Acne & Breakouts', slug: 'acne' },
+  { name: 'Dry & Sensitive', slug: 'dry' },
+  { name: 'Anti-Aging', slug: 'anti-aging' },
+  { name: 'Dark Spots & Brightening', slug: 'dark-spots' },
+  { name: 'Sensitivity', slug: 'sensitivity' },
+];
+
+const FEATURED_BRANDS = [
+  { name: 'COSRX', slug: 'cosrx' },
+  { name: 'ANUA', slug: 'anua' },
+  { name: 'PURITO', slug: 'purito' },
+  { name: 'SOME BY MI', slug: 'some-by-mi' },
+];
 
 /**
  * Main Navigation Component
@@ -17,16 +40,17 @@ interface Origins {
  */
 export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   // Origin countries
   const origins: Origins[] = [
-    { code: '🇰🇷', name: 'Korea', slug: 'korean-beauty' },
-    { code: '🇯🇵', name: 'Japan', slug: 'japanese-beauty' },
-    { code: '🇬🇧', name: 'UK', slug: 'uk-beauty' },
-    { code: '🇺🇸', name: 'USA', slug: 'usa-beauty' },
-    { code: '🇫🇷', name: 'France', slug: 'france-beauty' },
-    { code: '🇮🇳', name: 'India', slug: 'india-beauty' },
-    { code: '🇧🇩', name: 'Bangladesh', slug: 'bangladesh-beauty' },
+    { code: '🇰🇷', name: 'Korea', slug: 'korea' },
+    { code: '🇯🇵', name: 'Japan', slug: 'japan' },
+    { code: '🇬🇧', name: 'UK', slug: 'uk' },
+    { code: '🇺🇸', name: 'USA', slug: 'usa' },
+    { code: '🇫🇷', name: 'France', slug: 'france' },
+    { code: '🇮🇳', name: 'India', slug: 'india' },
+    { code: '🇧🇩', name: 'Bangladesh', slug: 'bangladesh' },
   ];
 
   return (
@@ -43,37 +67,89 @@ export default function Navigation() {
               🛍️ SHOP ALL
             </Link>
 
-            {/* SKINCARE ESSENTIALS */}
-            <Link
-              href="/shop"
-              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors py-2 flex-shrink-0"
-            >
-              💧 SKINCARE ESSENTIALS
-            </Link>
+            {/* SKINCARE ESSENTIALS - Dropdown */}
+            <div className="relative group">
+              <button className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors py-2 flex items-center gap-1 flex-shrink-0">
+                💧 SKINCARE ESSENTIALS
+                <ChevronDown size={14} />
+              </button>
+              <div className="absolute left-0 mt-0 hidden group-hover:block bg-white border border-gray-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50">
+                {SKINCARE_ESSENTIALS.map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={`/shop?category=${item.slug}`}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-            {/* SHOP BY CONCERN */}
-            <Link
-              href="/concerns"
-              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex-shrink-0"
-            >
-              🎯 CONCERN
-            </Link>
+            {/* SHOP BY CONCERN - Dropdown */}
+            <div className="relative group">
+              <button className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex items-center gap-1 flex-shrink-0">
+                🎯 CONCERN
+                <ChevronDown size={14} />
+              </button>
+              <div className="absolute left-0 mt-0 hidden group-hover:block bg-white border border-gray-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50">
+                {SKIN_CONCERNS.map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={`/shop?concern=${item.slug}`}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-            {/* ORIGINS */}
-            <Link
-              href="/origins"
-              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex items-center gap-1 flex-shrink-0"
-            >
-              <span>🌍 ORIGINS</span>
-            </Link>
+            {/* ORIGINS - Dropdown */}
+            <div className="relative group">
+              <button className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex items-center gap-1 flex-shrink-0">
+                🌍 ORIGINS
+                <ChevronDown size={14} />
+              </button>
+              <div className="absolute left-0 mt-0 hidden group-hover:block bg-white border border-gray-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50">
+                {origins.map((origin) => (
+                  <Link
+                    key={origin.slug}
+                    href={`/shop?origin=${origin.slug}`}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                  >
+                    <span className="mr-2">{origin.code}</span>
+                    {origin.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-            {/* BRANDS */}
-            <Link
-              href="/brands"
-              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex-shrink-0"
-            >
-              🏷️ BRANDS
-            </Link>
+            {/* BRANDS - Dropdown */}
+            <div className="relative group">
+              <button className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex items-center gap-1 flex-shrink-0">
+                🏷️ BRANDS
+                <ChevronDown size={14} />
+              </button>
+              <div className="absolute left-0 mt-0 hidden group-hover:block bg-white border border-gray-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50">
+                {FEATURED_BRANDS.map((brand) => (
+                  <Link
+                    key={brand.slug}
+                    href={`/shop?brand=${brand.slug}`}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                  >
+                    {brand.name}
+                  </Link>
+                ))}
+                <div className="border-t border-gray-200 my-2" />
+                <Link
+                  href="/brands"
+                  className="block px-4 py-2 text-sm font-semibold text-pink-600 hover:bg-pink-50 transition-colors"
+                >
+                  View All Brands →
+                </Link>
+              </div>
+            </div>
 
             {/* SALE - with badge */}
             <Link
@@ -134,43 +210,107 @@ export default function Navigation() {
                 </Link>
 
                 {/* SKINCARE ESSENTIALS */}
-                <Link
-                  href="/shop"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors"
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === 'essentials' ? null : 'essentials')}
+                  className="w-full text-left py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors flex items-center justify-between"
                 >
                   💧 SKINCARE ESSENTIALS
-                </Link>
+                  <ChevronDown size={14} className={openDropdown === 'essentials' ? 'rotate-180' : ''} />
+                </button>
+                {openDropdown === 'essentials' && (
+                  <div className="bg-gray-50 rounded py-2 pl-4">
+                    {SKINCARE_ESSENTIALS.map((item) => (
+                      <Link
+                        key={item.slug}
+                        href={`/shop?category=${item.slug}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-2 px-3 text-xs text-gray-600 hover:text-pink-600"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
 
                 {/* Divider */}
                 <div className="border-t border-gray-200 my-2" />
 
                 {/* SHOP BY CONCERN */}
-                <Link
-                  href="/concerns"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors"
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === 'concern' ? null : 'concern')}
+                  className="w-full text-left py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors flex items-center justify-between"
                 >
                   🎯 SHOP BY CONCERN
-                </Link>
+                  <ChevronDown size={14} className={openDropdown === 'concern' ? 'rotate-180' : ''} />
+                </button>
+                {openDropdown === 'concern' && (
+                  <div className="bg-gray-50 rounded py-2 pl-4">
+                    {SKIN_CONCERNS.map((item) => (
+                      <Link
+                        key={item.slug}
+                        href={`/shop?concern=${item.slug}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-2 px-3 text-xs text-gray-600 hover:text-pink-600"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
 
                 {/* ORIGINS */}
-                <Link
-                  href="/origins"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors"
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === 'origins' ? null : 'origins')}
+                  className="w-full text-left py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors flex items-center justify-between"
                 >
                   🌍 ORIGINS
-                </Link>
+                  <ChevronDown size={14} className={openDropdown === 'origins' ? 'rotate-180' : ''} />
+                </button>
+                {openDropdown === 'origins' && (
+                  <div className="bg-gray-50 rounded py-2 pl-4">
+                    {origins.map((origin) => (
+                      <Link
+                        key={origin.slug}
+                        href={`/shop?origin=${origin.slug}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-2 px-3 text-xs text-gray-600 hover:text-pink-600"
+                      >
+                        <span className="mr-2">{origin.code}</span>
+                        {origin.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
 
                 {/* BRANDS */}
-                <Link
-                  href="/brands"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors"
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === 'brands' ? null : 'brands')}
+                  className="w-full text-left py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors flex items-center justify-between"
                 >
                   🏷️ BRANDS
-                </Link>
+                  <ChevronDown size={14} className={openDropdown === 'brands' ? 'rotate-180' : ''} />
+                </button>
+                {openDropdown === 'brands' && (
+                  <div className="bg-gray-50 rounded py-2 pl-4">
+                    {FEATURED_BRANDS.map((brand) => (
+                      <Link
+                        key={brand.slug}
+                        href={`/shop?brand=${brand.slug}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-2 px-3 text-xs text-gray-600 hover:text-pink-600"
+                      >
+                        {brand.name}
+                      </Link>
+                    ))}
+                    <Link
+                      href="/brands"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block py-2 px-3 text-xs font-semibold text-pink-600 hover:text-pink-700"
+                    >
+                      View All Brands →
+                    </Link>
+                  </div>
+                )}
 
                 {/* SALE */}
                 <Link
