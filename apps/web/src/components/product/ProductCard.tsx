@@ -32,6 +32,11 @@ export default function ProductCard({ product }: Props) {
     });
   };
 
+  // Generate descriptive alt text for better SEO and accessibility
+  const imageAlt = product.images[0]?.alt
+    ? `${product.images[0].alt} - ${product.name}`
+    : `${product.name} ${product.categories?.[0]?.name ? `- ${product.categories[0].name}` : ''} - Korean & Japanese skincare product`;
+
   return (
     <div className="group card relative overflow-hidden">
 
@@ -63,10 +68,11 @@ export default function ProductCard({ product }: Props) {
         <div className="product-img-wrap">
           <Image
             src={product.images[0]?.src || '/images/placeholder.jpg'}
-            alt={product.images[0]?.alt || product.name}
+            alt={imageAlt}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
+            quality={85}
           />
         </div>
 

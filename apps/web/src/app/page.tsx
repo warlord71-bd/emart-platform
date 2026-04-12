@@ -9,6 +9,7 @@ import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSecti
 import { FlashSaleSection } from '@/components/home/FlashSaleSection';
 import { ShopByConcern } from '@/components/home/ShopByConcern';
 import { BrandsShowcaseInteractive } from '@/components/home/BrandsShowcaseInteractive';
+import { OriginShowcaseInteractive } from '@/components/home/OriginShowcaseInteractive';
 import { BrandsCarousel } from '@/components/product/BrandsCarousel';
 import type { Metadata } from 'next';
 
