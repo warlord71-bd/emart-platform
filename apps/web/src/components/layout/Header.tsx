@@ -31,7 +31,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 flex-shrink-0">
           <Image
-            src="http://5.189.188.229/wp-content/uploads/2026/03/logo.png"
+            src="https://5.189.188.229/wp-content/uploads/2026/03/logo.png"
             alt="Emart Skincare Bangladesh"
             width={44}
             height={44}

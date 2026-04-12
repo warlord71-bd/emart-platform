@@ -11,12 +11,12 @@ export const revalidate = 3600;
 
 // Mock brands data - in production this would come from WooCommerce
 const BRANDS = [
-  'ACWELL', 'ANUA', 'AESENCIA', 'APLE', 'ABR', 'AROMATICA', 'ATOMY', 'AMKEY',
+  'ABB', 'ACWELL', 'ARENICIA', 'AROMATIC', 'ANUA', 'ATOMY', "A'PITY", 'APIB',
   'BANILA CO', 'BEAUTY OF JOSEON', 'BENTON', 'BY WISHTREND',
-  'CARENEL', 'CELMAX', 'COXII', 'COSRX', 'CERMAPAH', 'COMMOGLABS', 'COSDE BEMA',
-  'DERMA E', 'DR.ALTHEA', 'DECURACILE', 'DE.JART+',
-  'ESQIULBERRY', 'ERUDE HOUSE',
-  'FARM STAY',
+  'CARENEL', 'CELMAK', 'COMUNCHIAS', 'COS DE BAHA', 'COSRX', 'CERAPIL', 'COS DE BAMA', 'CERAVE',
+  'DABO', 'DEAR KLAIRS', 'DERMAILE', 'DR.ALTHEA', 'DECIRACLE', 'DE JAEK+',
+  'ESQILBERRY',
+  'FARMSTAY',
   'GOODAL', 'GLOW RECIPE',
   'HABIBUHU WACHIER', 'HADA LABO',
   'ISNTREE', 'IOPE',
@@ -35,6 +35,7 @@ const BRANDS = [
   'WISH FORMULA',
   'YESSTYLE',
   'SOME BY MI',
+  'BRUCE HOUSE',
 ];
 
 function groupBrandsByLetter(brands: string[]): Record<string, string[]> {
