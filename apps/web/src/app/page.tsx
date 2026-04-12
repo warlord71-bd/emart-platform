@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import Link from 'next/link';
 import { MessageSquare, Sparkles } from 'lucide-react';
-import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories, getBestSellingProducts, getNewArrivals, getProducts } from '@/lib/woocommerce';
+import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories, getBestSellingProducts, getNewArrivals, getProducts, getProductsByOrigin } from '@/lib/woocommerce';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { CategoriesShowcaseInteractive } from '@/components/home/CategoriesShowcaseInteractive';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
@@ -81,10 +81,10 @@ export default async function HomePage() {
     getSaleProducts(8),
     getBestSellingProducts(8),
     getNewArrivals(8),
-    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.name, 5)),
+    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.name, 4)),
     ...categories.map(cat => getProductsByCategory(cat.id, 5)),
     ...SKIN_CONCERNS.map(concern => getProducts({ search: concern.slug, per_page: 8 }).then(r => r.products)),
-    ...ORIGINS.map(origin => getProducts({ search: origin.name, per_page: 5 }).then(r => r.products)),
+    ...ORIGINS.map(origin => getProductsByOrigin(origin.slug, 4)),
   ]);
 
   const brandProducts = allProducts.slice(0, FEATURED_BRANDS.length);

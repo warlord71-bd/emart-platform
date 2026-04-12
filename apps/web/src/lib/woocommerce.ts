@@ -265,6 +265,49 @@ export async function getProductsByCategory(categoryId: number, limit = 5): Prom
   }
 }
 
+// Map origins to their associated brands for product fetching
+const ORIGIN_BRAND_MAP: Record<string, string[]> = {
+  'korea': ['CosRx', 'Some By Mi', 'Purito', 'ANUA', 'Dr.Althea', 'ISNTREE', 'Skin1004'],
+  'japan': ['Rohto', 'Hada Labo', 'Kose', 'Shiseido', 'Tatcha'],
+  'uk': ['CeraVe', 'The Ordinary', 'Paula\'s Choice'],
+  'usa': ['CeraVe', 'Cetaphil', 'Neutrogena'],
+  'france': ['Bioderma', 'Eucerin', 'La Roche-Posay'],
+  'india': ['Minimalist', 'Dot & Key', 'Blessed Botanicals'],
+  'bangladesh': ['Dabo', 'Ponds', 'Himalaya']
+};
+
+export async function getProductsByOrigin(originSlug: string, limit = 4): Promise<WooProduct[]> {
+  try {
+    // First, try searching by origin name directly
+    const { products: searchResults } = await getProducts({
+      search: originSlug,
+      per_page: limit
+    });
+
+    if (searchResults.length > 0) {
+      return searchResults;
+    }
+
+    // If no results from search, try fetching from brands associated with this origin
+    const brands = ORIGIN_BRAND_MAP[originSlug.toLowerCase()] || [];
+    const allProducts: WooProduct[] = [];
+
+    for (const brand of brands) {
+      if (allProducts.length >= limit) break;
+      const { products: brandProducts } = await getProducts({
+        search: brand,
+        per_page: limit - allProducts.length
+      });
+      allProducts.push(...brandProducts);
+    }
+
+    return allProducts.slice(0, limit);
+  } catch (error) {
+    console.error(`getProductsByOrigin error for ${originSlug}:`, error);
+    return [];
+  }
+}
+
 // ══════════════════════════════
 // CATEGORIES API
 // ══════════════════════════════
