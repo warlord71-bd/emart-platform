@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, Menu, X } from 'lucide-react';
-import type { WooCategory } from '@/lib/woocommerce';
+import { Menu, X } from 'lucide-react';
 
 interface Origins {
   code: string;
@@ -17,28 +16,7 @@ interface Origins {
  * Mobile: Hamburger drawer with accordion subcategories
  */
 export default function Navigation() {
-  const [categories, setCategories] = useState<WooCategory[]>([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch categories on mount
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('/api/categories');
-        if (response.ok) {
-          const data = await response.json();
-          // Limit to 4 main categories for clean menu
-          setCategories(data.slice(0, 4));
-        }
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   // Origin countries
   const origins: Origins[] = [
@@ -64,17 +42,6 @@ export default function Navigation() {
             >
               🛍️ SHOP ALL
             </Link>
-
-            {/* Categories */}
-            {categories.map((category) => (
-              <Link
-                key={category.id}
-                href={`/category/${category.slug}`}
-                className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors py-2 flex-shrink-0"
-              >
-                {category.name}
-              </Link>
-            ))}
 
             {/* SHOP BY CONCERN */}
             <Link
@@ -160,18 +127,6 @@ export default function Navigation() {
                 >
                   🛍️ SHOP ALL
                 </Link>
-
-                {/* Categories */}
-                {categories.map((category) => (
-                  <Link
-                    key={category.id}
-                    href={`/category/${category.slug}`}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block py-3 px-4 text-sm font-medium text-gray-700 hover:bg-pink-50 rounded transition-colors"
-                  >
-                    {category.name}
-                  </Link>
-                ))}
 
                 {/* Divider */}
                 <div className="border-t border-gray-200 my-2" />
