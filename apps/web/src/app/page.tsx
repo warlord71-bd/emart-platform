@@ -73,12 +73,58 @@ const CAROUSEL_BRANDS = [
   { id: 8, name: 'DR.G', logo: 'https://via.placeholder.com/128x64?text=DR.G' },
 ];
 
-// Filter products - keep those with images (fallback to placeholder)
+// Validate image URL - check for proper format and real image URLs
+function isValidImageUrl(url: string): boolean {
+  if (!url || typeof url !== 'string') return false;
+
+  // Must start with http/https
+  if (!url.startsWith('http://') && !url.startsWith('https://')) return false;
+
+  // Must have valid image file extension
+  const validExtensions = /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i;
+  if (!validExtensions.test(url)) return false;
+
+  // Exclude placeholder domains
+  const placeholderDomains = [
+    'placeholder.com',
+    'via.placeholder.com',
+    'picsum.photos',
+    'dummyimage.com',
+    'lorempicsum.com',
+    'example.com',
+    'invalid',
+    '127.0.0.1',
+    'localhost',
+  ];
+
+  if (placeholderDomains.some(domain => url.toLowerCase().includes(domain))) {
+    return false;
+  }
+
+  // Exclude URLs with 404 or error patterns
+  if (url.includes('404') || url.includes('error') || url.includes('null')) {
+    return false;
+  }
+
+  return true;
+}
+
+// Filter products - keep only those with VALID, non-broken images
 function filterProductsWithImages(products: typeof getFeaturedProducts extends (...args: any[]) => Promise<infer T> ? T : never) {
   return products.filter(p => {
     // Must have product name and basic data
     if (!p.name || !p.id) return false;
-    // Keep all products - fallback to placeholder if no image
+
+    // Must have at least one image
+    if (!p.images || p.images.length === 0) return false;
+
+    // Must have valid image URL
+    const firstImage = p.images[0];
+    if (!firstImage || !firstImage.src) return false;
+
+    // Validate the image URL
+    if (!isValidImageUrl(firstImage.src)) return false;
+
     return true;
   });
 }
