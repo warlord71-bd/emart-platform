@@ -29,6 +29,39 @@ const SOCIALS = [
 export default function Footer() {
   return (
     <footer className="bg-white border-t border-gray-100">
+      {/* Trust Signals Strip */}
+      <div className="bg-gray-50 border-b border-gray-100 py-6 px-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">✓</div>
+            <div>
+              <div className="text-xs font-bold text-gray-600 uppercase">100% Authentic</div>
+              <div className="text-xs text-gray-500">Direct import</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">🚚</div>
+            <div>
+              <div className="text-xs font-bold text-gray-600 uppercase">Free Delivery</div>
+              <div className="text-xs text-gray-500">৳1,499+</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">💵</div>
+            <div>
+              <div className="text-xs font-bold text-gray-600 uppercase">COD Available</div>
+              <div className="text-xs text-gray-500">Nationwide</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">↩️</div>
+            <div>
+              <div className="text-xs font-bold text-gray-600 uppercase">7-Day Returns</div>
+              <div className="text-xs text-gray-500">Unopened items</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 py-12">
