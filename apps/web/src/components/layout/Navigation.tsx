@@ -55,12 +55,12 @@ export default function Navigation() {
     <>
       {/* Desktop Navigation */}
       <nav className="hidden md:block bg-white border-b border-gray-100 sticky top-[52px] z-[90]">
-        <div className="max-w-7xl mx-auto px-4 py-3">
-          <div className="flex items-center gap-8">
+        <div className="max-w-7xl mx-auto px-4 py-2">
+          <div className="flex items-center gap-4 flex-wrap">
             {/* SHOP ALL Button */}
             <Link
               href="/shop"
-              className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap flex-shrink-0"
             >
               🛍️ SHOP ALL
             </Link>
@@ -70,7 +70,7 @@ export default function Navigation() {
               <Link
                 key={category.id}
                 href={`/category/${category.slug}`}
-                className="text-sm font-medium text-gray-700 hover:text-pink-500 transition-colors py-3"
+                className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors py-2 flex-shrink-0"
               >
                 {category.name}
               </Link>
@@ -79,26 +79,26 @@ export default function Navigation() {
             {/* SHOP BY CONCERN */}
             <Link
               href="/concerns"
-              className="text-sm font-medium text-gray-700 hover:text-pink-500 transition-colors"
+              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex-shrink-0"
             >
-              🎯 SHOP BY CONCERN
+              🎯 CONCERN
             </Link>
 
             {/* ORIGINS */}
             <Link
               href="/origins"
-              className="text-sm font-medium text-gray-700 hover:text-pink-500 transition-colors flex items-center gap-1"
+              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex items-center gap-0.5 flex-shrink-0"
             >
-              <span>Origins</span>
-              <span className="text-xs opacity-70">
-                {origins.slice(0, 3).map((o) => o.code).join(' ')}
+              <span>🌍</span>
+              <span>
+                {origins.slice(0, 2).map((o) => o.code).join('')}
               </span>
             </Link>
 
             {/* BRANDS */}
             <Link
               href="/brands"
-              className="text-sm font-medium text-gray-700 hover:text-pink-500 transition-colors"
+              className="text-xs font-medium text-gray-700 hover:text-pink-500 transition-colors flex-shrink-0"
             >
               🏷️ BRANDS
             </Link>
@@ -106,10 +106,10 @@ export default function Navigation() {
             {/* SALE - with badge */}
             <Link
               href="/sale"
-              className="flex items-center gap-2 text-sm font-medium text-pink-600 hover:text-pink-700 transition-colors"
+              className="flex items-center gap-1 text-xs font-medium text-pink-600 hover:text-pink-700 transition-colors flex-shrink-0"
             >
               <span>🔥 SALE</span>
-              <span className="bg-pink-100 text-pink-700 text-xs px-2 py-0.5 rounded-full font-semibold">
+              <span className="bg-pink-100 text-pink-700 text-[10px] px-1.5 py-0.5 rounded-full font-semibold">
                 HOT
               </span>
             </Link>
@@ -117,10 +117,10 @@ export default function Navigation() {
             {/* NEW - with badge */}
             <Link
               href="/new-arrivals"
-              className="flex items-center gap-2 text-sm font-medium text-gold-600 hover:text-gold-700 transition-colors"
+              className="flex items-center gap-1 text-xs font-medium text-gold-600 hover:text-gold-700 transition-colors flex-shrink-0"
             >
               <span>✨ NEW</span>
-              <span className="bg-gold-100 text-gold-700 text-xs px-2 py-0.5 rounded-full font-semibold">
+              <span className="bg-gold-100 text-gold-700 text-[10px] px-1.5 py-0.5 rounded-full font-semibold">
                 NEW
               </span>
             </Link>
