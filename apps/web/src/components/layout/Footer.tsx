@@ -23,30 +23,15 @@ const HELP_LINKS = [
 ];
 
 const SOCIALS = [
-  {
-    label: 'Facebook',
-    href: 'https://www.facebook.com/emartbd.official',
-    color: '#1877f2',
-    emoji: '📘',
-  },
-  {
-    label: 'WhatsApp',
-    href: 'https://wa.me/8801919797399',
-    color: '#25d366',
-    emoji: '💬',
-  },
-  {
-    label: 'Instagram',
-    href: 'https://www.instagram.com/emartbd',
-    color: '#E4405F',
-    emoji: '📷',
-  },
+  { label: 'Facebook', href: 'https://www.facebook.com/emartbd.official', color: '#1877f2', emoji: '📘' },
+  { label: 'WhatsApp', href: 'https://wa.me/8801919797399', color: '#25d366', emoji: '💬' },
+  { label: 'Instagram', href: 'https://www.instagram.com/emartbd', color: '#E4405F', emoji: '📷' },
 ];
 
 export default function Footer() {
-
   return (
     <footer className="bg-white border-t border-gray-100">
+
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -54,7 +39,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div>
             <Link href="/" className="flex items-center gap-3 mb-4">
-              <Image src="http://5.189.188.229/wp-content/uploads/2026/03/logo.png" alt="Emart" width={44} height={44} className="rounded-xl" />
+              <Image src="https://5.189.188.229/wp-content/uploads/2026/03/logo.png" alt="Emart" width={44} height={44} className="rounded-xl" />
               <div>
                 <div className="font-extrabold text-[#1a1a2e]">Emart Skincare</div>
                 <div className="text-[#e8197a] text-xs font-bold tracking-widest uppercase">Bangladesh</div>
@@ -64,14 +49,14 @@ export default function Footer() {
               Bangladesh's #1 destination for authentic Korean & Japanese skincare.
               Every product 100% genuine.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               {SOCIALS.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg hover:scale-110 transition-transform"
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-xl"
                   style={{ background: s.color }}
                   title={s.label}
                 >
@@ -134,22 +119,17 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Payment Methods Strip */}
-      <div className="border-t border-gray-100 bg-white py-6 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            {/* Payment Methods */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">We Accept:</span>
-              <PaymentMethods />
-            </div>
-
-            {/* Delivery Info */}
-            <div className="flex gap-4 text-xs text-gray-500">
-              <span>🚚 Free ৳1,499+</span>
-              <span>⚡ Dhaka Next Day</span>
-              <span>🇧🇩 Nationwide</span>
-            </div>
+      {/* Payment Strip */}
+      <div className="border-t border-gray-100 bg-gray-50 py-4 px-4">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">We Accept:</span>
+            <PaymentMethods />
+          </div>
+          <div className="flex gap-3 text-xs text-gray-400">
+            <span>🚚 Free delivery ৳3,000+</span>
+            <span>⚡ Dhaka Next Day</span>
+            <span>🇧🇩 Nationwide</span>
           </div>
         </div>
       </div>
