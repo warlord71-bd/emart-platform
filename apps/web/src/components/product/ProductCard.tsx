@@ -16,6 +16,7 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
   const [imageSrc, setImageSrc] = useState(product.images[0]?.src || '/images/placeholder.png');
+  const [imageError, setImageError] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
 
   const discount = product.on_sale
@@ -68,15 +69,29 @@ export default function ProductCard({ product }: Props) {
       <Link href={`/shop/${product.slug}`}>
         {/* Image */}
         <div className="product-img-wrap">
-          <Image
-            src={imageSrc}
-            alt={imageAlt}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
-            quality={85}
-            onError={() => setImageSrc('/images/placeholder.png')}
-          />
+          {!imageError ? (
+            <Image
+              src={imageSrc}
+              alt={imageAlt}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
+              quality={85}
+              onError={() => {
+                setImageSrc('/images/placeholder.png');
+                setImageError(true);
+              }}
+            />
+          ) : (
+            <Image
+              src="/images/placeholder.png"
+              alt={imageAlt}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
+              quality={85}
+            />
+          )}
         </div>
 
         {/* Info */}
