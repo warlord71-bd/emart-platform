@@ -41,8 +41,23 @@ export default function Header() {
       try {
         const response = await fetch('/api/categories');
         if (response.ok) {
-          const data = await response.json();
-          setCategories(data);
+          const allCategories = await response.json();
+
+          // Find SKINCARE ESSENTIALS parent category
+          const skincareEssentialsParent = allCategories.find(
+            (cat: WooCategory) => cat.name === 'SKINCARE ESSENTIALS' && cat.parent === 0
+          );
+
+          // Filter to get only child categories of SKINCARE ESSENTIALS
+          if (skincareEssentialsParent) {
+            const childCategories = allCategories.filter(
+              (cat: WooCategory) => cat.parent === skincareEssentialsParent.id
+            );
+            setCategories(childCategories);
+          } else {
+            // Fallback: show all categories if parent not found
+            setCategories(allCategories);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch categories:', error);

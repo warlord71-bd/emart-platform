@@ -63,6 +63,7 @@ export interface WooCategory {
   id: number;
   name: string;
   slug: string;
+  parent: number;
   image?: WooImage;
   count?: number;
 }
