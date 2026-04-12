@@ -36,7 +36,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
       >
         <Image
           src={mainImage.src}
-          alt={mainImage.alt || productName}
+          alt={mainImage.alt || `${productName} - Premium Korean & Japanese Skincare Product`}
           width={500}
           height={500}
           priority={true}
@@ -67,7 +67,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
             >
               <Image
                 src={image.src}
-                alt={`${productName} ${index + 1}`}
+                alt={`${productName} image ${index + 1} - Product photo`}
                 width={80}
                 height={80}
                 quality={60}
