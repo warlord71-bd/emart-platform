@@ -2,7 +2,8 @@
 import Link from 'next/link';
 import { MessageSquare, Sparkles } from 'lucide-react';
 import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories, getBestSellingProducts, getNewArrivals, getProducts } from '@/lib/woocommerce';
-import { HeroBanner } from '@/components/home/HeroBanner';
+import { HeroCarousel } from '@/components/home/HeroCarousel';
+import { OriginChips } from '@/components/home/OriginChips';
 import { CategoriesShowcaseInteractive } from '@/components/home/CategoriesShowcaseInteractive';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
 import { FlashSaleSection } from '@/components/home/FlashSaleSection';
@@ -81,15 +82,11 @@ export default async function HomePage() {
 
   return (
     <div className="bg-white">
-      {/* ── HERO BANNER ── */}
-      <HeroBanner
-        title="Your Skin Deserves"
-        subtitle="100% Authentic Korean & Japanese Skincare"
-        description="Discover premium skincare from Korea and Japan. Fast delivery across Bangladesh, COD available, 100% authentic products."
-        primaryCTA={{ text: 'Shop Now', href: '/shop' }}
-        secondaryCTA={{ text: '🔥 View Sale', href: '/sale' }}
-        trustBadges={['100% Authentic', 'COD Available', 'Fast Delivery', 'Easy Returns']}
-      />
+      {/* ── HERO CAROUSEL ── */}
+      <HeroCarousel />
+
+      {/* ── SHOP BY ORIGIN ── */}
+      <OriginChips />
 
       {/* ── SHOP BY CATEGORY ── */}
       <CategoriesShowcaseInteractive
