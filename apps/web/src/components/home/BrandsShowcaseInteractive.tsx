@@ -54,17 +54,17 @@ export const BrandsShowcaseInteractive: React.FC<BrandsShowcaseInteractiveProps>
           ))}
         </div>
 
-        {/* Product Grid - Changed from carousel to grid layout */}
+        {/* Product Grid - Show 4 items per brand */}
         {selectedBrand && selectedBrand.products && selectedBrand.products.length > 0 ? (
           <div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {selectedBrand.products.slice(0, 10).map((product) => (
+              {selectedBrand.products.slice(0, 4).map((product) => (
                 <div key={product.id}>
                   <ProductCard product={product} />
                 </div>
               ))}
             </div>
-            {selectedBrand.products.length > 10 && (
+            {selectedBrand.products.length > 4 && (
               <div className="text-center mt-6">
                 <a
                   href={`/shop?brand=${selectedBrand.slug}`}
