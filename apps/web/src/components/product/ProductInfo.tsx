@@ -100,28 +100,6 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         )}
       </div>
 
-      {/* SEO Meta Description as Bullet Points */}
-      {(product.short_description || product.description) && (
-        <div className="space-y-2 bg-gray-50 p-4 rounded-lg">
-          <div className="text-sm text-gray-700">
-            <ul className="space-y-2">
-              {(product.short_description || product.description)
-                .split('\n')
-                .filter((line) => line.trim())
-                .slice(0, 3)
-                .map((line, idx) => {
-                  const cleanLine = line.replace(/<[^>]*>/g, '').trim();
-                  return cleanLine ? (
-                    <li key={idx} className="flex gap-2 items-start">
-                      <span className="text-lumiere-primary font-bold mt-0.5">•</span>
-                      <span>{cleanLine}</span>
-                    </li>
-                  ) : null;
-                })}
-            </ul>
-          </div>
-        </div>
-      )}
 
       {/* Quantity Selector */}
       <div className="flex items-center gap-4">
