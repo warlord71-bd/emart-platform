@@ -1,7 +1,9 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next';
 import './globals.css';
+import UtilityBar from '@/components/layout/UtilityBar';
 import Header from '@/components/layout/Header';
+import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { Toaster } from 'react-hot-toast';
@@ -57,7 +59,9 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans bg-white text-gray-800 antialiased">
         <Providers>
+          <UtilityBar />
           <Header />
+          <Navigation />
           <main className="min-h-screen">{children}</main>
           <Footer />
           <CartDrawer />
