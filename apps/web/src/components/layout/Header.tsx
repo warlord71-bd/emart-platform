@@ -225,20 +225,47 @@ export default function Header() {
                 🛍️ SHOP ALL
               </Link>
 
-              {/* Dynamic Categories from WooCommerce - Mobile */}
-              {!loading && categories.length > 0
-                ? categories.map((category) => (
-                    <Link
-                      key={category.id}
-                      href={`/shop?category=${category.slug}`}
-                      onClick={() => setMobileOpen(false)}
-                      className="py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0]
-                               hover:text-[#e8197a] rounded-lg transition-colors"
-                    >
-                      {category.name}
-                    </Link>
-                  ))
-                : null}
+              {/* SKINCARE ESSENTIALS - Mobile Accordion */}
+              <div className="mt-2">
+                <button
+                  onClick={() => setExpandedCategory(expandedCategory === 'skincare' ? null : 'skincare')}
+                  className="w-full py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0]
+                           hover:text-[#e8197a] rounded-lg transition-colors flex items-center justify-between"
+                >
+                  SKINCARE ESSENTIALS
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${expandedCategory === 'skincare' ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {expandedCategory === 'skincare' && !loading && categories.length > 0 && (
+                  <div className="ml-2 mt-1 border-l-2 border-[#e8197a] pl-2">
+                    {categories.map((category) => (
+                      <Link
+                        key={category.id}
+                        href={`/shop?category=${category.slug}`}
+                        onClick={() => {
+                          setMobileOpen(false);
+                          setExpandedCategory(null);
+                        }}
+                        className="block py-2 px-3 text-sm text-gray-600 hover:text-[#e8197a] transition-colors"
+                      >
+                        {category.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* SHOP BY CONCERN - Mobile */}
+              <Link
+                href="/search?q=concern"
+                onClick={() => setMobileOpen(false)}
+                className="py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0]
+                         hover:text-[#e8197a] rounded-lg transition-colors"
+              >
+                SHOP BY CONCERN
+              </Link>
 
               {/* Mobile Top Links */}
               <Link
