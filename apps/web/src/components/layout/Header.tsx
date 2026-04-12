@@ -9,6 +9,15 @@ import { ShoppingCart, Search, User, Menu, X, Heart, ChevronDown } from 'lucide-
 import { useCartStore } from '@/store/cartStore';
 import type { WooCategory } from '@/lib/woocommerce';
 
+// Skin concerns data
+const SKIN_CONCERNS = [
+  { name: 'Acne & Breakouts', slug: 'acne', emoji: '🔴' },
+  { name: 'Dry & Sensitive', slug: 'dry', emoji: '💧' },
+  { name: 'Anti-Aging', slug: 'anti-aging', emoji: '✨' },
+  { name: 'Dark Spots & Brightening', slug: 'dark-spots', emoji: '🌙' },
+  { name: 'Sensitivity', slug: 'sensitivity', emoji: '🌿' },
+];
+
 export default function Header() {
   const router = useRouter();
   const [search, setSearch] = useState('');
@@ -32,8 +41,23 @@ export default function Header() {
       try {
         const response = await fetch('/api/categories');
         if (response.ok) {
-          const data = await response.json();
-          setCategories(data);
+          const allCategories = await response.json();
+
+          // Find SKINCARE ESSENTIALS parent category
+          const skincareEssentialsParent = allCategories.find(
+            (cat: WooCategory) => cat.name === 'SKINCARE ESSENTIALS' && cat.parent === 0
+          );
+
+          // Filter to get only child categories of SKINCARE ESSENTIALS
+          if (skincareEssentialsParent) {
+            const childCategories = allCategories.filter(
+              (cat: WooCategory) => cat.parent === skincareEssentialsParent.id
+            );
+            setCategories(childCategories);
+          } else {
+            // Fallback: show all categories if parent not found
+            setCategories(allCategories);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch categories:', error);
@@ -67,7 +91,7 @@ export default function Header() {
 
       {/* ── Main Header ── */}
       <header
-        className={`sticky top-10 z-50 bg-white border-b border-gray-100
+        className={`sticky top-10 z-50 bg-white border-b border-gray-100 overflow-visible
           ${scrolled ? 'shadow-md' : 'shadow-sm'} transition-shadow duration-300`}
       >
         <div className="max-w-7xl mx-auto px-4">
@@ -159,8 +183,8 @@ export default function Header() {
           </div>
 
           {/* ── Desktop Navigation with Dropdown Menu ── */}
-          <nav className="hidden lg:block border-t border-gray-50 py-2">
-            <div className="flex gap-1">
+          <nav className="hidden lg:block border-t border-gray-50 py-2 overflow-visible">
+            <div className="flex gap-1 relative">
               {/* SHOP ALL - Main Menu Item */}
               <Link
                 href="/shop"
@@ -179,26 +203,46 @@ export default function Header() {
                 </button>
                 <div className="hidden group-hover:block absolute left-0 top-full bg-white border border-gray-200
                             rounded-lg shadow-lg py-2 min-w-60 z-50 mt-1">
-                  {!loading && categories.length > 0
-                    ? categories.map((cat) => (
-                        <Link
-                          key={cat.id}
-                          href={`/shop?category=${cat.slug}`}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50
-                                   hover:text-[#e8197a] transition-colors whitespace-nowrap"
-                        >
-                          {cat.name}
-                        </Link>
-                      ))
-                    : null}
+                  {loading ? (
+                    <div className="px-4 py-2 text-sm text-gray-500">Loading...</div>
+                  ) : categories.length > 0 ? (
+                    categories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        href={`/shop?category=${cat.slug}`}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50
+                                 hover:text-[#e8197a] transition-colors whitespace-nowrap"
+                      >
+                        {cat.name}
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="px-4 py-2 text-sm text-gray-500">No categories</div>
+                  )}
                 </div>
               </div>
 
-              {/* SHOP BY CONCERN */}
-              <Link href="/search?q=concern" className="py-2 px-3 text-sm font-medium text-gray-700
-                                                      hover:text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
-                SHOP BY CONCERN
-              </Link>
+              {/* SHOP BY CONCERN - With Dropdown */}
+              <div className="relative group">
+                <button className="flex items-center gap-2 py-2 px-3 text-sm font-medium text-gray-700
+                                hover:text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
+                  SHOP BY CONCERN
+                  <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />
+                </button>
+                <div className="hidden group-hover:block absolute left-0 top-full bg-white border border-gray-200
+                            rounded-lg shadow-lg py-2 min-w-60 z-50 mt-1">
+                  {SKIN_CONCERNS.map((concern) => (
+                    <Link
+                      key={concern.slug}
+                      href={`/search?q=${concern.slug}`}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50
+                               hover:text-[#e8197a] transition-colors whitespace-nowrap"
+                    >
+                      {concern.emoji} {concern.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
 
               {/* Top Navigation Links */}
               <Link href="/sale" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
@@ -257,15 +301,37 @@ export default function Header() {
                 )}
               </div>
 
-              {/* SHOP BY CONCERN - Mobile */}
-              <Link
-                href="/search?q=concern"
-                onClick={() => setMobileOpen(false)}
-                className="py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0]
-                         hover:text-[#e8197a] rounded-lg transition-colors"
-              >
-                SHOP BY CONCERN
-              </Link>
+              {/* SHOP BY CONCERN - Mobile Accordion */}
+              <div className="mt-2">
+                <button
+                  onClick={() => setExpandedCategory(expandedCategory === 'concern' ? null : 'concern')}
+                  className="w-full py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0]
+                           hover:text-[#e8197a] rounded-lg transition-colors flex items-center justify-between"
+                >
+                  SHOP BY CONCERN
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${expandedCategory === 'concern' ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {expandedCategory === 'concern' && (
+                  <div className="ml-2 mt-1 border-l-2 border-[#e8197a] pl-2">
+                    {SKIN_CONCERNS.map((concern) => (
+                      <Link
+                        key={concern.slug}
+                        href={`/search?q=${concern.slug}`}
+                        onClick={() => {
+                          setMobileOpen(false);
+                          setExpandedCategory(null);
+                        }}
+                        className="block py-2 px-3 text-sm text-gray-600 hover:text-[#e8197a] transition-colors"
+                      >
+                        {concern.emoji} {concern.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               {/* Mobile Top Links */}
               <Link
