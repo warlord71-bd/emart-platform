@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { PaymentMethods } from './PaymentMethods';
 
 const SHOP_LINKS = [
   { label: 'All Products', href: '/shop' },
@@ -43,12 +44,6 @@ const SOCIALS = [
 ];
 
 export default function Footer() {
-  const PAYMENT_METHODS = [
-    { name: 'bKash', emoji: '📱', color: 'text-pink-600' },
-    { name: 'Nagad', emoji: '💳', color: 'text-orange-600' },
-    { name: 'Visa', emoji: '💳', color: 'text-blue-600' },
-    { name: 'COD', emoji: '💵', color: 'text-green-600' },
-  ];
 
   return (
     <footer className="bg-white border-t border-gray-100">
@@ -144,20 +139,9 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             {/* Payment Methods */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap">
               <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">We Accept:</span>
-              <div className="flex flex-wrap gap-3">
-                {PAYMENT_METHODS.map((method) => (
-                  <div
-                    key={method.name}
-                    className="flex items-center justify-center w-14 h-10 border-2 border-gray-200 rounded-lg hover:border-[#e8197a] transition-colors bg-gray-50"
-                  >
-                    <div className={`text-lg font-bold ${method.color}`}>
-                      {method.emoji} {method.name === 'bKash' || method.name === 'Nagad' ? method.name.substring(0, 2) : method.emoji}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <PaymentMethods />
             </div>
 
             {/* Delivery Info */}
