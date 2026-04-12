@@ -23,8 +23,9 @@ const HELP_LINKS = [
 ];
 
 const SOCIALS = [
-  { label: 'Facebook', href: 'https://www.facebook.com/emartbd.official', color: '#1877f2', icon: 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z' },
-  { label: 'WhatsApp', href: 'https://wa.me/8801919797399', color: '#25d366', icon: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.57-.01-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z' },
+  { label: 'Facebook', href: 'https://www.facebook.com/emartbd.official', color: '#1877f2', emoji: '📘' },
+  { label: 'WhatsApp', href: 'https://wa.me/8801919797399', color: '#25d366', emoji: '💬' },
+  { label: 'Instagram', href: 'https://www.instagram.com/emartbd', color: '#E4405F', emoji: '📷' },
 ];
 
 export default function Footer() {
@@ -38,7 +39,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div>
             <Link href="/" className="flex items-center gap-3 mb-4">
-              <Image src="http://5.189.188.229/wp-content/uploads/2026/03/logo.png" alt="Emart" width={44} height={44} className="rounded-xl" />
+              <Image src="https://5.189.188.229/wp-content/uploads/2026/03/logo.png" alt="Emart" width={44} height={44} className="rounded-xl" />
               <div>
                 <div className="font-extrabold text-[#1a1a2e]">Emart Skincare</div>
                 <div className="text-[#e8197a] text-xs font-bold tracking-widest uppercase">Bangladesh</div>
@@ -55,12 +56,11 @@ export default function Footer() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-white"
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-xl"
                   style={{ background: s.color }}
+                  title={s.label}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-                    <path d={s.icon} />
-                  </svg>
+                  {s.emoji}
                 </a>
               ))}
             </div>

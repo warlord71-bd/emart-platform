@@ -52,8 +52,47 @@ export default async function ProductPage({ params }: ProductPageProps) {
       })).products.slice(0, 4)
     : [];
 
+  // Generate Product Schema
+  const brandName = 'Emart Skincare';
+  const schemaObj: any = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    'name': product.name,
+    'description': product.short_description || product.description?.replace(/<[^>]*>/g, '') || '',
+    'image': product.images?.[0]?.src || '',
+    'sku': `EM-${product.id}`,
+    'brand': {
+      '@type': 'Brand',
+      'name': brandName,
+    },
+    'offers': {
+      '@type': 'Offer',
+      'url': `https://e-mart.com.bd/product/${product.id}`,
+      'priceCurrency': 'BDT',
+      'price': product.sale_price || product.price,
+      'availability': product.stock_status === 'instock' ? 'InStock' : 'OutOfStock',
+    },
+  };
+
+  // Add rating if available
+  if (product.rating_count > 0) {
+    schemaObj.aggregateRating = {
+      '@type': 'AggregateRating',
+      'ratingValue': parseFloat(product.average_rating),
+      'ratingCount': product.rating_count,
+    };
+  }
+
+  const productSchema = schemaObj;
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productSchema),
+        }}
+      />
       {/* MAIN CONTENT */}
       <div className="px-4 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
