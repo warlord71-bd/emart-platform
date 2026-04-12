@@ -57,6 +57,59 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              'name': 'Emart Skincare Bangladesh',
+              'url': 'https://e-mart.com.bd',
+              'logo': 'https://5.189.188.229/wp-content/uploads/2026/03/logo.png',
+              'description': "Bangladesh's #1 destination for authentic Korean & Japanese skincare",
+              'sameAs': [
+                'https://www.facebook.com/emartbd.official',
+                'https://www.instagram.com/emartbd',
+              ],
+              'contactPoint': {
+                '@type': 'ContactPoint',
+                'telephone': '+880-9697-597399',
+                'contactType': 'Customer Service',
+                'areaServed': 'BD',
+                'availableLanguage': ['en', 'bn'],
+              },
+              'address': {
+                '@type': 'PostalAddress',
+                'streetAddress': '17, Central Road (Near Ideal College)',
+                'addressLocality': 'Dhanmondi',
+                'addressRegion': 'Dhaka',
+                'postalCode': '1205',
+                'addressCountry': 'BD',
+              },
+            }),
+          }}
+        />
+
+        {/* Website Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              'url': 'https://e-mart.com.bd',
+              'name': 'Emart Skincare Bangladesh',
+              'potentialAction': {
+                '@type': 'SearchAction',
+                'target': 'https://e-mart.com.bd/search?q={search_term_string}',
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
+      </head>
       <body className="font-sans bg-white text-gray-800 antialiased">
         <Providers>
           <UtilityBar />
