@@ -28,8 +28,8 @@ export default function Navigation() {
         const response = await fetch('/api/categories');
         if (response.ok) {
           const data = await response.json();
-          // Limit to 6 categories for menu
-          setCategories(data.slice(0, 6));
+          // Limit to 4 main categories for clean menu
+          setCategories(data.slice(0, 4));
         }
       } catch (error) {
         console.error('Failed to fetch categories:', error);
