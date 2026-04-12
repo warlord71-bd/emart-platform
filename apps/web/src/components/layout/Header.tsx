@@ -76,7 +76,7 @@ export default function Header() {
 
       {/* ── Main Header ── */}
       <header
-        className={`sticky top-10 z-50 bg-white border-b border-gray-100
+        className={`sticky top-10 z-50 bg-white border-b border-gray-100 overflow-visible
           ${scrolled ? 'shadow-md' : 'shadow-sm'} transition-shadow duration-300`}
       >
         <div className="max-w-7xl mx-auto px-4">
@@ -168,8 +168,8 @@ export default function Header() {
           </div>
 
           {/* ── Desktop Navigation with Dropdown Menu ── */}
-          <nav className="hidden lg:block border-t border-gray-50 py-2">
-            <div className="flex gap-1">
+          <nav className="hidden lg:block border-t border-gray-50 py-2 overflow-visible">
+            <div className="flex gap-1 relative">
               {/* SHOP ALL - Main Menu Item */}
               <Link
                 href="/shop"
@@ -188,18 +188,22 @@ export default function Header() {
                 </button>
                 <div className="hidden group-hover:block absolute left-0 top-full bg-white border border-gray-200
                             rounded-lg shadow-lg py-2 min-w-60 z-50 mt-1">
-                  {!loading && categories.length > 0
-                    ? categories.map((cat) => (
-                        <Link
-                          key={cat.id}
-                          href={`/shop?category=${cat.slug}`}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50
-                                   hover:text-[#e8197a] transition-colors whitespace-nowrap"
-                        >
-                          {cat.name}
-                        </Link>
-                      ))
-                    : null}
+                  {loading ? (
+                    <div className="px-4 py-2 text-sm text-gray-500">Loading...</div>
+                  ) : categories.length > 0 ? (
+                    categories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        href={`/shop?category=${cat.slug}`}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50
+                                 hover:text-[#e8197a] transition-colors whitespace-nowrap"
+                      >
+                        {cat.name}
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="px-4 py-2 text-sm text-gray-500">No categories</div>
+                  )}
                 </div>
               </div>
 
