@@ -73,9 +73,24 @@ const CAROUSEL_BRANDS = [
   { id: 8, name: 'DR.G', logo: 'https://via.placeholder.com/128x64?text=DR.G' },
 ];
 
-// Filter products to only include those with images
+// Filter products to only include those with valid images
 function filterProductsWithImages(products: typeof getFeaturedProducts extends (...args: any[]) => Promise<infer T> ? T : never) {
-  return products.filter(p => p.images && p.images.length > 0);
+  return products.filter(p => {
+    // Must have images array with at least one image
+    if (!p.images || p.images.length === 0) return false;
+
+    const firstImage = p.images[0];
+    // Image must have a valid src URL
+    if (!firstImage.src || firstImage.src.trim() === '') return false;
+
+    // Image URL must be a valid HTTP/HTTPS URL
+    if (!firstImage.src.startsWith('http://') && !firstImage.src.startsWith('https://')) return false;
+
+    // Exclude placeholder or broken image URLs
+    if (firstImage.src.includes('placeholder') || firstImage.src.includes('via.placeholder')) return false;
+
+    return true;
+  });
 }
 
 // Fill empty section with best-selling fallback products
