@@ -158,9 +158,9 @@ export default function Header() {
             </div>
           </div>
 
-          {/* ── Desktop Navigation (Category Links) ── */}
+          {/* ── Desktop Navigation with Dropdown Menu ── */}
           <nav className="hidden lg:block border-t border-gray-50 py-2">
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-1">
               {/* SHOP ALL - Main Menu Item */}
               <Link
                 href="/shop"
@@ -170,25 +170,41 @@ export default function Header() {
                 🛍️ SHOP ALL
               </Link>
 
-              {/* Dynamic Categories from WooCommerce */}
-              {!loading && categories.length > 0 ? (
-                categories.map((category) => (
-                  <Link
-                    key={category.id}
-                    href={`/shop?category=${category.slug}`}
-                    className="py-2 px-3 text-sm font-medium text-gray-700 hover:text-[#e8197a]
-                             hover:bg-gray-50 rounded-lg transition-colors"
-                  >
-                    {category.name}
-                  </Link>
-                ))
-              ) : null}
+              {/* SKINCARE ESSENTIALS - With Dropdown */}
+              <div className="relative group">
+                <button className="flex items-center gap-2 py-2 px-3 text-sm font-medium text-gray-700
+                                hover:text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
+                  SKINCARE ESSENTIALS
+                  <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />
+                </button>
+                <div className="hidden group-hover:block absolute left-0 top-full bg-white border border-gray-200
+                            rounded-lg shadow-lg py-2 min-w-60 z-50 mt-1">
+                  {!loading && categories.length > 0
+                    ? categories.map((cat) => (
+                        <Link
+                          key={cat.id}
+                          href={`/shop?category=${cat.slug}`}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50
+                                   hover:text-[#e8197a] transition-colors whitespace-nowrap"
+                        >
+                          {cat.name}
+                        </Link>
+                      ))
+                    : null}
+                </div>
+              </div>
+
+              {/* SHOP BY CONCERN */}
+              <Link href="/search?q=concern" className="py-2 px-3 text-sm font-medium text-gray-700
+                                                      hover:text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
+                SHOP BY CONCERN
+              </Link>
 
               {/* Top Navigation Links */}
-              <Link href="/sale" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg">
+              <Link href="/sale" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
                 Sale 🔥
               </Link>
-              <Link href="/new-arrivals" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg">
+              <Link href="/new-arrivals" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
                 New ✨
               </Link>
             </div>
