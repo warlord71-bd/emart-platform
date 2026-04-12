@@ -6,8 +6,8 @@ import Link from 'next/link';
  */
 export default function UtilityBar() {
   return (
-    <div className="sticky top-0 z-[100] bg-navy-950 text-white text-xs md:text-sm py-2 md:py-2.5 overflow-x-auto border-b border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3 md:gap-6 whitespace-nowrap">
+    <div className="sticky top-0 z-[100] bg-navy-950 text-white text-xs md:text-sm py-2.5 md:py-3 overflow-x-auto border-b border-navy-900 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-2 md:gap-4 whitespace-nowrap">
         {/* Free Delivery */}
         <span className="flex items-center gap-1">
           <span>🚚</span>
@@ -17,26 +17,26 @@ export default function UtilityBar() {
           </span>
         </span>
 
-        {/* Divider - hidden on mobile */}
-        <span className="hidden md:inline text-gray-500">•</span>
+        {/* Divider */}
+        <span className="text-gray-600">•</span>
 
         {/* Authentic Badge */}
         <span className="flex items-center gap-1">
           <span>✓</span>
-          <span>100% Authentic</span>
+          <span>Authentic</span>
         </span>
 
-        {/* Divider - hidden on mobile */}
-        <span className="hidden md:inline text-gray-500">•</span>
+        {/* Divider */}
+        <span className="text-gray-600">•</span>
 
         {/* COD Nationwide */}
         <span className="flex items-center gap-1">
           <span>💵</span>
-          <span>COD Nationwide</span>
+          <span>COD</span>
         </span>
 
-        {/* Divider - hidden on mobile */}
-        <span className="hidden md:inline text-gray-500">•</span>
+        {/* Divider */}
+        <span className="text-gray-600">•</span>
 
         {/* Track Order Link */}
         <Link
