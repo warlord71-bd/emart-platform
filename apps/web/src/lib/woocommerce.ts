@@ -128,6 +128,8 @@ export interface ProductsParams {
   search?: string;
   category?: string;
   tag?: string;
+  attribute?: string;
+  attribute_term?: string;
   orderby?: 'date' | 'price' | 'popularity' | 'rating' | 'title';
   order?: 'asc' | 'desc';
   on_sale?: boolean;
@@ -219,12 +221,48 @@ export async function getSaleProducts(limit = 8): Promise<WooProduct[]> {
   return products;
 }
 
+export async function getBestSellingProducts(limit = 8): Promise<WooProduct[]> {
+  const { products } = await getProducts({ orderby: 'rating', per_page: limit });
+  return products;
+}
+
+export async function getNewArrivals(limit = 8): Promise<WooProduct[]> {
+  const { products } = await getProducts({ orderby: 'date', order: 'desc', per_page: limit });
+  return products;
+}
+
 export async function searchProducts(query: string, page = 1): Promise<{
   products: WooProduct[];
   total: number;
   totalPages: number;
 }> {
   return getProducts({ search: query, page, per_page: 20 });
+}
+
+export async function getProductsByBrand(brandName: string, limit = 5): Promise<WooProduct[]> {
+  try {
+    const { products } = await getProducts({
+      search: brandName,
+      per_page: limit
+    });
+    return products;
+  } catch (error) {
+    console.error(`getProductsByBrand error for ${brandName}:`, error);
+    return [];
+  }
+}
+
+export async function getProductsByCategory(categoryId: number, limit = 5): Promise<WooProduct[]> {
+  try {
+    const { products } = await getProducts({
+      category: categoryId.toString(),
+      per_page: limit
+    });
+    return products;
+  } catch (error) {
+    console.error(`getProductsByCategory error for ${categoryId}:`, error);
+    return [];
+  }
 }
 
 // ══════════════════════════════

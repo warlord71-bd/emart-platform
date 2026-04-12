@@ -1,19 +1,12 @@
-import Link from 'next/link';
-import ProductCard from '@/components/product/ProductCard';
+'use client';
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  regularPrice?: number;
-  image?: string;
-  rating?: number;
-  reviewCount?: number;
-  brand?: string;
-}
+import Link from 'next/link';
+import { Star } from 'lucide-react';
+import ProductCard from '@/components/product/ProductCard';
+import type { WooProduct } from '@/lib/woocommerce';
 
 interface FeaturedProductsSectionProps {
-  products: Product[];
+  products: WooProduct[];
   title?: string;
   subtitle?: string;
   variant?: 'featured' | 'bestsellers' | 'sale';
@@ -51,16 +44,21 @@ export const FeaturedProductsSection: React.FC<FeaturedProductsSectionProps> = (
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-8 md:mb-10">
-          <div>
-            <h2 className={`text-3xl md:text-4xl font-serif font-bold ${style.headerColor}`}>
-              {variant === 'sale' && '🔥 '}
-              {title}
-            </h2>
-            {subtitle && (
-              <p className="text-lumiere-text-secondary text-sm md:text-base mt-1">
-                {subtitle}
-              </p>
-            )}
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-rose-500 rounded-lg">
+              <Star size={24} className="text-white fill-white" />
+            </div>
+            <div>
+              <h2 className={`text-3xl md:text-4xl font-serif font-bold ${style.headerColor}`}>
+                {variant === 'sale' && '🔥 '}
+                {title}
+              </h2>
+              {subtitle && (
+                <p className="text-lumiere-text-secondary text-sm md:text-base mt-1">
+                  {subtitle}
+                </p>
+              )}
+            </div>
           </div>
           <Link
             href={

@@ -5,23 +5,18 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ShoppingCart, Search, User, Menu, X, Heart } from 'lucide-react';
+import { ShoppingCart, Search, User, Menu, X, Heart, ChevronDown } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
-
-const NAV_LINKS = [
-  { label: 'Shop', href: '/shop' },
-  { label: 'Face Care', href: '/category/face-care' },
-  { label: 'Sunscreen', href: '/category/sunscreen' },
-  { label: 'Serum & Toner', href: '/category/serum-toner' },
-  { label: 'Sale 🔥', href: '/sale', className: 'text-[#e8197a]' },
-  { label: 'New ✨', href: '/new-arrivals', className: 'text-[#e8197a]' },
-];
+import type { WooCategory } from '@/lib/woocommerce';
 
 export default function Header() {
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [categories, setCategories] = useState<WooCategory[]>([]);
+  const [loading, setLoading] = useState(true);
   const totalItems = useCartStore((s) => s.totalItems());
   const toggleCart = useCartStore((s) => s.toggleCart);
 
@@ -29,6 +24,24 @@ export default function Header() {
     const handler = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handler);
     return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  // Fetch categories from WooCommerce
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories');
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
   }, []);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -54,11 +67,19 @@ export default function Header() {
 
       {/* ── Main Header ── */}
       <header
-        className={`sticky top-0 z-50 bg-white border-b border-gray-100
+        className={`sticky top-10 z-50 bg-white border-b border-gray-100
           ${scrolled ? 'shadow-md' : 'shadow-sm'} transition-shadow duration-300`}
       >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center gap-4 h-16">
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 text-gray-600 lg:hidden"
+            >
+              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 flex-shrink-0">
@@ -134,53 +155,137 @@ export default function Header() {
                   </span>
                 )}
               </button>
-
-              {/* Mobile Menu */}
-              <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className="p-2 text-gray-600 lg:hidden"
-              >
-                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
             </div>
           </div>
 
-          {/* ── Desktop Nav ── */}
-          <nav className="hidden lg:flex items-center gap-6 py-2 border-t border-gray-50">
-            {NAV_LINKS.map((link) => (
+          {/* ── Desktop Navigation with Dropdown Menu ── */}
+          <nav className="hidden lg:block border-t border-gray-50 py-2">
+            <div className="flex gap-1">
+              {/* SHOP ALL - Main Menu Item */}
               <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium text-gray-600 hover:text-[#e8197a]
-                           transition-colors ${link.className || ''}`}
+                href="/shop"
+                className="flex items-center gap-2 py-2 px-3 text-sm font-semibold text-white
+                         bg-[#e8197a] hover:bg-[#c01264] rounded-lg transition-colors"
               >
-                {link.label}
+                🛍️ SHOP ALL
               </Link>
-            ))}
+
+              {/* SKINCARE ESSENTIALS - With Dropdown */}
+              <div className="relative group">
+                <button className="flex items-center gap-2 py-2 px-3 text-sm font-medium text-gray-700
+                                hover:text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
+                  SKINCARE ESSENTIALS
+                  <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />
+                </button>
+                <div className="hidden group-hover:block absolute left-0 top-full bg-white border border-gray-200
+                            rounded-lg shadow-lg py-2 min-w-60 z-50 mt-1">
+                  {!loading && categories.length > 0
+                    ? categories.map((cat) => (
+                        <Link
+                          key={cat.id}
+                          href={`/shop?category=${cat.slug}`}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50
+                                   hover:text-[#e8197a] transition-colors whitespace-nowrap"
+                        >
+                          {cat.name}
+                        </Link>
+                      ))
+                    : null}
+                </div>
+              </div>
+
+              {/* SHOP BY CONCERN */}
+              <Link href="/search?q=concern" className="py-2 px-3 text-sm font-medium text-gray-700
+                                                      hover:text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
+                SHOP BY CONCERN
+              </Link>
+
+              {/* Top Navigation Links */}
+              <Link href="/sale" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
+                Sale 🔥
+              </Link>
+              <Link href="/new-arrivals" className="py-2 px-3 text-sm font-medium text-[#e8197a] hover:bg-gray-50 rounded-lg transition-colors">
+                New ✨
+              </Link>
+            </div>
           </nav>
         </div>
 
-        {/* ── Mobile Menu ── */}
+        {/* ── Mobile Menu (Accordion) ── */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4">
+          <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4 pb-20">
             <nav className="flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`py-3 px-4 text-sm font-medium text-gray-700
-                             hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg
-                             transition-colors ${link.className || ''}`}
+              {/* SHOP ALL - Mobile */}
+              <Link
+                href="/shop"
+                onClick={() => setMobileOpen(false)}
+                className="py-3 px-4 text-sm font-semibold text-white bg-[#e8197a]
+                         hover:bg-[#c01264] rounded-lg transition-colors text-center"
+              >
+                🛍️ SHOP ALL
+              </Link>
+
+              {/* SKINCARE ESSENTIALS - Mobile Accordion */}
+              <div className="mt-2">
+                <button
+                  onClick={() => setExpandedCategory(expandedCategory === 'skincare' ? null : 'skincare')}
+                  className="w-full py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0]
+                           hover:text-[#e8197a] rounded-lg transition-colors flex items-center justify-between"
                 >
-                  {link.label}
-                </Link>
-              ))}
+                  SKINCARE ESSENTIALS
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${expandedCategory === 'skincare' ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {expandedCategory === 'skincare' && !loading && categories.length > 0 && (
+                  <div className="ml-2 mt-1 border-l-2 border-[#e8197a] pl-2">
+                    {categories.map((category) => (
+                      <Link
+                        key={category.id}
+                        href={`/shop?category=${category.slug}`}
+                        onClick={() => {
+                          setMobileOpen(false);
+                          setExpandedCategory(null);
+                        }}
+                        className="block py-2 px-3 text-sm text-gray-600 hover:text-[#e8197a] transition-colors"
+                      >
+                        {category.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* SHOP BY CONCERN - Mobile */}
+              <Link
+                href="/search?q=concern"
+                onClick={() => setMobileOpen(false)}
+                className="py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0]
+                         hover:text-[#e8197a] rounded-lg transition-colors"
+              >
+                SHOP BY CONCERN
+              </Link>
+
+              {/* Mobile Top Links */}
+              <Link
+                href="/sale"
+                onClick={() => setMobileOpen(false)}
+                className="py-3 px-4 text-sm font-medium text-[#e8197a] hover:bg-[#fce7f0] rounded-lg transition-colors"
+              >
+                Sale 🔥
+              </Link>
+              <Link
+                href="/new-arrivals"
+                onClick={() => setMobileOpen(false)}
+                className="py-3 px-4 text-sm font-medium text-[#e8197a] hover:bg-[#fce7f0] rounded-lg transition-colors"
+              >
+                New ✨
+              </Link>
               <Link
                 href="/account"
                 onClick={() => setMobileOpen(false)}
-                className="py-3 px-4 text-sm font-medium text-gray-700
-                           hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg"
+                className="py-3 px-4 text-sm font-medium text-gray-700 hover:bg-[#fce7f0] hover:text-[#e8197a] rounded-lg"
               >
                 👤 My Account
               </Link>

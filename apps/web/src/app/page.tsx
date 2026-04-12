@@ -1,11 +1,14 @@
 // src/app/page.tsx
 import Link from 'next/link';
-import { getFeaturedProducts, getSaleProducts } from '@/lib/woocommerce';
+import { MessageSquare, Sparkles } from 'lucide-react';
+import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories, getBestSellingProducts, getNewArrivals, getProducts } from '@/lib/woocommerce';
 import { HeroBanner } from '@/components/home/HeroBanner';
-import { CategoriesGrid } from '@/components/home/CategoriesGrid';
+import { CategoriesShowcaseInteractive } from '@/components/home/CategoriesShowcaseInteractive';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
+import { FlashSaleSection } from '@/components/home/FlashSaleSection';
 import { ShopByConcern } from '@/components/home/ShopByConcern';
-import { BrandsShowcase } from '@/components/home/BrandsShowcase';
+import { BrandsShowcaseInteractive } from '@/components/home/BrandsShowcaseInteractive';
+import { BrandsCarousel } from '@/components/product/BrandsCarousel';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -28,36 +31,53 @@ const CATEGORIES = [
 ];
 
 const SKIN_CONCERNS = [
-  { name: 'Acne & Breakouts', slug: 'acne', emoji: '🔴', color: 'acne' as const },
-  { name: 'Dry & Sensitive', slug: 'dry', emoji: '💧', color: 'dryness' as const },
-  { name: 'Anti-Aging', slug: 'anti-aging', emoji: '✨', color: 'antiaging' as const },
-  { name: 'Dark Spots', slug: 'dark-spots', emoji: '🌙', color: 'brightening' as const },
-  { name: 'Sensitivity', slug: 'sensitivity', emoji: '🌿', color: 'sensitivity' as const },
+  { name: 'Acne & Breakouts', slug: 'acne', emoji: '🔴' },
+  { name: 'Dry & Sensitive', slug: 'dry', emoji: '💧' },
+  { name: 'Anti-Aging', slug: 'anti-aging', emoji: '✨' },
+  { name: 'Dark Spots & Brightening', slug: 'dark-spots', emoji: '🌙' },
+  { name: 'Sensitivity', slug: 'sensitivity', emoji: '🌿' },
 ];
 
 const FEATURED_BRANDS = [
-  { id: 1, name: 'COSRX', slug: 'cosrx', logo: undefined, products: [] },
-  { id: 2, name: 'ISNTREE', slug: 'isntree', logo: undefined, products: [] },
-  { id: 3, name: 'PURITO', slug: 'purito', logo: undefined, products: [] },
-  { id: 4, name: 'SOME BY MI', slug: 'some-by-mi', logo: undefined, products: [] },
-  { id: 5, name: 'LANEIGE', slug: 'laneige', logo: undefined, products: [] },
+  { id: 1, name: 'Dabo', slug: 'dabo' },
+  { id: 2, name: 'CosRx', slug: 'cosrx' },
+  { id: 3, name: 'Cerave', slug: 'cerave' },
+  { id: 4, name: 'Some By Mi', slug: 'some-by-mi' },
+  { id: 5, name: 'Skin1004', slug: 'skin1004' },
+  { id: 6, name: 'Purito', slug: 'purito' },
+  { id: 7, name: 'Dear Klairs', slug: 'dear-klairs' },
+  { id: 8, name: 'Dr.Althea', slug: 'dr-althea' },
+  { id: 9, name: 'ANUA', slug: 'anua' },
+  { id: 10, name: 'APLB', slug: 'aplb' },
+];
+
+const CAROUSEL_BRANDS = [
+  { id: 1, name: 'COSRX', logo: 'https://via.placeholder.com/128x64?text=COSRX' },
+  { id: 2, name: 'ISNTREE', logo: 'https://via.placeholder.com/128x64?text=ISNTREE' },
+  { id: 3, name: 'PURITO', logo: 'https://via.placeholder.com/128x64?text=PURITO' },
+  { id: 4, name: 'SOME BY MI', logo: 'https://via.placeholder.com/128x64?text=SOME+BY+MI' },
+  { id: 5, name: 'LANEIGE', logo: 'https://via.placeholder.com/128x64?text=LANEIGE' },
+  { id: 6, name: 'ANUA', logo: 'https://via.placeholder.com/128x64?text=ANUA' },
+  { id: 7, name: 'DABO', logo: 'https://via.placeholder.com/128x64?text=DABO' },
+  { id: 8, name: 'DR.G', logo: 'https://via.placeholder.com/128x64?text=DR.G' },
 ];
 
 export default async function HomePage() {
-  const [featured, onSale] = await Promise.all([
+  const categories = await getCategories({ per_page: 8, hide_empty: true });
+
+  const [featured, onSale, bestSelling, newArrivals, ...allProducts] = await Promise.all([
     getFeaturedProducts(8),
     getSaleProducts(8),
+    getBestSellingProducts(8),
+    getNewArrivals(8),
+    ...FEATURED_BRANDS.map(brand => getProductsByBrand(brand.name, 5)),
+    ...categories.map(cat => getProductsByCategory(cat.id, 5)),
+    ...SKIN_CONCERNS.map(concern => getProducts({ search: concern.slug, per_page: 8 }).then(r => r.products)),
   ]);
 
-  // Convert WooCommerce string prices to numbers
-  const convertPrice = (p: any) => ({
-    ...p,
-    price: parseFloat(p.price || '0'),
-    regularPrice: p.regularPrice ? parseFloat(p.regularPrice) : undefined,
-  });
-
-  const featuredProducts = featured.map(convertPrice);
-  const saleProducts = onSale.map(convertPrice);
+  const brandProducts = allProducts.slice(0, FEATURED_BRANDS.length);
+  const categoryProducts = allProducts.slice(FEATURED_BRANDS.length, FEATURED_BRANDS.length + categories.length);
+  const concernProducts = allProducts.slice(FEATURED_BRANDS.length + categories.length);
 
   return (
     <div className="bg-white">
@@ -69,37 +89,52 @@ export default async function HomePage() {
         primaryCTA={{ text: 'Shop Now', href: '/shop' }}
         secondaryCTA={{ text: '🔥 View Sale', href: '/sale' }}
         trustBadges={['100% Authentic', 'COD Available', 'Fast Delivery', 'Easy Returns']}
-        heroImage="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop"
       />
 
       {/* ── SHOP BY CATEGORY ── */}
-      <CategoriesGrid categories={CATEGORIES} title="Shop by Category" />
+      <CategoriesShowcaseInteractive
+        categories={categories.map((cat, index) => ({
+          ...cat,
+          products: categoryProducts[index] || [],
+        }))}
+        title="Shop by Category"
+      />
 
       {/* ── FEATURED PRODUCTS ── */}
-      {featuredProducts.length > 0 && (
+      {featured.length > 0 && (
         <FeaturedProductsSection
-          products={featuredProducts}
+          products={featured}
           title="Featured Products"
           subtitle="Curated selection of bestsellers"
           variant="featured"
         />
       )}
 
-      {/* ── SHOP BY SKIN CONCERN ── */}
-      <ShopByConcern concerns={SKIN_CONCERNS} title="Shop by Skin Concern" />
+      {/* ── TOP PICKS (FLASH SALE) ── */}
+      <FlashSaleSection
+        bestSelling={bestSelling}
+        newArrivals={newArrivals}
+        onSale={onSale}
+        title="Top Picks"
+      />
 
-      {/* ── ON SALE ── */}
-      {saleProducts.length > 0 && (
-        <FeaturedProductsSection
-          products={saleProducts}
-          title="Flash Sale"
-          subtitle="Limited time offers on premium brands"
-          variant="sale"
-        />
-      )}
+      {/* ── SHOP BY SKIN CONCERN ── */}
+      <ShopByConcern
+        concerns={SKIN_CONCERNS.map((concern, index) => ({
+          ...concern,
+          products: concernProducts[index] || [],
+        }))}
+        title="Shop by Concern"
+      />
 
       {/* ── BRANDS SHOWCASE ── */}
-      <BrandsShowcase brands={FEATURED_BRANDS} title="Explore Top Brands" />
+      <BrandsShowcaseInteractive
+        brands={FEATURED_BRANDS.map((brand, index) => ({
+          ...brand,
+          products: brandProducts[index] || [],
+        }))}
+        title="Shop by Brands"
+      />
 
       {/* ── BANNER — B2B ── */}
       <section className="py-8 px-4 bg-lumiere-primary-light">
@@ -123,12 +158,69 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── WHY CHOOSE LUMIÈRE ── */}
-      <section className="py-12 px-4 bg-lumiere-text-primary text-white">
+      {/* ── PREFOOTER SECTION ── */}
+
+      {/* BRANDS CAROUSEL */}
+      <section className="py-8 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <BrandsCarousel brands={CAROUSEL_BRANDS} />
+        </div>
+      </section>
+
+      {/* CUSTOMER TESTIMONIALS */}
+      <section className="py-8 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-amber-500 rounded-lg">
+              <MessageSquare size={24} className="text-white fill-white" />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-lumiere-text-primary">
+              What Our Customers Say
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                text: "Amazing Product! This product has completely changed my skincare routine. Highly recommended!",
+                author: "Fatima R.",
+                rating: 5,
+              },
+              {
+                text: "Fast delivery and authentic products. The quality is excellent and price is competitive. Will order again!",
+                author: "Rahman K.",
+                rating: 5,
+              },
+              {
+                text: "Best K-Beauty products in Bangladesh. Customer service was helpful and delivery was on time. 10/10!",
+                author: "Asha T.",
+                rating: 5,
+              },
+            ].map((testimonial, idx) => (
+              <div key={idx} className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+                <div className="flex gap-1 mb-3">
+                  {Array(testimonial.rating).fill(0).map((_, i) => (
+                    <span key={i} className="text-yellow-400">⭐</span>
+                  ))}
+                </div>
+                <p className="text-gray-600 text-sm mb-4">"{testimonial.text}"</p>
+                <p className="font-semibold text-lumiere-text-primary">{testimonial.author}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHY CHOOSE EMART ── */}
+      <section className="py-8 px-4 bg-lumiere-text-primary text-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold mb-10">
-            Why Choose Emart?
-          </h2>
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-emerald-500 rounded-lg">
+              <Sparkles size={24} className="text-white fill-white" />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-serif font-bold">
+              Why Choose Emart?
+            </h2>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               {
