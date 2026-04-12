@@ -73,21 +73,44 @@ const CAROUSEL_BRANDS = [
   { id: 8, name: 'DR.G', logo: 'https://via.placeholder.com/128x64?text=DR.G' },
 ];
 
-// Filter products to only include those with valid images
+// Smart image validation - remove broken image URLs
+function isValidImageUrl(url: string): boolean {
+  if (!url || url.trim() === '') return false;
+
+  // Must start with http/https
+  if (!url.startsWith('http://') && !url.startsWith('https://')) return false;
+
+  // Exclude placeholders
+  if (url.includes('placeholder') || url.includes('via.placeholder')) return false;
+  if (url.includes('picsum') || url.includes('dummyimage')) return false;
+
+  // Exclude broken domain patterns
+  const brokenDomains = [
+    'example.com',
+    '127.0.0.1',
+    'localhost',
+    'invalid',
+    '404',
+  ];
+  if (brokenDomains.some(domain => url.includes(domain))) return false;
+
+  // Must have file extension
+  const hasExtension = /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url);
+  if (!hasExtension) return false;
+
+  return true;
+}
+
+// Filter products to only include those with VALID images
 function filterProductsWithImages(products: typeof getFeaturedProducts extends (...args: any[]) => Promise<infer T> ? T : never) {
   return products.filter(p => {
     // Must have images array with at least one image
     if (!p.images || p.images.length === 0) return false;
 
     const firstImage = p.images[0];
-    // Image must have a valid src URL
-    if (!firstImage.src || firstImage.src.trim() === '') return false;
 
-    // Image URL must be a valid HTTP/HTTPS URL
-    if (!firstImage.src.startsWith('http://') && !firstImage.src.startsWith('https://')) return false;
-
-    // Exclude placeholder or broken image URLs
-    if (firstImage.src.includes('placeholder') || firstImage.src.includes('via.placeholder')) return false;
+    // Validate image URL
+    if (!isValidImageUrl(firstImage.src)) return false;
 
     return true;
   });
