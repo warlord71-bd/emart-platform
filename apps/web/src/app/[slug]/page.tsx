@@ -39,6 +39,27 @@ export async function generateStaticParams() {
 
 export const revalidate = 3600;
 
+// Clean description to remove FAQ-like content
+function cleanDescription(description: string): string {
+  if (!description) return '';
+
+  // Remove lines that look like FAQ format
+  return description
+    .split('\n')
+    .filter(line => {
+      const trimmed = line.toLowerCase().trim();
+      // Remove FAQ-like lines
+      if (trimmed.startsWith('q:') || trimmed.startsWith('question:')) return false;
+      if (trimmed.startsWith('a:') || trimmed.startsWith('answer:')) return false;
+      if (trimmed.match(/^\s*\d+\.\s+[A-Za-z]/)) return false; // Numbered lists
+      if (trimmed.includes('✓') || trimmed.includes('✅')) return false; // Checkmarks
+      if (trimmed.match(/^\s*[-•*]\s+/)) return false; // Bullet points
+      return true;
+    })
+    .join('\n')
+    .trim();
+}
+
 // Generate product-specific FAQ items
 function generateProductFAQItems(product: any): Array<{ question: string; answer: string }> {
   const productName = product.name || 'product';
@@ -173,7 +194,7 @@ export default async function ProductPage({ params }: Props) {
           <div className="py-8 border-t border-gray-200">
             <div className="max-w-4xl">
               <DetailsTabs
-                description={product.description || ''}
+                description={cleanDescription(product.description || '')}
                 ingredients={ingredients}
                 howToUse={howToUse}
               />
