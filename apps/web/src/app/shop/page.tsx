@@ -3,7 +3,7 @@
 // Shop page with pagination, filtering, and proper product browsing
 // ═══════════════════════════════════════════════════════════════════
 
-import { getProducts } from '@/lib/woocommerce';
+import { getProducts, getCategoryBySlug } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
 import type { Metadata } from 'next';
 
@@ -30,10 +30,19 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const category = searchParams.category || '';
 
   try {
+    // Convert category slug to ID for API call
+    let categoryId = '';
+    if (category) {
+      const categoryData = await getCategoryBySlug(category);
+      if (categoryData) {
+        categoryId = categoryData.id.toString();
+      }
+    }
+
     const { products = [], total = 0, totalPages = 0 } = await getProducts({
       page,
       per_page: perPage,
-      category: category,
+      category: categoryId,
       orderby: sort,
       order: 'desc',
       status: 'publish',
