@@ -172,6 +172,9 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         </div>
       )}
 
+      {/* App Download Banner */}
+      <AppDownloadBanner />
+
       {/* Info Box - 2x2 Grid */}
       <div className="bg-blue-50 rounded-lg p-4 grid grid-cols-2 gap-4">
         <div>
@@ -191,9 +194,6 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           <p className="text-sm text-blue-900 font-medium">{categoryName}</p>
         </div>
       </div>
-
-      {/* App Download Banner */}
-      <AppDownloadBanner />
     </div>
   );
 };
