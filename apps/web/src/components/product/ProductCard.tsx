@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
-  const [imageSrc, setImageSrc] = useState(product.images[0]?.src || '/images/placeholder.jpg');
+  const [imageSrc, setImageSrc] = useState(product.images[0]?.src || '/images/placeholder.png');
   const addItem = useCartStore((s) => s.addItem);
 
   const discount = product.on_sale
@@ -75,7 +75,7 @@ export default function ProductCard({ product }: Props) {
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
             quality={85}
-            onError={() => setImageSrc('/images/placeholder.jpg')}
+            onError={() => setImageSrc('/images/placeholder.png')}
           />
         </div>
 
