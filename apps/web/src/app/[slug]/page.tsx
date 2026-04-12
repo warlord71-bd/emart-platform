@@ -190,6 +190,16 @@ export default async function ProductPage({ params }: Props) {
             </div>
           </div>
 
+          {/* DETAILS SECTION - Tabs (Description | Ingredients | How to use) */}
+          <div className="py-8 border-t border-gray-200">
+            <div className="max-w-4xl">
+              <DetailsTabs
+                description={cleanDescription(product.description || '')}
+                ingredients={ingredients}
+                howToUse={howToUse}
+              />
+            </div>
+          </div>
 
           {/* REVIEWS SECTION */}
           <div className="py-8 border-t border-gray-200">
