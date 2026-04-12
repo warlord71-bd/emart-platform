@@ -27,6 +27,65 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
 export const revalidate = 3600;
 
+// Generate product-specific FAQ based on product data
+function generateProductFAQ(product: any): string {
+  const productName = product.name || 'product';
+  const categories = product.categories?.map((c: any) => c.name.toLowerCase()) || [];
+  const isSunscreen = categories.some((c: string) => c.includes('sunscreen') || c.includes('spf'));
+  const isSerum = categories.some((c: string) => c.includes('serum') || c.includes('essence'));
+  const isMoisturizer = categories.some((c: string) => c.includes('moisturizer'));
+  const isCleanser = categories.some((c: string) => c.includes('cleanser') || c.includes('wash'));
+  const hasAcneConcern = product.tags?.some((t: any) => t.name?.toLowerCase().includes('acne')) || productName.toLowerCase().includes('acne');
+  const hasSensitiveConcern = product.tags?.some((t: any) => t.name?.toLowerCase().includes('sensitive')) || productName.toLowerCase().includes('sensitive');
+
+  let faqContent = '';
+
+  // Common question
+  faqContent += `Q: Is ${productName} suitable for my skin type?\n`;
+  if (hasSensitiveConcern) {
+    faqContent += `A: Yes, ${productName} is specially formulated for sensitive skin and can be used by those with reactive or delicate skin types. However, always perform a patch test first.\n\n`;
+  } else {
+    faqContent += `A: ${productName} is designed for all skin types, but works especially well for combination and normal skin. If you have sensitive skin, we recommend testing on a small area first.\n\n`;
+  }
+
+  // Category-specific question
+  if (isSunscreen) {
+    faqContent += `Q: How often should I reapply ${productName}?\n`;
+    faqContent += `A: We recommend reapplying every 2 hours, or more frequently if you're swimming or sweating. Reapply after water activities even if the product is water-resistant.\n\n`;
+    faqContent += `Q: Can I use ${productName} under makeup?\n`;
+    faqContent += `A: Yes, absolutely. Apply ${productName} as the last step of your morning skincare routine, wait 15 minutes, then apply primer and makeup as usual.\n\n`;
+  } else if (isSerum) {
+    faqContent += `Q: How should I use ${productName} in my routine?\n`;
+    faqContent += `A: Apply ${productName} after cleansing and toning, but before moisturizer. Use 2-3 drops and gently pat into skin. Follow with your regular moisturizer.\n\n`;
+  } else if (isMoisturizer) {
+    faqContent += `Q: When should I use ${productName}?\n`;
+    faqContent += `A: Use ${productName} twice daily - morning and night - after cleansing and applying any serums or treatments. This helps lock in moisture.\n\n`;
+  } else if (isCleanser) {
+    faqContent += `Q: How often should I use ${productName}?\n`;
+    faqContent += `A: Use ${productName} twice daily in your morning and evening skincare routine. Adjust frequency based on your skin's needs.\n\n`;
+  }
+
+  // Concern-specific question
+  if (hasAcneConcern) {
+    faqContent += `Q: Will ${productName} help with acne?\n`;
+    faqContent += `A: Yes, ${productName} is specifically designed to help manage acne-prone skin. Results typically appear within 2-4 weeks of consistent use. Continue regular use for best results.\n\n`;
+  }
+
+  // Compatibility question
+  faqContent += `Q: Can I use ${productName} with other skincare products?\n`;
+  faqContent += `A: Yes, ${productName} works well with other skincare products. For best results, use with complementary products from the same line or brand. Introduce one new product at a time to monitor results.\n\n`;
+
+  // Results timeline
+  faqContent += `Q: When will I see visible results from ${productName}?\n`;
+  faqContent += `A: Most users notice improvements within 2-4 weeks of consistent daily use. Some may see results sooner, while others may need 6-8 weeks. Patience and consistency are key for skincare products.\n\n`;
+
+  // Storage question
+  faqContent += `Q: How should I store ${productName}?\n`;
+  faqContent += `A: Store ${productName} in a cool, dry place away from direct sunlight. Keep the cap tightly closed. Avoid storing in the bathroom if exposed to excessive moisture and heat.`;
+
+  return faqContent;
+}
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const product = await getProductById(parseInt(params.id));
 
@@ -158,10 +217,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   }
                 />
                 <CollapsibleSection
-                  title="FAQ"
-                  content={
-                    'Q: Is this product suitable for sensitive skin?\nA: Yes, this product is formulated for all skin types.\n\nQ: When will I see results?\nA: Results typically visible within 2-4 weeks of regular use.\n\nQ: Can I use this with other products?\nA: Yes, it works well in your skincare routine.'
-                  }
+                  title="FREQUENTLY ASKED QUESTIONS"
+                  content={generateProductFAQ(product)}
                 />
               </div>
             </div>
