@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { MessageSquare, Sparkles } from 'lucide-react';
 import { getFeaturedProducts, getSaleProducts, getProductsByBrand, getProductsByCategory, getCategories, getBestSellingProducts, getNewArrivals, getProducts } from '@/lib/woocommerce';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
+import { OriginChips } from '@/components/home/OriginChips';
 import { CategoriesShowcaseInteractive } from '@/components/home/CategoriesShowcaseInteractive';
 import { FeaturedProductsSection } from '@/components/home/FeaturedProductsSection';
 import { FlashSaleSection } from '@/components/home/FlashSaleSection';
@@ -83,6 +84,9 @@ export default async function HomePage() {
     <div className="bg-white">
       {/* ── HERO CAROUSEL ── */}
       <HeroCarousel />
+
+      {/* ── SHOP BY ORIGIN ── */}
+      <OriginChips />
 
       {/* ── SHOP BY CATEGORY ── */}
       <CategoriesShowcaseInteractive
