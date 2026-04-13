@@ -60,7 +60,7 @@ export const useCartStore = create<CartStore>()(
                 id: product.id,
                 name: product.name,
                 price: product.sale_price || product.regular_price || product.price,
-                image: product.images[0]?.src || '/images/placeholder.png',
+                image: product.images[0]?.src || '/placeholder.jpg',
                 quantity,
                 slug: product.slug,
                 stock_quantity: product.stock_quantity,

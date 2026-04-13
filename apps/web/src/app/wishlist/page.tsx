@@ -56,7 +56,7 @@ export default function WishlistPage() {
       name: item.name,
       price: item.price,
       quantity: 1,
-      image: item.images[0]?.src || '/images/placeholder.png'
+      image: item.images[0]?.src || '/placeholder.jpg'
     }));
 
     const updatedCart = [...currentCart, ...newItems];
@@ -129,7 +129,7 @@ export default function WishlistPage() {
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden bg-gray-100">
                   <Image
-                    src={item.images[0]?.src || '/images/placeholder.png'}
+                    src={item.images[0]?.src || '/placeholder.jpg'}
                     alt={item.images[0]?.alt || item.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
