@@ -278,30 +278,86 @@ function getEmartFaqItems(product: WooProduct): ProductFaqItem[] {
   return extractFaqItemsFromText(faqHtml);
 }
 
-function getEnglishFaqItems(product: WooProduct): ProductFaqItem[] {
-  const deliveryAnswer = product.short_description
-    ?.replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+function getProductAttributeValue(product: WooProduct, matcher: RegExp): string {
+  const attribute = product.attributes?.find((item) => matcher.test(item.name));
+  return attribute?.options?.filter(Boolean).slice(0, 3).join(', ') || '';
+}
+
+function getProductType(product: WooProduct): string {
+  const name = product.name.toLowerCase();
+  const categoryText = product.categories?.map((category) => category.slug).join(' ') || '';
+  const source = `${name} ${categoryText}`;
+
+  if (/sunscreen|sun-cream|sun-serum|spf|sun-stick|sun-milk/.test(source)) return 'sunscreen product';
+  if (/serum|ampoule|essence/.test(source)) return 'serum product';
+  if (/cleanser|face-wash|cleansing|foam-wash/.test(source)) return 'cleanser';
+  if (/toner|mist/.test(source)) return 'toner';
+  if (/cream|moisturi[sz]er|gel-cream|lotion/.test(source)) return 'moisturizer';
+  if (/mask|sleeping-pack/.test(source)) return 'face mask';
+  if (/shampoo|conditioner|hair/.test(source)) return 'hair care product';
+  if (/lip/.test(source)) return 'lip care product';
+  if (/body/.test(source)) return 'body care product';
+
+  const category = product.categories?.find(
+    (item) =>
+      !['k-beauty-j-beauty', 'korean-beauty', 'japanese-beauty', 'skincare-essentials'].includes(item.slug)
+  );
+  return category?.name.toLowerCase() || 'skincare product';
+}
+
+function getGeneratedProductFaqItems(product: WooProduct): ProductFaqItem[] {
+  const brand = getProductAttributeValue(product, /brand/i);
+  const origin = getProductAttributeValue(product, /(origin|made in|country)/i);
+  const skinType = getProductAttributeValue(product, /skin type/i) || 'most skin types';
+  const concern = getProductAttributeValue(product, /concern/i);
+  const productType = getProductType(product);
+  const howToUse = htmlToTextLines(getHowToUseHtml(product))[0];
+  const purposeParts = [`${product.name} is a ${productType}`];
+  if (concern) purposeParts.push(`for ${concern}`);
+  if (skinType) purposeParts.push(`suited to ${skinType} routines`);
 
   return [
     {
       question: `Is ${product.name} authentic?`,
       answer:
-        'Yes. Emart checks sourcing before dispatch and this product is sold as an authentic imported item.',
+        `Yes. Emart lists ${product.name} as an authentic ${origin ? `${origin} ` : ''}${brand ? `${brand} ` : ''}product and checks sourcing and product condition before dispatch.`,
     },
     {
-      question: 'How long does delivery take?',
-      answer:
-        deliveryAnswer ||
-        'Dhaka delivery usually takes 1-2 days. Outside Dhaka, delivery typically takes 2-5 business days depending on location.',
+      question: `What is ${product.name} used for?`,
+      answer: `${purposeParts.join(', ')}.`,
     },
     {
-      question: 'Can I order with Cash on Delivery?',
+      question: `How should I use ${product.name}?`,
       answer:
-        'Yes. Cash on Delivery is available for supported orders, and you can contact support if you need help before placing the order.',
+        howToUse ||
+        'Apply as directed for this product type, starting with a small amount and adjusting based on your skin comfort.',
+    },
+    {
+      question: `${product.name} কোন skin type এর জন্য ভালো?`,
+      answer: `${product.name} সাধারণত ${skinType} এর জন্য উপযোগী।${
+        concern ? ` আপনার concern যদি ${concern} হয়, তাহলে এটি routine-এ যোগ করার আগে ধীরে শুরু করুন।` : ''
+      }`,
+    },
+    {
+      question: `${product.name} ব্যবহারের আগে কী সতর্কতা রাখা উচিত?`,
+      answer:
+        'প্রথমবার ব্যবহারের আগে patch test করুন, চোখের খুব কাছে ব্যবহার এড়িয়ে চলুন, irritation হলে ব্যবহার বন্ধ করুন। active ingredient বা brightening/exfoliating product হলে দিনের বেলা sunscreen ব্যবহার করুন।',
     },
   ];
+}
+
+function getProductFaqItems(product: WooProduct): ProductFaqItem[] {
+  const seen = new Set<string>();
+  const items = [...getEmartFaqItems(product), ...getGeneratedProductFaqItems(product)];
+
+  return items
+    .filter((item) => {
+      const key = item.question.toLowerCase();
+      if (!item.question || !item.answer || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 5);
 }
 
 function ProductFaqSection({ items }: { items: ProductFaqItem[] }) {
@@ -311,7 +367,6 @@ function ProductFaqSection({ items }: { items: ProductFaqItem[] }) {
     <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm md:p-6">
       <div className="mb-4">
         <h2 className="text-xl font-bold text-ink">Frequently Asked Questions</h2>
-        <p className="mt-1 text-sm text-muted">English and Bangla product questions, kept at the end of the page.</p>
       </div>
 
       <div className="space-y-3">
@@ -398,11 +453,7 @@ export default async function ProductPage({ params }: Props) {
     '<p>No description available.</p>';
   const ingredientsHtml = getIngredientsHtml(product);
   const howToUseHtml = getHowToUseHtml(product);
-  const faqItems = [
-    ...getEnglishFaqItems(product),
-    ...getEmartFaqItems(product).slice(0, 3),
-    ...extractFaqItems(product.description || '').slice(0, 3),
-  ];
+  const faqItems = getProductFaqItems(product);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
