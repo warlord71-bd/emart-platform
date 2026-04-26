@@ -2,6 +2,22 @@
 const nextConfig = {
   async redirects() {
     return [
+      // ── Woodmart legacy paths ──────────────────────────────────────────────
+      // /product-category/skin-care/ → /category/skin-care/  (catches all sub-paths)
+      { source: '/product-category/:slug*', destination: '/category/:slug*', permanent: true },
+      // /product/xyz → /shop/xyz  (also handled at nginx level for speed)
+      { source: '/product/:slug', destination: '/shop/:slug', permanent: true },
+      // /product-tag/retinol → /shop  (tags have no dedicated page; land on shop)
+      { source: '/product-tag/:slug*', destination: '/shop', permanent: true },
+      // WooCommerce account area
+      { source: '/my-account', destination: '/account', permanent: true },
+      { source: '/my-account/', destination: '/account', permanent: true },
+      { source: '/my-account/:path*', destination: '/account', permanent: true },
+      // WooCommerce cart/checkout legacy
+      { source: '/cart', destination: '/', permanent: false },
+      { source: '/checkout', destination: '/', permanent: false },
+
+      // ── Known slug fixes ───────────────────────────────────────────────────
       { source: '/contact-us', destination: '/contact', permanent: true },
       { source: '/contact-us/', destination: '/contact', permanent: true },
       { source: '/order-tracking', destination: '/track-order', permanent: true },
