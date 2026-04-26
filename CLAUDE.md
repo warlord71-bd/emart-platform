@@ -1,187 +1,76 @@
----
-name: E-Mart BD - Global Beauty Hub (K-Beauty, J-Beauty + International Brands)
-tech_stack: Next.js 14+, TypeScript, WooCommerce REST API, Tailwind CSS
-agents: See AGENTS.md (universal), AGENTS.coding.md, AGENTS.design.md, AGENTS.seo.md
----
+# E-Mart Agent Instructions
 
-> This project uses a universal AGENTS.md system. Read AGENTS.md first, then the job-specific file.
+This project follows the universal VPS deployment law in `/root/CLAUDE.md`.
+Read that file first. This file only adds E-Mart-specific context.
 
-# E-Mart BD Project Context
+## Current Layout
 
-## What This Project Is
+- Local working tree: `/root/emart-platform`
+- Live runtime tree: `/var/www/emart-platform`
+- Web app: `apps/web`
+- Live process: `pm2` process `emartweb`
+- Canonical repo: GitHub remote `origin`, branch `main`
+- Current rule: Local -> VPS -> Repo, with Repo push last after live smoke test
 
-Bangladesh-based eCommerce platform selling authentic Korean & Japanese beauty products (COSRX, Maybelline, Missha). Next.js 14+ frontend with WooCommerce backend. Target audience: Bangladeshi women, 18-35, mobile-first.
+## Source Of Truth
 
-## Critical Constraints
+- The running site is served from `/var/www/emart-platform/apps/web`.
+- Do not restore old files from GitHub or Local over VPS without comparing first.
+- Keep the current live UI/UX unless the user explicitly asks to change it.
+- Before any deploy/restart, confirm the VPS tree is the intended source.
 
-1. **Never commit API credentials** - WooCommerce keys stay in .env.local only
-2. **Mobile-first** - 70% of traffic is mobile, test responsive layouts always
-3. **BDT currency** - Always use ৳ symbol, not $ or USD
-4. **Bilingual support** - English primary, Bangla secondary (UI labels, product descriptions)
-5. **Payment methods** - bKash, Nagad (merchant), Cash on Delivery only
-6. **Build must pass** - Run `npm run build` after every file change batch
+## Required Deploy Order
 
-## Code Style Rules
+Use the universal verify-then-publish order from `/root/CLAUDE.md`:
 
-### Next.js Patterns
-- **Metadata API** - Use `generateMetadata()` for dynamic pages, export `metadata` for static
-- **Server Components** - Default to Server Components, use `"use client"` only when needed (forms, interactivity)
-- **Image Optimization** - Always use `next/image`, never `<img>` tag
-- **API Routes** - Keep WooCommerce logic in `/app/api/wc/` for reusability
+1. Edit on Local.
+2. Build/test on Local.
+3. Commit on Local.
+4. Sync Local -> VPS.
+5. Build on VPS.
+6. Restart `emartweb`.
+7. Smoke test the live site.
+8. Push `origin main` only after live verification passes.
 
-### TypeScript
-- Prefer `interface` over `type` for object shapes
-- Use `unknown` instead of `any` when type is truly unknown
-- Export types from `types/woocommerce.ts` for WooCommerce entities
+If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing.
 
-### Tailwind CSS
-- Use design system tokens from `tailwind.config.ts`
-- Primary colors: `navy-950` (#1B1B2F), `pink-400` (#E8739E), `gold-500` (#D4A248)
-- Responsive breakpoints: sm (640px), md (768px), lg (1024px), xl (1280px)
+## E-Mart Project Facts
 
-### Component Organization
-```
-components/
-├── ui/           # Reusable primitives (Button, Card, Input)
-├── layout/       # Header, Footer, Breadcrumbs
-├── product/      # ProductCard, ProductGallery, AddToCart
-└── checkout/     # CartItem, PaymentMethod, OrderSummary
-```
+- Bangladesh eCommerce site for authentic K-beauty, J-beauty, and international beauty products.
+- Frontend: Next.js 14+, TypeScript, Tailwind CSS.
+- Backend/content source: WooCommerce + WordPress MU plugins.
+- Currency: BDT with the `৳` symbol.
+- Payments: Cash on Delivery, bKash, Nagad.
+- Main audience: mobile-first Bangladesh shoppers.
 
-## WooCommerce API Patterns
+## Live Business Rules
 
-### Fetching Products
-```typescript
-// Always include authorization header
-const response = await fetch(`${process.env.NEXT_PUBLIC_WC_API_URL}/products`, {
-  headers: {
-    'Authorization': `Basic ${Buffer.from(
-      `${process.env.WC_CONSUMER_KEY}:${process.env.WC_CONSUMER_SECRET}`
-    ).toString('base64')}`
-  },
-  next: { revalidate: 3600 } // Cache for 1 hour
-});
-```
+- Footer `SignupTabs` is the canonical WhatsApp + email signup block.
+- Newsletter path: Next `/api/newsletter/subscribe` -> WordPress `/wp-json/emart/v1/subscribe` -> MailPoet.
+- Sales/signup WhatsApp: `8801717082135`.
+- Support/payment WhatsApp/phone may use `8801919797399`; do not merge the numbers unless the user says so.
+- MailPoet is the live transactional sender path. Do not reinstall or switch SMTP unless asked.
+- Telegram command helper exists, but do not enable a second polling service on the same bot token while OpenClaw is polling.
 
-### Error Handling
-```typescript
-try {
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(`WC API error: ${data.message || response.statusText}`);
-  }
-  return data;
-} catch (error) {
-  console.error('WooCommerce fetch failed:', error);
-  return null; // Return null, show fallback UI
-}
-```
+## Safety Rules
 
-## File Modification Workflow
+- Never commit secrets. Keep `.env.local` local to the VPS/runtime.
+- Never run blind `git add -A` on a dirty runtime tree unless `.gitignore` is checked and the staged list is reviewed.
+- Never force-push without explicit user approval.
+- Never use `git reset --hard`, branch checkout, or rollback on VPS unless the target commit is verified first.
+- Never restart `emartweb` from unknown source state.
+- For cleanup, move files to `/root/.attic-YYYY-MM-DD/` instead of deleting unless the user explicitly asks for permanent deletion.
 
-1. **Read before edit** - Always view the file first with `cat` or `view`
-2. **Show changes** - Explain what you're changing and why
-3. **Incremental edits** - One logical change per file edit
-4. **Test immediately** - After editing, run relevant test command
-5. **Commit atomically** - Commit each feature/fix separately with clear message
+## Useful Current Memory
 
-## Git Commit Messages
+- Universal deploy instructions: `/root/CLAUDE.md` and `/root/AGENTS.md`.
+- E-Mart session log: `/var/www/emart-platform/apps/web/SESSION-LOG.md`.
+- E-Mart task/source notes, when present: `/var/www/emart-platform/apps/web/TASKS.md`, `MEMORY.md`, and `LIVE-SOURCE-OF-TRUTH.md`.
+- Cleanup restore point from 2026-04-26: `/root/.attic-2026-04-26/`.
 
-```
-feat: add JSON-LD schema for product pages
-fix: breadcrumb navigation on mobile
-perf: optimize product image loading
-seo: add sitemap generation for categories
-refactor: extract WooCommerce API helper
-```
+## What Not To Trust
 
-## Testing Commands
+- Old project agent files mentioning `AGENTS.coding.md`, `AGENTS.design.md`, or `AGENTS.seo.md`; those were retired to reduce complexity.
+- Old docs that say to push before live verification.
+- Old rollback snippets that use `git reset --hard` without checking the live source state first.
 
-```bash
-# Build check (ALWAYS run after changes)
-npm run build
-
-# Lint check
-npm run lint
-
-# Type check
-npm run type-check
-
-# Local dev server
-npm run dev
-
-# Production build + start
-npm run build && npm run start
-```
-
-## Checkpoint Strategy
-
-Create checkpoints before:
-- Schema markup additions (Phase 1)
-- Navigation changes (Phase 2)
-- New page creation (Phase 3)
-- Deployment (Phase 4)
-
-Use: `/checkpoint "Phase 1 complete: Schema added"`
-
-## Common Pitfalls to Avoid
-
-❌ **Don't** fetch WooCommerce data on every render (use caching)  
-❌ **Don't** hardcode URLs (use `process.env.NEXT_PUBLIC_SITE_URL`)  
-❌ **Don't** skip mobile testing (70% of users are mobile)  
-❌ **Don't** use client components for static content  
-❌ **Don't** forget to handle out-of-stock products gracefully  
-
-✅ **Do** cache WooCommerce responses with `next: { revalidate: X }`  
-✅ **Do** test Lighthouse scores after major changes  
-✅ **Do** handle API errors with fallback UI  
-✅ **Do** use TypeScript types for all WooCommerce entities  
-✅ **Do** verify schema markup with Google Rich Results Test  
-
-## Phase Execution Rules
-
-When implementing the SEO roadmap:
-1. Complete one phase fully before starting next
-2. Run verification commands after each phase
-3. Commit after each phase passes
-4. If verification fails, fix before proceeding
-5. Use `/compact` if context exceeds 50%
-
-## Questions to Ask Before Starting
-
-- "Should I read the current file first?" → Always YES
-- "Should I test this change?" → Always YES after file edits
-- "Should I commit now?" → YES after each phase passes
-- "Is context getting full?" → Check with `/context`, compact if >50%
-
-## Emergency Rollback
-
-If something breaks critically:
-```bash
-git log --oneline -10  # Find last working commit
-git reset --hard <commit-hash>
-npm run build
-pm2 restart emartweb
-```
-
-## Success Criteria
-
-Every change must:
-1. Build successfully (`npm run build` exits 0)
-2. Pass TypeScript checks (no TS errors)
-3. Maintain or improve Lighthouse scores
-4. Work on mobile (test with Chrome DevTools)
-5. Handle WooCommerce API errors gracefully
-
-## Bangladesh-Specific Context
-
-- **Delivery zones**: Inside Dhaka (1-2 days, ৳60), Outside Dhaka (3-5 days, ৳120)
-- **Free delivery threshold**: ৳1000
-- **Target keywords**: "korean skincare bangladesh", "cosrx dhaka", "authentic kbeauty bd"
-- **Competitor**: skincarebd.com, beautykhoj.com
-- **Payment culture**: 60% Cash on Delivery, 30% bKash, 10% Nagad
-
----
-
-**Updated:** April 2026  
-**Maintainer:** E-Mart BD Dev Team
