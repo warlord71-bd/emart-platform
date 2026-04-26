@@ -27,10 +27,10 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 lg:sticky lg:top-32 lg:self-start">
       {/* Main Image with Zoom */}
       <div
-        className="bg-gray-50 rounded-lg overflow-hidden relative h-96 md:h-full flex items-center justify-center group cursor-zoom-in"
+        className="group relative flex h-[360px] cursor-zoom-in items-center justify-center overflow-hidden rounded-2xl bg-gray-50 sm:h-[460px] lg:h-[560px]"
         onMouseEnter={() => setIsZoomed(true)}
         onMouseLeave={() => setIsZoomed(false)}
       >
@@ -42,12 +42,12 @@ export const ProductImage: React.FC<ProductImageProps> = ({
           priority={selectedImageIndex === 0}
           sizes="(max-width: 768px) 100vw, 50vw"
           quality={85}
-          className={`w-full h-full object-contain transition-transform duration-300 ${
+          className={`h-full w-full object-contain transition-transform duration-300 ${
             isZoomed ? 'scale-150' : 'scale-100'
           }`}
         />
         {images.length > 1 && (
-          <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded text-sm text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute right-4 top-4 rounded bg-white px-3 py-1 text-sm text-gray-600 opacity-0 transition-opacity group-hover:opacity-100">
             🔍 Zoom
           </div>
         )}
@@ -55,12 +55,12 @@ export const ProductImage: React.FC<ProductImageProps> = ({
 
       {/* Thumbnail Gallery */}
       {images.length > 1 && (
-        <div className="flex gap-3 overflow-x-auto pb-2">
+        <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {images.map((image, index) => (
             <button
               key={index}
               onClick={() => setSelectedImageIndex(index)}
-              className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+              className={`h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 bg-white transition-all ${
                 selectedImageIndex === index
                   ? 'border-lumiere-primary'
                   : 'border-gray-200 hover:border-gray-300'
@@ -73,7 +73,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
                 height={80}
                 quality={60}
                 loading="lazy"
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
               />
             </button>
           ))}

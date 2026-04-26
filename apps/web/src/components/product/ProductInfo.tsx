@@ -90,6 +90,56 @@ function getOriginCountrySlug(value: string): string {
   return slugify(value);
 }
 
+const CATEGORY_DISPLAY_PRIORITY: Record<string, string> = {
+  sunscreen: 'Sunscreen',
+  'serums-ampoules-essences': 'Serum',
+  'face-cleansers': 'Cleanser',
+  'toners-mists': 'Toner',
+  'night-cream': 'Moisturizer',
+  'cream-moisturizer': 'Moisturizer',
+  'face-masks': 'Face Mask',
+  'makeup-remover': 'Makeup Remover',
+  'lip-balm-care': 'Lip Care',
+  lips: 'Lip Care',
+  'body-wash': 'Body Wash',
+  'body-lotion': 'Body Lotion',
+  shampoos: 'Shampoo',
+  'hair-treatments': 'Hair Treatment',
+  'hair-care': 'Hair Care',
+};
+
+const CATEGORY_DISPLAY_EXCLUSIONS = new Set([
+  'k-beauty-j-beauty',
+  'korean-beauty',
+  'japanese-beauty',
+  'skincare-essentials',
+  'shop-by-concern',
+  'health-wellbeing',
+  'beauty-supplements',
+]);
+
+function getDisplayCategory(product: WooProduct): string {
+  for (const [slug, label] of Object.entries(CATEGORY_DISPLAY_PRIORITY)) {
+    if (product.categories?.some((category) => category.slug === slug)) {
+      return label;
+    }
+  }
+
+  const name = product.name.toLowerCase();
+  if (/serum|ampoule|essence/.test(name)) return 'Serum';
+  if (/cream|moisturi[sz]er|gel cream|lotion/.test(name)) return 'Moisturizer';
+  if (/cleanser|face wash|cleansing|foam wash/.test(name)) return 'Cleanser';
+  if (/toner|mist/.test(name)) return 'Toner';
+  if (/sunscreen|sun cream|sun serum|spf|sun stick|sun milk/.test(name)) return 'Sunscreen';
+  if (/mask|sleeping pack/.test(name)) return 'Face Mask';
+  if (/shampoo/.test(name)) return 'Shampoo';
+  if (/conditioner/.test(name)) return 'Conditioner';
+  if (/lip/.test(name)) return 'Lip Care';
+
+  const category = product.categories?.find((item) => !CATEGORY_DISPLAY_EXCLUSIONS.has(item.slug));
+  return category?.name || 'Products';
+}
+
 export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
@@ -149,7 +199,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const showBrandChip = Boolean(canonical);
   const madeIn = getAttributeValue('made in') || getAttributeValue('country') || getAttributeValue('origin') || 'South Korea';
   const size = getAttributeValue('size') || getAttributeValue('volume') || '75ml';
-  const categoryName = product.categories?.[0]?.name || 'Products';
+  const categoryName = getDisplayCategory(product);
   const brandHref = brandName ? `/brands?brand=${encodeURIComponent(brandSlug)}` : '/brands';
   const originHref = madeIn ? `/origins?country=${encodeURIComponent(getOriginCountrySlug(madeIn))}` : '/origins';
 
