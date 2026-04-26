@@ -1,11 +1,11 @@
-import { getProducts } from '@/lib/woocommerce';
+import { getCategoryBySlug, getProducts } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
 const ORIGINS = [
-  { country: 'korea', label: 'Korean Beauty', flag: '🇰🇷', tag: 'korean-beauty', desc: 'Authentic K-Beauty from Korea' },
-  { country: 'japan', label: 'Japanese Beauty', flag: '🇯🇵', tag: 'japanese-beauty', desc: 'Premium J-Beauty from Japan' },
+  { country: 'korea', label: 'Korean Beauty', flag: '🇰🇷', tag: 'korean-beauty', categorySlug: 'korean-beauty', desc: 'Authentic K-Beauty from Korea' },
+  { country: 'japan', label: 'Japanese Beauty', flag: '🇯🇵', tag: 'japanese-beauty', categorySlug: 'japanese-beauty', desc: 'Premium J-Beauty from Japan' },
   { country: 'uk', label: 'UK Beauty', flag: '🇬🇧', tag: 'uk-beauty', desc: 'Best of British Beauty' },
   { country: 'usa', label: 'USA Beauty', flag: '🇺🇸', tag: 'usa-beauty', desc: 'Top American Beauty Brands' },
   { country: 'france', label: 'French Beauty', flag: '🇫🇷', tag: 'france-beauty', desc: 'Luxury French Skincare' },
@@ -37,9 +37,20 @@ interface OriginsPageProps {
 export default async function OriginsPage({ searchParams }: OriginsPageProps) {
   const page = parseInt(searchParams.page || '1');
   const selectedOrigin = ORIGINS.find(o => o.country === searchParams.country);
+  const selectedCategory = selectedOrigin?.categorySlug
+    ? await getCategoryBySlug(selectedOrigin.categorySlug)
+    : null;
 
   const { products = [], totalPages = 1, total = 0 } = selectedOrigin
-    ? await getProducts({ page, per_page: 24, orderby: 'date', order: 'desc', tag: selectedOrigin.tag })
+    ? await getProducts({
+      page,
+      per_page: 24,
+      orderby: 'date',
+      order: 'desc',
+      ...(selectedCategory
+        ? { category: String(selectedCategory.id) }
+        : { tag: selectedOrigin.tag }),
+    })
     : { products: [], totalPages: 1, total: 0 };
 
   if (!searchParams.country) {
