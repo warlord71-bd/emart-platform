@@ -1,16 +1,17 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { sendGAEvent } from '@next/third-parties/google';
 
 export function NotFoundTracker() {
+  const pathname = usePathname();
+
   useEffect(() => {
-    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
-      (window as any).gtag('event', 'headless_migration_404', {
-        page_location: window.location.href,
-        page_path: window.location.pathname + window.location.search,
-      });
-    }
-  }, []);
+    sendGAEvent('event', 'headless_migration_404', {
+      page_path: pathname,
+    });
+  }, [pathname]);
 
   return null;
 }

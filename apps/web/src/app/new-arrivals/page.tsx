@@ -3,10 +3,13 @@ import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'New Arrivals - Latest Global Skincare Brands | Emart',
-  description: 'Discover the newest global skincare products at Emart. Fresh arrivals every week!',
-};
+export function generateMetadata(): Metadata {
+  return {
+    title: 'New Arrivals - Latest Global Skincare Brands | Emart',
+    description: 'Discover the newest global skincare products at Emart. Fresh arrivals every week!',
+    alternates: { canonical: '/new-arrivals' },
+  };
+}
 
 export const revalidate = 1800;
 

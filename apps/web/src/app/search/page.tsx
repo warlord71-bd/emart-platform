@@ -2,6 +2,7 @@
 // src/app/search/page.tsx
 // ═══════════════════════════════════════════
 import { searchProducts } from '@/lib/woocommerce';
+import { canonicalPath } from '@/lib/canonicalUrl';
 import { buildUrl } from '@/lib/url-utils';
 import ProductCard from '@/components/product/ProductCard';
 import type { Metadata } from 'next';
@@ -30,9 +31,15 @@ function isSkinQuizQuery(value: string) {
 }
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  // Keep ?q= in canonical so page-2+ of the same query collapses onto page-1.
+  // All other params (page, sort, etc.) are stripped by canonicalPath.
+  const canonical = searchParams.q
+    ? canonicalPath('/search', { q: searchParams.q })
+    : '/search';
   return {
     title: `Search: ${searchParams.q || ''} — Emart Skincare`,
     robots: { index: false, follow: true },
+    alternates: { canonical },
   };
 }
 

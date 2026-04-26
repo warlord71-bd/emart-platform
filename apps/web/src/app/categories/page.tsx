@@ -5,19 +5,24 @@ import type { Metadata } from 'next';
 import { getCategories } from '@/lib/woocommerce';
 import { MENU_CATEGORY_GROUPS, TOP_CATEGORY_IMAGE_OVERRIDES } from '@/lib/category-navigation';
 
-export const metadata: Metadata = {
-  title: 'All Categories — Emart Skincare Bangladesh',
-  description: 'Browse all Emart skincare, hair care, body care, makeup, and skin concern categories from one easy page.',
-  alternates: {
-    canonical: '/categories',
-  },
-};
+export function generateMetadata(): Metadata {
+  return {
+    title: 'All Categories — Emart Skincare Bangladesh',
+    description: 'Browse all Emart skincare, hair care, body care, makeup, and skin concern categories from one easy page.',
+    alternates: { canonical: '/categories' },
+  };
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
 
 export default async function CategoriesPage() {
-  const allCategories = await getCategories({ per_page: 100, hide_empty: true });
+  let allCategories: Awaited<ReturnType<typeof getCategories>> = [];
+  try {
+    allCategories = await getCategories({ per_page: 100, hide_empty: true });
+  } catch {
+    // WooCommerce API unreachable — render page structure without live category data
+  }
   const categoriesBySlug = new Map(allCategories.map((category) => [category.slug, category]));
 
   const categoryCount = MENU_CATEGORY_GROUPS.reduce((total, group) => total + group.items.length, 0);

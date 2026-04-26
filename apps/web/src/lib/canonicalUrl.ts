@@ -1,7 +1,12 @@
 const STRIP_PARAMS = new Set([
+  // pagination & ordering
   'orderby', 'order', 'page', 'per_page', 'paged',
+  // WP/WC internals
   '_wpnonce', 'add-to-cart', 's', 'post_type',
+  // WC attribute filters
   'filter_color', 'filter_size', 'min_price', 'max_price',
+  // Emart shop UI filters — sorted/filtered views are not canonical pages
+  'sort', 'category', 'brand', 'origin', 'in_stock', 'price',
 ]);
 
 /**

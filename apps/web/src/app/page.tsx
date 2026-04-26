@@ -36,14 +36,28 @@ function filterProductsWithImages(products: Awaited<ReturnType<typeof getBestSel
 }
 
 export default async function HomePage() {
-  const [bestSelling, newArrivals, onSale, fallbackResult, blogPosts, allCategories] = await Promise.all([
-    getBestSellingProducts(8),
-    getNewArrivals(8),
-    getSaleProducts(10),
-    getProducts({ per_page: 12, orderby: 'popularity' }),
-    getWordPressPosts({ perPage: 3 }),
-    getCategories({ per_page: 100, hide_empty: true }),
-  ]);
+  const emptyPage = { products: [] as Awaited<ReturnType<typeof getProducts>>['products'], totalPages: 0, total: 0 };
+  let [bestSelling, newArrivals, onSale, fallbackResult, blogPosts, allCategories]: [
+    Awaited<ReturnType<typeof getBestSellingProducts>>,
+    Awaited<ReturnType<typeof getNewArrivals>>,
+    Awaited<ReturnType<typeof getSaleProducts>>,
+    Awaited<ReturnType<typeof getProducts>>,
+    Awaited<ReturnType<typeof getWordPressPosts>>,
+    Awaited<ReturnType<typeof getCategories>>,
+  ] = [[], [], [], emptyPage, [], []];
+
+  try {
+    [bestSelling, newArrivals, onSale, fallbackResult, blogPosts, allCategories] = await Promise.all([
+      getBestSellingProducts(8),
+      getNewArrivals(8),
+      getSaleProducts(10),
+      getProducts({ per_page: 12, orderby: 'popularity' }),
+      getWordPressPosts({ perPage: 3 }),
+      getCategories({ per_page: 100, hide_empty: true }),
+    ]);
+  } catch {
+    // WooCommerce API unreachable (e.g. local build without VPN/tunnel) — render with empty data
+  }
 
   const fallbackProducts = filterProductsWithImages(fallbackResult.products);
   const bestSellerProducts = filterProductsWithImages(bestSelling).slice(0, 8);

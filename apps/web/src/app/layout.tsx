@@ -6,7 +6,7 @@ import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { Toaster } from 'react-hot-toast';
 import Providers from './providers';
-import Script from 'next/script';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { DM_Sans, JetBrains_Mono, Playfair_Display } from 'next/font/google';
 import { COMPANY } from '@/lib/companyProfile';
 
@@ -92,22 +92,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable}`}>
       <head>
-        {GOOGLE_TAG_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-tag" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GOOGLE_TAG_ID}');
-              `}
-            </Script>
-          </>
-        )}
         {/* LocalBusiness + Organization Schema */}
         <script
           type="application/ld+json"
@@ -236,6 +220,7 @@ export default function RootLayout({
             }}
           />
         </Providers>
+        {GOOGLE_TAG_ID && <GoogleAnalytics gaId={GOOGLE_TAG_ID} />}
       </body>
     </html>
   );

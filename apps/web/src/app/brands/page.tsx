@@ -11,10 +11,13 @@ for (const entry of brandLogoManifest as Array<{ slug: string; logo: string | nu
   if (entry.logo) brandLogoBySlug.set(entry.slug.toLowerCase(), entry.logo);
 }
 
-export const metadata: Metadata = {
-  title: 'Shop By Brands | Emart Skincare Bangladesh',
-  description: 'Browse all available beauty brands at Emart Skincare Bangladesh.',
-};
+export function generateMetadata(): Metadata {
+  return {
+    title: 'Shop By Brands | Emart Skincare Bangladesh',
+    description: 'Browse all available beauty brands at Emart Skincare Bangladesh.',
+    alternates: { canonical: '/brands' },
+  };
+}
 
 export const revalidate = 3600;
 export const dynamic = 'force-dynamic';
@@ -110,7 +113,12 @@ export default async function BrandsPage({
   // Pull WC terms (provides counts + ids for products-by-brand links) and merge
   // with the curated CANONICAL_BRANDS whitelist so the page always shows the
   // full ~95-brand list, even for brands without any WC products yet.
-  const wcBrands = await getBrands({ orderby: 'name', order: 'asc' });
+  let wcBrands: WooBrand[] = [];
+  try {
+    wcBrands = await getBrands({ orderby: 'name', order: 'asc' });
+  } catch {
+    // WooCommerce API unreachable — show canonical brand list without WC counts
+  }
   const wcBySlug = new Map<string, WooBrand>();
   for (const b of wcBrands) wcBySlug.set(b.slug.toLowerCase(), b);
 

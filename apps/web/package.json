@@ -12,6 +12,7 @@
     "check:all": "./scripts/check-all.sh"
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.4",
     "@tanstack/react-query": "^5.28.0",
     "axios": "^1.6.2",
     "lucide-react": "^0.263.1",

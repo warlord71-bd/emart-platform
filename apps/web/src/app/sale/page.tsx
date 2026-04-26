@@ -3,10 +3,13 @@ import ProductCard from '@/components/product/ProductCard';
 import ProductFilters from '@/components/product/ProductFilters';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: '🔥 Sale - Best Deals on Global Skincare Brands',
-  description: 'Shop our exclusive sale collection. Get the best deals on authentic global skincare products.',
-};
+export function generateMetadata(): Metadata {
+  return {
+    title: 'Sale - Best Deals on Global Skincare Brands | Emart',
+    description: 'Shop our exclusive sale collection. Get the best deals on authentic global skincare products.',
+    alternates: { canonical: '/sale' },
+  };
+}
 
 export const revalidate = 1800;
 
