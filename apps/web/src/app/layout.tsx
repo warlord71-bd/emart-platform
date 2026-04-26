@@ -108,74 +108,81 @@ export default function RootLayout({
             </Script>
           </>
         )}
-        {/* Organization Schema */}
+        {/* LocalBusiness + Organization Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'Organization',
-              'name': COMPANY.storeName,
-              'url': 'https://e-mart.com.bd',
-              'logo': 'https://e-mart.com.bd/wp-content/uploads/2026/03/logo.png',
-              'description': `${COMPANY.storeName} is an enterprise of ${COMPANY.enterpriseName}, serving Bangladesh with authentic global beauty products, careful product verification, and local customer support from Dhanmondi.`,
-              'sameAs': [
-                COMPANY.social.facebook,
-                COMPANY.social.instagram,
-                COMPANY.social.youtube,
-                COMPANY.social.x,
-              ],
-              'email': COMPANY.supportEmail,
-              'founder': {
-                '@type': 'Person',
-                'name': COMPANY.founderName,
-                'url': COMPANY.founderUrl,
-              },
-              'numberOfEmployees': {
-                '@type': 'QuantitativeValue',
-                'value': COMPANY.teamSize,
-              },
-              'parentOrganization': {
-                '@type': 'Organization',
-                'name': COMPANY.enterpriseName,
-              },
-              'contactPoint': [
+              '@graph': [
                 {
-                  '@type': 'ContactPoint',
+                  '@type': ['LocalBusiness', 'Organization'],
+                  '@id': 'https://e-mart.com.bd/#organization',
+                  'name': 'E-mart Bangladesh',
+                  'alternateName': COMPANY.storeName,
+                  'url': 'https://e-mart.com.bd',
+                  'logo': {
+                    '@type': 'ImageObject',
+                    'url': 'https://e-mart.com.bd/wp-content/uploads/2026/03/logo.png',
+                    'width': 600,
+                    'height': 600,
+                  },
+                  'image': 'https://e-mart.com.bd/wp-content/uploads/2026/03/logo.png',
+                  'description': `${COMPANY.storeName} is an enterprise of ${COMPANY.enterpriseName}, serving Bangladesh with authentic global beauty products, careful product verification, and local customer support from Dhanmondi.`,
+                  'address': {
+                    '@type': 'PostalAddress',
+                    'streetAddress': `${COMPANY.office.line1} ${COMPANY.office.line2}`,
+                    'addressLocality': 'Dhanmondi',
+                    'addressRegion': 'Dhaka',
+                    'postalCode': '1205',
+                    'addressCountry': 'BD',
+                  },
                   'telephone': COMPANY.phones.hotlineHref,
-                  'contactType': 'Customer Service',
                   'email': COMPANY.supportEmail,
-                  'areaServed': 'BD',
-                  'availableLanguage': ['en', 'bn'],
-                },
-                {
-                  '@type': 'ContactPoint',
-                  'telephone': COMPANY.phones.primaryHref,
-                  'contactType': 'Sales',
-                  'areaServed': 'BD',
-                  'availableLanguage': ['en', 'bn'],
+                  'openingHours': 'Sa-Th 09:00-21:00',
+                  'priceRange': '৳৳',
+                  'currenciesAccepted': 'BDT',
+                  'paymentAccepted': 'Cash, bKash, Nagad',
+                  'areaServed': { '@type': 'Country', 'name': 'Bangladesh' },
+                  'sameAs': [
+                    COMPANY.social.facebook,
+                    COMPANY.social.instagram,
+                    COMPANY.social.youtube,
+                    COMPANY.social.x,
+                    'https://www.google.com/maps/search/?api=1&query=E-mart+Bangladesh+Dhanmondi+Dhaka',
+                  ],
+                  'founder': {
+                    '@type': 'Person',
+                    'name': COMPANY.founderName,
+                    'url': COMPANY.founderUrl,
+                  },
+                  'numberOfEmployees': {
+                    '@type': 'QuantitativeValue',
+                    'value': COMPANY.teamSize,
+                  },
+                  'parentOrganization': {
+                    '@type': 'Organization',
+                    'name': COMPANY.enterpriseName,
+                  },
+                  'contactPoint': [
+                    {
+                      '@type': 'ContactPoint',
+                      'telephone': COMPANY.phones.hotlineHref,
+                      'contactType': 'customer service',
+                      'email': COMPANY.supportEmail,
+                      'areaServed': 'BD',
+                      'availableLanguage': ['en', 'bn'],
+                    },
+                    {
+                      '@type': 'ContactPoint',
+                      'telephone': COMPANY.phones.salesHref,
+                      'contactType': 'sales',
+                      'areaServed': 'BD',
+                      'availableLanguage': ['en', 'bn'],
+                    },
+                  ],
                 },
               ],
-              'address': {
-                '@type': 'PostalAddress',
-                'streetAddress': `${COMPANY.office.line1} ${COMPANY.office.line2}`,
-                'addressLocality': 'Dhanmondi',
-                'addressRegion': 'Dhaka',
-                'postalCode': '1205',
-                'addressCountry': 'BD',
-              },
-              'department': {
-                '@type': 'Store',
-                'name': `${COMPANY.storeName} Warehouse`,
-                'address': {
-                  '@type': 'PostalAddress',
-                  'streetAddress': `${COMPANY.warehouse.line1} ${COMPANY.warehouse.line2}`,
-                  'addressLocality': 'Dhanmondi',
-                  'addressRegion': 'Dhaka',
-                  'postalCode': '1205',
-                  'addressCountry': 'BD',
-                },
-              },
             }),
           }}
         />
