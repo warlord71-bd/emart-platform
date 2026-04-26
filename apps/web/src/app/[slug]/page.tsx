@@ -18,8 +18,20 @@ interface ProductFaqItem {
   answer: string;
 }
 
+interface HtmlSection {
+  headingHtml: string;
+  headingText: string;
+  bodyHtml: string;
+}
+
 const FAQ_HEADING_PATTERN =
   /<h[1-6]\b[^>]*>\s*(?:সাধারণ\s+জিজ্ঞাসা(?:\s*\(FAQ\))?|FAQ:?|Frequently Asked Questions)\s*<\/h[1-6]>/i;
+
+const USAGE_HEADING_PATTERN =
+  /(how\s*to\s*use|usage|direction|instruction|application|use|ব্যবহার|ব্যবহারের\s*নিয়ম|ব্যবহারবিধি|প্রয়োগ)/i;
+
+const NON_INGREDIENT_HEADING_PATTERN =
+  /(how\s*to\s*use|usage|direction|instruction|application|use|suitable\s*for|skin\s*type|storage|store|সংরক্ষণ|কার\s*জন্য|ব্যবহার|ব্যবহারের\s*নিয়ম|ব্যবহারবিধি|প্রয়োগ)/i;
 
 function normalizeRichHtml(value: string): string {
   return value
@@ -48,6 +60,68 @@ function htmlToTextLines(value: string): string[] {
     .split('\n')
     .map((line) => decodeText(line))
     .filter(Boolean);
+}
+
+function stripHtmlTags(value: string): string {
+  return decodeText(value.replace(/<[^>]*>/g, ''));
+}
+
+function splitHtmlSections(value: string): HtmlSection[] {
+  const normalized = normalizeRichHtml(value);
+  if (!normalized) return [];
+
+  const headingPattern = /<h([1-6])\b[^>]*>[\s\S]*?<\/h\1>/gi;
+  const matches = Array.from(normalized.matchAll(headingPattern));
+
+  if (matches.length === 0) {
+    return [{ headingHtml: '', headingText: '', bodyHtml: normalized }];
+  }
+
+  const sections: HtmlSection[] = [];
+  const firstIndex = matches[0]?.index ?? 0;
+  const preamble = normalized.slice(0, firstIndex).trim();
+  if (preamble) {
+    sections.push({ headingHtml: '', headingText: '', bodyHtml: preamble });
+  }
+
+  matches.forEach((match, index) => {
+    const headingHtml = match[0];
+    const start = (match.index ?? 0) + headingHtml.length;
+    const end = matches[index + 1]?.index ?? normalized.length;
+
+    sections.push({
+      headingHtml,
+      headingText: stripHtmlTags(headingHtml),
+      bodyHtml: normalized.slice(start, end).trim(),
+    });
+  });
+
+  return sections;
+}
+
+function renderHtmlSections(sections: HtmlSection[]): string {
+  return sections
+    .map((section) => `${section.headingHtml}${section.bodyHtml}`.trim())
+    .filter(Boolean)
+    .join(' ')
+    .trim();
+}
+
+function getUsageSectionHtml(value: string): string {
+  return renderHtmlSections(
+    splitHtmlSections(value).filter((section) => USAGE_HEADING_PATTERN.test(section.headingText))
+  );
+}
+
+function cleanIngredientsHtml(value: string): string {
+  const sections = splitHtmlSections(value);
+  if (sections.length === 0) return '';
+
+  const cleaned = sections.filter(
+    (section) => !section.headingText || !NON_INGREDIENT_HEADING_PATTERN.test(section.headingText)
+  );
+
+  return renderHtmlSections(cleaned) || normalizeRichHtml(value);
 }
 
 function removeFaqFromHtml(value: string): string {
@@ -172,22 +246,29 @@ function getCustomTabContent(product: WooProduct, matcher: RegExp): string {
 }
 
 function getIngredientsHtml(product: WooProduct): string {
-  return (
+  const ingredients =
     getMetaString(product, ['_emart_ingredients']) ||
     getMetaString(product, ['_wc_facebook_enhanced_catalog_attributes_ingredients']) ||
-    getCustomTabContent(product, /ingredient/i)
-  );
+    getCustomTabContent(product, /ingredient/i);
+
+  return cleanIngredientsHtml(ingredients);
 }
 
 function getHowToUseHtml(product: WooProduct): string {
-  return (
+  const explicitUsage =
     getMetaString(product, ['_emart_how_to_use']) ||
     getMetaString(product, [
       '_wc_facebook_enhanced_catalog_attributes_instructions',
       '_wc_facebook_enhanced_catalog_attributes_care_instructions',
     ]) ||
-    getCustomTabContent(product, /(how\s*to\s*use|usage|direction|instruction|application|use)/i)
-  );
+    getCustomTabContent(product, USAGE_HEADING_PATTERN);
+
+  if (explicitUsage) {
+    return explicitUsage;
+  }
+
+  const legacyIngredientsTab = getCustomTabContent(product, /ingredient/i);
+  return getUsageSectionHtml(legacyIngredientsTab);
 }
 
 function getEmartFaqItems(product: WooProduct): ProductFaqItem[] {
