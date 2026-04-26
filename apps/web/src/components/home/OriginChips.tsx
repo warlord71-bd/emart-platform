@@ -9,7 +9,8 @@ const ORIGINS = [
   { name: 'USA', emoji: '🇺🇸', slug: 'usa' },
   { name: 'France', emoji: '🇫🇷', slug: 'france' },
   { name: 'India', emoji: '🇮🇳', slug: 'india' },
-  { name: 'Bangladesh', emoji: '🇧🇩', slug: 'bangladesh' },
+  { name: 'Thailand', emoji: '🇹🇭', slug: 'thailand' },
+  { name: 'Other', emoji: '🌍', slug: 'other' },
 ];
 
 export const OriginChips = () => {
@@ -30,7 +31,7 @@ export const OriginChips = () => {
           {ORIGINS.map((origin) => (
             <Link
               key={origin.slug}
-              href={`/shop?origin=${encodeURIComponent(origin.slug)}`}
+              href={`/origins?country=${encodeURIComponent(origin.slug)}`}
               className="group inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-4 py-2.5 transition-all duration-200 hover:border-accent/30 hover:bg-accent-soft hover:shadow-card"
             >
               <span className="text-lg md:text-xl">{origin.emoji}</span>

@@ -110,8 +110,8 @@ const DESKTOP_MENU_GROUPS: MenuGroup[] = [
         items: [
           { label: 'Korean', href: '/origins?country=korea' },
           { label: 'Japanese', href: '/origins?country=japan' },
-          { label: 'Western', href: '/origins' },
-          { label: 'Indie', href: '/brands' },
+          { label: 'USA', href: '/origins?country=usa' },
+          { label: 'French', href: '/origins?country=france' },
         ],
       },
     ],
@@ -136,8 +136,8 @@ const DESKTOP_MENU_GROUPS: MenuGroup[] = [
         items: [
           { label: 'Korean', href: '/origins?country=korea' },
           { label: 'Japanese', href: '/origins?country=japan' },
-          { label: 'Western', href: '/origins' },
-          { label: 'Indie', href: '/brands' },
+          { label: 'USA', href: '/origins?country=usa' },
+          { label: 'French', href: '/origins?country=france' },
         ],
       },
     ],
