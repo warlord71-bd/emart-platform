@@ -9,6 +9,7 @@ import Providers from './providers';
 import Script from 'next/script';
 import { DM_Sans, JetBrains_Mono, Playfair_Display } from 'next/font/google';
 import { COMPANY } from '@/lib/companyProfile';
+import { Analytics } from '@vercel/analytics/next';
 
 const GOOGLE_TAG_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID || 'G-WMJNX87Q2N';
 
@@ -229,6 +230,7 @@ export default function RootLayout({
             }}
           />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
