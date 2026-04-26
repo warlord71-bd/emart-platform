@@ -1,7 +1,10 @@
 ---
-name: E-Mart BD - Korean Beauty eCommerce Platform
+name: E-Mart BD - Global Beauty Hub (K-Beauty, J-Beauty + International Brands)
 tech_stack: Next.js 14+, TypeScript, WooCommerce REST API, Tailwind CSS
+agents: See AGENTS.md (universal), AGENTS.coding.md, AGENTS.design.md, AGENTS.seo.md
 ---
+
+> This project uses a universal AGENTS.md system. Read AGENTS.md first, then the job-specific file.
 
 # E-Mart BD Project Context
 

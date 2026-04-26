@@ -16,9 +16,12 @@ interface OrderStatus {
 interface TrackingData {
   order_id: number;
   status: string;
+  status_label?: string;
+  status_description?: string;
   date_created: string;
   estimated_delivery?: string;
   tracking_number?: string;
+  tracking_url?: string;
   courier?: string;
   shipping_address: {
     address_1: string;
@@ -27,6 +30,11 @@ interface TrackingData {
     country: string;
   };
   timeline: OrderStatus[];
+  updates?: Array<{
+    id: number;
+    date: string;
+    note: string;
+  }>;
 }
 
 export default function TrackOrderPage() {
@@ -34,79 +42,67 @@ export default function TrackOrderPage() {
   const orderId = searchParams.get('id');
   
   const [orderNumber, setOrderNumber] = useState(orderId || '');
-  const [email, setEmail] = useState('');
+  const [identity, setIdentity] = useState('');
   const [loading, setLoading] = useState(false);
   const [trackingData, setTrackingData] = useState<TrackingData | null>(null);
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  const handleTrackOrder = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleTrackOrder = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setLoading(true);
     setError('');
     setSubmitted(true);
 
-    // Mock tracking data - in production, fetch from WooCommerce API
-    setTimeout(() => {
-      const mockData: TrackingData = {
-        order_id: parseInt(orderNumber) || 1001,
-        status: 'processing',
-        date_created: new Date(Date.now() - 86400000 * 3).toISOString(),
-        estimated_delivery: new Date(Date.now() + 86400000 * 2).toISOString(),
-        tracking_number: `TRK${Date.now()}`,
-        courier: 'Pathao Courier',
-        shipping_address: {
-          address_1: '123 Main Street',
-          city: 'Dhaka',
-          postcode: '1000',
-          country: 'Bangladesh'
-        },
-        timeline: [
-          {
-            status: 'pending',
-            status_label: 'Order Placed',
-            date: new Date(Date.now() - 86400000 * 3).toISOString(),
-            description: 'Your order has been received',
-            icon: Clock
-          },
-          {
-            status: 'processing',
-            status_label: 'Processing',
-            date: new Date(Date.now() - 86400000 * 2).toISOString(),
-            description: 'Your order is being prepared',
-            icon: Package
-          },
-          {
-            status: 'on-hold',
-            status_label: 'Ready to Ship',
-            date: new Date(Date.now() - 86400000 * 1).toISOString(),
-            description: 'Package ready for dispatch',
-            icon: Truck
-          },
-          {
-            status: 'completed',
-            status_label: 'Delivered',
-            date: '',
-            description: 'Package delivered successfully',
-            icon: CheckCircle
-          }
-        ]
+    try {
+      const response = await fetch('/api/track-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: orderNumber,
+          identity,
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data?.error || 'Order not found. Please check your order details and try again.');
+      }
+
+      const iconMap: Record<string, any> = {
+        pending: Clock,
+        processing: Package,
+        shipped: Truck,
+        completed: CheckCircle,
+        cancelled: AlertCircle,
       };
 
-      // Simulate different scenarios
-      if (orderNumber === 'error') {
-        setError('Order not found. Please check your order number and try again.');
-        setTrackingData(null);
-      } else {
-        setTrackingData(mockData);
-      }
+      setTrackingData({
+        ...data,
+        timeline: (data.timeline || []).map((step: OrderStatus) => ({
+          ...step,
+          icon: iconMap[step.status] || Package,
+        })),
+      });
+    } catch (fetchError) {
+      setTrackingData(null);
+      setError(fetchError instanceof Error ? fetchError.message : 'Order not found. Please try again.');
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
+  useEffect(() => {
+    if (orderId) {
+      handleTrackOrder();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderId]);
+
   const getCurrentStep = (timeline: OrderStatus[]) => {
-    const currentIndex = timeline.findIndex(item => item.status === 'completed' || item.status === 'cancelled');
-    return currentIndex >= 0 ? currentIndex : timeline.findIndex(item => item.status === 'on-hold' || item.status === 'processing');
+    const activeSteps = timeline.filter((item) => Boolean(item.date));
+    return Math.max(activeSteps.length - 1, 0);
   };
 
   if (!submitted && !orderId) {
@@ -135,17 +131,20 @@ export default function TrackOrderPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address (Optional)
+              <label htmlFor="identity" className="block text-sm font-medium text-gray-700 mb-1">
+                Email Address or Phone
               </label>
               <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                type="text"
+                id="identity"
+                value={identity}
+                onChange={(e) => setIdentity(e.target.value)}
+                placeholder="your@email.com or 01XXXXXXXXX"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
               />
+              <p className="mt-2 text-xs text-gray-500">
+                Logged-in customers can open tracking directly. Guests should enter the same email or phone used on the order.
+              </p>
             </div>
 
             <button
@@ -248,7 +247,7 @@ export default function TrackOrderPage() {
                 'bg-yellow-100 text-yellow-800'
               }`}>
                 {isDelivered && <CheckCircle className="h-4 w-4 mr-1" />}
-                {trackingData.status.toUpperCase()}
+                {trackingData.status_label || trackingData.status.toUpperCase()}
               </span>
               {trackingData.tracking_number && (
                 <p className="text-sm text-gray-500 mt-2">
@@ -301,10 +300,10 @@ export default function TrackOrderPage() {
           {trackingData.timeline[currentStep] && (
             <div className="mt-6 p-4 bg-gray-50 rounded-lg">
               <h3 className="font-medium text-gray-900 mb-1">
-                {trackingData.timeline[currentStep].status_label}
+                {trackingData.status_label || trackingData.timeline[currentStep].status_label}
               </h3>
               <p className="text-sm text-gray-600">
-                {trackingData.timeline[currentStep].description}
+                {trackingData.status_description || trackingData.timeline[currentStep].description}
               </p>
               {trackingData.estimated_delivery && !isDelivered && (
                 <p className="text-sm text-primary-600 mt-2 font-medium">
@@ -341,6 +340,18 @@ export default function TrackOrderPage() {
               {trackingData.tracking_number && (
                 <p><span className="font-medium">Tracking Number:</span> {trackingData.tracking_number}</p>
               )}
+              {trackingData.tracking_url && (
+                <p>
+                  <a
+                    href={trackingData.tracking_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-medium text-primary-600 hover:underline"
+                  >
+                    Open courier tracking link
+                  </a>
+                </p>
+              )}
               {trackingData.estimated_delivery && (
                 <p>
                   <span className="font-medium">Estimated Delivery:</span>{' '}
@@ -350,6 +361,22 @@ export default function TrackOrderPage() {
             </div>
           </div>
         </div>
+
+        {trackingData.updates && trackingData.updates.length > 0 && (
+          <div className="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 className="mb-4 text-lg font-semibold text-gray-900">Latest Updates</h3>
+            <div className="space-y-4">
+              {trackingData.updates.map((update) => (
+                <div key={update.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+                  <p className="text-sm font-medium text-gray-900">{update.note}</p>
+                  <p className="mt-1 text-xs text-gray-500">
+                    {new Date(update.date).toLocaleString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Actions */}
         <div className="mt-8 flex flex-col sm:flex-row gap-4">

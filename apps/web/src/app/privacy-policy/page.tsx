@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { COMPANY } from '@/lib/companyProfile';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -8,11 +9,11 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-[#1a1a2e] mb-6">Privacy Policy</h1>
+      <h1 className="mb-6 text-2xl font-bold text-ink">Privacy Policy</h1>
 
-      <div className="prose prose-sm max-w-none text-gray-600 space-y-6">
+      <div className="prose prose-sm max-w-none space-y-6 text-muted prose-headings:text-ink prose-strong:text-ink prose-li:text-muted prose-a:text-accent">
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">Introduction</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">Introduction</h2>
           <p>
             Emart Skincare Bangladesh ("we," "us," or "our") operates the e-mart.com.bd website.
             This Privacy Policy explains how we collect, use, protect, and disclose your information.
@@ -20,7 +21,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">Information We Collect</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">Information We Collect</h2>
           <p>We collect information in the following ways:</p>
           <ul className="list-disc list-inside space-y-2 mt-2">
             <li><strong>Personal Information:</strong> Name, email address, phone number, mailing address when you register or place an order</li>
@@ -31,7 +32,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">How We Use Your Information</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">How We Use Your Information</h2>
           <p>We use the collected information for:</p>
           <ul className="list-disc list-inside space-y-2 mt-2">
             <li>Processing and delivering your orders</li>
@@ -46,7 +47,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">Data Protection & Security</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">Data Protection & Security</h2>
           <p>
             Your information is important to us. We implement industry-standard security measures including:
           </p>
@@ -60,7 +61,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">Cookies & Tracking</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">Cookies & Tracking</h2>
           <p>
             We use cookies to enhance your browsing experience and track website performance.
             Cookies are small files stored on your device that help us remember your preferences
@@ -72,7 +73,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">Third-Party Sharing</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">Third-Party Sharing</h2>
           <p>
             We do not sell or share your personal information with third parties except:
           </p>
@@ -85,7 +86,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">Your Rights</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">Your Rights</h2>
           <p>You have the right to:</p>
           <ul className="list-disc list-inside space-y-2 mt-2">
             <li>Access your personal information</li>
@@ -97,7 +98,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">Children's Privacy</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">Children's Privacy</h2>
           <p>
             Our website is not intended for children under 13 years old. We do not knowingly collect
             information from children. If we become aware that we have collected information from a minor,
@@ -106,7 +107,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">Policy Updates</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">Policy Updates</h2>
           <p>
             We may update this Privacy Policy from time to time. Changes will be posted on this page,
             and the effective date will be updated. Your continued use of our website constitutes acceptance
@@ -114,9 +115,9 @@ export default function PrivacyPolicyPage() {
           </p>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-6">
-          <p className="text-sm text-green-900">
-            <strong>Privacy Concerns?</strong> Contact us at <a href="mailto:emart.bdofficial@gmail.com" className="text-[#e8197a] hover:underline">emart.bdofficial@gmail.com</a>
+        <div className="mt-6 rounded-lg border border-success/30 bg-success-soft p-4">
+          <p className="text-sm text-ink-2">
+            <strong>Privacy Concerns?</strong> Contact us at <a href={`mailto:${COMPANY.supportEmail}`} className="text-accent hover:underline">{COMPANY.supportEmail}</a>
           </p>
         </div>
       </div>

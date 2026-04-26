@@ -1,0 +1,952 @@
+[
+  {
+    "id": 1,
+    "name": "3W Clinic",
+    "slug": "3w-clinic",
+    "logo": "/images/brands-e-mart/3w-clinic.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 14820,
+    "fallback": false
+  },
+  {
+    "id": 2,
+    "name": "ABIB",
+    "slug": "abib",
+    "logo": "/images/brands-e-mart/abib.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 10637,
+    "fallback": false
+  },
+  {
+    "id": 3,
+    "name": "ACWELL",
+    "slug": "acwell",
+    "logo": "/images/brands-e-mart/acwell.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 22348,
+    "fallback": false
+  },
+  {
+    "id": 4,
+    "name": "AHC",
+    "slug": "ahc",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 5,
+    "name": "APLB",
+    "slug": "aplb",
+    "logo": "/images/brands-e-mart/aplb.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 2025,
+    "fallback": false
+  },
+  {
+    "id": 6,
+    "name": "April Skin",
+    "slug": "april-skin",
+    "logo": "/images/brands-e-mart/april-skin.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4940,
+    "fallback": false
+  },
+  {
+    "id": 7,
+    "name": "ANUA",
+    "slug": "anua",
+    "logo": "/images/brands-e-mart/anua.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 1931,
+    "fallback": false
+  },
+  {
+    "id": 8,
+    "name": "Arencia",
+    "slug": "arencia",
+    "logo": "/images/brands-e-mart/arencia.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6121,
+    "fallback": false
+  },
+  {
+    "id": 9,
+    "name": "Aromatica",
+    "slug": "aromatica",
+    "logo": "/images/brands-e-mart/aromatica.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 2396,
+    "fallback": false
+  },
+  {
+    "id": 10,
+    "name": "AXIS-Y",
+    "slug": "axis-y",
+    "logo": "/images/brands-e-mart/axis-y.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 7375,
+    "fallback": false
+  },
+  {
+    "id": 11,
+    "name": "Bad Skin",
+    "slug": "bad-skin",
+    "logo": "/images/brands-e-mart/bad-skin.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 7714,
+    "fallback": false
+  },
+  {
+    "id": 12,
+    "name": "Banila Co.",
+    "slug": "banila-co",
+    "logo": "/images/brands-e-mart/banila-co.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 9592,
+    "fallback": false
+  },
+  {
+    "id": 13,
+    "name": "Barulab",
+    "slug": "barulab",
+    "logo": "/images/brands-e-mart/barulab.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 2362,
+    "fallback": false
+  },
+  {
+    "id": 14,
+    "name": "B.LAB",
+    "slug": "b-lab",
+    "logo": "/images/brands-e-mart/b-lab.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 3857,
+    "fallback": false
+  },
+  {
+    "id": 15,
+    "name": "Beauty of Joseon",
+    "slug": "beauty-of-joseon",
+    "logo": "/images/brands-e-mart/beauty-of-joseon.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 54924,
+    "fallback": false
+  },
+  {
+    "id": 16,
+    "name": "Be The Skin",
+    "slug": "be-the-skin",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 17,
+    "name": "Belif",
+    "slug": "belif",
+    "logo": "/images/brands-e-mart/belif.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 3699,
+    "fallback": false
+  },
+  {
+    "id": 18,
+    "name": "Bellflower",
+    "slug": "bellflower",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 19,
+    "name": "Benton",
+    "slug": "benton",
+    "logo": "/images/brands-e-mart/benton.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 3568,
+    "fallback": false
+  },
+  {
+    "id": 20,
+    "name": "Bonajour",
+    "slug": "bonajour",
+    "logo": "/images/brands-e-mart/bonajour.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6853,
+    "fallback": false
+  },
+  {
+    "id": 21,
+    "name": "BRINGGREEN",
+    "slug": "bringgreen",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 22,
+    "name": "By Wishtrend",
+    "slug": "by-wishtrend",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 23,
+    "name": "Carenel",
+    "slug": "carenel",
+    "logo": "/images/brands-e-mart/carenel.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 1962,
+    "fallback": false
+  },
+  {
+    "id": 24,
+    "name": "Celimax",
+    "slug": "celimax",
+    "logo": "/images/brands-e-mart/celimax.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 2332,
+    "fallback": false
+  },
+  {
+    "id": 25,
+    "name": "COMMONLABS",
+    "slug": "commonlabs",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 26,
+    "name": "Cos De BAHA",
+    "slug": "cos-de-baha",
+    "logo": "/images/brands-e-mart/cos-de-baha.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6330,
+    "fallback": false
+  },
+  {
+    "id": 27,
+    "name": "COSRX",
+    "slug": "cosrx",
+    "logo": "/images/brands-e-mart/cosrx.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 8913,
+    "fallback": false
+  },
+  {
+    "id": 28,
+    "name": "Coxir",
+    "slug": "coxir",
+    "logo": "/images/brands-e-mart/coxir.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 8109,
+    "fallback": false
+  },
+  {
+    "id": 29,
+    "name": "Dear Klairs",
+    "slug": "dear-klairs",
+    "logo": "/images/brands-e-mart/dear-klairs.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 8875,
+    "fallback": false
+  },
+  {
+    "id": 30,
+    "name": "Dr. Althea",
+    "slug": "dr-althea",
+    "logo": "/images/brands-e-mart/dr-althea.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 3119,
+    "fallback": false
+  },
+  {
+    "id": 31,
+    "name": "Dr. Ceuracle",
+    "slug": "dr-ceuracle",
+    "logo": "/images/brands-e-mart/dr-ceuracle.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4530,
+    "fallback": false
+  },
+  {
+    "id": 32,
+    "name": "Dr.ForHair",
+    "slug": "dr-forhair",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 33,
+    "name": "Dr.Jart+",
+    "slug": "dr-jart",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 34,
+    "name": "Eqqualberry",
+    "slug": "eqqualberry",
+    "logo": "/images/brands-e-mart/eqqualberry.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 3370,
+    "fallback": false
+  },
+  {
+    "id": 35,
+    "name": "Etude House",
+    "slug": "etude-house",
+    "logo": "/images/brands-e-mart/etude-house.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 8047,
+    "fallback": false
+  },
+  {
+    "id": 36,
+    "name": "Farm Stay",
+    "slug": "farm-stay",
+    "logo": "/images/brands-e-mart/farm-stay.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6522,
+    "fallback": false
+  },
+  {
+    "id": 37,
+    "name": "FINO",
+    "slug": "fino",
+    "logo": "/images/brands-e-mart/fino.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 13703,
+    "fallback": false
+  },
+  {
+    "id": 38,
+    "name": "FULLY",
+    "slug": "fully",
+    "logo": "/images/brands-e-mart/fully.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4423,
+    "fallback": false
+  },
+  {
+    "id": 39,
+    "name": "Goodal",
+    "slug": "goodal",
+    "logo": "/images/brands-e-mart/goodal.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6850,
+    "fallback": false
+  },
+  {
+    "id": 40,
+    "name": "HaruHaru Wonder",
+    "slug": "haruharu-wonder",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 41,
+    "name": "Healthy Place",
+    "slug": "healthy-place",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 42,
+    "name": "Heimish",
+    "slug": "heimish",
+    "logo": "/images/brands-e-mart/heimish.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 5004,
+    "fallback": false
+  },
+  {
+    "id": 43,
+    "name": "House of Hur",
+    "slug": "house-of-hur",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 44,
+    "name": "Illiyoon",
+    "slug": "illiyoon",
+    "logo": "/images/brands-e-mart/illiyoon.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 3132,
+    "fallback": false
+  },
+  {
+    "id": 45,
+    "name": "I'M FROM",
+    "slug": "i-m-from",
+    "logo": "/images/brands-e-mart/i-m-from.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4427,
+    "fallback": false
+  },
+  {
+    "id": 46,
+    "name": "Innisfree",
+    "slug": "innisfree",
+    "logo": "/images/brands-e-mart/innisfree.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 10367,
+    "fallback": false
+  },
+  {
+    "id": 47,
+    "name": "Isntree",
+    "slug": "isntree",
+    "logo": "/images/brands-e-mart/isntree.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 4606,
+    "fallback": false
+  },
+  {
+    "id": 48,
+    "name": "Iunik",
+    "slug": "iunik",
+    "logo": "/images/brands-e-mart/iunik.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4759,
+    "fallback": false
+  },
+  {
+    "id": 49,
+    "name": "IZEZE",
+    "slug": "izeze",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 50,
+    "name": "Jumiso",
+    "slug": "jumiso",
+    "logo": "/images/brands-e-mart/jumiso.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 7918,
+    "fallback": false
+  },
+  {
+    "id": 51,
+    "name": "KAINE",
+    "slug": "kaine",
+    "logo": "/images/brands-e-mart/kaine.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 11034,
+    "fallback": false
+  },
+  {
+    "id": 52,
+    "name": "KSECRET",
+    "slug": "ksecret",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 53,
+    "name": "Laneige",
+    "slug": "laneige",
+    "logo": "/images/brands-e-mart/laneige.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 11387,
+    "fallback": false
+  },
+  {
+    "id": 54,
+    "name": "Manyo",
+    "slug": "manyo",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 55,
+    "name": "Mary & May",
+    "slug": "mary-may",
+    "logo": "/images/brands-e-mart/mary-may.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6821,
+    "fallback": false
+  },
+  {
+    "id": 56,
+    "name": "Medicube",
+    "slug": "medicube",
+    "logo": "/images/brands-e-mart/medicube.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 7093,
+    "fallback": false
+  },
+  {
+    "id": 57,
+    "name": "Mise En Scene",
+    "slug": "mise-en-scene",
+    "logo": "/images/brands-e-mart/mise-en-scene.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 11568,
+    "fallback": false
+  },
+  {
+    "id": 58,
+    "name": "Missha",
+    "slug": "missha",
+    "logo": "/images/brands-e-mart/missha.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 15559,
+    "fallback": false
+  },
+  {
+    "id": 59,
+    "name": "Mixsoon",
+    "slug": "mixsoon",
+    "logo": "/images/brands-e-mart/mixsoon.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 5579,
+    "fallback": false
+  },
+  {
+    "id": 60,
+    "name": "Nature Republic",
+    "slug": "nature-republic",
+    "logo": "/images/brands-e-mart/nature-republic.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 52933,
+    "fallback": false
+  },
+  {
+    "id": 61,
+    "name": "Nineless",
+    "slug": "nineless",
+    "logo": "/images/brands-e-mart/nineless.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4163,
+    "fallback": false
+  },
+  {
+    "id": 62,
+    "name": "Numbuzin",
+    "slug": "numbuzin",
+    "logo": "/images/brands-e-mart/numbuzin.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4677,
+    "fallback": false
+  },
+  {
+    "id": 63,
+    "name": "Purito",
+    "slug": "purito",
+    "logo": "/images/brands-e-mart/purito.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4796,
+    "fallback": false
+  },
+  {
+    "id": 64,
+    "name": "Pyunkang Yul",
+    "slug": "pyunkang-yul",
+    "logo": "/images/brands-e-mart/pyunkang-yul.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4690,
+    "fallback": false
+  },
+  {
+    "id": 65,
+    "name": "Rated Green",
+    "slug": "rated-green",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 66,
+    "name": "Rom&nd",
+    "slug": "rom-nd",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 67,
+    "name": "Round Lab",
+    "slug": "round-lab",
+    "logo": "/images/brands-e-mart/round-lab.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 8244,
+    "fallback": false
+  },
+  {
+    "id": 68,
+    "name": "Rovectin",
+    "slug": "rovectin",
+    "logo": "/images/brands-e-mart/rovectin.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4864,
+    "fallback": false
+  },
+  {
+    "id": 69,
+    "name": "Ryo",
+    "slug": "ryo",
+    "logo": "/images/brands-e-mart/ryo.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 12435,
+    "fallback": false
+  },
+  {
+    "id": 70,
+    "name": "SimplyO",
+    "slug": "simplyo",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 71,
+    "name": "Skin Food",
+    "slug": "skin-food",
+    "logo": "/images/brands-e-mart/skin-food.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 21038,
+    "fallback": false
+  },
+  {
+    "id": 72,
+    "name": "SKIN1004",
+    "slug": "skin1004",
+    "logo": "/images/brands-e-mart/skin1004.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 3241,
+    "fallback": false
+  },
+  {
+    "id": 73,
+    "name": "Skinmiso",
+    "slug": "skinmiso",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 74,
+    "name": "Some By Mi",
+    "slug": "some-by-mi",
+    "logo": "/images/brands-e-mart/some-by-mi.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 11061,
+    "fallback": false
+  },
+  {
+    "id": 75,
+    "name": "The Face Shop",
+    "slug": "the-face-shop",
+    "logo": "/images/brands-e-mart/the-face-shop.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 10529,
+    "fallback": false
+  },
+  {
+    "id": 76,
+    "name": "Tiam",
+    "slug": "tiam",
+    "logo": "/images/brands-e-mart/tiam.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 5425,
+    "fallback": false
+  },
+  {
+    "id": 77,
+    "name": "TIRTIR",
+    "slug": "tirtir",
+    "logo": "/images/brands-e-mart/tirtir.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 3986,
+    "fallback": false
+  },
+  {
+    "id": 78,
+    "name": "Tocobo",
+    "slug": "tocobo",
+    "logo": "/images/brands-e-mart/tocobo.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6871,
+    "fallback": false
+  },
+  {
+    "id": 79,
+    "name": "TONYMOLY",
+    "slug": "tonymoly",
+    "logo": "/images/brands-e-mart/tonymoly.svg",
+    "source": "https://kcbazar.com",
+    "type": "image/svg+xml",
+    "bytes": 9352,
+    "fallback": false
+  },
+  {
+    "id": 80,
+    "name": "Torriden",
+    "slug": "torriden",
+    "logo": "/images/brands-e-mart/torriden.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 4387,
+    "fallback": false
+  },
+  {
+    "id": 81,
+    "name": "VT Cosmetics",
+    "slug": "vt-cosmetics",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 82,
+    "name": "Bath & Body Works",
+    "slug": "bath-body-works",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 83,
+    "name": "Bioderma",
+    "slug": "bioderma",
+    "logo": "/images/brands-e-mart/bioderma.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 9327,
+    "fallback": false
+  },
+  {
+    "id": 84,
+    "name": "CeraVe",
+    "slug": "cerave",
+    "logo": "/images/brands-e-mart/cerave.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 12889,
+    "fallback": false
+  },
+  {
+    "id": 85,
+    "name": "Cetaphil",
+    "slug": "cetaphil",
+    "logo": "/images/brands-e-mart/cetaphil.png",
+    "source": "https://kcbazar.com",
+    "type": "image/png",
+    "bytes": 4553,
+    "fallback": false
+  },
+  {
+    "id": 86,
+    "name": "Differin",
+    "slug": "differin",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 87,
+    "name": "Japanese Cosmetics",
+    "slug": "japanese-cosmetics",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 88,
+    "name": "La Roche-Posay",
+    "slug": "la-roche-posay",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 89,
+    "name": "Mielle",
+    "slug": "mielle",
+    "logo": "/images/brands-e-mart/mielle.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6607,
+    "fallback": false
+  },
+  {
+    "id": 90,
+    "name": "Neutrogena",
+    "slug": "neutrogena",
+    "logo": "/images/brands-e-mart/neutrogena.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6246,
+    "fallback": false
+  },
+  {
+    "id": 91,
+    "name": "PanOxyl",
+    "slug": "panoxyl",
+    "logo": "/images/brands-e-mart/panoxyl.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 7514,
+    "fallback": false
+  },
+  {
+    "id": 92,
+    "name": "Paula's Choice",
+    "slug": "paulas-choice",
+    "logo": "/images/brands-e-mart/paulas-choice.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 29036,
+    "fallback": false
+  },
+  {
+    "id": 93,
+    "name": "The Inkey List",
+    "slug": "the-inkey-list",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  },
+  {
+    "id": 94,
+    "name": "The Ordinary",
+    "slug": "the-ordinary",
+    "logo": "/images/brands-e-mart/the-ordinary.png",
+    "source": "https://brandkoreabd.com",
+    "type": "image/png",
+    "bytes": 6575,
+    "fallback": false
+  },
+  {
+    "id": 95,
+    "name": "Topicals",
+    "slug": "topicals",
+    "logo": null,
+    "source": null,
+    "type": null,
+    "bytes": 0,
+    "fallback": true
+  }
+]

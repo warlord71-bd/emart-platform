@@ -349,24 +349,14 @@ export function AuthenticityStorySection() {
         </div>
 
         <div className="mt-6 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="relative min-h-[300px] overflow-hidden rounded-lg">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-bg-alt">
             <Image
-              src="https://e-mart.com.bd/wp-content/uploads/2026/04/banner-for-home-page-1.png"
+              src="https://e-mart.com.bd/wp-content/uploads/2026/04/hgjhh.png"
               alt="Hand-verified authentic K-beauty and J-beauty products at Emart"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+              className="object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wide backdrop-blur">
-                <BadgeCheck size={14} />
-                Authenticity Seal
-              </div>
-              <p className="mt-3 max-w-md text-sm leading-6 text-white/90">
-                Every bottle is checked for seal, batch, expiry, and presentation before it leaves Dhanmondi.
-              </p>
-            </div>
           </div>
 
           <div className="rounded-lg bg-white p-6 shadow-card">
@@ -508,30 +498,32 @@ export function BrandLogoGridSection({ brands }: { brands: BrandLogo[] }) {
         </div>
 
         <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:hidden">
-          <div className="flex w-max snap-x snap-mandatory gap-3 pb-1">
-            {visible.slice(0, 10).map((brand) => (
+          <div className="flex w-max snap-x snap-mandatory gap-2.5 pb-1">
+            {visible.filter((b) => b.logo).slice(0, 10).map((brand) => (
               <Link
                 key={brand.id}
                 href="/brands"
-                className="flex h-20 w-[32vw] min-w-[110px] snap-start items-center justify-center rounded-[22px] border border-hairline bg-white p-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
+                title={brand.name}
+                className="flex h-24 w-[32vw] min-w-[110px] snap-start items-center justify-center rounded-2xl border border-hairline bg-white p-2 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
               >
-                <div className="relative h-10 w-full">
-                  <Image src={brand.logo || '/logo.png'} alt={brand.name} fill className="object-contain" />
+                <div className="relative h-full w-full">
+                  <Image src={brand.logo!} alt={brand.name} fill sizes="120px" className="object-contain" />
                 </div>
               </Link>
             ))}
           </div>
         </div>
 
-        <div className="hidden grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-8 lg:grid">
-          {visible.map((brand) => (
+        <div className="hidden grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-8 lg:grid">
+          {visible.filter((b) => b.logo).map((brand) => (
             <Link
               key={brand.id}
               href="/brands"
-              className="flex h-20 items-center justify-center rounded-lg border border-hairline bg-white p-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
+              title={brand.name}
+              className="flex h-24 items-center justify-center rounded-lg border border-hairline bg-white p-2 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
             >
-              <div className="relative h-10 w-full">
-                <Image src={brand.logo || '/logo.png'} alt={brand.name} fill className="object-contain" />
+              <div className="relative h-full w-full">
+                <Image src={brand.logo!} alt={brand.name} fill sizes="160px" className="object-contain" />
               </div>
             </Link>
           ))}
@@ -684,7 +676,7 @@ export function OriginStoryBlock() {
             alt="Emart beauty curation and store story"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
+            className="object-contain object-center"
           />
         </div>
         <div className="p-6 lg:p-8">
@@ -760,25 +752,76 @@ export function BlogTeaserSection({ posts }: { posts: BlogPostSummary[] }) {
   );
 }
 
+const SERVICE_PROMISES = [
+  {
+    icon: Truck,
+    title: 'Same-day Dhaka',
+    mobileTitle: 'Same-day Dhaka',
+    copy: 'Fast Dhaka delivery when timing allows, with 2-day routing outside Dhaka.',
+  },
+  {
+    icon: WalletCards,
+    title: 'Flexible Payment',
+    mobileTitle: 'bKash · COD',
+    copy: 'bKash, Nagad, COD and card payments for first-time and repeat customers.',
+  },
+  {
+    icon: RotateCcw,
+    title: 'Easy Returns',
+    mobileTitle: '7-day returns',
+    copy: '7-day return support with clear product guarantee steps.',
+  },
+  {
+    icon: MessageCircle,
+    title: 'WhatsApp Support',
+    mobileTitle: 'WhatsApp help',
+    copy: 'Talk directly with our skincare support team at 01717082135.',
+    href: 'https://wa.me/8801717082135',
+  },
+];
+
 export function ShippingPaymentReturns() {
   return (
-    <section className="bg-ink px-4 py-8 text-white">
-      <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-lg bg-white/6 p-4">
-          <div className="text-sm font-bold">Same-day Dhaka</div>
-          <div className="mt-2 text-sm leading-6 text-white/75">Same-day in Dhaka when timing allows, fast 2-day routing outside.</div>
-        </div>
-        <div className="rounded-lg bg-white/6 p-4">
-          <div className="text-sm font-bold">bKash + Nagad + COD + Card</div>
-          <div className="mt-2 text-sm leading-6 text-white/75">Flexible payment flow for first-time and repeat customers.</div>
-        </div>
-        <div className="rounded-lg bg-white/6 p-4">
-          <div className="text-sm font-bold">7-day return policy</div>
-          <div className="mt-2 text-sm leading-6 text-white/75">Clear return steps, product guarantee, and support when something is off.</div>
-        </div>
-        <div className="rounded-lg bg-white/6 p-4">
-          <div className="text-sm font-bold">WhatsApp support</div>
-          <div className="mt-2 text-sm leading-6 text-white/75">Need help fast? Talk directly to us at +88 09696682135.</div>
+    <section className="border-y border-[#f4d9df] bg-[#fff7f8] px-4 py-4 sm:py-9">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
+          {SERVICE_PROMISES.map((item) => {
+            const Icon = item.icon;
+            const content = (
+              <>
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-accent/15 bg-accent/10 text-accent sm:h-11 sm:w-11">
+                  <Icon size={19} strokeWidth={2.2} className="sm:h-[22px] sm:w-[22px]" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[13px] font-extrabold leading-snug text-ink sm:text-sm">{item.mobileTitle || item.title}</div>
+                  <div className="mt-1.5 hidden text-sm leading-6 text-gray-600 sm:block">{item.copy}</div>
+                </div>
+              </>
+            );
+
+            if (item.href) {
+              return (
+                <a
+                  key={item.title}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex min-h-[72px] items-center gap-3 rounded-lg border border-hairline bg-white/85 p-3 shadow-[0_10px_22px_rgba(127,53,75,0.06)] transition-all hover:-translate-y-0.5 hover:border-accent/35 hover:bg-white sm:min-h-[128px] sm:items-start sm:gap-4 sm:p-4 sm:shadow-[0_14px_30px_rgba(127,53,75,0.07)]"
+                >
+                  {content}
+                </a>
+              );
+            }
+
+            return (
+              <div
+                key={item.title}
+                className="flex min-h-[72px] items-center gap-3 rounded-lg border border-hairline bg-white/85 p-3 shadow-[0_10px_22px_rgba(127,53,75,0.06)] sm:min-h-[128px] sm:items-start sm:gap-4 sm:p-4 sm:shadow-[0_14px_30px_rgba(127,53,75,0.07)]"
+              >
+                {content}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -788,7 +831,7 @@ export function ShippingPaymentReturns() {
 export function FloatingWhatsAppButton() {
   return (
     <a
-      href="https://wa.me/8801919797399"
+      href="https://wa.me/8801717082135"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with Emart on WhatsApp"
@@ -920,7 +963,7 @@ export function WhatsAppSupportBanner() {
           <MessageCircle size={24} />
         </div>
         <a
-          href="https://wa.me/8801919797399"
+          href="https://wa.me/8801717082135"
           target="_blank"
           rel="noopener noreferrer"
           className="mt-4 inline-flex rounded-lg bg-white px-4 py-2.5 text-sm font-bold text-[#25D366]"

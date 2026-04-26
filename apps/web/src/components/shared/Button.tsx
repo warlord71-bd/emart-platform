@@ -1,5 +1,4 @@
 import React from 'react';
-import { LUMIERE_COLORS } from '@/lib/design-system/colors';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -15,19 +14,20 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', className = '', children, ...props }, ref) => {
-    const baseStyles = 'font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2';
+    const baseStyles =
+      'inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus-visible:outline-none';
 
     const variantStyles = {
-      primary: `bg-[${LUMIERE_COLORS.primary}] text-white hover:bg-[${LUMIERE_COLORS.primaryHover}] active:scale-95`,
-      secondary: `bg-[${LUMIERE_COLORS.secondary}] text-white hover:bg-[${LUMIERE_COLORS.secondaryHover}] active:scale-95`,
-      outline: `border-2 border-[${LUMIERE_COLORS.primary}] text-[${LUMIERE_COLORS.primary}] hover:bg-[${LUMIERE_COLORS.primaryLight}]`,
-      ghost: `text-[${LUMIERE_COLORS.primary}] hover:bg-[${LUMIERE_COLORS.primaryLight}]`,
+      primary: 'rounded-pill bg-ink text-white hover:bg-black active:scale-95',
+      secondary: 'rounded-pill bg-accent text-white hover:bg-accent-deep active:scale-95',
+      outline: 'rounded-pill border border-ink text-ink hover:bg-bg-alt',
+      ghost: 'rounded-pill text-ink hover:bg-bg-alt',
     };
 
     const sizeStyles = {
-      sm: 'px-3 py-1.5 text-sm font-medium',
-      md: 'px-4 py-2.5 text-base font-medium',
-      lg: 'px-6 py-3 text-lg font-semibold',
+      sm: 'px-3 py-1.5 text-sm',
+      md: 'px-4 py-2.5 text-sm',
+      lg: 'px-6 py-3 text-base',
     };
 
     const buttonClass = `

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Globe } from 'lucide-react';
-import ProductCard from '@/components/product/ProductCard';
+import HomeProductRail from '@/components/home/HomeProductRail';
 import type { WooProduct } from '@/lib/woocommerce';
 
 interface Origin {
@@ -26,59 +26,44 @@ export const OriginShowcaseInteractive: React.FC<OriginShowcaseInteractiveProps>
   const selectedOrigin = origins.find(o => o.slug === selectedOriginSlug);
 
   return (
-    <section className="bg-white py-12 md:py-16 px-4">
+    <section className="bg-canvas px-4 py-8 md:py-10">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="hidden md:flex items-center justify-center w-12 h-12 bg-blue-500 rounded-lg">
+        <div className="mb-5 flex items-center gap-4 md:mb-6">
+          <div className="hidden md:flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-ink shadow-sm">
             <Globe size={24} className="text-white fill-white" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-lumiere-text-primary">
+          <h2 className="type-section-title text-lumiere-text-primary">
             {title}
           </h2>
         </div>
 
-        {/* Origin Chips - Horizontal scrollable, smaller buttons */}
-        <div className="flex flex-nowrap gap-2 mb-8 overflow-x-auto pb-4 snap-x snap-mandatory">
-          {origins.map((origin) => (
-            <button
-              key={origin.slug}
-              onClick={() => setSelectedOriginSlug(origin.slug)}
-              className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm transition-all snap-start flex items-center gap-2 ${
-                selectedOriginSlug === origin.slug
-                  ? 'bg-lumiere-primary text-white'
-                  : 'bg-gray-100 text-lumiere-text-primary hover:bg-gray-200'
-              }`}
-            >
-              <span className="text-lg">{origin.emoji}</span>
-              {origin.name}
-            </button>
-          ))}
+        <div className="-mx-4 mb-5 overflow-x-auto px-4 [scrollbar-width:none] md:mb-6 [&::-webkit-scrollbar]:hidden">
+          <div className="flex w-max gap-2 md:gap-3">
+            {origins.map((origin) => (
+              <button
+                key={origin.slug}
+                onClick={() => setSelectedOriginSlug(origin.slug)}
+                className={`flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                  selectedOriginSlug === origin.slug
+                    ? 'bg-accent text-white'
+                    : 'border border-hairline bg-card text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent'
+                }`}
+              >
+                <span className="text-lg leading-none">{origin.emoji}</span>
+                <span>{origin.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Product Grid - Show 4 items per origin */}
         {selectedOrigin && selectedOrigin.products && selectedOrigin.products.length > 0 ? (
-          <div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {selectedOrigin.products.slice(0, 4).map((product) => (
-                <div key={product.id}>
-                  <ProductCard product={product} />
-                </div>
-              ))}
-            </div>
-            {selectedOrigin.products.length > 4 && (
-              <div className="text-center mt-6">
-                <a
-                  href={`/shop?origin=${selectedOrigin.slug}`}
-                  className="inline-block px-6 py-2 bg-lumiere-primary text-white font-semibold rounded-lg
-                           hover:bg-lumiere-primary-hover transition-colors"
-                >
-                  View All {selectedOrigin.name} Products →
-                </a>
-              </div>
-            )}
-          </div>
+          <HomeProductRail
+            products={selectedOrigin.products}
+            viewAllHref={`/origins?country=${selectedOrigin.slug}`}
+            viewAllLabel={`${selectedOrigin.name} products`}
+          />
         ) : selectedOrigin ? (
-          <p className="text-center text-lumiere-text-secondary py-8">
+          <p className="py-8 text-center text-muted">
             No products available for {selectedOrigin.name}
           </p>
         ) : null}

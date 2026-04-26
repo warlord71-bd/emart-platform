@@ -38,20 +38,19 @@ export default function CartDrawer() {
       />
 
       {/* Drawer */}
-      <div className="fixed right-0 top-0 h-full w-full max-w-sm bg-white z-50
-                      shadow-2xl flex flex-col animate-slide-in">
+      <div className="fixed right-0 top-0 z-50 flex h-full w-full max-w-sm animate-slide-in flex-col bg-white shadow-pop">
 
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-100">
+        <div className="flex items-center justify-between border-b border-hairline p-4">
           <div className="flex items-center gap-2">
-            <ShoppingBag size={20} className="text-[#e8197a]" />
-            <h2 className="font-bold text-[#1a1a2e]">
+            <ShoppingBag size={20} className="text-accent" />
+            <h2 className="font-bold text-ink">
               My Cart ({totalItems()})
             </h2>
           </div>
           <button
             onClick={closeCart}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="rounded-full p-2 transition-colors hover:bg-bg-alt"
           >
             <X size={20} />
           </button>
@@ -65,7 +64,7 @@ export default function CartDrawer() {
               <p className="text-gray-500 font-medium">Your cart is empty</p>
               <button
                 onClick={closeCart}
-                className="mt-4 text-[#e8197a] font-semibold hover:underline"
+                className="mt-4 font-semibold text-accent hover:underline"
               >
                 Continue Shopping →
               </button>
@@ -73,10 +72,10 @@ export default function CartDrawer() {
           ) : (
             <div className="space-y-4">
               {items.map((item) => (
-                <div key={item.id} className="flex gap-3 pb-4 border-b border-gray-100">
+                <div key={item.id} className="flex gap-3 border-b border-hairline pb-4">
                   {/* Image */}
                   <Link href={`/shop/${item.slug}`} onClick={closeCart}>
-                    <div className="w-16 h-16 relative flex-shrink-0 rounded-lg overflow-hidden bg-gray-50">
+                    <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-bg-alt">
                       <Image
                         src={item.image}
                         alt={item.name}
@@ -91,11 +90,11 @@ export default function CartDrawer() {
                     <Link
                       href={`/shop/${item.slug}`}
                       onClick={closeCart}
-                      className="text-sm font-medium text-gray-800 line-clamp-2 hover:text-[#e8197a]"
+                      className="line-clamp-2 text-sm font-medium text-ink-2 hover:text-accent"
                     >
                       {item.name}
                     </Link>
-                    <div className="text-[#e8197a] font-bold text-sm mt-1">
+                    <div className="mt-1 text-sm font-bold text-accent">
                       {formatPrice(item.price)}
                     </div>
 
@@ -103,8 +102,7 @@ export default function CartDrawer() {
                     <div className="flex items-center gap-2 mt-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-7 h-7 flex items-center justify-center border border-gray-200
-                                   rounded-full hover:border-[#e8197a] hover:text-[#e8197a] transition-colors"
+                        className="flex h-7 w-7 items-center justify-center rounded-full border border-hairline transition-colors hover:border-accent hover:text-accent"
                       >
                         <Minus size={12} />
                       </button>
@@ -113,8 +111,7 @@ export default function CartDrawer() {
                       </span>
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-7 h-7 flex items-center justify-center border border-gray-200
-                                   rounded-full hover:border-[#e8197a] hover:text-[#e8197a] transition-colors"
+                        className="flex h-7 w-7 items-center justify-center rounded-full border border-hairline transition-colors hover:border-accent hover:text-accent"
                       >
                         <Plus size={12} />
                       </button>
@@ -135,11 +132,11 @@ export default function CartDrawer() {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="p-4 border-t border-gray-100 bg-gray-50">
+          <div className="border-t border-hairline bg-bg-alt p-4">
             {/* Free delivery notice */}
             {totalPrice() < 3000 && (
-              <div className="text-xs text-center text-gray-500 mb-3 bg-[#fce7f0] px-3 py-2 rounded-lg">
-                Add <strong className="text-[#e8197a]">
+              <div className="mb-3 rounded-lg bg-accent-soft px-3 py-2 text-center text-xs text-muted">
+                Add <strong className="text-accent">
                   {formatPrice(String(3000 - totalPrice()))}
                 </strong> more for free delivery 🚚
               </div>
@@ -147,7 +144,7 @@ export default function CartDrawer() {
 
             <div className="flex justify-between items-center mb-4">
               <span className="font-semibold text-gray-700">Subtotal</span>
-              <span className="font-bold text-lg text-[#e8197a]">
+              <span className="text-lg font-bold text-accent">
                 {formatPrice(String(totalPrice()))}
               </span>
             </div>
@@ -162,7 +159,7 @@ export default function CartDrawer() {
             <Link
               href="/cart"
               onClick={closeCart}
-              className="w-full text-center block mt-2 text-sm text-gray-500 hover:text-[#e8197a]"
+              className="mt-2 block w-full text-center text-sm text-muted hover:text-accent"
             >
               View Full Cart
             </Link>

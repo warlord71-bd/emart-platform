@@ -1,96 +1,69 @@
-import { getProducts, getCategories } from '@/lib/woocommerce';
-import { buildUrl } from '@/lib/url-utils';
+import { getProducts } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
-import ProductFilters from '@/components/product/ProductFilters';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '✨ New Arrivals - Latest Korean & Japanese Skincare',
-  description: 'Discover the newest Korean and Japanese skincare products at Emart. Fresh arrivals every week!',
+  title: 'New Arrivals - Latest Global Skincare Brands | Emart',
+  description: 'Discover the newest global skincare products at Emart. Fresh arrivals every week!',
 };
 
 export const revalidate = 1800;
 
 interface NewArrivalsPageProps {
-  searchParams: {
-    page?: string;
-    category?: string;
-    min_price?: string;
-    max_price?: string;
-  };
+  searchParams: { page?: string; };
 }
 
 export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageProps) {
   const page = parseInt(searchParams.page || '1');
+  const sixtyDaysAgo = new Date();
+  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+  const afterDate = sixtyDaysAgo.toISOString();
 
-  const [{ products, total, totalPages }, categories] = await Promise.all([
-    getProducts({
-      page,
-      per_page: 20,
-      orderby: 'date',
-      order: 'desc',
-      category: searchParams.category,
-      min_price: searchParams.min_price,
-      max_price: searchParams.max_price,
-    }),
-    getCategories(),
-  ]);
+  const { products = [], totalPages = 1, total = 0 } = await getProducts({
+    page,
+    per_page: 24,
+    orderby: 'date',
+    order: 'desc',
+    after: afterDate,
+  });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[#e8197a] mb-2">✨ New Arrivals</h1>
-        <p className="text-gray-500">{total} new products</p>
+    <div className="mx-auto max-w-7xl px-4 py-8">
+      <div className="mb-8 rounded-2xl border border-hairline bg-card px-5 py-5 shadow-card">
+        <h1 className="mb-2 text-3xl font-bold text-ink">New Arrivals</h1>
+        <p className="text-sm text-muted">{total} new products in the last 60 days</p>
       </div>
-
-      <div className="flex gap-6">
-        {/* Sidebar Filters */}
-        <aside className="hidden lg:block w-56 flex-shrink-0">
-          <ProductFilters categories={categories} searchParams={searchParams} />
-        </aside>
-
-        {/* Product Grid */}
-        <div className="flex-1">
-          {products.length > 0 ? (
-            <>
-              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex justify-center gap-2 mt-10">
-                  {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => i + 1).map((p) => (
-                    <a
-                      key={p}
-                      href={buildUrl('/new-arrivals', { page: p, category: searchParams.category })}
-                      className={`w-10 h-10 flex items-center justify-center rounded-lg
-                                  text-sm font-semibold border transition-colors
-                                  ${p === page
-                                    ? 'bg-[#e8197a] text-white border-[#e8197a]'
-                                    : 'border-gray-200 text-gray-600 hover:border-[#e8197a] hover:text-[#e8197a]'
-                                  }`}
-                    >
-                      {p}
-                    </a>
-                  ))}
-                </div>
+      {products.length > 0 ? (
+        <>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {products.map((product: any) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <div className="mt-10 flex items-center justify-center gap-2">
+              {page > 1 && (
+                <Link href={`/new-arrivals?page=${page - 1}`}
+                  className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-black">
+                  Previous
+                </Link>
               )}
-            </>
-          ) : (
-            <div className="text-center py-20 text-gray-400">
-              <div className="text-5xl mb-4">📦</div>
-              <p className="text-lg font-medium">No new arrivals yet</p>
-              <a href="/shop" className="text-[#e8197a] hover:underline mt-2 block">
-                Browse all products
-              </a>
+              <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
+              {page < totalPages && (
+                <Link href={`/new-arrivals?page=${page + 1}`}
+                  className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-black">
+                  Next
+                </Link>
+              )}
             </div>
           )}
+        </>
+      ) : (
+        <div className="py-20 text-center text-muted-2">
+          <p className="text-lg text-ink">No new arrivals in the last 60 days</p>
         </div>
-      </div>
+      )}
     </div>
   );
 }

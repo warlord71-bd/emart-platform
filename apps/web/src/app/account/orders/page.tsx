@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getCustomerOrders } from '@/lib/woocommerce';
 import { Package, Search, Filter, Eye, Truck, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -10,11 +9,9 @@ interface Order {
   date_created: string;
   status: string;
   total: string;
-  currency: string;
-  items: Array<{
+  line_items: Array<{
     name: string;
     quantity: number;
-    image?: string;
   }>;
   shipping: {
     address_1: string;
@@ -27,49 +24,31 @@ interface Order {
 export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   useEffect(() => {
-    // Mock data for demonstration - in production fetch from API
-    const mockOrders: Order[] = [
-      {
-        id: 1001,
-        date_created: new Date(Date.now() - 86400000 * 2).toISOString(),
-        status: 'processing',
-        total: '2500.00',
-        currency: 'BDT',
-        items: [
-          { name: 'Product A', quantity: 2 },
-          { name: 'Product B', quantity: 1 }
-        ],
-        shipping: {
-          address_1: '123 Main St',
-          city: 'Dhaka',
-          postcode: '1000',
-          country: 'Bangladesh'
+    const loadOrders = async () => {
+      try {
+        const response = await fetch('/api/account/orders', { cache: 'no-store' });
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(data?.error || 'Failed to load orders');
         }
-      },
-      {
-        id: 1002,
-        date_created: new Date(Date.now() - 86400000 * 5).toISOString(),
-        status: 'completed',
-        total: '1800.00',
-        currency: 'BDT',
-        items: [
-          { name: 'Product C', quantity: 3 }
-        ],
-        shipping: {
-          address_1: '456 Oak Ave',
-          city: 'Chittagong',
-          postcode: '2000',
-          country: 'Bangladesh'
-        }
+
+        setOrders(Array.isArray(data?.orders) ? data.orders : []);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Failed to load orders';
+        setError(message);
+        setOrders([]);
+      } finally {
+        setLoading(false);
       }
-    ];
-    
-    setOrders(mockOrders);
-    setLoading(false);
+    };
+
+    loadOrders();
   }, []);
 
   const filteredOrders = orders.filter(order => {
@@ -170,7 +149,7 @@ export default function OrdersPage() {
                     <div className="flex items-center space-x-4">
                       <div className="text-right">
                         <p className="text-sm text-gray-500">Total</p>
-                        <p className="text-xl font-bold text-gray-900">{order.total} {order.currency}</p>
+                        <p className="text-xl font-bold text-gray-900">{order.total} BDT</p>
                       </div>
                       <Link
                         href={`/track-order?id=${order.id}`}
@@ -184,9 +163,9 @@ export default function OrdersPage() {
 
                   {/* Order Items Preview */}
                   <div className="border-t border-gray-200 pt-4 mt-4">
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">Items ({order.items.reduce((sum, item) => sum + item.quantity, 0)})</h4>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Items ({order.line_items.reduce((sum, item) => sum + item.quantity, 0)})</h4>
                     <div className="space-y-2">
-                      {order.items.map((item, index) => (
+                      {order.line_items.map((item, index) => (
                         <div key={index} className="flex items-center justify-between text-sm">
                           <span className="text-gray-600">{item.name} × {item.quantity}</span>
                         </div>
@@ -222,9 +201,11 @@ export default function OrdersPage() {
           ) : (
             <div className="text-center py-16">
               <Package className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No orders found</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">{error ? 'Could not load orders' : 'No orders found'}</h3>
               <p className="text-gray-500 mb-6">
-                {searchTerm || statusFilter !== 'all' 
+                {error
+                  ? error
+                  : searchTerm || statusFilter !== 'all'
                   ? 'Try adjusting your search or filters'
                   : "You haven't placed any orders yet"}
               </p>

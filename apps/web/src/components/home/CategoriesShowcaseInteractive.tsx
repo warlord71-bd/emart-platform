@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2 } from 'lucide-react';
-import ProductCard from '@/components/product/ProductCard';
+import HomeProductRail from '@/components/home/HomeProductRail';
 import type { WooProduct, WooCategory } from '@/lib/woocommerce';
 
 // Helper to decode HTML entities
@@ -23,6 +22,7 @@ function decodeHtmlEntities(text: string): string {
 
 interface CategoryWithProducts extends WooCategory {
   products: WooProduct[];
+  displayName?: string;
 }
 
 interface CategoriesShowcaseInteractiveProps {
@@ -30,111 +30,64 @@ interface CategoriesShowcaseInteractiveProps {
   title?: string;
 }
 
-// Category name mapping for display
-const CATEGORY_NAME_MAP: Record<string, string> = {
-  'Serums, Ampoules & Essences': 'Serum / Ampoule',
-  'Sunscreens & Sun Care': 'Sunscreen',
-  'Face Cleansers': 'Cleanser',
-  'Toner & Mists': 'Toner',
-  'Korean Beauty': '',
-  'K-Beauty & J-Beauty': '',
-};
+function CategoryMark() {
+  return (
+    <div className="hidden h-12 w-12 shrink-0 grid-cols-2 gap-1.5 rounded-lg bg-accent/90 p-2 shadow-sm md:grid">
+      <span className="rounded-[3px] bg-white/95" />
+      <span className="rounded-[3px] bg-white/75" />
+      <span className="rounded-[3px] bg-white/75" />
+      <span className="rounded-[3px] bg-white/95" />
+    </div>
+  );
+}
 
 export const CategoriesShowcaseInteractive: React.FC<CategoriesShowcaseInteractiveProps> = ({
   categories,
-  title = 'Shop by Category',
+  title = 'Shop By Category',
 }) => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(categories[0]?.id || null);
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  // Filter out Korean Beauty categories and map display names
-  const filteredCategories = categories
-    .filter(cat => !['Korean Beauty', 'K-Beauty & J-Beauty'].includes(cat.name))
-    .map(cat => {
-      const decodedName = decodeHtmlEntities(cat.name);
-      return {
-        ...cat,
-        name: decodedName, // Update the name to be decoded
-        displayName: CATEGORY_NAME_MAP[decodedName] || CATEGORY_NAME_MAP[cat.name] || decodedName,
-      };
-    })
-    .filter(cat => cat.displayName); // Remove empty display names
-
-  const visibleCategories = isExpanded ? filteredCategories : filteredCategories.slice(0, 8);
-  const selectedCategory = filteredCategories.find(c => c.id === selectedCategoryId);
+  const normalizedCategories = categories.map((cat) => {
+    const decodedName = decodeHtmlEntities(cat.displayName || cat.name);
+    return { ...cat, displayName: decodedName };
+  });
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(normalizedCategories[0]?.id || null);
+  const selectedCategory = normalizedCategories.find(c => c.id === selectedCategoryId) || normalizedCategories[0];
 
   return (
-    <section className="bg-white py-8 px-4">
+    <section className="bg-canvas px-4 py-8 md:py-10">
       <div className="max-w-6xl mx-auto">
-        {/* Section Header - With Decorative Element */}
-        <div className="mb-8 flex items-center gap-4">
-          <div className="hidden md:flex items-center justify-center w-12 h-12 bg-amber-500 rounded-lg">
-            <CheckCircle2 size={24} className="text-white fill-white" />
-          </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-lumiere-text-primary">
+        <div className="mb-5 flex items-center gap-4 md:mb-6">
+          <CategoryMark />
+          <h2 className="type-section-title text-lumiere-text-primary">
             {title}
           </h2>
         </div>
 
-        {/* Category Tabs - Smaller buttons to fit more */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          {visibleCategories.map((category) => (
+        <div className="-mx-4 mb-5 overflow-x-auto px-4 [scrollbar-width:none] md:mb-6 [&::-webkit-scrollbar]:hidden">
+          <div className="flex w-max gap-2 md:gap-3">
+            {normalizedCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategoryId(category.id)}
-              className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+              className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${
                 selectedCategoryId === category.id
-                  ? 'bg-lumiere-primary text-white'
-                  : 'bg-gray-100 text-lumiere-text-primary hover:bg-gray-200'
+                  ? 'bg-accent text-white'
+                  : 'border border-hairline bg-card text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent'
               }`}
             >
               {category.displayName}
             </button>
-          ))}
-
-          {!isExpanded && filteredCategories.length > 8 && (
-            <button
-              onClick={() => setIsExpanded(true)}
-              className="px-4 py-2 rounded-lg font-medium text-sm bg-gray-100 text-lumiere-text-primary hover:bg-gray-200 transition-all"
-            >
-              →
-            </button>
-          )}
-
-          {isExpanded && filteredCategories.length > 8 && (
-            <button
-              onClick={() => setIsExpanded(false)}
-              className="px-4 py-2 rounded-lg font-medium text-sm bg-gray-100 text-lumiere-text-primary hover:bg-gray-200 transition-all"
-            >
-              ←
-            </button>
-          )}
+            ))}
+          </div>
         </div>
 
-        {/* Products Grid - No Carousel, Just Grid */}
         {selectedCategory && selectedCategory.products && selectedCategory.products.length > 0 ? (
-          <div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {selectedCategory.products.slice(0, 4).map((product) => (
-                <div key={product.id}>
-                  <ProductCard product={product} />
-                </div>
-              ))}
-            </div>
-            {selectedCategory.products.length > 4 && (
-              <div className="text-center mt-6">
-                <a
-                  href={`/shop?category=${selectedCategory.slug}`}
-                  className="inline-block px-6 py-2 bg-lumiere-primary text-white font-semibold rounded-lg
-                           hover:bg-lumiere-primary-hover transition-colors"
-                >
-                  View All in {selectedCategory.displayName} →
-                </a>
-              </div>
-            )}
-          </div>
+          <HomeProductRail
+            products={selectedCategory.products}
+            viewAllHref={`/category/${selectedCategory.slug}`}
+            viewAllLabel={selectedCategory.displayName || selectedCategory.name}
+          />
         ) : selectedCategory ? (
-          <p className="text-center text-lumiere-text-secondary py-8">
+          <p className="py-8 text-center text-muted">
             No products available
           </p>
         ) : null}

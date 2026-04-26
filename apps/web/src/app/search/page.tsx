@@ -5,9 +5,28 @@ import { searchProducts } from '@/lib/woocommerce';
 import { buildUrl } from '@/lib/url-utils';
 import ProductCard from '@/components/product/ProductCard';
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 interface Props {
   searchParams: { q?: string; page?: string };
+}
+
+function normalizeSearchQuery(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function isSkinQuizQuery(value: string) {
+  const normalized = normalizeSearchQuery(value);
+  if (!normalized) return false;
+
+  if (normalized === 'quiz' || normalized === 'skin quiz' || normalized === 'skincare quiz' || normalized === 'routine quiz') {
+    return true;
+  }
+
+  return normalized.includes('quiz') && (normalized.includes('skin') || normalized.includes('routine'));
 }
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
@@ -23,23 +42,30 @@ export default async function SearchPage({ searchParams }: Props) {
 
   if (!query) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-20 text-center">
-        <div className="text-5xl mb-4">🔍</div>
-        <h1 className="text-2xl font-bold text-[#1a1a2e]">Search Products</h1>
-        <p className="text-gray-500 mt-2">Enter a product name, brand, or category</p>
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+        <div className="mx-auto max-w-2xl">
+          <h1 className="mb-4 text-2xl font-bold text-ink">Search Products</h1>
+          <p className="mt-4 text-sm leading-6 text-muted">
+            Use the search bar in the header to find a product, brand, category, or skin concern.
+          </p>
+        </div>
       </div>
     );
+  }
+
+  if (isSkinQuizQuery(query)) {
+    redirect('/skin-quiz');
   }
 
   const { products, total, totalPages } = await searchProducts(query, page);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="mx-auto max-w-6xl px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#1a1a2e]">
+        <h1 className="text-2xl font-bold text-ink">
           Search: &ldquo;{query}&rdquo;
         </h1>
-        <p className="text-gray-500 text-sm mt-1">{total} products found</p>
+        <p className="mt-1 text-sm text-muted">{total} products found</p>
       </div>
 
       {products.length > 0 ? (
@@ -56,7 +82,7 @@ export default async function SearchPage({ searchParams }: Props) {
                   key={p}
                   href={buildUrl('/search', { q: query, page: p })}
                   className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-semibold border
-                              ${p === page ? 'bg-[#e8197a] text-white border-[#e8197a]' : 'border-gray-200 hover:border-[#e8197a]'}`}
+                              ${p === page ? 'border-accent bg-accent text-white' : 'border-hairline bg-card text-ink hover:border-accent/30 hover:text-accent'}`}
                 >
                   {p}
                 </a>
@@ -65,9 +91,9 @@ export default async function SearchPage({ searchParams }: Props) {
           )}
         </>
       ) : (
-        <div className="text-center py-20">
+        <div className="py-20 text-center">
           <div className="text-5xl mb-4">😔</div>
-          <p className="text-gray-500 text-lg">No products found for &ldquo;{query}&rdquo;</p>
+          <p className="text-lg text-muted">No products found for &ldquo;{query}&rdquo;</p>
           <a href="/shop" className="btn-primary inline-block mt-4">Browse All Products</a>
         </div>
       )}
@@ -94,7 +120,7 @@ export default async function SearchPage({ searchParams }: Props) {
 //   });
 //
 //   return (
-//     <div className="max-w-6xl mx-auto px-4 py-8">
+//     <div className="mx-auto max-w-6xl px-4 py-8">
 //       <h1 className="section-title mb-2">{category.name}</h1>
 //       <p className="text-gray-500 text-sm mb-6">{total} products</p>
 //       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">

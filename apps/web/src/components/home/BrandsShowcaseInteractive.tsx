@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Building2 } from 'lucide-react';
-import ProductCard from '@/components/product/ProductCard';
+import HomeProductRail from '@/components/home/HomeProductRail';
 import type { WooProduct } from '@/lib/woocommerce';
 
 interface Brand {
@@ -26,58 +26,43 @@ export const BrandsShowcaseInteractive: React.FC<BrandsShowcaseInteractiveProps>
   const selectedBrand = brands.find(b => b.id === selectedBrandId);
 
   return (
-    <section className="bg-white py-12 md:py-16 px-4">
+    <section className="bg-canvas px-4 py-8 md:py-10">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="hidden md:flex items-center justify-center w-12 h-12 bg-blue-500 rounded-lg">
+        <div className="mb-5 flex items-center gap-4 md:mb-6">
+          <div className="hidden md:flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-ink shadow-sm">
             <Building2 size={24} className="text-white" strokeWidth={1.5} />
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-lumiere-text-primary">
+          <h2 className="type-section-title text-lumiere-text-primary">
             {title}
           </h2>
         </div>
 
-        {/* Brand Tabs - Horizontal scrollable, smaller buttons */}
-        <div className="flex flex-nowrap gap-2 mb-8 overflow-x-auto pb-4 snap-x snap-mandatory">
-          {brands.map((brand) => (
-            <button
-              key={brand.id}
-              onClick={() => setSelectedBrandId(brand.id)}
-              className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm transition-all snap-start ${
-                selectedBrandId === brand.id
-                  ? 'bg-lumiere-primary text-white'
-                  : 'bg-gray-100 text-lumiere-text-primary hover:bg-gray-200'
-              }`}
-            >
-              {brand.name}
-            </button>
-          ))}
+        <div className="-mx-4 mb-5 overflow-x-auto px-4 [scrollbar-width:none] md:mb-6 [&::-webkit-scrollbar]:hidden">
+          <div className="flex w-max gap-2 md:gap-3">
+            {brands.map((brand) => (
+              <button
+                key={brand.id}
+                onClick={() => setSelectedBrandId(brand.id)}
+                className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                  selectedBrandId === brand.id
+                    ? 'bg-accent text-white'
+                    : 'border border-hairline bg-card text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent'
+                }`}
+              >
+                {brand.name}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Product Grid - Show 4 items per brand */}
         {selectedBrand && selectedBrand.products && selectedBrand.products.length > 0 ? (
-          <div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {selectedBrand.products.slice(0, 4).map((product) => (
-                <div key={product.id}>
-                  <ProductCard product={product} />
-                </div>
-              ))}
-            </div>
-            {selectedBrand.products.length > 4 && (
-              <div className="text-center mt-6">
-                <a
-                  href={`/shop?brand=${selectedBrand.slug}`}
-                  className="inline-block px-6 py-2 bg-lumiere-primary text-white font-semibold rounded-lg
-                           hover:bg-lumiere-primary-hover transition-colors"
-                >
-                  View All {selectedBrand.name} →
-                </a>
-              </div>
-            )}
-          </div>
+          <HomeProductRail
+            products={selectedBrand.products}
+            viewAllHref={`/shop?brand=${selectedBrand.slug}`}
+            viewAllLabel={selectedBrand.name}
+          />
         ) : selectedBrand ? (
-          <p className="text-center text-lumiere-text-secondary py-8">
+          <p className="py-8 text-center text-muted">
             No products available
           </p>
         ) : null}

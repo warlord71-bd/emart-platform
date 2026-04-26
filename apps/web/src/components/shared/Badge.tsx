@@ -1,5 +1,4 @@
 import React from 'react';
-import { LUMIERE_COLORS } from '@/lib/design-system/colors';
 
 interface BadgeProps {
   children: React.ReactNode;
@@ -17,18 +16,18 @@ export const Badge: React.FC<BadgeProps> = ({
   className = '',
 }) => {
   const variantStyles = {
-    default: `bg-[${LUMIERE_COLORS.secondary}] text-white`,
-    acne: `bg-[${LUMIERE_COLORS.acne}] text-[${LUMIERE_COLORS.acneBorder}] border border-[${LUMIERE_COLORS.acneBorder}]`,
-    dryness: `bg-[${LUMIERE_COLORS.dryness}] text-[${LUMIERE_COLORS.drynessBorder}] border border-[${LUMIERE_COLORS.drynessBorder}]`,
-    brightening: `bg-[${LUMIERE_COLORS.brightening}] text-[${LUMIERE_COLORS.brighteningText}]`,
-    antiaging: `bg-[${LUMIERE_COLORS.antiAging}] text-[${LUMIERE_COLORS.antiAgingBorder}] border border-[${LUMIERE_COLORS.antiAgingBorder}]`,
-    sensitivity: `bg-[${LUMIERE_COLORS.sensitivity}] text-[${LUMIERE_COLORS.sensitivityBorder}] border border-[${LUMIERE_COLORS.sensitivityBorder}]`,
-    discount: `bg-[${LUMIERE_COLORS.primary}] text-white font-bold`,
-    new: `bg-[${LUMIERE_COLORS.secondary}] text-white font-bold`,
-    sale: `bg-[${LUMIERE_COLORS.primary}] text-white font-bold`,
+    default: 'border border-success/20 bg-success-soft text-success',
+    acne: 'border border-success/25 bg-success-soft text-success',
+    dryness: 'border border-warning/25 bg-warning-soft text-warning',
+    brightening: 'bg-ink text-white',
+    antiaging: 'border border-accent/25 bg-accent-soft text-accent',
+    sensitivity: 'border border-success/25 bg-success-soft text-success',
+    discount: 'bg-accent font-mono font-bold uppercase tracking-[0.1em] text-white',
+    new: 'bg-ink font-mono font-bold uppercase tracking-[0.1em] text-white',
+    sale: 'bg-accent font-mono font-bold uppercase tracking-[0.1em] text-white',
   };
 
-  const baseStyles = 'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium';
+  const baseStyles = 'inline-flex items-center rounded-[4px] px-2.5 py-1 text-xs font-medium';
 
   return (
     <span className={`${baseStyles} ${variantStyles[variant]} ${className}`}>

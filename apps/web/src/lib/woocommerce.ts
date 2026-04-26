@@ -3,13 +3,17 @@
 
 import axios from 'axios';
 
-const WOO_URL = process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd';
+const WOO_URL = process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd';
+const PUBLIC_SITE_URL = 'https://e-mart.com.bd';
+const LEGACY_IP_HOST = ['5', '189', '188', '229'].join('.');
+const LOCAL_WORDPRESS_HOSTS = new Set(['127.0.0.1', 'localhost']);
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
 const isHTTPS = WOO_URL.startsWith('https');
+const WOO_WRITE_URL = isHTTPS ? WOO_URL : PUBLIC_SITE_URL;
 
 // ── API Client ──
-// Use Basic Auth for HTTPS, query string auth for HTTP
+// Use internal/query-auth reads when the install is on HTTP, but keep writes on the canonical HTTPS host.
 const wooClient = axios.create({
   baseURL: `${WOO_URL}/wp-json/wc/v3`,
   ...(isHTTPS ? {
@@ -26,6 +30,15 @@ const wooClient = axios.create({
   timeout: 15000,
 });
 
+const wooWriteClient = axios.create({
+  baseURL: `${WOO_WRITE_URL}/wp-json/wc/v3`,
+  auth: {
+    username: CONSUMER_KEY,
+    password: CONSUMER_SECRET,
+  },
+  timeout: 20000,
+});
+
 // ══════════════════════════════
 // TYPES
 // ══════════════════════════════
@@ -34,6 +47,8 @@ export interface WooProduct {
   name: string;
   slug: string;
   permalink: string;
+  date_modified?: string;
+  sku?: string;
   price: string;
   regular_price: string;
   sale_price: string;
@@ -47,6 +62,7 @@ export interface WooProduct {
   categories: WooCategory[];
   tags: WooTag[];
   attributes: WooAttribute[];
+  meta_data?: WooMetaData[];
   average_rating: string;
   rating_count: number;
   featured: boolean;
@@ -79,14 +95,40 @@ export interface WooAttribute {
   options: string[];
 }
 
+export interface WooMetaData {
+  id?: number;
+  key: string;
+  value: unknown;
+}
+
+export interface WooBrand {
+  id: number;
+  name: string;
+  slug: string;
+  count: number;
+  link?: string;
+}
+
 export interface WooOrder {
   id: number;
+  customer_id?: number;
   status: string;
   total: string;
+  currency?: string;
   line_items: WooLineItem[];
   shipping: WooShipping;
   billing: WooBilling;
   date_created: string;
+  date_modified?: string;
+  meta_data?: WooMetaData[];
+}
+
+export interface WooOrderNote {
+  id: number;
+  author: string;
+  date_created: string;
+  note: string;
+  customer_note?: boolean;
 }
 
 export interface WooLineItem {
@@ -120,6 +162,19 @@ export interface WooCustomer {
   last_name: string;
   username: string;
   avatar_url: string;
+  meta_data?: WooMetaData[];
+}
+
+export interface WooProductReview {
+  id: number;
+  product_id: number;
+  reviewer: string;
+  reviewer_email?: string;
+  review: string;
+  rating: number;
+  date_created: string;
+  verified: boolean;
+  status?: string;
 }
 
 export interface ProductsParams {
@@ -136,30 +191,231 @@ export interface ProductsParams {
   featured?: boolean;
   min_price?: string;
   max_price?: string;
+  stock_status?: 'instock' | 'outofstock' | 'onbackorder';
   exclude?: string;
   status?: string;
+  after?: string;
+  before?: string;
 }
 
 // ══════════════════════════════
 // PRODUCTS API
 // ══════════════════════════════
 
-// Transform image URLs to use VPS IP instead of old domain
+function decodeHtmlEntities(value: unknown): string {
+  if (value === null || value === undefined) return '';
+
+  let text = String(value);
+  const entities: Record<string, string> = {
+    amp: '&',
+    lt: '<',
+    gt: '>',
+    quot: '"',
+    apos: "'",
+    nbsp: ' ',
+    ndash: '-',
+    mdash: '-',
+    hellip: '...',
+    rsquo: "'",
+    lsquo: "'",
+    rdquo: '"',
+    ldquo: '"',
+  };
+
+  for (let i = 0; i < 3; i += 1) {
+    const next = text
+      .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity: string) => {
+        const normalized = entity.toLowerCase();
+        if (normalized.startsWith('#x')) {
+          const code = parseInt(normalized.slice(2), 16);
+          return Number.isFinite(code) ? String.fromCodePoint(code) : match;
+        }
+        if (normalized.startsWith('#')) {
+          const code = parseInt(normalized.slice(1), 10);
+          return Number.isFinite(code) ? String.fromCodePoint(code) : match;
+        }
+        return entities[normalized] ?? match;
+      })
+      .replace(/\s*;amp\s*/gi, ' & ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (next === text) break;
+    text = next;
+  }
+
+  return text;
+}
+
+function transformImage(image: any): WooImage {
+  if (!image) return image;
+
+  return {
+    id: Number(image.id || 0),
+    src: image.src ? normalizePublicAssetUrl(String(image.src)) : '',
+    name: decodeHtmlEntities(image.name),
+    alt: decodeHtmlEntities(image.alt),
+  };
+}
+
+function transformCategory(category: any): WooCategory {
+  if (!category) return category;
+
+  return {
+    id: Number(category.id || 0),
+    name: decodeHtmlEntities(category.name),
+    slug: String(category.slug || ''),
+    image: category.image ? transformImage(category.image) : category.image,
+    count: typeof category.count === 'number' ? category.count : undefined,
+  };
+}
+
+const PUBLIC_PRODUCT_META_KEYS = new Set([
+  '_woodmart_product_custom_tab_title',
+  '_woodmart_product_custom_tab_content',
+  '_woodmart_product_custom_tab_title_2',
+  '_woodmart_product_custom_tab_content_2',
+  'custom_tab_content1',
+  'custom_tab_content2',
+  '_wc_facebook_enhanced_catalog_attributes_ingredients',
+  '_wc_facebook_enhanced_catalog_attributes_instructions',
+  '_wc_facebook_enhanced_catalog_attributes_care_instructions',
+  '_structured_description',
+  '_rank_math_description',
+  '_brand_name',
+  'fb_product_description',
+  'fb_rich_text_description',
+  'meta description',
+  'rank_math_description',
+]);
+
+function transformMetaValue(value: unknown): unknown {
+  return typeof value === 'string' ? decodeHtmlEntities(value) : value;
+}
+
+function transformProductMetaData(metaData: any): WooMetaData[] {
+  if (!Array.isArray(metaData)) return [];
+
+  return metaData
+    .filter((meta) => PUBLIC_PRODUCT_META_KEYS.has(String(meta?.key || '')))
+    .map((meta) => ({
+      id: typeof meta.id === 'number' ? meta.id : undefined,
+      key: String(meta.key || ''),
+      value: transformMetaValue(meta.value),
+    }));
+}
+
+function transformProduct(product: any): WooProduct {
+  if (!product) return product;
+
+  return {
+    id: Number(product.id || 0),
+    name: decodeHtmlEntities(product.name),
+    slug: String(product.slug || ''),
+    permalink: product.permalink ? normalizePublicAssetUrl(String(product.permalink)) : '',
+    date_modified: product.date_modified,
+    sku: product.sku ? decodeHtmlEntities(product.sku) : '',
+    price: String(product.price || ''),
+    regular_price: String(product.regular_price || ''),
+    sale_price: String(product.sale_price || ''),
+    on_sale: Boolean(product.on_sale),
+    purchasable: product.purchasable !== false,
+    stock_status: product.stock_status || 'instock',
+    stock_quantity: product.stock_quantity ?? null,
+    description: decodeHtmlEntities(product.description),
+    short_description: decodeHtmlEntities(product.short_description),
+    images: Array.isArray(product.images) ? product.images.map(transformImage) : [],
+    categories: Array.isArray(product.categories) ? product.categories.map(transformCategory) : [],
+    tags: Array.isArray(product.tags)
+      ? product.tags.map((tag: any) => ({
+        id: Number(tag.id || 0),
+        name: decodeHtmlEntities(tag.name),
+        slug: String(tag.slug || ''),
+      }))
+      : [],
+    attributes: Array.isArray(product.attributes)
+      ? product.attributes.map((attribute: any) => ({
+        id: Number(attribute.id || 0),
+        name: decodeHtmlEntities(attribute.name),
+        options: Array.isArray(attribute.options)
+          ? attribute.options.map((option: unknown) => decodeHtmlEntities(option))
+          : [],
+      }))
+      : [],
+    meta_data: transformProductMetaData(product.meta_data),
+    average_rating: String(product.average_rating || '0'),
+    rating_count: Number(product.rating_count || 0),
+    featured: Boolean(product.featured),
+  };
+}
+
+function stripReviewHtml(value: unknown): string {
+  return decodeHtmlEntities(String(value || ''))
+    .replace(/<br\s*\/?\s*>/gi, '\n')
+    .replace(/<\/(p|li)>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function transformProductReview(review: any): WooProductReview {
+  return {
+    id: Number(review?.id || 0),
+    product_id: Number(review?.product_id || review?.product || 0),
+    reviewer: decodeHtmlEntities(review?.reviewer || 'Verified customer'),
+    reviewer_email: review?.reviewer_email ? String(review.reviewer_email) : undefined,
+    review: stripReviewHtml(review?.review),
+    rating: Number(review?.rating || 0),
+    date_created: String(review?.date_created || ''),
+    verified: Boolean(review?.verified),
+    status: typeof review?.status === 'string' ? review.status : undefined,
+  };
+}
+
+// Keep product images and text on the public storefront shape before rendering.
 function transformImageUrls(products: any[]): WooProduct[] {
   if (!Array.isArray(products)) return [];
 
-  return products.map(p => {
-    if (!p) return p;
+  return products.map(transformProduct);
+}
+
+function normalizePublicAssetUrl(src: string): string {
+  try {
+    const url = new URL(src);
+    if (url.hostname === 'e-mart.com.bd' || url.hostname === LEGACY_IP_HOST || LOCAL_WORDPRESS_HOSTS.has(url.hostname)) {
+      return `${PUBLIC_SITE_URL}${url.pathname}${url.search}${url.hash}`;
+    }
+  } catch {
+    return src;
+  }
+
+  return src;
+}
+
+function getSafeWooError(error: unknown): Record<string, unknown> {
+  if (axios.isAxiosError(error)) {
+    const responseMessage = typeof error.response?.data?.message === 'string'
+      ? error.response.data.message
+      : undefined;
+
     return {
-      ...p,
-      images: Array.isArray(p.images) ? p.images.map((img: any) => {
-        if (!img || !img.src) return img;
-        let newSrc = String(img.src);
-        newSrc = newSrc.replace('https://e-mart.com.bd', WOO_URL);
-        newSrc = newSrc.replace('http://e-mart.com.bd', WOO_URL);
-        return { ...img, src: newSrc };
-      }) : p.images,
+      message: responseMessage || error.message,
+      code: error.code,
+      status: error.response?.status,
     };
+  }
+
+  if (error instanceof Error) {
+    return { message: error.message };
+  }
+
+  return { message: 'Unknown error' };
+}
+
+function logWooError(context: string, error: unknown, details?: Record<string, unknown>) {
+  console.error(`${context} error:`, {
+    ...getSafeWooError(error),
+    ...details,
   });
 }
 
@@ -182,7 +438,7 @@ export async function getProducts(params: ProductsParams = {}): Promise<{
       totalPages: parseInt(response.headers['x-wp-totalpages'] || '0'),
     };
   } catch (error) {
-    console.error('getProducts error:', error);
+    logWooError('getProducts', error);
     return { products: [], total: 0, totalPages: 0 };
   }
 }
@@ -195,18 +451,19 @@ export async function getProduct(slug: string): Promise<WooProduct | null> {
     const products = transformImageUrls(response.data || []);
     return products[0] || null;
   } catch (error) {
-    console.error('getProduct error:', error);
+    logWooError('getProduct', error, { slug });
     return null;
   }
 }
 
 export async function getProductById(id: number): Promise<WooProduct | null> {
   try {
+    if (!id || isNaN(id)) { console.error('getProductById called with invalid id:', id); return null; }
     const response = await wooClient.get(`/products/${id}`);
     const products = transformImageUrls(response.data ? [response.data] : []);
     return products[0] || null;
   } catch (error) {
-    console.error('getProductById error:', error);
+    logWooError('getProductById', error, { id });
     return null;
   }
 }
@@ -222,6 +479,11 @@ export async function getSaleProducts(limit = 8): Promise<WooProduct[]> {
 }
 
 export async function getBestSellingProducts(limit = 8): Promise<WooProduct[]> {
+  const { products } = await getProducts({ orderby: 'popularity', per_page: limit });
+  return products;
+}
+
+export async function getTopRatedProducts(limit = 8): Promise<WooProduct[]> {
   const { products } = await getProducts({ orderby: 'rating', per_page: limit });
   return products;
 }
@@ -231,12 +493,12 @@ export async function getNewArrivals(limit = 8): Promise<WooProduct[]> {
   return products;
 }
 
-export async function searchProducts(query: string, page = 1): Promise<{
+export async function searchProducts(query: string, page = 1, perPage = 20): Promise<{
   products: WooProduct[];
   total: number;
   totalPages: number;
 }> {
-  return getProducts({ search: query, page, per_page: 20 });
+  return getProducts({ search: query, page, per_page: perPage });
 }
 
 export async function getProductsByBrand(brandName: string, limit = 5): Promise<WooProduct[]> {
@@ -247,9 +509,147 @@ export async function getProductsByBrand(brandName: string, limit = 5): Promise<
     });
     return products;
   } catch (error) {
-    console.error(`getProductsByBrand error for ${brandName}:`, error);
+    logWooError('getProductsByBrand', error, { brandName });
     return [];
   }
+}
+
+export async function getBrands(params: {
+  per_page?: number;
+  hide_empty?: boolean;
+  orderby?: 'count' | 'name' | 'slug' | 'id';
+  order?: 'asc' | 'desc';
+} = {}): Promise<WooBrand[]> {
+  const queryParams = {
+    per_page: 100,
+    hide_empty: true,
+    orderby: 'count',
+    order: 'desc',
+    ...params,
+  };
+
+  const parseBrands = (data: unknown) => {
+    if (!Array.isArray(data)) return [];
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { findCanonicalBrand } = require('./brandWhitelist') as typeof import('./brandWhitelist');
+    return data
+      .map((brand: any) => ({
+        id: Number(brand.id),
+        name: decodeHtmlEntities(brand.name).trim(),
+        slug: String(brand.slug || '').trim(),
+        count: Number(brand.count || 0),
+        link: typeof brand.link === 'string' ? brand.link : undefined,
+      }))
+      .filter((brand: WooBrand) => brand.id && brand.name && brand.slug && brand.count > 0)
+      .map((brand: WooBrand) => {
+        const canonical = findCanonicalBrand(brand.slug);
+        return canonical ? { ...brand, name: canonical.name } : brand;
+      })
+      .filter((brand: WooBrand) => findCanonicalBrand(brand.slug));
+  };
+
+  // Try internal URL first, fall back to public URL on socket errors
+  for (const attempt of ['internal', 'public'] as const) {
+    try {
+      let response;
+      if (attempt === 'public') {
+        response = await axios.get(`${PUBLIC_SITE_URL}/wp-json/wc/v3/products/attributes/1/terms`, {
+          params: { ...queryParams, consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET },
+          timeout: 20000,
+        });
+      } else {
+        response = await wooClient.get('/products/attributes/1/terms', {
+          params: queryParams,
+          timeout: 15000,
+        });
+      }
+      const brands = parseBrands(response.data);
+      if (brands.length > 0) return brands;
+    } catch (error: any) {
+      const isSocketError = error?.cause?.code === 'ECONNRESET' || error?.message?.includes('socket hang up');
+      if (attempt === 'internal' && isSocketError) continue;
+      logWooError('getBrands', error);
+      if (attempt === 'public') return [];
+    }
+  }
+  return [];
+}
+
+export async function getBrandBySlug(slug: string): Promise<WooBrand | null> {
+  const safeSlug = String(slug || '').trim();
+  if (!safeSlug) return null;
+
+  const queryParams = {
+    slug: safeSlug,
+    hide_empty: true,
+    per_page: 10,
+  };
+
+  const parseBrands = (data: unknown): WooBrand[] => {
+    if (!Array.isArray(data)) return [];
+    return data
+      .map((brand: any) => ({
+      id: Number(brand.id),
+      name: decodeHtmlEntities(brand.name).trim(),
+      slug: String(brand.slug || '').trim(),
+      count: Number(brand.count || 0),
+      link: typeof brand.link === 'string' ? brand.link : undefined,
+      }))
+      .filter((brand: WooBrand) => brand.id && brand.name && brand.slug);
+  };
+
+  const findExactBrand = (data: unknown): WooBrand | null => {
+    return parseBrands(data).find((brand) => brand.slug === safeSlug) || null;
+  };
+
+  const fetchBrandTerms = async (
+    attempt: 'internal' | 'public',
+    params: Record<string, string | number | boolean>,
+  ) => {
+    return attempt === 'public'
+      ? axios.get(`${PUBLIC_SITE_URL}/wp-json/wc/v3/products/attributes/1/terms`, {
+        params: { ...params, consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET },
+        timeout: 20000,
+      })
+      : wooClient.get('/products/attributes/1/terms', {
+        params,
+        timeout: 15000,
+      });
+  };
+
+  const findByPagedScan = async (attempt: 'internal' | 'public'): Promise<WooBrand | null> => {
+    for (let page = 1; page <= 20; page += 1) {
+      const response = await fetchBrandTerms(attempt, {
+        hide_empty: true,
+        per_page: 100,
+        page,
+      });
+      const brand = findExactBrand(response.data);
+      if (brand) return brand;
+
+      const totalPages = Number(response.headers?.['x-wp-totalpages'] || 0);
+      const terms = Array.isArray(response.data) ? response.data : [];
+      if ((totalPages && page >= totalPages) || terms.length < 100) break;
+    }
+
+    return null;
+  };
+
+  for (const attempt of ['internal', 'public'] as const) {
+    try {
+      const response = await fetchBrandTerms(attempt, queryParams);
+
+      const brand = findExactBrand(response.data) || await findByPagedScan(attempt);
+      if (brand) return brand;
+    } catch (error: any) {
+      const isSocketError = error?.cause?.code === 'ECONNRESET' || error?.message?.includes('socket hang up');
+      if (attempt === 'internal' && isSocketError) continue;
+      logWooError('getBrandBySlug', error, { slug: safeSlug });
+      if (attempt === 'public') return null;
+    }
+  }
+
+  return null;
 }
 
 export async function getProductsByCategory(categoryId: number, limit = 5): Promise<WooProduct[]> {
@@ -260,7 +660,7 @@ export async function getProductsByCategory(categoryId: number, limit = 5): Prom
     });
     return products;
   } catch (error) {
-    console.error(`getProductsByCategory error for ${categoryId}:`, error);
+    logWooError('getProductsByCategory', error, { categoryId });
     return [];
   }
 }
@@ -303,7 +703,7 @@ export async function getProductsByOrigin(originSlug: string, limit = 4): Promis
 
     return allProducts.slice(0, limit);
   } catch (error) {
-    console.error(`getProductsByOrigin error for ${originSlug}:`, error);
+    logWooError('getProductsByOrigin', error, { originSlug });
     return [];
   }
 }
@@ -327,9 +727,10 @@ export async function getCategories(params: {
         ...params,
       },
     });
-    return response.data;
+    if (!Array.isArray(response.data)) return [];
+    return response.data.map(transformCategory);
   } catch (error) {
-    console.error('getCategories error:', error);
+    logWooError('getCategories', error);
     return [];
   }
 }
@@ -339,9 +740,10 @@ export async function getCategoryBySlug(slug: string): Promise<WooCategory | nul
     const response = await wooClient.get('/products/categories', {
       params: { slug },
     });
-    return response.data[0] || null;
+    const categories = Array.isArray(response.data) ? response.data.map(transformCategory) : [];
+    return categories[0] || null;
   } catch (error) {
-    console.error('getCategoryBySlug error:', error);
+    logWooError('getCategoryBySlug', error, { slug });
     return null;
   }
 }
@@ -355,6 +757,7 @@ export async function createOrder(orderData: {
   billing: WooBilling;
   shipping: WooShipping;
   line_items: { product_id: number; quantity: number }[];
+  customer_id?: number;
   customer_note?: string;
 }): Promise<WooOrder | null> {
   try {
@@ -364,15 +767,16 @@ export async function createOrder(orderData: {
       throw new Error('Payment system not configured. Contact support.');
     }
 
-    const response = await wooClient.post('/orders', {
+    const orderStatus = orderData.payment_method === 'cod' ? 'processing' : 'pending';
+
+    const response = await wooWriteClient.post('/orders', {
       ...orderData,
       currency: 'BDT',
-      status: 'pending',
+      status: orderStatus,
     });
     return response.data;
   } catch (error: any) {
-    const errorMsg = error?.response?.data?.message || error?.message || 'Unknown error';
-    console.error('createOrder error:', errorMsg, error);
+    logWooError('createOrder', error);
     throw error; // Re-throw for better error handling at caller
   }
 }
@@ -384,8 +788,69 @@ export async function getCustomerOrders(customerId: number): Promise<WooOrder[]>
     });
     return response.data;
   } catch (error) {
-    console.error('getCustomerOrders error:', error);
+    logWooError('getCustomerOrders', error, { customerId });
     return [];
+  }
+}
+
+export async function getOrder(orderId: number): Promise<WooOrder | null> {
+  try {
+    const response = await wooClient.get(`/orders/${orderId}`);
+    return response.data;
+  } catch (error) {
+    logWooError('getOrder', error, { orderId });
+    return null;
+  }
+}
+
+export async function getOrderNotes(orderId: number): Promise<WooOrderNote[]> {
+  try {
+    const response = await wooClient.get(`/orders/${orderId}/notes`, {
+      params: { per_page: 50 },
+    });
+    return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+    logWooError('getOrderNotes', error, { orderId });
+    return [];
+  }
+}
+
+// ══════════════════════════════
+// PRODUCT REVIEWS API
+// ══════════════════════════════
+
+export async function getProductReviews(productId: number): Promise<WooProductReview[]> {
+  try {
+    const response = await wooClient.get('/products/reviews', {
+      params: {
+        product: productId,
+        per_page: 50,
+        status: 'approved',
+      },
+    });
+
+    return Array.isArray(response.data)
+      ? response.data.map(transformProductReview).filter((review) => review.id && review.rating > 0)
+      : [];
+  } catch (error) {
+    logWooError('getProductReviews', error, { productId });
+    return [];
+  }
+}
+
+export async function createProductReview(data: {
+  product_id: number;
+  reviewer: string;
+  reviewer_email: string;
+  review: string;
+  rating: number;
+}): Promise<WooProductReview | null> {
+  try {
+    const response = await wooWriteClient.post('/products/reviews', data);
+    return transformProductReview(response.data);
+  } catch (error) {
+    logWooError('createProductReview', error, { productId: data.product_id });
+    return null;
   }
 }
 
@@ -402,6 +867,18 @@ export async function getCustomer(id: number): Promise<WooCustomer | null> {
   }
 }
 
+export async function getCustomerByEmail(email: string): Promise<WooCustomer | null> {
+  try {
+    const response = await wooClient.get('/customers', {
+      params: { email, per_page: 1 },
+    });
+    const [customer] = Array.isArray(response.data) ? response.data : [];
+    return customer ?? null;
+  } catch (error) {
+    return null;
+  }
+}
+
 export async function createCustomer(data: {
   email: string;
   username: string;
@@ -410,10 +887,20 @@ export async function createCustomer(data: {
   last_name: string;
 }): Promise<WooCustomer | null> {
   try {
-    const response = await wooClient.post('/customers', data);
+    const response = await wooWriteClient.post('/customers', data);
     return response.data;
   } catch (error) {
-    console.error('createCustomer error:', error);
+    logWooError('createCustomer', error);
+    return null;
+  }
+}
+
+export async function updateCustomer(id: number, data: Record<string, unknown>): Promise<WooCustomer | null> {
+  try {
+    const response = await wooWriteClient.put(`/customers/${id}`, data);
+    return response.data;
+  } catch (error) {
+    logWooError('updateCustomer', error, { customerId: id });
     return null;
   }
 }
@@ -425,7 +912,7 @@ export async function createCustomer(data: {
 export function formatPrice(price: string): string {
   const num = parseFloat(price);
   if (isNaN(num)) return '৳0';
-  return `৳${num.toLocaleString('en-BD')}`;
+  return `৳${Math.round(num).toLocaleString('en-BD')}`;
 }
 
 export function getDiscountPercent(regular: string, sale: string): number {

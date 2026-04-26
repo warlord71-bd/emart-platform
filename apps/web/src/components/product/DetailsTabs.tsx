@@ -22,17 +22,17 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="clear-both rounded-2xl border border-hairline bg-white p-4 shadow-sm md:p-5">
       {/* Tab Navigation */}
-      <div className="flex gap-2 md:gap-4 border-b border-gray-200">
+      <div className="flex gap-4 overflow-x-auto border-b border-gray-200 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as typeof activeTab)}
-            className={`px-4 md:px-6 py-3 font-semibold text-sm md:text-base transition-colors ${
+            className={`shrink-0 border-b-2 px-1 py-3 text-sm font-semibold transition-colors md:text-base ${
               activeTab === tab.id
-                ? 'text-white bg-lumiere-text-primary rounded-t-lg'
-                : 'text-lumiere-text-secondary hover:text-lumiere-text-primary'
+                ? 'border-lumiere-text-primary text-lumiere-text-primary'
+                : 'border-transparent text-lumiere-text-secondary hover:text-lumiere-text-primary'
             }`}
           >
             {tab.label}
@@ -41,7 +41,7 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
       </div>
 
       {/* Tab Content */}
-      <div className="py-6 prose prose-sm max-w-none">
+      <div className="prose prose-sm max-w-none py-6">
         {activeTab === 'description' && (
           <div
             className="text-lumiere-text-secondary"

@@ -11,7 +11,7 @@ export const PaymentMethods: React.FC = () => {
   const methods: PaymentMethod[] = [
     {
       name: 'bKash',
-      bg: 'bg-gradient-to-br from-pink-500 to-rose-600',
+      bg: 'bg-gradient-to-br from-accent to-[#d55f78]',
       text: 'text-white',
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 100 100" fill="none">
@@ -49,7 +49,7 @@ export const PaymentMethods: React.FC = () => {
     },
     {
       name: 'Mastercard',
-      bg: 'bg-gray-100 border-2 border-gray-300',
+      bg: 'border border-hairline bg-card',
       text: 'text-gray-900',
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 100 100" fill="none">
@@ -87,7 +87,7 @@ export const PaymentMethods: React.FC = () => {
     },
     {
       name: 'COD',
-      bg: 'bg-green-500',
+      bg: 'bg-ink',
       text: 'text-white',
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 100 100" fill="none">
@@ -104,7 +104,7 @@ export const PaymentMethods: React.FC = () => {
       {methods.map((method) => (
         <div
           key={method.name}
-          className={`flex items-center justify-center w-16 h-12 rounded-lg transition-all hover:shadow-md hover:scale-105 cursor-pointer ${method.bg}`}
+          className={`flex h-12 w-16 cursor-pointer items-center justify-center rounded-xl transition-all hover:scale-105 hover:shadow-card ${method.bg}`}
           title={method.name}
         >
           {method.icon}

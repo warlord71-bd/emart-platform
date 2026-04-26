@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Heart, ShoppingCart, Trash2, Eye, Share2 } from 'lucide-react';
+import { formatPrice } from '@/lib/woocommerce';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -13,6 +14,7 @@ interface WishlistItem {
   on_sale: boolean;
   images: Array<{ src: string; alt: string }>;
   permalink: string;
+  slug?: string;
   stock_status: string;
   added_date: string;
 }
@@ -56,7 +58,7 @@ export default function WishlistPage() {
       name: item.name,
       price: item.price,
       quantity: 1,
-      image: item.images[0]?.src || '/placeholder.jpg'
+      image: item.images[0]?.src || '/logo.png'
     }));
 
     const updatedCart = [...currentCart, ...newItems];
@@ -129,7 +131,7 @@ export default function WishlistPage() {
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden bg-gray-100">
                   <Image
-                    src={item.images[0]?.src || '/placeholder.jpg'}
+                    src={item.images[0]?.src || '/logo.png'}
                     alt={item.images[0]?.alt || item.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -149,23 +151,23 @@ export default function WishlistPage() {
 
                 {/* Product Info */}
                 <div className="p-4">
-                  <Link href={`/product/${item.id}`} className="block mb-2">
+                  <Link href={item.slug ? `/shop/${item.slug}` : `/product/${item.id}`} className="block mb-2">
                     <h3 className="font-medium text-gray-900 line-clamp-2 hover:text-primary-600 transition-colors">
                       {item.name}
                     </h3>
                   </Link>
                   
                   <div className="flex items-baseline mb-3">
-                    <span className="text-lg font-bold text-gray-900">{item.price}</span>
+                    <span className="text-lg font-bold text-gray-900">{formatPrice(item.price)}</span>
                     {item.on_sale && (
-                      <span className="ml-2 text-sm text-gray-500 line-through">{item.regular_price}</span>
+                      <span className="ml-2 text-sm text-gray-500 line-through">{formatPrice(item.regular_price)}</span>
                     )}
                   </div>
 
                   {/* Action Buttons */}
                   <div className="flex space-x-2">
                     <Link
-                      href={`/product/${item.id}`}
+                      href={item.slug ? `/shop/${item.slug}` : `/product/${item.id}`}
                       className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                     >
                       <Eye className="h-4 w-4 mr-1" />
@@ -207,11 +209,7 @@ export default function WishlistPage() {
             <ul className="space-y-2 text-sm text-blue-800">
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                Items in your wishlist are saved locally. Create an account to sync across devices.
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2">•</span>
-                We'll notify you when items go on sale (coming soon).
+                Items in your wishlist are saved locally. They are available on this device while browser storage is kept.
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>

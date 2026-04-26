@@ -55,7 +55,7 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
     <section className="w-full bg-ink px-4 py-8 text-white">
       <div className="mx-auto max-w-6xl">
         <div className="mb-5 flex flex-nowrap items-center justify-between gap-2 sm:gap-4">
-          <h2 className="inline-flex flex-nowrap items-center gap-1.5 whitespace-nowrap text-lg font-extrabold sm:gap-2 sm:text-2xl lg:text-3xl">
+          <h2 className="inline-flex flex-nowrap items-center gap-1.5 whitespace-nowrap text-lg font-extrabold text-white sm:gap-2 sm:text-2xl lg:text-3xl">
             <span aria-hidden="true" className="shrink-0">⚡</span>
             <span className="shrink-0">Flash Sale</span>
           </h2>

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { COMPANY } from '@/lib/companyProfile';
 
 // Note: In a server component this would be:
 // export const metadata: Metadata = { ... };
@@ -9,16 +10,16 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden mb-3">
+    <div className="mb-3 overflow-hidden rounded-lg border border-hairline bg-card shadow-card">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-3 bg-gray-50 hover:bg-gray-100 flex justify-between items-center transition-colors text-left font-semibold text-[#1a1a2e]"
+        className="flex w-full items-center justify-between bg-bg-alt px-4 py-3 text-left font-semibold text-ink transition-colors hover:bg-brass-soft"
       >
         {question}
-        <span className={`text-[#e8197a] transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+        <span className={`text-accent transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
       </button>
       {isOpen && (
-        <div className="px-4 py-3 bg-white text-sm text-gray-600 border-t border-gray-200">
+        <div className="border-t border-hairline bg-card px-4 py-3 text-sm text-muted">
           {answer}
         </div>
       )}
@@ -30,7 +31,7 @@ export default function FAQPage() {
   const faqs = [
     {
       question: 'Are all products 100% authentic?',
-      answer: 'Yes, 100% of our products are authentic and sourced directly from manufacturers. We verify every product before shipping.'
+      answer: 'Yes. We focus on authentic products, verify stock before dispatch, and support customers from our Dhanmondi operation.'
     },
     {
       question: 'How long does delivery take?',
@@ -58,7 +59,7 @@ export default function FAQPage() {
     },
     {
       question: 'Do you have a physical store?',
-      answer: 'Yes! Visit us at 17, Central Road (Near Ideal College), Dhanmondi, Dhaka-1205. We\'re open Saturday-Thursday, 9:00 AM – 9:00 PM.'
+      answer: `Yes. Our office is at ${COMPANY.office.line1}, ${COMPANY.office.line2}, ${COMPANY.office.area}. Our warehouse operates from ${COMPANY.warehouse.line1}, ${COMPANY.warehouse.line2}, ${COMPANY.warehouse.area}.`
     },
     {
       question: 'Are there any hidden charges?',
@@ -66,14 +67,14 @@ export default function FAQPage() {
     },
     {
       question: 'How do I know if a product is right for my skin type?',
-      answer: 'Contact our support team for personalized recommendations. We have skincare experts who can guide you based on your skin type and concerns.'
+      answer: 'Contact our support team before ordering. We help customers narrow down options based on skin concern, texture preference, and routine type.'
     }
   ];
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-[#1a1a2e] mb-2">Frequently Asked Questions</h1>
-      <p className="text-gray-600 text-sm mb-6">Find answers to common questions about Emart, our products, shipping, and more.</p>
+      <h1 className="mb-2 text-2xl font-bold text-ink">Frequently Asked Questions</h1>
+      <p className="mb-6 text-sm text-muted">Find answers to common questions about Emart, our products, shipping, and more.</p>
 
       <div className="space-y-4">
         {faqs.map((faq, index) => (
@@ -81,9 +82,9 @@ export default function FAQPage() {
         ))}
       </div>
 
-      <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <p className="text-sm text-blue-900">
-          <strong>Still have questions?</strong> Contact us at <a href="mailto:emart.bdofficial@gmail.com" className="text-[#e8197a] hover:underline">emart.bdofficial@gmail.com</a> or call <a href="tel:+8809697597399" className="text-[#e8197a] hover:underline">+880 9697-597399</a>
+      <div className="mt-8 rounded-lg border border-brass/30 bg-brass-soft p-4">
+        <p className="text-sm text-ink-2">
+          <strong>Still have questions?</strong> Contact us at <a href={`mailto:${COMPANY.supportEmail}`} className="text-accent hover:underline">{COMPANY.supportEmail}</a> or call <a href={`tel:${COMPANY.phones.primaryHref}`} className="text-accent hover:underline">{COMPANY.phones.primary}</a>
         </p>
       </div>
     </div>

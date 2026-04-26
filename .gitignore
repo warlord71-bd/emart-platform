@@ -209,3 +209,50 @@ tramp
 .\#*
 # Local variables:
 # End:
+# === added 2026-04-26: exclude session/audit/handoff/temp + accidents ===
+# Build artifacts
+*.tsbuildinfo
+.next/
+
+# Local-only docs / handoffs / session logs
+AGENTS.md
+AGENTS.*.md
+TASK_SUMMARY.md
+apps/web/MEMORY.md
+apps/web/SESSION.md
+apps/web/SESSION-LOG.md
+apps/web/TASKS.md
+apps/web/DECISIONS.md
+apps/web/ENV.md
+apps/web/FILES-LOCKED.md
+apps/web/LIVE-SOURCE-OF-TRUTH.md
+apps/web/HANDOFF-*.md
+apps/web/OCR_*.md
+apps/web/TEMPORARY_*.md
+apps/web/TOMORROW_*.md
+apps/web/placeholder-analysis.md
+
+# Local-only / accidents
+apps/web/.codex
+apps/web/end.sh
+apps/web/start.sh
+apps/web/next
+apps/web/emart-skincare@1.0.0
+apps/web/src/app/layout.tsx.backup
+apps/web/ops/
+apps/web/public/audit/
+apps/web/public/images/payment-methods.original-black-bg.png
+apps_web_backup/
+apps/web_backup/
+audit/
+.codex
+docs/audit/
+scripts/apply-brand-corrections.php
+scripts/category-audit.php
+scripts/emart-safe-audit.sh
+scripts/full-image-sync.sh
+image-audit.sh
+rebuild.sh
+resolved
+e the current version from the branch (resolve conflict)
+olve the conflict - use the current version (HEAD)

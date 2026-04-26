@@ -39,7 +39,8 @@ export const ProductImage: React.FC<ProductImageProps> = ({
           alt={mainImage.alt || productName}
           width={500}
           height={500}
-          priority={true}
+          priority={selectedImageIndex === 0}
+          sizes="(max-width: 768px) 100vw, 50vw"
           quality={85}
           className={`w-full h-full object-contain transition-transform duration-300 ${
             isZoomed ? 'scale-150' : 'scale-100'

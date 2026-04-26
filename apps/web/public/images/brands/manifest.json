@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "COSRX",
+    "slug": "cosrx",
+    "logo": "/images/brands/cosrx.png"
+  },
+  {
+    "id": 2,
+    "name": "ISNTREE",
+    "slug": "isntree",
+    "logo": "/images/brands/isntree.png"
+  },
+  {
+    "id": 3,
+    "name": "PURITO",
+    "slug": "purito",
+    "logo": "/images/brands/purito.png"
+  },
+  {
+    "id": 4,
+    "name": "SOME BY MI",
+    "slug": "some-by-mi",
+    "logo": "/images/brands/some-by-mi.png"
+  },
+  {
+    "id": 5,
+    "name": "LANEIGE",
+    "slug": "laneige",
+    "logo": "/images/brands/laneige.png"
+  },
+  {
+    "id": 6,
+    "name": "ANUA",
+    "slug": "anua",
+    "logo": "/images/brands/anua.jpg"
+  },
+  {
+    "id": 7,
+    "name": "DABO",
+    "slug": "dabo",
+    "logo": "/images/brands/dabo.png"
+  },
+  {
+    "id": 8,
+    "name": "DR.G",
+    "slug": "dr-g",
+    "logo": "/images/brands/dr-g.png"
+  }
+]

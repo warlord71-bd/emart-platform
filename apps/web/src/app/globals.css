@@ -1,99 +1,401 @@
-/* src/app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --pk: #e8197a;
-  --pk-d: #c01264;
-  --pk-l: #fce7f0;
-  --dark: #1a1a2e;
-  --bd: #ede0e8;
+  /* === PORCELAIN PALETTE ===================================== */
+
+  /* Surfaces */
+  --color-bg: #fafaf8;
+  --color-bg-alt: #f3f1ec;
+  --color-card: #ffffff;
+  --color-stone: #edeae3;
+
+  /* Ink (text & strong surfaces) */
+  --color-ink: #111111;
+  --color-ink-2: #2a2a2a;
+  --color-muted: #6b6b6b;
+  --color-muted-2: #9a9a9a;
+  --color-hairline: rgba(17, 17, 17, 0.1);
+
+  /* Accent — muted rose */
+  --color-accent: #d4596e;
+  --color-accent-soft: #f8e6ea;
+  --color-accent-deep: #a13f52;
+
+  /* Brass (premium / ratings) */
+  --color-brass: #c9a961;
+  --color-brass-soft: #f5ecd4;
+
+  /* Semantic */
+  --color-success: #2e7d5b;
+  --color-success-soft: #e4f0ea;
+  --color-warning: #c88a2e;
+  --color-warning-soft: #f8ecd6;
+  --color-danger: #b23b3b;
+  --color-danger-soft: #f5e1e1;
+
+  /* Typography */
+  --font-display: var(--font-display-loaded), "Playfair Display", Georgia, "Noto Serif Bengali", serif;
+  --font-body: var(--font-body-loaded), "DM Sans", "Hind Siliguri", system-ui, sans-serif;
+  --font-mono: var(--font-mono-loaded), "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Compatibility aliases while legacy classes are still in use */
+  --font-poppins: var(--font-body);
+  --font-bengali: "Hind Siliguri", sans-serif;
+  --pk: var(--color-accent);
+  --pk-d: var(--color-accent-deep);
+  --pk-l: var(--color-accent-soft);
+  --dark: var(--color-ink);
+  --bd: var(--color-stone);
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px rgba(17, 17, 17, 0.06);
+  --shadow-pop: 0 20px 48px rgba(17, 17, 17, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(212, 89, 110, 0.25);
+
+  /* Spacing rhythm */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
 }
 
 @layer base {
-  * { box-sizing: border-box; }
-
-  body {
-    font-family: var(--font-poppins), 'Noto Sans Bengali', sans-serif;
-    color: #333;
+  * {
+    box-sizing: border-box;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-poppins), sans-serif;
-    font-weight: 700;
-    color: #1a1a2e;
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    background: var(--color-bg);
+    color: var(--color-ink-2);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  @supports (overflow-x: clip) {
+    html,
+    body {
+      overflow-x: clip;
+    }
+  }
+
+  body {
+    margin: 0;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus,
+  button:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
   }
 }
 
 @layer components {
-  .btn-primary {
-    @apply bg-[#e8197a] text-white font-semibold px-6 py-3 rounded-lg
-           hover:bg-[#c01264] transition-colors duration-200
-           disabled:opacity-50 disabled:cursor-not-allowed;
+  .announcement-marquee {
+    @apply relative w-full overflow-hidden whitespace-nowrap;
   }
 
-  .btn-outline {
-    @apply border-2 border-[#e8197a] text-[#e8197a] font-semibold px-6 py-3 rounded-lg
-           hover:bg-[#e8197a] hover:text-white transition-colors duration-200;
+  .announcement-marquee__track {
+    display: flex;
+    width: max-content;
+    animation: announcement-marquee 22s linear infinite;
   }
 
-  .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  .announcement-marquee__group {
+    @apply flex shrink-0 items-center gap-3 px-3 leading-5;
   }
 
-  .badge-sale {
-    @apply badge bg-[#e8197a] text-white;
+  .announcement-marquee:hover .announcement-marquee__track,
+  .announcement-marquee:focus-within .announcement-marquee__track {
+    animation-play-state: paused;
   }
 
-  .badge-new {
-    @apply badge bg-[#1a1a2e] text-white;
+  .ink {
+    color: var(--color-ink);
   }
 
-  .badge-stock {
-    @apply badge bg-green-100 text-green-800;
+  .muted {
+    color: var(--color-muted);
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100
-           hover:shadow-md transition-shadow duration-200;
+    background: var(--color-card);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-pop);
+  }
+
+  .hairline {
+    border: 1px solid var(--color-hairline);
+  }
+
+  .btn-primary,
+  .btn-outline,
+  .btn-ghost,
+  .btn-accent {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 0;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .btn-primary {
+    background: var(--color-ink);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+  }
+
+  .btn-primary:hover {
+    background: #000;
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-outline,
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-ink);
+    border: 1px solid var(--color-ink);
+    padding: 11px 21px;
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+  }
+
+  .btn-outline:hover,
+  .btn-ghost:hover {
+    background: var(--color-bg-alt);
+  }
+
+  .btn-accent {
+    background: var(--color-accent);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+  }
+
+  .btn-accent:hover {
+    background: var(--color-accent-deep);
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 text-xs font-medium;
+    border-radius: 4px;
+  }
+
+  .badge-sale {
+    background: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 3px 7px;
+  }
+
+  .badge-new {
+    background: var(--color-ink);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 3px 7px;
+  }
+
+  .badge-stock {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+    border: 1px solid rgba(46, 125, 91, 0.12);
+  }
+
+  .badge-auth {
+    background: var(--color-brass-soft);
+    color: #7a5f1f;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 4px 9px;
+    border-radius: 4px;
+    border: 1px solid rgba(201, 169, 97, 0.3);
   }
 
   .section-title {
-    @apply text-2xl md:text-3xl font-bold text-[#1a1a2e]
-           border-b-4 border-[#e8197a] pb-2 inline-block;
+    @apply inline-block border-b-4 pb-2 text-2xl font-bold md:text-3xl;
+    color: var(--color-ink);
+    border-bottom-color: var(--color-accent);
   }
 
   .price {
-    @apply text-[#e8197a] font-bold;
+    color: var(--color-accent);
+    font-weight: 700;
   }
 
   .price-old {
-    @apply text-gray-400 line-through text-sm;
+    color: var(--color-muted-2);
+    text-decoration: line-through;
+    font-size: 0.875rem;
   }
 
-  /* Product image container — always square */
   .product-img-wrap {
-    @apply relative w-full aspect-square overflow-hidden bg-gray-50 rounded-lg;
+    @apply relative aspect-square w-full overflow-hidden rounded-lg;
+    background: var(--color-bg-alt);
   }
 
   .product-img-wrap img {
-    @apply w-full h-full object-cover object-center
-           transition-transform duration-300 group-hover:scale-105;
+    @apply h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105;
   }
 
-  /* Skeleton loading */
+  @media (max-width: 640px) {
+    .product-img-wrap {
+      aspect-ratio: 1.08;
+    }
+  }
+
+  .type-page-title {
+    @apply text-[24px] font-bold leading-tight tracking-normal md:text-[32px];
+  }
+
+  .type-section-title {
+    @apply text-[21px] font-bold leading-tight tracking-normal md:text-[26px];
+  }
+
+  .type-section-subtitle {
+    @apply text-[14px] font-normal leading-relaxed tracking-normal md:text-[16px];
+  }
+
+  .type-product-title {
+    @apply text-[14px] font-medium leading-snug tracking-normal md:text-[15px];
+  }
+
+  .type-product-price {
+    @apply text-[16px] font-bold leading-tight tracking-normal md:text-[18px];
+  }
+
+  .type-button {
+    @apply text-[14px] font-semibold leading-none tracking-normal;
+  }
+
+  .type-cta {
+    @apply text-[15px] font-bold leading-none tracking-normal;
+  }
+
+  .type-meta {
+    @apply text-[12px] font-medium leading-snug tracking-normal;
+  }
+
+  .type-ui-font {
+    font-family: var(--font-body);
+  }
+
+  .type-bangla {
+    font-family: "Hind Siliguri", sans-serif;
+    line-height: 1.7;
+  }
+
+  .star-filled {
+    color: var(--color-brass);
+  }
+
+  .star-empty {
+    color: var(--color-stone);
+  }
+
   .skeleton {
-    @apply animate-pulse bg-gray-200 rounded;
+    @apply animate-pulse rounded;
+    background: var(--color-stone);
   }
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb { background: #e8197a; border-radius: 3px; }
+@keyframes announcement-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
 
-/* Mobile bottom nav safe area */
+@media (prefers-reduced-motion: reduce) {
+  .announcement-marquee__track {
+    animation: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-alt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 3px;
+}
+
 @media (max-width: 768px) {
-  body { padding-bottom: 64px; }
+  body {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+}
+
+:lang(bn),
+.bn {
+  font-family: "Hind Siliguri", sans-serif;
+  line-height: 1.8;
 }

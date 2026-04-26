@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { COMPANY } from '@/lib/companyProfile';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
@@ -8,11 +9,11 @@ export const metadata: Metadata = {
 export default function TermsConditionsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-[#1a1a2e] mb-6">Terms & Conditions</h1>
+      <h1 className="mb-6 text-2xl font-bold text-ink">Terms & Conditions</h1>
 
-      <div className="prose prose-sm max-w-none text-gray-600 space-y-6">
+      <div className="prose prose-sm max-w-none space-y-6 text-muted prose-headings:text-ink prose-strong:text-ink prose-li:text-muted prose-a:text-accent">
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">1. Acceptance of Terms</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">1. Acceptance of Terms</h2>
           <p>
             By accessing and using this website (e-mart.com.bd), you accept and agree to be bound by the terms,
             conditions, and notices contained herein. If you do not agree to abide by the above, please do not use this service.
@@ -20,7 +21,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">2. Use License</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">2. Use License</h2>
           <p>
             Permission is granted to temporarily download one copy of the materials (information, software, documents)
             from Emart Skincare Bangladesh for personal, non-commercial transitory viewing only.
@@ -36,7 +37,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">3. Disclaimer of Warranties</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">3. Disclaimer of Warranties</h2>
           <p>
             The materials on Emart Skincare Bangladesh are provided on an "as is" basis.
             We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties
@@ -46,7 +47,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">4. Limitations of Liability</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">4. Limitations of Liability</h2>
           <p>
             In no event shall Emart Skincare Bangladesh or its suppliers be liable for any damages (including, without limitation,
             damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials
@@ -55,7 +56,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">5. Accuracy of Materials</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">5. Accuracy of Materials</h2>
           <p>
             The materials appearing on Emart Skincare Bangladesh could include technical inaccuracies or typographical errors.
             We do not warrant that any of the materials on our website are accurate, complete, or current.
@@ -64,7 +65,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">6. Materials & Content Ownership</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">6. Materials & Content Ownership</h2>
           <p>
             The materials on Emart Skincare Bangladesh are protected by copyright and trademark laws.
             You may not modify, copy, reproduce, republish, upload, post, transmit, or distribute these materials
@@ -73,7 +74,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">7. Product Information</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">7. Product Information</h2>
           <p>
             We strive to provide accurate product descriptions and pricing. However,
             we do not warrant that product descriptions, pricing, or other content is accurate, complete, reliable, current, or error-free.
@@ -82,7 +83,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">8. Order Acceptance</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">8. Order Acceptance</h2>
           <p>
             We reserve the right to refuse any order you place with us.
             We may, in our sole discretion, limit or cancel quantities purchased per person, per household,
@@ -91,7 +92,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">9. Pricing & Availability</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">9. Pricing & Availability</h2>
           <p>
             We reserve the right to change our prices without notice and without liability.
             While we attempt to provide accurate information, errors may occur.
@@ -100,7 +101,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">10. User Conduct</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">10. User Conduct</h2>
           <p>
             You agree not to use this website:
           </p>
@@ -114,7 +115,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">11. Account Responsibility</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">11. Account Responsibility</h2>
           <p>
             If you create an account on our website, you are responsible for maintaining the confidentiality of your password
             and account information. You agree to accept responsibility for all activities that occur under your account.
@@ -123,7 +124,7 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">12. Changes to Terms</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">12. Changes to Terms</h2>
           <p>
             We may revise these terms of service for Emart Skincare Bangladesh at any time without notice.
             By using this website after such modifications, you agree to be bound by the revised terms and conditions.
@@ -131,17 +132,17 @@ export default function TermsConditionsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-[#1a1a2e] mb-3">13. Governing Law</h2>
+          <h2 className="mb-3 text-lg font-semibold text-ink">13. Governing Law</h2>
           <p>
             These terms and conditions are governed by and construed in accordance with the laws of Bangladesh,
             and you irrevocably submit to the exclusive jurisdiction of the courts located in Dhaka, Bangladesh.
           </p>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
-          <p className="text-sm text-yellow-900">
-            <strong>Last Updated:</strong> March 2026<br />
-            <strong>Questions?</strong> Contact us at <a href="mailto:emart.bdofficial@gmail.com" className="text-[#e8197a] hover:underline">emart.bdofficial@gmail.com</a>
+        <div className="mt-6 rounded-lg border border-warning/30 bg-warning-soft p-4">
+          <p className="text-sm text-ink-2">
+            <strong>Last Updated:</strong> April 2026<br />
+            <strong>Questions?</strong> Contact us at <a href={`mailto:${COMPANY.supportEmail}`} className="text-accent hover:underline">{COMPANY.supportEmail}</a>
           </p>
         </div>
       </div>

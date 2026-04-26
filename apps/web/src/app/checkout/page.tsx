@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
-import { createOrder, formatPrice } from '@/lib/woocommerce';
+import { formatPrice } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
+import { COMPANY } from '@/lib/companyProfile';
 
 const DISTRICTS = [
   'Dhaka', 'Chittagong', 'Rajshahi', 'Khulna', 'Sylhet',
@@ -25,18 +26,18 @@ const PAYMENT_METHODS = [
   {
     id: 'bkash',
     label: 'bKash',
-    desc: 'Send to: 01919-797399 (Merchant)',
+    desc: `Send to: ${COMPANY.payment.bkash} (Merchant)`,
     icon: '💳',
     color: 'pink',
-    number: '01919-797399',
+    number: COMPANY.payment.bkash,
   },
   {
     id: 'nagad',
     label: 'Nagad',
-    desc: 'Send to: 01919-797399 (Merchant)',
+    desc: `Send to: ${COMPANY.payment.nagad} (Merchant)`,
     icon: '📱',
     color: 'orange',
-    number: '01919-797399',
+    number: COMPANY.payment.nagad,
   },
 ];
 
@@ -67,13 +68,18 @@ export default function CheckoutPage() {
     e.preventDefault();
     if (items.length === 0) return;
 
-    // Validate phone
+    const normalizedEmail = form.email.trim().toLowerCase();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
     if (!form.phone.match(/^(\+880|880|0)1[3-9]\d{8}$/)) {
       toast.error('Please enter a valid Bangladesh phone number');
       return;
     }
 
-    // Validate bKash/Nagad transaction ID
     if (paymentMethod !== 'cod' && !txnId.trim()) {
       toast.error('Please enter your transaction ID');
       return;
@@ -90,30 +96,42 @@ export default function CheckoutPage() {
         postcode: form.postcode,
         country: 'BD',
         phone: form.phone,
-        email: form.email || `${form.phone}@emart.bd`,
+        email: normalizedEmail,
       };
 
-      const order = await createOrder({
+      const payload = {
         payment_method: paymentMethod,
         billing,
         shipping: billing,
-        line_items: items.map((i) => ({
-          product_id: i.id,
-          quantity: i.quantity,
+        line_items: items.map((item) => ({
+          product_id: item.id,
+          quantity: item.quantity,
         })),
         customer_note: [
           form.note,
           paymentMethod !== 'cod' ? `TxnID: ${txnId}` : '',
         ].filter(Boolean).join(' | '),
+      };
+
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
 
-      if (order) {
-        clearCart();
-        toast.success('Order placed successfully! 🎉');
-        router.push(`/order-success?id=${order.id}`);
-      } else {
-        throw new Error('Order creation failed');
+      const data = await response.json().catch(() => ({}));
+
+      const orderId = data?.order?.id || data?.id;
+
+      if (!response.ok || !orderId) {
+        throw new Error(data?.error || 'Order creation failed');
       }
+
+      clearCart();
+      toast.success('Order placed successfully! 🎉');
+      router.push(`/order-success?id=${orderId}`);
     } catch (err: any) {
       const errorMessage = err?.message || 'Something went wrong. Please try again or call us.';
       toast.error(errorMessage);
@@ -127,7 +145,7 @@ export default function CheckoutPage() {
     return (
       <div className="max-w-xl mx-auto px-4 py-20 text-center">
         <div className="text-6xl mb-4">🛒</div>
-        <h2 className="text-xl font-bold text-[#1a1a2e] mb-2">Your cart is empty</h2>
+        <h2 className="mb-2 text-xl font-bold text-ink">Your cart is empty</h2>
         <a href="/shop" className="btn-primary inline-block mt-4">Shop Now →</a>
       </div>
     );
@@ -135,24 +153,20 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-[#1a1a2e] mb-8">Checkout</h1>
+      <h1 className="mb-8 text-2xl font-bold text-ink">Checkout</h1>
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-          {/* ── LEFT: Forms ── */}
           <div className="lg:col-span-2 space-y-6">
-
-            {/* Shipping Info */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-              <h2 className="font-bold text-[#1a1a2e] text-lg mb-4">📦 Delivery Information</h2>
+            <div className="rounded-2xl border border-hairline bg-card p-6 shadow-card">
+              <h2 className="mb-4 text-lg font-bold text-ink">📦 Delivery Information</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { name: 'first_name', label: 'First Name', required: true },
                   { name: 'last_name', label: 'Last Name', required: true },
                 ].map(({ name, label, required }) => (
                   <div key={name}>
-                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                    <label className="mb-1 block text-sm font-medium text-muted">
                       {label} {required && <span className="text-red-500">*</span>}
                     </label>
                     <input
@@ -160,14 +174,13 @@ export default function CheckoutPage() {
                       value={(form as any)[name]}
                       onChange={handleChange}
                       required={required}
-                      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm
-                                 focus:outline-none focus:border-[#e8197a] focus:ring-2 focus:ring-[#e8197a]/20"
+                      className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"
                     />
                   </div>
                 ))}
 
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                  <label className="mb-1 block text-sm font-medium text-muted">
                     Phone Number <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -177,13 +190,12 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     required
                     placeholder="01XXXXXXXXX"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm
-                               focus:outline-none focus:border-[#e8197a] focus:ring-2 focus:ring-[#e8197a]/20"
+                    className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"
                   />
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                  <label className="mb-1 block text-sm font-medium text-muted">
                     Full Address <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -192,13 +204,12 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     required
                     placeholder="House, Road, Area"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm
-                               focus:outline-none focus:border-[#e8197a] focus:ring-2 focus:ring-[#e8197a]/20"
+                    className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                  <label className="mb-1 block text-sm font-medium text-muted">
                     District <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -206,32 +217,35 @@ export default function CheckoutPage() {
                     value={form.city}
                     onChange={handleChange}
                     required
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm
-                               focus:outline-none focus:border-[#e8197a]"
+                    className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none"
                   >
-                    {DISTRICTS.map((d) => (
-                      <option key={d} value={d}>{d}</option>
+                    {DISTRICTS.map((district) => (
+                      <option key={district} value={district}>{district}</option>
                     ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
-                    Email (optional)
+                  <label className="mb-1 block text-sm font-medium text-muted">
+                    Email Address <span className="text-red-500">*</span>
                   </label>
                   <input
                     name="email"
                     type="email"
                     value={form.email}
                     onChange={handleChange}
-                    placeholder="for order confirmation"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm
-                               focus:outline-none focus:border-[#e8197a] focus:ring-2 focus:ring-[#e8197a]/20"
+                    required
+                    autoComplete="email"
+                    placeholder="you@gmail.com"
+                    className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"
                   />
+                  <p className="mt-1 text-xs text-muted">
+                    We send order updates here. If this is your Gmail, you can use the same address with Continue with Google in My Account.
+                  </p>
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                  <label className="mb-1 block text-sm font-medium text-muted">
                     Order Note (optional)
                   </label>
                   <textarea
@@ -240,24 +254,19 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     rows={2}
                     placeholder="Special instructions for delivery..."
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm
-                               focus:outline-none focus:border-[#e8197a] resize-none"
+                    className="w-full resize-none rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Payment Method */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-              <h2 className="font-bold text-[#1a1a2e] text-lg mb-4">💳 Payment Method</h2>
+            <div className="rounded-2xl border border-hairline bg-card p-6 shadow-card">
+              <h2 className="mb-4 text-lg font-bold text-ink">💳 Payment Method</h2>
               <div className="space-y-3">
                 {PAYMENT_METHODS.map((method) => (
                   <label
                     key={method.id}
-                    className={`flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all
-                               ${paymentMethod === method.id
-                                 ? 'border-[#e8197a] bg-[#fce7f0]'
-                                 : 'border-gray-200 hover:border-gray-300'}`}
+                    className={`flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${paymentMethod === method.id ? 'border-accent bg-accent-soft' : 'border-hairline hover:border-accent/40'}`}
                   >
                     <input
                       type="radio"
@@ -265,18 +274,17 @@ export default function CheckoutPage() {
                       value={method.id}
                       checked={paymentMethod === method.id}
                       onChange={() => setPaymentMethod(method.id)}
-                      className="mt-1 accent-[#e8197a]"
+                      className="mt-1 accent-accent"
                     />
                     <div className="flex-1">
-                      <div className="font-semibold text-[#1a1a2e] flex items-center gap-2">
+                      <div className="flex items-center gap-2 font-semibold text-ink">
                         <span>{method.icon}</span> {method.label}
                       </div>
-                      <div className="text-sm text-gray-500 mt-0.5">{method.desc}</div>
+                      <div className="mt-0.5 text-sm text-muted">{method.desc}</div>
 
-                      {/* bKash/Nagad Transaction ID input */}
                       {paymentMethod === method.id && method.id !== 'cod' && (
-                        <div className="mt-3 p-3 bg-white rounded-lg border border-gray-200">
-                          <p className="text-xs text-gray-600 mb-2">
+                        <div className="mt-3 rounded-lg border border-hairline bg-card p-3">
+                          <p className="mb-2 text-xs text-muted">
                             Send money to: <strong>{method.number}</strong> (Merchant)
                             <br />
                             Then enter your Transaction ID below:
@@ -286,8 +294,7 @@ export default function CheckoutPage() {
                             value={txnId}
                             onChange={(e) => setTxnId(e.target.value)}
                             placeholder="Transaction ID (e.g. 8N7G6K5M)"
-                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                                       focus:outline-none focus:border-[#e8197a]"
+                            className="w-full rounded-lg border border-hairline bg-card px-3 py-2 text-sm text-ink-2 focus:border-accent focus:outline-none"
                           />
                         </div>
                       )}
@@ -298,50 +305,46 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* ── RIGHT: Order Summary ── */}
           <div className="space-y-4">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm sticky top-24">
-              <h2 className="font-bold text-[#1a1a2e] text-lg mb-4">🧾 Order Summary</h2>
+            <div className="sticky top-24 rounded-2xl border border-hairline bg-card p-6 shadow-card">
+              <h2 className="mb-4 text-lg font-bold text-ink">🧾 Order Summary</h2>
 
-              {/* Items */}
               <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-3 items-center">
-                    <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-50">
+                    <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-bg-alt">
                       <Image src={item.image} alt={item.name} fill className="object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-gray-700 line-clamp-2">{item.name}</p>
-                      <p className="text-xs text-gray-400">Qty: {item.quantity}</p>
+                      <p className="line-clamp-2 text-xs font-medium text-ink-2">{item.name}</p>
+                      <p className="text-xs text-muted-2">Qty: {item.quantity}</p>
                     </div>
-                    <span className="text-sm font-bold text-[#e8197a] flex-shrink-0">
+                    <span className="flex-shrink-0 text-sm font-bold text-accent">
                       {formatPrice(String(parseFloat(item.price) * item.quantity))}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* Totals */}
-              <div className="border-t border-gray-100 pt-4 space-y-2">
-                <div className="flex justify-between text-sm text-gray-600">
+              <div className="space-y-2 border-t border-hairline pt-4">
+                <div className="flex justify-between text-sm text-muted">
                   <span>Subtotal ({totalItems()} items)</span>
                   <span>{formatPrice(String(totalPrice()))}</span>
                 </div>
-                <div className="flex justify-between text-sm text-gray-600">
+                <div className="flex justify-between text-sm text-muted">
                   <span>Shipping</span>
-                  <span className={totalPrice() >= 3000 ? 'text-green-600 font-medium' : ''}>
+                  <span className={totalPrice() >= 3000 ? 'font-medium text-success' : ''}>
                     {totalPrice() >= 3000 ? 'FREE 🚚' : '৳60–120'}
                   </span>
                 </div>
-                <div className="flex justify-between font-bold text-base border-t border-gray-100 pt-2">
-                  <span className="text-[#1a1a2e]">Total</span>
-                  <span className="text-[#e8197a] text-lg">
+                <div className="flex justify-between border-t border-hairline pt-2 text-base font-bold">
+                  <span className="text-ink">Total</span>
+                  <span className="text-lg text-accent">
                     {formatPrice(String(totalPrice() + (totalPrice() >= 3000 ? 0 : 80)))}
                   </span>
                 </div>
               </div>
 
-              {/* Submit */}
               <button
                 type="submit"
                 disabled={loading}
@@ -350,8 +353,8 @@ export default function CheckoutPage() {
                 {loading ? (
                   <>
                     <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                     </svg>
                     Placing Order...
                   </>
@@ -360,9 +363,9 @@ export default function CheckoutPage() {
                 )}
               </button>
 
-              <p className="text-xs text-gray-400 text-center mt-3">
+              <p className="mt-3 text-center text-xs text-muted-2">
                 By placing order you agree to our{' '}
-                <a href="/terms-conditions" className="text-[#e8197a] hover:underline">Terms</a>
+                <a href="/terms-conditions" className="text-accent hover:underline">Terms</a>
               </p>
             </div>
           </div>

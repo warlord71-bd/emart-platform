@@ -21,8 +21,7 @@ export default function SortControl({ currentOrderby = 'date', currentOrder = 'd
 
   return (
     <select
-      className="border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 focus:outline-none focus:border-[#e8197a] cursor-pointer"
+      className="cursor-pointer rounded-lg border border-hairline bg-card px-3 py-2 text-sm text-ink focus:border-accent focus:outline-none"
       defaultValue={`${currentOrderby}-${currentOrder}`}
       onChange={(e) => handleSort(e.target.value)}
     >

@@ -1,150 +1,146 @@
 /**
- * Lumière K-Beauty Typography System
- * Premium fonts for elegant, readable e-commerce experience
+ * Porcelain typography system
+ * Compatibility export for the legacy design-system module.
  */
 
 export const TYPOGRAPHY = {
   fonts: {
-    heading: '"Noto Serif", serif', // Elegant, authoritative, editorial
-    body: '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', // Legible, modern
+    heading: '"Playfair Display", Georgia, "Noto Serif Bengali", serif',
+    body: '"DM Sans", "Hind Siliguri", system-ui, sans-serif',
+    mono: '"JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace',
   },
 
-  // Heading Styles
   h1: {
-    fontSize: '2.5rem', // 40px
-    fontWeight: '700',
-    lineHeight: '1.2',
-    letterSpacing: '-0.02em',
-    fontFamily: '"Noto Serif", serif',
+    fontSize: '2.5rem',
+    fontWeight: '500',
+    lineHeight: '1.15',
+    letterSpacing: '-0.01em',
+    fontFamily: '"Playfair Display", Georgia, serif',
   },
 
   h2: {
-    fontSize: '2rem', // 32px
-    fontWeight: '600',
-    lineHeight: '1.3',
+    fontSize: '2rem',
+    fontWeight: '500',
+    lineHeight: '1.2',
     letterSpacing: '-0.01em',
-    fontFamily: '"Noto Serif", serif',
+    fontFamily: '"Playfair Display", Georgia, serif',
   },
 
   h3: {
-    fontSize: '1.5rem', // 24px
-    fontWeight: '600',
-    lineHeight: '1.4',
-    fontFamily: '"Noto Serif", serif',
+    fontSize: '1.5rem',
+    fontWeight: '500',
+    lineHeight: '1.3',
+    fontFamily: '"Playfair Display", Georgia, serif',
   },
 
   h4: {
-    fontSize: '1.25rem', // 20px
-    fontWeight: '600',
-    lineHeight: '1.5',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontSize: '1.25rem',
+    fontWeight: '500',
+    lineHeight: '1.4',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
   h5: {
-    fontSize: '1.125rem', // 18px
-    fontWeight: '600',
+    fontSize: '1.125rem',
+    fontWeight: '500',
     lineHeight: '1.5',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
   h6: {
-    fontSize: '1rem', // 16px
-    fontWeight: '600',
+    fontSize: '1rem',
+    fontWeight: '500',
     lineHeight: '1.5',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
-  // Body Styles
   bodyLarge: {
-    fontSize: '1.125rem', // 18px
+    fontSize: '1.125rem',
     fontWeight: '400',
     lineHeight: '1.6',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
   body: {
-    fontSize: '1rem', // 16px
+    fontSize: '1rem',
     fontWeight: '400',
     lineHeight: '1.6',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
   bodySmall: {
-    fontSize: '0.875rem', // 14px
+    fontSize: '0.875rem',
     fontWeight: '400',
     lineHeight: '1.5',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
   caption: {
-    fontSize: '0.75rem', // 12px
+    fontSize: '0.75rem',
     fontWeight: '400',
     lineHeight: '1.4',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
-  // Special Styles
   buttonLarge: {
-    fontSize: '1rem', // 16px
-    fontWeight: '600',
-    lineHeight: '1.5',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontSize: '1rem',
+    fontWeight: '500',
+    lineHeight: '1.4',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
   button: {
-    fontSize: '0.9375rem', // 15px
-    fontWeight: '600',
+    fontSize: '0.9375rem',
+    fontWeight: '500',
     lineHeight: '1.4',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
   buttonSmall: {
-    fontSize: '0.875rem', // 14px
-    fontWeight: '600',
+    fontSize: '0.875rem',
+    fontWeight: '500',
     lineHeight: '1.4',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
   label: {
-    fontSize: '0.875rem', // 14px
+    fontSize: '0.875rem',
     fontWeight: '500',
     lineHeight: '1.5',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"DM Sans", "Hind Siliguri", sans-serif',
   },
 
   badge: {
-    fontSize: '0.75rem', // 12px
-    fontWeight: '600',
+    fontSize: '0.75rem',
+    fontWeight: '500',
     lineHeight: '1.4',
-    fontFamily: '"Plus Jakarta Sans", sans-serif',
+    fontFamily: '"JetBrains Mono", ui-monospace, monospace',
   },
 
-  // Responsive Typography
   responsive: {
     h1Mobile: {
-      fontSize: '1.75rem', // 28px
-      fontWeight: '700',
-      lineHeight: '1.2',
-      fontFamily: '"Noto Serif", serif',
+      fontSize: '1.75rem',
+      fontWeight: '500',
+      lineHeight: '1.15',
+      fontFamily: '"Playfair Display", Georgia, serif',
     },
     h2Mobile: {
-      fontSize: '1.5rem', // 24px
-      fontWeight: '600',
-      lineHeight: '1.3',
-      fontFamily: '"Noto Serif", serif',
+      fontSize: '1.5rem',
+      fontWeight: '500',
+      lineHeight: '1.2',
+      fontFamily: '"Playfair Display", Georgia, serif',
     },
   },
 } as const;
 
-/**
- * Tailwind CSS typography plugin configuration
- * Add to tailwind.config.ts for seamless integration
- */
 export const TAILWIND_TYPOGRAPHY = {
   extend: {
     fontFamily: {
-      serif: ['"Noto Serif"', 'serif'],
-      sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+      display: ['"Playfair Display"', 'Georgia', 'serif'],
+      body: ['"DM Sans"', '"Hind Siliguri"', 'system-ui', 'sans-serif'],
+      mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+      serif: ['"Playfair Display"', 'Georgia', 'serif'],
+      sans: ['"DM Sans"', '"Hind Siliguri"', 'system-ui', 'sans-serif'],
     },
     fontSize: {
       xs: ['0.75rem', { lineHeight: '1.4' }],
@@ -152,9 +148,9 @@ export const TAILWIND_TYPOGRAPHY = {
       base: ['1rem', { lineHeight: '1.6' }],
       lg: ['1.125rem', { lineHeight: '1.6' }],
       xl: ['1.25rem', { lineHeight: '1.5' }],
-      '2xl': ['1.5rem', { lineHeight: '1.4' }],
-      '3xl': ['2rem', { lineHeight: '1.3' }],
-      '4xl': ['2.5rem', { lineHeight: '1.2' }],
+      '2xl': ['1.5rem', { lineHeight: '1.3' }],
+      '3xl': ['2rem', { lineHeight: '1.2' }],
+      '4xl': ['2.5rem', { lineHeight: '1.15' }],
     },
   },
 };

@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { Star } from 'lucide-react';
-import ProductCard from '@/components/product/ProductCard';
+import HomeProductRail from '@/components/home/HomeProductRail';
 import type { WooProduct } from '@/lib/woocommerce';
 
 interface FeaturedProductsSectionProps {
@@ -38,49 +37,40 @@ export const FeaturedProductsSection: React.FC<FeaturedProductsSectionProps> = (
   };
 
   const style = variantStyles[variant];
+  const viewAllHref =
+    variant === 'sale'
+      ? '/shop?filter=sale'
+      : variant === 'bestsellers'
+        ? '/shop?sort=bestsellers'
+        : '/shop?featured=true';
 
   return (
-    <section className={`${style.bg} py-12 md:py-16 px-4`}>
+    <section className={`${style.bg} px-4 py-8 md:py-10`}>
       <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="flex items-center justify-between mb-8 md:mb-10">
+        <div className="mb-5 flex items-center gap-4 md:mb-6">
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center justify-center w-12 h-12 bg-rose-500 rounded-lg">
+            <div className="hidden md:flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-rose-500 shadow-sm">
               <Star size={24} className="text-white fill-white" />
             </div>
             <div>
-              <h2 className={`text-3xl md:text-4xl font-serif font-bold ${style.headerColor}`}>
-                {variant === 'sale' && '🔥 '}
+              <h2 className={`type-section-title ${style.headerColor}`}>
                 {title}
               </h2>
               {subtitle && (
-                <p className="text-lumiere-text-secondary text-sm md:text-base mt-1">
+                <p className="type-section-subtitle text-lumiere-text-secondary mt-1">
                   {subtitle}
                 </p>
               )}
             </div>
           </div>
-          <Link
-            href={
-              variant === 'sale'
-                ? '/shop?filter=sale'
-                : variant === 'bestsellers'
-                  ? '/shop?sort=bestsellers'
-                  : '/shop?featured=true'
-            }
-            className="text-lumiere-primary hover:text-lumiere-primary-hover font-semibold text-sm md:text-base transition-colors whitespace-nowrap"
-          >
-            View All →
-          </Link>
         </div>
 
-        {/* Products Grid */}
         {products.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <HomeProductRail
+            products={products}
+            viewAllHref={viewAllHref}
+            viewAllLabel={title}
+          />
         ) : (
           <div className="text-center py-12">
             <p className="text-lumiere-text-secondary">No products available</p>
