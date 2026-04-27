@@ -69,8 +69,17 @@ def fetch(url: str) -> bytes:
 def normalize_title(value: str) -> str:
     return re.sub(r'[^a-z0-9]+', '', html_lib.unescape(value).lower())
 
+def clean_text(value: str) -> str:
+    text = value or ''
+    for _ in range(3):
+        decoded = html_lib.unescape(text)
+        if decoded == text:
+            break
+        text = decoded
+    return re.sub(r'\s+', ' ', text).strip()
+
 def core_title(value: str) -> str:
-    value = html_lib.unescape(value or '').lower()
+    value = clean_text(value).lower()
     value = re.sub(r'spf\s*\d+\+*', ' ', value)
     value = re.sub(r'pa\s*\+*', ' ', value)
     value = re.sub(r'\bnew\s+version\b', ' ', value)
@@ -252,7 +261,7 @@ in_stock = created = oos = errors = skipped = 0
 
 for i, row in enumerate(rows):
     url  = row.get('product_url', '')
-    name = row.get('name', '').strip()
+    name = clean_text(row.get('name', '').strip())
     img_url = row.get('image_url', '')
     price = row.get('price', '')
     source = row.get('source', '')
