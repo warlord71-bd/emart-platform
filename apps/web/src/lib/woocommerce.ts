@@ -2,6 +2,7 @@
 // WooCommerce REST API v3 Client for E-Mart BD
 
 import axios from 'axios';
+import { CANONICAL_BRANDS } from '@/lib/brandWhitelist';
 
 const WOO_URL = process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd';
 const PUBLIC_SITE_URL = 'https://e-mart.com.bd';
@@ -9,6 +10,8 @@ const LEGACY_IP_HOST = ['5', '189', '188', '229'].join('.');
 const LOCAL_WORDPRESS_HOSTS = new Set(['127.0.0.1', 'localhost']);
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
+const WOO_READ_TIMEOUT_MS = 5000;
+const IS_NEXT_BUILD = process.env.NEXT_PHASE === 'phase-production-build';
 const isHTTPS = WOO_URL.startsWith('https');
 const WOO_WRITE_URL = isHTTPS ? WOO_URL : PUBLIC_SITE_URL;
 
@@ -27,7 +30,7 @@ const wooClient = axios.create({
       consumer_secret: CONSUMER_SECRET,
     },
   }),
-  timeout: 15000,
+  timeout: WOO_READ_TIMEOUT_MS,
 });
 
 const wooWriteClient = axios.create({
@@ -523,6 +526,13 @@ export async function getBrands(params: {
   orderby?: 'count' | 'name' | 'slug' | 'id';
   order?: 'asc' | 'desc';
 } = {}): Promise<WooBrand[]> {
+  const fallbackBrands = () => CANONICAL_BRANDS.map((brand, index) => ({
+    id: -1 - index,
+    name: brand.name,
+    slug: brand.slugs[0],
+    count: 0,
+  }));
+
   const queryParams = {
     per_page: 100,
     hide_empty: true,
@@ -534,7 +544,6 @@ export async function getBrands(params: {
   const parseBrands = (data: unknown) => {
     if (!Array.isArray(data)) return [];
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { findCanonicalBrand } = require('./brandWhitelist') as typeof import('./brandWhitelist');
     return data
       .map((brand: any) => ({
         id: Number(brand.id),
@@ -545,10 +554,10 @@ export async function getBrands(params: {
       }))
       .filter((brand: WooBrand) => brand.id && brand.name && brand.slug && brand.count > 0)
       .map((brand: WooBrand) => {
-        const canonical = findCanonicalBrand(brand.slug);
+        const canonical = CANONICAL_BRANDS.find((item) => item.slugs.includes(brand.slug));
         return canonical ? { ...brand, name: canonical.name } : brand;
       })
-      .filter((brand: WooBrand) => findCanonicalBrand(brand.slug));
+      .filter((brand: WooBrand) => CANONICAL_BRANDS.some((item) => item.slugs.includes(brand.slug)));
   };
 
   // Try internal URL first, fall back to public URL on socket errors
@@ -558,24 +567,25 @@ export async function getBrands(params: {
       if (attempt === 'public') {
         response = await axios.get(`${PUBLIC_SITE_URL}/wp-json/wc/v3/products/attributes/1/terms`, {
           params: { ...queryParams, consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET },
-          timeout: 20000,
+          timeout: WOO_READ_TIMEOUT_MS,
         });
       } else {
         response = await wooClient.get('/products/attributes/1/terms', {
           params: queryParams,
-          timeout: 15000,
+          timeout: WOO_READ_TIMEOUT_MS,
         });
       }
       const brands = parseBrands(response.data);
       if (brands.length > 0) return brands;
     } catch (error: any) {
       const isSocketError = error?.cause?.code === 'ECONNRESET' || error?.message?.includes('socket hang up');
+      if (IS_NEXT_BUILD) return fallbackBrands();
       if (attempt === 'internal' && isSocketError) continue;
       logWooError('getBrands', error);
-      if (attempt === 'public') return [];
+      if (attempt === 'public') return fallbackBrands();
     }
   }
-  return [];
+  return fallbackBrands();
 }
 
 export async function getBrandBySlug(slug: string): Promise<WooBrand | null> {
@@ -612,11 +622,11 @@ export async function getBrandBySlug(slug: string): Promise<WooBrand | null> {
     return attempt === 'public'
       ? axios.get(`${PUBLIC_SITE_URL}/wp-json/wc/v3/products/attributes/1/terms`, {
         params: { ...params, consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET },
-        timeout: 20000,
+        timeout: WOO_READ_TIMEOUT_MS,
       })
       : wooClient.get('/products/attributes/1/terms', {
         params,
-        timeout: 15000,
+        timeout: WOO_READ_TIMEOUT_MS,
       });
   };
 

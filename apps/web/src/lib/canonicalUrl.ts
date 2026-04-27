@@ -1,8 +1,13 @@
 const STRIP_PARAMS = new Set([
   // pagination & ordering
   'orderby', 'order', 'page', 'per_page', 'paged',
+  // analytics / ads / social tracking
+  'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+  'utm_id', 'utm_source_platform', 'utm_creative_format', 'utm_marketing_tactic',
+  'gclid', 'gbraid', 'wbraid', 'fbclid', 'msclkid', 'yclid',
+  'mc_cid', 'mc_eid',
   // WP/WC internals
-  '_wpnonce', 'add-to-cart', 's', 'post_type',
+  '_wpnonce', 'add-to-cart', 's', 'post_type', 'session_id',
   // WC attribute filters
   'filter_color', 'filter_size', 'min_price', 'max_price',
   // Emart shop UI filters — sorted/filtered views are not canonical pages

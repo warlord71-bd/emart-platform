@@ -92,7 +92,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable}`}>
       <head>
-        {/* LocalBusiness + Organization Schema */}
+        {/* OnlineStore + Organization Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -100,7 +100,7 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@graph': [
                 {
-                  '@type': ['LocalBusiness', 'Organization'],
+                  '@type': ['OnlineStore', 'Organization'],
                   '@id': 'https://e-mart.com.bd/#organization',
                   'name': 'E-mart Bangladesh',
                   'alternateName': COMPANY.storeName,
@@ -127,7 +127,8 @@ export default function RootLayout({
                   'priceRange': '৳৳',
                   'currenciesAccepted': 'BDT',
                   'paymentAccepted': 'Cash, bKash, Nagad',
-                  'areaServed': { '@type': 'Country', 'name': 'Bangladesh' },
+                  'areaServed': { '@type': 'Country', 'name': 'BD' },
+                  'availableDeliveryMethod': 'https://schema.org/ParcelService',
                   'sameAs': [
                     COMPANY.social.facebook,
                     COMPANY.social.instagram,

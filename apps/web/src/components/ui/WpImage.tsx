@@ -11,8 +11,8 @@ const PLACEHOLDER = `${WP_BASE}/wp-content/uploads/woocommerce-placeholder.png`;
  *
  * - Normalises relative `/wp-content/uploads/…` paths to absolute URLs
  * - Falls back to the WooCommerce placeholder on load error
- * - Passes unoptimized={false} so Next.js /_next/image optimises these
- *   images even while the global `unoptimized: true` default is in place
+ * - Keeps unoptimized={false} so Next.js /_next/image optimises these
+ *   WordPress images for edge/CDN caching.
  *   (the per-component prop takes precedence)
  *
  * Usage:

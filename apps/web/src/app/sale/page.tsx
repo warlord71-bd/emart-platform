@@ -2,12 +2,13 @@ import { getProducts, getCategories } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
 import ProductFilters from '@/components/product/ProductFilters';
 import type { Metadata } from 'next';
+import { canonicalPath } from '@/lib/canonicalUrl';
 
-export function generateMetadata(): Metadata {
+export function generateMetadata({ searchParams }: { searchParams?: SalePageProps['searchParams'] }): Metadata {
   return {
     title: 'Sale - Best Deals on Global Skincare Brands | Emart',
     description: 'Shop our exclusive sale collection. Get the best deals on authentic global skincare products.',
-    alternates: { canonical: '/sale' },
+    alternates: { canonical: canonicalPath('/sale', searchParams) },
   };
 }
 

@@ -3,13 +3,14 @@ import CatalogFilters from '@/components/product/CatalogFilters';
 import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { canonicalPath } from '@/lib/canonicalUrl';
 
 // All filter/sort params are stripped — only /shop is the canonical page for this route.
-export function generateMetadata(): Metadata {
+export function generateMetadata({ searchParams }: { searchParams?: ShopPageProps['searchParams'] }): Metadata {
   return {
     title: 'Shop Global Skincare Brands | Emart',
     description: 'Browse our collection of authentic global skincare products.',
-    alternates: { canonical: '/shop' },
+    alternates: { canonical: canonicalPath('/shop', searchParams) },
   };
 }
 

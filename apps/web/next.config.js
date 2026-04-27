@@ -29,9 +29,11 @@ const nextConfig = {
     ];
   },
   images: {
-    unoptimized: true,
+    unoptimized: false,
+    minimumCacheTTL: 2678400,
     remotePatterns: [
       { protocol: 'https', hostname: 'e-mart.com.bd' },
+      { protocol: 'https', hostname: 'www.e-mart.com.bd' },
       { protocol: 'https', hostname: '**.woocommerce.com' },
     ],
   },

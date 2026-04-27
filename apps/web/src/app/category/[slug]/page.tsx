@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getGraphQLCategoryMetadata, isWordPressGraphQLConfigured } from '@/lib/wordpress-graphql';
+import { canonicalPath } from '@/lib/canonicalUrl';
 
 interface Props {
   params: { slug: string };
@@ -70,7 +71,7 @@ function detectContext(category: { slug: string; name: string }): 'skincare' | '
   return undefined;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const graphQLCategory = isWordPressGraphQLConfigured()
     ? await getGraphQLCategoryMetadata(params.slug).catch(() => null)
     : null;
@@ -84,7 +85,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${cat.name} — Emart Skincare Bangladesh`,
     description,
-    alternates: { canonical: `/category/${cat.slug}` },
+    alternates: { canonical: canonicalPath(`/category/${cat.slug}`, searchParams) },
     openGraph: {
       title: `${cat.name} — Emart`,
       description,

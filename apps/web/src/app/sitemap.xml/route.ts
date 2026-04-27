@@ -46,7 +46,7 @@ const staticPages = [
   '/terms-conditions',
 ];
 
-const getCachedSitemapXml = unstable_cache(createSitemapXml, ['emart-next-image-sitemap-v4'], {
+const getCachedSitemapXml = unstable_cache(createSitemapXml, ['emart-next-image-sitemap-v5'], {
   revalidate: CACHE_SECONDS,
 });
 
@@ -91,11 +91,11 @@ async function getSitemapData(): Promise<{
         GRAPHQL_SITEMAP_TIMEOUT_MS,
         'GraphQL sitemap timed out.'
       );
-      if (data.products.length > 0) {
+      if (data.products.length > PAGE_SIZE) {
         return data;
       }
 
-      console.warn('GraphQL sitemap returned no products. Falling back to WooCommerce REST.');
+      console.warn('GraphQL sitemap returned an empty or capped product set. Falling back to WooCommerce REST.');
     } catch (error) {
       console.warn('GraphQL sitemap failed. Falling back to WooCommerce REST.', getErrorMessage(error));
     }
@@ -133,7 +133,7 @@ function renderProductEntry(product: SitemapProduct): string {
 
   return renderUrlEntry({
     loc: `${BASE_URL}/shop/${product.slug}`,
-    lastmod: product.date_modified,
+    lastmod: product.date_modified || new Date().toISOString(),
     changefreq: 'monthly',
     priority: 0.7,
     images,

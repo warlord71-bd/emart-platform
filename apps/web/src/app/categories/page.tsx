@@ -4,12 +4,13 @@ import { ArrowRight, LayoutGrid, Sparkles } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getCategories } from '@/lib/woocommerce';
 import { MENU_CATEGORY_GROUPS, TOP_CATEGORY_IMAGE_OVERRIDES } from '@/lib/category-navigation';
+import { canonicalPath } from '@/lib/canonicalUrl';
 
-export function generateMetadata(): Metadata {
+export function generateMetadata({ searchParams }: { searchParams?: Record<string, string | string[]> }): Metadata {
   return {
     title: 'All Categories — Emart Skincare Bangladesh',
     description: 'Browse all Emart skincare, hair care, body care, makeup, and skin concern categories from one easy page.',
-    alternates: { canonical: '/categories' },
+    alternates: { canonical: canonicalPath('/categories', searchParams) },
   };
 }
 

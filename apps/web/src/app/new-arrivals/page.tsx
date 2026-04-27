@@ -2,12 +2,13 @@ import { getProducts } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { canonicalPath } from '@/lib/canonicalUrl';
 
-export function generateMetadata(): Metadata {
+export function generateMetadata({ searchParams }: { searchParams?: NewArrivalsPageProps['searchParams'] }): Metadata {
   return {
     title: 'New Arrivals - Latest Global Skincare Brands | Emart',
     description: 'Discover the newest global skincare products at Emart. Fresh arrivals every week!',
-    alternates: { canonical: '/new-arrivals' },
+    alternates: { canonical: canonicalPath('/new-arrivals', searchParams) },
   };
 }
 

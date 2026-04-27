@@ -5,17 +5,18 @@ import ProductCard from '@/components/product/ProductCard';
 import { getBrandBySlug, getBrands, getProducts, type WooBrand } from '@/lib/woocommerce';
 import brandLogoManifest from '../../../public/images/brands-e-mart/manifest.json';
 import { CANONICAL_BRANDS } from '@/lib/brandWhitelist';
+import { canonicalPath } from '@/lib/canonicalUrl';
 
 const brandLogoBySlug = new Map<string, string>();
 for (const entry of brandLogoManifest as Array<{ slug: string; logo: string | null }>) {
   if (entry.logo) brandLogoBySlug.set(entry.slug.toLowerCase(), entry.logo);
 }
 
-export function generateMetadata(): Metadata {
+export function generateMetadata({ searchParams }: { searchParams?: { brand?: string; page?: string } }): Metadata {
   return {
     title: 'Shop By Brands | Emart Skincare Bangladesh',
     description: 'Browse all available beauty brands at Emart Skincare Bangladesh.',
-    alternates: { canonical: '/brands' },
+    alternates: { canonical: canonicalPath('/brands', searchParams) },
   };
 }
 

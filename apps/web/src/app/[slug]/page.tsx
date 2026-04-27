@@ -27,6 +27,76 @@ function getSeoDescription(product: WooProduct): string {
   );
 }
 
+function getNumericPrice(product: WooProduct): string {
+  const price = Number.parseFloat(product.price || product.sale_price || product.regular_price || '0');
+  return Number.isFinite(price) && price > 0 ? price.toFixed(2) : '0.00';
+}
+
+function getProductJsonLd(product: WooProduct) {
+  const imageUrls = product.images?.map((image) => image.src).filter(Boolean) || [];
+  const price = getNumericPrice(product);
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    '@id': `https://e-mart.com.bd/shop/${product.slug}#product`,
+    name: product.name,
+    description: getSeoDescription(product),
+    image: imageUrls,
+    sku: product.sku || String(product.id),
+    category: product.categories?.[0]?.name,
+    brand: {
+      '@type': 'Brand',
+      name: getProductAttributeValue(product, /brand/i) || 'Emart',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: `https://e-mart.com.bd/shop/${product.slug}`,
+      priceCurrency: 'BDT',
+      price,
+      availability: product.stock_status === 'instock'
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'OnlineStore',
+        name: 'Emart Skincare Bangladesh',
+        url: 'https://e-mart.com.bd',
+        areaServed: { '@type': 'Country', name: 'BD' },
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'BD',
+          name: 'Bangladesh',
+        },
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          currency: 'BDT',
+          value: '0.00',
+          description: 'Flat-rate or dynamic Bangladesh delivery calculated at checkout. Free delivery may apply on eligible orders.',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 1,
+            unitCode: 'DAY',
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 1,
+            maxValue: 5,
+            unitCode: 'DAY',
+          },
+        },
+      },
+    },
+  };
+}
+
 interface HtmlSection {
   headingHtml: string;
   headingText: string;
@@ -430,11 +500,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const { products } = await getProducts({ per_page: 100 });
-  return products.map((product) => ({ slug: product.slug }));
+  return [];
 }
 
 export const revalidate = 3600;
+export const dynamicParams = true;
 
 export default async function ProductPage({ params }: Props) {
   const product = await getProduct(params.slug);
@@ -462,9 +532,11 @@ export default async function ProductPage({ params }: Props) {
   const ingredientsHtml = getIngredientsHtml(product);
   const howToUseHtml = getHowToUseHtml(product);
   const faqItems = getProductFaqItems(product);
+  const productJsonLd = getProductJsonLd(product);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
         <ProductImage images={product.images} productName={product.name} />
         <ProductInfo product={product} />
