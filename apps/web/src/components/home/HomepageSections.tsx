@@ -194,6 +194,58 @@ function ProductFeatureCard({
   );
 }
 
+interface CategoryTile {
+  name: string;
+  href: string;
+  image?: string;
+}
+
+export function ShopByCategorySection({ categories }: { categories: CategoryTile[] }) {
+  if (!categories.length) return null;
+  const tiles = categories.slice(0, 6);
+  return (
+    <section className="bg-bg px-4 py-6 lg:py-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-4 flex items-end justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Browse</p>
+            <h2 className="mt-1 text-2xl font-extrabold text-ink lg:text-3xl">Shop by category</h2>
+          </div>
+          <Link href="/categories" className="flex items-center gap-1 text-sm font-semibold text-accent hover:underline">
+            All categories <ArrowRight size={14} />
+          </Link>
+        </div>
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {tiles.map((cat) => (
+            <Link
+              key={cat.href}
+              href={cat.href}
+              className="group flex flex-col items-center gap-2 rounded-2xl border border-hairline bg-bg-alt p-3 transition-all hover:border-accent/30 hover:bg-white hover:shadow-card"
+            >
+              <div className="relative h-16 w-16 overflow-hidden rounded-full bg-gradient-to-br from-accent-soft via-white to-[#edf7f2] ring-1 ring-hairline sm:h-20 sm:w-20">
+                {cat.image ? (
+                  <Image
+                    src={cat.image}
+                    alt={cat.name}
+                    fill
+                    sizes="80px"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-lg font-black text-accent">
+                    {cat.name.slice(0, 1)}
+                  </div>
+                )}
+              </div>
+              <span className="text-center text-xs font-bold leading-tight text-ink">{cat.name}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function InstantTrustBar() {
   return (
     <section className="bg-ink px-4 py-4 text-white">
