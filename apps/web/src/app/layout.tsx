@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     'global beauty brands Bangladesh',
     'original imported skincare bd',
     'skin care price Bangladesh',
-    'kbeauty dhaka',
+    'kbeauty bangladesh',
   ],
   openGraph: {
     type: 'website',
@@ -112,11 +112,11 @@ export default function RootLayout({
                     'height': 600,
                   },
                   'image': 'https://e-mart.com.bd/wp-content/uploads/2026/03/logo.png',
-                  'description': `${COMPANY.storeName} is an enterprise of ${COMPANY.enterpriseName}, serving Bangladesh with authentic global beauty products, careful product verification, and local customer support from Dhanmondi.`,
+                  'description': `${COMPANY.storeName} is an online beauty store from ${COMPANY.enterpriseName}, based in Dhaka and serving customers across Bangladesh with authentic global beauty products, careful product checks, and delivery support nationwide.`,
                   'address': {
                     '@type': 'PostalAddress',
                     'streetAddress': `${COMPANY.office.line1} ${COMPANY.office.line2}`,
-                    'addressLocality': 'Dhanmondi',
+                    'addressLocality': 'Dhaka',
                     'addressRegion': 'Dhaka',
                     'postalCode': '1205',
                     'addressCountry': 'BD',
