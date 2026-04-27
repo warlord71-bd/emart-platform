@@ -11,7 +11,7 @@ For each in-stock product:
 
 Run: nohup python3 scripts/import-instock-products.py > /tmp/product-import.log 2>&1 &
 """
-import csv, json, re, time, io, subprocess, urllib.request, os
+import base64, csv, html as html_lib, json, re, time, io, subprocess, urllib.request, os
 from pathlib import Path
 from PIL import Image
 
@@ -23,37 +23,71 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 
 progress_file = AUDIT / 'product-import-progress.json'
 done = json.loads(progress_file.read_text()) if progress_file.exists() else {}
+RETRY_STATUSES = {'create_error'}
 
 rows = list(csv.DictReader(open(AUDIT / 'sourcing-gap-import-ready.csv')))
 print(f'Processing {len(rows)} candidates | Already done: {len(done)}\n')
 
 # ── Emart category mapping from product name keywords ──────────────────────────
-EMART_CATS = {
-    'cleanser': 134, 'foam': 134, 'cleansing': 134,        # Face Cleansers
-    'toner': 133, 'essence': 133, 'mist': 133,              # Toners (use existing)
-    'serum': 132, 'ampoule': 132,                           # Serums
-    'moisturizer': 131, 'cream': 131, 'lotion': 131, 'gel': 131,  # Moisturizer
-    'sunscreen': 292, 'sun cream': 292, 'spf': 292, 'suncream': 292,  # Sunscreen
-    'mask': 133, 'sheet mask': 133, 'sleeping mask': 133,  # Masks
-    'eye cream': 131, 'eye serum': 132,                     # Eye care
-    'hair': 133, 'shampoo': 133, 'conditioner': 133,       # Hair care
-    'body': 133, 'body wash': 133, 'body lotion': 133,     # Body care
-    'lip': 133, 'lipstick': 133,                           # Lips
-    'foundation': 133, 'cushion': 133, 'bb cream': 133,    # Makeup
-}
-SKINCARE_CAT_ID = 133   # Skincare Essentials (fallback)
-KBEAUTY_CAT_ID  = 7943  # Korean Beauty
+EMART_CAT_RULES = [
+    (('sunscreen', 'sun screen', 'sun cream', 'suncream', 'sun stick', 'spf', 'uv protector'), 806),
+    (('cream-to-foam', 'facial wash', 'face wash', 'cleanser', 'cleansing', 'foam', 'micellar'), 7984),
+    (('shampoo',), 3549),
+    (('conditioner',), 7985),
+    (('hair mask', 'hair food', 'hair treatment'), 7979),
+    (('hair oil', 'argan oil'), 3605),
+    (('eye cream', 'eye serum', 'eye gel', 'eye butter'), 7989),
+    (('lipstick', 'lip tint', 'tint'), 8022),
+    (('lip balm', 'lip oil', 'lip treatment', 'lip care', 'lip'), 8023),
+    (('sheet mask',), 957),
+    (('sleeping mask', 'sleep mask'), 757),
+    (('wash off mask', 'clay mask', 'mud mask'), 876),
+    (('toner pad', 'toner pads'), 7995),
+    (('toner', 'mist'), 7994),
+    (('serum', 'ampoule', 'essence', 'retinol', 'arbutin', 'peptide', 'niacinamide'), 7996),
+    (('foundation', 'cushion', 'bb cream', 'cc cream', 'primer', 'concealer'), 7980),
+    (('body wash',), 7990),
+    (('body lotion',), 7987),
+    (('body oil',), 8027),
+    (('body',), 8005),
+    (('moisturizer', 'moisturiser', 'cream', 'lotion', 'gel'), 8941),
+    (('hair',), 7141),
+]
+SKINCARE_CAT_ID = 748   # Skincare Essentials (fallback)
 
 def get_category_id(name: str) -> list:
     name_lower = name.lower()
-    for keyword, cat_id in EMART_CATS.items():
-        if keyword in name_lower:
-            return [cat_id, KBEAUTY_CAT_ID]
-    return [SKINCARE_CAT_ID, KBEAUTY_CAT_ID]
+    for keywords, cat_id in EMART_CAT_RULES:
+        if any(keyword in name_lower for keyword in keywords):
+            return [cat_id]
+    return [SKINCARE_CAT_ID]
 
 def fetch(url: str) -> bytes:
     req = urllib.request.Request(url, headers=HEADERS)
     return urllib.request.urlopen(req, timeout=12).read()
+
+def normalize_title(value: str) -> str:
+    return re.sub(r'[^a-z0-9]+', '', html_lib.unescape(value).lower())
+
+def core_title(value: str) -> str:
+    value = html_lib.unescape(value or '').lower()
+    value = re.sub(r'spf\s*\d+\+*', ' ', value)
+    value = re.sub(r'pa\s*\+*', ' ', value)
+    value = re.sub(r'\bnew\s+version\b', ' ', value)
+    value = re.sub(r'\bwith\s+packet\b|\bwithout\s+packet\b', ' ', value)
+    return re.sub(r'[^a-z0-9]+', '', value)
+
+def load_existing_titles() -> set:
+    result = subprocess.run([
+        'wp', f'--path={WP_PATH}', '--allow-root', 'db', 'query',
+        "SELECT post_title FROM wp4h_posts WHERE post_type='product' AND post_status IN ('publish','draft','private')",
+        '--skip-column-names',
+    ], capture_output=True, text=True, timeout=120)
+    return {normalize_title(line) for line in result.stdout.splitlines() if line.strip()}
+
+existing_titles = load_existing_titles()
+existing_core_titles = {core_title(title) for title in existing_titles if title}
+print(f'Existing Woo product titles loaded: {len(existing_titles)}')
 
 def check_stock_jsonld(html: str) -> str:
     ld_blocks = re.findall(r'<script[^>]*application/ld\+json[^>]*>(.*?)</script>', html, re.DOTALL)
@@ -71,7 +105,34 @@ def check_stock_jsonld(html: str) -> str:
     if oos_class: return 'out_of_stock'
     return 'unknown'
 
-def get_price_from_jsonld(html: str) -> str:
+def clean_price(value: str) -> str:
+    value = html_lib.unescape(value or '')
+    match = re.search(r'[\d,]+(?:\.\d+)?', value)
+    if not match:
+        return ''
+    amount = float(match.group(0).replace(',', ''))
+    return str(int(amount)) if amount.is_integer() else str(amount)
+
+def get_price_pair(html: str, fallback_price: str) -> tuple[str, str]:
+    price_block = re.search(r'<p class=["\'][^"\']*\bprice\b[^"\']*["\'][^>]*>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
+    if price_block:
+        block = price_block.group(1)
+        regular_match = re.search(r'<del[^>]*>(.*?)</del>', block, re.DOTALL | re.IGNORECASE)
+        sale_match = re.search(r'<ins[^>]*>(.*?)</ins>', block, re.DOTALL | re.IGNORECASE)
+        if regular_match and sale_match:
+            regular = clean_price(regular_match.group(1))
+            sale = clean_price(sale_match.group(1))
+            if regular and sale:
+                return regular, sale
+
+        text_block = re.sub(r'<[^>]+>', ' ', block)
+        amounts = [clean_price(amount) for amount in re.findall(r'৳\s*[\d,]+(?:\.\d+)?', html_lib.unescape(text_block))]
+        amounts = [amount for amount in amounts if amount]
+        if len(amounts) >= 2:
+            return amounts[0], amounts[1]
+        if len(amounts) == 1:
+            return amounts[0], ''
+
     ld_blocks = re.findall(r'<script[^>]*application/ld\+json[^>]*>(.*?)</script>', html, re.DOTALL)
     for b in ld_blocks:
         try:
@@ -80,9 +141,10 @@ def get_price_from_jsonld(html: str) -> str:
                 offers = d.get('offers', {})
                 if isinstance(offers, list): offers = offers[0]
                 price = offers.get('price', '')
-                if price: return str(float(price))
+                if price:
+                    return clean_price(str(price)), ''
         except: pass
-    return ''
+    return clean_price(fallback_price), ''
 
 def is_white_background(raw: bytes, threshold=232, coverage=0.87) -> bool:
     try:
@@ -110,20 +172,26 @@ def process_image(raw: bytes) -> bytes:
     canvas.save(out, format='JPEG', quality=88, optimize=True)
     return out.getvalue()
 
-def create_wc_product(name: str, price: str, cat_ids: list, img_path: str, slug_hint: str) -> dict:
+def create_wc_product(name: str, regular_price: str, sale_price: str, cat_ids: list, img_path: str, slug_hint: str) -> dict:
     """Create WC product via WP-CLI and return {id, slug}."""
-    # Build category JSON
-    cats_json = json.dumps([{"id": c} for c in cat_ids])
-    safe_name = name.replace("'", "\\'").replace('"', '\\"')
+    cat_ids_php = '[' + ','.join(str(int(c)) for c in cat_ids) + ']'
+    product_name_b64 = base64.b64encode(name.encode('utf-8')).decode('ascii')
     short_desc = f"<p>Buy {name} in Bangladesh. 100% authentic import. Dhaka 1-2 days delivery.</p>"
+    short_desc_b64 = base64.b64encode(short_desc.encode('utf-8')).decode('ascii')
+    regular_price_b64 = base64.b64encode(str(regular_price).encode('utf-8')).decode('ascii')
+    sale_price_b64 = base64.b64encode(str(sale_price).encode('utf-8')).decode('ascii')
 
     php = f'''
 global $wpdb;
+$product_name = base64_decode("{product_name_b64}");
+$short_desc = base64_decode("{short_desc_b64}");
+$regular_price = base64_decode("{regular_price_b64}");
+$sale_price = base64_decode("{sale_price_b64}");
 $args = [
-    "post_title"   => "{safe_name}",
+    "post_title"   => $product_name,
     "post_status"  => "publish",
     "post_type"    => "product",
-    "post_excerpt" => "{short_desc}",
+    "post_excerpt" => $short_desc,
 ];
 $pid = wp_insert_post($args);
 if (is_wp_error($pid)) {{ echo "ERROR:" . $pid->get_error_message(); return; }}
@@ -132,14 +200,20 @@ if (is_wp_error($pid)) {{ echo "ERROR:" . $pid->get_error_message(); return; }}
 wp_set_object_terms($pid, "simple", "product_type");
 
 // Price
-update_post_meta($pid, "_regular_price", "{price}");
-update_post_meta($pid, "_price", "{price}");
+update_post_meta($pid, "_regular_price", $regular_price);
+if ($sale_price !== "" && (float) $sale_price < (float) $regular_price) {{
+    update_post_meta($pid, "_sale_price", $sale_price);
+    update_post_meta($pid, "_price", $sale_price);
+}} else {{
+    delete_post_meta($pid, "_sale_price");
+    update_post_meta($pid, "_price", $regular_price);
+}}
 update_post_meta($pid, "_stock_status", "instock");
 update_post_meta($pid, "_manage_stock", "no");
 update_post_meta($pid, "_visibility", "visible");
 
 // Categories
-$cat_ids = {cats_json};
+$cat_ids = {cat_ids_php};
 wp_set_post_terms($pid, $cat_ids, "product_cat");
 
 // Get slug
@@ -150,6 +224,8 @@ echo "OK:" . $pid . ":" . $post->post_name;
                            capture_output=True, text=True, timeout=30)
     output = result.stdout.strip()
     if not output.startswith('OK:'):
+        detail = (result.stderr or output or 'unknown WP-CLI error').strip().splitlines()[-1]
+        print(f'  WP create failed: {detail[:180]}')
         return {}
     parts = output.split(':')
     pid, pslug = int(parts[1]), parts[2] if len(parts) > 2 else slug_hint
@@ -184,12 +260,26 @@ for i, row in enumerate(rows):
     slug = re.search(r'/product/([^/]+)', url)
     slug = slug.group(1) if slug else name[:40]
 
+    normalized_name = normalize_title(name)
+    normalized_core_name = core_title(name)
+    if normalized_name in existing_titles or normalized_core_name in existing_core_titles:
+        if done.get(slug, {}).get('status') == 'created':
+            pass
+        else:
+            print(f'[{i+1}/{len(rows)}] ↷ DUP  {name[:55]}')
+            done[slug] = {'status': 'duplicate_existing', 'name': name}
+            skipped += 1
+            continue
+
     if slug in done:
         status = done[slug].get('status', '')
-        if status == 'created': created += 1
-        elif status == 'out_of_stock': oos += 1
-        else: skipped += 1
-        continue
+        if status in RETRY_STATUSES:
+            print(f'[{i+1}/{len(rows)}] ↻ RETRY {name[:55]}')
+        else:
+            if status == 'created': created += 1
+            elif status == 'out_of_stock': oos += 1
+            else: skipped += 1
+            continue
 
     # Emartway products — can't check stock reliably, skip for now
     if source == 'emartwayskincare.com.bd':
@@ -209,10 +299,10 @@ for i, row in enumerate(rows):
             continue
 
         in_stock += 1
-        # Use live price if available
-        live_price = get_price_from_jsonld(html) or price
-        if not live_price or float(live_price or 0) < 100:
-            live_price = price
+        regular_price, sale_price = get_price_pair(html, price)
+        if not regular_price or float(regular_price or 0) < 100:
+            regular_price = clean_price(price)
+            sale_price = ''
 
         # Download + check image
         img_path = ''
@@ -226,13 +316,16 @@ for i, row in enumerate(rows):
             except: pass
 
         cat_ids = get_category_id(name)
-        result = create_wc_product(name, live_price, cat_ids, img_path, slug)
+        result = create_wc_product(name, regular_price, sale_price, cat_ids, img_path, slug)
 
         if img_path: Path(img_path).unlink(missing_ok=True)
 
         if result:
-            print(f'[{i+1}/{len(rows)}] ✓ NEW  ID={result["id"]} ৳{live_price} {name[:45]}')
-            done[slug] = {'status': 'created', 'wc_id': result['id'], 'name': name, 'price': live_price}
+            price_note = f'৳{regular_price}' + (f'→৳{sale_price}' if sale_price else '')
+            print(f'[{i+1}/{len(rows)}] ✓ NEW  ID={result["id"]} {price_note} {name[:45]}')
+            done[slug] = {'status': 'created', 'wc_id': result['id'], 'name': name, 'regular_price': regular_price, 'sale_price': sale_price}
+            existing_titles.add(normalized_name)
+            existing_core_titles.add(normalized_core_name)
             created += 1
         else:
             print(f'[{i+1}/{len(rows)}] ! ERR  {name[:55]}')
