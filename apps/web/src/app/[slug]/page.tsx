@@ -18,6 +18,15 @@ interface ProductFaqItem {
   answer: string;
 }
 
+function getSeoDescription(product: WooProduct): string {
+  const rm = product.meta_data?.find((m) => m.key === '_rank_math_description')?.value;
+  if (rm && typeof rm === 'string' && rm.trim().length > 20) return rm.trim();
+  return (
+    product.short_description?.replace(/<[^>]+>/g, '').trim().substring(0, 160) ||
+    product.name
+  );
+}
+
 interface HtmlSection {
   headingHtml: string;
   headingText: string;
@@ -410,8 +419,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${product.name} — Price in Bangladesh`,
-    description:
-      product.short_description?.replace(/<[^>]+>/g, '').substring(0, 160) || product.name,
+    description: getSeoDescription(product),
     alternates: {
       canonical: `/shop/${product.slug}`,
     },
