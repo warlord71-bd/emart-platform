@@ -129,6 +129,44 @@ export default function RootLayout({
                   'paymentAccepted': 'Cash, bKash, Nagad',
                   'areaServed': { '@type': 'Country', 'name': 'BD' },
                   'availableDeliveryMethod': 'https://schema.org/ParcelService',
+                  'hasShippingService': {
+                    '@type': 'ShippingService',
+                    '@id': 'https://e-mart.com.bd/#bangladesh-shipping',
+                    'name': 'Bangladesh nationwide delivery',
+                    'description': 'Delivery is available across Bangladesh, with shipping cost confirmed at checkout.',
+                    'fulfillmentType': 'https://schema.org/FulfillmentTypeDelivery',
+                    'handlingTime': {
+                      '@type': 'ServicePeriod',
+                      'duration': {
+                        '@type': 'QuantitativeValue',
+                        'minValue': 0,
+                        'maxValue': 1,
+                        'unitCode': 'DAY',
+                      },
+                    },
+                    'shippingConditions': {
+                      '@type': 'ShippingConditions',
+                      'shippingDestination': {
+                        '@type': 'DefinedRegion',
+                        'addressCountry': 'BD',
+                        'name': 'Bangladesh',
+                      },
+                      'shippingRate': {
+                        '@type': 'MonetaryAmount',
+                        'currency': 'BDT',
+                        'maxValue': 300,
+                      },
+                      'transitTime': {
+                        '@type': 'ServicePeriod',
+                        'duration': {
+                          '@type': 'QuantitativeValue',
+                          'minValue': 1,
+                          'maxValue': 5,
+                          'unitCode': 'DAY',
+                        },
+                      },
+                    },
+                  },
                   'sameAs': [
                     COMPANY.social.facebook,
                     COMPANY.social.instagram,

@@ -117,28 +117,22 @@ print(f'\nTKM slug→concern map: {len(slug_concern)} unique slugs')
 # ── Phase 2: Match TKM slugs to Emart products ───────────────────────────────
 print('\nLoading Emart products...')
 result = subprocess.run([
-    'wp', '--path=' + WP_PATH, '--allow-root', 'eval',
-    '''
-global $wpdb;
-$rows = $wpdb->get_results("
-    SELECT p.ID, p.post_name, p.post_title, p.post_excerpt, p.post_content
-    FROM {$wpdb->posts} p
-    WHERE p.post_type='product' AND p.post_status='publish'
-");
-$out = [];
-foreach ($rows as $r) {
-    $out[] = [$r->ID, $r->post_name, $r->post_title,
-              substr(wp_strip_all_tags($r->post_excerpt), 0, 200),
-              substr(wp_strip_all_tags($r->post_content), 0, 300)];
-}
-file_put_contents("/tmp/emart-products-for-concern.json", json_encode($out));
-echo count($out) . " products exported\n";
-'''
+    'wp', '--path=' + WP_PATH, '--allow-root', 'db', 'query',
+    "SELECT ID, post_name, post_title, LEFT(post_excerpt,200), LEFT(post_content,300) FROM wp4h_posts WHERE post_type='product' AND post_status='publish'",
+    '--skip-column-names'
 ], capture_output=True, text=True)
-print(result.stdout.strip())
 
-with open('/tmp/emart-products-for-concern.json') as f:
-    emart_products = json.load(f)
+emart_products = []
+for line in result.stdout.splitlines():
+    parts = line.split('\t')
+    if len(parts) >= 3:
+        pid = parts[0].strip()
+        slug = parts[1].strip()
+        title = parts[2].strip()
+        excerpt = parts[3].strip() if len(parts) > 3 else ''
+        content = parts[4].strip() if len(parts) > 4 else ''
+        emart_products.append((pid, slug, title, excerpt, content))
+print(f'{len(emart_products)} products loaded')
 
 # Load existing concern assignments to avoid overwriting
 existing_result = subprocess.run([
