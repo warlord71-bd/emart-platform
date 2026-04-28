@@ -262,7 +262,7 @@ export const CANONICAL_BRANDS: CanonicalBrand[] = [
   { name: 'Sulwhasoo', region: 'western', slugs: ['sulwhasoo'] },
   { name: 'Basic', region: 'western', slugs: ['basic'] },
   { name: 'Medi-peel', region: 'western', slugs: ['medi-peel'] },
-  { name: 'Korea', region: 'western', slugs: ['korea'] },
+  { name: 'Korea', region: 'western', slugs: ['korea', 'korean'] },
   { name: 'Guerisson', region: 'western', slugs: ['guerisson'] },
   { name: 'Labelyoung', region: 'western', slugs: ['labelyoung'] },
   { name: 'Samyang', region: 'western', slugs: ['samyang'] },
@@ -290,6 +290,13 @@ export const CANONICAL_BRANDS: CanonicalBrand[] = [
   { name: 'Aloe vera', region: 'western', slugs: ['aloe-vera'] },
   { name: 'Cold Pressed', region: 'western', slugs: ['cold-pressed'] },
   { name: 'Sabamed', region: 'western', slugs: ['sabamed'] },
+  { name: 'Green Finger', region: 'korean', slugs: ['green-finger'] },
+  { name: 'Sungboon Editor', region: 'korean', slugs: ['sungboon-editor'] },
+  { name: 'ZEZE', region: 'korean', slugs: ['zeze'] },
+  { name: 'Korea Red Ginseng', region: 'korean', slugs: ['korea-red-ginseng'] },
+  { name: 'Kojie San', region: 'western', slugs: ['kojie-san'] },
+  { name: 'essence', region: 'western', slugs: ['essence'] },
+  { name: 'Beauty Formulas', region: 'western', slugs: ['beauty-formulas'] },
 ];
 
 const slugToCanonical = new Map<string, CanonicalBrand>();
