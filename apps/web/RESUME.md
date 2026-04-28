@@ -1,16 +1,13 @@
-# Session Resume Guide — 2026-04-27
+# Session Resume Guide — 2026-04-28
 
-Two background jobs are running (or may have completed). Both have resume support.
+The long 2026-04-27 skincarebd/product-import jobs have completed or been closed out. Do not restart the product importer for the same 633-candidate batch unless the user explicitly asks to reset and rerun it.
 
 ---
 
-## Current Running Jobs
+## Closed Jobs
 
-### Job A — Product Import from Sourcing Gap (PID ~465174)
+### Job A — Product Import from Sourcing Gap (complete)
 ```bash
-# Check log
-tail -50 /tmp/product-import.log
-
 # Check progress file
 python3 -c "
 import json; from pathlib import Path
@@ -23,13 +20,15 @@ errors   = len([v for v in d.values() if 'error' in str(v.get('status',''))])
 skipped  = len([v for v in d.values() if 'skip' in str(v.get('status',''))])
 print(f'Product import: {len(d)}/633 | created={created} | oos={oos} | errors={errors} | skipped={skipped}')
 "
-
-# If process is dead, resume it:
-ps aux | grep import-instock | grep -v grep
-cd /root/emart-platform/apps/web
-nohup python3 -u scripts/import-instock-products.py > /tmp/product-import.log 2>&1 &
-echo "PID: $!"
 ```
+
+Final known status: 633/633 processed — 92 created/published, 159 duplicate_existing/skipped or drafted, 380 out_of_stock, 2 source 404.
+
+Duplicate cleanup notes:
+- Reports: `/root/emart-platform/audit/skincarebd/import-duplicate-audit.csv` and `/root/emart-platform/audit/skincarebd/import-high-confidence-duplicates.csv`
+- High-confidence same-size duplicate imports were drafted; older products stayed published.
+- Final corrected duplicate verifier found 0 same-size high-confidence duplicates still published.
+- ACWELL 30ml and Neutrogena SPF70 were intentionally kept live as likely variants.
 
 ### Job B — Image import v2 (may be complete)
 ```bash
@@ -56,7 +55,7 @@ print(f'Image import: {len(d)}/1282 | imported={imported} | non-white={skipped} 
 - [x] ShopByCategorySection: desktop category grid added to homepage
 - [x] MailPoet: welcome/cart/transactional emails rebuilt with Emart branding
 - [x] Shipping: Dhaka ৳70 / Outside Dhaka ৳100 / Free above ৳3,000
-- [~] Product import from sourcing gap (633 candidates, resumable)
+- [x] Product import from sourcing gap (633 candidates processed; duplicate cleanup completed)
 
 ## Still pending (requires user action)
 
@@ -79,7 +78,9 @@ if not p.exists(): print('Not started'); exit()
 d = json.loads(p.read_text())
 created = len([v for v in d.values() if v.get('status') == 'created'])
 oos     = len([v for v in d.values() if v.get('status') == 'out_of_stock'])
-print(f'{len(d)}/633 done | {created} created | {oos} OOS')
+dups    = len([v for v in d.values() if v.get('status') == 'duplicate_existing'])
+errs    = len([v for v in d.values() if 'error' in str(v.get('status',''))])
+print(f'{len(d)}/633 done | {created} created | {dups} duplicates | {oos} OOS | {errs} errors')
 " && \
 echo "=== Image Import ===" && \
 python3 -c "
