@@ -290,6 +290,7 @@ export const CANONICAL_BRANDS: CanonicalBrand[] = [
   { name: 'Aloe vera', region: 'western', slugs: ['aloe-vera'] },
   { name: 'Cold Pressed', region: 'western', slugs: ['cold-pressed'] },
   { name: 'Sabamed', region: 'western', slugs: ['sabamed'] },
+  { name: 'Beauty Glazed', region: 'western', slugs: ['beauty-glazed'] },
   { name: 'Green Finger', region: 'korean', slugs: ['green-finger'] },
   { name: 'Sungboon Editor', region: 'korean', slugs: ['sungboon-editor'] },
   { name: 'ZEZE', region: 'korean', slugs: ['zeze'] },

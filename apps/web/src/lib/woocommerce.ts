@@ -533,7 +533,7 @@ export async function getBrands(params: {
     count: 0,
   }));
 
-  const queryParams = {
+  const baseParams = {
     per_page: 100,
     hide_empty: true,
     orderby: 'count',
@@ -543,7 +543,6 @@ export async function getBrands(params: {
 
   const parseBrands = (data: unknown) => {
     if (!Array.isArray(data)) return [];
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     return data
       .map((brand: any) => ({
         id: Number(brand.id),
@@ -560,22 +559,42 @@ export async function getBrands(params: {
       .filter((brand: WooBrand) => CANONICAL_BRANDS.some((item) => item.slugs.includes(brand.slug)));
   };
 
+  const whitelistSlugs = new Set(CANONICAL_BRANDS.flatMap((b) => b.slugs));
+
   // Try internal URL first, fall back to public URL on socket errors
   for (const attempt of ['internal', 'public'] as const) {
     try {
-      let response;
-      if (attempt === 'public') {
-        response = await axios.get(`${PUBLIC_SITE_URL}/wp-json/wc/v3/products/attributes/1/terms`, {
-          params: { ...queryParams, consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET },
-          timeout: WOO_READ_TIMEOUT_MS,
-        });
-      } else {
-        response = await wooClient.get('/products/attributes/1/terms', {
-          params: queryParams,
-          timeout: WOO_READ_TIMEOUT_MS,
-        });
+      const allBrands: WooBrand[] = [];
+      // Paginate until all whitelist brands are found or no more pages
+      for (let page = 1; page <= 10; page++) {
+        const queryParams = { ...baseParams, page };
+        let response;
+        if (attempt === 'public') {
+          response = await axios.get(`${PUBLIC_SITE_URL}/wp-json/wc/v3/products/attributes/1/terms`, {
+            params: { ...queryParams, consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET },
+            timeout: WOO_READ_TIMEOUT_MS,
+          });
+        } else {
+          response = await wooClient.get('/products/attributes/1/terms', {
+            params: queryParams,
+            timeout: WOO_READ_TIMEOUT_MS,
+          });
+        }
+        const pageData: any[] = Array.isArray(response.data) ? response.data : [];
+        allBrands.push(...parseBrands(pageData));
+        // Stop if last page (fewer than per_page results) or no whitelist hits remain
+        if (pageData.length < 100) break;
+        const foundSlugs = new Set(allBrands.map((b) => b.slug));
+        const stillMissing = [...whitelistSlugs].some((s) => !foundSlugs.has(s));
+        if (!stillMissing) break;
       }
-      const brands = parseBrands(response.data);
+      // Deduplicate by id, keep highest count
+      const seen = new Map<number, WooBrand>();
+      for (const b of allBrands) {
+        const existing = seen.get(b.id);
+        if (!existing || b.count > existing.count) seen.set(b.id, b);
+      }
+      const brands = [...seen.values()];
       if (brands.length > 0) return brands;
     } catch (error: any) {
       const isSocketError = error?.cause?.code === 'ECONNRESET' || error?.message?.includes('socket hang up');
