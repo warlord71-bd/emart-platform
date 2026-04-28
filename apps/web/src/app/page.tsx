@@ -97,7 +97,7 @@ export default async function HomePage() {
     <div className="bg-white">
       <HeroCarousel />
       {/* Mobile: horizontal scroll discovery strip */}
-      <MobileDiscovery categories={mobileDiscoveryCategories} showChips={false} />
+      <MobileDiscovery categories={mobileDiscoveryCategories} showChips={false} showCategories={false} />
       {/* Desktop + Mobile: category grid visible at all sizes */}
       <ShopByCategorySection categories={categoryTiles} />
       <OfferCollectionsRail />
