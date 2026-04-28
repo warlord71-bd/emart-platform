@@ -1011,6 +1011,11 @@ def main() -> int:
         action="store_true",
         help="Allow creating missing active brand terms when a product already has a matching secondary brand taxonomy term.",
     )
+    parser.add_argument(
+        "--actions",
+        default="",
+        help="Optional comma-separated proposal actions to include, e.g. assign_existing_term or create_term_then_assign.",
+    )
     args = parser.parse_args()
 
     if args.rollback_csv:
@@ -1098,6 +1103,10 @@ def main() -> int:
                 }
             )
 
+    allowed_actions = {item.strip() for item in args.actions.split(",") if item.strip()}
+    if allowed_actions:
+        proposals = [proposal for proposal in proposals if proposal.action in allowed_actions]
+
     write_csv(
         output_dir / "proposed-assignments.csv",
         [
@@ -1132,6 +1141,8 @@ def main() -> int:
         f"Dry-run summary: missing={len(missing_products)} proposed={len(proposals)} skipped={len(skipped_rows)} "
         f"apply_mode={'yes' if args.apply else 'no'}"
     )
+    if allowed_actions:
+        print(f"Action filter: {', '.join(sorted(allowed_actions))}")
 
     for proposal in proposals[:25]:
         print(
