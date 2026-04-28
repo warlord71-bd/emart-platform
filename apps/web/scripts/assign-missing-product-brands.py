@@ -92,6 +92,7 @@ class ActiveBrandTerm:
     term_slug: str
     count: int
     aliases: List[str] = field(default_factory=list)
+    whitelist_backed: bool = True
 
 
 @dataclass
@@ -131,6 +132,9 @@ class Proposal:
     categories: str
     tags: str
     secondary_brand_terms: str
+    action: str = "assign_existing_term"
+    create_term_name: str = ""
+    create_term_slug: str = ""
 
 
 @dataclass
@@ -205,6 +209,37 @@ def wp_post_term_remove(product_id: int, taxonomy: str, term_id: int) -> subproc
     )
 
 
+def wp_term_create(taxonomy: str, name: str, slug: str) -> int:
+    proc = run_command(
+        [
+            "wp",
+            f"--path={WP_PATH}",
+            "--allow-root",
+            "term",
+            "create",
+            taxonomy,
+            name,
+            f"--slug={slug}",
+            "--porcelain",
+        ]
+    )
+    return int(clean_text(proc.stdout))
+
+
+def wp_term_delete(taxonomy: str, term_id: int) -> subprocess.CompletedProcess[str]:
+    return run_command(
+        [
+            "wp",
+            f"--path={WP_PATH}",
+            "--allow-root",
+            "term",
+            "delete",
+            taxonomy,
+            str(term_id),
+        ]
+    )
+
+
 def clean_text(value: object) -> str:
     text = html.unescape(str(value or ""))
     text = re.sub(r"\s+", " ", text).strip()
@@ -226,6 +261,10 @@ def normalize_slug(value: object) -> str:
     text = clean_text(value).lower()
     text = re.sub(r"[^a-z0-9]+", "-", text)
     return text.strip("-")
+
+
+def sql_quote(value: object) -> str:
+    return str(value).replace("\\", "\\\\").replace("'", "''")
 
 
 def starts_with_phrase(text: str, phrase: str) -> bool:
@@ -373,7 +412,7 @@ def detect_brand_taxonomy() -> Tuple[str, Dict[str, TaxonomyEvidence]]:
     return ranked[0].taxonomy, evidence_map
 
 
-def load_active_brand_terms(taxonomy: str) -> List[Tuple[int, str, str, int]]:
+def load_taxonomy_terms(taxonomy: str) -> List[Tuple[int, str, str, int]]:
     rows = wp_db_query(
         f"""
         SELECT t.term_id, t.name, t.slug, tt.count
@@ -392,7 +431,13 @@ def load_active_brand_terms(taxonomy: str) -> List[Tuple[int, str, str, int]]:
     return terms
 
 
-def build_active_brand_map(taxonomy: str) -> Tuple[Dict[str, ActiveBrandTerm], Dict[str, str]]:
+def load_active_brand_terms(taxonomy: str) -> List[Tuple[int, str, str, int]]:
+    return load_taxonomy_terms(taxonomy)
+
+
+def build_active_brand_map(
+    taxonomy: str,
+) -> Tuple[Dict[str, ActiveBrandTerm], Dict[str, str], Dict[str, ActiveBrandTerm]]:
     canonical_brands = parse_brand_whitelist(WHITELIST_PATH)
     active_terms = load_active_brand_terms(taxonomy)
 
@@ -422,6 +467,7 @@ def build_active_brand_map(taxonomy: str) -> Tuple[Dict[str, ActiveBrandTerm], D
         buckets.setdefault(matched_brand.name, []).append((term_id, term_name, term_slug, count))
 
     active_map: Dict[str, ActiveBrandTerm] = {}
+    direct_term_map: Dict[str, ActiveBrandTerm] = {}
     alias_to_canonical: Dict[str, str] = {}
     for brand in canonical_brands:
         options = buckets.get(brand.name)
@@ -441,12 +487,36 @@ def build_active_brand_map(taxonomy: str) -> Tuple[Dict[str, ActiveBrandTerm], D
             term_slug=term_slug,
             count=count,
             aliases=clean_aliases,
+            whitelist_backed=True,
         )
         for alias in clean_aliases:
             alias_to_canonical[alias] = brand.name
         alias_to_canonical[normalize_slug(term_slug).replace("-", " ")] = brand.name
 
-    return active_map, alias_to_canonical
+    for term_id, term_name, term_slug, count in active_terms:
+        existing = next(
+            (term for term in active_map.values() if term.term_id == term_id),
+            None,
+        )
+        term = existing or ActiveBrandTerm(
+            canonical_name=term_name,
+            term_id=term_id,
+            term_name=term_name,
+            term_slug=term_slug,
+            count=count,
+            aliases=sorted(
+                {
+                    normalize_phrase(term_name),
+                    normalize_phrase(term_slug.replace("-", " ")),
+                    normalize_slug(term_slug).replace("-", " "),
+                }
+            ),
+            whitelist_backed=False,
+        )
+        direct_term_map[normalize_phrase(term_name)] = term
+        direct_term_map[normalize_slug(term_slug).replace("-", " ")] = term
+
+    return active_map, alias_to_canonical, direct_term_map
 
 
 def load_missing_products(active_taxonomy: str, statuses: Sequence[str]) -> List[ProductRecord]:
@@ -523,10 +593,129 @@ def load_missing_products(active_taxonomy: str, statuses: Sequence[str]) -> List
     return products
 
 
-def score_product(
-    product: ProductRecord,
+def find_active_term_by_name_or_slug(taxonomy: str, name: str, slug: str) -> Optional[Tuple[int, str, str, int]]:
+    rows = wp_db_query(
+        f"""
+        SELECT t.term_id, t.name, t.slug, tt.count
+        FROM wp4h_terms t
+        JOIN wp4h_term_taxonomy tt ON tt.term_id = t.term_id
+        WHERE tt.taxonomy = '{sql_quote(taxonomy)}'
+          AND (LOWER(t.name) = LOWER('{sql_quote(name)}') OR LOWER(t.slug) = LOWER('{sql_quote(slug)}'))
+        ORDER BY tt.count DESC, t.term_id ASC
+        LIMIT 1
+        """
+    )
+    if not rows or len(rows[0]) < 4:
+        return None
+    term_id, term_name, term_slug, count = rows[0][:4]
+    return int(term_id), clean_text(term_name), clean_text(term_slug), int(count or 0)
+
+
+def build_createable_brand_candidates(
+    products: Sequence[ProductRecord],
     active_terms: Dict[str, ActiveBrandTerm],
     alias_to_canonical: Dict[str, str],
+    direct_term_map: Dict[str, ActiveBrandTerm],
+) -> Dict[str, SecondaryBrandTerm]:
+    candidate_counts: Dict[Tuple[str, str], int] = {}
+    candidate_terms: Dict[Tuple[str, str], SecondaryBrandTerm] = {}
+
+    for product in products:
+        for term in product.secondary_brand_terms:
+            term_slug_key = normalize_slug(term.slug).replace("-", " ")
+            term_name_key = normalize_phrase(term.name)
+            canonical_name = alias_to_canonical.get(term_name_key) or alias_to_canonical.get(term_slug_key)
+            if canonical_name and canonical_name in active_terms:
+                continue
+            if direct_term_map.get(term_name_key) or direct_term_map.get(term_slug_key):
+                continue
+
+            key = (term_name_key, term_slug_key)
+            candidate_counts[key] = candidate_counts.get(key, 0) + 1
+            candidate_terms[key] = term
+
+    createable_by_alias: Dict[str, SecondaryBrandTerm] = {}
+    for key, count in candidate_counts.items():
+        if count < 2:
+            continue
+        term = candidate_terms[key]
+        for alias in {
+            normalize_phrase(term.name),
+            normalize_phrase(term.slug.replace("-", " ")),
+            normalize_slug(term.slug).replace("-", " "),
+        }:
+            if alias:
+                createable_by_alias[alias] = term
+    return createable_by_alias
+
+
+def build_trusted_title_inference_terms(active_terms: Dict[str, ActiveBrandTerm]) -> Dict[str, ActiveBrandTerm]:
+    product_brand_terms = load_taxonomy_terms("product_brand")
+    trusted_secondary_aliases = set()
+    for _, name, slug, _ in product_brand_terms:
+        trusted_secondary_aliases.add(normalize_phrase(name))
+        trusted_secondary_aliases.add(normalize_phrase(slug.replace("-", " ")))
+        trusted_secondary_aliases.add(normalize_slug(slug).replace("-", " "))
+
+    trusted_terms: Dict[str, ActiveBrandTerm] = {}
+    for key, active in active_terms.items():
+        aliases = {
+            normalize_phrase(active.canonical_name),
+            normalize_phrase(active.term_name),
+            normalize_phrase(active.term_slug.replace("-", " ")),
+            normalize_slug(active.term_slug).replace("-", " "),
+        }
+        product_brand_backed = bool(aliases & trusted_secondary_aliases)
+        established_active_brand = active.count >= 5
+        normalized_name = normalize_phrase(active.term_name)
+        tokens = [token for token in normalized_name.split() if token and token not in {"of", "and", "the", "by", "s"}]
+        suspicious_keywords = {
+            "aha",
+            "bha",
+            "pha",
+            "collagen",
+            "glutathion",
+            "glutathione",
+            "hyluronic",
+            "hyaluronic",
+            "whitening",
+            "brightening",
+            "aqua",
+            "cream",
+            "serum",
+            "toner",
+            "mask",
+            "soap",
+            "sunstick",
+            "sunstick",
+            "sun",
+            "melasma",
+            "3d",
+            "x",
+        }
+        contains_digits = any(char.isdigit() for char in normalized_name)
+        suspicious_phrase = (
+            not product_brand_backed
+            and active.count < 5
+            and (
+                contains_digits
+                or any(token in suspicious_keywords for token in tokens)
+                or len(tokens) >= 4
+            )
+        )
+        if not suspicious_phrase and (product_brand_backed or established_active_brand or active.whitelist_backed):
+            trusted_terms[key] = active
+    return trusted_terms
+
+
+def score_product(
+    product: ProductRecord,
+    active_taxonomy: str,
+    active_terms: Dict[str, ActiveBrandTerm],
+    title_inference_terms: Dict[str, ActiveBrandTerm],
+    alias_to_canonical: Dict[str, str],
+    direct_term_map: Dict[str, ActiveBrandTerm],
+    createable_brand_candidates: Dict[str, SecondaryBrandTerm],
     reference_hints: Optional[Dict[int, ReferenceBrandHint]] = None,
 ) -> Tuple[Optional[Proposal], str]:
     title_phrase = normalize_phrase(product.title)
@@ -535,6 +724,8 @@ def score_product(
     categories_phrase = " | ".join(normalize_phrase(cat) for cat in product.categories if cat)
 
     candidates: List[Tuple[float, str, str, ActiveBrandTerm]] = []
+    saw_secondary_brand_without_active_term = False
+    create_term_candidate: Optional[SecondaryBrandTerm] = None
 
     if reference_hints and product.product_id in reference_hints:
         hint = reference_hints[product.product_id]
@@ -550,9 +741,18 @@ def score_product(
         if canonical_name and canonical_name in active_terms:
             active = active_terms[canonical_name]
             candidates.append((1.0, f"secondary_taxonomy:{term.taxonomy}", term.name, active))
+            continue
+
+        direct_active = direct_term_map.get(term_name_key) or direct_term_map.get(term_slug_key)
+        if direct_active:
+            candidates.append((0.995, f"secondary_taxonomy_direct:{term.taxonomy}", term.name, direct_active))
+        else:
+            saw_secondary_brand_without_active_term = True
+            if create_term_candidate is None:
+                create_term_candidate = term
 
     # Prefix match against title / slug for the live canonical term set.
-    for active in active_terms.values():
+    for active in title_inference_terms.values():
         for alias in sorted(active.aliases, key=len, reverse=True):
             if not alias:
                 continue
@@ -577,6 +777,60 @@ def score_product(
                 candidates.append((0.91, "title_contains+term_support", alias, active))
 
     if not candidates:
+        for alias, secondary_term in sorted(createable_brand_candidates.items(), key=lambda item: len(item[0]), reverse=True):
+            if not alias:
+                continue
+            if starts_with_phrase(title_phrase, alias) or starts_with_phrase(slug_phrase, alias):
+                proposal = Proposal(
+                    product_id=product.product_id,
+                    status=product.status,
+                    title=product.title,
+                    slug=product.slug,
+                    sku=product.sku,
+                    taxonomy=active_taxonomy,
+                    term_id=0,
+                    term_name=secondary_term.name,
+                    term_slug=normalize_slug(secondary_term.slug or secondary_term.name),
+                    confidence=0.955,
+                    source=f"title_prefix_create_active_term:{secondary_term.taxonomy}",
+                    matched_alias=alias,
+                    categories=" | ".join(product.categories),
+                    tags=" | ".join(product.tags),
+                    secondary_brand_terms=" | ".join(
+                        f"{term.taxonomy}:{term.name}" for term in product.secondary_brand_terms
+                    ),
+                    action="create_term_then_assign",
+                    create_term_name=secondary_term.name,
+                    create_term_slug=normalize_slug(secondary_term.slug or secondary_term.name),
+                )
+                return proposal, "ok"
+
+        if create_term_candidate:
+            proposal = Proposal(
+                product_id=product.product_id,
+                status=product.status,
+                title=product.title,
+                slug=product.slug,
+                sku=product.sku,
+                taxonomy=active_taxonomy,
+                term_id=0,
+                term_name=create_term_candidate.name,
+                term_slug=normalize_slug(create_term_candidate.slug or create_term_candidate.name),
+                confidence=0.965,
+                source=f"secondary_taxonomy_create_active_term:{create_term_candidate.taxonomy}",
+                matched_alias=create_term_candidate.name,
+                categories=" | ".join(product.categories),
+                tags=" | ".join(product.tags),
+                secondary_brand_terms=" | ".join(
+                    f"{term.taxonomy}:{term.name}" for term in product.secondary_brand_terms
+                ),
+                action="create_term_then_assign",
+                create_term_name=create_term_candidate.name,
+                create_term_slug=normalize_slug(create_term_candidate.slug or create_term_candidate.name),
+            )
+            return proposal, "ok"
+        if saw_secondary_brand_without_active_term:
+            return None, "secondary_brand_missing_active_pa_brand_term"
         return None, "no_confident_match"
 
     ranked = sorted(candidates, key=lambda item: (item[0], len(item[2]), item[3].count), reverse=True)
@@ -709,15 +963,23 @@ def run_rollback(csv_path: Path) -> int:
     successes = 0
     failures = 0
     for row in rows:
-        product_id = int(row["product_id"])
+        action = clean_text(row.get("action", "")) or "remove_assignment"
         taxonomy = row["taxonomy"]
         term_id = int(row["term_id"])
         try:
-            wp_post_term_remove(product_id, taxonomy, term_id)
+            if action == "delete_term_if_empty":
+                wp_term_delete(taxonomy, term_id)
+            else:
+                product_id = int(row["product_id"])
+                wp_post_term_remove(product_id, taxonomy, term_id)
             successes += 1
         except subprocess.CalledProcessError as exc:
             failures += 1
-            print(f"[ROLLBACK FAIL] product={product_id} taxonomy={taxonomy} term_id={term_id}: {exc.stderr.strip()}")
+            product_id = clean_text(row.get("product_id", ""))
+            print(
+                f"[ROLLBACK FAIL] action={action} product={product_id or '-'} "
+                f"taxonomy={taxonomy} term_id={term_id}: {exc.stderr.strip()}"
+            )
 
     print(f"Rollback complete: removed={successes} failed={failures}")
     return 0 if failures == 0 else 1
@@ -744,6 +1006,11 @@ def main() -> int:
         type=Path,
         help="Optional reviewed CSV reference file. Can be passed more than once.",
     )
+    parser.add_argument(
+        "--allow-create-active-terms",
+        action="store_true",
+        help="Allow creating missing active brand terms when a product already has a matching secondary brand taxonomy term.",
+    )
     args = parser.parse_args()
 
     if args.rollback_csv:
@@ -752,10 +1019,11 @@ def main() -> int:
     detected_taxonomy, evidence_map = detect_brand_taxonomy()
     print(f"Detected active brand taxonomy: {detected_taxonomy}")
 
-    active_terms, alias_to_canonical = build_active_brand_map(detected_taxonomy)
+    active_terms, alias_to_canonical, direct_term_map = build_active_brand_map(detected_taxonomy)
     if not active_terms:
         print("No canonical live brand terms could be mapped from the detected taxonomy. Aborting.")
         return 1
+    title_inference_terms = build_trusted_title_inference_terms(active_terms)
 
     reference_hints = load_reference_hints(args.reference_csv, active_terms, alias_to_canonical)
     if reference_hints:
@@ -763,6 +1031,12 @@ def main() -> int:
 
     statuses = [status.strip() for status in args.statuses.split(",") if status.strip()]
     missing_products = load_missing_products(detected_taxonomy, statuses)
+    createable_brand_candidates = build_createable_brand_candidates(
+        missing_products,
+        active_terms,
+        alias_to_canonical,
+        direct_term_map,
+    )
     if args.limit > 0:
         missing_products = missing_products[: args.limit]
 
@@ -794,7 +1068,16 @@ def main() -> int:
     proposals: List[Proposal] = []
     skipped_rows: List[dict] = []
     for product in missing_products:
-        proposal, status = score_product(product, active_terms, alias_to_canonical, reference_hints)
+        proposal, status = score_product(
+            product,
+            detected_taxonomy,
+            active_terms,
+            title_inference_terms,
+            alias_to_canonical,
+            direct_term_map,
+            createable_brand_candidates,
+            reference_hints,
+        )
         if proposal:
             proposal.taxonomy = detected_taxonomy
             proposals.append(proposal)
@@ -833,6 +1116,9 @@ def main() -> int:
             "categories",
             "tags",
             "secondary_brand_terms",
+            "action",
+            "create_term_name",
+            "create_term_slug",
         ],
         [proposal.__dict__ for proposal in proposals],
     )
@@ -859,27 +1145,81 @@ def main() -> int:
 
     apply_results: List[dict] = []
     rollback_rows: List[dict] = []
+    created_terms: Dict[Tuple[str, str], Tuple[int, str]] = {}
     for proposal in proposals:
         try:
-            wp_post_term_set(proposal.product_id, proposal.taxonomy, proposal.term_id)
+            target_term_id = proposal.term_id
+            if proposal.action == "create_term_then_assign":
+                if not args.allow_create_active_terms:
+                    apply_results.append(
+                        {
+                            "product_id": proposal.product_id,
+                            "status": "skipped_create_not_allowed",
+                            "taxonomy": proposal.taxonomy,
+                            "term_id": "",
+                            "term_name": proposal.create_term_name or proposal.term_name,
+                            "confidence": proposal.confidence,
+                            "source": proposal.source,
+                            "title": proposal.title,
+                            "error": "Run with --allow-create-active-terms to create missing active brand terms.",
+                            "action": proposal.action,
+                        }
+                    )
+                    continue
+
+                create_key = (proposal.taxonomy, proposal.create_term_slug or proposal.term_slug)
+                if create_key in created_terms:
+                    target_term_id = created_terms[create_key][0]
+                else:
+                    existing_term = find_active_term_by_name_or_slug(
+                        proposal.taxonomy,
+                        proposal.create_term_name or proposal.term_name,
+                        proposal.create_term_slug or proposal.term_slug,
+                    )
+                    if existing_term:
+                        target_term_id = existing_term[0]
+                    else:
+                        target_term_id = wp_term_create(
+                            proposal.taxonomy,
+                            proposal.create_term_name or proposal.term_name,
+                            proposal.create_term_slug or proposal.term_slug,
+                        )
+                        created_terms[create_key] = (
+                            target_term_id,
+                            proposal.create_term_name or proposal.term_name,
+                        )
+                        rollback_rows.append(
+                            {
+                                "action": "delete_term_if_empty",
+                                "product_id": "",
+                                "taxonomy": proposal.taxonomy,
+                                "term_id": target_term_id,
+                                "term_name": proposal.create_term_name or proposal.term_name,
+                            }
+                        )
+
+            wp_post_term_set(proposal.product_id, proposal.taxonomy, target_term_id)
             apply_results.append(
                 {
                     "product_id": proposal.product_id,
                     "status": "applied",
                     "taxonomy": proposal.taxonomy,
-                    "term_id": proposal.term_id,
-                    "term_name": proposal.term_name,
+                    "term_id": target_term_id,
+                    "term_name": proposal.create_term_name or proposal.term_name,
                     "confidence": proposal.confidence,
                     "source": proposal.source,
                     "title": proposal.title,
+                    "error": "",
+                    "action": proposal.action,
                 }
             )
             rollback_rows.append(
                 {
+                    "action": "remove_assignment",
                     "product_id": proposal.product_id,
                     "taxonomy": proposal.taxonomy,
-                    "term_id": proposal.term_id,
-                    "term_name": proposal.term_name,
+                    "term_id": target_term_id,
+                    "term_name": proposal.create_term_name or proposal.term_name,
                 }
             )
         except subprocess.CalledProcessError as exc:
@@ -894,17 +1234,18 @@ def main() -> int:
                     "source": proposal.source,
                     "title": proposal.title,
                     "error": exc.stderr.strip(),
+                    "action": proposal.action,
                 }
             )
 
     write_csv(
         output_dir / "apply-results.csv",
-        ["product_id", "status", "taxonomy", "term_id", "term_name", "confidence", "source", "title", "error"],
+        ["product_id", "status", "taxonomy", "term_id", "term_name", "confidence", "source", "title", "error", "action"],
         apply_results,
     )
     write_csv(
         output_dir / "rollback.csv",
-        ["product_id", "taxonomy", "term_id", "term_name"],
+        ["action", "product_id", "taxonomy", "term_id", "term_name"],
         rollback_rows,
     )
 
