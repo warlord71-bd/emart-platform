@@ -13,9 +13,8 @@ const nextConfig = {
       { source: '/my-account', destination: '/account', permanent: true },
       { source: '/my-account/', destination: '/account', permanent: true },
       { source: '/my-account/:path*', destination: '/account', permanent: true },
-      // WooCommerce cart/checkout legacy
+      // WooCommerce cart legacy
       { source: '/cart', destination: '/', permanent: false },
-      { source: '/checkout', destination: '/', permanent: false },
 
       // ── Known slug fixes ───────────────────────────────────────────────────
       { source: '/contact-us', destination: '/contact', permanent: true },
