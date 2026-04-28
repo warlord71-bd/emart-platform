@@ -133,6 +133,14 @@ class Proposal:
     secondary_brand_terms: str
 
 
+@dataclass
+class ReferenceBrandHint:
+    product_id: int
+    brand_name: str
+    source_label: str
+    confidence: float
+
+
 def run_command(cmd: Sequence[str], *, check: bool = True) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         list(cmd),
@@ -519,6 +527,7 @@ def score_product(
     product: ProductRecord,
     active_terms: Dict[str, ActiveBrandTerm],
     alias_to_canonical: Dict[str, str],
+    reference_hints: Optional[Dict[int, ReferenceBrandHint]] = None,
 ) -> Tuple[Optional[Proposal], str]:
     title_phrase = normalize_phrase(product.title)
     slug_phrase = normalize_phrase(product.slug.replace("-", " "))
@@ -526,6 +535,12 @@ def score_product(
     categories_phrase = " | ".join(normalize_phrase(cat) for cat in product.categories if cat)
 
     candidates: List[Tuple[float, str, str, ActiveBrandTerm]] = []
+
+    if reference_hints and product.product_id in reference_hints:
+        hint = reference_hints[product.product_id]
+        active = active_terms.get(hint.brand_name)
+        if active:
+            candidates.append((hint.confidence, hint.source_label, hint.brand_name, active))
 
     # Strongest evidence: another brand taxonomy already present on the product.
     for term in product.secondary_brand_terms:
@@ -630,6 +645,61 @@ def write_detection_report(path: Path, detected_taxonomy: str, evidence_map: Dic
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
+def load_reference_hints(
+    csv_paths: Sequence[Path],
+    active_terms: Dict[str, ActiveBrandTerm],
+    alias_to_canonical: Dict[str, str],
+) -> Dict[int, ReferenceBrandHint]:
+    hints: Dict[int, ReferenceBrandHint] = {}
+    for csv_path in csv_paths:
+        if not csv_path.exists():
+            print(f"[WARN] reference CSV not found: {csv_path}")
+            continue
+
+        with csv_path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            for row in reader:
+                raw_product_id = clean_text(row.get("product_id", ""))
+                if not raw_product_id.isdigit():
+                    continue
+
+                product_id = int(raw_product_id)
+                candidates = [
+                    clean_text(row.get("correct_brand", "")),
+                    clean_text(row.get("corrected_brand", "")),
+                    clean_text(row.get("edited_brand", "")),
+                ]
+                brand_value = next((value for value in candidates if value), "")
+                if not brand_value:
+                    continue
+
+                canonical_name = (
+                    alias_to_canonical.get(normalize_phrase(brand_value))
+                    or alias_to_canonical.get(normalize_slug(brand_value).replace("-", " "))
+                )
+                if not canonical_name or canonical_name not in active_terms:
+                    continue
+
+                safe_flag = clean_text(row.get("safe", "")).lower()
+                review_issue = clean_text(row.get("review_issue", ""))
+                confidence = 0.985 if safe_flag == "true" else 0.955
+                source_label = f"reference_csv:{csv_path.name}"
+                if review_issue:
+                    source_label = f"{source_label}:{review_issue}"
+
+                existing = hints.get(product_id)
+                if existing and existing.confidence >= confidence:
+                    continue
+
+                hints[product_id] = ReferenceBrandHint(
+                    product_id=product_id,
+                    brand_name=canonical_name,
+                    source_label=source_label,
+                    confidence=confidence,
+                )
+    return hints
+
+
 def run_rollback(csv_path: Path) -> int:
     rows = list(csv.DictReader(csv_path.open("r", encoding="utf-8")))
     if not rows:
@@ -667,6 +737,13 @@ def main() -> int:
         type=Path,
         help="Rollback a previous apply using the generated rollback CSV.",
     )
+    parser.add_argument(
+        "--reference-csv",
+        action="append",
+        default=[],
+        type=Path,
+        help="Optional reviewed CSV reference file. Can be passed more than once.",
+    )
     args = parser.parse_args()
 
     if args.rollback_csv:
@@ -679,6 +756,10 @@ def main() -> int:
     if not active_terms:
         print("No canonical live brand terms could be mapped from the detected taxonomy. Aborting.")
         return 1
+
+    reference_hints = load_reference_hints(args.reference_csv, active_terms, alias_to_canonical)
+    if reference_hints:
+        print(f"Loaded reference hints for {len(reference_hints)} products from {len(args.reference_csv)} CSV file(s)")
 
     statuses = [status.strip() for status in args.statuses.split(",") if status.strip()]
     missing_products = load_missing_products(detected_taxonomy, statuses)
@@ -713,7 +794,7 @@ def main() -> int:
     proposals: List[Proposal] = []
     skipped_rows: List[dict] = []
     for product in missing_products:
-        proposal, status = score_product(product, active_terms, alias_to_canonical)
+        proposal, status = score_product(product, active_terms, alias_to_canonical, reference_hints)
         if proposal:
             proposal.taxonomy = detected_taxonomy
             proposals.append(proposal)
