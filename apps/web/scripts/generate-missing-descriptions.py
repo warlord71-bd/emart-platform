@@ -19,8 +19,8 @@ WC_SECRET = "cs_2551608b6d9f84841f8193eaffff2bfb120e659b"
 TG_TOKEN  = "8705011508:AAGjcEGOjQ7inSa-chq9sJswEOo8XcJ9KXE"
 TG_CHAT   = "6906852635"
 
-MODEL_DESC = "deepseek/deepseek-chat"
-MODEL_META = "google/gemini-flash-1.5"
+MODEL_DESC = "google/gemini-2.0-flash-exp:free"
+MODEL_META = "google/gemini-2.0-flash-exp:free"
 PROGRESS_FILE = "/tmp/gen_missing_desc_progress.json"
 
 auth = HTTPBasicAuth(WC_KEY, WC_SECRET)
@@ -314,10 +314,10 @@ def main():
 
         try:
             desc       = generate_description(product)
-            time.sleep(2)
+            time.sleep(4)
             short_desc = generate_short_description(product)
             meta       = generate_rank_math_meta(product)
-            time.sleep(1)
+            time.sleep(4)
 
             ok = update_product(pid, desc, short_desc, meta)
             if ok:
@@ -340,7 +340,7 @@ def main():
             save_progress(progress)
             time.sleep(5)
 
-        time.sleep(3)
+        time.sleep(5)
 
     summary = f"🎉 Done! {len(done_ids)} updated, {len(failed_ids)} failed."
     if failed_ids:
