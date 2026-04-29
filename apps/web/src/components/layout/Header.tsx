@@ -6,19 +6,28 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
+  Baby,
   BadgeCheck,
   Camera,
   ChevronDown,
+  ChevronRight,
+  Droplets,
   Flame,
+  Flower2,
   Heart,
   Menu,
   Mic,
+  Paintbrush,
   Search,
+  ShieldCheck,
   ShoppingBag,
   ShoppingCart,
+  Scissors,
   Sparkles,
   Tags,
+  Target,
   User,
+  Waves,
   X,
   type LucideIcon,
 } from 'lucide-react';
@@ -194,19 +203,74 @@ const DESKTOP_MENU_GROUPS: MenuGroup[] = [
   },
 ];
 
-const DRAWER_LINKS: MenuItem[] = [
-  { label: 'Skincare', href: '/categories' },
-  { label: 'Makeup', href: '/category/makeup-cosmetics' },
-  { label: 'Hair & Scalp', href: '/category/hair-care' },
-  { label: 'Body & Bath', href: '/category/body-wash' },
-  { label: 'Fragrance', href: '/category/fragrances' },
-  { label: "Men's", href: '/search?q=mens+care' },
-  { label: 'Mom & Baby', href: '/category/mother-baby-care' },
-  { label: 'Personal Care', href: '/category/personal-hygiene' },
-  { label: 'Brands', href: '/brands' },
-  { label: 'Concerns', href: '/concerns' },
-  { label: 'Sale', href: '/sale' },
-  { label: 'New', href: '/new-arrivals' },
+interface DrawerItem {
+  label: string;
+  href?: string;
+  icon: LucideIcon;
+  tone?: string;
+  children?: MenuItem[];
+}
+
+const DRAWER_ITEMS: DrawerItem[] = [
+  {
+    label: 'Skincare',
+    icon: Droplets,
+    children: [
+      { label: 'Face Cleansers', href: '/category/face-cleansers' },
+      { label: 'Toners & Mists', href: '/category/toners-mists' },
+      { label: 'Serums & Ampoules', href: '/category/serums-ampoules-essences' },
+      { label: 'Moisturizers', href: '/category/night-cream' },
+      { label: 'Sunscreen', href: '/category/sunscreen' },
+      { label: 'Eye Care', href: '/category/eye-care' },
+      { label: 'Masks', href: '/category/face-masks' },
+    ],
+  },
+  {
+    label: 'Makeup',
+    icon: Paintbrush,
+    children: [
+      { label: 'Face Makeup', href: '/category/face-makeup' },
+      { label: 'Eyes', href: '/category/eyes' },
+      { label: 'Lips', href: '/category/lips' },
+      { label: 'Tools & Remover', href: '/category/makeup-remover' },
+    ],
+  },
+  {
+    label: 'Hair & Scalp',
+    icon: Scissors,
+    children: [
+      { label: 'Shampoo', href: '/search?q=shampoo' },
+      { label: 'Conditioner', href: '/search?q=conditioner' },
+      { label: 'Treatments', href: '/search?q=hair+treatment' },
+      { label: 'Hair Styling', href: '/search?q=hair+styling' },
+    ],
+  },
+  {
+    label: 'Body & Bath',
+    icon: Waves,
+    children: [
+      { label: 'Body Wash', href: '/category/body-wash' },
+      { label: 'Body Lotion', href: '/category/body-lotion' },
+      { label: 'Exfoliation', href: '/search?q=body+scrub' },
+      { label: 'Hand & Foot', href: '/search?q=hand+foot+care' },
+    ],
+  },
+  { label: 'Fragrance', href: '/category/fragrances', icon: Flower2 },
+  { label: "Men's", href: '/search?q=mens+care', icon: User },
+  { label: 'Mom & Baby', href: '/category/mother-baby-care', icon: Baby },
+  {
+    label: 'Personal Care',
+    icon: ShieldCheck,
+    children: [
+      { label: 'Oral Care', href: '/search?q=oral+care' },
+      { label: 'Feminine Care', href: '/search?q=feminine+care' },
+      { label: 'Deodorant', href: '/search?q=deodorant' },
+    ],
+  },
+  { label: 'Brands', href: '/brands', icon: Tags },
+  { label: 'Concerns', href: '/concerns', icon: Target },
+  { label: 'Sale', href: '/sale', icon: Flame, tone: 'sale' },
+  { label: 'New Arrivals', href: '/new-arrivals', icon: Sparkles, tone: 'new' },
 ];
 
 const formatPrice = (value: string | number) => {
@@ -306,6 +370,7 @@ export default function Header() {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
   const cartItems = useCartStore((s) => s.items);
@@ -890,7 +955,7 @@ export default function Header() {
             type="button"
             aria-label="Close menu"
             className="absolute inset-0 bg-ink/30"
-            onClick={() => setMobileOpen(false)}
+            onClick={() => { setMobileOpen(false); setExpandedItem(null); }}
           />
           <aside className="relative h-full w-[84vw] max-w-[320px] bg-white p-4 shadow-2xl">
             <div className="mb-3 flex items-center justify-between border-b border-hairline pb-2">
@@ -900,7 +965,7 @@ export default function Header() {
               </div>
               <button
                 type="button"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => { setMobileOpen(false); setExpandedItem(null); }}
                 className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-50"
                 aria-label="Close menu"
               >
@@ -908,17 +973,67 @@ export default function Header() {
               </button>
             </div>
 
-            <div className="grid gap-2">
-              {DRAWER_LINKS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-lg border border-hairline px-4 py-3 text-sm font-bold text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent"
-                >
-                  {item.label}
-                </Link>
-              ))}
+            <div className="space-y-1">
+              {DRAWER_ITEMS.map((item) => {
+                const Icon = item.icon;
+                const isExpanded = expandedItem === item.label;
+                const isSale = item.tone === 'sale';
+                const isNew = item.tone === 'new';
+
+                if (item.children) {
+                  return (
+                    <div key={item.label}>
+                      <button
+                        type="button"
+                        onClick={() => setExpandedItem(isExpanded ? null : item.label)}
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold text-ink transition-colors hover:bg-accent-soft hover:text-accent"
+                      >
+                        <Icon size={18} className="shrink-0 text-accent" />
+                        <span className="flex-1 text-left">{item.label}</span>
+                        <ChevronRight
+                          size={16}
+                          className={`shrink-0 text-muted transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
+                        />
+                      </button>
+                      {isExpanded && (
+                        <div className="mb-1 ml-9 space-y-0.5 border-l-2 border-accent/20 pl-3">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={() => { setMobileOpen(false); setExpandedItem(null); }}
+                              className="block rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-accent-soft hover:text-accent"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href!}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition-colors ${
+                      isSale
+                        ? 'text-accent hover:bg-accent-soft'
+                        : isNew
+                          ? 'text-brass hover:bg-brass-soft'
+                          : 'text-ink hover:bg-accent-soft hover:text-accent'
+                    }`}
+                  >
+                    <Icon
+                      size={18}
+                      className={`shrink-0 ${isSale ? 'text-accent' : isNew ? 'text-brass' : 'text-accent'}`}
+                    />
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
