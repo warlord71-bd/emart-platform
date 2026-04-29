@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
 """
-generate-missing-descriptions.py
-Target: products imported in the last 7 days with empty post_content (<80 chars).
-Generates: full description, short_description, rank math title/desc/keyword.
-Models: DeepSeek (description) + Gemini Flash (rank math meta).
-Updates via WooCommerce REST API. Fully resumable.
+generate-missing-descriptions.py  (v2 — comprehensive)
+Target: products imported in last 7 days with empty post_content.
+Generates in one AI call (structured JSON):
+  - description       → post_content (400-500w, h3+p)
+  - ingredients       → _emart_ingredients meta (Ingredients tab)
+  - how_to_use        → _emart_how_to_use meta (How to Use tab)
+  - short_desc        → short_description (2-sentence paragraph)
+  - tags              → product.tags (green keyword strip, 4 tags)
+  - rank_math_title   → _rank_math_title
+  - rank_math_desc    → _rank_math_description (155-160 chars)
+  - focus_keyword     → _rank_math_focus_keyword
+Model: llama-3.3-70b-versatile on Groq (free, high quality).
+Resumable via /tmp/gen_missing_desc_progress.json.
 """
 
 import requests
@@ -19,8 +27,23 @@ WC_SECRET = "cs_2551608b6d9f84841f8193eaffff2bfb120e659b"
 TG_TOKEN  = "8705011508:AAGjcEGOjQ7inSa-chq9sJswEOo8XcJ9KXE"
 TG_CHAT   = "6906852635"
 
-MODEL_DESC = "google/gemini-2.0-flash-exp:free"
-MODEL_META = "google/gemini-2.0-flash-exp:free"
+def _load_groq_key():
+    # Read from opencode config (preferred) or env
+    try:
+        cfg = json.load(open(os.path.expanduser("~/.config/opencode/opencode.json")))
+        key = cfg.get("provider", {}).get("groq", {}).get("options", {}).get("apiKey", "")
+        if key:
+            return key
+    except Exception:
+        pass
+    return os.environ.get("GROQ_API_KEY", "")
+
+GROQ_KEY = _load_groq_key()
+
+GROQ_URL      = "https://api.groq.com/openai/v1/chat/completions"
+MODEL_MAIN    = "llama-3.3-70b-versatile"   # full content JSON
+MODEL_FAST    = "llama-3.1-8b-instant"      # rank math meta
+
 PROGRESS_FILE = "/tmp/gen_missing_desc_progress.json"
 
 auth = HTTPBasicAuth(WC_KEY, WC_SECRET)
@@ -29,33 +52,15 @@ AI_RESIDUE = [
     "certainly", "absolutely", "furthermore", "moreover", "leverage",
     "comprehensive", "game-changer", "in conclusion", "in summary",
     "it's worth noting", "delve into", "tapestry", "vibrant", "bustling",
-    "revolutionize", "groundbreaking", "cutting-edge", "state-of-the-art",
-    "seamlessly", "robust", "paradigm", "synergy", "stakeholder",
-    "i'd be happy to", "as an ai", "please note that",
+    "revolutionize", "groundbreaking", "cutting-edge", "seamlessly",
+    "robust", "paradigm", "synergy", "i'd be happy to", "as an ai",
 ]
-
-# ── OpenRouter key ─────────────────────────────────────────────────────────
-def load_or_key():
-    try:
-        for line in open("/root/.env"):
-            if "OPENROUTER_API_KEY=" in line:
-                val = line.split("=", 1)[1].strip()
-                # deduplicate if key was accidentally doubled in the file
-                parts = [p for p in val.split("sk-or-v1-") if p]
-                return "sk-or-v1-" + parts[0] if parts else val
-    except Exception:
-        pass
-    return os.environ.get("OPENROUTER_API_KEY", "")
-
-OR_KEY = load_or_key()
 
 # ── Helpers ────────────────────────────────────────────────────────────────
 def tg(msg):
     try:
-        requests.post(
-            f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
-            json={"chat_id": TG_CHAT, "text": msg[:4000]}, timeout=10,
-        )
+        requests.post(f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
+                      json={"chat_id": TG_CHAT, "text": msg[:4000]}, timeout=10)
     except Exception:
         pass
 
@@ -69,7 +74,7 @@ def save_progress(p):
     with open(PROGRESS_FILE, "w") as f:
         json.dump(p, f)
 
-def remove_ai_residue(text):
+def clean(text):
     for phrase in AI_RESIDUE:
         text = re.sub(re.escape(phrase), "", text, flags=re.IGNORECASE)
     return re.sub(r"  +", " ", text).strip()
@@ -82,20 +87,19 @@ def get_brand(product):
     known = {
         "cosrx": "COSRX", "laneige": "Laneige", "innisfree": "Innisfree",
         "some by mi": "Some By Mi", "tonymoly": "TonyMoly", "etude": "Etude House",
-        "missha": "Missha", "the face shop": "The Face Shop", "skinfood": "Skinfood",
-        "cerave": "CeraVe", "neutrogena": "Neutrogena", "bioderma": "Bioderma",
-        "rohto": "Rohto Mentholatum", "biore": "Biore", "shiseido": "Shiseido",
-        "hada labo": "Hada Labo", "paula's choice": "Paula's Choice",
-        "beauty of joseon": "Beauty of Joseon", "round lab": "Round Lab",
-        "anua": "Anua", "iunik": "iUNIK", "klairs": "Klairs",
-        "torriden": "Torriden", "skin1004": "Skin1004", "isntree": "Isntree",
-        "numbuzin": "Numbuzin", "ma:nyo": "Ma:nyo", "dr.jart": "Dr.Jart+",
-        "mediheal": "Mediheal", "heimish": "Heimish", "tiam": "Tiam",
-        "mixsoon": "MIXSOON", "aplb": "APLB", "acwell": "Acwell",
+        "missha": "Missha", "cerave": "CeraVe", "neutrogena": "Neutrogena",
+        "bioderma": "Bioderma", "rohto": "Rohto Mentholatum", "biore": "Biore",
+        "shiseido": "Shiseido", "hada labo": "Hada Labo",
+        "paula's choice": "Paula's Choice", "beauty of joseon": "Beauty of Joseon",
+        "round lab": "Round Lab", "anua": "Anua", "iunik": "iUNIK",
+        "klairs": "Klairs", "torriden": "Torriden", "skin1004": "Skin1004",
+        "isntree": "Isntree", "numbuzin": "Numbuzin", "ma:nyo": "Ma:nyo",
+        "dr.jart": "Dr.Jart+", "mediheal": "Mediheal", "heimish": "Heimish",
+        "tiam": "Tiam", "mixsoon": "MIXSOON", "aplb": "APLB", "acwell": "Acwell",
         "axis-y": "Axis-Y", "the ordinary": "The Ordinary", "cetaphil": "Cetaphil",
         "nivea": "Nivea", "izeze": "IZEZE", "zeze": "ZEZE",
         "sungboon editor": "Sungboon Editor", "i'm from": "I'M FROM",
-        "mixsoon": "MIXSOON", "ryo": "RYO", "iunik": "iUNIK",
+        "ryo": "RYO", "some by mi": "Some By Mi",
     }
     for key, val in known.items():
         if key in name:
@@ -104,7 +108,7 @@ def get_brand(product):
 
 def get_origin(brand):
     b = brand.lower()
-    if any(x in b for x in ["rohto", "mentholatum", "biore", "shiseido", "hada labo", "fancl", "curel", "ryo"]):
+    if any(x in b for x in ["rohto", "mentholatum", "biore", "shiseido", "hada labo", "ryo", "fancl"]):
         return "Japan"
     if any(x in b for x in ["cerave", "neutrogena", "paula's choice", "the ordinary", "cetaphil", "nivea"]):
         return "USA"
@@ -126,141 +130,120 @@ def extract_specs(product):
         specs["pa"] = f"PA{pa.group(1)}"
     return specs
 
-# ── AI calls ───────────────────────────────────────────────────────────────
-def ai_call(prompt, model, max_tokens, temp):
-    headers = {
-        "Authorization": f"Bearer {OR_KEY}",
-        "Content-Type": "application/json",
-    }
+# ── AI call ────────────────────────────────────────────────────────────────
+def groq_call(prompt, model, max_tokens, temp):
+    headers = {"Authorization": f"Bearer {GROQ_KEY}", "Content-Type": "application/json"}
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
         "max_tokens": max_tokens,
         "temperature": temp,
-        "frequency_penalty": 0.5,
     }
     for attempt in range(3):
         try:
-            r = requests.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers=headers, json=payload, timeout=90,
-            )
+            r = requests.post(GROQ_URL, headers=headers, json=payload, timeout=90)
             r.raise_for_status()
             return r.json()["choices"][0]["message"]["content"].strip()
         except Exception as e:
             if attempt < 2:
-                time.sleep(5 * (attempt + 1))
+                time.sleep(6 * (attempt + 1))
             else:
                 raise
 
-def generate_description(product):
+# ── Content generation (single JSON call) ─────────────────────────────────
+def generate_all_content(product):
     name    = product.get("name", "")
     brand   = get_brand(product)
     origin  = get_origin(brand)
     cats    = ", ".join(c["name"] for c in product.get("categories", []))
     specs   = extract_specs(product)
-    price   = product.get("price", "")
     spec_str = ", ".join(f"{k}: {v}" for k, v in specs.items()) or "N/A"
+    price   = product.get("price", "")
+    vol     = specs.get("volume", "")
+    spf     = specs.get("spf", "")
 
-    prompt = f"""You are a skincare expert writing product descriptions for Emart (e-mart.com.bd), Bangladesh's #1 authentic K-beauty & international beauty store.
+    prompt = f"""You are writing product content for Emart (e-mart.com.bd), Bangladesh's #1 authentic K-beauty & international beauty store.
 
-Write a detailed product description in **English only**, HTML tags only (h3, p). No markdown, no preamble.
+Generate complete product content. Return ONLY valid JSON — no markdown, no explanation, no code block.
 
 Product: {name}
 Brand: {brand or "Unknown"}
 Origin: {origin}
 Categories: {cats}
 Specs: {spec_str}
-Price: ৳{price}
+Price (BDT): {price}
 
-Requirements:
-- 400–500 words
-- 3–4 h3 sections: What is it, Key Benefits & Ingredients, How to Use, Why Buy from Emart
-- Must mention: "100% authentic {origin} import", "Emart verified", "Dhaka 1-2 day delivery", "Cash on Delivery available"
-- Mention specific ingredients or proven benefits based on the product name and category
-- Include skin type suitability if inferable from the product name
-- Warm and helpful tone — helpful for a Bangladesh shopper deciding to buy
-- No AI filler phrases (certainly, absolutely, game-changer, revolutionize, etc.)
-- Output HTML only — h3 and p tags, nothing else"""
+Return this exact JSON structure:
+{{
+  "description": "400-500 word HTML product description. Use h3 and p tags only. 3-4 sections: What is it, Key Benefits & Ingredients, How to Use, Why Buy from Emart. Must mention: 100% authentic {origin} import, Emart verified, Dhaka 1-2 day delivery, Cash on Delivery available. English only. No Bengali. Helpful and warm tone.",
+  "ingredients": "HTML list of main active ingredients with one-line benefit for each. Use ul and li tags. If exact ingredients unknown, list typical key ingredients for this product type based on its name and category. Keep concise.",
+  "how_to_use": "HTML numbered steps (ol and li tags) for using this product. 4-6 practical steps. Based on product type.",
+  "short_desc": "2 plain-text sentences. First: Buy [name] in Bangladesh from Emart. 100% authentic {origin} import. Second: mention a key benefit + Dhaka delivery + COD. No Bengali characters.",
+  "tags": ["tag1", "tag2", "tag3", "tag4"],
+  "seo_title": "max 60 chars, brand + product short name + Bangladesh",
+  "seo_desc": "155-160 chars exactly. Include brand, key benefit, price if known, COD, authentic. End with CTA.",
+  "focus_keyword": "buying-intent long-tail keyword like buy [product] Bangladesh price"
+}}
 
-    return remove_ai_residue(ai_call(prompt, MODEL_DESC, 2000, 0.9))
+For tags: 4 SEO buying-intent tags relevant to this product. Examples: "Korean Sunscreen Bangladesh", "Buy {brand} Bangladesh", "Authentic Skincare BD".
+Output JSON only."""
 
-def generate_short_description(product):
-    brand   = get_brand(product)
-    origin  = get_origin(brand)
-    specs   = extract_specs(product)
-    cats    = product.get("categories", [])
-    cat_name = cats[0]["name"] if cats else "Skincare"
-    price   = product.get("price", "")
-    vol     = specs.get("volume", "")
+    raw = groq_call(prompt, MODEL_MAIN, 2500, 0.7)
 
-    rows = [
-        f"<li><strong>Brand:</strong> {brand}</li>" if brand else "",
-        f"<li><strong>Category:</strong> {cat_name}</li>",
-        f"<li><strong>Size:</strong> {vol}</li>" if vol else "",
-        f"<li><strong>Origin:</strong> {origin}</li>",
-        f"<li><strong>Price:</strong> ৳{price}</li>" if price else "",
-        "<li><strong>Delivery:</strong> Dhaka 1–2 days | Nationwide 3–5 days</li>",
-        "<li><strong>Payment:</strong> COD | bKash | Nagad</li>",
-        "<li><strong>Authenticity:</strong> 100% authentic — verified by Emart</li>",
-    ]
-    return "<ul>" + "".join(r for r in rows if r) + "</ul>"
+    # Extract JSON block
+    m = re.search(r"\{[\s\S]*\}", raw)
+    if not m:
+        raise ValueError(f"No JSON in response: {raw[:200]}")
 
-def generate_rank_math_meta(product):
-    name  = product.get("name", "")
-    brand = get_brand(product)
-    price = product.get("price", "")
-    specs = extract_specs(product)
-    vol   = specs.get("volume", "")
+    data = json.loads(m.group())
 
-    prompt = f"""Generate SEO meta for a Bangladesh beauty product page. Return valid JSON only — no markdown, no explanation.
+    # Clean AI residue from text fields
+    for key in ("description", "ingredients", "how_to_use"):
+        if key in data and isinstance(data[key], str):
+            data[key] = clean(data[key])
 
-Product: {name}
-Brand: {brand}
-Price: ৳{price}
-Volume: {vol}
+    # Ensure short_desc has no Bengali chars (would be filtered by frontend)
+    short = data.get("short_desc", "")
+    short = re.sub(r"[ঀ-৿৳]", "", short).strip()
+    if not short:
+        short = f"Buy {name} in Bangladesh from Emart. 100% authentic {origin} import, Dhaka 1-2 day delivery, COD available."
+    data["short_desc"] = short
 
-JSON format exactly:
-{{"title": "...", "description": "...", "focus_keyword": "..."}}
+    # Validate tags
+    tags = data.get("tags", [])
+    if not isinstance(tags, list):
+        tags = []
+    data["tags"] = [str(t).strip() for t in tags if t][:4]
 
-Rules:
-- title: max 60 chars, include brand + short product name + "Bangladesh"
-- description: 150–160 chars, include price, brand, CTA (Order now / COD available), mention authentic
-- focus_keyword: buying-intent long-tail, e.g. "buy {name[:35].lower()} bangladesh price"
-- Output JSON only, nothing else"""
+    # Fallback SEO fields
+    if not data.get("seo_title"):
+        data["seo_title"] = f"{name[:45]} — Price in Bangladesh"[:60]
+    if not data.get("seo_desc"):
+        data["seo_desc"] = f"Buy {name[:60]} in Bangladesh. 100% authentic. Dhaka 1-2 day delivery. COD available."[:160]
+    if not data.get("focus_keyword"):
+        data["focus_keyword"] = f"buy {name[:35].lower()} bangladesh"
 
-    raw = ai_call(prompt, MODEL_META, 300, 0.2)
-    m = re.search(r"\{.*\}", raw, re.DOTALL)
-    if m:
-        try:
-            return json.loads(m.group())
-        except Exception:
-            pass
-    # Fallback
-    title = f"{name[:50]} — Price in Bangladesh"
-    desc  = f"Buy {name[:70]} in Bangladesh from Emart. 100% authentic. Dhaka 1-2 day delivery. COD available."
-    return {
-        "title": title[:60],
-        "description": desc[:160],
-        "focus_keyword": f"buy {name[:35].lower()} bangladesh",
-    }
+    return data
 
 # ── WC update ──────────────────────────────────────────────────────────────
-def update_product(pid, description, short_desc, meta):
+def update_product(pid, data):
+    tags_payload = [{"name": t} for t in data.get("tags", [])]
+
     payload = {
-        "description": description,
-        "short_description": short_desc,
+        "description":       data["description"],
+        "short_description": f"<p>{data['short_desc']}</p>",
+        "tags":              tags_payload,
         "meta_data": [
-            {"key": "_rank_math_title",         "value": meta["title"]},
-            {"key": "_rank_math_description",   "value": meta["description"]},
-            {"key": "_rank_math_focus_keyword", "value": meta["focus_keyword"]},
+            {"key": "_emart_ingredients",        "value": data.get("ingredients", "")},
+            {"key": "_emart_how_to_use",         "value": data.get("how_to_use", "")},
+            {"key": "_rank_math_title",          "value": data.get("seo_title", "")},
+            {"key": "_rank_math_description",    "value": data.get("seo_desc", "")},
+            {"key": "_rank_math_focus_keyword",  "value": data.get("focus_keyword", "")},
         ],
     }
-    r = requests.put(
-        f"{WC_URL}/wp-json/wc/v3/products/{pid}",
-        json=payload, auth=auth, timeout=30,
-    )
-    return r.ok
+    r = requests.put(f"{WC_URL}/wp-json/wc/v3/products/{pid}",
+                     json=payload, auth=auth, timeout=30)
+    return r.ok, r.status_code
 
 # ── Fetch targets ──────────────────────────────────────────────────────────
 def fetch_target_products():
@@ -268,11 +251,10 @@ def fetch_target_products():
     products = []
     page = 1
     while True:
-        r = requests.get(
-            f"{WC_URL}/wp-json/wc/v3/products",
-            params={"after": after, "status": "publish", "per_page": 100, "page": page},
-            auth=auth, timeout=30,
-        )
+        r = requests.get(f"{WC_URL}/wp-json/wc/v3/products",
+                         params={"after": after, "status": "publish",
+                                 "per_page": 100, "page": page},
+                         auth=auth, timeout=30)
         if not r.ok:
             print(f"API error page {page}: {r.status_code}")
             break
@@ -291,21 +273,17 @@ def fetch_target_products():
 
 # ── Main ───────────────────────────────────────────────────────────────────
 def main():
-    print(f"OpenRouter key: {'✓ set' if OR_KEY else '✗ MISSING — check /root/.env'}")
-    if not OR_KEY:
-        return
-
     print("Fetching target products (last 7 days, empty description)...")
     products = fetch_target_products()
-    print(f"Found {len(products)} products needing descriptions")
+    print(f"Found {len(products)} products needing content")
 
-    progress  = load_progress()
-    done_ids  = set(progress["done_ids"])
+    progress   = load_progress()
+    done_ids   = set(progress["done_ids"])
     failed_ids = set(progress["failed_ids"])
 
     targets = [p for p in products if p["id"] not in done_ids]
     print(f"To process: {len(targets)}  |  Already done: {len(done_ids)}")
-    tg(f"🚀 generate-missing-descriptions started\n{len(targets)} products to process")
+    tg(f"🚀 generate-missing-descriptions v2 started\n{len(targets)} products to process\nModel: {MODEL_MAIN}")
 
     for i, product in enumerate(targets, 1):
         pid  = product["id"]
@@ -313,26 +291,30 @@ def main():
         print(f"\n[{i}/{len(targets)}] #{pid} — {name[:70]}")
 
         try:
-            desc       = generate_description(product)
-            time.sleep(4)
-            short_desc = generate_short_description(product)
-            meta       = generate_rank_math_meta(product)
-            time.sleep(4)
+            data = generate_all_content(product)
+            time.sleep(3)
 
-            ok = update_product(pid, desc, short_desc, meta)
+            ok, status = update_product(pid, data)
             if ok:
                 done_ids.add(pid)
                 progress["done_ids"] = list(done_ids)
                 save_progress(progress)
-                print(f"  ✓ {meta['title'][:60]}")
+                print(f"  ✓ {data['seo_title'][:60]}")
+                print(f"    tags: {data['tags']}")
                 if i % 10 == 0:
                     tg(f"✅ {i}/{len(targets)} done\nLast: {name[:60]}")
             else:
                 failed_ids.add(pid)
                 progress["failed_ids"] = list(failed_ids)
                 save_progress(progress)
-                print(f"  ✗ WC API update failed")
+                print(f"  ✗ WC API {status}")
 
+        except json.JSONDecodeError as e:
+            print(f"  ✗ JSON parse error: {e}")
+            failed_ids.add(pid)
+            progress["failed_ids"] = list(failed_ids)
+            save_progress(progress)
+            time.sleep(5)
         except Exception as e:
             print(f"  ✗ Error: {e}")
             failed_ids.add(pid)
@@ -340,11 +322,11 @@ def main():
             save_progress(progress)
             time.sleep(5)
 
-        time.sleep(5)
+        time.sleep(4)
 
     summary = f"🎉 Done! {len(done_ids)} updated, {len(failed_ids)} failed."
     if failed_ids:
-        summary += f"\nFailed IDs: {sorted(failed_ids)}"
+        summary += f"\nFailed IDs: {sorted(failed_ids)[:20]}"
     tg(summary)
     print(f"\n{summary}")
 
