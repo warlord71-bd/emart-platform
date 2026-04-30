@@ -204,7 +204,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const originHref = madeIn ? `/origins?country=${encodeURIComponent(getOriginCountrySlug(madeIn))}` : '/origins';
 
   return (
-    <div className="space-y-4 md:space-y-6">
+    <div className="w-full max-w-[calc(100vw-2rem)] min-w-0 space-y-4 md:max-w-full md:space-y-6">
       {/* 3 Compact Badges - Brand | Made In | Size */}
       <div className="flex flex-wrap gap-2">
         {showBrandChip && (
@@ -229,7 +229,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       </div>
 
       {/* Product Title - H1 */}
-      <h1 className="text-2xl md:text-3xl font-serif font-bold text-lumiere-text-primary">
+      <h1 className="w-full max-w-[20ch] whitespace-normal break-words text-2xl font-serif font-bold leading-tight text-lumiere-text-primary [overflow-wrap:anywhere] sm:max-w-none md:text-3xl">
         {product.name}
       </h1>
 
