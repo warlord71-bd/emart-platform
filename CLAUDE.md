@@ -93,7 +93,42 @@ Header hygiene:
 - Do not blindly strip headers from required internal API calls.
 - Do not break Woo/API/cart/checkout/payment/order/auth/webhook flows.
 
-## 5. Required Agent Execution Order for SEO Work
+## 5. Token Efficiency Protocol for AI Agents
+
+Use tokens like an engineer, not like a crawler.
+
+Default workflow:
+
+1. Read `CLAUDE.md`, then only the relevant sections of `SEO_TODO.md` and `BRAND_GUIDE.md`.
+2. Start from the latest confirmed gaps in `SEO_TODO.md` before doing a broad audit.
+3. Search targeted symbols, routes, and files first; avoid whole-repo dumps.
+4. Prefer `rg`/code search for exact terms such as `canonical`, `generateMetadata`, `sitemap`, `per_page`, `shop_view`, `brand`, `robots`, `notFound`, `middleware`, `NEXT_PUBLIC_SITE_URL`.
+5. Open only the files needed for the current task.
+6. Summarize findings in short bullet points before editing.
+7. Make small, isolated edits that match the confirmed gap.
+8. Do not rewrite working systems to satisfy a checklist.
+9. Do not repeat long policy text in final answers; cite the file and summarize what changed.
+10. If a task is already implemented correctly, mark it as `already compliant` and do not modify it.
+
+High-signal search targets for SEO work:
+
+- `apps/web/app/sitemap.ts`
+- `apps/web/app/robots.ts`
+- `apps/web/middleware.ts`
+- `apps/web/next.config.*`
+- dynamic product route under `apps/web/app/shop/`
+- dynamic category route under `apps/web/app/category/`
+- dynamic brand route under `apps/web/app/brands/`
+- shared SEO utilities under `apps/web/lib/`, `apps/web/utils/`, or `apps/web/components/`
+
+Output discipline:
+
+- Report only files changed, tests run, and unresolved risks.
+- Keep reports concise but complete.
+- Avoid speculative rewrites, visual redesigns, or backend changes unless explicitly requested.
+- Ask for approval before broad UI/UX changes or any backend/database mutation.
+
+## 6. Required Agent Execution Order for SEO Work
 
 When implementing SEO work, follow this order:
 
@@ -106,7 +141,7 @@ When implementing SEO work, follow this order:
 7. Build/test.
 8. Follow the deployment order below.
 
-## 6. Current Layout
+## 7. Current Layout
 
 - Local working tree: `/root/emart-platform`
 - Live runtime tree: `/var/www/emart-platform`
@@ -115,14 +150,14 @@ When implementing SEO work, follow this order:
 - Canonical repo: GitHub remote `origin`, branch `main`
 - Current rule: Local -> VPS -> Repo, with Repo push last after live smoke test
 
-## 7. Source Of Truth
+## 8. Source Of Truth
 
 - The running site is served from `/var/www/emart-platform/apps/web`.
 - Do not restore old files from GitHub or Local over VPS without comparing first.
 - Keep the current live UI/UX unless the user explicitly asks to change it.
 - Before any deploy/restart, confirm the VPS tree is the intended source.
 
-## 8. Required Deploy Order
+## 9. Required Deploy Order
 
 This project follows the universal VPS deployment law in `/root/CLAUDE.md`. Read that file first when working on the VPS.
 
@@ -139,7 +174,7 @@ Use the verify-then-publish order:
 
 If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing.
 
-## 9. E-Mart Project Facts
+## 10. E-Mart Project Facts
 
 - Bangladesh eCommerce site for authentic K-beauty, J-beauty, and international beauty products.
 - Frontend: Next.js 14+, TypeScript, Tailwind CSS.
@@ -148,7 +183,7 @@ If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing
 - Payments: Cash on Delivery, bKash, Nagad.
 - Main audience: mobile-first Bangladesh shoppers.
 
-## 10. Live Business Rules
+## 11. Live Business Rules
 
 - Footer `SignupTabs` is the canonical WhatsApp + email signup block.
 - Newsletter path: Next `/api/newsletter/subscribe` -> WordPress `/wp-json/emart/v1/subscribe` -> MailPoet.
@@ -157,7 +192,7 @@ If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing
 - MailPoet is the live transactional sender path. Do not reinstall or switch SMTP unless asked.
 - Telegram command helper exists, but do not enable a second polling service on the same bot token while OpenClaw is polling.
 
-## 11. General Safety Rules
+## 12. General Safety Rules
 
 - Never commit secrets. Keep `.env.local` local to the VPS/runtime.
 - Never run blind `git add -A` on a dirty runtime tree unless `.gitignore` is checked and the staged list is reviewed.
@@ -166,14 +201,14 @@ If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing
 - Never restart `emartweb` from unknown source state.
 - For cleanup, move files to `/root/.attic-YYYY-MM-DD/` instead of deleting unless the user explicitly asks for permanent deletion.
 
-## 12. Useful Current Memory
+## 13. Useful Current Memory
 
 - Universal deploy instructions: `/root/CLAUDE.md` and `/root/AGENTS.md`.
 - E-Mart session log: `/var/www/emart-platform/apps/web/SESSION-LOG.md`.
 - E-Mart task/source notes, when present: `/var/www/emart-platform/apps/web/TASKS.md`, `MEMORY.md`, and `LIVE-SOURCE-OF-TRUTH.md`.
 - Cleanup restore point from 2026-04-26: `/root/.attic-2026-04-26/`.
 
-## 13. What Not To Trust
+## 14. What Not To Trust
 
 - Old project agent files mentioning `AGENTS.coding.md`, `AGENTS.design.md`, or `AGENTS.seo.md`; those were retired to reduce complexity.
 - Old docs that say to push before live verification.
