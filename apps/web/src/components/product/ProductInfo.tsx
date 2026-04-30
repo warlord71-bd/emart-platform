@@ -200,7 +200,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const madeIn = getAttributeValue('made in') || getAttributeValue('country') || getAttributeValue('origin') || 'South Korea';
   const size = getAttributeValue('size') || getAttributeValue('volume') || '75ml';
   const categoryName = getDisplayCategory(product);
-  const brandHref = brandName ? `/brands?brand=${encodeURIComponent(brandSlug)}` : '/brands';
+  const brandHref = brandName ? `/brands/${encodeURIComponent(brandSlug)}` : '/brands';
   const originHref = madeIn ? `/origins?country=${encodeURIComponent(getOriginCountrySlug(madeIn))}` : '/origins';
 
   return (

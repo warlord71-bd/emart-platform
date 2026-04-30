@@ -179,7 +179,7 @@ export default async function BrandsPage({
                 const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
                 return (
                   <Link key={brand.slug}
-                    href={`/shop?brand=${encodeURIComponent(brand.slug)}`}
+                    href={`/brands/${encodeURIComponent(brand.slug)}`}
                     className="group flex flex-col items-center gap-2 rounded-xl border border-hairline bg-card p-3 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-card">
                     <div className="relative h-12 w-full">
                       {logo ? (
@@ -209,7 +209,7 @@ export default async function BrandsPage({
           <p className="mb-4 text-sm text-muted">Available brands curated for Bangladesh</p>
           <Link href="/shop"
             className="inline-block rounded-xl bg-ink px-8 py-3 font-semibold text-white transition-colors hover:bg-black">
-            Shop All Products →
+            Shop All Products
           </Link>
         </div>
       </div>

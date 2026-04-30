@@ -6,13 +6,6 @@ type: project
 
 ## Deferred by user
 
-**Social card thumbnails (homepage)**
-Homepage SocialChannelGrid shows mismatched placeholder images for TikTok, Facebook, Instagram cards. User said "do it later". Fix: replace `cosrx-sunscreen.jpg` (TikTok) and `hair-care.jpg` (Facebook) with on-brand images or real thumbnails.
-**File:** `apps/web/src/components/home/SocialChannelGrid.tsx`
-
-**`/brands/[slug]` individual brand pages**
-Brand link on product page uses `/brands?brand=slug` (query param, canonical strips it to `/brands`). Task 2.2 from SEO brief asked for `/brands/[slug]` route. No route exists yet. Requires new `app/brands/[slug]/page.tsx` that fetches brand products and has proper canonical.
-
 **Cloudflare cache rules**
 Infrastructure-level — must be done in Cloudflare dashboard, not code. Rules needed:
 - `/_next/static/*` → Cache Everything, 1 month TTL
@@ -38,3 +31,5 @@ Infrastructure-level — must be done in Cloudflare dashboard, not code. Rules n
 - priceValidUntil in JSON-LD, Skin Type/Concern in head metadata
 - WordPress backend robots.txt (Disallow: /)
 - Codex SEO audit verified: canonical URLs, category/brand pages, sitemap clean
+- Homepage social card thumbnails replaced for TikTok/Facebook/Instagram with platform-branded cards
+- `/brands/[slug]` route added with product grid, canonical metadata, brand links, and sitemap entries

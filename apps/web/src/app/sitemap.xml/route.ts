@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache';
-import { getCategories, getProducts, type WooCategory, type WooProduct } from '@/lib/woocommerce';
+import { getBrands, getCategories, getProducts, type WooBrand, type WooCategory, type WooProduct } from '@/lib/woocommerce';
 import {
   getGraphQLSitemapData,
   isWordPressGraphQLConfigured,
@@ -65,11 +65,13 @@ async function createSitemapXml(): Promise<string> {
   const data = await getSitemapData();
   const products = dedupeBySlug(data.products);
   const categories = dedupeBySlug(data.categories);
+  const brands = dedupeBySlug(data.brands);
 
   const entries = [
     ...staticPages.map((page) => renderUrlEntry({ loc: `${BASE_URL}${page}`, changefreq: page === '' ? 'daily' : 'weekly', priority: page === '' ? 1 : 0.8 })),
     ...products.map(renderProductEntry),
     ...categories.map(renderCategoryEntry),
+    ...brands.map(renderBrandEntry),
   ];
 
   return [
@@ -83,6 +85,7 @@ async function createSitemapXml(): Promise<string> {
 async function getSitemapData(): Promise<{
   products: SitemapProduct[];
   categories: SitemapCategory[];
+  brands: WooBrand[];
 }> {
   if (GRAPHQL_SITEMAP_ENABLED && isWordPressGraphQLConfigured()) {
     try {
@@ -92,7 +95,10 @@ async function getSitemapData(): Promise<{
         'GraphQL sitemap timed out.'
       );
       if (data.products.length > PAGE_SIZE) {
-        return data;
+        return {
+          ...data,
+          brands: await getBrands({ orderby: 'name', order: 'asc' }).catch(() => []),
+        };
       }
 
       console.warn('GraphQL sitemap returned an empty or capped product set. Falling back to WooCommerce REST.');
@@ -101,14 +107,16 @@ async function getSitemapData(): Promise<{
     }
   }
 
-  const [products, categories] = await Promise.all([
+  const [products, categories, brands] = await Promise.all([
     getAllPublishedProducts(),
     getCategories().catch(() => []),
+    getBrands({ orderby: 'name', order: 'asc' }).catch(() => []),
   ]);
 
   return {
     products,
     categories: addCategoryLastmod(categories, products),
+    brands,
   };
 }
 
@@ -146,6 +154,14 @@ function renderCategoryEntry(category: SitemapCategory): string {
     lastmod: category.date_modified,
     changefreq: 'weekly',
     priority: 0.8,
+  });
+}
+
+function renderBrandEntry(brand: WooBrand): string {
+  return renderUrlEntry({
+    loc: `${BASE_URL}/brands/${brand.slug}`,
+    changefreq: 'weekly',
+    priority: 0.7,
   });
 }
 

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getGraphQLSitemapData, isWordPressGraphQLConfigured } from '@/lib/wordpress-graphql';
-import { getProducts, getCategories } from '@/lib/woocommerce';
+import { getProducts, getCategories, getBrands } from '@/lib/woocommerce';
 import { getWordPressPosts } from '@/lib/wordpress-posts';
 
 const BASE_URL = 'https://e-mart.com.bd';
@@ -69,14 +69,16 @@ async function getSitemapViaGraphQL(): Promise<MetadataRoute.Sitemap> {
     }));
 
   const blogEntries = await getBlogSitemapEntries();
+  const brandEntries = await getBrandSitemapEntries();
 
-  return [...STATIC_PAGES, ...categoryEntries, ...productEntries, ...blogEntries];
+  return [...STATIC_PAGES, ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
 }
 
 async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
-  const [products, categories] = await Promise.all([
+  const [products, categories, brands] = await Promise.all([
     getAllPublishedProductPosts(),
     getCategories({ per_page: 100, hide_empty: true }),
+    getBrands({ orderby: 'name', order: 'asc' }).catch(() => []),
   ]);
 
   const productEntries: MetadataRoute.Sitemap = products.map((p) => ({
@@ -96,8 +98,25 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
     }));
 
   const blogEntries = await getBlogSitemapEntries();
+  const brandEntries: MetadataRoute.Sitemap = brands.map((brand) => ({
+    url: `${BASE_URL}/brands/${brand.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
 
-  return [...STATIC_PAGES, ...categoryEntries, ...productEntries, ...blogEntries];
+  return [...STATIC_PAGES, ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
+}
+
+async function getBrandSitemapEntries(): Promise<MetadataRoute.Sitemap> {
+  const brands = await getBrands({ orderby: 'name', order: 'asc' }).catch(() => []);
+
+  return brands.map((brand) => ({
+    url: `${BASE_URL}/brands/${brand.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
 }
 
 async function getAllPublishedProductPosts(): Promise<SitemapProduct[]> {
