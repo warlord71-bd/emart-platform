@@ -621,50 +621,48 @@ export function CustomerVoiceSection() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-4 lg:grid-cols-3">
-          {UGC_REELS.map((item) => (
-            <article
-              key={item.href}
-              className="overflow-hidden rounded-lg border border-hairline bg-ink text-white shadow-card"
-            >
-              <div className="flex items-center justify-end px-5 pt-5">
-                <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white/80">
-                  {item.platform}
+        {/* Social channels CTA */}
+        <div className="mt-8 overflow-hidden rounded-xl border border-hairline bg-ink text-white shadow-card">
+          <div className="grid gap-0 lg:grid-cols-[1fr_auto]">
+            <div className="p-6 lg:p-8">
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent-soft">Watch &amp; Follow</p>
+              <h3 className="mt-2 text-2xl font-extrabold">See routines in action</h3>
+              <p className="mt-3 max-w-md text-sm leading-7 text-white/70">
+                Unboxings, skincare tutorials, texture demos, and honest reviews — all on YouTube, TikTok, and Instagram. Watch everything without leaving Emart.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/social"
+                  className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-accent/90"
+                >
+                  <PlayCircle className="h-4 w-4" />
+                  Watch on Emart
+                </Link>
+                <div className="flex items-center gap-2">
+                  {[
+                    { href: 'https://youtube.com/@emartbd', label: 'YT', bg: 'bg-[#FF0000]' },
+                    { href: 'https://www.tiktok.com/@emart_bdofficial', label: 'TT', bg: 'bg-white/10' },
+                    { href: 'https://www.instagram.com/emartbd', label: 'IG', bg: 'bg-gradient-to-br from-[#f09433] to-[#dc2743]' },
+                  ].map((s) => (
+                    <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer"
+                      className={`flex h-9 w-9 items-center justify-center rounded-full text-[10px] font-extrabold text-white ${s.bg}`}>
+                      {s.label}
+                    </a>
+                  ))}
                 </div>
               </div>
-              <div className="px-5 pb-5 pt-3">
-                <div className="text-xs font-bold uppercase tracking-[0.2em] text-accent-soft">{item.eyebrow}</div>
-                <div className="mt-2 text-lg font-bold leading-tight">{item.label}</div>
-                <div className="mt-2 text-sm leading-6 text-white/75">{item.note}</div>
-              </div>
-
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block px-5 pb-5"
-              >
-                <div className="relative overflow-hidden rounded-lg border border-white/10">
-                  <div className="aspect-[9/16] relative">
-                    <Image
-                      src={item.image || '/images/home-categories/viral-kbeauty.jpg'}
-                      alt={item.label}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                      className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-4">
-                      <div className="flex items-center gap-2 text-sm font-bold text-white">
-                        <PlayCircle className="h-5 w-5" />
-                        <span>Open official {item.platform}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </article>
-          ))}
+            </div>
+            <div className="relative hidden aspect-[9/14] w-[180px] lg:block">
+              <Image
+                src="/images/home-categories/viral-kbeauty.jpg"
+                alt="K-beauty skincare content on Emart social channels"
+                fill
+                sizes="180px"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/40 to-transparent" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
