@@ -82,10 +82,14 @@ Official brand names:
    - Useful legacy URLs should 301 redirect to matching clean frontend routes.
    - Thin archive/tag URLs should noindex or redirect to a relevant frontend route.
 
-5. Header hygiene:
+5. Header hygiene, not aggressive stripping:
    - If Next.js proxies Woo/WordPress responses, do not forward backend discovery or backend technology headers to public frontend HTML pages.
-   - Do not break required internal API calls.
-   - If these headers only exist on private backend/API responses, document as no action needed.
+   - Check public frontend HTML responses for backend-specific headers such as `X-Powered-By: PHP`, `X-Powered-By: WordPress`, and `Link: <.../wp-json/...>; rel="https://api.w.org/"`.
+   - Public SEO pages should not expose WordPress discovery headers or backend technology headers.
+   - Do not blindly strip headers from all API calls.
+   - Do not break required internal Woo/WordPress API calls, caching, authentication, webhooks, checkout, cart, payment, or order flows.
+   - If these headers only exist on private backend/API responses and are not present on public frontend HTML pages, document as no action needed.
+   - Prefer fixing leaks in the Next.js server, middleware, proxy, or hosting header layer, not by making WordPress public as an SEO surface.
 
 6. Cache/revalidation:
    - Brand/category counts should not stay stale after product updates.
