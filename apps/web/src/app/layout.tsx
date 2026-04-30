@@ -7,7 +7,7 @@ import CartDrawer from '@/components/cart/CartDrawer';
 import { Toaster } from 'react-hot-toast';
 import Providers from './providers';
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { DM_Sans, JetBrains_Mono, Playfair_Display } from 'next/font/google';
+import { DM_Sans, Hind_Siliguri, JetBrains_Mono, Playfair_Display } from 'next/font/google';
 import { COMPANY } from '@/lib/companyProfile';
 
 const GOOGLE_TAG_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID || 'G-WMJNX87Q2N';
@@ -23,6 +23,13 @@ const dmSans = DM_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-body-loaded',
+  display: 'swap',
+});
+
+const hindSiliguri = Hind_Siliguri({
+  subsets: ['bengali', 'latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-bengali-loaded',
   display: 'swap',
 });
 
@@ -90,7 +97,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-BD" className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable}`}>
+    <html lang="en-BD" className={`${playfair.variable} ${dmSans.variable} ${hindSiliguri.variable} ${jetbrains.variable}`}>
       <head>
         {/* OnlineStore + Organization Schema */}
         <script

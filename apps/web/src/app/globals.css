@@ -37,12 +37,12 @@
 
   /* Typography */
   --font-display: var(--font-display-loaded), "Playfair Display", Georgia, "Noto Serif Bengali", serif;
-  --font-body: var(--font-body-loaded), "DM Sans", "Hind Siliguri", system-ui, sans-serif;
+  --font-body: var(--font-body-loaded), "DM Sans", var(--font-bengali-loaded), "Hind Siliguri", system-ui, sans-serif;
   --font-mono: var(--font-mono-loaded), "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
 
   /* Compatibility aliases while legacy classes are still in use */
   --font-poppins: var(--font-body);
-  --font-bengali: "Hind Siliguri", sans-serif;
+  --font-bengali: var(--font-bengali-loaded), "Hind Siliguri", sans-serif;
   --pk: var(--color-accent);
   --pk-d: var(--color-accent-deep);
   --pk-l: var(--color-accent-soft);

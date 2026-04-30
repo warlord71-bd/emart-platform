@@ -11,7 +11,7 @@ export function YouTubeCard({ videoId, title }: { videoId: string; title: string
 
   return (
     <div className="overflow-hidden rounded-2xl shadow-card">
-      <div className="relative aspect-[9/16] w-full bg-black">
+      <div className="relative aspect-square w-full bg-black sm:aspect-[9/16]">
         {playing ? (
           <iframe
             src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
@@ -49,7 +49,7 @@ export function TikTokCard({ videoId, title }: { videoId: string; title: string 
 
   return (
     <div className="overflow-hidden rounded-2xl shadow-card">
-      <div className="relative aspect-[9/16] w-full bg-[#010101]">
+      <div className="relative aspect-square w-full bg-[#010101] sm:aspect-[9/16]">
         {playing ? (
           <iframe
             src={`https://www.tiktok.com/embed/v2/${videoId}`}
@@ -93,7 +93,7 @@ export function FacebookCard({ videoUrl, title }: { videoUrl: string; title: str
 
   return (
     <div className="overflow-hidden rounded-2xl shadow-card">
-      <div className="relative aspect-[9/16] w-full bg-[#1877F2]">
+      <div className="relative aspect-square w-full bg-[#1877F2] sm:aspect-[9/16]">
         {playing ? (
           <iframe
             src={embedSrc}
@@ -129,7 +129,7 @@ export function InstagramCard({ href, caption, thumbnail }: { href: string; capt
   return (
     <a href={href} target="_blank" rel="noopener noreferrer"
       className="group block overflow-hidden rounded-2xl shadow-card">
-      <div className="relative aspect-[9/16] w-full overflow-hidden bg-black">
+      <div className="relative aspect-square w-full overflow-hidden bg-black sm:aspect-[9/16]">
         <Image src={thumbnail} alt={caption} fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover transition-transform duration-300 group-hover:scale-[1.03]" />

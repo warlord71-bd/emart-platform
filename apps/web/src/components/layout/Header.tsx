@@ -636,13 +636,13 @@ export default function Header() {
               <div className="announcement-marquee__track h-7">
                 {[0, 1].map((item) => (
                   <div key={item} className="announcement-marquee__group h-7">
-                    <span>ফ্রি ডেলিভারি ৳3,000+</span>
+                    <span className="font-bengali">ফ্রি ডেলিভারি ৳3,000+</span>
                     <span className="text-white/35">·</span>
                     <span>COD</span>
                     <span className="text-white/35">·</span>
-                    <span>ঢাকায় পরের দিন</span>
+                    <span className="font-bengali">ঢাকায় পরের দিন</span>
                     <span className="text-white/35">·</span>
-                    <span>১০০% অথেনটিক</span>
+                    <span className="font-bengali">১০০% অথেনটিক</span>
                   </div>
                 ))}
               </div>
@@ -650,13 +650,13 @@ export default function Header() {
           </div>
 
           <div className="mx-auto hidden h-8 max-w-7xl grid-cols-[minmax(0,1fr)_minmax(260px,1.15fr)_minmax(0,1fr)] items-center gap-4 px-4 lg:grid">
-            <div className="truncate">Free delivery ৳3,000+ · ফ্রি ডেলিভারি</div>
+            <div className="truncate">Free delivery ৳3,000+ · <span className="font-bengali">ফ্রি ডেলিভারি</span></div>
             <div className="min-w-0 overflow-hidden">
               <div className="announcement-marquee" aria-label="Store announcements">
                 <div className="announcement-marquee__track">
                   {[0, 1].map((item) => (
                     <div key={item} className="announcement-marquee__group">
-                      <span>১০০% অথেনটিক · ৪০+ গ্লোবাল ব্র্যান্ড · COD</span>
+                      <span className="font-bengali">১০০% অথেনটিক · ৪০+ গ্লোবাল ব্র্যান্ড · COD</span>
                       <span className="text-white/35">·</span>
                       <span>Dhaka next-day delivery · 1-2 days</span>
                       <span className="text-white/35">·</span>

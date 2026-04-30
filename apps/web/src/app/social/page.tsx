@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/social' },
 };
 
+const videoGridClass = 'grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5';
+
 const PLATFORM_LINKS = [
   { label: 'YouTube', href: COMPANY.social.youtube, bg: 'bg-[#FF0000]', icon: <svg viewBox="0 0 24 24" className="h-4 w-4 fill-white"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg> },
   { label: 'TikTok', href: COMPANY.social.tiktok, bg: 'bg-[#010101]', icon: <svg viewBox="0 0 24 24" className="h-4 w-4 fill-white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.89a8.18 8.18 0 0 0 4.78 1.52V7a4.85 4.85 0 0 1-1.01-.31z"/></svg> },
@@ -51,20 +53,20 @@ export default async function SocialPage() {
   const youtubeVideos = await getYouTubeVideos(10);
 
   return (
-    <main className="min-h-screen bg-bg pb-16 pt-8">
-      <div className="mx-auto max-w-6xl px-4">
+    <main className="min-h-screen overflow-x-hidden bg-bg pb-32 pt-8 lg:pb-16">
+      <div className="w-full max-w-[24.375rem] px-4 sm:mx-auto sm:max-w-6xl">
 
         {/* Header */}
         <div className="mb-12 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Watch &amp; Follow</p>
           <h1 className="mt-2 text-3xl font-extrabold text-ink lg:text-4xl">Our Social Content</h1>
-          <p className="mx-auto mt-3 max-w-lg text-sm leading-7 text-gray-500">
+          <p className="mx-auto mt-3 max-w-[20rem] text-sm leading-7 text-gray-500 sm:max-w-lg">
             Tutorials, unboxings, texture demos &amp; honest reviews — watch directly without leaving Emart.
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <div className="mx-auto mt-6 grid w-full max-w-[18rem] grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:flex sm:max-w-none sm:flex-wrap sm:justify-center">
             {PLATFORM_LINKS.map((p) => (
               <a key={p.label} href={p.href} target="_blank" rel="noopener noreferrer"
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-white shadow-sm transition-opacity hover:opacity-90 ${p.bg}`}>
+                className={`inline-flex min-w-0 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-white shadow-sm transition-opacity hover:opacity-90 ${p.bg}`}>
                 {p.icon}{p.label}
               </a>
             ))}
@@ -75,7 +77,7 @@ export default async function SocialPage() {
         <section className="mb-14">
           <SectionHeader title="YouTube" color="bg-[#FF0000]"
             followHref={COMPANY.social.youtube} followLabel="Subscribe" />
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+          <div className={videoGridClass}>
             {youtubeVideos.map((v) => (
               <YouTubeCard key={v.id} videoId={v.id} title={v.title} />
             ))}
@@ -89,7 +91,7 @@ export default async function SocialPage() {
           {TIKTOK_VIDEOS.length === 0 ? (
             <EmptyPlatform platform="TikTok" href={COMPANY.social.tiktok} />
           ) : (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            <div className={videoGridClass}>
               {TIKTOK_VIDEOS.map((v) => (
                 <TikTokCard key={v.id} videoId={v.id} title={v.title} />
               ))}
@@ -104,7 +106,7 @@ export default async function SocialPage() {
           {FACEBOOK_VIDEOS.length === 0 ? (
             <EmptyPlatform platform="Facebook" href={COMPANY.social.facebook} />
           ) : (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            <div className={videoGridClass}>
               {FACEBOOK_VIDEOS.map((v) => (
                 <FacebookCard key={v.videoUrl} videoUrl={v.videoUrl} title={v.title} />
               ))}
@@ -116,7 +118,7 @@ export default async function SocialPage() {
         <section className="mb-14">
           <SectionHeader title="Instagram" color="bg-gradient-to-r from-[#f09433] to-[#dc2743]"
             followHref={COMPANY.social.instagram} followLabel="Follow" />
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+          <div className={videoGridClass}>
             {INSTAGRAM_POSTS.map((p) => (
               <InstagramCard key={p.href} href={p.href} caption={p.caption} thumbnail={p.thumbnail} />
             ))}
