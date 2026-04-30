@@ -134,3 +134,14 @@ Produce these after implementation:
 - Do not use WordPress theme SEO as the public SEO source.
 - Do not hide brands/categories until data mapping is verified.
 - Do not make destructive backend/database changes without report and approval.
+
+## UI/UX Safety Rules
+
+- SEO implementation must not cause a broad UI redesign.
+- Preserve the current visual design unless the user explicitly requests a redesign.
+- Do not change homepage layout, category discovery layout, product page layout, header, footer, mobile menu, search, filters, cart drawer, checkout, or account UX unless the SEO task strictly requires it.
+- Do not move or visually downgrade price, stock, Add to Cart, Buy Now, cart, checkout, search, or filter controls without approval.
+- Product trust badges must not push Add to Cart or Buy Now too far down on mobile.
+- Product image fallback changes must preserve fixed image dimensions to avoid layout shift.
+- Any required UI change must be minimal, documented in `files-changed-summary.md`, and tested at 360px, 390px and 430px mobile widths.
+- If a change can affect conversion or mobile UX, report the risk before making broad visual changes.
