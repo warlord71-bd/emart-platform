@@ -5,6 +5,13 @@ type RenderedValue = {
   rendered?: string;
 };
 
+type RankMathSeo = {
+  title?: string | null;
+  description?: string | null;
+  focus_keyword?: string | null;
+  canonical_url?: string | null;
+};
+
 type WordPressPostResponse = {
   id: number;
   slug: string;
@@ -14,6 +21,7 @@ type WordPressPostResponse = {
   title?: RenderedValue;
   excerpt?: RenderedValue;
   content?: RenderedValue;
+  rank_math_seo?: RankMathSeo;
 };
 
 export type BlogPostSummary = {
@@ -25,6 +33,8 @@ export type BlogPostSummary = {
   excerpt: string;
   date: string;
   modified: string;
+  seoTitle: string | null;
+  seoDescription: string | null;
 };
 
 export type BlogPost = BlogPostSummary & {
@@ -111,6 +121,7 @@ function toBlogPost(post: WordPressPostResponse): BlogPost {
   const slug = post.slug || String(post.id);
   const title = textFromHtml(post.title?.rendered) || 'Beauty guide';
   const excerpt = textFromHtml(post.excerpt?.rendered).slice(0, 170);
+  const rm = post.rank_math_seo;
 
   return {
     id: Number(post.id),
@@ -122,6 +133,8 @@ function toBlogPost(post: WordPressPostResponse): BlogPost {
     content: sanitizePostHtml(post.content?.rendered),
     date: post.date || new Date().toISOString(),
     modified: post.modified || post.date || new Date().toISOString(),
+    seoTitle: rm?.title?.trim() || null,
+    seoDescription: rm?.description?.trim() || null,
   };
 }
 
@@ -138,7 +151,7 @@ export async function getWordPressPosts({ perPage = 6 }: { perPage?: number } = 
     per_page: perPage,
     orderby: 'date',
     order: 'desc',
-    _fields: 'id,slug,link,title,excerpt,date,modified',
+    _fields: 'id,slug,link,title,excerpt,date,modified,rank_math_seo',
   });
 
   return posts.map(toBlogPost);
@@ -153,7 +166,7 @@ export async function getWordPressPostBySlug(slug: string): Promise<BlogPost | n
     const posts = await fetchWordPressPosts({
       slug: candidate,
       per_page: 1,
-      _fields: 'id,slug,link,title,excerpt,content,date,modified',
+      _fields: 'id,slug,link,title,excerpt,content,date,modified,rank_math_seo',
     });
 
     if (posts[0]) return toBlogPost(posts[0]);

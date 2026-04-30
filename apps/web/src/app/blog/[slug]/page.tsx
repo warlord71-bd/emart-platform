@@ -26,13 +26,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getWordPressPostBySlug(params.slug);
   if (!post) return { title: 'Guide Not Found' };
 
+  const seoTitle = post.seoTitle || `${post.title} | Emart`;
+  const seoDesc  = post.seoDescription || post.excerpt || 'Helpful skincare guide from Emart.';
+
   return {
-    title: `${post.title} | Emart`,
-    description: post.excerpt || 'Helpful skincare guide from Emart.',
+    title: seoTitle,
+    description: seoDesc,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: seoTitle,
+      description: seoDesc,
       url: `/blog/${post.slug}`,
       type: 'article',
       publishedTime: post.date,

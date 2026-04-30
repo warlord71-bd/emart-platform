@@ -18,9 +18,14 @@ interface ProductFaqItem {
   answer: string;
 }
 
+function getRankMathMeta(product: WooProduct, key: string): string | null {
+  const v = product.meta_data?.find((m) => m.key === key)?.value;
+  return v && typeof v === 'string' && v.trim().length > 5 ? v.trim() : null;
+}
+
 function getSeoDescription(product: WooProduct): string {
-  const rm = product.meta_data?.find((m) => m.key === '_rank_math_description')?.value;
-  if (rm && typeof rm === 'string' && rm.trim().length > 20) return rm.trim();
+  const rm = getRankMathMeta(product, '_rank_math_description');
+  if (rm) return rm;
   return (
     product.short_description?.replace(/<[^>]+>/g, '').trim().substring(0, 160) ||
     product.name
@@ -488,14 +493,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Product Not Found' };
   }
 
+  const rmTitle = getRankMathMeta(product, '_rank_math_title');
+  const seoDesc = getSeoDescription(product);
+  const ogImage = product.images[0]?.src || '';
+
   return {
-    title: `${product.name} — Price in Bangladesh`,
-    description: getSeoDescription(product),
-    alternates: {
-      canonical: `/shop/${product.slug}`,
-    },
+    title: rmTitle || `${product.name} — Price in Bangladesh`,
+    description: seoDesc,
+    alternates: { canonical: `/shop/${product.slug}` },
     openGraph: {
-      images: [{ url: product.images[0]?.src || '' }],
+      title: rmTitle || product.name,
+      description: seoDesc,
+      images: ogImage ? [{ url: ogImage, width: 800, height: 800 }] : undefined,
+      type: 'website',
     },
   };
 }
