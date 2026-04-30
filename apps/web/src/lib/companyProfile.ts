@@ -37,8 +37,9 @@ export const COMPANY = {
   social: {
     x: 'https://x.com/hasan_tarafder',
     facebook: 'https://www.facebook.com/emartbd.official',
-    instagram: 'https://www.instagram.com/emartbd',
-    youtube: 'https://youtube.com/@emartbd',
+    instagram: 'https://www.instagram.com/emartbd.official/',
+    youtube: 'https://www.youtube.com/@emartbd.official',
+    tiktok: 'https://www.tiktok.com/@emart_bdofficial',
     telegram: 'https://t.me/emartbd',
   },
 } as const;

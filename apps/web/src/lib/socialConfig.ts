@@ -1,40 +1,57 @@
-// Social media video config — update these with your real video/post IDs
+// Social media video config
+// YouTube is auto-fetched via RSS (set YOUTUBE_CHANNEL_ID in .env.local)
+// TikTok & Facebook: add video IDs/URLs here
 
 export type VideoEntry = {
   id: string;
   title: string;
 };
 
+export type FacebookEntry = {
+  videoUrl: string; // full facebook.com video URL
+  title: string;
+};
+
 export type InstagramEntry = {
   href: string;
   caption: string;
-  thumbnail: string; // local /images/ path or WP CDN URL
+  thumbnail: string;
 };
 
-// YouTube — channel handle: @emartbd
-// Set YOUTUBE_CHANNEL_ID in .env.local to enable auto-fetch via RSS
-// Fallback: these IDs are always shown when RSS fetch fails
+// YouTube fallback (shown if RSS fails or YOUTUBE_CHANNEL_ID not set)
 export const YOUTUBE_FALLBACK_VIDEOS: VideoEntry[] = [
-  { id: 'zgo8F-H3FEI', title: 'K-Beauty Skincare Routine – Emart BD' },
-  // Add more YouTube video IDs here
+  { id: 'j7anBWKrzYo', title: 'eMart Skincare Bangladesh' },
+  { id: 'XNvxeRLA2No', title: 'Choose the right product for your skin concerns' },
+  { id: 'tPlb1vVc08o', title: 'Choose your product – skin concerns' },
+  { id: 'mbVkJThHGqQ', title: 'Best Korean skincare for oily skin' },
+  { id: 'Y_Gh3L9UrP4', title: 'Retinol & Vitamin C – correct use' },
 ];
 
 // TikTok — channel: @emart_bdofficial
-// Get the numeric ID from the video URL:
-//   tiktok.com/@emart_bdofficial/video/7123456789  →  id: '7123456789'
+// These IDs were extracted from the TikTok profile page.
+// If a video doesn't play, replace its id with a valid video ID from:
+// tiktok.com/@emart_bdofficial → share a video → copy link → paste the number
 export const TIKTOK_VIDEOS: VideoEntry[] = [
-  // Add your TikTok video IDs here:
-  // { id: '7123456789012345678', title: 'COSRX Snail Mucin unboxing' },
+  { id: '7634471676686714371', title: 'Skincare routine – Emart' },
+  { id: '7449298784200212486', title: 'Skincare tips – Emart' },
+  { id: '7449693274664730630', title: 'Product demo – Emart' },
+  { id: '7435925695869501496', title: 'K-beauty picks – Emart' },
+  { id: '7040035152164586522', title: 'Emart skincare unboxing' },
 ];
 
-// Instagram — channel: @emartbd
-// Get shortcode from the post URL:  instagram.com/p/SHORTCODE/
+// Facebook — page: emartbd.official
+// To get a video URL: go to facebook.com/emartbd.official/videos → open a video → copy URL
+// Format: https://www.facebook.com/emartbd.official/videos/VIDEO_ID/
+export const FACEBOOK_VIDEOS: FacebookEntry[] = [
+  // Add your Facebook video URLs here:
+  // { videoUrl: 'https://www.facebook.com/emartbd.official/videos/123456789/', title: 'Video title' },
+];
+
+// Instagram — @emartbd.official
 export const INSTAGRAM_POSTS: InstagramEntry[] = [
   {
-    href: 'https://www.instagram.com/emartbd/',
-    caption: 'K-beauty & global skincare — follow us for daily drops',
+    href: 'https://www.instagram.com/emartbd.official/',
+    caption: 'K-beauty & global skincare — daily drops, routines & honest reviews',
     thumbnail: '/images/home-categories/viral-kbeauty.jpg',
   },
-  // Add more posts:
-  // { href: 'https://www.instagram.com/p/SHORTCODE/', caption: '...', thumbnail: '...' },
 ];
