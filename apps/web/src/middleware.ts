@@ -8,7 +8,7 @@ const STRIP_PARAMS = [
   'add_to_cart',
 ];
 
-export function middleware(req: NextRequest) {
+export function middleware(req: NextRequest): NextResponse | undefined {
   const url = req.nextUrl.clone();
   let stripped = false;
 
@@ -22,6 +22,8 @@ export function middleware(req: NextRequest) {
   if (stripped) {
     return NextResponse.redirect(url, { status: 301 });
   }
+
+  return undefined;
 }
 
 export const config = {
