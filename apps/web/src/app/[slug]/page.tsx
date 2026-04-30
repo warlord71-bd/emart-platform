@@ -508,23 +508,25 @@ export const revalidate = 3600;
 export const dynamicParams = true;
 
 export default async function ProductPage({ params }: Props) {
-  const product = await getProduct(params.slug);
-
-  if (!product) {
-    const post = await getWordPressPostBySlug(params.slug);
-    if (post) {
-      permanentRedirect(`/blog/${post.slug}`);
-    }
-
+  let product;
+  try {
+    product = await getProduct(params.slug);
+  } catch {
     notFound();
   }
 
-  const { products: related } = await getProducts({
-    category: product.categories[0]?.id?.toString(),
-    per_page: 4,
-    exclude: [product.id].join(','),
-  });
-  const reviews = await getProductReviews(product.id);
+  if (!product) {
+    let post = null;
+    try { post = await getWordPressPostBySlug(params.slug); } catch { /* ignore */ }
+    if (post) permanentRedirect(`/blog/${post.slug}`);
+    notFound();
+  }
+
+  const [relatedResult, reviews] = await Promise.all([
+    getProducts({ category: product.categories[0]?.id?.toString(), per_page: 4, exclude: [product.id].join(',') }).catch(() => ({ products: [] })),
+    getProductReviews(product.id).catch(() => []),
+  ]);
+  const { products: related } = relatedResult;
 
   const descriptionHtml =
     removeFaqFromHtml(product.description || '') ||
