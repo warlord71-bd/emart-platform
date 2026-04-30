@@ -16,6 +16,19 @@ Official brand names:
 
 ---
 
+## Current Confirmed Gaps From Repo Audit
+
+Codex/code audit has already found that some SEO pieces exist, but these confirmed gaps still need targeted implementation:
+
+1. Legacy query stripping exists partially but misses `per_page` and `shop_view`.
+2. Some metadata canonicals are still relative and must be converted to absolute URLs.
+3. Brand detail page titles must use the approved format: `{BrandName} Bangladesh | Authentic {BrandName} Products | Emart`.
+4. Required SEO reports still need to be generated.
+
+Implementation should stay narrow around these confirmed surfaces first. Do not start a broad redesign or backend rewrite.
+
+---
+
 ## Job 1: Next.js SEO Core
 
 1. Use official brand names only.
@@ -67,6 +80,7 @@ Official brand names:
 2. Absolute URL enforcement:
    - Define `NEXT_PUBLIC_SITE_URL=https://e-mart.com.bd`.
    - Canonicals, sitemap entries, Open Graph URLs, JSON-LD URLs and breadcrumb URLs must be absolute.
+   - Convert all remaining relative canonicals to absolute frontend URLs using `NEXT_PUBLIC_SITE_URL`.
 
 3. Status code logic:
    - Product not found from API -> `notFound()`.
@@ -75,10 +89,11 @@ Official brand names:
    - Out-of-stock product stays indexable, but Product JSON-LD availability must be `OutOfStock`.
    - In-stock product JSON-LD availability must be `InStock`.
 
-4. Legacy route redirect layer:
+4. Legacy route redirect and query cleanup layer:
    - Handle `/product-category/*`.
    - Handle `/tag/*`.
-   - Handle duplicate query parameter URLs such as add-to-cart, orderby, per_page, shop_view and srsltid.
+   - Handle duplicate query parameter URLs such as `add-to-cart`, `orderby`, `per_page`, `shop_view` and `srsltid`.
+   - If existing query stripping already handles some params, extend it to include missing `per_page` and `shop_view`.
    - Useful legacy URLs should 301 redirect to matching clean frontend routes.
    - Thin archive/tag URLs should noindex or redirect to a relevant frontend route.
 
@@ -123,6 +138,13 @@ Produce these after implementation:
 - missing-product-images.csv
 - dynamic-sitemap-report.md
 - files-changed-summary.md
+
+At minimum, for the current confirmed gaps, generate:
+
+- `seo-route-audit.md`
+- `dynamic-sitemap-report.md`
+- `files-changed-summary.md`
+- `brand-data-flow-report.md` if brand metadata/data flow is touched
 
 ---
 
