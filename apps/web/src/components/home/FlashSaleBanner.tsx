@@ -10,10 +10,10 @@ interface FlashSaleBannerProps {
 }
 
 function msUntilMidnight(): number {
-  const now = new Date();
-  const next = new Date(now);
-  next.setHours(24, 0, 0, 0);
-  return next.getTime() - now.getTime();
+  // Count down to midnight in Bangladesh Standard Time (UTC+6)
+  const bdNow = Date.now() + 6 * 3600_000;
+  const msIntoDay = bdNow % 86_400_000;
+  return 86_400_000 - msIntoDay;
 }
 
 function pad(n: number): string {
