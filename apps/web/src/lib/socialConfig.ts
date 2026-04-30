@@ -32,19 +32,19 @@ export const YOUTUBE_FALLBACK_VIDEOS: VideoEntry[] = [
 // If a video doesn't play, replace its id with a valid video ID from:
 // tiktok.com/@emart_bdofficial → share a video → copy link → paste the number
 export const TIKTOK_VIDEOS: VideoEntry[] = [
+  { id: '7633667263308107028', title: 'Emart Skincare – latest reel' },
   { id: '7634471676686714371', title: 'Skincare routine – Emart' },
   { id: '7449298784200212486', title: 'Skincare tips – Emart' },
   { id: '7449693274664730630', title: 'Product demo – Emart' },
   { id: '7435925695869501496', title: 'K-beauty picks – Emart' },
-  { id: '7040035152164586522', title: 'Emart skincare unboxing' },
 ];
 
 // Facebook — page: emartbd.official
 // To get a video URL: go to facebook.com/emartbd.official/videos → open a video → copy URL
 // Format: https://www.facebook.com/emartbd.official/videos/VIDEO_ID/
 export const FACEBOOK_VIDEOS: FacebookEntry[] = [
-  // Add your Facebook video URLs here:
-  // { videoUrl: 'https://www.facebook.com/emartbd.official/videos/123456789/', title: 'Video title' },
+  { videoUrl: 'https://www.facebook.com/reel/27258498457080592', title: 'Emart Skincare – Reel' },
+  { videoUrl: 'https://www.facebook.com/reel/3912614818870498', title: 'Emart Skincare – Reel 2' },
 ];
 
 // Instagram — @emartbd.official
