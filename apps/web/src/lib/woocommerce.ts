@@ -29,6 +29,7 @@ const wooClient = axios.create({
       consumer_key: CONSUMER_KEY,
       consumer_secret: CONSUMER_SECRET,
     },
+    headers: { Host: 'e-mart.com.bd' },
   }),
   timeout: WOO_READ_TIMEOUT_MS,
 });
