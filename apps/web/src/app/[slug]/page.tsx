@@ -59,6 +59,7 @@ function getProductJsonLd(product: WooProduct) {
       url: `https://e-mart.com.bd/shop/${product.slug}`,
       priceCurrency: 'BDT',
       price,
+      priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       availability: product.stock_status === 'instock'
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
@@ -496,16 +497,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const rmTitle = getRankMathMeta(product, '_rank_math_title');
   const seoDesc = getSeoDescription(product);
   const ogImage = product.images[0]?.src || '';
+  const skinType = getProductAttributeValue(product, /skin type/i);
+  const skinConcern = getProductAttributeValue(product, /concern/i);
+  const brandName = getProductAttributeValue(product, /brand/i);
+
+  const keywords: string[] = [
+    product.name,
+    brandName,
+    skinType && `${skinType} skin`,
+    skinConcern,
+    'Bangladesh',
+    'authentic skincare',
+  ].filter(Boolean) as string[];
 
   return {
     title: rmTitle || `${product.name} — Price in Bangladesh`,
     description: seoDesc,
+    keywords,
     alternates: { canonical: `/shop/${product.slug}` },
     openGraph: {
       title: rmTitle || product.name,
       description: seoDesc,
       images: ogImage ? [{ url: ogImage, width: 800, height: 800 }] : undefined,
       type: 'website',
+    },
+    other: {
+      ...(skinType ? { 'product:skin_type': skinType } : {}),
+      ...(skinConcern ? { 'product:skin_concern': skinConcern } : {}),
     },
   };
 }

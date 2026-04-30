@@ -21,6 +21,7 @@ const nextConfig = {
       { source: '/product-category/:slug*', destination: '/category/:slug*', permanent: true },
       { source: '/product/:slug',           destination: '/shop/:slug',      permanent: true },
       { source: '/product-tag/:slug*',      destination: '/shop',            permanent: true },
+      { source: '/tag/:slug*',              destination: '/shop',            permanent: true },
       { source: '/my-account',              destination: '/account',         permanent: true },
       { source: '/my-account/',             destination: '/account',         permanent: true },
       { source: '/my-account/:path*',       destination: '/account',         permanent: true },

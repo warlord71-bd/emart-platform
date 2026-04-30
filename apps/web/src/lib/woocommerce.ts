@@ -553,7 +553,7 @@ export async function getBrands(params: {
         count: Number(brand.count || 0),
         link: typeof brand.link === 'string' ? brand.link : undefined,
       }))
-      .filter((brand: WooBrand) => brand.id && brand.name && brand.slug && brand.count > 0)
+      .filter((brand: WooBrand) => brand.id && brand.name && brand.slug)
       .map((brand: WooBrand) => {
         const canonical = CANONICAL_BRANDS.find((item) => item.slugs.includes(brand.slug));
         return canonical ? { ...brand, name: canonical.name } : brand;
