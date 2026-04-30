@@ -6,6 +6,7 @@ import {
   getOfferCollectionProducts,
 } from '@/lib/offerCollections';
 import type { OfferCollectionSlug } from '@/lib/offerCollectionConfig';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 export const revalidate = 1800;
 
@@ -23,12 +24,12 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
     title: config.title,
     description: config.description,
     alternates: {
-      canonical: config.href,
+      canonical: absoluteUrl(config.href),
     },
     openGraph: {
       title: `${config.title} | Emart`,
       description: config.description,
-      url: config.href,
+      url: absoluteUrl(config.href),
     },
   };
 }

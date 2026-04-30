@@ -4,13 +4,14 @@ import { getYouTubeVideos } from '@/lib/youtubeRss';
 import { TIKTOK_VIDEOS, FACEBOOK_VIDEOS, INSTAGRAM_POSTS } from '@/lib/socialConfig';
 import { COMPANY } from '@/lib/companyProfile';
 import Link from 'next/link';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Watch & Follow | Emart Skincare Bangladesh',
   description: 'Watch our latest skincare tutorials, unboxings, and demos on YouTube, TikTok, Facebook, and Instagram. All playable without leaving Emart.',
-  alternates: { canonical: '/social' },
+  alternates: { canonical: absoluteUrl('/social') },
 };
 
 const videoGridClass = 'grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5';

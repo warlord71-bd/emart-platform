@@ -2,6 +2,7 @@ import { getBrandBySlug, getCategoryBySlug, getProducts, type WooProduct } from 
 import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 type Origin = {
   country: string;
@@ -168,7 +169,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { count
     title: origin ? `${origin.label} Products | Emart` : 'Shop By Origin | Emart',
     description: origin ? origin.desc : 'Shop authentic beauty products by country of origin',
     alternates: {
-      canonical: '/origins',
+      canonical: absoluteUrl('/origins'),
     },
     robots: isQueryView
       ? { index: false, follow: true }

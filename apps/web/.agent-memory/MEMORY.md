@@ -11,3 +11,4 @@
 - [SEO sitemap indexability](project_seo_sitemap_indexability.md) — robots advertises only Next `/sitemap.xml`; Rank Math sitemap URLs redirect to it at Nginx
 - [GMC + Facebook product URL fix](project_gmc_nextjs_urls.md) — mu-plugin rewrites /product/slug → /shop/slug for GLA (GMC) and FB Catalog submissions
 - [Open and deferred tasks](project_open_tasks.md) — Cloudflare cache rules remain dashboard-only; social thumbnails and `/brands/[slug]` completed live 2026-04-30
+- [Token efficiency protocol](feedback_token_efficiency.md) — keep future sessions token-lean with narrow reads, concise updates, and minimal output

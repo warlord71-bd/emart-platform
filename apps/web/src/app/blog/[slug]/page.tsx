@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getWordPressPostBySlug, getWordPressPosts } from '@/lib/wordpress-posts';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 interface Props {
   params: { slug: string };
@@ -32,11 +33,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: seoTitle,
     description: seoDesc,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: { canonical: absoluteUrl(`/blog/${post.slug}`) },
     openGraph: {
       title: seoTitle,
       description: seoDesc,
-      url: `/blog/${post.slug}`,
+      url: absoluteUrl(`/blog/${post.slug}`),
       type: 'article',
       publishedTime: post.date,
       modifiedTime: post.modified,
@@ -55,14 +56,14 @@ export default async function BlogPostPage({ params }: Props) {
     description: post.excerpt,
     datePublished: post.date,
     dateModified: post.modified,
-    mainEntityOfPage: `https://e-mart.com.bd/blog/${post.slug}`,
-    author: { '@type': 'Person', name: 'Emart Editorial Team', url: 'https://e-mart.com.bd/about-us' },
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    author: { '@type': 'Person', name: 'Emart Editorial Team', url: absoluteUrl('/about-us') },
     publisher: {
       '@type': 'Organization',
       name: 'Emart Skincare Bangladesh',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://e-mart.com.bd/logo.png',
+        url: absoluteUrl('/logo.png'),
       },
     },
   };

@@ -9,6 +9,7 @@ import Providers from './providers';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { DM_Sans, Hind_Siliguri, JetBrains_Mono, Playfair_Display } from 'next/font/google';
 import { COMPANY } from '@/lib/companyProfile';
+import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
 
 const GOOGLE_TAG_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID || 'G-WMJNX87Q2N';
 
@@ -41,13 +42,13 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://e-mart.com.bd'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Emart Skincare Bangladesh',
+    default: 'Emart Skincare Bangladesh | Authentic Korean & Global Beauty',
     template: '%s | Emart',
   },
   description:
-    "Authentic global beauty for Bangladesh. Shop original skincare, haircare, and beauty products from Emart with trusted support, careful verification, and nationwide delivery.",
+    'Shop authentic Korean, Japanese and global skincare in Bangladesh from Emart Skincare Bangladesh. Carefully curated beauty products, local support, faster delivery and trusted service.',
   keywords: [
     'K-Beauty Bangladesh',
     'Korean skincare Bangladesh',
@@ -63,11 +64,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_BD',
-    url: 'https://e-mart.com.bd',
+    url: SITE_URL,
     siteName: 'Emart Skincare Bangladesh',
     images: [
       {
-        url: 'https://e-mart.com.bd/wp-content/uploads/2026/03/logo.png',
+        url: absoluteUrl('/wp-content/uploads/2026/03/logo.png'),
         width: 600,
         height: 600,
         alt: 'Emart Skincare Bangladesh',
@@ -108,17 +109,17 @@ export default function RootLayout({
               '@graph': [
                 {
                   '@type': ['OnlineStore', 'Organization'],
-                  '@id': 'https://e-mart.com.bd/#organization',
-                  'name': 'E-mart Bangladesh',
-                  'alternateName': COMPANY.storeName,
-                  'url': 'https://e-mart.com.bd',
+                  '@id': `${SITE_URL}/#organization`,
+                  'name': COMPANY.storeName,
+                  'alternateName': COMPANY.brandName,
+                  'url': SITE_URL,
                   'logo': {
                     '@type': 'ImageObject',
-                    'url': 'https://e-mart.com.bd/wp-content/uploads/2026/03/logo.png',
+                    'url': absoluteUrl('/wp-content/uploads/2026/03/logo.png'),
                     'width': 600,
                     'height': 600,
                   },
-                  'image': 'https://e-mart.com.bd/wp-content/uploads/2026/03/logo.png',
+                  'image': absoluteUrl('/wp-content/uploads/2026/03/logo.png'),
                   'description': `${COMPANY.storeName} is an online beauty store from ${COMPANY.enterpriseName}, based in Dhaka and serving customers across Bangladesh with authentic global beauty products, careful product checks, and delivery support nationwide.`,
                   'address': {
                     '@type': 'PostalAddress',
@@ -138,7 +139,7 @@ export default function RootLayout({
                   'availableDeliveryMethod': 'https://schema.org/ParcelService',
                   'hasShippingService': {
                     '@type': 'ShippingService',
-                    '@id': 'https://e-mart.com.bd/#bangladesh-shipping',
+                    '@id': `${SITE_URL}/#bangladesh-shipping`,
                     'name': 'Bangladesh nationwide delivery',
                     'description': 'Delivery is available across Bangladesh, with shipping cost confirmed at checkout.',
                     'fulfillmentType': 'https://schema.org/FulfillmentTypeDelivery',
@@ -179,7 +180,7 @@ export default function RootLayout({
                     COMPANY.social.instagram,
                     COMPANY.social.youtube,
                     COMPANY.social.x,
-                    'https://www.google.com/maps/search/?api=1&query=E-mart+Bangladesh+Dhanmondi+Dhaka',
+                    'https://www.google.com/maps/search/?api=1&query=Emart+Skincare+Bangladesh+Dhanmondi+Dhaka',
                   ],
                   'founder': {
                     '@type': 'Person',
@@ -224,11 +225,11 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'WebSite',
-              'url': 'https://e-mart.com.bd',
+              'url': SITE_URL,
               'name': COMPANY.storeName,
               'potentialAction': {
                 '@type': 'SearchAction',
-                'target': 'https://e-mart.com.bd/search?q={search_term_string}',
+                'target': `${SITE_URL}/search?q={search_term_string}`,
                 'query-input': 'required name=search_term_string',
               },
             }),

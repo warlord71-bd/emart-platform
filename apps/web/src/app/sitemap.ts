@@ -2,8 +2,9 @@ import type { MetadataRoute } from 'next';
 import { getGraphQLSitemapData, isWordPressGraphQLConfigured } from '@/lib/wordpress-graphql';
 import { getProducts, getCategories, getBrands } from '@/lib/woocommerce';
 import { getWordPressPosts } from '@/lib/wordpress-posts';
+import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
 
-const BASE_URL = 'https://e-mart.com.bd';
+const BASE_URL = SITE_URL;
 const PAGE_SIZE = 100;
 const WORDPRESS_URL = (process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_WOO_URL || BASE_URL).replace(/\/$/, '');
 
@@ -23,23 +24,23 @@ export const dynamic = 'force-dynamic';
 
 const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: BASE_URL, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
-  { url: `${BASE_URL}/shop`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-  { url: `${BASE_URL}/new-arrivals`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-  { url: `${BASE_URL}/sale`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-  { url: `${BASE_URL}/brands`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-  { url: `${BASE_URL}/origins`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-  { url: `${BASE_URL}/concerns`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-  { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
-  { url: `${BASE_URL}/social`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-  { url: `${BASE_URL}/about-us`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-  { url: `${BASE_URL}/authenticity`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/shop'), lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+  { url: absoluteUrl('/new-arrivals'), lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+  { url: absoluteUrl('/sale'), lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+  { url: absoluteUrl('/brands'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/origins'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/concerns'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/blog'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
+  { url: absoluteUrl('/social'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/about-us'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/authenticity'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
 ];
 
 async function getBlogSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const posts = await getWordPressPosts({ perPage: 50 });
 
   return posts.map((post) => ({
-    url: `${BASE_URL}/blog/${post.slug}`,
+    url: absoluteUrl(`/blog/${post.slug}`),
     lastModified: post.modified ? new Date(post.modified) : new Date(post.date),
     changeFrequency: 'monthly',
     priority: 0.6,
@@ -53,7 +54,7 @@ async function getSitemapViaGraphQL(): Promise<MetadataRoute.Sitemap> {
   }
 
   const productEntries: MetadataRoute.Sitemap = products.map((p) => ({
-    url: `${BASE_URL}/shop/${p.slug}`,
+    url: absoluteUrl(`/shop/${p.slug}`),
     lastModified: p.date_modified ? new Date(p.date_modified) : new Date(),
     changeFrequency: 'daily',
     priority: 0.8,
@@ -62,7 +63,7 @@ async function getSitemapViaGraphQL(): Promise<MetadataRoute.Sitemap> {
   const categoryEntries: MetadataRoute.Sitemap = categories
     .filter((c) => c.slug !== 'uncategorized')
     .map((c) => ({
-      url: `${BASE_URL}/category/${c.slug}`,
+      url: absoluteUrl(`/category/${c.slug}`),
       lastModified: c.date_modified ? new Date(c.date_modified) : new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,
@@ -82,7 +83,7 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const productEntries: MetadataRoute.Sitemap = products.map((p) => ({
-    url: `${BASE_URL}/shop/${p.slug}`,
+    url: absoluteUrl(`/shop/${p.slug}`),
     lastModified: p.date_modified ? new Date(p.date_modified) : new Date(),
     changeFrequency: 'daily',
     priority: 0.8,
@@ -91,19 +92,25 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
   const categoryEntries: MetadataRoute.Sitemap = categories
     .filter((c) => c.slug !== 'uncategorized')
     .map((c) => ({
-      url: `${BASE_URL}/category/${c.slug}`,
+      url: absoluteUrl(`/category/${c.slug}`),
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,
     }));
 
   const blogEntries = await getBlogSitemapEntries();
-  const brandEntries: MetadataRoute.Sitemap = brands.map((brand) => ({
-    url: `${BASE_URL}/brands/${brand.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.7,
-  }));
+  if (productEntries.length === 0) {
+    throw new Error('Sitemap product source returned zero published products.');
+  }
+
+  const brandEntries: MetadataRoute.Sitemap = brands
+    .filter((brand) => brand.count > 0)
+    .map((brand) => ({
+      url: absoluteUrl(`/brands/${brand.slug}`),
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    }));
 
   return [...STATIC_PAGES, ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
 }
@@ -111,8 +118,8 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
 async function getBrandSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const brands = await getBrands({ orderby: 'name', order: 'asc' }).catch(() => []);
 
-  return brands.map((brand) => ({
-    url: `${BASE_URL}/brands/${brand.slug}`,
+  return brands.filter((brand) => brand.count > 0).map((brand) => ({
+    url: absoluteUrl(`/brands/${brand.slug}`),
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.7,

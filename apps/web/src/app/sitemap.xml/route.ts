@@ -1,5 +1,6 @@
 import { unstable_cache } from 'next/cache';
 import { getBrands, getCategories, getProducts, type WooBrand, type WooCategory, type WooProduct } from '@/lib/woocommerce';
+import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
 import {
   getGraphQLSitemapData,
   isWordPressGraphQLConfigured,
@@ -8,7 +9,7 @@ import {
   type GraphQLSitemapProduct,
 } from '@/lib/wordpress-graphql';
 
-const BASE_URL = 'https://e-mart.com.bd';
+const BASE_URL = SITE_URL;
 const PAGE_SIZE = 100;
 const CACHE_SECONDS = 86400;
 const GRAPHQL_SITEMAP_TIMEOUT_MS = Number(process.env.WORDPRESS_GRAPHQL_SITEMAP_TIMEOUT_MS || 11000);
@@ -68,7 +69,7 @@ async function createSitemapXml(): Promise<string> {
   const brands = dedupeBySlug(data.brands);
 
   const entries = [
-    ...staticPages.map((page) => renderUrlEntry({ loc: `${BASE_URL}${page}`, changefreq: page === '' ? 'daily' : 'weekly', priority: page === '' ? 1 : 0.8 })),
+    ...staticPages.map((page) => renderUrlEntry({ loc: absoluteUrl(page || '/'), changefreq: page === '' ? 'daily' : 'weekly', priority: page === '' ? 1 : 0.8 })),
     ...products.map(renderProductEntry),
     ...categories.map(renderCategoryEntry),
     ...brands.map(renderBrandEntry),
@@ -116,7 +117,7 @@ async function getSitemapData(): Promise<{
   return {
     products,
     categories: addCategoryLastmod(categories, products),
-    brands,
+    brands: brands.filter((brand) => brand.count > 0),
   };
 }
 
@@ -140,7 +141,7 @@ function renderProductEntry(product: SitemapProduct): string {
   const images = getProductImages(product);
 
   return renderUrlEntry({
-    loc: `${BASE_URL}/shop/${product.slug}`,
+    loc: absoluteUrl(`/shop/${product.slug}`),
     lastmod: product.date_modified || new Date().toISOString(),
     changefreq: 'monthly',
     priority: 0.7,
@@ -150,7 +151,7 @@ function renderProductEntry(product: SitemapProduct): string {
 
 function renderCategoryEntry(category: SitemapCategory): string {
   return renderUrlEntry({
-    loc: `${BASE_URL}/category/${category.slug}`,
+    loc: absoluteUrl(`/category/${category.slug}`),
     lastmod: category.date_modified,
     changefreq: 'weekly',
     priority: 0.8,
@@ -159,7 +160,7 @@ function renderCategoryEntry(category: SitemapCategory): string {
 
 function renderBrandEntry(brand: WooBrand): string {
   return renderUrlEntry({
-    loc: `${BASE_URL}/brands/${brand.slug}`,
+    loc: absoluteUrl(`/brands/${brand.slug}`),
     changefreq: 'weekly',
     priority: 0.7,
   });

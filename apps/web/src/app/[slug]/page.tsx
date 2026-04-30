@@ -8,6 +8,7 @@ import { ProductInfo } from '@/components/product/ProductInfo';
 import { DetailsTabs } from '@/components/product/DetailsTabs';
 import { ReviewsSection } from '@/components/product/ReviewsSection';
 import ProductCard from '@/components/product/ProductCard';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 interface Props {
   params: { slug: string };
@@ -44,7 +45,7 @@ function getProductJsonLd(product: WooProduct) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    '@id': `https://e-mart.com.bd/shop/${product.slug}#product`,
+    '@id': `${absoluteUrl(`/shop/${product.slug}`)}#product`,
     name: product.name,
     description: getSeoDescription(product),
     image: imageUrls,
@@ -56,7 +57,7 @@ function getProductJsonLd(product: WooProduct) {
     },
     offers: {
       '@type': 'Offer',
-      url: `https://e-mart.com.bd/shop/${product.slug}`,
+      url: absoluteUrl(`/shop/${product.slug}`),
       priceCurrency: 'BDT',
       price,
       priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
@@ -67,7 +68,7 @@ function getProductJsonLd(product: WooProduct) {
       seller: {
         '@type': 'OnlineStore',
         name: 'Emart Skincare Bangladesh',
-        url: 'https://e-mart.com.bd',
+        url: absoluteUrl('/'),
         areaServed: { '@type': 'Country', name: 'BD' },
       },
       shippingDetails: {
@@ -481,11 +482,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       return {
         title: `${post.title} | Emart`,
         description: post.excerpt || 'Helpful skincare guide from Emart.',
-        alternates: { canonical: `/blog/${post.slug}` },
+        alternates: { canonical: absoluteUrl(`/blog/${post.slug}`) },
         openGraph: {
           title: post.title,
           description: post.excerpt,
-          url: `/blog/${post.slug}`,
+          url: absoluteUrl(`/blog/${post.slug}`),
           type: 'article',
         },
       };
@@ -514,10 +515,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: rmTitle || `${product.name} — Price in Bangladesh`,
     description: seoDesc,
     keywords,
-    alternates: { canonical: `/shop/${product.slug}` },
+    alternates: { canonical: absoluteUrl(`/shop/${product.slug}`) },
     openGraph: {
       title: rmTitle || product.name,
       description: seoDesc,
+      url: absoluteUrl(`/shop/${product.slug}`),
       images: ogImage ? [{ url: ogImage, width: 800, height: 800 }] : undefined,
       type: 'website',
     },

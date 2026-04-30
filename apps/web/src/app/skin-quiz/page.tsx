@@ -4,17 +4,18 @@ import { getCategoryBySlug, getProducts, type WooProduct } from '@/lib/woocommer
 import { getConcernListing } from '@/lib/concerns';
 import SkinQuizClient from './SkinQuizClient';
 import type { SkinConcern, SkinQuizProduct, SkinQuizProductPools } from '@/lib/skinQuiz';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 export const metadata: Metadata = {
   title: 'Skincare Quiz',
   description: 'Take Emart’s skincare quiz to get a Bangladesh-friendly routine matched to your skin, climate, and budget, then receive it by email.',
   alternates: {
-    canonical: '/skin-quiz',
+    canonical: absoluteUrl('/skin-quiz'),
   },
   openGraph: {
     title: 'Skincare Quiz | Emart',
     description: 'Find a routine that fits Dhaka heat, AC office days, dark spots, breakouts, and real skincare budgets in Bangladesh.',
-    url: 'https://e-mart.com.bd/skin-quiz',
+    url: absoluteUrl('/skin-quiz'),
     images: [
       {
         url: 'https://e-mart.com.bd/images/hero-products.png',
@@ -168,4 +169,3 @@ export default async function SkinQuizPage() {
     </div>
   );
 }
-

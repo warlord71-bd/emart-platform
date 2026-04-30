@@ -1,17 +1,18 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getWordPressPosts } from '@/lib/wordpress-posts';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Skincare Guides',
   description: 'Read skincare guides, ingredient explainers, and product comparisons from Emart Skincare Bangladesh.',
-  alternates: { canonical: '/blog' },
+  alternates: { canonical: absoluteUrl('/blog') },
   openGraph: {
     title: 'Skincare Guides',
     description: 'Helpful skincare guides from Emart Skincare Bangladesh.',
-    url: '/blog',
+    url: absoluteUrl('/blog'),
   },
 };
 

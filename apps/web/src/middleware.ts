@@ -4,6 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 const STRIP_PARAMS = [
   'srsltid',      // Google Search result session link ID
   'orderby',      // WooCommerce sort parameter
+  'order',
+  'per_page',
+  'paged',
+  'shop_view',
   'add-to-cart',  // WooCommerce add-to-cart shortcut
   'add_to_cart',
 ];

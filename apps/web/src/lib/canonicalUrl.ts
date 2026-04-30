@@ -1,6 +1,8 @@
+import { absoluteUrl } from '@/lib/siteUrl';
+
 const STRIP_PARAMS = new Set([
   // pagination & ordering
-  'orderby', 'order', 'page', 'per_page', 'paged',
+  'orderby', 'order', 'page', 'per_page', 'paged', 'shop_view',
   // analytics / ads / social tracking
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
   'utm_id', 'utm_source_platform', 'utm_creative_format', 'utm_marketing_tactic',
@@ -15,7 +17,7 @@ const STRIP_PARAMS = new Set([
 ]);
 
 /**
- * Returns a clean canonical path by stripping WooCommerce/Next.js pagination
+ * Returns a clean absolute canonical URL by stripping WooCommerce/Next.js pagination
  * and sort query params that should not be indexed as separate pages.
  * Pass the result as `alternates.canonical` in generateMetadata.
  */
@@ -23,7 +25,7 @@ export function canonicalPath(
   pathname: string,
   searchParams?: URLSearchParams | Record<string, string | string[]>,
 ): string {
-  if (!searchParams) return pathname;
+  if (!searchParams) return absoluteUrl(pathname);
 
   const params =
     searchParams instanceof URLSearchParams
@@ -40,5 +42,5 @@ export function canonicalPath(
   });
 
   const qs = clean.toString();
-  return qs ? `${pathname}?${qs}` : pathname;
+  return absoluteUrl(qs ? `${pathname}?${qs}` : pathname);
 }

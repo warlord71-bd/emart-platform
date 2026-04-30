@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { getProduct, getProductById } from '@/lib/woocommerce';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 interface ProductPageProps {
   params: { id: string };
@@ -17,12 +18,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       product.short_description ||
       'Premium authentic global skincare product',
     alternates: {
-      canonical: `/shop/${product.slug}`,
+      canonical: absoluteUrl(`/shop/${product.slug}`),
     },
     openGraph: {
       title: product.name,
       description: product.short_description || 'Premium skincare product',
-      url: `/shop/${product.slug}`,
+      url: absoluteUrl(`/shop/${product.slug}`),
       images: product.images?.[0]?.src ? [{ url: product.images[0].src }] : [],
     },
   };

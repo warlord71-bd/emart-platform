@@ -6,6 +6,7 @@ import ProductCard from '@/components/product/ProductCard';
 import { getBrandBySlug, getProducts } from '@/lib/woocommerce';
 import brandLogoManifest from '../../../../public/images/brands-e-mart/manifest.json';
 import { ArrowLeft } from 'lucide-react';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -26,14 +27,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
   const desc = `Shop authentic ${brand.name} products in Bangladesh. Buy original ${brand.name} skincare at Emart with verified stock and nationwide delivery.`;
+  const title = `${brand.name} Bangladesh | Authentic ${brand.name} Products | Emart`;
 
   return {
-    title: `${brand.name} | Emart Skincare Bangladesh`,
+    title: { absolute: title },
     description: desc,
-    alternates: { canonical: `/brands/${params.slug}` },
+    alternates: { canonical: absoluteUrl(`/brands/${brand.slug}`) },
     openGraph: {
-      title: `${brand.name} at Emart`,
+      title,
       description: desc,
+      url: absoluteUrl(`/brands/${brand.slug}`),
       images: logo ? [{ url: logo }] : undefined,
     },
   };
