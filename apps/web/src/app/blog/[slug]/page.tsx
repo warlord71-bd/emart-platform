@@ -56,7 +56,7 @@ export default async function BlogPostPage({ params }: Props) {
     datePublished: post.date,
     dateModified: post.modified,
     mainEntityOfPage: `https://e-mart.com.bd/blog/${post.slug}`,
-    author: { '@type': 'Organization', name: 'Emart Skincare Bangladesh' },
+    author: { '@type': 'Person', name: 'Emart Editorial Team', url: 'https://e-mart.com.bd/about-us' },
     publisher: {
       '@type': 'Organization',
       name: 'Emart Skincare Bangladesh',
@@ -80,12 +80,27 @@ export default async function BlogPostPage({ params }: Props) {
 
         <header className="mb-8 rounded-[28px] bg-ink px-5 py-7 text-white shadow-card">
           <p className="text-xs font-bold uppercase tracking-widest text-brass">
-            Skincare Guide · {formatDate(post.date)}
+            Skincare Guide
           </p>
           <h1 className="mt-3 text-3xl font-bold leading-tight text-white">{post.title}</h1>
           {post.excerpt && (
             <p className="mt-4 text-sm leading-6 text-white/72">{post.excerpt}</p>
           )}
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/10 pt-4 text-xs text-white/60">
+            <address className="not-italic">
+              By <span className="font-semibold text-white/80">Emart Editorial Team</span>
+            </address>
+            <span>·</span>
+            <time dateTime={post.date} className="font-semibold text-white/80">
+              {formatDate(post.date)}
+            </time>
+            {post.modified && post.modified !== post.date && (
+              <>
+                <span>·</span>
+                <span>Updated <time dateTime={post.modified}>{formatDate(post.modified)}</time></span>
+              </>
+            )}
+          </div>
         </header>
 
         <div
