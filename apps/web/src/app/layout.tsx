@@ -90,7 +90,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable}`}>
+    <html lang="en-BD" className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable}`}>
       <head>
         {/* OnlineStore + Organization Schema */}
         <script
