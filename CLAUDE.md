@@ -128,7 +128,46 @@ Output discipline:
 - Avoid speculative rewrites, visual redesigns, or backend changes unless explicitly requested.
 - Ask for approval before broad UI/UX changes or any backend/database mutation.
 
-## 6. Required Agent Execution Order for SEO Work
+## 6. OpenClaw VPS Capability Clause
+
+OpenClaw already exists inside the VPS setup and can help with Emart platform inspection, testing, reporting, and safe automation. Treat OpenClaw as a VPS-side assistant capability, not as a replacement for the source-of-truth and deployment rules in this file.
+
+Where we are now:
+
+- Claude/Codex/GPT/Gemini/OpenRouter models are used for reasoning, planning, code review, and implementation guidance.
+- OpenClaw is useful when the task needs VPS-side visibility, repeatable checks, process/log inspection, or automation around the live environment.
+- OpenClaw must not bypass Git, build, smoke test, approval, or deployment order.
+
+Best OpenClaw use cases for Emart:
+
+- VPS health/status checks before and after deployment.
+- PM2/process inspection for `emartweb`.
+- Smoke-test helpers after build/restart.
+- Log summarization for Next.js, Woo/API, newsletter, webhook, Telegram, or cron issues.
+- SEO verification helpers for sitemap, robots, canonical, redirects, status codes, and public headers.
+- Dynamic sitemap verification against current Woo/API data.
+- Report generation for Codex/Claude tasks.
+- Safe read-only audits of live runtime state before code changes.
+- Reusable project automation that reports findings before changing files.
+
+Before using OpenClaw:
+
+1. Verify its current installation, service/process state, config path, and project integration points on the VPS.
+2. Check existing logs/docs before changing OpenClaw behavior.
+3. Confirm whether OpenClaw is already polling or running long-lived services.
+4. Do not start a second polling service on the same Telegram bot token or duplicate an existing OpenClaw worker.
+5. Do not expose secrets, bot tokens, API keys, WooCommerce keys, or `.env.local` values.
+6. Do not let OpenClaw mutate checkout, cart, payment, order, customer, stock, price, or database logic without explicit approval.
+
+OpenClaw safety rules:
+
+- Prefer read-only inspection first.
+- Prefer small explicit commands over broad automation.
+- Log what OpenClaw checked or changed.
+- If OpenClaw output conflicts with this repo, verify against the live VPS source of truth before editing.
+- Use OpenClaw to assist testing and reporting, not to bypass review, build, smoke test, or deployment order.
+
+## 7. Required Agent Execution Order for SEO Work
 
 When implementing SEO work, follow this order:
 
@@ -141,7 +180,7 @@ When implementing SEO work, follow this order:
 7. Build/test.
 8. Follow the deployment order below.
 
-## 7. Current Layout
+## 8. Current Layout
 
 - Local working tree: `/root/emart-platform`
 - Live runtime tree: `/var/www/emart-platform`
@@ -150,14 +189,14 @@ When implementing SEO work, follow this order:
 - Canonical repo: GitHub remote `origin`, branch `main`
 - Current rule: Local -> VPS -> Repo, with Repo push last after live smoke test
 
-## 8. Source Of Truth
+## 9. Source Of Truth
 
 - The running site is served from `/var/www/emart-platform/apps/web`.
 - Do not restore old files from GitHub or Local over VPS without comparing first.
 - Keep the current live UI/UX unless the user explicitly asks to change it.
 - Before any deploy/restart, confirm the VPS tree is the intended source.
 
-## 9. Required Deploy Order
+## 10. Required Deploy Order
 
 This project follows the universal VPS deployment law in `/root/CLAUDE.md`. Read that file first when working on the VPS.
 
@@ -174,7 +213,7 @@ Use the verify-then-publish order:
 
 If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing.
 
-## 10. E-Mart Project Facts
+## 11. E-Mart Project Facts
 
 - Bangladesh eCommerce site for authentic K-beauty, J-beauty, and international beauty products.
 - Frontend: Next.js 14+, TypeScript, Tailwind CSS.
@@ -183,7 +222,7 @@ If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing
 - Payments: Cash on Delivery, bKash, Nagad.
 - Main audience: mobile-first Bangladesh shoppers.
 
-## 11. Live Business Rules
+## 12. Live Business Rules
 
 - Footer `SignupTabs` is the canonical WhatsApp + email signup block.
 - Newsletter path: Next `/api/newsletter/subscribe` -> WordPress `/wp-json/emart/v1/subscribe` -> MailPoet.
@@ -191,8 +230,9 @@ If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing
 - Support/payment WhatsApp/phone may use `8801919797399`; do not merge the numbers unless the user says so.
 - MailPoet is the live transactional sender path. Do not reinstall or switch SMTP unless asked.
 - Telegram command helper exists, but do not enable a second polling service on the same bot token while OpenClaw is polling.
+- OpenClaw is part of the VPS-side project tooling. Use it carefully for inspection, testing, reporting, and safe automation when useful.
 
-## 12. General Safety Rules
+## 13. General Safety Rules
 
 - Never commit secrets. Keep `.env.local` local to the VPS/runtime.
 - Never run blind `git add -A` on a dirty runtime tree unless `.gitignore` is checked and the staged list is reviewed.
@@ -201,14 +241,14 @@ If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing
 - Never restart `emartweb` from unknown source state.
 - For cleanup, move files to `/root/.attic-YYYY-MM-DD/` instead of deleting unless the user explicitly asks for permanent deletion.
 
-## 13. Useful Current Memory
+## 14. Useful Current Memory
 
 - Universal deploy instructions: `/root/CLAUDE.md` and `/root/AGENTS.md`.
 - E-Mart session log: `/var/www/emart-platform/apps/web/SESSION-LOG.md`.
 - E-Mart task/source notes, when present: `/var/www/emart-platform/apps/web/TASKS.md`, `MEMORY.md`, and `LIVE-SOURCE-OF-TRUTH.md`.
 - Cleanup restore point from 2026-04-26: `/root/.attic-2026-04-26/`.
 
-## 14. What Not To Trust
+## 15. What Not To Trust
 
 - Old project agent files mentioning `AGENTS.coding.md`, `AGENTS.design.md`, or `AGENTS.seo.md`; those were retired to reduce complexity.
 - Old docs that say to push before live verification.
