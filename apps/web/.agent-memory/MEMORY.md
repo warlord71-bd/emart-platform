@@ -8,3 +8,4 @@
 - [Product content tab extraction](project_product_content_tabs.md) — legacy Ingredients tabs may contain usage/suitable/storage sections; storefront parser splits usage into How to use across catalog
 - [Product FAQ system](project_product_faq_system.md) — canonical `_emart_product_faq` has 5 product-focused FAQs per published product; no delivery/COD in product FAQ
 - [Product meta description state](project_meta_description_state.md) — all 3,564 published products now have `_rank_math_description`; product pages prefer Rank Math descriptions; deployed in `4da64d2`
+- [SEO sitemap indexability](project_seo_sitemap_indexability.md) — robots advertises only Next `/sitemap.xml`; Rank Math sitemap URLs redirect to it at Nginx
