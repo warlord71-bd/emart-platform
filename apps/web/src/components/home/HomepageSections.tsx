@@ -696,39 +696,56 @@ export function BlogTeaserSection({ posts }: { posts: BlogPostSummary[] }) {
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Skincare journal · জার্নাল</p>
             <h2 className="mt-2 text-2xl font-extrabold text-ink lg:text-3xl">Editorial</h2>
           </div>
-          <Link href="/blog" className="hidden text-sm font-bold text-accent lg:inline-flex">
-            Read more →
+          <Link href="/blog" className="text-sm font-bold text-accent hover:underline">
+            Read all articles →
           </Link>
         </div>
 
+        {/* Mobile: horizontal scroll */}
         <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:hidden">
           <div className="flex w-max snap-x snap-mandatory gap-4 pb-1">
             {visible.map((post) => (
-              <Link
-                key={post.id}
-                href={post.href}
-                className="w-[78vw] max-w-[300px] snap-start rounded-[22px] border border-hairline bg-bg-alt p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
-              >
-                <div className="text-xs font-bold uppercase tracking-wide text-accent">{formatBlogDate(post.date)}</div>
-                <h3 className="mt-3 line-clamp-2 text-lg font-bold leading-snug text-ink">{post.title}</h3>
-                <p className="mt-3 line-clamp-3 text-sm leading-7 text-gray-600">{post.excerpt}</p>
-              </Link>
+              <article key={post.id} className="w-[78vw] max-w-[300px] snap-start">
+                <Link
+                  href={post.href}
+                  className="block rounded-[22px] border border-hairline bg-bg-alt p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
+                >
+                  <time dateTime={post.date} className="text-xs font-bold uppercase tracking-wide text-accent">
+                    {formatBlogDate(post.date)}
+                  </time>
+                  <h3 className="mt-3 line-clamp-2 text-lg font-bold leading-snug text-ink">{post.title}</h3>
+                  <p className="mt-3 line-clamp-3 text-sm leading-7 text-gray-600">{post.excerpt}</p>
+                  <span className="mt-4 inline-block text-xs font-bold text-accent">Read article →</span>
+                </Link>
+              </article>
             ))}
           </div>
         </div>
 
+        {/* Desktop: grid */}
         <div className="hidden gap-4 md:grid md:grid-cols-3">
           {visible.map((post) => (
-            <Link
-              key={post.id}
-              href={post.href}
-              className="rounded-lg border border-hairline bg-bg-alt p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
-            >
-              <div className="text-xs font-bold uppercase tracking-wide text-accent">{formatBlogDate(post.date)}</div>
-              <h3 className="mt-3 line-clamp-2 text-lg font-bold leading-snug text-ink">{post.title}</h3>
-              <p className="mt-3 line-clamp-3 text-sm leading-7 text-gray-600">{post.excerpt}</p>
-            </Link>
+            <article key={post.id}>
+              <Link
+                href={post.href}
+                className="block rounded-lg border border-hairline bg-bg-alt p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
+              >
+                <time dateTime={post.date} className="text-xs font-bold uppercase tracking-wide text-accent">
+                  {formatBlogDate(post.date)}
+                </time>
+                <h3 className="mt-3 line-clamp-2 text-lg font-bold leading-snug text-ink">{post.title}</h3>
+                <p className="mt-3 line-clamp-3 text-sm leading-7 text-gray-600">{post.excerpt}</p>
+                <span className="mt-4 inline-block text-xs font-bold text-accent">Read article →</span>
+              </Link>
+            </article>
           ))}
+        </div>
+
+        {/* Mobile: bottom CTA */}
+        <div className="mt-5 text-center md:hidden">
+          <Link href="/blog" className="inline-flex rounded-full border border-accent/30 px-5 py-2 text-sm font-bold text-accent hover:bg-accent-soft">
+            Read all articles →
+          </Link>
         </div>
       </div>
     </section>
