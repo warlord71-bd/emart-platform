@@ -27,7 +27,10 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: `${BASE_URL}/new-arrivals`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
   { url: `${BASE_URL}/sale`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
   { url: `${BASE_URL}/brands`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+  { url: `${BASE_URL}/origins`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+  { url: `${BASE_URL}/concerns`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
+  { url: `${BASE_URL}/social`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: `${BASE_URL}/about-us`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: `${BASE_URL}/authenticity`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
 ];
