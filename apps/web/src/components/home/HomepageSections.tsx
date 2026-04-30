@@ -124,9 +124,9 @@ const UGC_REELS = [
     label: 'YouTube Shorts spotlight',
     href: 'https://www.youtube.com/shorts/zgo8F-H3FEI',
     platform: 'YouTube',
-    embedUrl: 'https://www.youtube.com/embed/zgo8F-H3FEI?rel=0',
+    image: '/images/home-categories/cosrx-snail-92-cream.png',
     eyebrow: 'Featured Short',
-    note: 'Visible on-page so customers can watch without leaving home',
+    note: 'Product demos, unboxings, and skincare routines on YouTube',
   },
   {
     label: 'TikTok unboxing reel',
@@ -638,57 +638,31 @@ export function CustomerVoiceSection() {
                 <div className="mt-2 text-sm leading-6 text-white/75">{item.note}</div>
               </div>
 
-              {item.embedUrl ? (
-                <div className="px-5 pb-5">
-                  <div className="overflow-hidden rounded-lg border border-white/10 bg-black">
-                    <div className="aspect-[9/16] w-full">
-                      <iframe
-                        src={item.embedUrl}
-                        title={item.label}
-                        className="h-full w-full"
-                        loading="lazy"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                      />
-                    </div>
-                  </div>
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-accent-soft"
-                  >
-                    Watch on YouTube <ArrowRight className="h-4 w-4" />
-                  </a>
-                </div>
-              ) : (
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block px-5 pb-5"
-                >
-                  <div className="relative overflow-hidden rounded-lg border border-white/10">
-                    <div className="aspect-[9/16] relative">
-                      <Image
-                        src={item.image || '/images/home-categories/viral-kbeauty.jpg'}
-                        alt={item.label}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 33vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
-                      <div className="absolute inset-x-0 bottom-0 p-4">
-                        <div className="flex items-center gap-2 text-sm font-bold text-white">
-                          <PlayCircle className="h-5 w-5" />
-                          <span>Open official {item.platform}</span>
-                        </div>
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block px-5 pb-5"
+              >
+                <div className="relative overflow-hidden rounded-lg border border-white/10">
+                  <div className="aspect-[9/16] relative">
+                    <Image
+                      src={item.image || '/images/home-categories/viral-kbeauty.jpg'}
+                      alt={item.label}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-4">
+                      <div className="flex items-center gap-2 text-sm font-bold text-white">
+                        <PlayCircle className="h-5 w-5" />
+                        <span>Open official {item.platform}</span>
                       </div>
                     </div>
                   </div>
-                </a>
-              )}
+                </div>
+              </a>
             </article>
           ))}
         </div>
