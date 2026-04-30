@@ -32,6 +32,7 @@ Official brand names:
    - WebSite schema on homepage
 9. Canonicals must point only to clean frontend URLs.
 10. Sitemap must include only clean frontend SEO routes.
+11. Sitemap must be dynamic, not a stale static list.
 
 ---
 
@@ -91,6 +92,18 @@ Official brand names:
    - Product metadata should update after product name, price or image changes.
    - Sitemap should not include stale empty pages.
 
+7. Dynamic sitemap freshness:
+   - Implement sitemap in `app/sitemap.ts` or the current Next.js sitemap generator.
+   - Fetch current product, brand and category slugs from the active Woo/API source.
+   - Do not use a manually maintained static slug list.
+   - Do not include deleted, draft, private, missing, or unpublished Woo products.
+   - Do not include empty brands or empty categories.
+   - If a product is deleted/unpublished in WordPress, its frontend URL must disappear from sitemap on the next build or revalidation cycle.
+   - If an old slug remains in Next.js cache, the product page must call `notFound()` when the API no longer returns that product.
+   - Sitemap must use absolute URLs with `NEXT_PUBLIC_SITE_URL`.
+   - Document whether sitemap is generated at build time, request time, or via ISR/revalidation.
+   - Add a safe fallback so API failure does not publish a broken sitemap with empty or stale results.
+
 ---
 
 ## Required Reports
@@ -104,6 +117,7 @@ Produce these after implementation:
 - wrong-nav-links-report.md
 - product-size-mismatch.csv
 - missing-product-images.csv
+- dynamic-sitemap-report.md
 - files-changed-summary.md
 
 ---
