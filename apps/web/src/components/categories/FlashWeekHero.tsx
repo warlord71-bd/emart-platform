@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { useFlash } from '@/lib/realtime/flash-context';
+import { flashDayLabel, useFlash } from '@/lib/realtime/flash-context';
 import { useCategoryPageI18n } from './categoryPageI18n';
 import CountdownTiles from './CountdownTiles';
 import TrendingLeaderboard from './TrendingLeaderboard';
@@ -17,7 +17,7 @@ interface TrendingProduct {
 }
 
 export default function FlashWeekHero({ initialTrending = [] }: { initialTrending?: TrendingProduct[] }) {
-  const { secondsRemaining } = useFlash();
+  const { secondsRemaining, promotion } = useFlash();
   const { t } = useCategoryPageI18n();
 
   return (
@@ -25,7 +25,7 @@ export default function FlashWeekHero({ initialTrending = [] }: { initialTrendin
       <div className="mb-container grid gap-6 py-8 sm:py-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-center">
         <div>
           <p className="inline-flex rounded-md bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--mb-pink-soft)]">
-            {t('heroBadge')}
+            {flashDayLabel(promotion)}
           </p>
           <h1 className="mt-3 max-w-2xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
             {t('heroTitlePrefix')} <span className="text-[var(--mb-gold)]">{t('heroTitleHighlight')}</span><br className="hidden sm:block" /> {t('heroTitleSuffix')}

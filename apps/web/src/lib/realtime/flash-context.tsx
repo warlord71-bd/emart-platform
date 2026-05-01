@@ -83,3 +83,13 @@ export function splitCountdown(totalSeconds: number) {
   const seconds = totalSeconds % 60;
   return { hours, minutes, seconds };
 }
+
+export function flashDayLabel(promotion: FlashPromotion | null): string {
+  if (!promotion?.starts_at || !promotion?.ends_at) return '✦ Flash Week';
+  const start = new Date(promotion.starts_at).getTime();
+  const end = new Date(promotion.ends_at).getTime();
+  const totalDays = Math.max(1, Math.round((end - start) / 86_400_000));
+  const elapsed = Math.max(0, Math.floor((Date.now() - start) / 86_400_000));
+  const day = Math.min(elapsed + 1, totalDays);
+  return `✦ Flash Week · Day ${day} of ${totalDays}`;
+}

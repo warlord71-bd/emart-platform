@@ -260,8 +260,10 @@ function mapFeaturedReview(review: WooProductReview, product?: WooProduct | null
 }
 
 export async function getFeaturedReviews(limit = 3): Promise<FeaturedReview[]> {
-  const reviews = (await getRecentProductReviews(24))
-    .filter((review) => review.rating >= 5 && review.verified !== false)
+  const all = await getRecentProductReviews(50);
+  // Prefer 5-star verified; fall back to 4+ star verified if pool is thin.
+  const strict = all.filter((r) => r.rating >= 5 && r.verified !== false);
+  const reviews = (strict.length >= limit ? strict : all.filter((r) => r.rating >= 4 && r.verified !== false))
     .slice(0, limit);
 
   const productsById = new Map<number, WooProduct | null>();

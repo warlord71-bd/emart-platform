@@ -23,7 +23,7 @@ import CustomerWall from '@/components/categories/CustomerWall';
 
 export function generateMetadata({ searchParams }: { searchParams?: Record<string, string | string[]> }): Metadata {
   return {
-    title: 'Live Beauty Categories | Emart Skincare Bangladesh',
+    title: { absolute: 'Live Beauty Categories | Emart Skincare Bangladesh' },
     description: 'Browse Emart categories by live shopper activity, flash deals, trending products, verified reviews, and skin concerns in Bangladesh.',
     alternates: { canonical: canonicalPath('/categories', searchParams) },
   };
