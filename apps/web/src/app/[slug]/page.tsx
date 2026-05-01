@@ -521,7 +521,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: seoDesc,
       url: absoluteUrl(`/shop/${product.slug}`),
       images: ogImage ? [{ url: ogImage, width: 800, height: 800 }] : undefined,
-      type: 'product.item' as 'website',
+      type: 'website',
     },
     other: {
       ...(skinType ? { 'product:skin_type': skinType } : {}),
