@@ -77,21 +77,28 @@ async function rankMathFetch<T>(
   }
 }
 
-/**
- * Reformat Rank Math title to Emart brand standard.
- * Input:  "Product Name 150ml - Emart Skincare Bangladesh"
- * Output: "Product Name 150ml | Emart"
- */
-function reformatTitle(raw: string | null, fallback: string): string {
-  if (!raw?.trim()) return fallback;
-
-  const stripped = raw
+function stripRankMathSuffix(raw: string): string {
+  return raw
     .replace(/\s*[-–—|]\s*Emart Skincare Bangladesh\s*$/i, '')
     .replace(/\s*[-–—|]\s*Emart\s*$/i, '')
     .trim();
+}
 
+/** Product: "Product Name 150ml - Emart Skincare Bangladesh" → "Product Name 150ml | Emart" */
+function reformatTitle(raw: string | null, fallback: string): string {
+  if (!raw?.trim()) return fallback;
+  const stripped = stripRankMathSuffix(raw);
   if (stripped.length < 3) return fallback;
   return `${stripped} | Emart`;
+}
+
+/** Category: "Toners - Emart Skincare Bangladesh" → "Toners in Bangladesh | Emart Skincare Bangladesh" */
+function reformatCategoryTitle(raw: string | null, fallback: string): string {
+  if (!raw?.trim()) return fallback;
+  const stripped = stripRankMathSuffix(raw);
+  if (stripped.length < 3) return fallback;
+  const core = /in bangladesh/i.test(stripped) ? stripped : `${stripped} in Bangladesh`;
+  return `${core} | Emart Skincare Bangladesh`;
 }
 
 export async function getProductSeo(
@@ -125,7 +132,7 @@ export async function getCategorySeo(
   const seo = data?.productCategory?.seo;
   const name = data?.productCategory?.name || categoryName || slug;
 
-  const titleFallback = `${name} — Shop Online | Emart Skincare Bangladesh`;
+  const titleFallback = `${name} in Bangladesh | Emart Skincare Bangladesh`;
   const descFallback = `Shop authentic ${name} products in Bangladesh from Emart. 100% verified imports, COD available, fast delivery.`;
 
   const rawTitle = seo?.title ?? null;
@@ -136,7 +143,7 @@ export async function getCategorySeo(
     rawTitle.trim().length < 4;
 
   return {
-    title: isBroken ? titleFallback : reformatTitle(rawTitle, titleFallback),
+    title: isBroken ? titleFallback : reformatCategoryTitle(rawTitle, titleFallback),
     description: seo?.description || descFallback,
     canonical,
     ogImage: seo?.openGraph?.image?.url || '',
