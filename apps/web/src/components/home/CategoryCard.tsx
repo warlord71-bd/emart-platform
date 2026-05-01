@@ -2,19 +2,12 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { CategoryIllustration } from '@/components/category/CategoryIllustration';
 import type { FeaturedCategory } from '@/lib/api/featured-categories';
 import { useCategoryPresence } from '@/lib/realtime/presence';
 
-// Stripe placeholder tints cycle pink → gold → navy
-const TINTS = [
-  { bg: 'rgba(232,115,158,0.07)', stripe: 'rgba(232,115,158,0.14)' },
-  { bg: 'rgba(212,162,72,0.07)',  stripe: 'rgba(212,162,72,0.14)'  },
-  { bg: 'rgba(27,27,47,0.84)',    stripe: 'rgba(27,27,47,0.91)'    },
-];
-
 export function CategoryCard({ category, index }: { category: FeaturedCategory; index: number }) {
   const viewers = useCategoryPresence(category.id);
-  const tint = TINTS[index % 3];
 
   const badge =
     category.is_hot  ? { label: 'HOT',  cls: 'bg-[rgba(217,83,79,0.10)] text-[#D9534F]', icon: '🔥' } :
@@ -38,13 +31,8 @@ export function CategoryCard({ category, index }: { category: FeaturedCategory; 
             className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           />
         ) : (
-          <div
-            className="absolute inset-0"
-            style={{ background: `repeating-linear-gradient(135deg, ${tint.bg} 0 8px, ${tint.stripe} 8px 16px)` }}
-          >
-            <span className="absolute inset-0 flex items-center justify-center text-[11px] font-mono text-[var(--mb-ink-3)]">
-              {category.name.toLowerCase()}
-            </span>
+          <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.03]">
+            <CategoryIllustration slug={category.slug} uid={category.id || index} />
           </div>
         )}
 

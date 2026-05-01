@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowUpRight } from 'lucide-react';
+import { CategoryIllustration } from '@/components/category/CategoryIllustration';
 import { useCategoryPageI18n } from './categoryPageI18n';
 
 interface CategoryPulse {
@@ -21,10 +22,6 @@ async function fetchPopular() {
   const response = await fetch('/api/categories/popular?limit=8&window=7d&include=product_count,trend_pct,active_viewers,is_hot', { cache: 'no-store' });
   if (!response.ok) throw new Error('Popular categories unavailable');
   return response.json();
-}
-
-function abbreviation(name: string) {
-  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase();
 }
 
 export default function PopularCategoriesGrid({ initialCategories = [] }: { initialCategories?: CategoryPulse[] }) {
@@ -58,7 +55,13 @@ export default function PopularCategoriesGrid({ initialCategories = [] }: { init
             >
               <div className="flex items-start justify-between gap-3">
                 <span className="relative grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-[var(--mb-pink-bg)] text-sm font-extrabold text-[var(--mb-pink)]">
-                  {category.icon_url ? <Image src={category.icon_url} alt="" fill sizes="48px" className="object-cover" /> : abbreviation(category.name)}
+                  {category.icon_url ? (
+                    <Image src={category.icon_url} alt="" fill sizes="48px" className="object-cover" />
+                  ) : (
+                    <span className="absolute inset-0 [&>svg]:h-full [&>svg]:w-full">
+                      <CategoryIllustration slug={category.slug} uid={category.id} />
+                    </span>
+                  )}
                 </span>
                 <span className="flex items-center gap-2">
                   {category.is_hot ? <span className="rounded-full bg-[var(--mb-pink)] px-2 py-1 text-[10px] font-bold text-white">HOT</span> : null}
