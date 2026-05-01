@@ -62,7 +62,6 @@ export interface WooProduct {
   short_description: string;
   images: WooImage[];
   categories: WooCategory[];
-  tags: WooTag[];
   attributes: WooAttribute[];
   meta_data?: WooMetaData[];
   average_rating: string;
@@ -83,12 +82,6 @@ export interface WooCategory {
   slug: string;
   image?: WooImage;
   count?: number;
-}
-
-export interface WooTag {
-  id: number;
-  name: string;
-  slug: string;
 }
 
 export interface WooAttribute {
@@ -333,13 +326,6 @@ function transformProduct(product: any): WooProduct {
     short_description: decodeHtmlEntities(product.short_description),
     images: Array.isArray(product.images) ? product.images.map(transformImage) : [],
     categories: Array.isArray(product.categories) ? product.categories.map(transformCategory) : [],
-    tags: Array.isArray(product.tags)
-      ? product.tags.map((tag: any) => ({
-        id: Number(tag.id || 0),
-        name: decodeHtmlEntities(tag.name),
-        slug: String(tag.slug || ''),
-      }))
-      : [],
     attributes: Array.isArray(product.attributes)
       ? product.attributes.map((attribute: any) => ({
         id: Number(attribute.id || 0),

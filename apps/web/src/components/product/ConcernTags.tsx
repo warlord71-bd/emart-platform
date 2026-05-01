@@ -1,8 +1,13 @@
 import Link from 'next/link';
-import type { WooTag } from '@/lib/woocommerce';
+
+interface ConcernTag {
+  id: number;
+  name: string;
+  slug: string;
+}
 
 interface ConcernTagsProps {
-  tags: WooTag[];
+  tags: ConcernTag[];
 }
 
 const CONCERN_EMOJIS: Record<string, string> = {
