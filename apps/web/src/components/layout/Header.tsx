@@ -155,6 +155,23 @@ function AccountDropdown() {
   );
 }
 
+function getMegaPanelClass(label: string) {
+  if (label === 'SHOP BY CATEGORY') {
+    return 'w-[960px] max-w-[calc(100vw-7rem)]';
+  }
+  if (label === 'SHOP BY CONCERN') {
+    return 'w-[560px] max-w-[calc(100vw-7rem)]';
+  }
+  return 'w-[520px] max-w-[calc(100vw-7rem)]';
+}
+
+function getMegaGridClass(label: string) {
+  if (label === 'SHOP BY CATEGORY') {
+    return 'grid grid-cols-3 gap-x-8 gap-y-6';
+  }
+  return 'grid grid-cols-2 gap-x-6 gap-y-5';
+}
+
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
@@ -708,11 +725,8 @@ export default function Header() {
                     {group.label}
                     <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
                   </button>
-                  <div className={`invisible absolute left-0 top-full z-[70] max-w-[calc(100vw-2rem)] translate-y-1 rounded-lg border border-hairline bg-white p-4 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ${group.panelClassName}`}>
-                    <div
-                      className="grid gap-4"
-                      style={{ gridTemplateColumns: `repeat(${group.sections.length}, minmax(0, 1fr))` }}
-                    >
+                  <div className={`invisible absolute left-0 top-full z-[70] translate-y-1 rounded-lg border border-hairline bg-white p-5 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ${getMegaPanelClass(group.label)}`}>
+                    <div className={getMegaGridClass(group.label)}>
                       {group.sections.map((section) => (
                         <div key={section.title} className="min-w-0">
                           <div className="mb-2 text-[11px] font-bold uppercase tracking-normal text-gray-400">
