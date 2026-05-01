@@ -15,8 +15,8 @@ import {
   OriginStoryBlock,
   BlogTeaserSection,
   ShippingPaymentReturns,
-  ShopByCategorySection,
 } from '@/components/home/HomepageSections';
+import ShopByCategory from '@/components/home/ShopByCategory';
 import { HOME_TOP_CATEGORY_ORDER, TOP_CATEGORY_IMAGE_OVERRIDES } from '@/lib/category-navigation';
 import brandLogoManifest from '../../public/images/brands-e-mart/manifest.json';
 import type { Metadata } from 'next';
@@ -92,12 +92,6 @@ export default async function HomePage() {
     };
   });
 
-  const categoryTiles = mobileDiscoveryCategories.map((c) => ({
-    name: c.name,
-    href: c.href || `/category/${c.slug}`,
-    image: c.image,
-  }));
-
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -116,8 +110,7 @@ export default async function HomePage() {
       <HeroCarousel />
       {/* Mobile: horizontal scroll discovery strip */}
       <MobileDiscovery categories={mobileDiscoveryCategories} showChips={false} showCategories={false} />
-      {/* Desktop + Mobile: category grid visible at all sizes */}
-      <ShopByCategorySection categories={categoryTiles} />
+      <ShopByCategory />
       <OfferCollectionsRail />
       <FlashSaleBanner products={safeSaleProducts} />
 
