@@ -9,6 +9,7 @@ import { DetailsTabs } from '@/components/product/DetailsTabs';
 import { ReviewsSection } from '@/components/product/ReviewsSection';
 import ProductCard from '@/components/product/ProductCard';
 import { absoluteUrl } from '@/lib/siteUrl';
+import { getProductSeo } from '@/lib/seo';
 
 interface Props {
   params: { slug: string };
@@ -495,9 +496,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Product Not Found' };
   }
 
-  const rmTitle = getRankMathMeta(product, '_rank_math_title');
-  const seoDesc = getSeoDescription(product);
-  const ogImage = product.images[0]?.src || '';
+  const seo = await getProductSeo(params.slug, {
+    name: product.name,
+    description: product.short_description || product.description,
+    imageUrl: product.images?.[0]?.src,
+  });
   const skinType = getProductAttributeValue(product, /skin type/i);
   const skinConcern = getProductAttributeValue(product, /concern/i);
   const brandName = getProductAttributeValue(product, /brand/i);
@@ -512,15 +515,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   ].filter(Boolean) as string[];
 
   return {
-    title: `${product.name} Price in Bangladesh`,
-    description: seoDesc,
+    title: { absolute: seo.title },
+    description: seo.description,
     keywords,
-    alternates: { canonical: absoluteUrl(`/shop/${product.slug}`) },
+    alternates: { canonical: seo.canonical },
     openGraph: {
-      title: rmTitle || product.name,
-      description: seoDesc,
-      url: absoluteUrl(`/shop/${product.slug}`),
-      images: ogImage ? [{ url: ogImage, width: 800, height: 800 }] : undefined,
+      title: product.name,
+      description: seo.description,
+      url: seo.canonical,
+      images: seo.ogImage ? [{ url: seo.ogImage, width: 800, height: 800 }] : undefined,
       type: 'website',
     },
     other: {

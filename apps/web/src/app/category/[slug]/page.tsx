@@ -4,8 +4,7 @@ import ProductCard from '@/components/product/ProductCard';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { getGraphQLCategoryMetadata, isWordPressGraphQLConfigured } from '@/lib/wordpress-graphql';
-import { canonicalPath } from '@/lib/canonicalUrl';
+import { getCategorySeo } from '@/lib/seo';
 
 interface Props {
   params: { slug: string };
@@ -71,25 +70,21 @@ function detectContext(category: { slug: string; name: string }): 'skincare' | '
   return undefined;
 }
 
-export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
-  const graphQLCategory = isWordPressGraphQLConfigured()
-    ? await getGraphQLCategoryMetadata(params.slug).catch(() => null)
-    : null;
-  const cat = graphQLCategory || await getCategoryBySlug(params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const cat = await getCategoryBySlug(params.slug);
   if (!cat) return { title: 'Category Not Found' };
 
-  const description = 'description' in cat && cat.description
-    ? cat.description.replace(/<[^>]+>/g, '').substring(0, 160)
-    : `Shop authentic ${cat.name} products in Bangladesh. Original imports, fast delivery, COD available. Best prices on ${cat.name} skincare at Emart.`;
+  const seo = await getCategorySeo(params.slug, cat.name);
 
   return {
-    title: { absolute: `${cat.name} — Shop Online | Emart Skincare Bangladesh` },
-    description,
-    alternates: { canonical: canonicalPath(`/category/${cat.slug}`, searchParams) },
+    title: { absolute: seo.title },
+    description: seo.description,
+    alternates: { canonical: seo.canonical },
     openGraph: {
-      title: `${cat.name} | Emart Skincare Bangladesh`,
-      description,
-      url: `https://e-mart.com.bd/category/${cat.slug}`,
+      title: seo.title,
+      description: seo.description,
+      url: seo.canonical,
+      ...(seo.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
     },
   };
 }
