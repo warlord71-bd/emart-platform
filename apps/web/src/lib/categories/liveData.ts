@@ -13,6 +13,11 @@ import { HOME_TOP_CATEGORY_ORDER, type TopCategoryConfig } from '@/lib/category-
 
 const FIVE_MINUTES = 5 * 60 * 1000;
 const FLASH_DURATION_MS = 6 * 60 * 60 * 1000;
+const BACKEND_ONLY_CATEGORY_SLUGS = new Set([
+  'k-beauty-j-beauty',
+  'shop-by-concern',
+  'moms-corner',
+]);
 
 export interface CategoryPulse {
   id: number;
@@ -134,7 +139,7 @@ export function getActiveFlashPromotion(): FlashPromotion {
 }
 
 export async function getCategoryPulses(limit = 8): Promise<CategoryPulse[]> {
-  const categories = await getCategories({ per_page: Math.max(limit, 20), hide_empty: true });
+  const categories = await getCategories({ per_page: 100, hide_empty: true });
   const bySlug = new Map(categories.map((category) => [category.slug, category]));
   const curated = HOME_TOP_CATEGORY_ORDER
     .map((item) => {
@@ -149,7 +154,12 @@ export async function getCategoryPulses(limit = 8): Promise<CategoryPulse[]> {
 
   const seen = new Set(curated.map(({ category }) => category.slug));
   const fallback: Array<{ item: TopCategoryConfig; category: WooCategory }> = categories
-    .filter((category) => category.slug && category.count && !seen.has(category.slug))
+    .filter((category) => (
+      category.slug
+      && category.count
+      && !seen.has(category.slug)
+      && !BACKEND_ONLY_CATEGORY_SLUGS.has(category.slug)
+    ))
     .map((category) => ({ item: { name: category.name }, category }));
 
   return [...curated, ...fallback]
