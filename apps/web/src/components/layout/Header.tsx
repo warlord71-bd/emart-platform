@@ -697,8 +697,7 @@ export default function Header() {
             </div>
           </div>
 
-          {!isCategoriesRoute && (
-            <nav className="flex h-12 items-center gap-1 border-t border-hairline bg-bg-alt" aria-label="Primary navigation">
+          <nav className="flex h-12 items-center gap-1 border-t border-hairline bg-bg-alt" aria-label="Primary navigation">
               {UNIFIED_BROWSE_TREE.map((group) => (
                 <div key={group.label} className="group relative h-full">
                   <button
@@ -737,14 +736,6 @@ export default function Header() {
                 </div>
               ))}
 
-              <Link href="/search?q=mens+care" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
-                <span className="text-cyan-600">●</span>
-                MEN&apos;S
-              </Link>
-              <Link href="/category/mother-baby-care" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
-                <span className="text-emerald-600">●</span>
-                MOM &amp; BABY
-              </Link>
               <Link href="/brands" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
                 <Tags size={15} className="text-brass" />
                 BRANDS
@@ -758,8 +749,7 @@ export default function Header() {
                 <Sparkles size={15} />
                 NEW ARRIVALS
               </Link>
-            </nav>
-          )}
+          </nav>
         </div>
       </header>
 
@@ -871,21 +861,25 @@ export default function Header() {
           paddingRight: 'max(0.25rem, env(safe-area-inset-right))',
         }}
       >
-        <Link href={isCategoriesRoute ? '/categories' : '/'} className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
-          {isCategoriesRoute ? <ShoppingBag size={20} /> : <span className="text-lg leading-none">⌂</span>}
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">{isCategoriesRoute ? 'Browse' : 'Home'}</span>
+        <Link href="/" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
+          <span className="text-lg leading-none">⌂</span>
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">Home</span>
         </Link>
-        <Link href={isCategoriesRoute ? '/skin-quiz' : '/shop'} className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
-          {isCategoriesRoute ? <Sparkles size={20} /> : <ShoppingBag size={20} />}
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">{isCategoriesRoute ? 'Quiz' : 'Shop'}</span>
+        <Link href="/shop" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
+          <ShoppingBag size={20} />
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">Shop</span>
+        </Link>
+        <Link href="/categories" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
+          <Sparkles size={20} />
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">Browse</span>
         </Link>
         <Link
-          href={isCategoriesRoute ? '/wishlist' : '/search'}
+          href="/wishlist"
           className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent"
-          aria-label={isCategoriesRoute ? 'Wishlist' : 'Search products'}
+          aria-label="Wishlist"
         >
-          {isCategoriesRoute ? <Heart size={20} /> : <Search size={20} />}
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">{isCategoriesRoute ? 'Wishlist' : 'Search'}</span>
+          <Heart size={20} />
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">Wishlist</span>
         </Link>
         <button
           type="button"
@@ -899,7 +893,7 @@ export default function Header() {
         </button>
         <Link href="/account" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
           <User size={20} />
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">{isCategoriesRoute ? 'Me' : 'Account'}</span>
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">Account</span>
         </Link>
       </nav>
 

@@ -6,6 +6,7 @@ import { getBrandBySlug, getBrands, getProducts, type WooBrand } from '@/lib/woo
 import brandLogoManifest from '../../../public/images/brands-e-mart/manifest.json';
 import { CANONICAL_BRANDS } from '@/lib/brandWhitelist';
 import { canonicalPath } from '@/lib/canonicalUrl';
+import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
 
 const brandLogoBySlug = new Map<string, string>();
 for (const entry of brandLogoManifest as Array<{ slug: string; logo: string | null }>) {
@@ -53,6 +54,7 @@ export default async function BrandsPage({
 
       return (
         <div className="min-h-screen bg-bg">
+          <BrowseHubNav active="brands" />
           <div className="border-b border-hairline bg-card px-4 py-8">
             <div className="mx-auto max-w-7xl">
               <div className="mb-2 flex items-center gap-2 text-sm text-muted">
@@ -137,6 +139,7 @@ export default async function BrandsPage({
 
   return (
     <div className="min-h-screen bg-bg">
+      <BrowseHubNav active="brands" />
       {/* Hero */}
       <div className="border-b border-hairline bg-card px-4 py-8">
         <div className="mx-auto max-w-7xl">

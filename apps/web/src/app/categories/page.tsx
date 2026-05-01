@@ -20,6 +20,7 @@ import PopularCategoriesGrid from '@/components/categories/PopularCategoriesGrid
 import FlashDealsRow from '@/components/categories/FlashDealsRow';
 import ConcernGrid from '@/components/categories/ConcernGrid';
 import CustomerWall from '@/components/categories/CustomerWall';
+import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
 
 export function generateMetadata({ searchParams }: { searchParams?: Record<string, string | string[]> }): Metadata {
   return {
@@ -90,6 +91,7 @@ export default async function CategoriesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
+      <BrowseHubNav active="categories" />
       <FlashProvider initialPromotion={promotion}>
         <Suspense fallback={<SectionSkeleton />}>
           <LiveTickerBar initialPresence={activeSessions} initialPurchases={recentPurchases} />

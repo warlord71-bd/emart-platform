@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { CONCERN_DEFINITIONS, getConcernBySlug, getConcernHref, getConcernListing } from '@/lib/concerns';
 import { Sparkles, Target, Droplets, CircleDot, Sun, Star, Clock3, Shield, ShieldCheck, type LucideIcon } from 'lucide-react';
+import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
 
 export const metadata: Metadata = {
   title: 'Shop By Concern | Emart Skincare Bangladesh',
@@ -36,48 +37,51 @@ export default async function ConcernsPage({ searchParams }: ConcernsPageProps) 
 
   if (!searchParams.concern) {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-8">
-        <div className="mb-8 overflow-hidden rounded-[28px] border border-hairline bg-ink px-5 py-6 text-white shadow-card md:px-7">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-brass">Concern finder</p>
-          <h1 className="text-3xl font-bold text-white md:text-4xl">Shop By Concern</h1>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-white/72">
-            Explore one unified concern library across acne, melasma, dark spots, sensitivity, sunscreen, and more.
-            Each concern listing follows the same Emart structure and product-grid experience.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-2">
+      <div>
+        <BrowseHubNav active="concerns" />
+        <div className="mx-auto max-w-7xl px-4 py-8">
+          <div className="mb-8 overflow-hidden rounded-[28px] border border-hairline bg-ink px-5 py-6 text-white shadow-card md:px-7">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-brass">Concern finder</p>
+            <h1 className="text-3xl font-bold text-white md:text-4xl">Shop By Concern</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-white/72">
+              Explore one unified concern library across acne, melasma, dark spots, sensitivity, sunscreen, and more.
+              Each concern listing follows the same Emart structure and product-grid experience.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {CONCERN_DEFINITIONS.map((concern) => (
+                (() => {
+                  const Icon = concernIconMap[concern.icon] || Sparkles;
+                  return (
+                    <Link
+                      key={concern.slug}
+                      href={getConcernHref(concern.slug)}
+                      className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/12"
+                    >
+                      <Icon className="h-4 w-4" />
+                      <span>{concern.label}</span>
+                    </Link>
+                  );
+                })()
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-3">
             {CONCERN_DEFINITIONS.map((concern) => (
               (() => {
                 const Icon = concernIconMap[concern.icon] || Sparkles;
                 return (
-                  <Link
-                    key={concern.slug}
-                    href={getConcernHref(concern.slug)}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/12"
-                  >
-                    <Icon className="h-4 w-4" />
-                    <span>{concern.label}</span>
+                  <Link key={concern.slug} href={getConcernHref(concern.slug)}
+                    className="rounded-2xl border border-hairline bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-card">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div className="mb-2 text-base font-semibold text-ink">{concern.label}</div>
+                    <div className="text-sm leading-6 text-muted">{concern.description}</div>
                   </Link>
                 );
               })()
             ))}
           </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-3">
-          {CONCERN_DEFINITIONS.map((concern) => (
-            (() => {
-              const Icon = concernIconMap[concern.icon] || Sparkles;
-              return (
-                <Link key={concern.slug} href={getConcernHref(concern.slug)}
-                  className="rounded-2xl border border-hairline bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-card">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="mb-2 text-base font-semibold text-ink">{concern.label}</div>
-                  <div className="text-sm leading-6 text-muted">{concern.description}</div>
-                </Link>
-              );
-            })()
-          ))}
         </div>
       </div>
     );
@@ -98,12 +102,14 @@ export default async function ConcernsPage({ searchParams }: ConcernsPageProps) 
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-2 flex items-center gap-3">
-        <Link href="/concerns" className="text-sm text-muted transition-colors hover:text-accent">Concerns</Link>
-        <span className="text-muted-2">/</span>
-        <span className="text-sm font-medium text-ink">{selectedConcern.label}</span>
-      </div>
+    <div>
+      <BrowseHubNav active="concerns" />
+      <div className="mx-auto max-w-7xl px-4 py-8">
+        <div className="mb-2 flex items-center gap-3">
+          <Link href="/concerns" className="text-sm text-muted transition-colors hover:text-accent">Concerns</Link>
+          <span className="text-muted-2">/</span>
+          <span className="text-sm font-medium text-ink">{selectedConcern.label}</span>
+        </div>
 
       <section className="mb-6 overflow-hidden rounded-[28px] border border-hairline bg-card px-5 py-6 shadow-card md:px-7">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
@@ -179,6 +185,7 @@ export default async function ConcernsPage({ searchParams }: ConcernsPageProps) 
           <Link href="/concerns" className="mt-2 block text-accent hover:underline">View all concerns</Link>
         </div>
       )}
+      </div>
     </div>
   );
 }
