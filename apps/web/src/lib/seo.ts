@@ -30,7 +30,7 @@ interface CategorySeoResponse {
 }
 
 const PRODUCT_SEO_QUERY = `
-  query ProductSeo($slug: String!) {
+  query ProductSeo($slug: ID!) {
     product(id: $slug, idType: SLUG) {
       seo {
         title
@@ -42,7 +42,7 @@ const PRODUCT_SEO_QUERY = `
 `;
 
 const CATEGORY_SEO_QUERY = `
-  query CategorySeo($slug: String!) {
+  query CategorySeo($slug: ID!) {
     productCategory(id: $slug, idType: SLUG) {
       name
       seo {
