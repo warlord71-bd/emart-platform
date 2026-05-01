@@ -65,6 +65,8 @@ const POPULAR_SEARCHES = [
 ];
 
 const DRAWER_LINKS: MenuItem[] = [
+  { label: 'Shop All', href: '/shop' },
+  { label: 'Account', href: '/account' },
   { label: "Men's Care", href: '/search?q=mens+care' },
   { label: 'Brands', href: '/brands' },
   { label: 'Sale', href: '/sale' },
@@ -716,6 +718,11 @@ export default function Header() {
           </div>
 
           <nav className="flex h-12 items-center gap-1 border-t border-hairline bg-bg-alt" aria-label="Primary navigation">
+              <Link href="/shop" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
+                <ShoppingBag size={15} className="text-accent" />
+                SHOP ALL
+              </Link>
+
               {UNIFIED_BROWSE_TREE.map((group) => (
                 <div key={group.label} className="group relative h-full">
                   <button
@@ -910,10 +917,6 @@ export default function Header() {
           <CountBadge value={totalItems} />
           <span className="max-w-full truncate text-[10px] font-medium leading-4">Cart</span>
         </button>
-        <Link href="/account" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
-          <User size={20} />
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">Account</span>
-        </Link>
       </nav>
 
       <input
