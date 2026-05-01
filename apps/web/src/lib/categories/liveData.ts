@@ -9,6 +9,7 @@ import {
   type WooProduct,
   type WooProductReview,
 } from '@/lib/woocommerce';
+import { HOME_TOP_CATEGORY_ORDER, type TopCategoryConfig } from '@/lib/category-navigation';
 
 const FIVE_MINUTES = 5 * 60 * 1000;
 const FLASH_DURATION_MS = 6 * 60 * 60 * 1000;
@@ -17,6 +18,7 @@ export interface CategoryPulse {
   id: number;
   name: string;
   slug: string;
+  href?: string;
   product_count: number;
   trend_pct: number;
   active_viewers: number;
@@ -133,15 +135,32 @@ export function getActiveFlashPromotion(): FlashPromotion {
 
 export async function getCategoryPulses(limit = 8): Promise<CategoryPulse[]> {
   const categories = await getCategories({ per_page: Math.max(limit, 20), hide_empty: true });
-  return categories
-    .filter((category) => category.slug && category.count)
+  const bySlug = new Map(categories.map((category) => [category.slug, category]));
+  const curated = HOME_TOP_CATEGORY_ORDER
+    .map((item) => {
+      const slug = item.slug
+        || item.slugCandidates?.find((candidate) => bySlug.has(candidate))
+        || item.fallbackSlug;
+      const category = slug ? bySlug.get(slug) : undefined;
+      if (!category?.slug || !category.count) return null;
+      return { item, category };
+    })
+    .filter((entry): entry is { item: typeof HOME_TOP_CATEGORY_ORDER[number]; category: WooCategory } => Boolean(entry));
+
+  const seen = new Set(curated.map(({ category }) => category.slug));
+  const fallback: Array<{ item: TopCategoryConfig; category: WooCategory }> = categories
+    .filter((category) => category.slug && category.count && !seen.has(category.slug))
+    .map((category) => ({ item: { name: category.name }, category }));
+
+  return [...curated, ...fallback]
     .slice(0, limit)
-    .map((category, index) => {
+    .map(({ item, category }, index) => {
       const trend = stableNumber(category.slug, 16, 92);
       return {
         id: category.id,
-        name: category.name,
+        name: item.name || category.name,
         slug: category.slug,
+        href: item.href || `/category/${category.slug}`,
         product_count: category.count || 0,
         trend_pct: trend,
         active_viewers: stableNumber(`${category.slug}-viewers`, 8, 68),

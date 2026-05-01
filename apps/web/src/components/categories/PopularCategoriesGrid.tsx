@@ -11,6 +11,7 @@ interface CategoryPulse {
   id: number;
   name: string;
   slug: string;
+  href?: string;
   product_count: number;
   trend_pct: number;
   active_viewers: number;
@@ -50,7 +51,7 @@ export default function PopularCategoriesGrid({ initialCategories = [] }: { init
           {categories.map((category, index) => (
             <Link
               key={category.id}
-              href={`/category/${category.slug}`}
+              href={category.href || `/category/${category.slug}`}
               className={`mb-card group min-h-40 p-4 transition hover:-translate-y-0.5 hover:border-[var(--mb-pink-soft)] ${index > 3 ? 'hidden sm:block' : ''}`}
             >
               <div className="flex items-start justify-between gap-3">

@@ -11,6 +11,8 @@ export interface TopCategoryConfig {
 export interface MenuCategoryItem {
   name: string;
   slug: string;
+  href?: string;
+  description?: string;
 }
 
 export interface MenuCategoryGroup {
@@ -18,6 +20,24 @@ export interface MenuCategoryGroup {
   description: string;
   anchor: string;
   items: MenuCategoryItem[];
+}
+
+export interface NavigationSection {
+  title: string;
+  items: MenuCategoryItem[];
+}
+
+export interface NavigationGroup {
+  label: string;
+  href: string;
+  tone: string;
+  panelClassName: string;
+  sections: NavigationSection[];
+}
+
+export interface OriginNavItem extends MenuCategoryItem {
+  country: string;
+  flag: string;
 }
 
 export const TOP_CATEGORY_IMAGE_OVERRIDES: Record<string, string> = {
@@ -28,29 +48,22 @@ export const TOP_CATEGORY_IMAGE_OVERRIDES: Record<string, string> = {
 };
 
 export const HOME_TOP_CATEGORY_ORDER: TopCategoryConfig[] = [
-  { name: 'Viral Kbeauty', slugCandidates: ['k-beauty-j-beauty', 'korean-beauty'], fallbackSlug: 'k-beauty-j-beauty' },
+  { name: 'K-Beauty', slugCandidates: ['k-beauty-j-beauty', 'korean-beauty', 'korean-skincare'], fallbackSlug: 'k-beauty-j-beauty' },
+  { name: 'J-Beauty', slugCandidates: ['j-beauty', 'japanese-beauty', 'japanese-skincare'], fallbackSlug: 'japanese-beauty', href: '/origins?country=japan' },
   { name: 'Serum & Ampoule', slugCandidates: ['serums-ampoules-essences', 'toners-mists'], fallbackSlug: 'serums-ampoules-essences' },
   { name: 'Moisturizers', slugCandidates: ['night-cream', 'moisturizer', 'cream-moisturizers'], fallbackSlug: 'night-cream' },
   { name: 'Sunscreen', slugCandidates: ['sunscreen'], fallbackSlug: 'sunscreen' },
   { name: 'Cleansers', slugCandidates: ['face-cleansers'], fallbackSlug: 'face-cleansers' },
-  { name: 'Hair Care', slugCandidates: ['hair-care'], fallbackSlug: 'hair-care' },
 ];
 
-const concernCategoryItems = Array.from(
-  new Map(
-    CONCERN_DEFINITIONS
-      .filter((concern) => concern.categorySlug)
-      .map((concern) => [
-        concern.categorySlug!,
-        {
-          name: concern.label,
-          slug: concern.categorySlug!,
-        },
-      ])
-  ).values()
-);
+export const CONCERN_NAV_ITEMS: MenuCategoryItem[] = CONCERN_DEFINITIONS.map((concern) => ({
+  name: concern.label,
+  slug: concern.slug,
+  href: `/concerns?concern=${encodeURIComponent(concern.slug)}`,
+  description: concern.description,
+}));
 
-export const MENU_CATEGORY_GROUPS: MenuCategoryGroup[] = [
+export const CATEGORY_NAV_SECTIONS: MenuCategoryGroup[] = [
   {
     title: 'Skincare',
     description: 'Daily face care, treatment steps, and sun protection.',
@@ -58,7 +71,7 @@ export const MENU_CATEGORY_GROUPS: MenuCategoryGroup[] = [
     items: [
       { name: 'Face Cleansers', slug: 'face-cleansers' },
       { name: 'Toners & Mists', slug: 'toners-mists' },
-      { name: 'Serums & Ampoules', slug: 'serums-ampoules-essences' },
+      { name: 'Serum & Ampoule', slug: 'serums-ampoules-essences' },
       { name: 'Sunscreen', slug: 'sunscreen' },
       { name: 'Eye Care', slug: 'eye-care' },
       { name: 'Masks', slug: 'face-masks' },
@@ -99,9 +112,81 @@ export const MENU_CATEGORY_GROUPS: MenuCategoryGroup[] = [
     ],
   },
   {
-    title: 'Shop by Concern',
-    description: 'Browse by skin goals and common skincare concerns.',
-    anchor: 'concern',
-    items: concernCategoryItems,
+    title: 'K-Beauty & J-Beauty',
+    description: 'Browse Korean and Japanese beauty without mixing them into generic country labels.',
+    anchor: 'origin-highlight',
+    items: [
+      { name: 'K-Beauty', slug: 'k-beauty-j-beauty', href: '/origins?country=korea' },
+      { name: 'J-Beauty', slug: 'japanese-beauty', href: '/origins?country=japan' },
+    ],
   },
 ];
+
+export const MENU_CATEGORY_GROUPS = CATEGORY_NAV_SECTIONS;
+
+export const ORIGIN_NAV_ITEMS: OriginNavItem[] = [
+  { name: 'K-Beauty', slug: 'korea', country: 'korea', flag: 'KR', href: '/origins?country=korea', description: 'Korean skincare and makeup picks.' },
+  { name: 'J-Beauty', slug: 'japan', country: 'japan', flag: 'JP', href: '/origins?country=japan', description: 'Japanese beauty and sunscreen finds.' },
+  { name: 'USA Beauty', slug: 'usa', country: 'usa', flag: 'US', href: '/origins?country=usa' },
+  { name: 'UK Beauty', slug: 'uk', country: 'uk', flag: 'UK', href: '/origins?country=uk' },
+  { name: 'French Beauty', slug: 'france', country: 'france', flag: 'FR', href: '/origins?country=france' },
+  { name: 'Indian Beauty', slug: 'india', country: 'india', flag: 'IN', href: '/origins?country=india' },
+  { name: 'Thai Beauty', slug: 'thailand', country: 'thailand', flag: 'TH', href: '/origins?country=thailand' },
+  { name: 'Other Global Beauty', slug: 'other', country: 'other', flag: 'GL', href: '/origins?country=other' },
+];
+
+const toCategoryItem = (item: MenuCategoryItem): MenuCategoryItem => ({
+  ...item,
+  href: item.href || `/category/${item.slug}`,
+});
+
+export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
+  {
+    label: 'SHOP BY CATEGORY',
+    href: '/categories',
+    tone: 'text-accent',
+    panelClassName: 'w-[760px]',
+    sections: CATEGORY_NAV_SECTIONS.map((section) => ({
+      title: section.title,
+      items: section.items.map(toCategoryItem),
+    })),
+  },
+  {
+    label: 'SHOP BY CONCERN',
+    href: '/concerns',
+    tone: 'text-warning',
+    panelClassName: 'w-[700px]',
+    sections: [
+      {
+        title: 'Skin goals',
+        items: CONCERN_NAV_ITEMS.slice(0, 5),
+      },
+      {
+        title: 'More concerns',
+        items: CONCERN_NAV_ITEMS.slice(5),
+      },
+    ],
+  },
+  {
+    label: 'SHOP BY ORIGIN',
+    href: '/origins',
+    tone: 'text-brass',
+    panelClassName: 'w-[640px]',
+    sections: [
+      {
+        title: 'K-Beauty & J-Beauty',
+        items: ORIGIN_NAV_ITEMS.slice(0, 2),
+      },
+      {
+        title: 'Western Beauty',
+        items: ORIGIN_NAV_ITEMS.filter((item) => ['usa', 'uk', 'france'].includes(item.country)),
+      },
+      {
+        title: 'More origins',
+        items: ORIGIN_NAV_ITEMS.filter((item) => ['india', 'thailand', 'other'].includes(item.country)),
+      },
+    ],
+  },
+];
+
+export const DRAWER_NAV_GROUPS = UNIFIED_BROWSE_TREE;

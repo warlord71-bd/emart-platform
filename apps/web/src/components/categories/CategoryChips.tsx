@@ -9,6 +9,7 @@ interface CategoryChip {
   id: number;
   name: string;
   slug: string;
+  href?: string;
   display_order?: number;
   is_trending?: boolean;
 }
@@ -43,7 +44,7 @@ export default function CategoryChips({ initialCategories = [] }: { initialCateg
             .map((category) => (
               <Link
                 key={category.id}
-                href={`/category/${category.slug}`}
+                href={category.href || `/category/${category.slug}`}
                 className="rounded-full border border-[var(--mb-line)] bg-white px-4 py-2 text-sm font-bold text-[var(--mb-ink-2)] transition hover:border-[var(--mb-pink-soft)] hover:text-[var(--mb-pink)]"
               >
                 {category.name}

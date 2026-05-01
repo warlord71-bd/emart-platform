@@ -23,6 +23,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
+import { DRAWER_NAV_GROUPS, UNIFIED_BROWSE_TREE } from '@/lib/category-navigation';
 import type { WooCategory, WooImage } from '@/lib/woocommerce';
 
 interface SearchSuggestion {
@@ -47,18 +48,6 @@ interface MenuItem {
   href: string;
 }
 
-interface MenuSection {
-  title: string;
-  items: MenuItem[];
-}
-
-interface MenuGroup {
-  label: string;
-  tone: string;
-  sections: MenuSection[];
-  panelClassName: string;
-}
-
 const SEARCH_SCOPES: SearchScope[] = [
   { value: 'all', label: 'All', href: '/shop' },
   { value: 'skincare', label: 'Skincare', href: '/categories', queryPrefix: 'skincare' },
@@ -75,136 +64,8 @@ const POPULAR_SEARCHES = [
   'Cerave cleanser',
 ];
 
-const DESKTOP_MENU_GROUPS: MenuGroup[] = [
-  {
-    label: 'SKINCARE',
-    tone: 'text-accent',
-    panelClassName: 'w-[700px]',
-    sections: [
-      {
-        title: 'By Type',
-        items: [
-          { label: 'Cleansers', href: '/category/face-cleansers' },
-          { label: 'Toners', href: '/category/toners-mists' },
-          { label: 'Serums', href: '/category/serums-ampoules-essences' },
-          { label: 'Moisturizers', href: '/category/night-cream' },
-          { label: 'Sunscreen', href: '/category/sunscreen' },
-          { label: 'Masks', href: '/category/face-masks' },
-          { label: 'Treatments', href: '/concerns' },
-        ],
-      },
-      {
-        title: 'By Concern',
-        items: [
-          { label: 'All concerns', href: '/concerns' },
-          { label: 'Acne', href: '/category/acne-blemish-care' },
-          { label: 'Melasma', href: '/category/melasma' },
-          { label: 'Anti-aging', href: '/category/anti-aging-repair' },
-          { label: 'Sensitivity', href: '/category/dryness-hydration' },
-          { label: 'Pores', href: '/category/pores-oil-control' },
-          { label: 'Dryness', href: '/category/dryness-hydration' },
-        ],
-      },
-      {
-        title: 'By Origin',
-        items: [
-          { label: 'Korean', href: '/origins?country=korea' },
-          { label: 'Japanese', href: '/origins?country=japan' },
-          { label: 'USA', href: '/origins?country=usa' },
-          { label: 'French', href: '/origins?country=france' },
-        ],
-      },
-    ],
-  },
-  {
-    label: 'MAKEUP',
-    tone: 'text-accent',
-    panelClassName: 'w-[520px]',
-    sections: [
-      {
-        title: 'By Type',
-        items: [
-          { label: 'Face', href: '/category/face-makeup' },
-          { label: 'Eye', href: '/category/eyes' },
-          { label: 'Lip', href: '/category/lips' },
-          { label: 'Tools', href: '/category/makeup-remover' },
-          { label: 'Brushes', href: '/search?q=makeup+brushes' },
-        ],
-      },
-      {
-        title: 'By Origin',
-        items: [
-          { label: 'Korean', href: '/origins?country=korea' },
-          { label: 'Japanese', href: '/origins?country=japan' },
-          { label: 'USA', href: '/origins?country=usa' },
-          { label: 'French', href: '/origins?country=france' },
-        ],
-      },
-    ],
-  },
-  {
-    label: 'HAIR & SCALP',
-    tone: 'text-warning',
-    panelClassName: 'w-[260px]',
-    sections: [
-      {
-        title: 'By Type',
-        items: [
-          { label: 'Shampoo', href: '/search?q=shampoo' },
-          { label: 'Conditioner', href: '/search?q=conditioner' },
-          { label: 'Treatments', href: '/search?q=hair+treatment' },
-          { label: 'Styling', href: '/search?q=hair+styling' },
-        ],
-      },
-    ],
-  },
-  {
-    label: 'BODY & BATH',
-    tone: 'text-brass',
-    panelClassName: 'w-[620px]',
-    sections: [
-      {
-        title: 'By Type',
-        items: [
-          { label: 'Wash', href: '/category/body-wash' },
-          { label: 'Lotion', href: '/category/body-lotion' },
-          { label: 'Exfoliation', href: '/search?q=body+scrub' },
-          { label: 'Hand/Foot', href: '/search?q=hand+foot+care' },
-        ],
-      },
-      {
-        title: 'Fragrance',
-        items: [
-          { label: 'All fragrance', href: '/category/fragrances' },
-          { label: 'Body mist', href: '/search?q=body+mist' },
-          { label: 'Perfume', href: '/search?q=perfume' },
-          { label: 'Deo spray', href: '/search?q=deodorant+spray' },
-        ],
-      },
-      {
-        title: 'Personal Care',
-        items: [
-          { label: 'Oral', href: '/search?q=oral+care' },
-          { label: 'Feminine', href: '/search?q=feminine+care' },
-          { label: 'Deodorant', href: '/search?q=deodorant' },
-          { label: 'Shaving', href: '/search?q=shaving' },
-        ],
-      },
-    ],
-  },
-];
-
 const DRAWER_LINKS: MenuItem[] = [
-  { label: 'Skincare', href: '/categories' },
-  { label: 'Makeup', href: '/category/makeup-cosmetics' },
-  { label: 'Hair & Scalp', href: '/category/hair-care' },
-  { label: 'Body & Bath', href: '/category/body-wash' },
-  { label: 'Fragrance', href: '/category/fragrances' },
-  { label: "Men's", href: '/search?q=mens+care' },
-  { label: 'Mom & Baby', href: '/category/mother-baby-care' },
-  { label: 'Personal Care', href: '/category/personal-hygiene' },
   { label: 'Brands', href: '/brands' },
-  { label: 'Concerns', href: '/concerns' },
   { label: 'Sale', href: '/sale' },
   { label: 'New', href: '/new-arrivals' },
 ];
@@ -307,6 +168,7 @@ export default function Header() {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openDrawerGroups, setOpenDrawerGroups] = useState<string[]>(['SHOP BY CATEGORY']);
   const [isListening, setIsListening] = useState(false);
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
   const cartItems = useCartStore((s) => s.items);
@@ -319,6 +181,13 @@ export default function Header() {
   const showSearchPanel = searchFocused && (trimmedSearch.length < 2 || searchLoading || searchResults.length > 0);
   const cartPreviewItems = cartItems.slice(-3).reverse();
   const isCategoriesRoute = pathname === '/categories';
+  const toggleDrawerGroup = (label: string) => {
+    setOpenDrawerGroups((current) =>
+      current.includes(label)
+        ? current.filter((item) => item !== label)
+        : [...current, label]
+    );
+  };
 
   useEffect(() => {
     const readWishlist = () => {
@@ -830,7 +699,7 @@ export default function Header() {
 
           {!isCategoriesRoute && (
             <nav className="flex h-12 items-center gap-1 border-t border-hairline bg-bg-alt" aria-label="Primary navigation">
-              {DESKTOP_MENU_GROUPS.map((group) => (
+              {UNIFIED_BROWSE_TREE.map((group) => (
                 <div key={group.label} className="group relative h-full">
                   <button
                     type="button"
@@ -853,11 +722,11 @@ export default function Header() {
                           <div className="space-y-1">
                             {section.items.map((item) => (
                               <Link
-                                key={item.href}
-                                href={item.href}
+                                key={item.href || item.slug}
+                                href={item.href || `/category/${item.slug}`}
                                 className="block rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:bg-accent-soft hover:text-accent"
                               >
-                                {item.label}
+                                {item.name}
                               </Link>
                             ))}
                           </div>
@@ -918,17 +787,59 @@ export default function Header() {
               </button>
             </div>
 
-            <div className="grid gap-2">
-              {DRAWER_LINKS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-lg border border-hairline px-4 py-3 text-sm font-bold text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent"
-                >
-                  {item.label}
-                </Link>
-              ))}
+            <div className="space-y-3 overflow-y-auto pb-28">
+              {DRAWER_NAV_GROUPS.map((group) => {
+                const isOpen = openDrawerGroups.includes(group.label);
+                return (
+                  <div key={group.label} className="rounded-lg border border-hairline bg-white">
+                    <button
+                      type="button"
+                      onClick={() => toggleDrawerGroup(group.label)}
+                      className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-extrabold text-ink"
+                      aria-expanded={isOpen}
+                    >
+                      <span>{group.label}</span>
+                      <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {isOpen && (
+                      <div className="border-t border-hairline px-3 py-3">
+                        {group.sections.map((section) => (
+                          <div key={section.title} className="mb-3 last:mb-0">
+                            <div className="mb-1 px-1 text-[11px] font-bold uppercase tracking-normal text-gray-400">
+                              {section.title}
+                            </div>
+                            <div className="grid gap-1">
+                              {section.items.map((item) => (
+                                <Link
+                                  key={item.href || item.slug}
+                                  href={item.href || `/category/${item.slug}`}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="rounded-lg px-3 py-2 text-sm font-semibold text-muted hover:bg-accent-soft hover:text-accent"
+                                >
+                                  {item.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              <div className="grid gap-2 border-t border-hairline pt-3">
+                {DRAWER_LINKS.filter((item) => ['Brands', 'Sale', 'New'].includes(item.label)).map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-lg border border-hairline px-4 py-3 text-sm font-bold text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
