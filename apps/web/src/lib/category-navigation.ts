@@ -29,7 +29,7 @@ export const TOP_CATEGORY_IMAGE_OVERRIDES: Record<string, string> = {
 
 export const HOME_TOP_CATEGORY_ORDER: TopCategoryConfig[] = [
   { name: 'Viral Kbeauty', slugCandidates: ['k-beauty-j-beauty', 'korean-beauty'], fallbackSlug: 'k-beauty-j-beauty' },
-  { name: 'Toners & Essences', slugCandidates: ['serums-ampoules-essences', 'toners-mists'], fallbackSlug: 'serums-ampoules-essences' },
+  { name: 'Serum & Ampoule', slugCandidates: ['serums-ampoules-essences', 'toners-mists'], fallbackSlug: 'serums-ampoules-essences' },
   { name: 'Moisturizers', slugCandidates: ['night-cream', 'moisturizer', 'cream-moisturizers'], fallbackSlug: 'night-cream' },
   { name: 'Sunscreen', slugCandidates: ['sunscreen'], fallbackSlug: 'sunscreen' },
   { name: 'Cleansers', slugCandidates: ['face-cleansers'], fallbackSlug: 'face-cleansers' },
