@@ -42,8 +42,8 @@ export default function PopularCategoriesGrid({ initialCategories = [] }: { init
       <div className="mb-container">
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mb-pink)]">Live category pulse</p>
-            <h2 className="mt-1 text-3xl font-semibold text-[var(--mb-ink)]">{t('popularCategories')}</h2>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mb-pink)]">{t('popularEyebrow')}</p>
+            <h2 className="mt-1 text-3xl font-semibold text-[var(--mb-ink)]">{t('popularTitle')}</h2>
           </div>
           <Link href="/shop" className="hidden text-sm font-bold text-[var(--mb-pink)] sm:inline">{t('seeAll')}</Link>
         </div>

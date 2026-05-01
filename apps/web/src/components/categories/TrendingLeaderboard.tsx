@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { TrendingUp } from 'lucide-react';
 import { useCategoryPageI18n } from './categoryPageI18n';
 
 interface TrendingProduct {
@@ -31,31 +30,28 @@ export default function TrendingLeaderboard({ initialProducts = [] }: { initialP
   const products: TrendingProduct[] = Array.isArray(data?.products) ? data.products : [];
 
   return (
-    <div className="mb-card mb-card-lg h-full p-4 sm:p-5">
+    <div className="h-full rounded-[var(--mb-radius)] border border-white/10 bg-white/[0.06] p-4 text-white sm:p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--mb-pink)]">{t('trendingNow')}</p>
-          <h2 className="mt-1 text-xl font-semibold text-[var(--mb-ink)]">Fastest-rising SKUs</h2>
-        </div>
-        <TrendingUp className="h-5 w-5 text-[var(--mb-gold)]" />
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/70">{t('trendingNow')}</p>
+        <span className="rounded-md bg-[#FFE5E5] px-2 py-1 text-[10px] font-bold text-[var(--mb-danger)]">LIVE</span>
       </div>
-      {isError ? <p className="text-sm text-[var(--mb-ink-3)]">Trending products are unavailable right now.</p> : null}
+      {isError ? <p className="text-sm text-white/60">Trending products are unavailable right now.</p> : null}
       {isLoading && products.length === 0 ? <div className="h-48 animate-pulse rounded-[var(--mb-radius)] bg-[var(--mb-pink-bg)]" /> : null}
-      <div className="space-y-2">
+      <div>
         {products.slice(0, 4).map((product, index) => (
           <Link
             key={product.id}
             href={`/shop/${product.slug}`}
-            className={`grid grid-cols-[30px_minmax(0,1fr)_auto] items-center gap-3 rounded-[var(--mb-radius-sm)] border border-[var(--mb-line)] bg-white/70 p-3 transition hover:border-[var(--mb-pink-soft)] hover:bg-white ${index === 3 ? 'hidden sm:grid' : ''}`}
+            className={`grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-3 border-b border-white/10 py-3 transition hover:bg-white/[0.04] ${index === 3 ? 'hidden sm:grid' : ''}`}
           >
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-[var(--mb-navy)] text-xs font-bold text-white">{index + 1}</span>
+            <span className="font-[var(--font-display)] text-xl font-semibold text-[var(--mb-gold)]">0{index + 1}</span>
             <span className="min-w-0">
-              <span className="block truncate text-sm font-bold text-[var(--mb-ink)]">{product.name}</span>
-              <span className="block truncate text-xs text-[var(--mb-ink-3)]">{product.brand}</span>
+              <span className="block truncate text-sm font-bold text-white">{product.name}</span>
+              <span className="block truncate text-[10px] uppercase tracking-[0.08em] text-white/55">{product.brand}</span>
             </span>
             <span className="text-right text-xs font-bold">
-              <span className="block text-[var(--mb-success)]">↑ {n(product.growth_rate)}%</span>
-              <span className={product.stock_remaining < 15 ? 'text-[var(--mb-danger)]' : 'text-[var(--mb-ink-3)]'}>
+              <span className={product.stock_remaining < 15 ? 'block text-[#FF8B8B]' : 'block text-[var(--mb-pink-soft)]'}>↑ {n(product.growth_rate)}%</span>
+              <span className="text-white/50">
                 {n(product.stock_remaining)} left
               </span>
             </span>

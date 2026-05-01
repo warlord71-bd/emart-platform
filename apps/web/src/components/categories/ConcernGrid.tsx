@@ -45,8 +45,8 @@ export default function ConcernGrid({ initialConcerns = [] }: { initialConcerns?
     <section id="concerns" className="py-8 sm:py-10">
       <div className="mb-container">
         <div className="mb-5">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mb-pink)]">Skin goals</p>
-          <h2 className="mt-1 text-3xl font-semibold text-[var(--mb-ink)]">{t('concerns')}</h2>
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mb-gold)]">{t('concernEyebrow')}</p>
+          <h2 className="mt-1 text-3xl font-semibold text-[var(--mb-ink)]">{t('concernTitle')}</h2>
         </div>
         {isError ? <p className="mb-card p-4 text-sm text-[var(--mb-ink-3)]">Concern data is unavailable right now.</p> : null}
         {isLoading && concerns.length === 0 ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-44 animate-pulse rounded-[var(--mb-radius)] bg-[var(--mb-pink-bg)]" />)}</div> : null}

@@ -38,15 +38,15 @@ export default function FlashDealsRow({ initialProducts = [] }: { initialProduct
   const products: FlashProduct[] = Array.isArray(data?.products) ? data.products : [];
 
   return (
-    <section className="bg-[var(--mb-paper)] py-8 sm:py-10">
+    <section className="bg-gradient-to-b from-[var(--mb-pink-bg)] to-white py-8 sm:py-10">
       <div className="mb-container">
         <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mb-pink)]">Stock velocity</p>
-            <h2 className="mt-1 text-3xl font-semibold text-[var(--mb-ink)]">{t('flashDeals')}</h2>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mb-pink)]">{t('flashEyebrow')}</p>
+            <h2 className="mt-1 text-3xl font-semibold text-[var(--mb-ink)]">{t('flashTitle')}</h2>
           </div>
-          <div>
-            <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--mb-ink-3)]">{t('flashEnds')}</p>
+          <div className="rounded-full bg-[var(--mb-navy)] px-4 py-3 text-white">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-white/65">{t('flashEnds')}</p>
             <CountdownTiles seconds={secondsRemaining} />
           </div>
         </div>
