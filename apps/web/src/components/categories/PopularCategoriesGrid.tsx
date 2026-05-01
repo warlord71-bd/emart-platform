@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowUpRight } from 'lucide-react';
@@ -56,13 +55,9 @@ export default function PopularCategoriesGrid({ initialCategories = [] }: { init
             >
               <div className="flex items-start justify-between gap-3">
                 <span className="relative grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-[var(--mb-pink-bg)] text-sm font-extrabold text-[var(--mb-pink)]">
-                  {category.icon_url ? (
-                    <Image src={category.icon_url} alt="" fill sizes="48px" className="object-cover" />
-                  ) : (
-                    <span className="absolute inset-0 [&>svg]:h-full [&>svg]:w-full">
-                      <CategoryIllustration slug={category.slug} uid={category.id} />
-                    </span>
-                  )}
+                  <span className="absolute inset-0 [&>svg]:h-full [&>svg]:w-full">
+                    <CategoryIllustration slug={category.slug} uid={category.id} />
+                  </span>
                 </span>
                 <span className="flex items-center gap-2">
                   {category.is_hot ? <span className="rounded-full bg-[var(--mb-pink)] px-2 py-1 text-[10px] font-bold text-white">HOT</span> : null}

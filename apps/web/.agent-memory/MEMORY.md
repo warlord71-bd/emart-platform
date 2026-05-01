@@ -12,3 +12,4 @@
 - [GMC + Facebook product URL fix](project_gmc_nextjs_urls.md) — mu-plugin rewrites /product/slug → /shop/slug for GLA (GMC) and FB Catalog submissions
 - [Open and deferred tasks](project_open_tasks.md) — Cloudflare cache rules remain dashboard-only; social thumbnails and `/brands/[slug]` completed live 2026-04-30
 - [Token efficiency protocol](feedback_token_efficiency.md) — keep future sessions token-lean with narrow reads, concise updates, and minimal output
+- [2026-05-01 VPS reconciliation state](project_20260501_vps_reconciliation_state.md) — Local/Git clean at `61ca7be`; VPS git metadata old/dirty but header/category source matches; preserve live `HeroCarousel` tagline before broad sync
