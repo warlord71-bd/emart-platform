@@ -812,6 +812,23 @@ export async function getCustomerOrders(customerId: number): Promise<WooOrder[]>
   }
 }
 
+export async function getRecentOrders(limit = 10): Promise<WooOrder[]> {
+  try {
+    const response = await wooClient.get('/orders', {
+      params: {
+        per_page: limit,
+        orderby: 'date',
+        order: 'desc',
+        status: 'processing,completed',
+      },
+    });
+    return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+    logWooError('getRecentOrders', error, { limit });
+    return [];
+  }
+}
+
 export async function getOrder(orderId: number): Promise<WooOrder | null> {
   try {
     const response = await wooClient.get(`/orders/${orderId}`);
@@ -853,6 +870,26 @@ export async function getProductReviews(productId: number): Promise<WooProductRe
       : [];
   } catch (error) {
     logWooError('getProductReviews', error, { productId });
+    return [];
+  }
+}
+
+export async function getRecentProductReviews(limit = 12): Promise<WooProductReview[]> {
+  try {
+    const response = await wooClient.get('/products/reviews', {
+      params: {
+        per_page: limit,
+        status: 'approved',
+        orderby: 'date_gmt',
+        order: 'desc',
+      },
+    });
+
+    return Array.isArray(response.data)
+      ? response.data.map(transformProductReview).filter((review) => review.id && review.rating > 0)
+      : [];
+  } catch (error) {
+    logWooError('getRecentProductReviews', error, { limit });
     return [];
   }
 }

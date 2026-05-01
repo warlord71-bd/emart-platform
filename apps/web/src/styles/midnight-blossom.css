@@ -1,0 +1,93 @@
+[data-theme="midnight-blossom"] {
+  --mb-navy: #1B1B2F;
+  --mb-navy-2: #25253E;
+  --mb-navy-3: #2F2F4A;
+  --mb-pink: #E8739E;
+  --mb-pink-soft: #F5C2D5;
+  --mb-pink-bg: #FBE8EF;
+  --mb-gold: #D4A248;
+  --mb-gold-soft: #EAC986;
+  --mb-cream: #FAF6EE;
+  --mb-paper: #FFFDF8;
+  --mb-ink: #1B1B2F;
+  --mb-ink-2: #4A4A63;
+  --mb-ink-3: #7A7A8E;
+  --mb-line: #E6E1D6;
+  --mb-success: #3FA572;
+  --mb-danger: #D9534F;
+  --mb-radius-sm: 8px;
+  --mb-radius: 14px;
+  --mb-radius-lg: 22px;
+  --font-display: var(--font-display-loaded), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-sans-loaded), "Jost", system-ui, sans-serif;
+  --font-bn: var(--font-bengali-loaded), "Hind Siliguri", "Jost", sans-serif;
+  background: var(--mb-cream);
+  color: var(--mb-ink);
+  font-family: var(--font-sans);
+}
+
+[data-theme="midnight-blossom"] h1,
+[data-theme="midnight-blossom"] h2,
+[data-theme="midnight-blossom"] h3 {
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
+[data-theme="midnight-blossom"] :lang(bn),
+[data-theme="midnight-blossom"] .mb-bn {
+  font-family: var(--font-bn);
+}
+
+.mb-shell {
+  background:
+    radial-gradient(circle at top left, rgba(232, 115, 158, 0.16), transparent 32rem),
+    linear-gradient(180deg, var(--mb-paper), var(--mb-cream));
+}
+
+.mb-container {
+  width: min(100% - 2rem, 1180px);
+  margin-inline: auto;
+}
+
+.mb-card {
+  border: 1px solid var(--mb-line);
+  border-radius: var(--mb-radius);
+  background: var(--mb-paper);
+  box-shadow: 0 12px 34px rgba(27, 27, 47, 0.07);
+}
+
+.mb-card-lg {
+  border-radius: var(--mb-radius-lg);
+}
+
+.mb-scrollbar-none {
+  scrollbar-width: none;
+}
+
+.mb-scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.mb-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: mb-ticker 28s linear infinite;
+}
+
+.mb-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes mb-ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes mb-pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0.35); }
+  50% { box-shadow: 0 0 0 7px rgba(217, 83, 79, 0); }
+}
+
+.mb-stock-pulse {
+  animation: mb-pulse-red 1.4s ease-in-out infinite;
+}

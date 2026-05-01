@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   BadgeCheck,
   Camera,
@@ -296,6 +296,7 @@ function AccountDropdown() {
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
   const [searchScope, setSearchScope] = useState(SEARCH_SCOPES[0].value);
@@ -317,6 +318,7 @@ export default function Header() {
   const trimmedSearch = search.trim();
   const showSearchPanel = searchFocused && (trimmedSearch.length < 2 || searchLoading || searchResults.length > 0);
   const cartPreviewItems = cartItems.slice(-3).reverse();
+  const isCategoriesRoute = pathname === '/categories';
 
   useEffect(() => {
     const readWishlist = () => {
@@ -950,21 +952,21 @@ export default function Header() {
           paddingRight: 'max(0.25rem, env(safe-area-inset-right))',
         }}
       >
-        <Link href="/" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
-          <span className="text-lg leading-none">⌂</span>
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">Home</span>
+        <Link href={isCategoriesRoute ? '/categories' : '/'} className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
+          {isCategoriesRoute ? <ShoppingBag size={20} /> : <span className="text-lg leading-none">⌂</span>}
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">{isCategoriesRoute ? 'Browse' : 'Home'}</span>
         </Link>
-        <Link href="/shop" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
-          <ShoppingBag size={20} />
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">Shop</span>
+        <Link href={isCategoriesRoute ? '/skin-quiz' : '/shop'} className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
+          {isCategoriesRoute ? <Sparkles size={20} /> : <ShoppingBag size={20} />}
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">{isCategoriesRoute ? 'Quiz' : 'Shop'}</span>
         </Link>
         <Link
-          href="/search"
+          href={isCategoriesRoute ? '/wishlist' : '/search'}
           className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent"
-          aria-label="Search products"
+          aria-label={isCategoriesRoute ? 'Wishlist' : 'Search products'}
         >
-          <Search size={20} />
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">Search</span>
+          {isCategoriesRoute ? <Heart size={20} /> : <Search size={20} />}
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">{isCategoriesRoute ? 'Wishlist' : 'Search'}</span>
         </Link>
         <button
           type="button"
@@ -978,7 +980,7 @@ export default function Header() {
         </button>
         <Link href="/account" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
           <User size={20} />
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">Account</span>
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">{isCategoriesRoute ? 'Me' : 'Account'}</span>
         </Link>
       </nav>
 

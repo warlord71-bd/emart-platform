@@ -1,13 +1,14 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next';
 import './globals.css';
+import '@/styles/midnight-blossom.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { Toaster } from 'react-hot-toast';
 import Providers from './providers';
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { DM_Sans, Hind_Siliguri, JetBrains_Mono, Playfair_Display } from 'next/font/google';
+import { DM_Sans, Hind_Siliguri, JetBrains_Mono, Jost, Playfair_Display } from 'next/font/google';
 import { COMPANY } from '@/lib/companyProfile';
 import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
 
@@ -31,6 +32,13 @@ const hindSiliguri = Hind_Siliguri({
   subsets: ['bengali', 'latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-bengali-loaded',
+  display: 'swap',
+});
+
+const jost = Jost({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-sans-loaded',
   display: 'swap',
 });
 
@@ -98,7 +106,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-BD" className={`${playfair.variable} ${dmSans.variable} ${hindSiliguri.variable} ${jetbrains.variable}`}>
+    <html lang="en-BD" className={`${playfair.variable} ${dmSans.variable} ${hindSiliguri.variable} ${jost.variable} ${jetbrains.variable}`}>
       <head>
         {/* OnlineStore + Organization Schema */}
         <script
