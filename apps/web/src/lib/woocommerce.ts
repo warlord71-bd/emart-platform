@@ -1,5 +1,5 @@
 // src/lib/woocommerce.ts
-// WooCommerce REST API v3 Client for E-Mart BD
+// WooCommerce REST API v3 Client for Emart Skincare Bangladesh
 
 import axios from 'axios';
 import { CANONICAL_BRANDS } from '@/lib/brandWhitelist';
