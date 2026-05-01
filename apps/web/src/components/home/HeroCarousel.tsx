@@ -27,7 +27,10 @@ export const HeroCarousel = () => {
           <h1 className="mt-1.5 max-w-[8.5ch] text-[1.45rem] font-extrabold leading-[0.94] text-[#101010] lg:mt-3 lg:max-w-[10ch] lg:text-6xl">
             {HERO.title}
           </h1>
-          <p className="mt-2 max-w-[28ch] text-[11px] leading-4.5 text-white/92 lg:mt-4 lg:max-w-[46ch] lg:text-base lg:leading-7">
+          <p className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.22em] text-white/70 lg:mt-2 lg:text-[11px]">
+            Global Beauty. Local Trust.
+          </p>
+          <p className="mt-1.5 max-w-[28ch] text-[11px] leading-4.5 text-white/92 lg:mt-3 lg:max-w-[46ch] lg:text-base lg:leading-7">
             <span className="lg:hidden">{HERO.mobileCopy}</span>
             <span className="hidden lg:inline">{HERO.copy}</span>
           </p>
