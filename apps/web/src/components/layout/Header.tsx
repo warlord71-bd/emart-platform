@@ -708,7 +708,7 @@ export default function Header() {
                     {group.label}
                     <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
                   </button>
-                  <div className={`invisible absolute left-0 top-full z-[70] translate-y-1 rounded-lg border border-hairline bg-white p-4 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ${group.panelClassName}`}>
+                  <div className={`invisible absolute left-0 top-full z-[70] max-w-[calc(100vw-2rem)] translate-y-1 rounded-lg border border-hairline bg-white p-4 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ${group.panelClassName}`}>
                     <div
                       className="grid gap-4"
                       style={{ gridTemplateColumns: `repeat(${group.sections.length}, minmax(0, 1fr))` }}
@@ -723,7 +723,7 @@ export default function Header() {
                               <Link
                                 key={item.href || item.slug}
                                 href={item.href || `/category/${item.slug}`}
-                                className="block rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:bg-accent-soft hover:text-accent"
+                                className="block rounded-lg px-3 py-2 text-[13px] font-semibold leading-snug text-muted transition-colors hover:bg-accent-soft hover:text-accent"
                               >
                                 {item.name}
                               </Link>

@@ -48,7 +48,7 @@ export const TOP_CATEGORY_IMAGE_OVERRIDES: Record<string, string> = {
 };
 
 export const HOME_TOP_CATEGORY_ORDER: TopCategoryConfig[] = [
-  { name: 'K-Beauty', slugCandidates: ['k-beauty-j-beauty', 'korean-beauty', 'korean-skincare'], fallbackSlug: 'k-beauty-j-beauty' },
+  { name: 'K-Beauty', slugCandidates: ['k-beauty-j-beauty', 'korean-beauty', 'korean-skincare'], fallbackSlug: 'k-beauty-j-beauty', href: '/origins?country=korea' },
   { name: 'J-Beauty', slugCandidates: ['j-beauty', 'japanese-beauty', 'japanese-skincare'], fallbackSlug: 'japanese-beauty', href: '/origins?country=japan' },
   { name: 'Serum & Ampoule', slugCandidates: ['serums-ampoules-essences', 'toners-mists'], fallbackSlug: 'serums-ampoules-essences' },
   { name: 'Moisturizers', slugCandidates: ['night-cream', 'moisturizer', 'cream-moisturizers'], fallbackSlug: 'night-cream' },
@@ -112,12 +112,13 @@ export const CATEGORY_NAV_SECTIONS: MenuCategoryGroup[] = [
     ],
   },
   {
-    title: 'K-Beauty & J-Beauty',
-    description: 'Browse Korean and Japanese beauty without mixing them into generic country labels.',
-    anchor: 'origin-highlight',
+    title: 'Family & Personal',
+    description: 'Men, mom and baby, and everyday personal-care routes.',
+    anchor: 'family-personal',
     items: [
-      { name: 'K-Beauty', slug: 'k-beauty-j-beauty', href: '/origins?country=korea' },
-      { name: 'J-Beauty', slug: 'japanese-beauty', href: '/origins?country=japan' },
+      { name: "Men's Care", slug: 'mens-care', href: '/search?q=mens+care' },
+      { name: 'Mom & Baby', slug: 'mother-baby-care' },
+      { name: 'Personal Hygiene', slug: 'personal-hygiene' },
     ],
   },
 ];
@@ -145,7 +146,7 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     label: 'SHOP BY CATEGORY',
     href: '/categories',
     tone: 'text-accent',
-    panelClassName: 'w-[760px]',
+    panelClassName: 'w-[min(1040px,calc(100vw-2rem))]',
     sections: CATEGORY_NAV_SECTIONS.map((section) => ({
       title: section.title,
       items: section.items.map(toCategoryItem),

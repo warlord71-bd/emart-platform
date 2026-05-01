@@ -17,7 +17,7 @@ export function CategoryCard({ category, index }: { category: FeaturedCategory; 
 
   return (
     <Link
-      href={`/category/${category.slug}`}
+      href={category.href || `/category/${category.slug}`}
       className="group flex flex-col rounded-[var(--mb-radius)] border border-[var(--mb-line)] bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(27,27,47,.08),0_1px_3px_rgba(27,27,47,.05)]"
     >
       {/* Image */}

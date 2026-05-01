@@ -4,6 +4,7 @@ import { HOME_TOP_CATEGORY_ORDER, TOP_CATEGORY_IMAGE_OVERRIDES } from '@/lib/cat
 export interface FeaturedCategory {
   id: string;
   slug: string;
+  href?: string;
   name: string;
   bn_name: string;
   product_count: number;
@@ -46,6 +47,7 @@ export async function getFeaturedCategories(limit = 5): Promise<FeaturedCategory
     result.push({
       id: String(cat.id),
       slug: resolvedSlug,
+      href: item.href || `/category/${resolvedSlug}`,
       name: item.name || cat.name,
       bn_name: BN_NAMES[resolvedSlug] ?? '',
       product_count: cat.count ?? 0,
