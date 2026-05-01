@@ -266,6 +266,23 @@ function FamilyCare() {
   );
 }
 
+function AllCategories() {
+  return (
+    <Shell slug="all-categories">
+      <g>
+        <rect x="40" y="58" width="44" height="58" rx="14" fill="#FFFDF8" stroke="#E8739E" strokeWidth="2" />
+        <rect x="96" y="58" width="44" height="58" rx="14" fill="#FFFDF8" stroke="#D4A248" strokeWidth="2" />
+        <rect x="40" y="128" width="44" height="58" rx="14" fill="#FFFDF8" stroke="#D4A248" strokeWidth="2" />
+        <rect x="96" y="128" width="44" height="58" rx="14" fill="#FFFDF8" stroke="#E8739E" strokeWidth="2" />
+        <circle cx="62" cy="87" r="10" fill="#E8739E" opacity=".55" />
+        <path d="M107 88 H130" stroke="#1B1B2F" strokeWidth="3" strokeLinecap="round" opacity=".55" />
+        <path d="M62 146 C74 160 74 174 62 181 C50 174 50 160 62 146Z" fill="#D4A248" opacity=".72" />
+        <path d="M108 160 C118 150 130 150 138 160 C130 171 118 171 108 160Z" fill="#E8739E" opacity=".58" />
+      </g>
+    </Shell>
+  );
+}
+
 function Fallback({ slug }: { slug: string }) {
   const letter = (slug.charAt(0) || '?').toUpperCase();
   return (
@@ -280,6 +297,7 @@ function Fallback({ slug }: { slug: string }) {
 export function CategoryIllustration({ slug, uid }: Props) {
   const id = safeId(slug, uid);
 
+  if (/all-categories|categories|category/i.test(slug)) return <AllCategories />;
   if (/j-beauty|japanese/i.test(slug)) return <JBeauty />;
   if (/k-beauty|korean|skincare-essential/i.test(slug)) return <KBeauty />;
   if (/dry|hydrat|water|hyaluronic/i.test(slug)) return <Hydration id={id} />;

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { getFeaturedCategories } from '@/lib/api/featured-categories';
+import { CategoryIllustration } from '@/components/category/CategoryIllustration';
 import { CategoryCard } from './CategoryCard';
 
 function Skeleton() {
@@ -77,11 +78,13 @@ export default async function ShopByCategory() {
               href="/categories"
               className="group flex h-full flex-col rounded-[var(--mb-radius)] border border-[var(--mb-line)] bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(27,27,47,.08)]"
             >
-              <div className="relative mb-3 flex aspect-[3/4] items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-[var(--mb-navy)] to-[var(--mb-navy-2)]">
-                <ArrowUpRight
-                  size={28}
-                  className="text-[var(--mb-gold)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:scale-110"
-                />
+              <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-[var(--mb-cream)]">
+                <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.03]">
+                  <CategoryIllustration slug="all-categories" uid="all-categories" />
+                </div>
+                <span className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white/85 text-[var(--mb-gold)] shadow-sm backdrop-blur">
+                  <ArrowUpRight size={18} />
+                </span>
               </div>
               <p className="mt-0.5 font-display text-[18px] leading-snug text-[var(--mb-navy)]">
                 All categories

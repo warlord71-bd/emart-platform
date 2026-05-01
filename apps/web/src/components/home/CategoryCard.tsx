@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { CategoryIllustration } from '@/components/category/CategoryIllustration';
 import type { FeaturedCategory } from '@/lib/api/featured-categories';
@@ -22,19 +21,9 @@ export function CategoryCard({ category, index }: { category: FeaturedCategory; 
     >
       {/* Image */}
       <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-[var(--mb-cream)]">
-        {category.hero_image ? (
-          <Image
-            src={category.hero_image}
-            alt={category.name}
-            fill
-            sizes="(min-width:1024px) 200px, (min-width:640px) 33vw, 60vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          />
-        ) : (
-          <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.03]">
-            <CategoryIllustration slug={category.slug} uid={category.id || index} />
-          </div>
-        )}
+        <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.03]">
+          <CategoryIllustration slug={category.slug} uid={category.id || index} />
+        </div>
 
         {/* Badge — HOT / NEW / SALE */}
         {badge && (
@@ -53,9 +42,6 @@ export function CategoryCard({ category, index }: { category: FeaturedCategory; 
       </div>
 
       {/* Text */}
-      {category.bn_name && (
-        <p className="font-bn text-[11px] leading-none text-[var(--mb-ink-3)]">{category.bn_name}</p>
-      )}
       <p className="mt-0.5 text-[14px] font-medium leading-snug text-[var(--mb-navy)]">{category.name}</p>
       <p className="mt-1 text-[11px] text-[var(--mb-ink-3)]">
         {category.product_count.toLocaleString()} products

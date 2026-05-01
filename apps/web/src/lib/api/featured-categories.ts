@@ -6,27 +6,12 @@ export interface FeaturedCategory {
   slug: string;
   href?: string;
   name: string;
-  bn_name: string;
   product_count: number;
   hero_image: string | null;
   is_hot: boolean;
   has_new: boolean;
   has_sale: boolean;
 }
-
-const BN_NAMES: Record<string, string> = {
-  'k-beauty-j-beauty':        'কে-বিউটি',
-  'korean-beauty':             'কোরিয়ান বিউটি',
-  'serums-ampoules-essences':  'সেরাম ও এসেন্স',
-  'toners-mists':              'টোনার ও মিস্ট',
-  'night-cream':               'ময়েশ্চারাইজার',
-  'moisturizer':               'ময়েশ্চারাইজার',
-  'cream-moisturizers':        'ক্রিম',
-  'sunscreen':                 'সানস্ক্রিন',
-  'face-cleansers':            'ক্লেনজার',
-  'hair-care':                 'হেয়ার কেয়ার',
-  'skincare-essentials':       'স্কিনকেয়ার',
-};
 
 // per_page:100 matches page.tsx so Next.js deduplicates the fetch in the same render pass
 export async function getFeaturedCategories(limit = 5): Promise<FeaturedCategory[]> {
@@ -49,7 +34,6 @@ export async function getFeaturedCategories(limit = 5): Promise<FeaturedCategory
       slug: resolvedSlug,
       href: item.href || `/category/${resolvedSlug}`,
       name: item.name || cat.name,
-      bn_name: BN_NAMES[resolvedSlug] ?? '',
       product_count: cat.count ?? 0,
       hero_image: TOP_CATEGORY_IMAGE_OVERRIDES[resolvedSlug] ?? cat.image?.src ?? null,
       is_hot: false,
