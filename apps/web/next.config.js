@@ -25,7 +25,7 @@ const nextConfig = {
       { source: '/my-account',              destination: '/account',         permanent: true },
       { source: '/my-account/',             destination: '/account',         permanent: true },
       { source: '/my-account/:path*',       destination: '/account',         permanent: true },
-      { source: '/cart',                    destination: '/',                permanent: false },
+      { source: '/cart',                    destination: '/checkout',        permanent: false },
       { source: '/contact-us',             destination: '/contact',          permanent: true },
       { source: '/contact-us/',            destination: '/contact',          permanent: true },
       { source: '/order-tracking',         destination: '/track-order',      permanent: true },

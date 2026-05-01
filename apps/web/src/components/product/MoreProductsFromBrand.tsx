@@ -7,6 +7,15 @@ interface MoreProductsFromBrandProps {
   brandName?: string;
 }
 
+function toBrandSlug(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 export const MoreProductsFromBrand: React.FC<MoreProductsFromBrandProps> = ({
   products,
   brandName = 'This Brand',
@@ -14,6 +23,7 @@ export const MoreProductsFromBrand: React.FC<MoreProductsFromBrandProps> = ({
   if (!products || products.length === 0) return null;
 
   const hasMore = products.length > 4;
+  const brandHref = `/brands/${encodeURIComponent(toBrandSlug(brandName))}`;
 
   return (
     <section>
@@ -33,7 +43,7 @@ export const MoreProductsFromBrand: React.FC<MoreProductsFromBrandProps> = ({
         {hasMore && (
           <div className="flex md:items-center md:justify-center justify-end">
             <Link
-              href={`/shop?brand=${brandName}`}
+              href={brandHref}
               className="flex flex-col items-center gap-2 px-4 py-6 hover:opacity-80 transition-opacity"
             >
               <span className="text-3xl">→</span>
@@ -47,4 +57,3 @@ export const MoreProductsFromBrand: React.FC<MoreProductsFromBrandProps> = ({
     </section>
   );
 };
-

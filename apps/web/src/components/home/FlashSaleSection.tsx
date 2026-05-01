@@ -31,7 +31,7 @@ export const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
     { id: 'editors-choice', label: 'Editors Choice', href: '/shop', products: editorsChoice },
     { id: 'best-selling', label: 'Best Selling', href: '/shop?sort=bestsellers', products: bestSelling },
     { id: 'top-rated', label: 'Top Rated', href: '/shop?sort=rating', products: topRated },
-    { id: 'offer', label: 'Offer', href: '/sale', products: onSale },
+    { id: 'offer', label: 'Offer', href: '/offers/eid-offer', products: onSale },
   ];
 
   const [selectedTab, setSelectedTab] = useState(tabs[0]?.id || 'editors-choice');

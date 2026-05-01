@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
-import ProductCard from '@/components/product/ProductCard';
-import { getBrandBySlug, getBrands, getProducts, type WooBrand } from '@/lib/woocommerce';
+import { permanentRedirect } from 'next/navigation';
+import { getBrands, type WooBrand } from '@/lib/woocommerce';
 import brandLogoManifest from '../../../public/images/brands-e-mart/manifest.json';
 import { CANONICAL_BRANDS } from '@/lib/brandWhitelist';
 import { canonicalPath } from '@/lib/canonicalUrl';
@@ -42,74 +42,7 @@ export default async function BrandsPage({
   const page = parseInt(searchParams?.page || '1');
 
   if (selectedBrandSlug) {
-    const brand = await getBrandBySlug(selectedBrandSlug);
-
-    if (brand) {
-      const { products, total, totalPages } = await getProducts({
-        page,
-        per_page: 24,
-        attribute: 'pa_brand',
-        attribute_term: String(brand.id),
-      });
-
-      return (
-        <div className="min-h-screen bg-bg">
-          <BrowseHubNav active="brands" />
-          <div className="border-b border-hairline bg-card px-4 py-8">
-            <div className="mx-auto max-w-7xl">
-              <div className="mb-2 flex items-center gap-2 text-sm text-muted">
-                <Link href="/brands" className="transition-colors hover:text-accent">Brands</Link>
-                <span>/</span>
-                <span className="font-medium text-ink">{brand.name}</span>
-              </div>
-              <h1 className="mb-1 text-3xl font-bold text-ink">{brand.name}</h1>
-              <p className="text-sm text-muted">{total} product{total === 1 ? '' : 's'} available from this brand</p>
-            </div>
-          </div>
-
-          <div className="mx-auto max-w-7xl px-4 py-8">
-            {products.length > 0 ? (
-              <>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                  {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-
-                {totalPages > 1 && (
-                  <div className="mt-10 flex items-center justify-center gap-2">
-                    {page > 1 && (
-                      <Link
-                        href={`/brands?brand=${encodeURIComponent(selectedBrandSlug)}&page=${page - 1}`}
-                        className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-black"
-                      >
-                        Previous
-                      </Link>
-                    )}
-                    <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">
-                      Page {page} of {totalPages}
-                    </span>
-                    {page < totalPages && (
-                      <Link
-                        href={`/brands?brand=${encodeURIComponent(selectedBrandSlug)}&page=${page + 1}`}
-                        className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-black"
-                      >
-                        Next
-                      </Link>
-                    )}
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="py-20 text-center text-muted-2">
-                <p className="text-lg text-ink">No products found for {brand.name}</p>
-                <Link href="/brands" className="mt-2 block text-accent hover:underline">View all brands</Link>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    }
+    permanentRedirect(`/brands/${encodeURIComponent(selectedBrandSlug)}${page > 1 ? `?page=${page}` : ''}`);
   }
 
   // Pull WC terms (provides counts + ids for products-by-brand links) and merge

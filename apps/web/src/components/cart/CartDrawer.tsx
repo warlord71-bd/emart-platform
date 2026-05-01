@@ -157,13 +157,6 @@ export default function CartDrawer() {
             >
               Proceed to Checkout →
             </Link>
-            <Link
-              href="/cart"
-              onClick={closeCart}
-              className="mt-2 block w-full text-center text-sm text-muted hover:text-accent"
-            >
-              View Full Cart
-            </Link>
           </div>
         )}
       </div>
