@@ -65,6 +65,7 @@ const POPULAR_SEARCHES = [
 ];
 
 const DRAWER_LINKS: MenuItem[] = [
+  { label: "Men's Care", href: '/search?q=mens+care' },
   { label: 'Brands', href: '/brands' },
   { label: 'Sale', href: '/sale' },
   { label: 'New', href: '/new-arrivals' },
@@ -754,6 +755,10 @@ export default function Header() {
                 <Tags size={15} className="text-brass" />
                 BRANDS
               </Link>
+              <Link href="/search?q=mens+care" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
+                <span className="text-cyan-600">●</span>
+                MEN&apos;S
+              </Link>
 
               <Link href="/sale" className="ml-auto flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent-soft px-3 text-sm font-extrabold text-accent hover:bg-accent-soft/80">
                 <Flame size={15} />
@@ -833,7 +838,7 @@ export default function Header() {
               })}
 
               <div className="grid gap-2 border-t border-hairline pt-3">
-                {DRAWER_LINKS.filter((item) => ['Brands', 'Sale', 'New'].includes(item.label)).map((item) => (
+                {DRAWER_LINKS.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
