@@ -209,6 +209,10 @@ tramp
 .\#*
 # Local variables:
 # End:
+# === workspace: exclude large binaries and screenshots ===
+workspace/snapshots/
+workspace/ui-audit/
+
 # === added 2026-04-26: exclude session/audit/handoff/temp + accidents ===
 # Build artifacts
 *.tsbuildinfo
@@ -244,7 +248,6 @@ apps/web/public/audit/
 apps/web/public/images/payment-methods.original-black-bg.png
 apps_web_backup/
 apps/web_backup/
-audit/
 .codex
 docs/audit/
 scripts/apply-brand-corrections.php

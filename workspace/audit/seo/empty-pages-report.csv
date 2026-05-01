@@ -1,0 +1,5 @@
+route,type,status,notes
+/brands/[slug],brand,guarded,"Brand detail route requires a Woo brand term; missing brand calls notFound(). Sitemap filters brand entries to count > 0."
+/category/[slug],category,guarded,"Category route calls notFound() when getCategoryBySlug() returns no category. Category sitemap uses hide_empty."
+/shop/[slug],product,guarded,"Product route calls notFound() when the product API returns no product."
+

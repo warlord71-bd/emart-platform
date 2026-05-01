@@ -1,0 +1,3187 @@
+[
+  {
+    "emart_id": "4224",
+    "sale_price": 1300.0,
+    "skbd_slug": "cosrx-balancium-b5-d-panthenol-cream-50ml"
+  },
+  {
+    "emart_id": "63917",
+    "sale_price": 2100.0,
+    "skbd_slug": "paulas-choice-advanced-replenishing-toner-118ml"
+  },
+  {
+    "emart_id": "2739",
+    "sale_price": 1300.0,
+    "skbd_slug": "coxir-black-snail-collagen-cream-50ml"
+  },
+  {
+    "emart_id": "3139",
+    "sale_price": 1500.0,
+    "skbd_slug": "coxir-vita-c-bright-cream-50ml"
+  },
+  {
+    "emart_id": "3137",
+    "sale_price": 1100.0,
+    "skbd_slug": "coxir-vita-c-brightening-serum-50ml"
+  },
+  {
+    "emart_id": "3102",
+    "sale_price": 1400.0,
+    "skbd_slug": "coxir-black-snail-collagen-serum-50ml"
+  },
+  {
+    "emart_id": "63663",
+    "sale_price": 2200.0,
+    "skbd_slug": "cerave-acne-control-gel-40ml"
+  },
+  {
+    "emart_id": "63695",
+    "sale_price": 1200.0,
+    "skbd_slug": "neutrogena-rapid-clear-stubborn-acne-cleanser-147ml"
+  },
+  {
+    "emart_id": "2783",
+    "sale_price": 980.0,
+    "skbd_slug": "innisfree-jeju-volcanic-pore-scrub-foam-150ml"
+  },
+  {
+    "emart_id": "2851",
+    "sale_price": 1100.0,
+    "skbd_slug": "innisfree-green-tea-cleansing-oil-150ml"
+  },
+  {
+    "emart_id": "3816",
+    "sale_price": 1500.0,
+    "skbd_slug": "tiam-snail-azulene-sleeping-mask-80ml"
+  },
+  {
+    "emart_id": "63609",
+    "sale_price": 1500.0,
+    "skbd_slug": "some-by-mi-miracle-hair-body-starter-kit"
+  },
+  {
+    "emart_id": "63889",
+    "sale_price": 1600.0,
+    "skbd_slug": "the-inkey-list-lactic-acid-30-ml"
+  },
+  {
+    "emart_id": "63709",
+    "sale_price": 900.0,
+    "skbd_slug": "neutrogena-t-gel-therapeutic-shampoo-original-formula-130ml"
+  },
+  {
+    "emart_id": "63711",
+    "sale_price": 1400.0,
+    "skbd_slug": "neutrogena-body-clear-body-wash-250ml"
+  },
+  {
+    "emart_id": "3274",
+    "sale_price": 1000.0,
+    "skbd_slug": "by-wishtrend-acid-duo-2-mild-gel-cleanser-150ml"
+  },
+  {
+    "emart_id": "63769",
+    "sale_price": 980.0,
+    "skbd_slug": "isntree-onion-newpair-cleansing-foam-150ml"
+  },
+  {
+    "emart_id": "63887",
+    "sale_price": 1500.0,
+    "skbd_slug": "the-inkey-list-peptide-moisturizer-50-ml"
+  },
+  {
+    "emart_id": "63697",
+    "sale_price": 1000.0,
+    "skbd_slug": "neutrogena-sheer-zinc-mineral-face-sunscreen-lotion-with-broad-spectrum-spf-50-88ml"
+  },
+  {
+    "emart_id": "3915",
+    "sale_price": 1750.0,
+    "skbd_slug": "im-from-ginseng-eye-cream-30g"
+  },
+  {
+    "emart_id": "63691",
+    "sale_price": 1400.0,
+    "skbd_slug": "neutrogena-t-gel-extra-strength-therapeutic-shampoo-177ml"
+  },
+  {
+    "emart_id": "63821",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-healing-ointment-340-g"
+  },
+  {
+    "emart_id": "63693",
+    "sale_price": 1300.0,
+    "skbd_slug": "neutrogena-sport-face-sunscreen-spf-70-oilfree-facial-sunscreen-lotion-73ml"
+  },
+  {
+    "emart_id": "63683",
+    "sale_price": 1000.0,
+    "skbd_slug": "neutrogena-hydro-boost-water-gel-lotion-sunscreen-spf-30-88ml"
+  },
+  {
+    "emart_id": "33863",
+    "sale_price": 1700.0,
+    "skbd_slug": "heimish-marine-care-deep-moisture-multi-face-oil-30ml"
+  },
+  {
+    "emart_id": "55859",
+    "sale_price": 1400.0,
+    "skbd_slug": "neogen-dermalogy-white-dual-cream-80ml"
+  },
+  {
+    "emart_id": "63743",
+    "sale_price": 900.0,
+    "skbd_slug": "the-ordinary-pycnogenol-5-15ml"
+  },
+  {
+    "emart_id": "63875",
+    "sale_price": 1700.0,
+    "skbd_slug": "the-inkey-list-vitamin-c-30ml"
+  },
+  {
+    "emart_id": "63739",
+    "sale_price": 1100.0,
+    "skbd_slug": "the-ordinary-100-plant-derived-squalane-30ml"
+  },
+  {
+    "emart_id": "2693",
+    "sale_price": 1300.0,
+    "skbd_slug": "cosrx-ac-collection-ultimate-spot-cream-30g"
+  },
+  {
+    "emart_id": "63877",
+    "sale_price": 1600.0,
+    "skbd_slug": "the-inkey-list-glycolic-acid-toner-100-ml"
+  },
+  {
+    "emart_id": "63425",
+    "sale_price": 1500.0,
+    "skbd_slug": "cerave-sunscreen-stick-broad-spectrum-spf-50-13-32gm"
+  },
+  {
+    "emart_id": "63595",
+    "sale_price": 1100.0,
+    "skbd_slug": "lubriderm-daily-moisture-lotion-for-normal-to-dry-skin-sensitive-skin-473ml"
+  },
+  {
+    "emart_id": "63677",
+    "sale_price": 1300.0,
+    "skbd_slug": "neutrogena-age-shield-face-sunscreen-70-88ml"
+  },
+  {
+    "emart_id": "63605",
+    "sale_price": 1200.0,
+    "skbd_slug": "dear-klairs-soft-airy-uv-essence-spf-50-pa-sun-50g"
+  },
+  {
+    "emart_id": "63377",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-diabetics-dry-skin-relief-moisturizing-cream-236ml"
+  },
+  {
+    "emart_id": "63597",
+    "sale_price": 1200.0,
+    "skbd_slug": "lubriderm-daily-moisture-lotion-for-normal-to-dry-skin-fragrance-free-473ml"
+  },
+  {
+    "emart_id": "63715",
+    "sale_price": 1100.0,
+    "skbd_slug": "the-ordinary-mineral-uv-filters-spf-30-with-antioxidants-50ml"
+  },
+  {
+    "emart_id": "63531",
+    "sale_price": 900.0,
+    "skbd_slug": "p-calm-under-pore-foam-cleanser-150ml"
+  },
+  {
+    "emart_id": "63471",
+    "sale_price": 1700.0,
+    "skbd_slug": "ryo-hair-loss-expert-care-shampoo-for-dry-scalp-400ml"
+  },
+  {
+    "emart_id": "52468",
+    "sale_price": 1300.0,
+    "skbd_slug": "cosrx-lightweight-soothing-moisturizer-80ml"
+  },
+  {
+    "emart_id": "36439",
+    "sale_price": 2500.0,
+    "skbd_slug": "cerave-hydrating-hyaluronic-acid-serum-30ml"
+  },
+  {
+    "emart_id": "63835",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-foaming-facial-cleanser-473-ml"
+  },
+  {
+    "emart_id": "63865",
+    "sale_price": 1700.0,
+    "skbd_slug": "the-inkey-list-bakucchoil-30ml"
+  },
+  {
+    "emart_id": "2854",
+    "sale_price": 900.0,
+    "skbd_slug": "innisfree-bija-cica-gel-ex-40ml"
+  },
+  {
+    "emart_id": "63649",
+    "sale_price": 1350.0,
+    "skbd_slug": "be-the-skin-botanical-pore-toner-150ml"
+  },
+  {
+    "emart_id": "63735",
+    "sale_price": 1200.0,
+    "skbd_slug": "the-ordinary-granactive-retinoid-2-emulsion-30ml"
+  },
+  {
+    "emart_id": "63457",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-renewing-sa-cleanser-for-normal-skin-473ml"
+  },
+  {
+    "emart_id": "63643",
+    "sale_price": 700.0,
+    "skbd_slug": "innisfree-volcanic-calming-pore-clay-mask-100ml"
+  },
+  {
+    "emart_id": "63489",
+    "sale_price": 1100.0,
+    "skbd_slug": "isntree-chestnut-lha-jelly-cleansing-oil-150ml"
+  },
+  {
+    "emart_id": "56280",
+    "sale_price": 980.0,
+    "skbd_slug": "klairs-gentle-black-facial-cleanser-140ml"
+  },
+  {
+    "emart_id": "63685",
+    "sale_price": 1200.0,
+    "skbd_slug": "neutrogena-pure-free-baby-sunscreen-lotion-with-spf-50-88ml"
+  },
+  {
+    "emart_id": "63313",
+    "sale_price": 1500.0,
+    "skbd_slug": "bioderma-photoderm-aquafluide-spf-50-40ml"
+  },
+  {
+    "emart_id": "63227",
+    "sale_price": 850.0,
+    "skbd_slug": "kaine-green-fit-pro-sun-55ml"
+  },
+  {
+    "emart_id": "63381",
+    "sale_price": 900.0,
+    "skbd_slug": "benton-heartleaf-80-skin-toner-pad-70pads"
+  },
+  {
+    "emart_id": "63717",
+    "sale_price": 1100.0,
+    "skbd_slug": "the-ordinary-granactive-retinoid-5-in-squalane-30ml"
+  },
+  {
+    "emart_id": "63203",
+    "sale_price": 1700.0,
+    "skbd_slug": "rovectin-skin-essentials-activating-treatment-lotion-180ml"
+  },
+  {
+    "emart_id": "63197",
+    "sale_price": 1500.0,
+    "skbd_slug": "rovectin-cica-care-clearing-ampoule-30ml"
+  },
+  {
+    "emart_id": "63193",
+    "sale_price": 1300.0,
+    "skbd_slug": "rovectin-clean-forever-young-biome-ampoule-50ml"
+  },
+  {
+    "emart_id": "63189",
+    "sale_price": 1500.0,
+    "skbd_slug": "rovectin-uv-defense-tinted-spf50-pa-50ml"
+  },
+  {
+    "emart_id": "63949",
+    "sale_price": 1100.0,
+    "skbd_slug": "innisfree-olive-real-body-lotion-310ml"
+  },
+  {
+    "emart_id": "63759",
+    "sale_price": 1200.0,
+    "skbd_slug": "the-ordinary-ascorbic-acid-8-alpha-arbutin-2-30ml"
+  },
+  {
+    "emart_id": "63293",
+    "sale_price": 1400.0,
+    "skbd_slug": "isntree-hyper-niacinamide-20-serum-20ml"
+  },
+  {
+    "emart_id": "63243",
+    "sale_price": 2800.0,
+    "skbd_slug": "la-roche-posay-pure-niacinamide-10-serum-30ml"
+  },
+  {
+    "emart_id": "63557",
+    "sale_price": 1400.0,
+    "skbd_slug": "abib-tone-up-sunstick-silky-bar-spf50-pa-20g"
+  },
+  {
+    "emart_id": "63825",
+    "sale_price": 1500.0,
+    "skbd_slug": "cerave-hydrating-body-wash-296-ml"
+  },
+  {
+    "emart_id": "63583",
+    "sale_price": 1500.0,
+    "skbd_slug": "cosrx-hydrium-moisture-power-enriched-cream-50ml"
+  },
+  {
+    "emart_id": "4186",
+    "sale_price": 1450.0,
+    "skbd_slug": "beauty-of-joseon-ginseng-essence-water-150ml"
+  },
+  {
+    "emart_id": "63837",
+    "sale_price": 1900.0,
+    "skbd_slug": "cerave-hydrating-facial-cleanser-473-ml"
+  },
+  {
+    "emart_id": "63629",
+    "sale_price": 1800.0,
+    "skbd_slug": "neogen-dermalogy-real-niacinamide-15-serum-30ml"
+  },
+  {
+    "emart_id": "57606",
+    "sale_price": 1500.0,
+    "skbd_slug": "the-ordinary-hyaluronic-acid-2-b5-30ml"
+  },
+  {
+    "emart_id": "63845",
+    "sale_price": 1900.0,
+    "skbd_slug": "cerave-daily-moisturizing-lotion-355-ml"
+  },
+  {
+    "emart_id": "63919",
+    "sale_price": 900.0,
+    "skbd_slug": "some-by-mi-aha-bha-pha-calming-truecica-micellar-cleansing-water-300ml"
+  },
+  {
+    "emart_id": "63879",
+    "sale_price": 1500.0,
+    "skbd_slug": "the-inkey-list-15-vitamin-c-and-egf-30-ml"
+  },
+  {
+    "emart_id": "26156",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-hydrating-cream-to-foam-cleanser-236-ml"
+  },
+  {
+    "emart_id": "63567",
+    "sale_price": 1200.0,
+    "skbd_slug": "innisfree-hyaluron-moist-sunscreen-spf50-pa-50ml"
+  },
+  {
+    "emart_id": "63265",
+    "sale_price": 1300.0,
+    "skbd_slug": "goodal-green-tangerine-vita-c-dark-spot-care-sun-serum-50ml"
+  },
+  {
+    "emart_id": "63221",
+    "sale_price": 990.0,
+    "skbd_slug": "be-the-skin-bha-pore-zero-serum-30ml"
+  },
+  {
+    "emart_id": "3138",
+    "sale_price": 1400.0,
+    "skbd_slug": "coxir-black-snail-collagen-eye-cream-30ml"
+  },
+  {
+    "emart_id": "63757",
+    "sale_price": 1300.0,
+    "skbd_slug": "the-ordinary-granactive-retinoid-2-in-squalane-30ml"
+  },
+  {
+    "emart_id": "63797",
+    "sale_price": 900.0,
+    "skbd_slug": "rated-green-cold-brew-hibiscus-moisturizing-scalp-pack-200ml"
+  },
+  {
+    "emart_id": "43696",
+    "sale_price": 950.0,
+    "skbd_slug": "axis-y-complete-no-stress-physical-sunscreen-50ml"
+  },
+  {
+    "emart_id": "63533",
+    "sale_price": 1300.0,
+    "skbd_slug": "mixsoon-centella-asiatica-toner-150ml"
+  },
+  {
+    "emart_id": "63641",
+    "sale_price": 1700.0,
+    "skbd_slug": "innisfree-green-active-ceramide-barrier-cream-50ml"
+  },
+  {
+    "emart_id": "63027",
+    "sale_price": 1900.0,
+    "skbd_slug": "cerave-baby-moisturizing-cream-226g"
+  },
+  {
+    "emart_id": "63483",
+    "sale_price": 1500.0,
+    "skbd_slug": "isntree-hyaluronic-acid-water-sleeping-mask-100ml"
+  },
+  {
+    "emart_id": "43771",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-centella-gel-cream-cg-45ml"
+  },
+  {
+    "emart_id": "63279",
+    "sale_price": 1300.0,
+    "skbd_slug": "numbuzin-no-4-full-nutrient-firming-cream-60m"
+  },
+  {
+    "emart_id": "2623",
+    "sale_price": 1200.0,
+    "skbd_slug": "some-by-mi-h7-hydro-max-cream-50ml"
+  },
+  {
+    "emart_id": "63651",
+    "sale_price": 990.0,
+    "skbd_slug": "be-the-skin-botanical-nutrition-power-serum-50ml"
+  },
+  {
+    "emart_id": "56238",
+    "sale_price": 1500.0,
+    "skbd_slug": "jumiso-snail-mucin-95-peptide-essence-140ml"
+  },
+  {
+    "emart_id": "63103",
+    "sale_price": 1200.0,
+    "skbd_slug": "belif-problem-solution-toner-pad-150ml-70pcs"
+  },
+  {
+    "emart_id": "63965",
+    "sale_price": 1100.0,
+    "skbd_slug": "bellflower-camu-camu-blemish-care-serum-50ml"
+  },
+  {
+    "emart_id": "63679",
+    "sale_price": 900.0,
+    "skbd_slug": "neutrogena-hydro-boost-hydrating-cleansing-gel-162ml"
+  },
+  {
+    "emart_id": "4351",
+    "sale_price": 1100.0,
+    "skbd_slug": "cosrx-pure-fit-cica-cleanser-150ml"
+  },
+  {
+    "emart_id": "26135",
+    "sale_price": 2100.0,
+    "skbd_slug": "cerave-moisturising-cream-454g"
+  },
+  {
+    "emart_id": "63819",
+    "sale_price": 1900.0,
+    "skbd_slug": "cerave-ultra-light-moisturizing-lotion-with-sunscreen-spf-30-50-ml"
+  },
+  {
+    "emart_id": "59515",
+    "sale_price": 1500.0,
+    "skbd_slug": "haruharu-wonder-black-rice-hyaluronic-cream-unscented-50ml"
+  },
+  {
+    "emart_id": "62903",
+    "sale_price": 900.0,
+    "skbd_slug": "nine-less-a-control-heartleaf-bha-cleanser-120ml"
+  },
+  {
+    "emart_id": "62899",
+    "sale_price": 850.0,
+    "skbd_slug": "nine-less-essentials-uv-shield-soothing-sun-cream-spf-50-pa-50g"
+  },
+  {
+    "emart_id": "51010",
+    "sale_price": 1500.0,
+    "skbd_slug": "purito-dermide-balancing-barrier-balm-60ml"
+  },
+  {
+    "emart_id": "51309",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-sa-lotion-for-rough-bumpy-skin-237ml"
+  },
+  {
+    "emart_id": "50548",
+    "sale_price": 1400.0,
+    "skbd_slug": "neogen-cica-repair-snail-essence-100ml"
+  },
+  {
+    "emart_id": "63321",
+    "sale_price": 1400.0,
+    "skbd_slug": "numbuzin-no-8-fine-cica-serum-50ml"
+  },
+  {
+    "emart_id": "63885",
+    "sale_price": 1700.0,
+    "skbd_slug": "the-inkey-list-rosehip-oil-30-ml"
+  },
+  {
+    "emart_id": "63343",
+    "sale_price": 1200.0,
+    "skbd_slug": "missha-damaged-hair-therapy-shampoo-400ml"
+  },
+  {
+    "emart_id": "63905",
+    "sale_price": 1500.0,
+    "skbd_slug": "the-inkey-list-salicylic-acid-cleanser-150-ml"
+  },
+  {
+    "emart_id": "63955",
+    "sale_price": 850.0,
+    "skbd_slug": "purito-daily-go-to-sunscreen-spf-50-pa-60-ml"
+  },
+  {
+    "emart_id": "62839",
+    "sale_price": 1000.0,
+    "skbd_slug": "farm-stay-collagen-hyaluronic-acid-all-in-one-ampoule-250ml"
+  },
+  {
+    "emart_id": "63155",
+    "sale_price": 1450.0,
+    "skbd_slug": "neutrogena-clear-face-oil-free-sunscreen-spf-30-88ml"
+  },
+  {
+    "emart_id": "59578",
+    "sale_price": 1700.0,
+    "skbd_slug": "the-ordinary-ascorbyl-glucoside-solution-12-30ml"
+  },
+  {
+    "emart_id": "59066",
+    "sale_price": 1200.0,
+    "skbd_slug": "tocobo-cotton-soft-sun-stick-spf50-pa-19g"
+  },
+  {
+    "emart_id": "63175",
+    "sale_price": 1500.0,
+    "skbd_slug": "cosrx-the-hyaluronic-acid-3-serum-20ml"
+  },
+  {
+    "emart_id": "63233",
+    "sale_price": 2500.0,
+    "skbd_slug": "la-roche-posay-anthelios-uvmune-400-invisible-fluid-spf50-sun-cream-50ml"
+  },
+  {
+    "emart_id": "62805",
+    "sale_price": 1150.0,
+    "skbd_slug": "skin-aqua-super-moisture-barrier-uv-gel-spf50-pa-100g"
+  },
+  {
+    "emart_id": "63883",
+    "sale_price": 1700.0,
+    "skbd_slug": "the-inkey-list-fulvic-acid-brightening-cleanser-150-ml"
+  },
+  {
+    "emart_id": "62801",
+    "sale_price": 1150.0,
+    "skbd_slug": "kose-softymo-speedy-cleansing-liquid-240ml"
+  },
+  {
+    "emart_id": "63873",
+    "sale_price": 1700.0,
+    "skbd_slug": "the-inkey-list-collagen-booster-30ml"
+  },
+  {
+    "emart_id": "63135",
+    "sale_price": 2100.0,
+    "skbd_slug": "la-roche-posay-anthelios-melt-in-milk-sunscreen-spf-60-150ml"
+  },
+  {
+    "emart_id": "63947",
+    "sale_price": 1200.0,
+    "skbd_slug": "isntree-hyaluronic-acid-natural-sun-cream-50ml"
+  },
+  {
+    "emart_id": "63571",
+    "sale_price": 1200.0,
+    "skbd_slug": "tocobo-bio-watery-sun-cream-spf50-pa-50ml"
+  },
+  {
+    "emart_id": "63969",
+    "sale_price": 1100.0,
+    "skbd_slug": "bellflower-hibiscus-anti-aging-serum-30ml"
+  },
+  {
+    "emart_id": "63435",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-hydrating-mineral-body-sunscreen-broad-spectrum-spf-50-150ml"
+  },
+  {
+    "emart_id": "62967",
+    "sale_price": 1300.0,
+    "skbd_slug": "biore-uv-kids-pure-milk-sunscreen-spf50-pa-70ml"
+  },
+  {
+    "emart_id": "63851",
+    "sale_price": 1900.0,
+    "skbd_slug": "cerave-hydrating-mineral-sunscreen-spf-30-face-sheer-tint-50ml"
+  },
+  {
+    "emart_id": "63407",
+    "sale_price": 1200.0,
+    "skbd_slug": "numbuzin-no-6-deep-sleep-mask-serum-50ml"
+  },
+  {
+    "emart_id": "63307",
+    "sale_price": 850.0,
+    "skbd_slug": "ahc-natural-perfection-double-shield-sun-stick-22g-spf50-pa"
+  },
+  {
+    "emart_id": "63015",
+    "sale_price": 1700.0,
+    "skbd_slug": "manyo-pure-cleansing-oil-200ml"
+  },
+  {
+    "emart_id": "63325",
+    "sale_price": 1500.0,
+    "skbd_slug": "numbuzin-no-1-purple-complex-moisture-balancing-soothing-cream-100ml"
+  },
+  {
+    "emart_id": "62757",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-foaming-cleanser-236ml"
+  },
+  {
+    "emart_id": "3819",
+    "sale_price": 1400.0,
+    "skbd_slug": "tiam-hyaluronic-water-plumping-serum-40ml"
+  },
+  {
+    "emart_id": "63411",
+    "sale_price": 1900.0,
+    "skbd_slug": "cerave-sa-cream-for-rough-bumpy-skin-340g"
+  },
+  {
+    "emart_id": "63237",
+    "sale_price": 3200.0,
+    "skbd_slug": "la-roche-posay-effaclar-mat-mattifying-moisturizer-for-oily-skin-40ml"
+  },
+  {
+    "emart_id": "63117",
+    "sale_price": 1100.0,
+    "skbd_slug": "dr-forhair-folligen-anti-dandruff-shampoo-300ml"
+  },
+  {
+    "emart_id": "58144",
+    "sale_price": 1100.0,
+    "skbd_slug": "skin1004-madagascar-centella-tone-brightening-cleansing-gel-foam-125ml"
+  },
+  {
+    "emart_id": "62821",
+    "sale_price": 1500.0,
+    "skbd_slug": "pyunkang-yul-nutrition-cream-100ml"
+  },
+  {
+    "emart_id": "4264",
+    "sale_price": 1300.0,
+    "skbd_slug": "cosrx-hyaluronic-acid-hydra-power-essence-100ml"
+  },
+  {
+    "emart_id": "63785",
+    "sale_price": 700.0,
+    "skbd_slug": "isntree-chestnut-bha-2-clear-liquid-100ml"
+  },
+  {
+    "emart_id": "62706",
+    "sale_price": 1000.0,
+    "skbd_slug": "skin1004-madagascar-centella-poremizing-deep-cleansing-foam-125ml"
+  },
+  {
+    "emart_id": "63849",
+    "sale_price": 2100.0,
+    "skbd_slug": "cerave-eczema-relief-creamy-oil-236-ml"
+  },
+  {
+    "emart_id": "63229",
+    "sale_price": 1400.0,
+    "skbd_slug": "abib-airy-sunstick-smoothing-bar-23g"
+  },
+  {
+    "emart_id": "4068",
+    "sale_price": 1700.0,
+    "skbd_slug": "isntree-real-rose-calming-mask-100ml"
+  },
+  {
+    "emart_id": "63371",
+    "sale_price": 1500.0,
+    "skbd_slug": "numbuzin-no-4-collagen-73-pudding-serum-50ml"
+  },
+  {
+    "emart_id": "53350",
+    "sale_price": 900.0,
+    "skbd_slug": "aromatica-rosemary-scalp-scaling-shampoo-180ml"
+  },
+  {
+    "emart_id": "63775",
+    "sale_price": 900.0,
+    "skbd_slug": "heimish-matcha-biome-amino-acne-cleansing-foam-150ml"
+  },
+  {
+    "emart_id": "62694",
+    "sale_price": 550.0,
+    "skbd_slug": "apieu-honey-milk-lip-balm-3-3g"
+  },
+  {
+    "emart_id": "62957",
+    "sale_price": 1200.0,
+    "skbd_slug": "hadalabo-gokujyun-hydrataning-hyaluronic-cleansing-foam-100gm"
+  },
+  {
+    "emart_id": "62959",
+    "sale_price": 1200.0,
+    "skbd_slug": "hada-labo-gokujyun-hyaluronic-acid-foaming-facewash160ml"
+  },
+  {
+    "emart_id": "63827",
+    "sale_price": 1200.0,
+    "skbd_slug": "cerave-sa-body-wash-for-rough-bumpy-skin-296-ml"
+  },
+  {
+    "emart_id": "63177",
+    "sale_price": 1700.0,
+    "skbd_slug": "isntree-hyper-acid4-aha-bha-lha-30-serum-20ml"
+  },
+  {
+    "emart_id": "63599",
+    "sale_price": 900.0,
+    "skbd_slug": "jamaican-black-castor-oil-coconut-118ml"
+  },
+  {
+    "emart_id": "62698",
+    "sale_price": 1500.0,
+    "skbd_slug": "numbuzin-no-1-pantothenic-b5-active-soothing-cream-80ml"
+  },
+  {
+    "emart_id": "62688",
+    "sale_price": 1500.0,
+    "skbd_slug": "ordinary-caffeine-solution-5-egcg-30ml"
+  },
+  {
+    "emart_id": "63261",
+    "sale_price": 1300.0,
+    "skbd_slug": "abib-sedum-hyaluron-sunscreen-protection-tube-50ml"
+  },
+  {
+    "emart_id": "58397",
+    "sale_price": 1500.0,
+    "skbd_slug": "axis-y-dark-spot-correcting-glow-toner-125ml"
+  },
+  {
+    "emart_id": "2970",
+    "sale_price": 1100.0,
+    "skbd_slug": "purito-defence-barrier-ph-cleanser-150ml"
+  },
+  {
+    "emart_id": "63281",
+    "sale_price": 990.0,
+    "skbd_slug": "numbuzin-no-7-mild-green-soothing-serum-50ml"
+  },
+  {
+    "emart_id": "63131",
+    "sale_price": 2500.0,
+    "skbd_slug": "la-roche-posay-lipikar-body-lotion-for-normal-to-dry-skin-400ml"
+  },
+  {
+    "emart_id": "4328",
+    "sale_price": 1500.0,
+    "skbd_slug": "cosrx-hydrium-watery-toner-150ml"
+  },
+  {
+    "emart_id": "3823",
+    "sale_price": 980.0,
+    "skbd_slug": "klairs-rich-moist-foaming-cleanser-100ml"
+  },
+  {
+    "emart_id": "63719",
+    "sale_price": 1500.0,
+    "skbd_slug": "the-ordinary-ascorbyl-tetraisopalmitate-solution-20-in-vitamin-f-30ml"
+  },
+  {
+    "emart_id": "59566",
+    "sale_price": 1100.0,
+    "skbd_slug": "the-ordinary-glycolic-acid-7-exfoliating-toner-100ml"
+  },
+  {
+    "emart_id": "63815",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-itch-relief-moisturizing-lotion-237-ml"
+  },
+  {
+    "emart_id": "63389",
+    "sale_price": 800.0,
+    "skbd_slug": "heimish-dalism-liquid-lipstick-4g-02-burning-rose"
+  },
+  {
+    "emart_id": "63375",
+    "sale_price": 1900.0,
+    "skbd_slug": "cerave-skin-renewing-nightly-exfoliating-treatment-50ml"
+  },
+  {
+    "emart_id": "63277",
+    "sale_price": 1500.0,
+    "skbd_slug": "numbuzin-no-5-daily-multi-vitamin-cream-60ml"
+  },
+  {
+    "emart_id": "63937",
+    "sale_price": 1600.0,
+    "skbd_slug": "dr-ceuracle-royal-vita-propolis-33-capsule-eye-cream-20ml"
+  },
+  {
+    "emart_id": "33897",
+    "sale_price": 2100.0,
+    "skbd_slug": "cerave-hydrating-micellar-water-ultra-gentle-cleanser-296ml"
+  },
+  {
+    "emart_id": "2968",
+    "sale_price": 1100.0,
+    "skbd_slug": "purito-from-green-cleansing-oil-200ml"
+  },
+  {
+    "emart_id": "62743",
+    "sale_price": 1500.0,
+    "skbd_slug": "bath-and-body-works-tropidelic-fine-fragrance-mist-236ml"
+  },
+  {
+    "emart_id": "62610",
+    "sale_price": 1100.0,
+    "skbd_slug": "bath-body-fiji-sunshine-guava-tini-ultimate-hydration-body-cream-226g"
+  },
+  {
+    "emart_id": "62602",
+    "sale_price": 1300.0,
+    "skbd_slug": "bellflower-red-ginseng-66-serum-30ml"
+  },
+  {
+    "emart_id": "62600",
+    "sale_price": 1100.0,
+    "skbd_slug": "bellflower-aha-bha-pha-serum-30ml"
+  },
+  {
+    "emart_id": "62598",
+    "sale_price": 1100.0,
+    "skbd_slug": "bellflower-propolis-76-serum-30ml"
+  },
+  {
+    "emart_id": "62596",
+    "sale_price": 1100.0,
+    "skbd_slug": "bellflower-alpha-arbutin-cream-for-brightening-30ml"
+  },
+  {
+    "emart_id": "26169",
+    "sale_price": 1900.0,
+    "skbd_slug": "cerave-resurfacing-retinol-serum-30ml"
+  },
+  {
+    "emart_id": "63731",
+    "sale_price": 1300.0,
+    "skbd_slug": "the-ordinary-glycolic-acid-7-toning-solution-240ml"
+  },
+  {
+    "emart_id": "62889",
+    "sale_price": 850.0,
+    "skbd_slug": "round-lab-1025-dokdo-sunscreen-50ml"
+  },
+  {
+    "emart_id": "58036",
+    "sale_price": 1500.0,
+    "skbd_slug": "marymay-collagen-peptide-vital-mask-30pcs"
+  },
+  {
+    "emart_id": "57934",
+    "sale_price": 950.0,
+    "skbd_slug": "skin1004-madagascar-centella-hyalu-cica-silky-fit-sun-stick-20g"
+  },
+  {
+    "emart_id": "58042",
+    "sale_price": 1200.0,
+    "skbd_slug": "mary-may-niacinamide-chaenomeles-sinensis-serum-30ml"
+  },
+  {
+    "emart_id": "62518",
+    "sale_price": 1200.0,
+    "skbd_slug": "some-by-mi-beta-panthenol-repair-starter-kit"
+  },
+  {
+    "emart_id": "62949",
+    "sale_price": 1200.0,
+    "skbd_slug": "hadalabo-gokujyun-aging-care-anti-aging-lotion-170ml"
+  },
+  {
+    "emart_id": "63359",
+    "sale_price": 850.0,
+    "skbd_slug": "beauty-of-joseon-ginseng-moist-sun-serum-50ml"
+  },
+  {
+    "emart_id": "62917",
+    "sale_price": 1700.0,
+    "skbd_slug": "axis-y-biome-ultimate-indulging-cream-55ml"
+  },
+  {
+    "emart_id": "63871",
+    "sale_price": 1900.0,
+    "skbd_slug": "the-inkey-list-multi-biotic-moisturizer-30ml"
+  },
+  {
+    "emart_id": "59029",
+    "sale_price": 1700.0,
+    "skbd_slug": "medicube-collagen-night-wrapping-mask-75ml"
+  },
+  {
+    "emart_id": "62947",
+    "sale_price": 1300.0,
+    "skbd_slug": "rohto-hada-labo-gokujyun-aging-care-perfect-gel-moisturiser-100g"
+  },
+  {
+    "emart_id": "63121",
+    "sale_price": 1300.0,
+    "skbd_slug": "jumiso-all-day-vitamin-pure-c-5-5-glow-serum-30ml"
+  },
+  {
+    "emart_id": "63881",
+    "sale_price": 1500.0,
+    "skbd_slug": "the-inkey-list-polyglutamic-acid-30-ml"
+  },
+  {
+    "emart_id": "62989",
+    "sale_price": 1300.0,
+    "skbd_slug": "pyunkang-yul-ultimate-calming-solution-cream-30ml"
+  },
+  {
+    "emart_id": "63183",
+    "sale_price": 1300.0,
+    "skbd_slug": "rovectin-skin-essentials-cica-care-purifying-toner-260ml"
+  },
+  {
+    "emart_id": "4322",
+    "sale_price": 1100.0,
+    "skbd_slug": "benton-aloe-propolis-soothing-gel-100ml"
+  },
+  {
+    "emart_id": "4286",
+    "sale_price": 900.0,
+    "skbd_slug": "some-by-mi-cica-peptide-anti-hair-loss-derma-scalp-treatment-50ml"
+  },
+  {
+    "emart_id": "63727",
+    "sale_price": 1300.0,
+    "skbd_slug": "the-ordinary-natural-moisturizing-factors-ha-30ml"
+  },
+  {
+    "emart_id": "59569",
+    "sale_price": 1300.0,
+    "skbd_slug": "the-ordinary-vitamin-c-suspension-23-ha-spheres-2-30ml"
+  },
+  {
+    "emart_id": "62819",
+    "sale_price": 1200.0,
+    "skbd_slug": "neutrogena-bright-boost-night-cream-50ml"
+  },
+  {
+    "emart_id": "63115",
+    "sale_price": 900.0,
+    "skbd_slug": "dr-forhair-folligen-original-shampoo-300-ml"
+  },
+  {
+    "emart_id": "50657",
+    "sale_price": 1300.0,
+    "skbd_slug": "rovectin-clean-lotus-water-cream-60ml"
+  },
+  {
+    "emart_id": "62428",
+    "sale_price": 1600.0,
+    "skbd_slug": "returnu-deep-comfort-ampoule-30ml"
+  },
+  {
+    "emart_id": "62426",
+    "sale_price": 1300.0,
+    "skbd_slug": "returnu-deep-comfort-ampoule-sunscreen-50ml"
+  },
+  {
+    "emart_id": "62422",
+    "sale_price": 1500.0,
+    "skbd_slug": "returnu-poreshooter-gommage-cleansing-balm-95ml"
+  },
+  {
+    "emart_id": "62566",
+    "sale_price": 950.0,
+    "skbd_slug": "mixsoon-centella-sun-cream-50g-spf-50-pa-50g"
+  },
+  {
+    "emart_id": "63657",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-skin-renewing-vitamin-c-serum-30ml"
+  },
+  {
+    "emart_id": "63199",
+    "sale_price": 1500.0,
+    "skbd_slug": "rovectin-skin-essentials-deep-moisture-uv-protector-spf50-pa50ml"
+  },
+  {
+    "emart_id": "63633",
+    "sale_price": 990.0,
+    "skbd_slug": "kaine-vita-drop-serum-30ml"
+  },
+  {
+    "emart_id": "63545",
+    "sale_price": 700.0,
+    "skbd_slug": "tocobo-glass-tlnted-lip-balm-013-tangerine-red-3-5g"
+  },
+  {
+    "emart_id": "63275",
+    "sale_price": 1300.0,
+    "skbd_slug": "numbuzin-no-1-clear-filter-sun-essence-spf50-pa50ml"
+  },
+  {
+    "emart_id": "63303",
+    "sale_price": 1400.0,
+    "skbd_slug": "etude-soon-jung-2x-barrier-intensive-cream-60ml"
+  },
+  {
+    "emart_id": "63037",
+    "sale_price": 1500.0,
+    "skbd_slug": "haruharu-wonder-centella-phyto-5-peptide-concentrate-cream-30ml"
+  },
+  {
+    "emart_id": "62861",
+    "sale_price": 950.0,
+    "skbd_slug": "isntree-onion-fresh-fluid-sun-cream-50ml"
+  },
+  {
+    "emart_id": "63147",
+    "sale_price": 1400.0,
+    "skbd_slug": "belif-the-true-cream-aqua-bomb-50ml"
+  },
+  {
+    "emart_id": "63097",
+    "sale_price": 1300.0,
+    "skbd_slug": "goodal-green-tangerine-vita-c-dark-circle-eye-cream-30ml"
+  },
+  {
+    "emart_id": "2961",
+    "sale_price": 1400.0,
+    "skbd_slug": "purito-centella-green-level-calming-toner-200ml"
+  },
+  {
+    "emart_id": "63855",
+    "sale_price": 1300.0,
+    "skbd_slug": "panoxyl-acne-foaming-wash-benzoyl-peroxide-10-156-g"
+  },
+  {
+    "emart_id": "51286",
+    "sale_price": 1000.0,
+    "skbd_slug": "panoxyl-acne-creamy-wash-benzoyl-peroxide-4-170-g"
+  },
+  {
+    "emart_id": "4138",
+    "sale_price": 1350.0,
+    "skbd_slug": "purito-centella-unscented-toner-200ml"
+  },
+  {
+    "emart_id": "4096",
+    "sale_price": 1400.0,
+    "skbd_slug": "iunik-tea-tree-relief-toner-200ml"
+  },
+  {
+    "emart_id": "62875",
+    "sale_price": 1500.0,
+    "skbd_slug": "torriden-dive-in-watery-moisture-sun-cream-60ml"
+  },
+  {
+    "emart_id": "58181",
+    "sale_price": 1450.0,
+    "skbd_slug": "beauty-of-joseon-ground-rice-and-honey-glow-mask-150ml"
+  },
+  {
+    "emart_id": "58018",
+    "sale_price": 1700.0,
+    "skbd_slug": "marymay-idebenone-blackberry-complex-intensive-total-care-cream-70g"
+  },
+  {
+    "emart_id": "58190",
+    "sale_price": 950.0,
+    "skbd_slug": "skin1004-madagascar-centella-poremizing-quick-clay-stick-mask-27g"
+  },
+  {
+    "emart_id": "63945",
+    "sale_price": 950.0,
+    "skbd_slug": "dr-ceuracle-pro-balance-biotics-clear-up-sun-spf50-pa-50ml"
+  },
+  {
+    "emart_id": "63543",
+    "sale_price": 700.0,
+    "skbd_slug": "tocobo-glow-ritual-lip-balm-001-coral-water-3-5g"
+  },
+  {
+    "emart_id": "58632",
+    "sale_price": 1180.0,
+    "skbd_slug": "iunik-centella-calming-daily-sunscreen-60ml"
+  },
+  {
+    "emart_id": "62935",
+    "sale_price": 980.0,
+    "skbd_slug": "torriden-balanceful-cleansing-gel-200ml"
+  },
+  {
+    "emart_id": "63899",
+    "sale_price": 2100.0,
+    "skbd_slug": "the-inkey-list-oat-cleansing-balm-150ml"
+  },
+  {
+    "emart_id": "55812",
+    "sale_price": 1500.0,
+    "skbd_slug": "skin1004-madagascar-centella-probio-cica-intensive-ampoule-50ml"
+  },
+  {
+    "emart_id": "62987",
+    "sale_price": 1300.0,
+    "skbd_slug": "clean-clear-cleanser-buy-1-get-1-free"
+  },
+  {
+    "emart_id": "62895",
+    "sale_price": 1300.0,
+    "skbd_slug": "round-lab-1025-dokdo-cream-80ml"
+  },
+  {
+    "emart_id": "62785",
+    "sale_price": 700.0,
+    "skbd_slug": "romnd-blur-fudge-tint-08-current-jam"
+  },
+  {
+    "emart_id": "63341",
+    "sale_price": 1500.0,
+    "skbd_slug": "im-from-rice-sunscreen-50ml"
+  },
+  {
+    "emart_id": "63487",
+    "sale_price": 1300.0,
+    "skbd_slug": "isntree-yam-root-vegan-milk-cream-80ml"
+  },
+  {
+    "emart_id": "57127",
+    "sale_price": 1700.0,
+    "skbd_slug": "anua-peach-70-niacinamide-serum-30ml"
+  },
+  {
+    "emart_id": "58165",
+    "sale_price": 1500.0,
+    "skbd_slug": "dr-althea-natural-radiance-essence-30ml"
+  },
+  {
+    "emart_id": "63169",
+    "sale_price": 900.0,
+    "skbd_slug": "b-lab-cica-barrier-5-5-cleansing-oil-balm-100ml"
+  },
+  {
+    "emart_id": "62859",
+    "sale_price": 900.0,
+    "skbd_slug": "missha-glow-skin-balm-to-go-mist-80-ml"
+  },
+  {
+    "emart_id": "4259",
+    "sale_price": 800.0,
+    "skbd_slug": "cosrx-aha-7-whitehead-power-liquid-100ml"
+  },
+  {
+    "emart_id": "63647",
+    "sale_price": 1500.0,
+    "skbd_slug": "heimish-matcha-biome-intensive-repair-cream-50ml"
+  },
+  {
+    "emart_id": "59722",
+    "sale_price": 950.0,
+    "skbd_slug": "anua-heartleaf-silky-moisture-sunscreen-50ml"
+  },
+  {
+    "emart_id": "62666",
+    "sale_price": 1100.0,
+    "skbd_slug": "w-dressroom-dressliving-clear-perfume-gift-set-no-214-hazelnut-in-chocolate-70ml-no-314-strawberry"
+  },
+  {
+    "emart_id": "59014",
+    "sale_price": 1200.0,
+    "skbd_slug": "medicube-pdrn-pink-peptide-serum-30ml"
+  },
+  {
+    "emart_id": "62352",
+    "sale_price": 950.0,
+    "skbd_slug": "skin1004-madagascar-centella-air-fit-suncreen-plus-spf-50-pa-50ml"
+  },
+  {
+    "emart_id": "63707",
+    "sale_price": 1400.0,
+    "skbd_slug": "neutrogena-ultra-sheer-dry-touch-sunscreen-lotion-spf-55-88ml"
+  },
+  {
+    "emart_id": "3965",
+    "sale_price": 1500.0,
+    "skbd_slug": "neogen-dermalogy-black-energy-cream-80ml"
+  },
+  {
+    "emart_id": "39879",
+    "sale_price": 1200.0,
+    "skbd_slug": "some-by-mi-propolis-b5-glow-barrier-calming-mask-100g"
+  },
+  {
+    "emart_id": "63055",
+    "sale_price": 700.0,
+    "skbd_slug": "romnd-dewyful-water-tint-12-canyon"
+  },
+  {
+    "emart_id": "63537",
+    "sale_price": 700.0,
+    "skbd_slug": "tocobo-powder-cream-lip-balm-033-carrot-cake-3-5g"
+  },
+  {
+    "emart_id": "59857",
+    "sale_price": 900.0,
+    "skbd_slug": "b-lab-matcha-hydrating-foam-cleanser-120ml"
+  },
+  {
+    "emart_id": "57570",
+    "sale_price": 1700.0,
+    "skbd_slug": "round-lab-1025-dokdo-toner-200ml"
+  },
+  {
+    "emart_id": "59504",
+    "sale_price": 990.0,
+    "skbd_slug": "haruharu-wonder-centella-4-txa-dark-spot-go-away-serum-30ml"
+  },
+  {
+    "emart_id": "63761",
+    "sale_price": 1100.0,
+    "skbd_slug": "the-ordinary-salicylic-acid-2-masque-50ml"
+  },
+  {
+    "emart_id": "62578",
+    "sale_price": 1300.0,
+    "skbd_slug": "nineless-a-control-azelaic-acid-cream-50ml"
+  },
+  {
+    "emart_id": "62965",
+    "sale_price": 1300.0,
+    "skbd_slug": "biore-uv-aqua-rich-watery-essence-spf-50pa-70ml"
+  },
+  {
+    "emart_id": "63505",
+    "sale_price": 1100.0,
+    "skbd_slug": "the-ordinary-lactic-acid-5-ha-30ml"
+  },
+  {
+    "emart_id": "62969",
+    "sale_price": 1300.0,
+    "skbd_slug": "biore-uv-aqua-rich-watery-gel-spf-50pa-70ml"
+  },
+  {
+    "emart_id": "63591",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-niacinamide-facial-toner-hydrating-pore-minimizing-200ml-nt"
+  },
+  {
+    "emart_id": "63319",
+    "sale_price": 1700.0,
+    "skbd_slug": "numbuzin-no-1-easy-peasy-cleansing-oil-200ml"
+  },
+  {
+    "emart_id": "62723",
+    "sale_price": 1300.0,
+    "skbd_slug": "embryolisse-lait-creme-concentre-nourishing-moisturiser-75ml"
+  },
+  {
+    "emart_id": "63507",
+    "sale_price": 550.0,
+    "skbd_slug": "heimish-matcha-biome-redness-relief-hydrating-toner-30ml"
+  },
+  {
+    "emart_id": "62656",
+    "sale_price": 1500.0,
+    "skbd_slug": "medicube-triple-collagen-cream-4-0-50ml"
+  },
+  {
+    "emart_id": "62466",
+    "sale_price": 1100.0,
+    "skbd_slug": "izeze-black-cumin-nem-bliss-suncream-50ml-spf-50-pa"
+  },
+  {
+    "emart_id": "63231",
+    "sale_price": 2700.0,
+    "skbd_slug": "la-roche-posay-anthelios-mineral-zinc-oxide-sunscreen-spf50-50ml"
+  },
+  {
+    "emart_id": "36577",
+    "sale_price": 1000.0,
+    "skbd_slug": "neutrogena-oil-free-acne-wash-269ml"
+  },
+  {
+    "emart_id": "63081",
+    "sale_price": 900.0,
+    "skbd_slug": "belif-aqua-bomb-jelly-cleanser-160ml"
+  },
+  {
+    "emart_id": "3607",
+    "sale_price": 1400.0,
+    "skbd_slug": "some-by-mi-snail-truecica-miracle-repair-cream-60g"
+  },
+  {
+    "emart_id": "62803",
+    "sale_price": 1150.0,
+    "skbd_slug": "skin-aqua-uv-super-moisture-gel-spf-50-pa-110gm"
+  },
+  {
+    "emart_id": "63773",
+    "sale_price": 950.0,
+    "skbd_slug": "some-by-mi-truecica-aqua-calming-suncream-50ml-50pa"
+  },
+  {
+    "emart_id": "62278",
+    "sale_price": 1300.0,
+    "skbd_slug": "skin1004-madagascar-centella-travel-kit-3020303030ml"
+  },
+  {
+    "emart_id": "62288",
+    "sale_price": 1500.0,
+    "skbd_slug": "some-by-mi-beta-panthenol-repair-cream-50ml"
+  },
+  {
+    "emart_id": "62266",
+    "sale_price": 1900.0,
+    "skbd_slug": "medicube-kojic-acid-turmeric-night-wrapping-mask-75ml"
+  },
+  {
+    "emart_id": "63749",
+    "sale_price": 1200.0,
+    "skbd_slug": "isntree-tw-real-bifida-ampoule-50ml"
+  },
+  {
+    "emart_id": "63347",
+    "sale_price": 2100.0,
+    "skbd_slug": "cerave-hydrating-sunscreen-face-sheer-tint-spf-30-50ml"
+  },
+  {
+    "emart_id": "62284",
+    "sale_price": 1500.0,
+    "skbd_slug": "arencia-fresh-red-smoothie-serum-30-50g"
+  },
+  {
+    "emart_id": "63251",
+    "sale_price": 1500.0,
+    "skbd_slug": "amplen-vc-shot-ampoule-30ml"
+  },
+  {
+    "emart_id": "63579",
+    "sale_price": 1500.0,
+    "skbd_slug": "bonajour-peptide-water-cream-100ml"
+  },
+  {
+    "emart_id": "62246",
+    "sale_price": 900.0,
+    "skbd_slug": "arencia-rice-mucin-cleanser-120g"
+  },
+  {
+    "emart_id": "59601",
+    "sale_price": 1500.0,
+    "skbd_slug": "skin1004-madagascar-centella-poremizing-light-gel-cream-75ml"
+  },
+  {
+    "emart_id": "51752",
+    "sale_price": 1300.0,
+    "skbd_slug": "rovectin-vita-dark-spot-serum-30ml"
+  },
+  {
+    "emart_id": "2617",
+    "sale_price": 980.0,
+    "skbd_slug": "some-by-mi-snail-truecica-miracle-repair-low-ph-gel-cleanser-100ml"
+  },
+  {
+    "emart_id": "56469",
+    "sale_price": 1500.0,
+    "skbd_slug": "cosrx-low-ph-niacinamide-micellar-cleansing-water-400ml"
+  },
+  {
+    "emart_id": "63111",
+    "sale_price": 1700.0,
+    "skbd_slug": "good-molecules-good-molecules-discoloration-correcting-serum-30ml"
+  },
+  {
+    "emart_id": "62244",
+    "sale_price": 1700.0,
+    "skbd_slug": "some-by-mi-beta-panthenol-repair-serum-30ml"
+  },
+  {
+    "emart_id": "62863",
+    "sale_price": 850.0,
+    "skbd_slug": "isntree-onion-fresh-light-sun-stick-spf-50-pa-22g"
+  },
+  {
+    "emart_id": "62809",
+    "sale_price": 900.0,
+    "skbd_slug": "im-from-mugwort-gel-cleanser-150ml"
+  },
+  {
+    "emart_id": "62338",
+    "sale_price": 990.0,
+    "skbd_slug": "dr-althea-gentle-vitamin-c-serum-30ml"
+  },
+  {
+    "emart_id": "57130",
+    "sale_price": 1400.0,
+    "skbd_slug": "dr-althea-vitamin-c-boosting-serum-30ml"
+  },
+  {
+    "emart_id": "4289",
+    "sale_price": 1350.0,
+    "skbd_slug": "isntree-hyaluronic-acid-toner-plus-200ml"
+  },
+  {
+    "emart_id": "63239",
+    "sale_price": 2100.0,
+    "skbd_slug": "la-roche-posay-pure-vitamin-c-10-serum-30ml"
+  },
+  {
+    "emart_id": "62642",
+    "sale_price": 1550.0,
+    "skbd_slug": "mielle-organics-rosemary-mint-light-scalp-hair-strengthening-oil-59ml"
+  },
+  {
+    "emart_id": "58045",
+    "sale_price": 850.0,
+    "skbd_slug": "marymay-vegan-peptide-bakuchiol-sun-stick-spf50-pa-18g"
+  },
+  {
+    "emart_id": "2584",
+    "sale_price": 1500.0,
+    "skbd_slug": "some-by-mi-snail-truecica-miracle-repair-serum-50ml"
+  },
+  {
+    "emart_id": "63763",
+    "sale_price": 1100.0,
+    "skbd_slug": "the-ordinary-100-organic-cold-pressed-rose-hip-seed-oil-30ml"
+  },
+  {
+    "emart_id": "59586",
+    "sale_price": 1350.0,
+    "skbd_slug": "skin1004-madagascar-centella-tone-brightening-tone-up-sunscreen-spf50-pa-50ml"
+  },
+  {
+    "emart_id": "59211",
+    "sale_price": 1500.0,
+    "skbd_slug": "medicube-txa-niacinamide-15-serum-30ml"
+  },
+  {
+    "emart_id": "51305",
+    "sale_price": 1500.0,
+    "skbd_slug": "innisfree-retinol-cica-repair-ampoule-30ml"
+  },
+  {
+    "emart_id": "63241",
+    "sale_price": 2500.0,
+    "skbd_slug": "la-roche-posay-retinol-b3-pure-retinol-serum-30ml"
+  },
+  {
+    "emart_id": "62446",
+    "sale_price": 1500.0,
+    "skbd_slug": "medicube-deep-vita-a-retinol-serum-30ml"
+  },
+  {
+    "emart_id": "62226",
+    "sale_price": 1700.0,
+    "skbd_slug": "skin1004-madagascar-centella-niacinamide-10-boosting-shot-ampoule-30ml"
+  },
+  {
+    "emart_id": "62224",
+    "sale_price": 1050.0,
+    "skbd_slug": "seapuri-scalpy-hair-serum-20ml"
+  },
+  {
+    "emart_id": "62901",
+    "sale_price": 1500.0,
+    "skbd_slug": "nineless-a-control-azelaic-acid-toner-150ml"
+  },
+  {
+    "emart_id": "62214",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-10-caffeine-10-niacinamide-cn-serum30ml"
+  },
+  {
+    "emart_id": "62210",
+    "sale_price": 990.0,
+    "skbd_slug": "cos-de-baha-ab-aha-bha-ab-serum-30ml"
+  },
+  {
+    "emart_id": "62206",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-azelaic-acid-5-niacinamide-2-facial-toner-at-200ml"
+  },
+  {
+    "emart_id": "62202",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-bakuchiol-2-retinol-0-15-serum-l1-30ml"
+  },
+  {
+    "emart_id": "62196",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-drying-cream-dc-45ml"
+  },
+  {
+    "emart_id": "63611",
+    "sale_price": 1400.0,
+    "skbd_slug": "tiam-panthenol-moist-cream-50ml"
+  },
+  {
+    "emart_id": "63257",
+    "sale_price": 1500.0,
+    "skbd_slug": "illiyoon-ceramide-ato-soothing-gel-175ml"
+  },
+  {
+    "emart_id": "62849",
+    "sale_price": 1500.0,
+    "skbd_slug": "tirtir-ceramic-cream-50ml"
+  },
+  {
+    "emart_id": "62739",
+    "sale_price": 1100.0,
+    "skbd_slug": "round-lab-on-the-go-kit-cleanser-40ml-toner-50ml-lotion-50ml"
+  },
+  {
+    "emart_id": "62286",
+    "sale_price": 1500.0,
+    "skbd_slug": "some-by-mi-galactomyces-glutathione-glow-milky-toner-200ml"
+  },
+  {
+    "emart_id": "2597",
+    "sale_price": 1500.0,
+    "skbd_slug": "some-by-mi-galactomyces-pure-vitamin-c-glow-serum-30ml"
+  },
+  {
+    "emart_id": "62182",
+    "sale_price": 1400.0,
+    "skbd_slug": "some-by-mi-galactomyces-glutathione-brightening-cream-40ml"
+  },
+  {
+    "emart_id": "59832",
+    "sale_price": 1700.0,
+    "skbd_slug": "numbuzin-no-2-rose-pdrn-collagen-plumping-serum-30ml"
+  },
+  {
+    "emart_id": "62178",
+    "sale_price": 1300.0,
+    "skbd_slug": "purito-seoul-oat-in-gentle-exfoliating-face-cleanser-150ml"
+  },
+  {
+    "emart_id": "62160",
+    "sale_price": 1400.0,
+    "skbd_slug": "marymay-retinol-0-1-bakuchiol-cica-serum-80ml"
+  },
+  {
+    "emart_id": "62156",
+    "sale_price": 900.0,
+    "skbd_slug": "house-of-hur-moist-ampoule-blusher-08-berry-purple-20ml"
+  },
+  {
+    "emart_id": "62172",
+    "sale_price": 900.0,
+    "skbd_slug": "house-of-hur-purifying-cleansing-balm-50ml"
+  },
+  {
+    "emart_id": "62176",
+    "sale_price": 850.0,
+    "skbd_slug": "house-of-hur-tropical-dew-sun-cream-50ml"
+  },
+  {
+    "emart_id": "62174",
+    "sale_price": 1700.0,
+    "skbd_slug": "april-skin-txa-niacinamide-toning-shot-99-milky-toner-150ml"
+  },
+  {
+    "emart_id": "62250",
+    "sale_price": 1000.0,
+    "skbd_slug": "april-skin-carrotene-ipmp-hydromelt-cleansing-balm-90ml"
+  },
+  {
+    "emart_id": "59381",
+    "sale_price": 1100.0,
+    "skbd_slug": "celimax-the-vita-a-retinol-shot-tightening-serum-30ml"
+  },
+  {
+    "emart_id": "62142",
+    "sale_price": 1700.0,
+    "skbd_slug": "eqqualberry-purple-rice-pore-smoothing-cleansing-oil-200ml"
+  },
+  {
+    "emart_id": "62452",
+    "sale_price": 990.0,
+    "skbd_slug": "medicube-deep-vita-c-ampoule-2-0-30g"
+  },
+  {
+    "emart_id": "62879",
+    "sale_price": 1500.0,
+    "skbd_slug": "torriden-balanceful-cica-cream-80ml"
+  },
+  {
+    "emart_id": "62144",
+    "sale_price": 900.0,
+    "skbd_slug": "purito-seoul-seoul-best-kit-105ml"
+  },
+  {
+    "emart_id": "56187",
+    "sale_price": 1500.0,
+    "skbd_slug": "mielle-rosemary-mint-scalp-hair-strengthening-oil-59ml"
+  },
+  {
+    "emart_id": "62134",
+    "sale_price": 1700.0,
+    "skbd_slug": "april-skin-pink-aloe-pack-cleanser-120g"
+  },
+  {
+    "emart_id": "62132",
+    "sale_price": 1500.0,
+    "skbd_slug": "fully-red-tomato-jam-pack-cleanser-120ml"
+  },
+  {
+    "emart_id": "62130",
+    "sale_price": 900.0,
+    "skbd_slug": "fully-rice-dough-mask-cleanser-130ml"
+  },
+  {
+    "emart_id": "62126",
+    "sale_price": 1500.0,
+    "skbd_slug": "fully-rice-ceramide-capsule-cream-90ml"
+  },
+  {
+    "emart_id": "63469",
+    "sale_price": 900.0,
+    "skbd_slug": "tocobo-coconut-clay-cleansing-foam-150ml"
+  },
+  {
+    "emart_id": "62114",
+    "sale_price": 1500.0,
+    "skbd_slug": "haruharu-wonder-black-rice-night-knight-retinol-serum-20ml"
+  },
+  {
+    "emart_id": "63063",
+    "sale_price": 500.0,
+    "skbd_slug": "romnd-zero-velvet-tint-07-fizz"
+  },
+  {
+    "emart_id": "62720",
+    "sale_price": 1300.0,
+    "skbd_slug": "melano-cc-medicated-anti-blemish-serum-20ml"
+  },
+  {
+    "emart_id": "58048",
+    "sale_price": 1200.0,
+    "skbd_slug": "marymay-blackberry-complex-glow-washoff-pack-125g"
+  },
+  {
+    "emart_id": "58023",
+    "sale_price": 1500.0,
+    "skbd_slug": "mary-may-vegan-blackberry-complex-cream-essence-140ml"
+  },
+  {
+    "emart_id": "59443",
+    "sale_price": 1700.0,
+    "skbd_slug": "eqqualberry-purple-rice-pore-purifying-pack-cleanser-130g"
+  },
+  {
+    "emart_id": "63133",
+    "sale_price": 2500.0,
+    "skbd_slug": "la-roche-posay-anthelios-body-face-gentle-lotion-mineral-sunscreen-spf-50-90ml"
+  },
+  {
+    "emart_id": "62124",
+    "sale_price": 500.0,
+    "skbd_slug": "haruharu-wonder-black-rice-moisture-deep-cleansing-oil-mini-30ml"
+  },
+  {
+    "emart_id": "63335",
+    "sale_price": 500.0,
+    "skbd_slug": "3w-clinic-collagen-retinol-ball-eye-serum-30ml"
+  },
+  {
+    "emart_id": "62823",
+    "sale_price": 1500.0,
+    "skbd_slug": "pyunkang-yul-balancing-gel-100ml"
+  },
+  {
+    "emart_id": "4092",
+    "sale_price": 1150.0,
+    "skbd_slug": "iunik-centella-calming-gel-cream-60ml"
+  },
+  {
+    "emart_id": "2728",
+    "sale_price": 1500.0,
+    "skbd_slug": "im-from-rice-toner-150ml"
+  },
+  {
+    "emart_id": "74052",
+    "sale_price": 900.0,
+    "skbd_slug": "anua-heartleaf-quercetinol-pore-deep-cleansing-foam-150ml"
+  },
+  {
+    "emart_id": "26540",
+    "sale_price": 1700.0,
+    "skbd_slug": "im-from-rice-cream-50g"
+  },
+  {
+    "emart_id": "63211",
+    "sale_price": 950.0,
+    "skbd_slug": "heimish-artless-glow-tinted-sunscreen-shine-beige-spf50-pa-40ml"
+  },
+  {
+    "emart_id": "62268",
+    "sale_price": 1200.0,
+    "skbd_slug": "skin1004-madagascar-centella-hyalu-cica-water-fit-sun-serum-50ml-11"
+  },
+  {
+    "emart_id": "63213",
+    "sale_price": 950.0,
+    "skbd_slug": "heimish-moringa-ceramide-hyaluronic-acid-hydrating-watery-sunscreen-50ml"
+  },
+  {
+    "emart_id": "74522",
+    "sale_price": 1400.0,
+    "skbd_slug": "im-from-ginseng-serum-30ml"
+  },
+  {
+    "emart_id": "62799",
+    "sale_price": 1400.0,
+    "skbd_slug": "heimish-black-rose-hydra-plumping-sorbet-cream-50ml"
+  },
+  {
+    "emart_id": "62885",
+    "sale_price": 1300.0,
+    "skbd_slug": "torriden-dive-in-low-molecular-hyaluronic-acid-cream-80ml"
+  },
+  {
+    "emart_id": "63215",
+    "sale_price": 1500.0,
+    "skbd_slug": "heimish-moringa-creamide-hyaluronic-hydrating-cream-50ml"
+  },
+  {
+    "emart_id": "62887",
+    "sale_price": 1300.0,
+    "skbd_slug": "torriden-dive-in-low-molecular-hyaluronic-acid-cleansing-foam-150ml"
+  },
+  {
+    "emart_id": "62090",
+    "sale_price": 900.0,
+    "skbd_slug": "house-of-hur-midnight-soothing-cleansing-balm-50ml"
+  },
+  {
+    "emart_id": "62825",
+    "sale_price": 700.0,
+    "skbd_slug": "farm-stay-citrus-yuja-vitalizing-ampoule-250ml"
+  },
+  {
+    "emart_id": "59713",
+    "sale_price": 1200.0,
+    "skbd_slug": "anua-heartleaf-pore-clay-pack-100ml"
+  },
+  {
+    "emart_id": "63933",
+    "sale_price": 980.0,
+    "skbd_slug": "cosrx-full-fit-honey-sugar-lip-scrub-20g"
+  },
+  {
+    "emart_id": "62084",
+    "sale_price": 1700.0,
+    "skbd_slug": "numbuzin-no-4-ceramide-aha-glazed-skin-prep-serum-30ml"
+  },
+  {
+    "emart_id": "63113",
+    "sale_price": 950.0,
+    "skbd_slug": "dr-forhair-folligen-sea-salt-scaler-300ml"
+  },
+  {
+    "emart_id": "62624",
+    "sale_price": 1500.0,
+    "skbd_slug": "bath-body-works-works-japanese-cherry-blossom-lotion-296ml"
+  },
+  {
+    "emart_id": "63023",
+    "sale_price": 1500.0,
+    "skbd_slug": "bonajour-retichinol-power-concentrate-20ml"
+  },
+  {
+    "emart_id": "63137",
+    "sale_price": 2100.0,
+    "skbd_slug": "la-roche-posay-toleriane-double-repair-moisturizer-with-spf-100ml"
+  },
+  {
+    "emart_id": "4095",
+    "sale_price": 1400.0,
+    "skbd_slug": "iunik-tea-tree-relief-serum-50ml"
+  },
+  {
+    "emart_id": "4093",
+    "sale_price": 1700.0,
+    "skbd_slug": "iunik-calendula-complete-cleansing-oil-200ml"
+  },
+  {
+    "emart_id": "59385",
+    "sale_price": 1300.0,
+    "skbd_slug": "iunik-centella-bubble-cleansing-foam-150ml"
+  },
+  {
+    "emart_id": "4091",
+    "sale_price": 1500.0,
+    "skbd_slug": "iunik-propolis-vitamin-synergy-serum-50ml"
+  },
+  {
+    "emart_id": "62208",
+    "sale_price": 990.0,
+    "skbd_slug": "cos-de-baha-azelaic-acid-15-msm-1-az15-serum-30ml"
+  },
+  {
+    "emart_id": "62228",
+    "sale_price": 1500.0,
+    "skbd_slug": "eqqualberry-bakuchiol-plumping-capsule-cream-50ml"
+  },
+  {
+    "emart_id": "62096",
+    "sale_price": 1400.0,
+    "skbd_slug": "ksecret-seoul-1988-glow-serum-niacinamide-15-yuja"
+  },
+  {
+    "emart_id": "62276",
+    "sale_price": 1250.0,
+    "skbd_slug": "ksecret-collagen-vita-secret-multi-balm-11g"
+  },
+  {
+    "emart_id": "62516",
+    "sale_price": 950.0,
+    "skbd_slug": "aplb-glutathione-niacinamide-body-wash-300ml"
+  },
+  {
+    "emart_id": "59884",
+    "sale_price": 900.0,
+    "skbd_slug": "aplb-glutathione-niacinamide-facial-cleanser-80ml"
+  },
+  {
+    "emart_id": "62504",
+    "sale_price": 950.0,
+    "skbd_slug": "aplb-glutathione-niacinamide-cleansing-balm-80ml"
+  },
+  {
+    "emart_id": "62496",
+    "sale_price": 990.0,
+    "skbd_slug": "aplb-retinol-vitamin-c-vitamin-e-mist-essence-105ml"
+  },
+  {
+    "emart_id": "63143",
+    "sale_price": 900.0,
+    "skbd_slug": "round-lab-mugwort-calming-cleanser-150ml"
+  },
+  {
+    "emart_id": "62310",
+    "sale_price": 1400.0,
+    "skbd_slug": "celimax-the-real-noni-energy-ampoule-30ml"
+  },
+  {
+    "emart_id": "62658",
+    "sale_price": 1900.0,
+    "skbd_slug": "medicube-zero-pore-pad-2-0-70pcs"
+  },
+  {
+    "emart_id": "62056",
+    "sale_price": 1100.0,
+    "skbd_slug": "medicube-kojic-acid-turmeric-toning-cleanser-120g"
+  },
+  {
+    "emart_id": "56126",
+    "sale_price": 1300.0,
+    "skbd_slug": "thank-you-farmer-sun-project-water-sun-cream-50ml"
+  },
+  {
+    "emart_id": "62048",
+    "sale_price": 2200.0,
+    "skbd_slug": "healthy-place-low-molecular-pomegranate-collagen-14-stick"
+  },
+  {
+    "emart_id": "62046",
+    "sale_price": 980.0,
+    "skbd_slug": "cosrx-peptide-132-ultra-perfect-hair-bonding-shampoo-200ml"
+  },
+  {
+    "emart_id": "62044",
+    "sale_price": 1500.0,
+    "skbd_slug": "cosrx-peptide-132-ultra-perfect-hair-bonding-treatment-120ml"
+  },
+  {
+    "emart_id": "62042",
+    "sale_price": 980.0,
+    "skbd_slug": "cosrx-peptide-132-ultra-perfect-hair-bonding-oil-serum-28ml"
+  },
+  {
+    "emart_id": "59735",
+    "sale_price": 1500.0,
+    "skbd_slug": "arencia-fresh-blue-hyssop-rice-mochi-cleanser-120g"
+  },
+  {
+    "emart_id": "62556",
+    "sale_price": 950.0,
+    "skbd_slug": "purito-seoul-wonder-releaf-centella-daily-sun-lotion-60ml"
+  },
+  {
+    "emart_id": "58216",
+    "sale_price": 1500.0,
+    "skbd_slug": "jumiso-antioxidant-glow-facial-essence-40ml"
+  },
+  {
+    "emart_id": "62052",
+    "sale_price": 2200.0,
+    "skbd_slug": "healthy-place-double-toning-white-glutathione-collagen-stick-14-stick"
+  },
+  {
+    "emart_id": "4134",
+    "sale_price": 1400.0,
+    "skbd_slug": "iunik-vitamin-hyaluronic-acid-vitalizing-toner-200ml"
+  },
+  {
+    "emart_id": "62070",
+    "sale_price": 1300.0,
+    "skbd_slug": "naturie-hatomugi-skin-conditioning-gel-180g"
+  },
+  {
+    "emart_id": "63637",
+    "sale_price": 900.0,
+    "skbd_slug": "kaine-rosemary-relief-gel-cleanser-150ml"
+  },
+  {
+    "emart_id": "63673",
+    "sale_price": 900.0,
+    "skbd_slug": "isntree-green-tea-fresh-emulsion-120ml"
+  },
+  {
+    "emart_id": "62032",
+    "sale_price": 1500.0,
+    "skbd_slug": "seoul-1988-boosting-serum-collagen-complex-7-red-ginseng-30ml"
+  },
+  {
+    "emart_id": "62030",
+    "sale_price": 1350.0,
+    "skbd_slug": "purito-oat-pdrn-gentle-refining-toner-200ml"
+  },
+  {
+    "emart_id": "50875",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-moisturizing-cream-236ml-for-normal-to-dry-skin"
+  },
+  {
+    "emart_id": "2809",
+    "sale_price": 1500.0,
+    "skbd_slug": "innisfree-jeju-cherry-blossom-tone-up-cream-50ml"
+  },
+  {
+    "emart_id": "62833",
+    "sale_price": 900.0,
+    "skbd_slug": "farm-stay-hyaluronic-acid-super-aqua-cream-100ml"
+  },
+  {
+    "emart_id": "62026",
+    "sale_price": 1500.0,
+    "skbd_slug": "vt-cosmetics-pdrn-capsule-cream-100-50ml"
+  },
+  {
+    "emart_id": "59590",
+    "sale_price": 1400.0,
+    "skbd_slug": "skin1004-madagascar-centella-poremizing-clear-toner-210ml"
+  },
+  {
+    "emart_id": "62008",
+    "sale_price": 1050.0,
+    "skbd_slug": "be-hope-luxury-vegan-pore-lifting-roller-cream-150ml"
+  },
+  {
+    "emart_id": "59732",
+    "sale_price": 1500.0,
+    "skbd_slug": "dr-althea-0-1-gentle-retinol-serum-30ml"
+  },
+  {
+    "emart_id": "62478",
+    "sale_price": 1200.0,
+    "skbd_slug": "izeze-hyper-csa-cica-cleanser-150ml"
+  },
+  {
+    "emart_id": "58117",
+    "sale_price": 1200.0,
+    "skbd_slug": "anua-bha-2-gentle-exfoliating-toner-150ml"
+  },
+  {
+    "emart_id": "63687",
+    "sale_price": 1200.0,
+    "skbd_slug": "neutrogena-t-sal-therapeutic-shampoo-scalp-build-up-control-133ml"
+  },
+  {
+    "emart_id": "53315",
+    "sale_price": 1900.0,
+    "skbd_slug": "cosrx-the-6-peptide-skin-booster-serum-150ml"
+  },
+  {
+    "emart_id": "62016",
+    "sale_price": 1500.0,
+    "skbd_slug": "moev-annurcatin-treatment-200g"
+  },
+  {
+    "emart_id": "50830",
+    "sale_price": 990.0,
+    "skbd_slug": "cosrx-the-vitamin-c-23-serum-20ml"
+  },
+  {
+    "emart_id": "61982",
+    "sale_price": 1100.0,
+    "skbd_slug": "bad-skin-collagen-bomb-hydrating-ampoule-400-ml"
+  },
+  {
+    "emart_id": "61978",
+    "sale_price": 1100.0,
+    "skbd_slug": "bad-skin-collagen-bomb-anti-wrinkle-eye-cream-90ml"
+  },
+  {
+    "emart_id": "61972",
+    "sale_price": 1100.0,
+    "skbd_slug": "bad-skin-collagen-bomb-hylifting-cream-100-ml"
+  },
+  {
+    "emart_id": "63151",
+    "sale_price": 1500.0,
+    "skbd_slug": "goodal-vegan-rice-milk-moisturizing-cream-70ml"
+  },
+  {
+    "emart_id": "63369",
+    "sale_price": 1500.0,
+    "skbd_slug": "numbuzin-no-1-glossy-essence-serum-50ml"
+  },
+  {
+    "emart_id": "62911",
+    "sale_price": 950.0,
+    "skbd_slug": "anua-airy-sun-cream-50ml"
+  },
+  {
+    "emart_id": "63149",
+    "sale_price": 1700.0,
+    "skbd_slug": "belif-numero-10-essence-50ml"
+  },
+  {
+    "emart_id": "62342",
+    "sale_price": 1400.0,
+    "skbd_slug": "benton-pha-peeling-toner-150ml"
+  },
+  {
+    "emart_id": "62592",
+    "sale_price": 1500.0,
+    "skbd_slug": "bonajour-eggplant-bha-water-cream-50ml"
+  },
+  {
+    "emart_id": "63867",
+    "sale_price": 1700.0,
+    "skbd_slug": "the-inkey-list-brighten-i-eye-cream-15ml"
+  },
+  {
+    "emart_id": "62807",
+    "sale_price": 1150.0,
+    "skbd_slug": "nivea-sun-protect-super-water-gel-140g"
+  },
+  {
+    "emart_id": "62795",
+    "sale_price": 1300.0,
+    "skbd_slug": "heimish-all-clean-gentle-exfoliating-gel-cleanser-130ml"
+  },
+  {
+    "emart_id": "61958",
+    "sale_price": 1050.0,
+    "skbd_slug": "ongredients-daily-aqua-bomb-cream-80ml"
+  },
+  {
+    "emart_id": "61956",
+    "sale_price": 950.0,
+    "skbd_slug": "iunik-beta-glucan-barrier-sunscreen-spf50-pa-60-ml"
+  },
+  {
+    "emart_id": "62747",
+    "sale_price": 1500.0,
+    "skbd_slug": "bath-body-works-japanese-cherry-blossom-body-wash-295-ml"
+  },
+  {
+    "emart_id": "63619",
+    "sale_price": 1400.0,
+    "skbd_slug": "heimish-matcha-biome-oil-free-calming-gel-moisturizer-100ml"
+  },
+  {
+    "emart_id": "61946",
+    "sale_price": 1000.0,
+    "skbd_slug": "anua-peach-niacin-spread-cleansing-foam-150ml"
+  },
+  {
+    "emart_id": "61944",
+    "sale_price": 1500.0,
+    "skbd_slug": "anua-azelaic-acid-3-cica-skin-clarifying-toner-250ml"
+  },
+  {
+    "emart_id": "61940",
+    "sale_price": 1500.0,
+    "skbd_slug": "anua-zero-cast-moisturizing-finish-sunscreen-50ml"
+  },
+  {
+    "emart_id": "61960",
+    "sale_price": 1300.0,
+    "skbd_slug": "p-calm-cicalacto-exosome-45-sleeping-mask-50g"
+  },
+  {
+    "emart_id": "61938",
+    "sale_price": 1500.0,
+    "skbd_slug": "dr-althea-niathione-cream-30ml"
+  },
+  {
+    "emart_id": "61964",
+    "sale_price": 1900.0,
+    "skbd_slug": "p-calm-barrier-cycle-toner-pad-160ml"
+  },
+  {
+    "emart_id": "63069",
+    "sale_price": 500.0,
+    "skbd_slug": "romnd-juicy-lasting-tint-07-jujube"
+  },
+  {
+    "emart_id": "61962",
+    "sale_price": 1500.0,
+    "skbd_slug": "p-calm-holy-basil-bubble-deep-mask-90g-set-dual-pore-brush"
+  },
+  {
+    "emart_id": "61934",
+    "sale_price": 1300.0,
+    "skbd_slug": "cosrx-the-ceramide-skin-barrier-moisturizer-80ml"
+  },
+  {
+    "emart_id": "3100",
+    "sale_price": 1500.0,
+    "skbd_slug": "nacific-phyto-niacin-whitening-toner-150ml"
+  },
+  {
+    "emart_id": "62702",
+    "sale_price": 1100.0,
+    "skbd_slug": "the-face-shop-rice-ceramide-moisturizing-emulsion-150ml"
+  },
+  {
+    "emart_id": "61948",
+    "sale_price": 1050.0,
+    "skbd_slug": "kopher-curepair-mela-cream-35ml"
+  },
+  {
+    "emart_id": "63465",
+    "sale_price": 1500.0,
+    "skbd_slug": "heimish-marine-care-retinol-eye-serum-30ml"
+  },
+  {
+    "emart_id": "4223",
+    "sale_price": 1500.0,
+    "skbd_slug": "cosrx-balancium-comfort-ceramide-cream-80g"
+  },
+  {
+    "emart_id": "63333",
+    "sale_price": 1400.0,
+    "skbd_slug": "numbuzin-no-3-velvet-beauty-cream-60ml"
+  },
+  {
+    "emart_id": "62608",
+    "sale_price": 1350.0,
+    "skbd_slug": "bath-body-works-cherry-blossom-fine-fragrance-mist-236-ml"
+  },
+  {
+    "emart_id": "62622",
+    "sale_price": 1350.0,
+    "skbd_slug": "bath-body-works-cherry-blossom-body-lotion-236ml"
+  },
+  {
+    "emart_id": "62024",
+    "sale_price": 1600.0,
+    "skbd_slug": "julyme-damage-care-perfume-hair-oil-30ml-full-bloom"
+  },
+  {
+    "emart_id": "62200",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-centella-facial-toner-ct-200ml"
+  },
+  {
+    "emart_id": "61996",
+    "sale_price": 1300.0,
+    "skbd_slug": "shiseido-fino-premium-touch-conditioner-550ml"
+  },
+  {
+    "emart_id": "62640",
+    "sale_price": 1250.0,
+    "skbd_slug": "shiseido-fino-premium-touch-shampoo-550ml"
+  },
+  {
+    "emart_id": "62997",
+    "sale_price": 1500.0,
+    "skbd_slug": "shiseido-fino-premium-touch-essence-hair-mask-230g"
+  },
+  {
+    "emart_id": "50630",
+    "sale_price": 2500.0,
+    "skbd_slug": "cerave-skin-renewing-night-cream-48g"
+  },
+  {
+    "emart_id": "63289",
+    "sale_price": 950.0,
+    "skbd_slug": "isntree-hyaluronic-acid-daily-sun-gel-50ml"
+  },
+  {
+    "emart_id": "63141",
+    "sale_price": 1400.0,
+    "skbd_slug": "round-lab-mugwort-calming-cream-80ml"
+  },
+  {
+    "emart_id": "62913",
+    "sale_price": 900.0,
+    "skbd_slug": "axis-y-biome-comforting-infused-toner-200ml"
+  },
+  {
+    "emart_id": "62580",
+    "sale_price": 850.0,
+    "skbd_slug": "nineless-mela-pro-tranexamic-acid-sun-screen-face-and-body-sun-protection-spf-50-pa-100ml"
+  },
+  {
+    "emart_id": "63223",
+    "sale_price": 1500.0,
+    "skbd_slug": "cosrx-balancium-comfort-cool-ceramide-soothing-gel-cream-85ml"
+  },
+  {
+    "emart_id": "63405",
+    "sale_price": 1400.0,
+    "skbd_slug": "numbuzin-no-3-skin-softening-serum-50ml"
+  },
+  {
+    "emart_id": "2963",
+    "sale_price": 1500.0,
+    "skbd_slug": "purito-centella-green-level-recovery-cream-50ml"
+  },
+  {
+    "emart_id": "61924",
+    "sale_price": 1000.0,
+    "skbd_slug": "aplb-tranexamic-acid-niacinamide-body-lotion-300ml"
+  },
+  {
+    "emart_id": "57477",
+    "sale_price": 1500.0,
+    "skbd_slug": "illiyoon-ceramide-ato-concentrate-cream-200ml"
+  },
+  {
+    "emart_id": "62664",
+    "sale_price": 1600.0,
+    "skbd_slug": "aestura-atobarrier-365-cream-80ml"
+  },
+  {
+    "emart_id": "57866",
+    "sale_price": 1150.0,
+    "skbd_slug": "kose-softymo-speedy-cleansing-oil-230ml"
+  },
+  {
+    "emart_id": "3699",
+    "sale_price": 1200.0,
+    "skbd_slug": "some-by-mi-galactomyces-pure-vitamin-c-glow-toner-200ml"
+  },
+  {
+    "emart_id": "62198",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-ceramide-1-gel-cream-c1-45ml"
+  },
+  {
+    "emart_id": "61916",
+    "sale_price": 700.0,
+    "skbd_slug": "celimax-the-real-noni-refresh-clay-mask-120g"
+  },
+  {
+    "emart_id": "61912",
+    "sale_price": 1200.0,
+    "skbd_slug": "celimax-the-real-noni-hydra-firming-lotion-150ml"
+  },
+  {
+    "emart_id": "61908",
+    "sale_price": 1100.0,
+    "skbd_slug": "celimax-the-real-noni-acne-bubble-cleanser-155ml"
+  },
+  {
+    "emart_id": "61914",
+    "sale_price": 1200.0,
+    "skbd_slug": "celimax-the-real-noni-energy-ampoule-50ml"
+  },
+  {
+    "emart_id": "61910",
+    "sale_price": 1400.0,
+    "skbd_slug": "celimax-the-real-noni-energy-repair-cream-50ml"
+  },
+  {
+    "emart_id": "63793",
+    "sale_price": 2900.0,
+    "skbd_slug": "la-roche-posay-toleriane-purifying-foaming-cleanser-400-ml"
+  },
+  {
+    "emart_id": "63311",
+    "sale_price": 1500.0,
+    "skbd_slug": "bioderma-sebium-hydra-ultra-moisturising-compensating-care-40ml"
+  },
+  {
+    "emart_id": "63449",
+    "sale_price": 1500.0,
+    "skbd_slug": "cerave-sa-smoothing-cleanser-236ml"
+  },
+  {
+    "emart_id": "63025",
+    "sale_price": 2700.0,
+    "skbd_slug": "la-roche-posay-toleriane-double-repair-face-moisturizer-100ml"
+  },
+  {
+    "emart_id": "61880",
+    "sale_price": 2500.0,
+    "skbd_slug": "la-roche-posay-toleriane-double-repair-matte-face-moisturizer-100ml"
+  },
+  {
+    "emart_id": "61878",
+    "sale_price": 1500.0,
+    "skbd_slug": "aveeno-baby-daily-care-hair-body-wash-250ml"
+  },
+  {
+    "emart_id": "58113",
+    "sale_price": 2900.0,
+    "skbd_slug": "la-roche-posay-cicaplast-baume-b5-100ml"
+  },
+  {
+    "emart_id": "62696",
+    "sale_price": 1100.0,
+    "skbd_slug": "dr-forhair-folligen-tonic-120ml"
+  },
+  {
+    "emart_id": "63485",
+    "sale_price": 1350.0,
+    "skbd_slug": "isntree-yam-root-vegan-milk-toner-200ml"
+  },
+  {
+    "emart_id": "62344",
+    "sale_price": 1500.0,
+    "skbd_slug": "benton-guava-moisture-soothing-cream-80ml"
+  },
+  {
+    "emart_id": "63011",
+    "sale_price": 1200.0,
+    "skbd_slug": "goodal-vegan-rice-milk-moisturizing-sun-cream-50ml"
+  },
+  {
+    "emart_id": "62865",
+    "sale_price": 1200.0,
+    "skbd_slug": "round-lab-1025-dokdo-cleanser-150ml"
+  },
+  {
+    "emart_id": "62951",
+    "sale_price": 1800.0,
+    "skbd_slug": "hada-labo-shiro-jyun-whitening-cream-with-arbutin-50g"
+  },
+  {
+    "emart_id": "63659",
+    "sale_price": 2500.0,
+    "skbd_slug": "cerave-acne-control-cleanser-237ml"
+  },
+  {
+    "emart_id": "62881",
+    "sale_price": 1500.0,
+    "skbd_slug": "torriden-solid-in-ceramide-all-day-essence-100ml"
+  },
+  {
+    "emart_id": "63217",
+    "sale_price": 1500.0,
+    "skbd_slug": "heimish-moringa-ceramide-collagen-enriched-moisturizer-120ml"
+  },
+  {
+    "emart_id": "62280",
+    "sale_price": 1400.0,
+    "skbd_slug": "medicube-pdrn-pink-collagen-capsule-cream-55g"
+  },
+  {
+    "emart_id": "62204",
+    "sale_price": 990.0,
+    "skbd_slug": "cos-de-baha-azelaic-acid-20-cream-az20-50ml"
+  },
+  {
+    "emart_id": "62751",
+    "sale_price": 950.0,
+    "skbd_slug": "bath-and-body-works-cherry-blossom-body-wash-295ml"
+  },
+  {
+    "emart_id": "62867",
+    "sale_price": 1500.0,
+    "skbd_slug": "pyunkang-yul-intensive-ceramide-lotion-500ml"
+  },
+  {
+    "emart_id": "61866",
+    "sale_price": 1100.0,
+    "skbd_slug": "atomy-body-care-body-lotion-300ml"
+  },
+  {
+    "emart_id": "63083",
+    "sale_price": 900.0,
+    "skbd_slug": "round-lab-birch-juice-moisturizing-cleanser-150ml"
+  },
+  {
+    "emart_id": "62562",
+    "sale_price": 1700.0,
+    "skbd_slug": "haruharu-wonder-black-rice-probiotics-barrier-essence-120ml-a-k-a-makgeolli-essence"
+  },
+  {
+    "emart_id": "58271",
+    "sale_price": 950.0,
+    "skbd_slug": "haruharu-wonder-black-rice-moisture-airyfit-daily-sunscreen-50ml"
+  },
+  {
+    "emart_id": "63161",
+    "sale_price": 700.0,
+    "skbd_slug": "tocobo-vita-glazed-lip-mask-20ml"
+  },
+  {
+    "emart_id": "56301",
+    "sale_price": 900.0,
+    "skbd_slug": "mixsoon-bean-essence-50ml"
+  },
+  {
+    "emart_id": "61860",
+    "sale_price": 1700.0,
+    "skbd_slug": "dr-ceuracle-jeju-matcha-tea-essence-150ml"
+  },
+  {
+    "emart_id": "61854",
+    "sale_price": 1300.0,
+    "skbd_slug": "haruharu-wonder-black-bamboo-top-to-toe-spf-veil-spf50-pa-100ml"
+  },
+  {
+    "emart_id": "61852",
+    "sale_price": 1400.0,
+    "skbd_slug": "pyunkang-yul-kids-baby-cream-400ml"
+  },
+  {
+    "emart_id": "62775",
+    "sale_price": 1400.0,
+    "skbd_slug": "axis-y-heartleaf-my-type-calming-cream-60ml"
+  },
+  {
+    "emart_id": "59692",
+    "sale_price": 1500.0,
+    "skbd_slug": "anua-heartleaf-70-intense-calming-cream-50ml"
+  },
+  {
+    "emart_id": "62945",
+    "sale_price": 1300.0,
+    "skbd_slug": "hadalabo-koi-gokujyun-perfect-gel-moisturiser-100g"
+  },
+  {
+    "emart_id": "63379",
+    "sale_price": 2100.0,
+    "skbd_slug": "cerave-hydrating-toner-200ml"
+  },
+  {
+    "emart_id": "61834",
+    "sale_price": 2100.0,
+    "skbd_slug": "cetaphil-ceramide-serum-30ml"
+  },
+  {
+    "emart_id": "61832",
+    "sale_price": 1900.0,
+    "skbd_slug": "cetaphil-very-high-protection-light-gel-sun-spf50-plus-50ml"
+  },
+  {
+    "emart_id": "61836",
+    "sale_price": 1900.0,
+    "skbd_slug": "cetaphil-gentle-exfoliating-sa-cleanser-236ml"
+  },
+  {
+    "emart_id": "63295",
+    "sale_price": 1700.0,
+    "skbd_slug": "isntree-onion-newpair-b5-ampoule-50ml"
+  },
+  {
+    "emart_id": "63139",
+    "sale_price": 1700.0,
+    "skbd_slug": "jumiso-best-serum-trial-kits-5ml-4-ea"
+  },
+  {
+    "emart_id": "62594",
+    "sale_price": 1100.0,
+    "skbd_slug": "bellflower-madecassoside-cream-for-calming-30ml"
+  },
+  {
+    "emart_id": "62953",
+    "sale_price": 1300.0,
+    "skbd_slug": "hada-labo-shirojyun-premium-deep-whitening-cream-50g"
+  },
+  {
+    "emart_id": "63409",
+    "sale_price": 1900.0,
+    "skbd_slug": "numbuzin-no-3-super-glowing-essence-toner-200ml"
+  },
+  {
+    "emart_id": "62871",
+    "sale_price": 1300.0,
+    "skbd_slug": "marymay-sensitive-soothing-gel-cream-70g"
+  },
+  {
+    "emart_id": "62166",
+    "sale_price": 900.0,
+    "skbd_slug": "medicube-pdrn-pink-niacineamide-whip-cleanser-120g"
+  },
+  {
+    "emart_id": "59525",
+    "sale_price": 1400.0,
+    "skbd_slug": "eqqualberry-vitamin-illuminating-serum-30ml"
+  },
+  {
+    "emart_id": "61950",
+    "sale_price": 1700.0,
+    "skbd_slug": "purito-seoul-txa-6-niacinamide-10-retinal-serum-30ml"
+  },
+  {
+    "emart_id": "62336",
+    "sale_price": 1300.0,
+    "skbd_slug": "purito-seoul-daily-soft-touch-sunscreen-stick-20g"
+  },
+  {
+    "emart_id": "62877",
+    "sale_price": 1500.0,
+    "skbd_slug": "torriden-cellmazing-low-molecular-collagen-firming-cream-60ml"
+  },
+  {
+    "emart_id": "59519",
+    "sale_price": 1700.0,
+    "skbd_slug": "eqqualberry-bakuchiol-plumping-serum-30ml"
+  },
+  {
+    "emart_id": "59104",
+    "sale_price": 1000.0,
+    "skbd_slug": "anua-8-hyaluronic-acid-hydrating-gentle-foaming-cleanser-150ml"
+  },
+  {
+    "emart_id": "59933",
+    "sale_price": 1700.0,
+    "skbd_slug": "anua-7-rice-ceramide-hydrating-barrier-serum-50ml"
+  },
+  {
+    "emart_id": "61922",
+    "sale_price": 1400.0,
+    "skbd_slug": "numbuzin-no-9-nad-pdrn-glow-boosting-toner-150ml"
+  },
+  {
+    "emart_id": "62851",
+    "sale_price": 1700.0,
+    "skbd_slug": "tirtir-ceramic-milk-ampoule-40ml"
+  },
+  {
+    "emart_id": "3672",
+    "sale_price": 1300.0,
+    "skbd_slug": "jumiso-all-day-vitamin-brightening-balancing-facial-serum-30ml"
+  },
+  {
+    "emart_id": "59653",
+    "sale_price": 1200.0,
+    "skbd_slug": "anua-birch-70-moisture-boosting-serum-30ml"
+  },
+  {
+    "emart_id": "59728",
+    "sale_price": 1500.0,
+    "skbd_slug": "dr-althea-pure-grinding-cleansing-balm-50ml"
+  },
+  {
+    "emart_id": "61828",
+    "sale_price": 1900.0,
+    "skbd_slug": "cetaphil-extra-gentle-daily-scrub-178ml"
+  },
+  {
+    "emart_id": "62136",
+    "sale_price": 1950.0,
+    "skbd_slug": "eqqualberry-collagen-pore-tight-up-gel-toner-pads-60pads"
+  },
+  {
+    "emart_id": "51669",
+    "sale_price": 1500.0,
+    "skbd_slug": "isntree-hyper-retinol-ex-1-0-serum-20ml"
+  },
+  {
+    "emart_id": "59982",
+    "sale_price": 1900.0,
+    "skbd_slug": "cetaphil-bright-healthy-radiance-brightening-day-protection-cream-spf-15-50g"
+  },
+  {
+    "emart_id": "62034",
+    "sale_price": 1300.0,
+    "skbd_slug": "lion-pair-medicated-acne-care-cream-24g"
+  },
+  {
+    "emart_id": "62540",
+    "sale_price": 1200.0,
+    "skbd_slug": "heimish-rx-aha-bha-enzyme-scrub-130ml"
+  },
+  {
+    "emart_id": "59015",
+    "sale_price": 1500.0,
+    "skbd_slug": "medicube-age-r-glutathione-glow-capsule-cream-50ml"
+  },
+  {
+    "emart_id": "62618",
+    "sale_price": 800.0,
+    "skbd_slug": "bath-and-body-works-fresh-cut-lilacs-body-lotion-236-ml"
+  },
+  {
+    "emart_id": "62905",
+    "sale_price": 1200.0,
+    "skbd_slug": "abib-jericho-rose-bifida-serum-firming-drop-50ml"
+  },
+  {
+    "emart_id": "62458",
+    "sale_price": 1200.0,
+    "skbd_slug": "izeze-love-me-cushion-14g-spf50-pa-21light-nude"
+  },
+  {
+    "emart_id": "62921",
+    "sale_price": 900.0,
+    "skbd_slug": "axis-y-new-skin-resolution-gel-mask-100ml"
+  },
+  {
+    "emart_id": "59683",
+    "sale_price": 1300.0,
+    "skbd_slug": "anua-3-ceramide-panthenol-moisture-barrier-cream-100ml"
+  },
+  {
+    "emart_id": "62190",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-hg-hyaluronic-acid-niacinamide-gel-cream-120ml"
+  },
+  {
+    "emart_id": "62040",
+    "sale_price": 1150.0,
+    "skbd_slug": "lion-pair-medicated-acne-care-cream-14g"
+  },
+  {
+    "emart_id": "59265",
+    "sale_price": 1400.0,
+    "skbd_slug": "k-secret-seoul-1988-eye-cream-retinal-liposome-4-fermented-bean-30ml"
+  },
+  {
+    "emart_id": "59894",
+    "sale_price": 1000.0,
+    "skbd_slug": "aplb-glutathione-niacinamide-body-lotion-300ml"
+  },
+  {
+    "emart_id": "62430",
+    "sale_price": 700.0,
+    "skbd_slug": "returnu-vita-tone-essence-30ml"
+  },
+  {
+    "emart_id": "62634",
+    "sale_price": 2100.0,
+    "skbd_slug": "paulas-choice-clinical-niacinamide-20-treatment-20ml"
+  },
+  {
+    "emart_id": "59456",
+    "sale_price": 1200.0,
+    "skbd_slug": "numbuzin-no-1-pantothenic-b5-active-soothing-serum-50ml"
+  },
+  {
+    "emart_id": "59364",
+    "sale_price": 2300.0,
+    "skbd_slug": "vt-cosmetics-reedle-shot-100-50ml"
+  },
+  {
+    "emart_id": "62158",
+    "sale_price": 1700.0,
+    "skbd_slug": "marymay-rice-niacin-10-triple-vitamin-serum-80ml"
+  },
+  {
+    "emart_id": "62586",
+    "sale_price": 900.0,
+    "skbd_slug": "bonajour-jeju-milk-soft-foaming-cleanser-160ml"
+  },
+  {
+    "emart_id": "61816",
+    "sale_price": 1500.0,
+    "skbd_slug": "eqqualberry-hyaltoin-flooding-serum-30ml"
+  },
+  {
+    "emart_id": "62520",
+    "sale_price": 1500.0,
+    "skbd_slug": "heimish-rx-hyaluronic-acid-rich-whipped-cream-50ml"
+  },
+  {
+    "emart_id": "62528",
+    "sale_price": 1350.0,
+    "skbd_slug": "heimish-rx-retinol-bakuchiol-hydrogel-eye-patch-60ml"
+  },
+  {
+    "emart_id": "62222",
+    "sale_price": 1500.0,
+    "skbd_slug": "abib-heartleaf-teca-capsule-serum-calming-drop-50-ml"
+  },
+  {
+    "emart_id": "62584",
+    "sale_price": 1300.0,
+    "skbd_slug": "bonajour-ginger-aqua-relief-pad-60pads"
+  },
+  {
+    "emart_id": "61818",
+    "sale_price": 1900.0,
+    "skbd_slug": "eqqualberry-aloe-pdrn-calming-serum-30ml"
+  },
+  {
+    "emart_id": "63499",
+    "sale_price": 950.0,
+    "skbd_slug": "heimish-moringa-creamide-bb-cream-30g-25n-medium"
+  },
+  {
+    "emart_id": "62538",
+    "sale_price": 1400.0,
+    "skbd_slug": "heimish-rx-aha-bha-peeling-serum-35ml"
+  },
+  {
+    "emart_id": "62532",
+    "sale_price": 1500.0,
+    "skbd_slug": "heimish-rx-multi-vitamin-dark-spot-cream-50ml"
+  },
+  {
+    "emart_id": "62530",
+    "sale_price": 1300.0,
+    "skbd_slug": "heimish-rx-retinol-bakuchiol-eye-cream-30ml"
+  },
+  {
+    "emart_id": "61822",
+    "sale_price": 950.0,
+    "skbd_slug": "loreal-elvive-hydra-hyaluronic-moisture-plump-hair-serum-150ml"
+  },
+  {
+    "emart_id": "62374",
+    "sale_price": 1700.0,
+    "skbd_slug": "arencia-holy-hyssop-serum-30-50g"
+  },
+  {
+    "emart_id": "61820",
+    "sale_price": 1500.0,
+    "skbd_slug": "dr-althea-pdrn-reju-5000-cream-20g"
+  },
+  {
+    "emart_id": "61826",
+    "sale_price": 1400.0,
+    "skbd_slug": "loreal-elvive-hydra-hyaluronic-8-sceond-wonder-water-lamellar-conditioner-200ml"
+  },
+  {
+    "emart_id": "61824",
+    "sale_price": 1100.0,
+    "skbd_slug": "loreal-elvive-hydra-hyaluronic-moisture-wrapping-mask-300ml"
+  },
+  {
+    "emart_id": "62937",
+    "sale_price": 1200.0,
+    "skbd_slug": "round-lab-birch-juice-moisturising-sun-stick-spf50-pa-19g"
+  },
+  {
+    "emart_id": "57931",
+    "sale_price": 1400.0,
+    "skbd_slug": "skin1004-madagascar-centella-probio-cica-enrich-cream-50ml"
+  },
+  {
+    "emart_id": "56251",
+    "sale_price": 1700.0,
+    "skbd_slug": "mixsoon-bean-cream-50ml"
+  },
+  {
+    "emart_id": "63267",
+    "sale_price": 1300.0,
+    "skbd_slug": "torriden-dive-in-low-molecule-hyaluronic-acid-soothing-cream-100ml"
+  },
+  {
+    "emart_id": "63091",
+    "sale_price": 500.0,
+    "skbd_slug": "torriden-solid-in-ceramide-lip-essence-11ml"
+  },
+  {
+    "emart_id": "62745",
+    "sale_price": 1200.0,
+    "skbd_slug": "bath-body-works-fresh-cut-lilacs-fine-fragrance-mist-236ml"
+  },
+  {
+    "emart_id": "63009",
+    "sale_price": 1400.0,
+    "skbd_slug": "heimish-marine-care-retinol-for-face-serum-50ml"
+  },
+  {
+    "emart_id": "74518",
+    "sale_price": 1500.0,
+    "skbd_slug": "im-from-vitamin-tree-water-gel-75g"
+  },
+  {
+    "emart_id": "63493",
+    "sale_price": 1900.0,
+    "skbd_slug": "cerave-healing-ointment-144g"
+  },
+  {
+    "emart_id": "3768",
+    "sale_price": 1500.0,
+    "skbd_slug": "purito-dermide-cica-barrier-sleeping-pack-80ml"
+  },
+  {
+    "emart_id": "62883",
+    "sale_price": 1300.0,
+    "skbd_slug": "torriden-solid-in-ceramide-cream-70ml"
+  },
+  {
+    "emart_id": "58170",
+    "sale_price": 1500.0,
+    "skbd_slug": "dr-althea-skin-relief-essence-30ml"
+  },
+  {
+    "emart_id": "59929",
+    "sale_price": 1500.0,
+    "skbd_slug": "anua-azelaic-acid-10-hyaluron-redness-soothing-serum-30ml"
+  },
+  {
+    "emart_id": "59878",
+    "sale_price": 850.0,
+    "skbd_slug": "aplb-glutathione-niacinamide-sunscreen-40ml"
+  },
+  {
+    "emart_id": "62737",
+    "sale_price": 1700.0,
+    "skbd_slug": "doctor-g-red-blemish-clear-soothing-cream-70ml"
+  },
+  {
+    "emart_id": "56975",
+    "sale_price": 1500.0,
+    "skbd_slug": "skin1004-madagascar-centella-tone-brightening-capsule-ampoule-100ml"
+  },
+  {
+    "emart_id": "62735",
+    "sale_price": 1700.0,
+    "skbd_slug": "needly-vita-c-glow-jelly-pad-60pads"
+  },
+  {
+    "emart_id": "63669",
+    "sale_price": 1300.0,
+    "skbd_slug": "some-by-mi-propolis-b5-glow-barrier-calming-cream-60ml"
+  },
+  {
+    "emart_id": "63581",
+    "sale_price": 1500.0,
+    "skbd_slug": "isntree-yam-root-vegan-milk-cleanser-220ml"
+  },
+  {
+    "emart_id": "43859",
+    "sale_price": 1300.0,
+    "skbd_slug": "axis-y-quinoa-one-step-balanced-gel-cleanser-180ml"
+  },
+  {
+    "emart_id": "4285",
+    "sale_price": 1500.0,
+    "skbd_slug": "some-by-mi-cica-peptide-anti-hair-loss-derma-scalp-shampoo-285ml"
+  },
+  {
+    "emart_id": "62476",
+    "sale_price": 1100.0,
+    "skbd_slug": "izeze-hyper-cma-cica-toner-150ml"
+  },
+  {
+    "emart_id": "63351",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-tranexamic-acid-nacinamide-serum-tn-30ml"
+  },
+  {
+    "emart_id": "62418",
+    "sale_price": 980.0,
+    "skbd_slug": "fully-green-tomato-clay-pack-cleanser-120ml"
+  },
+  {
+    "emart_id": "63337",
+    "sale_price": 400.0,
+    "skbd_slug": "3w-clinic-vitamin-c-foam-cleansing-100-ml"
+  },
+  {
+    "emart_id": "63283",
+    "sale_price": 800.0,
+    "skbd_slug": "numbuzin-no-2-deep-clean-fresh-cream-cleanser-120ml"
+  },
+  {
+    "emart_id": "62242",
+    "sale_price": 1100.0,
+    "skbd_slug": "ksecret-extra-illuminating-eye-gel-patches-vitamin-c-102g"
+  },
+  {
+    "emart_id": "63363",
+    "sale_price": 1100.0,
+    "skbd_slug": "bonajour-rose-stem-cell-cream-50ml"
+  },
+  {
+    "emart_id": "62718",
+    "sale_price": 1100.0,
+    "skbd_slug": "dr-forhair-phyto-fresh-tonic-100ml"
+  },
+  {
+    "emart_id": "62716",
+    "sale_price": 1100.0,
+    "skbd_slug": "dr-forhair-folligen-silk-treatment-300ml"
+  },
+  {
+    "emart_id": "61928",
+    "sale_price": 1500.0,
+    "skbd_slug": "iunik-centella-relief-sorbet-cream-50ml"
+  },
+  {
+    "emart_id": "58798",
+    "sale_price": 1200.0,
+    "skbd_slug": "shiseido-tsubaki-premium-repair-hair-mask-180g"
+  },
+  {
+    "emart_id": "26614",
+    "sale_price": 990.0,
+    "skbd_slug": "tiam-pore-minimizing-21-serum-40ml"
+  },
+  {
+    "emart_id": "62212",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-a-arbutin-5-licorice-al-serum-30ml"
+  },
+  {
+    "emart_id": "4287",
+    "sale_price": 1500.0,
+    "skbd_slug": "some-by-mi-cica-peptide-anti-hair-loss-derma-scalp-tonic-150ml"
+  },
+  {
+    "emart_id": "59645",
+    "sale_price": 1500.0,
+    "skbd_slug": "anua-heartleaf-70-daily-lotion-200ml"
+  },
+  {
+    "emart_id": "62590",
+    "sale_price": 900.0,
+    "skbd_slug": "bonajour-ginger-aqua-relief-foam-cleanser-150ml"
+  },
+  {
+    "emart_id": "63353",
+    "sale_price": 950.0,
+    "skbd_slug": "be-the-skin-sebum-zero-aloerice-vegan-sun-cream-50ml-spf-50-pa"
+  },
+  {
+    "emart_id": "62356",
+    "sale_price": 1400.0,
+    "skbd_slug": "iunik-beta-glucan-3x-barrier-cream-50ml"
+  },
+  {
+    "emart_id": "62402",
+    "sale_price": 850.0,
+    "skbd_slug": "house-of-hur-weightless-sun-fluid-50ml"
+  },
+  {
+    "emart_id": "63031",
+    "sale_price": 500.0,
+    "skbd_slug": "abib-protective-lip-balm-block-stick-spf15-3-3g"
+  },
+  {
+    "emart_id": "62773",
+    "sale_price": 1400.0,
+    "skbd_slug": "haruharu-wonder-black-bamboo-daily-soothing-sun-shield-20g"
+  },
+  {
+    "emart_id": "62554",
+    "sale_price": 1300.0,
+    "skbd_slug": "purito-seoul-purito-daily-soft-touch-sunscreen-60ml"
+  },
+  {
+    "emart_id": "51757",
+    "sale_price": 1150.0,
+    "skbd_slug": "beauty-of-joseon-ginseng-cleansing-oil-210ml"
+  },
+  {
+    "emart_id": "62853",
+    "sale_price": 1500.0,
+    "skbd_slug": "tirtir-sos-serum-50ml"
+  },
+  {
+    "emart_id": "62777",
+    "sale_price": 1300.0,
+    "skbd_slug": "axis-y-cera-heart-my-type-duo-cream-60ml"
+  },
+  {
+    "emart_id": "62793",
+    "sale_price": 1500.0,
+    "skbd_slug": "dr-althea-147-barrier-cream-50ml"
+  },
+  {
+    "emart_id": "62761",
+    "sale_price": 1400.0,
+    "skbd_slug": "isntree-onion-newpair-booster-shot-2000-50ml"
+  },
+  {
+    "emart_id": "55820",
+    "sale_price": 1700.0,
+    "skbd_slug": "skin1004-madagascar-centella-hyalu-cica-blue-serum-30ml"
+  },
+  {
+    "emart_id": "59719",
+    "sale_price": 1900.0,
+    "skbd_slug": "anua-heartleaf-77-clear-pad-70ea"
+  },
+  {
+    "emart_id": "62620",
+    "sale_price": 1350.0,
+    "skbd_slug": "bath-body-works-dahlia-body-lotion-236ml"
+  },
+  {
+    "emart_id": "62502",
+    "sale_price": 1000.0,
+    "skbd_slug": "aplb-glutathione-niacinamide-cleansing-water-160ml"
+  },
+  {
+    "emart_id": "63501",
+    "sale_price": 800.0,
+    "skbd_slug": "heimish-moringa-creamide-bb-cream-30g-23n-light-medium"
+  },
+  {
+    "emart_id": "59453",
+    "sale_price": 1900.0,
+    "skbd_slug": "numbuzin-no-9-nad-bio-lifting-essence-50ml"
+  },
+  {
+    "emart_id": "62086",
+    "sale_price": 1500.0,
+    "skbd_slug": "dr-reju-all-advanced-pdrn-rejuvenating-cream-20ml"
+  },
+  {
+    "emart_id": "63119",
+    "sale_price": 900.0,
+    "skbd_slug": "etude-soon-jung-whip-cleanser-150ml"
+  },
+  {
+    "emart_id": "63431",
+    "sale_price": 1700.0,
+    "skbd_slug": "cerave-moisturizing-cream-for-normal-to-dry-skin-453g"
+  },
+  {
+    "emart_id": "58162",
+    "sale_price": 1500.0,
+    "skbd_slug": "dr-althea-345na-relief-cream-50ml"
+  },
+  {
+    "emart_id": "59758",
+    "sale_price": 1550.0,
+    "skbd_slug": "medicube-zero-pore-blackhead-mud-mask-100g"
+  },
+  {
+    "emart_id": "58393",
+    "sale_price": 1300.0,
+    "skbd_slug": "axis-y-dark-spot-correcting-glow-cream-50ml"
+  },
+  {
+    "emart_id": "63623",
+    "sale_price": 950.0,
+    "skbd_slug": "benton-skin-fit-mineral-sun-cream-spf50-pa-50ml"
+  },
+  {
+    "emart_id": "62650",
+    "sale_price": 2300.0,
+    "skbd_slug": "vt-cosmetics-cica-reedle-shot-300-essence-50ml"
+  },
+  {
+    "emart_id": "61896",
+    "sale_price": 950.0,
+    "skbd_slug": "celimax-poredark-spot-brightening-care-sunscreen-50ml"
+  },
+  {
+    "emart_id": "62348",
+    "sale_price": 1300.0,
+    "skbd_slug": "round-lab-birch-juice-mild-up-sunscreen-50ml"
+  },
+  {
+    "emart_id": "59052",
+    "sale_price": 1300.0,
+    "skbd_slug": "beauty-of-joseon-relief-sun-aqua-fresh-rice-b5-50ml"
+  },
+  {
+    "emart_id": "63671",
+    "sale_price": 1400.0,
+    "skbd_slug": "bonajour-bio-active-resurrection-plant-night-cream-80ml"
+  },
+  {
+    "emart_id": "2972",
+    "sale_price": 990.0,
+    "skbd_slug": "purito-pure-vitamin-c-serum-60ml"
+  },
+  {
+    "emart_id": "55815",
+    "sale_price": 1500.0,
+    "skbd_slug": "skin1004-madagascar-centella-poremizing-fresh-ampoule-100ml"
+  },
+  {
+    "emart_id": "62771",
+    "sale_price": 1500.0,
+    "skbd_slug": "numbuzin-no-4-hydration-glow-mineral-toner-200ml"
+  },
+  {
+    "emart_id": "51898",
+    "sale_price": 950.0,
+    "skbd_slug": "cos-de-baha-a5-azelaic-acid-5-serum-30-ml"
+  },
+  {
+    "emart_id": "61856",
+    "sale_price": 1500.0,
+    "skbd_slug": "medicube-hyaluronic-moisturizing-capsule-cream-55g"
+  },
+  {
+    "emart_id": "63317",
+    "sale_price": 1200.0,
+    "skbd_slug": "skin1004-madagascar-centella-hyalu-cica-water-fit-sun-serum-50ml"
+  },
+  {
+    "emart_id": "57102",
+    "sale_price": 1500.0,
+    "skbd_slug": "anua-peach-77-niacin-enriched-cream-50ml"
+  },
+  {
+    "emart_id": "62444",
+    "sale_price": 1100.0,
+    "skbd_slug": "some-by-mi-yuja-niacin-brightening-all-in-one-cleanser-100ml"
+  },
+  {
+    "emart_id": "60013",
+    "sale_price": 500.0,
+    "skbd_slug": "anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini"
+  },
+  {
+    "emart_id": "61858",
+    "sale_price": 1500.0,
+    "skbd_slug": "anua-pdrn-hyaluronic-acid-100-moisturizing-cream-60ml"
+  },
+  {
+    "emart_id": "62116",
+    "sale_price": 1400.0,
+    "skbd_slug": "haruharu-wonder-black-rice-5-ceramide-barrier-moisturizing-cream-50ml"
+  },
+  {
+    "emart_id": "63285",
+    "sale_price": 950.0,
+    "skbd_slug": "isntree-yam-root-milk-tone-up-sun-cream-50ml"
+  },
+  {
+    "emart_id": "56112",
+    "sale_price": 1550.0,
+    "skbd_slug": "skin1004-madagascar-centella-light-cleansing-oil-200ml"
+  },
+  {
+    "emart_id": "61814",
+    "sale_price": 990.0,
+    "skbd_slug": "eqqualberry-nad-peptide-boosting-serum-30ml"
+  },
+  {
+    "emart_id": "55938",
+    "sale_price": 980.0,
+    "skbd_slug": "beauty-of-joseon-green-plum-refreshing-cleanser-100ml"
+  }
+]
