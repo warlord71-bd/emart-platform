@@ -20,7 +20,7 @@ import {
 import { HOME_TOP_CATEGORY_ORDER, TOP_CATEGORY_IMAGE_OVERRIDES } from '@/lib/category-navigation';
 import brandLogoManifest from '../../public/images/brands-e-mart/manifest.json';
 import type { Metadata } from 'next';
-import { absoluteUrl } from '@/lib/siteUrl';
+import { absoluteUrl, SITE_URL } from '@/lib/siteUrl';
 
 export const metadata: Metadata = {
   title: 'Emart Skincare Bangladesh | Authentic Korean & Global Beauty',
@@ -35,7 +35,6 @@ export const metadata: Metadata = {
   },
 };
 
-export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
 
 function filterProductsWithImages(products: Awaited<ReturnType<typeof getBestSellingProducts>>) {
@@ -99,8 +98,21 @@ export default async function HomePage() {
     image: c.image,
   }));
 
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    url: SITE_URL,
+    name: 'Emart Skincare Bangladesh',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${SITE_URL}/search?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
   return (
     <div className="bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       <HeroCarousel />
       {/* Mobile: horizontal scroll discovery strip */}
       <MobileDiscovery categories={mobileDiscoveryCategories} showChips={false} showCategories={false} />

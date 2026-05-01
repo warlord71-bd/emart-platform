@@ -83,11 +83,11 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     : `Shop authentic ${cat.name} products in Bangladesh. Original imports, fast delivery, COD available. Best prices on ${cat.name} skincare at Emart.`;
 
   return {
-    title: `${cat.name} — Emart Skincare Bangladesh`,
+    title: { absolute: `${cat.name} — Shop Online | Emart Skincare Bangladesh` },
     description,
     alternates: { canonical: canonicalPath(`/category/${cat.slug}`, searchParams) },
     openGraph: {
-      title: `${cat.name} — Emart`,
+      title: `${cat.name} | Emart Skincare Bangladesh`,
       description,
       url: `https://e-mart.com.bd/category/${cat.slug}`,
     },

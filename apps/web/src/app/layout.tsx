@@ -218,23 +218,6 @@ export default function RootLayout({
           }}
         />
 
-        {/* Website Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebSite',
-              'url': SITE_URL,
-              'name': COMPANY.storeName,
-              'potentialAction': {
-                '@type': 'SearchAction',
-                'target': `${SITE_URL}/search?q={search_term_string}`,
-                'query-input': 'required name=search_term_string',
-              },
-            }),
-          }}
-        />
       </head>
       <body className="max-w-full overflow-x-hidden bg-bg font-body text-ink-2 antialiased">
         <Providers>

@@ -49,7 +49,7 @@ function getProductJsonLd(product: WooProduct) {
     name: product.name,
     description: getSeoDescription(product),
     image: imageUrls,
-    sku: product.sku || String(product.id),
+    ...(product.sku?.trim() ? { sku: product.sku } : {}),
     category: product.categories?.[0]?.name,
     brand: {
       '@type': 'Brand',
@@ -512,7 +512,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   ].filter(Boolean) as string[];
 
   return {
-    title: rmTitle || `${product.name} — Price in Bangladesh`,
+    title: rmTitle || `${product.name} Price in Bangladesh`,
     description: seoDesc,
     keywords,
     alternates: { canonical: absoluteUrl(`/shop/${product.slug}`) },
@@ -521,7 +521,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: seoDesc,
       url: absoluteUrl(`/shop/${product.slug}`),
       images: ogImage ? [{ url: ogImage, width: 800, height: 800 }] : undefined,
-      type: 'website',
+      type: 'product.item' as 'website',
     },
     other: {
       ...(skinType ? { 'product:skin_type': skinType } : {}),

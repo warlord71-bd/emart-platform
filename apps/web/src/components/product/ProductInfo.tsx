@@ -8,7 +8,6 @@ import { isInStock } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import type { WooProduct } from '@/lib/woocommerce';
 import { formatPrice } from '@/lib/woocommerce';
-import { AppDownloadBanner } from './AppDownloadBanner';
 
 interface ProductInfoProps {
   product: WooProduct;
@@ -198,7 +197,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const brandSlug = canonical?.slugs[0] || (rawBrandName ? slugify(rawBrandName) : '');
   const showBrandChip = Boolean(canonical);
   const madeIn = getAttributeValue('made in') || getAttributeValue('country') || getAttributeValue('origin') || 'South Korea';
-  const size = getAttributeValue('size') || getAttributeValue('volume') || '75ml';
+  const sizeFromAttr = getAttributeValue('size') || getAttributeValue('volume');
+  const sizeFromName = !sizeFromAttr
+    ? product.name.match(/(\d+(?:\.\d+)?)\s*(ml|g|oz|L)/i)
+    : null;
+  const size = sizeFromAttr || (sizeFromName ? `${sizeFromName[1]}${sizeFromName[2].toLowerCase()}` : null);
   const categoryName = getDisplayCategory(product);
   const brandHref = brandName ? `/brands/${encodeURIComponent(brandSlug)}` : '/brands';
   const originHref = madeIn ? `/origins?country=${encodeURIComponent(getOriginCountrySlug(madeIn))}` : '/origins';
@@ -223,9 +226,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         >
           📍 {madeIn}
         </Link>
-        <span className="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1">
-          📦 {size}
-        </span>
+        {size && (
+          <span className="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1">
+            📦 {size}
+          </span>
+        )}
       </div>
 
       {/* Product Title - H1 */}
@@ -346,16 +351,6 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         </button>
       </div>
 
-      {/* Concern Tags */}
-      {product.tags && product.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {product.tags.slice(0, 4).map((tag) => (
-            <span key={tag.id} className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-              ✓ {tag.name}
-            </span>
-          ))}
-        </div>
-      )}
 
       {/* Info Box - 2x2 Grid */}
       <div className="bg-blue-50 rounded-lg p-4 grid grid-cols-2 gap-4">
@@ -377,8 +372,6 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         </div>
       </div>
 
-      {/* App Download Banner - Below Info Box */}
-      <AppDownloadBanner />
 
       {/* Sticky ATC — mobile only, appears when buttons scroll out of view */}
       {stickyVisible && inStock && (

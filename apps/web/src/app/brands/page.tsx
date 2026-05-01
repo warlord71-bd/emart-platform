@@ -20,7 +20,7 @@ export function generateMetadata({ searchParams }: { searchParams?: { brand?: st
   };
 }
 
-export const revalidate = 60;
+export const revalidate = 1800;
 
 function groupByLetter(brands: WooBrand[]) {
   const grouped: Record<string, WooBrand[]> = {};

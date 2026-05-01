@@ -8,7 +8,7 @@ import brandLogoManifest from '../../../../public/images/brands-e-mart/manifest.
 import { ArrowLeft } from 'lucide-react';
 import { absoluteUrl } from '@/lib/siteUrl';
 
-export const revalidate = 60;
+export const revalidate = 1800;
 export const dynamicParams = true;
 
 const brandLogoBySlug = new Map<string, string>();
