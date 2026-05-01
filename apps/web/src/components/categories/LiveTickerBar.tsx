@@ -8,24 +8,42 @@ import { createRealtimeConnection, type RealtimeMessage } from '@/lib/realtime/p
 import { useCategoryPageI18n } from './categoryPageI18n';
 import CountdownTiles from './CountdownTiles';
 
+interface PresencePayload {
+  total: number;
+}
+
+interface RecentPurchasePayload {
+  customer_first_name: string;
+  city: string;
+  product_name: string;
+}
+
 async function fetchJson(path: string) {
   const response = await fetch(path, { cache: 'no-store' });
   if (!response.ok) throw new Error(path);
   return response.json();
 }
 
-export default function LiveTickerBar() {
+export default function LiveTickerBar({
+  initialPresence,
+  initialPurchases = [],
+}: {
+  initialPresence?: PresencePayload;
+  initialPurchases?: RecentPurchasePayload[];
+}) {
   const { t, n } = useCategoryPageI18n();
   const { secondsRemaining } = useFlash();
   const [presenceDelta, setPresenceDelta] = useState(0);
   const presence = useQuery({
     queryKey: ['category_page.active_sessions'],
     queryFn: () => fetchJson('/api/analytics/active-sessions'),
+    initialData: initialPresence,
     refetchInterval: 30_000,
   });
   const orders = useQuery({
     queryKey: ['category_page.recent_orders'],
     queryFn: () => fetchJson('/api/orders/recent?limit=10&fields=customer_first_name,city,product_name,timestamp'),
+    initialData: { purchases: initialPurchases },
     refetchInterval: 30_000,
   });
 
@@ -41,7 +59,7 @@ export default function LiveTickerBar() {
   const total = Math.max(0, Number(presence.data?.total || 0) + presenceDelta);
   const recent = Array.isArray(orders.data?.purchases) ? orders.data.purchases : [];
   const messages = useMemo(() => {
-    const purchaseMessages = recent.slice(0, 4).map((item: { customer_first_name: string; city: string; product_name: string }) =>
+    const purchaseMessages = recent.slice(0, 4).map((item: RecentPurchasePayload) =>
       `${item.customer_first_name} from ${item.city} just bought ${item.product_name}`,
     );
     return [
@@ -71,7 +89,7 @@ export default function LiveTickerBar() {
           </div>
         </div>
         <div className="flex min-w-0 flex-1 items-center justify-between gap-3 sm:hidden">
-          <span className="truncate text-xs font-semibold">{n(total)} {t('shoppers')}</span>
+          <span className="truncate text-xs font-semibold">{n(total)} {t('shoppingNow')}</span>
           <div className="scale-75 origin-right"><CountdownTiles seconds={secondsRemaining} /></div>
         </div>
       </div>

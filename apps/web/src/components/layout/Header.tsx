@@ -652,7 +652,9 @@ export default function Header() {
           </div>
 
           <div className="mx-auto hidden h-8 max-w-7xl grid-cols-[minmax(0,1fr)_minmax(260px,1.15fr)_minmax(0,1fr)] items-center gap-4 px-4 lg:grid">
-            <div className="truncate">Free delivery ৳3,000+ · <span className="font-bengali">ফ্রি ডেলিভারি</span></div>
+            <div className="truncate">
+              {isCategoriesRoute ? 'Free delivery ৳1,500+' : 'Free delivery ৳3,000+'} · <span className="font-bengali">ফ্রি ডেলিভারি</span>
+            </div>
             <div className="min-w-0 overflow-hidden">
               <div className="announcement-marquee" aria-label="Store announcements">
                 <div className="announcement-marquee__track">
@@ -671,7 +673,11 @@ export default function Header() {
             <div className="flex items-center justify-end gap-3 text-right">
               <Link href="/track-order" className="transition-colors hover:text-accent-soft">Track order</Link>
               <span className="text-white/35">·</span>
-              <a href="tel:+8809696682135" className="transition-colors hover:text-accent-soft">+88 09696682135</a>
+              {isCategoriesRoute ? (
+                <Link href="/faq" className="transition-colors hover:text-accent-soft">Help</Link>
+              ) : (
+                <a href="tel:+8809696682135" className="transition-colors hover:text-accent-soft">+88 09696682135</a>
+              )}
               <span className="text-white/35">·</span>
               <div className="inline-flex items-center gap-1">
                 <button
@@ -822,67 +828,69 @@ export default function Header() {
             </div>
           </div>
 
-          <nav className="flex h-12 items-center gap-1 border-t border-hairline bg-bg-alt" aria-label="Primary navigation">
-            {DESKTOP_MENU_GROUPS.map((group) => (
-              <div key={group.label} className="group relative h-full">
-                <button
-                  type="button"
-                  className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink transition-colors hover:bg-white hover:text-accent"
-                >
-                  <span className={group.tone}>●</span>
-                  {group.label}
-                  <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
-                </button>
-                <div className={`invisible absolute left-0 top-full z-[70] translate-y-1 rounded-lg border border-hairline bg-white p-4 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ${group.panelClassName}`}>
-                  <div
-                    className="grid gap-4"
-                    style={{ gridTemplateColumns: `repeat(${group.sections.length}, minmax(0, 1fr))` }}
+          {!isCategoriesRoute && (
+            <nav className="flex h-12 items-center gap-1 border-t border-hairline bg-bg-alt" aria-label="Primary navigation">
+              {DESKTOP_MENU_GROUPS.map((group) => (
+                <div key={group.label} className="group relative h-full">
+                  <button
+                    type="button"
+                    className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink transition-colors hover:bg-white hover:text-accent"
                   >
-                    {group.sections.map((section) => (
-                      <div key={section.title} className="min-w-0">
-                        <div className="mb-2 text-[11px] font-bold uppercase tracking-normal text-gray-400">
-                          {section.title}
+                    <span className={group.tone}>●</span>
+                    {group.label}
+                    <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
+                  </button>
+                  <div className={`invisible absolute left-0 top-full z-[70] translate-y-1 rounded-lg border border-hairline bg-white p-4 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ${group.panelClassName}`}>
+                    <div
+                      className="grid gap-4"
+                      style={{ gridTemplateColumns: `repeat(${group.sections.length}, minmax(0, 1fr))` }}
+                    >
+                      {group.sections.map((section) => (
+                        <div key={section.title} className="min-w-0">
+                          <div className="mb-2 text-[11px] font-bold uppercase tracking-normal text-gray-400">
+                            {section.title}
+                          </div>
+                          <div className="space-y-1">
+                            {section.items.map((item) => (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                className="block rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:bg-accent-soft hover:text-accent"
+                              >
+                                {item.label}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                        <div className="space-y-1">
-                          {section.items.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="block rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:bg-accent-soft hover:text-accent"
-                            >
-                              {item.label}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
 
-            <Link href="/search?q=mens+care" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
-              <span className="text-cyan-600">●</span>
-              MEN&apos;S
-            </Link>
-            <Link href="/category/mother-baby-care" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
-              <span className="text-emerald-600">●</span>
-              MOM &amp; BABY
-            </Link>
-            <Link href="/brands" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
-              <Tags size={15} className="text-brass" />
-              BRANDS
-            </Link>
+              <Link href="/search?q=mens+care" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
+                <span className="text-cyan-600">●</span>
+                MEN&apos;S
+              </Link>
+              <Link href="/category/mother-baby-care" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
+                <span className="text-emerald-600">●</span>
+                MOM &amp; BABY
+              </Link>
+              <Link href="/brands" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
+                <Tags size={15} className="text-brass" />
+                BRANDS
+              </Link>
 
-            <Link href="/sale" className="ml-auto flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent-soft px-3 text-sm font-extrabold text-accent hover:bg-accent-soft/80">
-              <Flame size={15} />
-              SALE
-            </Link>
-            <Link href="/new-arrivals" className="flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-brass-soft px-3 text-sm font-extrabold text-ink hover:bg-bg-alt">
-              <Sparkles size={15} />
-              NEW ARRIVALS
-            </Link>
-          </nav>
+              <Link href="/sale" className="ml-auto flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent-soft px-3 text-sm font-extrabold text-accent hover:bg-accent-soft/80">
+                <Flame size={15} />
+                SALE
+              </Link>
+              <Link href="/new-arrivals" className="flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-brass-soft px-3 text-sm font-extrabold text-ink hover:bg-bg-alt">
+                <Sparkles size={15} />
+                NEW ARRIVALS
+              </Link>
+            </nav>
+          )}
         </div>
       </header>
 

@@ -32,27 +32,27 @@ export default function CustomerWall({ initialReviews = [] }: { initialReviews?:
   const reviews: FeaturedReview[] = Array.isArray(data?.reviews) ? data.reviews : [];
 
   return (
-    <section className="bg-[var(--mb-navy)] py-8 text-white sm:py-10">
+    <section className="bg-white py-8 sm:py-10">
       <div className="mb-container">
         <div className="mb-5">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mb-gold-soft)]">Verified voices</p>
-          <h2 className="mt-1 text-3xl font-semibold text-white">{t('customerWall')}</h2>
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mb-pink)]">{t('customerEyebrow')}</p>
+          <h2 className="mt-1 text-3xl font-semibold text-[var(--mb-ink)]">{t('customerTitle')}</h2>
         </div>
-        {isError ? <p className="rounded-[var(--mb-radius)] border border-white/10 bg-white/5 p-4 text-sm text-white/70">Reviews are unavailable right now.</p> : null}
+        {isError ? <p className="mb-card p-4 text-sm text-[var(--mb-ink-3)]">Reviews are unavailable right now.</p> : null}
         {isLoading && reviews.length === 0 ? <div className="grid gap-3 lg:grid-cols-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-48 animate-pulse rounded-[var(--mb-radius)] bg-white/10" />)}</div> : null}
         <div className="grid gap-3 lg:grid-cols-3">
           {reviews.map((review) => (
-            <article key={review.id} className="rounded-[var(--mb-radius)] border border-white/10 bg-white/[0.06] p-5">
+            <article key={review.id} className="rounded-[var(--mb-radius)] bg-[var(--mb-cream)] p-5">
               <div className="mb-4 flex text-[var(--mb-gold-soft)]">
                 {Array.from({ length: 5 }).map((_, index) => <Star key={index} size={15} fill={index < review.rating ? 'currentColor' : 'none'} />)}
               </div>
-              <p className="line-clamp-4 text-sm leading-7 text-white/86">“{review.quote}”</p>
-              <div className="mt-5 flex items-center gap-2 text-sm font-bold text-white">
+              <p className="font-[var(--font-display)] text-lg leading-7 text-[var(--mb-ink)]">“{review.quote}”</p>
+              <div className="mt-5 flex items-center gap-2 border-t border-[var(--mb-line)] pt-4 text-sm font-bold text-[var(--mb-ink)]">
                 <BadgeCheck size={16} className="text-[var(--mb-success)]" />
                 {review.customer_first_name} · {review.customer_city} · {t('verified')}
               </div>
               {review.product ? (
-                <Link href={`/shop/${review.product.slug}`} className="mt-3 block truncate text-xs font-bold text-[var(--mb-pink-soft)]">
+                <Link href={`/shop/${review.product.slug}`} className="mt-3 block truncate text-xs font-bold text-[var(--mb-pink)]">
                   {review.product.name}
                 </Link>
               ) : null}

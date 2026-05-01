@@ -3,10 +3,12 @@ import type { Metadata } from 'next';
 import { canonicalPath } from '@/lib/canonicalUrl';
 import {
   getActiveFlashPromotion,
+  getActiveSessions,
   getCategoryPulses,
   getConcernSummaries,
   getFeaturedReviews,
   getFlashProducts,
+  getRecentPurchases,
   getTrendingProducts,
 } from '@/lib/categories/liveData';
 import { FlashProvider } from '@/lib/realtime/flash-context';
@@ -46,12 +48,16 @@ export default async function CategoriesPage() {
     flashProducts,
     concerns,
     reviews,
+    activeSessions,
+    recentPurchases,
   ] = await Promise.all([
     getCategoryPulses(8),
     getTrendingProducts(4),
     getFlashProducts(5),
     getConcernSummaries(4),
     getFeaturedReviews(3),
+    getActiveSessions(),
+    getRecentPurchases(10),
   ]);
   const promotion = getActiveFlashPromotion();
 
@@ -86,7 +92,7 @@ export default async function CategoriesPage() {
       />
       <FlashProvider initialPromotion={promotion}>
         <Suspense fallback={<SectionSkeleton />}>
-          <LiveTickerBar />
+          <LiveTickerBar initialPresence={activeSessions} initialPurchases={recentPurchases} />
         </Suspense>
         <Suspense fallback={<SectionSkeleton tone="dark" />}>
           <FlashWeekHero initialTrending={trendingProducts} />

@@ -30,7 +30,7 @@ export default function CategoryChips({ initialCategories = [] }: { initialCateg
   const categories: CategoryChip[] = Array.isArray(data?.categories) ? data.categories : [];
 
   return (
-    <section className="sticky top-[72px] z-20 border-b border-[var(--mb-line)] bg-[var(--mb-paper)]/95 backdrop-blur">
+    <section className="border-b border-[var(--mb-line)] bg-white">
       <div className="mb-container overflow-x-auto py-3 mb-scrollbar-none">
         <div className="flex w-max items-center gap-2">
           <Link href="/categories" className="rounded-full bg-[var(--mb-navy)] px-4 py-2 text-sm font-bold text-white">{t('all')}</Link>
