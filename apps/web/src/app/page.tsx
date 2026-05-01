@@ -23,13 +23,13 @@ import type { Metadata } from 'next';
 import { absoluteUrl, SITE_URL } from '@/lib/siteUrl';
 
 export const metadata: Metadata = {
-  title: 'Emart Skincare Bangladesh | Authentic Korean & Global Beauty',
+  title: 'Emart — Authentic Korean, Japanese & Global Skincare Bangladesh',
   description: 'Shop authentic Korean, Japanese and global skincare in Bangladesh from Emart Skincare Bangladesh. Carefully curated beauty products, local support, faster delivery and trusted service.',
   alternates: {
     canonical: absoluteUrl('/'),
   },
   openGraph: {
-    title: 'Emart Skincare Bangladesh | Authentic Korean & Global Beauty',
+    title: 'Emart — Authentic Korean, Japanese & Global Skincare Bangladesh',
     description: 'Shop authentic Korean, Japanese and global skincare in Bangladesh from Emart Skincare Bangladesh. Carefully curated beauty products, local support, faster delivery and trusted service.',
     url: absoluteUrl('/'),
   },
