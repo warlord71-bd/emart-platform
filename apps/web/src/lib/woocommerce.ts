@@ -15,31 +15,29 @@ const IS_NEXT_BUILD = process.env.NEXT_PHASE === 'phase-production-build';
 const isHTTPS = WOO_URL.startsWith('https');
 const WOO_WRITE_URL = isHTTPS ? WOO_URL : PUBLIC_SITE_URL;
 
-// ── API Client ──
-// Use internal/query-auth reads when the install is on HTTP, but keep writes on the canonical HTTPS host.
+// ── API Clients ──
+// Both read and write use the internal URL (WOO_INTERNAL_URL=http://127.0.0.1).
+// When HTTP, credentials are sent as query params and a Host header ensures Nginx
+// routes to the correct WordPress server block.
+// Sending writes through the public domain (https://e-mart.com.bd) is not safe
+// because that domain resolves to Cloudflare IPs — our Nginx geo block would 403
+// any WC API request not originating from the VPS itself.
+const wooApiConfig = isHTTPS
+  ? { auth: { username: CONSUMER_KEY, password: CONSUMER_SECRET } }
+  : {
+      params: { consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET },
+      headers: { Host: 'e-mart.com.bd' },
+    };
+
 const wooClient = axios.create({
   baseURL: `${WOO_URL}/wp-json/wc/v3`,
-  ...(isHTTPS ? {
-    auth: {
-      username: CONSUMER_KEY,
-      password: CONSUMER_SECRET,
-    },
-  } : {
-    params: {
-      consumer_key: CONSUMER_KEY,
-      consumer_secret: CONSUMER_SECRET,
-    },
-    headers: { Host: 'e-mart.com.bd' },
-  }),
+  ...wooApiConfig,
   timeout: WOO_READ_TIMEOUT_MS,
 });
 
 const wooWriteClient = axios.create({
-  baseURL: `${WOO_WRITE_URL}/wp-json/wc/v3`,
-  auth: {
-    username: CONSUMER_KEY,
-    password: CONSUMER_SECRET,
-  },
+  baseURL: `${WOO_URL}/wp-json/wc/v3`,
+  ...wooApiConfig,
   timeout: 20000,
 });
 
