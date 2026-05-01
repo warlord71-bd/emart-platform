@@ -48,8 +48,8 @@ export const TOP_CATEGORY_IMAGE_OVERRIDES: Record<string, string> = {
 };
 
 export const HOME_TOP_CATEGORY_ORDER: TopCategoryConfig[] = [
-  { name: 'K-Beauty', slugCandidates: ['k-beauty-j-beauty', 'korean-beauty', 'korean-skincare'], fallbackSlug: 'k-beauty-j-beauty', href: '/origins?country=korea' },
-  { name: 'J-Beauty', slugCandidates: ['j-beauty', 'japanese-beauty', 'japanese-skincare'], fallbackSlug: 'japanese-beauty', href: '/origins?country=japan' },
+  { name: 'K-Beauty', slugCandidates: ['korean-beauty', 'k-beauty-j-beauty', 'korean-skincare'], fallbackSlug: 'korean-beauty' },
+  { name: 'J-Beauty', slugCandidates: ['japanese-beauty', 'j-beauty', 'japanese-skincare'], fallbackSlug: 'japanese-beauty' },
   { name: 'Serum & Ampoule', slugCandidates: ['serums-ampoules-essences', 'toners-mists'], fallbackSlug: 'serums-ampoules-essences' },
   { name: 'Moisturizers', slugCandidates: ['night-cream', 'moisturizer', 'cream-moisturizers'], fallbackSlug: 'night-cream' },
   { name: 'Sunscreen', slugCandidates: ['sunscreen'], fallbackSlug: 'sunscreen' },
@@ -97,7 +97,8 @@ export const CATEGORY_NAV_SECTIONS: MenuCategoryGroup[] = [
       { name: 'Body Lotion', slug: 'body-lotion' },
       { name: 'Body Wash', slug: 'body-wash' },
       { name: 'Fragrance', slug: 'fragrances' },
-      { name: 'Personal Hygiene', slug: 'personal-hygiene' },
+      { name: 'Hand Care', slug: 'hand-care' },
+      { name: 'Body Oil', slug: 'body-oil' },
     ],
   },
   {
@@ -118,6 +119,9 @@ export const CATEGORY_NAV_SECTIONS: MenuCategoryGroup[] = [
     items: [
       { name: "Men's Care", slug: 'mens-care', href: '/search?q=mens+care' },
       { name: 'Mom & Baby', slug: 'mother-baby-care' },
+      { name: 'Baby Skincare', slug: 'baby-skincare' },
+      { name: 'Baby Bath & Wash', slug: 'baby-bath-wash' },
+      { name: 'Diapers & Wipes', slug: 'diapers-wipes' },
       { name: 'Personal Hygiene', slug: 'personal-hygiene' },
     ],
   },
