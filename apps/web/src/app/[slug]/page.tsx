@@ -512,7 +512,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   ].filter(Boolean) as string[];
 
   return {
-    title: rmTitle || `${product.name} Price in Bangladesh`,
+    title: `${product.name} Price in Bangladesh`,
     description: seoDesc,
     keywords,
     alternates: { canonical: absoluteUrl(`/shop/${product.slug}`) },

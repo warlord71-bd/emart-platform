@@ -14,7 +14,7 @@ export function generateMetadata({ searchParams }: { searchParams?: ShopPageProp
   };
 }
 
-export const revalidate = 3600;
+export const revalidate = 1800;
 
 interface ShopPageProps {
   searchParams: {
