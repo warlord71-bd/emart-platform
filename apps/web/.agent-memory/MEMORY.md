@@ -15,3 +15,4 @@
 - [2026-05-01 VPS reconciliation state](project_20260501_vps_reconciliation_state.md) — Local/Git clean at `61ca7be`; VPS git metadata old/dirty but header/category source matches; preserve live `HeroCarousel` tagline before broad sync
 - [Mobile-first UI preference](feedback_mobile_first_design.md) — user wants storefront UI work designed mobile-first by default; avoid cramped mobile nav/control additions
 - [Presence WebSocket service](project_presence_websocket.md) — live PM2 `emart-presence` serves same-origin `wss://e-mart.com.bd/ws/presence`; do not use unresolved `api.e-mart.com.bd`
+- [Catalog cache headers](project_catalog_cache_headers.md) — Nginx runtime override makes `/shop` and `/category/{slug}` return public `s-maxage`; Cloudflare HIT still needs dashboard/API cache rule
