@@ -1,4 +1,4 @@
-// Curated brand whitelist sourced from skincarebd.com /brands taxonomy (April 2026).
+// Curated brand whitelist for Emart catalog normalization (April 2026).
 // Used to filter the noisy WooCommerce `pa_brand` attribute terms (which include
 // product-specific entries like "Abib Airy Sunstick") down to canonical brand names.
 //
