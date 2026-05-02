@@ -34,7 +34,6 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: absoluteUrl('/concerns'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/blog'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
   { url: absoluteUrl('/social'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-  { url: absoluteUrl('/about-us'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/our-story'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/authenticity'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/join-our-team'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
