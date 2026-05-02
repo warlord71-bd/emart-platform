@@ -69,8 +69,9 @@ export function useCategoryPresence(categoryId: string | number): number | null 
     poll();
     const timer = setInterval(poll, 30_000);
 
+    const wsUrl = process.env.NEXT_PUBLIC_WS_PRESENCE_URL;
     const cleanup = createRealtimeConnection(
-      ['wss://api.e-mart.com.bd/ws/presence'],
+      wsUrl ? [wsUrl] : [],
       (msg: RealtimeMessage) => {
         if (msg.type === 'presence' && String(msg.category_id) === id) {
           setCount((prev) => (prev != null ? Math.max(0, prev + Number(msg.delta || 0)) : null));
