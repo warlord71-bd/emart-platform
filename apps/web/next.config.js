@@ -1,9 +1,39 @@
 /** @type {import('next').NextConfig} */
+const privateNoStoreHeaders = [
+  { key: 'Cache-Control', value: 'private, no-store, max-age=0, must-revalidate' },
+  { key: 'CDN-Cache-Control', value: 'private, no-store' },
+  { key: 'Cloudflare-CDN-Cache-Control', value: 'private, no-store' },
+];
+
 const nextConfig = {
   poweredByHeader: false,
 
   async headers() {
     return [
+      {
+        source: '/checkout',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/account',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/account/orders',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/order-success',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/track-order',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/wishlist',
+        headers: privateNoStoreHeaders,
+      },
       {
         source: '/(.*)',
         headers: [

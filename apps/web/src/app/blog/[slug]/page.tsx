@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getWordPressPostBySlug, getWordPressPosts } from '@/lib/wordpress-posts';
 import { absoluteUrl } from '@/lib/siteUrl';
+import { sanitizeHtml } from '@/lib/sanitizeHtml';
 
 interface Props {
   params: { slug: string };
@@ -106,7 +107,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <div
           className="space-y-5 text-base leading-8 text-muted [&_a]:font-semibold [&_a]:text-accent [&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:mt-6 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-ink [&_li]:ml-5 [&_li]:list-disc [&_ol_li]:list-decimal [&_p]:text-muted [&_strong]:text-ink"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
         />
 
         <div className="mt-10 rounded-2xl border border-hairline bg-card p-5 shadow-card">

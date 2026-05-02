@@ -5,13 +5,14 @@ import axios from 'axios';
 import { unstable_cache } from 'next/cache';
 import { CANONICAL_BRANDS } from '@/lib/brandWhitelist';
 
-const WOO_URL = process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd';
 const PUBLIC_SITE_URL = 'https://e-mart.com.bd';
+const DEFAULT_INTERNAL_WOO_URL = process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '';
+const WOO_URL = process.env.WOO_INTERNAL_URL || DEFAULT_INTERNAL_WOO_URL || process.env.NEXT_PUBLIC_WOO_URL || PUBLIC_SITE_URL;
 const LEGACY_IP_HOST = ['5', '189', '188', '229'].join('.');
 const LOCAL_WORDPRESS_HOSTS = new Set(['127.0.0.1', 'localhost']);
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
-const WOO_READ_TIMEOUT_MS = 5000;
+const WOO_READ_TIMEOUT_MS = 8000;
 const IS_NEXT_BUILD = process.env.NEXT_PHASE === 'phase-production-build';
 const isHTTPS = WOO_URL.startsWith('https');
 const WOO_WRITE_URL = isHTTPS ? WOO_URL : PUBLIC_SITE_URL;
@@ -659,15 +660,24 @@ export async function getBrandBySlug(slug: string): Promise<WooBrand | null> {
     return null;
   };
 
+  let shouldTryPublicFallback = false;
+
   for (const attempt of ['internal', 'public'] as const) {
+    if (attempt === 'public' && !shouldTryPublicFallback) return null;
+
     try {
       const response = await fetchBrandTerms(attempt, queryParams);
 
       const brand = findExactBrand(response.data) || await findByPagedScan(attempt);
       if (brand) return brand;
+      if (attempt === 'internal') return null;
     } catch (error: any) {
       const isSocketError = error?.cause?.code === 'ECONNRESET' || error?.message?.includes('socket hang up');
-      if (attempt === 'internal' && isSocketError) continue;
+      const isNetworkError = isSocketError || error?.code === 'ECONNREFUSED' || error?.code === 'ETIMEDOUT';
+      if (attempt === 'internal' && isNetworkError) {
+        shouldTryPublicFallback = true;
+        continue;
+      }
       logWooError('getBrandBySlug', error, { slug: safeSlug });
       if (attempt === 'public') return null;
     }
