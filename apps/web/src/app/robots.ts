@@ -39,16 +39,18 @@ export default function robots(): MetadataRoute.Robots {
           '/xmlrpc.php',
         ],
       },
-      { userAgent: 'GPTBot', disallow: '/' },
-      { userAgent: 'CCBot', disallow: '/' },
-      { userAgent: 'anthropic-ai', disallow: '/' },
-      { userAgent: 'cohere-ai', disallow: '/' },
-      { userAgent: 'Bytespider', disallow: '/' },
+      // AI search crawlers — allowed for product/brand discovery in AI search surfaces
+      { userAgent: 'GPTBot', allow: '/' },
       { userAgent: 'OAI-SearchBot', allow: '/' },
       { userAgent: 'ClaudeBot', allow: '/' },
+      { userAgent: 'anthropic-ai', allow: '/' },
       { userAgent: 'PerplexityBot', allow: '/' },
       { userAgent: 'Google-Extended', allow: '/' },
       { userAgent: 'Applebot', allow: '/' },
+      // Bulk scrapers — not search engines, no SEO benefit
+      { userAgent: 'CCBot', disallow: '/' },
+      { userAgent: 'Bytespider', disallow: '/' },
+      { userAgent: 'cohere-ai', disallow: '/' },
     ],
     sitemap: ['https://e-mart.com.bd/sitemap.xml'],
   }
