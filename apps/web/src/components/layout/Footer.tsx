@@ -26,7 +26,7 @@ const SHOP_LINKS: FooterLink[] = [
 const SUPPORT_LINKS: FooterLink[] = [
   { label: 'Editorial', href: '/blog', icon: BookOpen },
   { label: 'FAQs', href: '/faq', icon: HelpCircle },
-  { label: 'Sitemap', href: '/sitemap.xml', icon: SearchCheck },
+  { label: 'Sitemap', href: '/sitemap', icon: SearchCheck },
   { label: 'Shipping & Delivery', href: '/shipping-policy', icon: Truck },
   { label: 'Refund & Return Policy', href: '/return-policy', icon: RotateCcw },
   { label: 'Track My Order', href: '/track-order', icon: SearchCheck },

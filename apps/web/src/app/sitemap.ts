@@ -34,6 +34,7 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: absoluteUrl('/social'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/about-us'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/authenticity'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/sitemap'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
 ];
 
 async function getBlogSitemapEntries(): Promise<MetadataRoute.Sitemap> {
