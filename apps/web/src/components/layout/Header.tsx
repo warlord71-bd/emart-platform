@@ -379,6 +379,8 @@ export default function Header() {
           </select>
         )}
         <input
+          id="header-search"
+          name="q"
           type="search"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
