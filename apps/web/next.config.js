@@ -7,10 +7,26 @@ const nextConfig = {
       {
         source: '/(.*)',
         headers: [
-          { key: 'X-Frame-Options',           value: 'DENY' },
-          { key: 'X-Content-Type-Options',     value: 'nosniff' },
-          { key: 'Referrer-Policy',            value: 'strict-origin-when-cross-origin' },
-          { key: 'Permissions-Policy',         value: 'camera=(), microphone=(), geolocation=()' },
+          { key: 'X-Frame-Options',             value: 'DENY' },
+          { key: 'X-Content-Type-Options',       value: 'nosniff' },
+          { key: 'Referrer-Policy',              value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy',           value: 'camera=(), microphone=(), geolocation=()' },
+          { key: 'Strict-Transport-Security',    value: 'max-age=15552000; includeSubDomains; preload' },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://*.cloudflare.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' data: blob: https://e-mart.com.bd https://*.e-mart.com.bd https://*.woocommerce.com https://www.facebook.com https://www.google-analytics.com https://www.googletagmanager.com",
+              "font-src 'self' data: https://fonts.gstatic.com",
+              "connect-src 'self' https://e-mart.com.bd https://www.google-analytics.com https://*.facebook.com https://www.googletagmanager.com",
+              "frame-src 'self' https://www.facebook.com",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join('; '),
+          },
         ],
       },
     ];

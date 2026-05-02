@@ -2,6 +2,7 @@
 // WooCommerce REST API v3 Client for Emart Skincare Bangladesh
 
 import axios from 'axios';
+import { unstable_cache } from 'next/cache';
 import { CANONICAL_BRANDS } from '@/lib/brandWhitelist';
 
 const WOO_URL = process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd';
@@ -412,24 +413,28 @@ function logWooError(context: string, error: unknown, details?: Record<string, u
   });
 }
 
-export async function getProducts(params: ProductsParams = {}): Promise<{
-  products: WooProduct[];
-  total: number;
-  totalPages: number;
-}> {
-  try {
+const _getProductsCached = unstable_cache(
+  async (params: ProductsParams): Promise<{ products: WooProduct[]; total: number; totalPages: number }> => {
     const response = await wooClient.get('/products', {
-      params: {
-        per_page: 20,
-        status: 'publish',
-        ...params,
-      },
+      params: { per_page: 20, status: 'publish', ...params },
     });
     return {
       products: transformImageUrls(response.data || []),
       total: parseInt(response.headers['x-wp-total'] || '0'),
       totalPages: parseInt(response.headers['x-wp-totalpages'] || '0'),
     };
+  },
+  ['woo-products'],
+  { revalidate: 300, tags: ['products'] },
+);
+
+export async function getProducts(params: ProductsParams = {}): Promise<{
+  products: WooProduct[];
+  total: number;
+  totalPages: number;
+}> {
+  try {
+    return await _getProductsCached(params);
   } catch (error) {
     logWooError('getProducts', error);
     return { products: [], total: 0, totalPages: 0 };
@@ -754,13 +759,19 @@ export async function getCategories(params: {
   }
 }
 
-export async function getCategoryBySlug(slug: string): Promise<WooCategory | null> {
-  try {
-    const response = await wooClient.get('/products/categories', {
-      params: { slug },
-    });
+const _getCategoryBySlugCached = unstable_cache(
+  async (slug: string): Promise<WooCategory | null> => {
+    const response = await wooClient.get('/products/categories', { params: { slug } });
     const categories = Array.isArray(response.data) ? response.data.map(transformCategory) : [];
     return categories[0] || null;
+  },
+  ['woo-category-by-slug'],
+  { revalidate: 600, tags: ['categories'] },
+);
+
+export async function getCategoryBySlug(slug: string): Promise<WooCategory | null> {
+  try {
+    return await _getCategoryBySlugCached(slug);
   } catch (error) {
     logWooError('getCategoryBySlug', error, { slug });
     return null;
