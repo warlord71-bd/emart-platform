@@ -1,54 +1,11 @@
 import { unstable_cache } from 'next/cache';
-import { getBrands, getCategories, getProducts, type WooBrand, type WooCategory, type WooProduct } from '@/lib/woocommerce';
-import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
-import {
-  getGraphQLSitemapData,
-  isWordPressGraphQLConfigured,
-  type GraphQLSitemapCategory,
-  type GraphQLSitemapImage,
-  type GraphQLSitemapProduct,
-} from '@/lib/wordpress-graphql';
-
-const BASE_URL = SITE_URL;
-const PAGE_SIZE = 100;
-const CACHE_SECONDS = 86400;
-const GRAPHQL_SITEMAP_TIMEOUT_MS = Number(process.env.WORDPRESS_GRAPHQL_SITEMAP_TIMEOUT_MS || 11000);
-const GRAPHQL_SITEMAP_ENABLED = process.env.WORDPRESS_GRAPHQL_SITEMAP_ENABLED !== 'false';
-
-type SitemapImage = GraphQLSitemapImage | NonNullable<WooProduct['images']>[number];
-type SitemapProduct = (WooProduct | GraphQLSitemapProduct) & {
-  categorySlugs?: string[];
-};
-type SitemapCategory = (WooCategory | GraphQLSitemapCategory) & {
-  date_modified?: string;
-};
+import { getSitemapEntries, type SitemapEntry } from '@/lib/sitemapEntries';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = CACHE_SECONDS;
+export const revalidate = 3600;
 
-const staticPages = [
-  '',
-  '/shop',
-  '/new-arrivals',
-  '/sale',
-  '/skin-quiz',
-  '/brands',
-  '/concerns',
-  '/origins',
-  '/about-us',
-  '/our-story',
-  '/authenticity',
-  '/join-our-team',
-  '/contact',
-  '/faq',
-  '/shipping-policy',
-  '/return-policy',
-  '/privacy-policy',
-  '/terms-conditions',
-];
-
-const getCachedSitemapXml = unstable_cache(createSitemapXml, ['emart-next-image-sitemap-v5'], {
-  revalidate: CACHE_SECONDS,
+const getCachedSitemapXml = unstable_cache(createSitemapXml, ['emart-styled-sitemap-xml-v1'], {
+  revalidate: 3600,
 });
 
 export async function GET() {
@@ -57,231 +14,52 @@ export async function GET() {
   return new Response(xml, {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': `public, max-age=0, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=${CACHE_SECONDS}`,
+      'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=3600',
     },
   });
 }
 
 async function createSitemapXml(): Promise<string> {
-  const data = await getSitemapData();
-  const products = dedupeBySlug(data.products);
-  const categories = dedupeBySlug(data.categories);
-  const brands = dedupeBySlug(data.brands);
-
-  const entries = [
-    ...staticPages.map((page) => renderUrlEntry({ loc: absoluteUrl(page || '/'), changefreq: page === '' ? 'daily' : 'weekly', priority: page === '' ? 1 : 0.8 })),
-    ...products.map(renderProductEntry),
-    ...categories.map(renderCategoryEntry),
-    ...brands.map(renderBrandEntry),
-  ];
+  const entries = await getSitemapEntries();
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
-    ...entries,
+    '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...entries.map(renderUrlEntry),
     '</urlset>',
   ].join('\n');
 }
 
-async function getSitemapData(): Promise<{
-  products: SitemapProduct[];
-  categories: SitemapCategory[];
-  brands: WooBrand[];
-}> {
-  if (GRAPHQL_SITEMAP_ENABLED && isWordPressGraphQLConfigured()) {
-    try {
-      const data = await withTimeout(
-        getGraphQLSitemapData(),
-        GRAPHQL_SITEMAP_TIMEOUT_MS,
-        'GraphQL sitemap timed out.'
-      );
-      if (data.products.length > PAGE_SIZE) {
-        return {
-          ...data,
-          brands: await getBrands({ orderby: 'name', order: 'asc' }).catch(() => []),
-        };
-      }
-
-      console.warn('GraphQL sitemap returned an empty or capped product set. Falling back to WooCommerce REST.');
-    } catch (error) {
-      console.warn('GraphQL sitemap failed. Falling back to WooCommerce REST.', getErrorMessage(error));
-    }
-  }
-
-  const [products, categories, brands] = await Promise.all([
-    getAllPublishedProducts(),
-    getCategories().catch(() => []),
-    getBrands({ orderby: 'name', order: 'asc' }).catch(() => []),
-  ]);
-
-  return {
-    products,
-    categories: addCategoryLastmod(categories, products),
-    brands: brands.filter((brand) => brand.count > 0),
-  };
-}
-
-async function getAllPublishedProducts(): Promise<WooProduct[]> {
-  const firstPage = await getProducts({ page: 1, per_page: PAGE_SIZE });
-  const products = [...firstPage.products];
-
-  const remainingPages = Array.from(
-    { length: Math.max(firstPage.totalPages - 1, 0) },
-    (_, index) => index + 2
-  );
-  const remainingData = await Promise.all(
-    remainingPages.map((page) => getProducts({ page, per_page: PAGE_SIZE }))
-  );
-
-  products.push(...remainingData.flatMap((pageData) => pageData.products));
-  return products;
-}
-
-function renderProductEntry(product: SitemapProduct): string {
-  const images = getProductImages(product);
-
-  return renderUrlEntry({
-    loc: absoluteUrl(`/shop/${product.slug}`),
-    lastmod: product.date_modified || new Date().toISOString(),
-    changefreq: 'monthly',
-    priority: 0.7,
-    images,
-  });
-}
-
-function renderCategoryEntry(category: SitemapCategory): string {
-  return renderUrlEntry({
-    loc: absoluteUrl(`/category/${category.slug}`),
-    lastmod: category.date_modified,
-    changefreq: 'weekly',
-    priority: 0.8,
-  });
-}
-
-function renderBrandEntry(brand: WooBrand): string {
-  return renderUrlEntry({
-    loc: absoluteUrl(`/brands/${brand.slug}`),
-    changefreq: 'weekly',
-    priority: 0.7,
-  });
-}
-
-function renderUrlEntry({
-  loc,
-  lastmod,
-  changefreq,
-  priority,
-  images = [],
-}: {
-  loc: string;
-  lastmod?: string;
-  changefreq: 'daily' | 'weekly' | 'monthly';
-  priority: number;
-  images?: Array<{ loc: string; title: string }>;
-}): string {
+function renderUrlEntry(entry: SitemapEntry): string {
   const lines = [
     '<url>',
-    `<loc>${escapeXml(loc)}</loc>`,
+    `<loc>${escapeXml(entry.url)}</loc>`,
   ];
 
-  const formattedLastmod = formatLastmod(lastmod);
+  const formattedLastmod = formatLastmod(entry.lastModified);
   if (formattedLastmod) {
     lines.push(`<lastmod>${formattedLastmod}</lastmod>`);
   }
 
-  lines.push(`<changefreq>${changefreq}</changefreq>`);
-  lines.push(`<priority>${priority.toFixed(1)}</priority>`);
-
-  for (const image of images) {
-    lines.push('<image:image>');
-    lines.push(`<image:loc>${escapeXml(image.loc)}</image:loc>`);
-    lines.push(`<image:title>${escapeXml(image.title)}</image:title>`);
-    lines.push('</image:image>');
+  if (entry.changeFrequency) {
+    lines.push(`<changefreq>${entry.changeFrequency}</changefreq>`);
+  }
+  if (typeof entry.priority === 'number') {
+    lines.push(`<priority>${entry.priority.toFixed(1)}</priority>`);
   }
 
   lines.push('</url>');
   return lines.join('\n');
 }
 
-function getProductImages(product: SitemapProduct): Array<{ loc: string; title: string }> {
-  const seen = new Set<string>();
-
-  return (product.images || [])
-    .map((image: SitemapImage) => ({
-      loc: normalizeImageUrl(image.src),
-      title: image.alt || image.name || product.name,
-    }))
-    .filter((image) => {
-      if (!image.loc || seen.has(image.loc)) return false;
-      seen.add(image.loc);
-      return true;
-    });
-}
-
-function normalizeImageUrl(src?: string): string {
-  if (!src) return '';
-
-  try {
-    const url = new URL(src);
-    if (url.protocol !== 'http:' && url.protocol !== 'https:') return '';
-    return url.toString();
-  } catch {
-    return '';
-  }
-}
-
-function formatLastmod(value?: string): string | null {
+function formatLastmod(value?: Date | string): string | null {
   if (!value) return null;
 
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return null;
 
   return date.toISOString();
-}
-
-function addCategoryLastmod(categories: WooCategory[], products: WooProduct[]): SitemapCategory[] {
-  const lastmodBySlug = new Map<string, string>();
-
-  for (const product of products) {
-    if (!product.date_modified) continue;
-
-    for (const category of product.categories || []) {
-      const current = lastmodBySlug.get(category.slug);
-      if (!current || new Date(product.date_modified) > new Date(current)) {
-        lastmodBySlug.set(category.slug, product.date_modified);
-      }
-    }
-  }
-
-  return categories.map((category) => ({
-    ...category,
-    date_modified: lastmodBySlug.get(category.slug),
-  }));
-}
-
-function dedupeBySlug<T extends { slug?: string }>(items: T[]): T[] {
-  const seen = new Set<string>();
-
-  return items.filter((item) => {
-    if (!item.slug || seen.has(item.slug)) return false;
-    seen.add(item.slug);
-    return true;
-  });
-}
-
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : 'Unknown error';
-}
-
-function withTimeout<T>(promise: Promise<T>, timeoutMs: number, message: string): Promise<T> {
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => reject(new Error(message)), timeoutMs);
-
-    promise
-      .then(resolve)
-      .catch(reject)
-      .finally(() => clearTimeout(timeout));
-  });
 }
 
 function escapeXml(value: string): string {

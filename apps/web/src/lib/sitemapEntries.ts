@@ -19,8 +19,7 @@ type WordPressProductPost = {
   modified?: string;
 };
 
-export const revalidate = 3600;
-export const dynamic = 'force-dynamic';
+export type SitemapEntry = MetadataRoute.Sitemap[number];
 
 const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: BASE_URL, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
@@ -203,7 +202,7 @@ async function getAllPublishedProductsViaWooRest(): Promise<SitemapProduct[]> {
   return products;
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   try {
     if (isWordPressGraphQLConfigured()) {
       return await getSitemapViaGraphQL();
