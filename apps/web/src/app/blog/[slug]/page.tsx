@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getWordPressPostBySlug, getWordPressPosts } from '@/lib/wordpress-posts';
 import { absoluteUrl } from '@/lib/siteUrl';
-import { sanitizeHtml } from '@/lib/sanitizeHtml';
+import { safeJsonLd, sanitizeHtml } from '@/lib/sanitizeHtml';
 
 interface Props {
   params: { slug: string };
@@ -71,7 +71,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <main className="bg-bg">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(articleJsonLd) }} />
 
       <article className="mx-auto max-w-3xl px-4 py-10">
         <nav className="mb-6 flex items-center gap-2 text-sm text-muted">

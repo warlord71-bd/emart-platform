@@ -10,6 +10,7 @@ import { ReviewsSection } from '@/components/product/ReviewsSection';
 import ProductCard from '@/components/product/ProductCard';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { getProductSeo } from '@/lib/seo';
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 
 interface Props {
   params: { slug: string };
@@ -572,7 +573,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(productJsonLd) }} />
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
         <ProductImage images={product.images} productName={product.name} />
         <ProductInfo product={product} />

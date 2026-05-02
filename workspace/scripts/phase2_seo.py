@@ -7,11 +7,16 @@ import os
 import hashlib
 
 WC_URL = "https://e-mart.com.bd"
-WC_KEY = "ck_9d9fabaffcc52af85797a6887feb5a8da730b51f"
-WC_SECRET = "cs_2551608b6d9f84841f8193eaffff2bfb120e659b"
-OR_KEY = "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"
-TG_TOKEN = "8705011508:AAGjcEGOjQ7inSa-chq9sJswEOo8XcJ9KXE"
-TG_CHAT = "6906852635"
+WC_KEY = os.environ.get("WOO_CONSUMER_KEY", "").strip()
+WC_SECRET = os.environ.get("WOO_CONSUMER_SECRET", "").strip()
+OR_KEY = os.environ.get("OPENROUTER_API_KEY", "").strip()
+TG_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+TG_CHAT = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
+
+if not WC_KEY or not WC_SECRET:
+    raise SystemExit("WOO_CONSUMER_KEY and WOO_CONSUMER_SECRET are required.")
+if not OR_KEY:
+    raise SystemExit("OPENROUTER_API_KEY is required.")
 
 auth = HTTPBasicAuth(WC_KEY, WC_SECRET)
 BATCH = 20

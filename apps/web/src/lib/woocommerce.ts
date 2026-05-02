@@ -414,6 +414,21 @@ function logWooError(context: string, error: unknown, details?: Record<string, u
   });
 }
 
+function isWooNetworkError(error: any): boolean {
+  return (
+    error?.cause?.code === 'ECONNRESET' ||
+    error?.message?.includes('socket hang up') ||
+    error?.code === 'ECONNREFUSED' ||
+    error?.code === 'ETIMEDOUT' ||
+    error?.code === 'ECONNABORTED'
+  );
+}
+
+function isBlockedFallbackStatus(error: any): boolean {
+  const status = error?.response?.status;
+  return status === 401 || status === 403 || status === 404;
+}
+
 const _getProductsCached = unstable_cache(
   async (params: ProductsParams): Promise<{ products: WooProduct[]; total: number; totalPages: number }> => {
     const response = await wooClient.get('/products', {
@@ -672,12 +687,11 @@ export async function getBrandBySlug(slug: string): Promise<WooBrand | null> {
       if (brand) return brand;
       if (attempt === 'internal') return null;
     } catch (error: any) {
-      const isSocketError = error?.cause?.code === 'ECONNRESET' || error?.message?.includes('socket hang up');
-      const isNetworkError = isSocketError || error?.code === 'ECONNREFUSED' || error?.code === 'ETIMEDOUT';
-      if (attempt === 'internal' && isNetworkError) {
+      if (attempt === 'internal' && isWooNetworkError(error)) {
         shouldTryPublicFallback = true;
         continue;
       }
+      if (attempt === 'public' && isBlockedFallbackStatus(error)) return null;
       logWooError('getBrandBySlug', error, { slug: safeSlug });
       if (attempt === 'public') return null;
     }

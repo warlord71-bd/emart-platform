@@ -31,6 +31,10 @@ Bypass cache for private, dynamic, backend, and auth paths:
 - `https://e-mart.com.bd/wp-admin*`
 - `https://e-mart.com.bd/wp-login.php*`
 - `https://e-mart.com.bd/my-account*`
+- `https://e-mart.com.bd/admin*`
+- `https://e-mart.com.bd/auth*`
+- `https://e-mart.com.bd/login*`
+- `https://e-mart.com.bd/register*`
 - `https://e-mart.com.bd/order-success*`
 - `https://e-mart.com.bd/track-order*`
 - `https://e-mart.com.bd/wishlist*`

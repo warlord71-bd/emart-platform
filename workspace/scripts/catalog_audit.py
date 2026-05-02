@@ -3,10 +3,14 @@ from requests.auth import HTTPBasicAuth
 import csv
 import re
 import time
+import os
 
 WC_URL = "https://e-mart.com.bd"
-WC_KEY = "ck_9d9fabaffcc52af85797a6887feb5a8da730b51f"
-WC_SECRET = "cs_2551608b6d9f84841f8193eaffff2bfb120e659b"
+WC_KEY = os.environ.get("WOO_CONSUMER_KEY", "").strip()
+WC_SECRET = os.environ.get("WOO_CONSUMER_SECRET", "").strip()
+
+if not WC_KEY or not WC_SECRET:
+    raise SystemExit("WOO_CONSUMER_KEY and WOO_CONSUMER_SECRET are required.")
 
 auth = HTTPBasicAuth(WC_KEY, WC_SECRET)
 
