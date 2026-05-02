@@ -1,51 +1,27 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Emart Configuration Setup Script
-# Updates environment variables for web and mobile apps on VPS
+set -euo pipefail
 
-echo "🚀 Emart VPS Configuration Setup"
-echo "=================================="
+cat >&2 <<'MSG'
+This script is intentionally disabled.
 
-# Web App Configuration
-echo ""
-echo "📱 Setting up Web App (.env.local)..."
-cat > /var/www/wordpress/apps/web/.env.local << 'EOF'
-# WooCommerce API Configuration
-NEXT_PUBLIC_WOO_URL=http://5.189.188.229
-WOO_CONSUMER_KEY=ck_emart_5189188229
-WOO_CONSUMER_SECRET=cs_emart_5189188229
+Do not generate or overwrite Emart production env files from a repo script.
+Production secrets must stay in the runtime env only:
 
-# Next.js Configuration
-NEXT_PUBLIC_API_URL=http://5.189.188.229
-NODE_ENV=production
-EOF
+  /var/www/emart-platform/apps/web/.env.local
 
-echo "✅ Web app configured at: /var/www/wordpress/apps/web/.env.local"
+Use the project deploy sequence instead:
 
-# Mobile App Configuration
-echo ""
-echo "📱 Setting up Mobile App (.env)..."
-cat > /var/www/wordpress/apps/mobile/.env << 'EOF'
-# WooCommerce API Configuration
-REACT_APP_WOO_URL=http://5.189.188.229/wp-json/wc/v3
-REACT_APP_WOO_CONSUMER_KEY=ck_emart_5189188229
-REACT_APP_WOO_CONSUMER_SECRET=cs_emart_5189188229
-EOF
+  1. Edit source on Local: /root/emart-platform
+  2. Build Local: apps/web -> npm run build
+  3. Sync Local -> VPS after verification
+  4. Build on VPS
+  5. Restart PM2 only after source state is verified
+  6. Smoke test live
+  7. Push repo last
 
-echo "✅ Mobile app configured at: /var/www/wordpress/apps/mobile/.env"
+If env changes are required, update the VPS file manually after explicit
+approval, without committing secrets to git.
+MSG
 
-echo ""
-echo "=================================="
-echo "✅ Configuration Complete!"
-echo ""
-echo "🔐 API Credentials Set:"
-echo "  Consumer Key: ck_emart_5189188229"
-echo "  Consumer Secret: cs_emart_5189188229"
-echo ""
-echo "🌐 API URL: http://5.189.188.229"
-echo ""
-echo "📝 Next Steps:"
-echo "  1. Restart web and mobile apps"
-echo "  2. Test checkout flow"
-echo "  3. Update Cloudflare DNS when ready"
-echo ""
+exit 1
