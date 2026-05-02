@@ -134,7 +134,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <div className="flex-1">
           {products.length > 0 ? (
             <>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-4 min-[430px]:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
                 {products.map((product: any) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
