@@ -528,7 +528,7 @@ export default function Header() {
             <div className="announcement-marquee h-7" aria-label="Store announcements">
               <div className="announcement-marquee__track h-7">
                 {[0, 1].map((item) => (
-                  <div key={item} className="announcement-marquee__group h-7">
+                  <div key={item} aria-hidden={item === 1 ? true : undefined} className="announcement-marquee__group h-7">
                     <span className="font-bengali">ফ্রি ডেলিভারি ৳3,000+</span>
                     <span className="text-white/35">·</span>
                     <span>COD</span>
@@ -550,7 +550,7 @@ export default function Header() {
               <div className="announcement-marquee" aria-label="Store announcements">
                 <div className="announcement-marquee__track">
                   {[0, 1].map((item) => (
-                    <div key={item} className="announcement-marquee__group">
+                    <div key={item} aria-hidden={item === 1 ? true : undefined} className="announcement-marquee__group">
                       <span className="font-bengali">১০০% অথেনটিক · ৪০+ গ্লোবাল ব্র্যান্ড · COD</span>
                       <span className="text-white/35">·</span>
                       <span>Dhaka next-day delivery · 1-2 days</span>

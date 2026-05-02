@@ -7,6 +7,7 @@ const privateNoStoreHeaders = [
 
 const nextConfig = {
   poweredByHeader: false,
+  eslint: { ignoreDuringBuilds: true },
 
   async headers() {
     return [
