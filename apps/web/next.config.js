@@ -20,7 +20,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: blob: https://e-mart.com.bd https://*.e-mart.com.bd https://*.woocommerce.com https://www.facebook.com https://www.google-analytics.com https://www.googletagmanager.com https://img.youtube.com",
               "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://e-mart.com.bd https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://www.google.com https://*.google.com https://*.doubleclick.net https://*.facebook.com https://www.googletagmanager.com https://cloudflareinsights.com",
+              "connect-src 'self' https://e-mart.com.bd wss://api.e-mart.com.bd https://api.e-mart.com.bd https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://www.google.com https://*.google.com https://*.doubleclick.net https://*.facebook.com https://www.googletagmanager.com https://cloudflareinsights.com",
               "frame-src 'self' https://www.facebook.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
