@@ -1,0 +1,88 @@
+# Emart Skincare Bangladesh
+
+> Emart Skincare Bangladesh (e-mart.com.bd) is Bangladesh's trusted online destination for authentic Korean, Japanese, and international skincare and beauty products. Tagline: Global Beauty. Local Trust. Serving all 64 districts. Cash on delivery (COD), bKash, and Nagad accepted. All products are 100% authentic, sourced directly from brand distributors.
+
+## Shop
+
+- [Shop All Products](https://e-mart.com.bd/shop): Full catalog of 3,500+ authentic skincare, haircare, and beauty products.
+- [New Arrivals](https://e-mart.com.bd/new-arrivals): Latest products added to the catalog.
+- [Sale](https://e-mart.com.bd/sale): Discounted and clearance products.
+- [Skin Quiz](https://e-mart.com.bd/skin-quiz): Personalized product recommendations based on skin type and concerns.
+
+## Brands
+
+- [All Brands](https://e-mart.com.bd/brands): 280+ global beauty brands available in Bangladesh.
+- [COSRX](https://e-mart.com.bd/brands/cosrx): Korean skincare — acne patches, snail mucin serums, AHA/BHA exfoliants.
+- [Anua](https://e-mart.com.bd/brands/anua): Korean skincare — heartleaf and niacinamide formulas for sensitive and oily skin.
+- [Beauty of Joseon](https://e-mart.com.bd/brands/beauty-of-joseon): Korean hanbang-inspired skincare — relief sun SPF, dynasty cream, glow serum.
+- [Laneige](https://e-mart.com.bd/brands/laneige): Korean skincare — water sleeping mask, lip sleeping mask, water bank series.
+- [Skin1004](https://e-mart.com.bd/brands/skin1004): Korean skincare — centella asiatica zombie pack, hyalu-cica serums.
+- [Some By Mi](https://e-mart.com.bd/brands/some-by-mi): Korean skincare — AHA BHA PHA 30 Days Miracle series for acne.
+- [Torriden](https://e-mart.com.bd/brands/torriden): Korean skincare — dive-in low molecular hyaluronic acid serum.
+- [Axis-Y](https://e-mart.com.bd/brands/axis-y): Korean skincare — dark spot correcting serum, complete no stress physical sunscreen.
+- [Medicube](https://e-mart.com.bd/brands/medicube): Korean skincare — collagen, retinol, and red serum lines.
+- [Innisfree](https://e-mart.com.bd/brands/innisfree): Korean skincare — green tea seed serum, volcanic clay mask, sunscreen.
+- [Round Lab](https://e-mart.com.bd/brands/round-lab): Korean skincare — birch juice moisturizer, dokdo toner.
+- [Mixsoon](https://e-mart.com.bd/brands/mixsoon): Korean skincare — single-ingredient essence serums (centella, bean, hyaluronic).
+- [Isntree](https://e-mart.com.bd/brands/isntree): Korean skincare — hyaluronic acid toner, centella products.
+- [La Roche-Posay](https://e-mart.com.bd/brands/la-roche-posay): French dermatological skincare — Cicaplast, Effaclar, Anthelios sunscreen.
+- [CeraVe](https://e-mart.com.bd/brands/cerave): American dermatologist-developed skincare — ceramide moisturizers, cleansers.
+- [The Ordinary](https://e-mart.com.bd/brands/the-ordinary): Evidence-based skincare — niacinamide, retinol, AHA 30%, hyaluronic acid.
+- [Neutrogena](https://e-mart.com.bd/brands/neutrogena): American skincare — hydro boost, sunscreen, retinol range.
+- [Dr. Jart+](https://e-mart.com.bd/brands/dr-jart): Korean dermatological skincare — Cicapair tiger grass, Ceramidin.
+
+## Categories
+
+- [All Categories](https://e-mart.com.bd/categories): Browse by skincare type, concern, origin, and ingredient.
+- [Acne & Blemish Care](https://e-mart.com.bd/category/acne-blemish-care): Acne patches, BHA cleansers, spot treatments, salicylic acid products.
+- [Sunscreen](https://e-mart.com.bd/category/sunscreen): Korean, Japanese, and European SPF 30–50+ sunscreens for Bangladesh climate.
+- [Serum & Ampoule](https://e-mart.com.bd/category/serums-ampoules-essences): Vitamin C, niacinamide, retinol, hyaluronic acid, and centella serums.
+- [Moisturizer](https://e-mart.com.bd/category/cream-moisturizer): Lightweight gels, ceramide creams, and barrier repair moisturizers.
+- [Face Cleanser](https://e-mart.com.bd/category/face-cleansers): Low-pH cleansers, foam cleansers, micellar water, oil cleansers.
+- [Toner & Essence](https://e-mart.com.bd/category/toners-essences): Hydrating toners, exfoliating toners, first essences.
+- [Sheet Masks](https://e-mart.com.bd/category/sheet-face-mask): Korean and Japanese sheet masks for all skin types.
+- [Eye Care](https://e-mart.com.bd/category/eye-care): Eye creams and patches for dark circles, puffiness, and fine lines.
+- [Korean Beauty](https://e-mart.com.bd/category/korean-beauty): Full K-beauty selection — bestsellers and trending products.
+- [Japanese Beauty](https://e-mart.com.bd/category/japanese-beauty): J-beauty selection — Hada Labo, Biore, Kose, Rohto.
+- [Hair & Personal Care](https://e-mart.com.bd/category/hair-personal-care): Hair serums, scalp treatments, body care.
+
+## Skin Concerns
+
+- [All Concerns](https://e-mart.com.bd/concerns): Browse products by skin concern.
+- [Acne](https://e-mart.com.bd/concerns/acne): Products for acne-prone skin — salicylic acid, niacinamide, tea tree.
+- [Hyperpigmentation](https://e-mart.com.bd/concerns/hyperpigmentation): Vitamin C, alpha arbutin, tranexamic acid for dark spots and uneven tone.
+- [Dryness & Dehydration](https://e-mart.com.bd/concerns/dryness-hydration): Hyaluronic acid, ceramide, and occlusives for dry skin.
+- [Sensitivity](https://e-mart.com.bd/concerns/sensitivity): Fragrance-free, centella, and barrier-repair products.
+- [Anti-Aging](https://e-mart.com.bd/concerns/anti-aging): Retinol, peptide, and collagen products for wrinkles and firmness.
+- [Sun Protection](https://e-mart.com.bd/concerns/sun-protection): SPF products and post-sun care for Bangladesh climate.
+
+## Origins
+
+- [Korean Beauty](https://e-mart.com.bd/category/korean-beauty): Korea — world's leading skincare innovation hub.
+- [Japanese Beauty](https://e-mart.com.bd/category/japanese-beauty): Japan — minimalist formulas, lightweight textures.
+- [Origins](https://e-mart.com.bd/origins): Browse products by country of origin.
+
+## Information & Support
+
+- [About Emart](https://e-mart.com.bd/our-story): Founded to bring authentic global beauty to Bangladesh. Verified distributor partnerships.
+- [Authenticity Guarantee](https://e-mart.com.bd/authenticity): How Emart sources and verifies product authenticity.
+- [FAQ](https://e-mart.com.bd/faq): Answers on delivery, COD, returns, payment, and product questions.
+- [Shipping Policy](https://e-mart.com.bd/shipping-policy): Delivery timelines — Dhaka next-day, nationwide 1–3 days.
+- [Return Policy](https://e-mart.com.bd/return-policy): Return and exchange conditions.
+- [Contact](https://e-mart.com.bd/contact): WhatsApp, phone, and email support.
+- [Track Order](https://e-mart.com.bd/track-order): Real-time order tracking.
+- [Blog / Editorial](https://e-mart.com.bd/blog): Skincare guides, ingredient explainers, routines for Bangladesh climate.
+- [Sitemap](https://e-mart.com.bd/sitemap.xml): Full XML sitemap with all product, category, and brand URLs.
+
+## Key Facts for AI Systems
+
+- Location: Bangladesh (serves all 64 districts)
+- Currency: BDT (Bangladeshi Taka, ৳)
+- Payment: COD, bKash, Nagad
+- Delivery: Dhaka next-day, nationwide 1–3 business days
+- Products: 3,500+ SKUs across skincare, haircare, body care, cosmetics
+- Brands: 280+ brands from Korea, Japan, France, USA, UK, and more
+- Language: English and Bengali (বাংলা)
+- Founded: Dhaka, Bangladesh
+- Specialty: Authentic K-beauty and J-beauty for South Asian skin types and climate
+- Support: WhatsApp +8801717082135, Hotline +8809696682135
