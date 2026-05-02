@@ -3,6 +3,7 @@ import { getGraphQLSitemapData, isWordPressGraphQLConfigured } from '@/lib/wordp
 import { getProducts, getCategories, getBrands } from '@/lib/woocommerce';
 import { getWordPressPosts } from '@/lib/wordpress-posts';
 import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
+import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 
 const BASE_URL = SITE_URL;
 const PAGE_SIZE = 100;
@@ -24,16 +25,32 @@ export type SitemapEntry = MetadataRoute.Sitemap[number];
 const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: BASE_URL, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
   { url: absoluteUrl('/shop'), lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+  { url: absoluteUrl('/categories'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
   { url: absoluteUrl('/new-arrivals'), lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
   { url: absoluteUrl('/sale'), lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+  { url: absoluteUrl('/skin-quiz'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/brands'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/origins'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/concerns'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/blog'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
   { url: absoluteUrl('/social'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/about-us'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/our-story'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/authenticity'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/join-our-team'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/contact'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/faq'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/shipping-policy'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+  { url: absoluteUrl('/return-policy'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+  { url: absoluteUrl('/privacy-policy'), lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
+  { url: absoluteUrl('/terms-conditions'), lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
   { url: absoluteUrl('/sitemap'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+  ...OFFER_COLLECTIONS.map((offer) => ({
+    url: absoluteUrl(offer.href),
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  })),
 ];
 
 async function getBlogSitemapEntries(): Promise<MetadataRoute.Sitemap> {
