@@ -8,6 +8,21 @@ type OrderMessage = { type: 'order'; product_name?: string; city?: string; custo
 
 export type RealtimeMessage = PresenceMessage | StockMessage | OrderMessage;
 
+export function getPresenceWebSocketUrl(categoryId?: string | number) {
+  const baseUrl = process.env.NEXT_PUBLIC_WS_PRESENCE_URL;
+  if (!baseUrl) return null;
+
+  if (categoryId == null) return baseUrl;
+
+  try {
+    const url = new URL(baseUrl);
+    url.searchParams.set('category_id', String(categoryId));
+    return url.toString();
+  } catch {
+    return baseUrl;
+  }
+}
+
 export function createRealtimeConnection(
   urls: string[],
   onMessage: (message: RealtimeMessage) => void,
@@ -69,12 +84,15 @@ export function useCategoryPresence(categoryId: string | number): number | null 
     poll();
     const timer = setInterval(poll, 30_000);
 
-    const wsUrl = process.env.NEXT_PUBLIC_WS_PRESENCE_URL;
+    const categoryWsUrl = getPresenceWebSocketUrl(id);
     const cleanup = createRealtimeConnection(
-      wsUrl ? [wsUrl] : [],
+      categoryWsUrl ? [categoryWsUrl] : [],
       (msg: RealtimeMessage) => {
         if (msg.type === 'presence' && String(msg.category_id) === id) {
-          setCount((prev) => (prev != null ? Math.max(0, prev + Number(msg.delta || 0)) : null));
+          setCount((prev) => {
+            if (msg.total != null) return Math.max(0, Number(msg.total));
+            return prev != null ? Math.max(0, prev + Number(msg.delta || 0)) : null;
+          });
         }
       },
     );

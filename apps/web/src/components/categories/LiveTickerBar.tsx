@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Zap } from 'lucide-react';
 import { useFlash } from '@/lib/realtime/flash-context';
-import { createRealtimeConnection, type RealtimeMessage } from '@/lib/realtime/presence';
+import { createRealtimeConnection, getPresenceWebSocketUrl, type RealtimeMessage } from '@/lib/realtime/presence';
 import { useCategoryPageI18n } from './categoryPageI18n';
 import CountdownTiles from './CountdownTiles';
 
@@ -48,8 +48,13 @@ export default function LiveTickerBar({
   });
 
   useEffect(() => {
+    const urls = [
+      getPresenceWebSocketUrl(),
+      process.env.NEXT_PUBLIC_WS_ORDERS_URL || null,
+    ].filter((url): url is string => Boolean(url));
+
     return createRealtimeConnection(
-      ['wss://api.e-mart.com.bd/ws/presence', 'wss://api.e-mart.com.bd/ws/orders'],
+      urls,
       (message: RealtimeMessage) => {
         if (message.type === 'presence') setPresenceDelta((current) => current + Number(message.delta || 0));
       },
