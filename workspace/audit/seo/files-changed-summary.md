@@ -4,6 +4,13 @@ Date: 2026-04-30
 
 ## Code
 
+### 2026-05-02
+
+- `apps/web/src/components/layout/Footer.tsx`
+  - Added `Sitemap` under the Support footer links, pointing to `/sitemap.xml`.
+
+### 2026-04-30
+
 - `apps/web/src/lib/siteUrl.ts`
   - Added `SITE_URL` and `absoluteUrl()` based on `NEXT_PUBLIC_SITE_URL`, defaulting to `https://e-mart.com.bd`.
 - `apps/web/src/middleware.ts`
@@ -33,4 +40,3 @@ Date: 2026-04-30
 - No UI redesign.
 - No checkout, cart, payment, order, customer, stock or price logic touched.
 - No backend/database writes.
-

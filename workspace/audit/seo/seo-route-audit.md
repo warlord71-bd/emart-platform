@@ -26,3 +26,12 @@ Public homepage HTML response did not expose `X-Powered-By: PHP`, `X-Powered-By:
 
 Observed public headers include Cloudflare/Next-safe security headers such as `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy`.
 
+## 2026-05-02 Frontend > Backend Cross-check
+
+- Public SEO surface remains the Next.js frontend. Woo/WordPress is used as a private content/data source.
+- Public HTTPS `/wp-json/` returns 403.
+- Public HTTPS `/graphql` returns 403 with `X-Robots-Tag: noindex, nofollow, noarchive, nosnippet`.
+- Localhost `/graphql` remains available for internal Next/WPGraphQL SEO fetches, so the app can still render metadata and sitemap data.
+- Legacy `/sitemap_index.xml` and `/product-sitemap1.xml` redirect to `https://e-mart.com.bd/sitemap.xml`.
+- Footer shop category links checked on the running app: sunscreen, serums/ampoules, hair care, makeup, bath/body, mother/baby, and health/wellbeing all returned 200.
+- Footer support now includes a direct `/sitemap.xml` link for transparent sitemap discovery.

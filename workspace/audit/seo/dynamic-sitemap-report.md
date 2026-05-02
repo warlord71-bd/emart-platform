@@ -22,7 +22,18 @@ Date: 2026-04-30
 - Live sitemap used absolute `<loc>` URLs.
 - Live sitemap already included `https://e-mart.com.bd/brands/cosrx`.
 
+## 2026-05-02 Live Cross-check
+
+- Running `/sitemap.xml` returned HTTP 200.
+- Current XML size: 775,991 bytes.
+- Current URL count: 3,929.
+- Product URLs under clean frontend `/shop/`: 3,665.
+- Category URLs under clean frontend `/category/`: 60.
+- Brand URLs under clean frontend `/brands/`: 162.
+- Backend pattern scan found no `wp-json`, `graphql`, `wp-admin`, `wp-login`, `sitemap_index`, `product-category`, or legacy `/product/` URLs in sitemap XML.
+- `robots.txt` advertises `Sitemap: https://e-mart.com.bd/sitemap.xml`.
+- Google sitemap ping was not used because Google has deprecated the unauthenticated sitemap ping endpoint; the current safe paths are `robots.txt` discovery and Search Console submission.
+
 ## Notes
 
 The current patch keeps sitemap generation request-time/ISR based. It does not introduce static manual product, brand or category slug lists.
-
