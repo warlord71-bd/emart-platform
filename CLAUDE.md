@@ -4,6 +4,21 @@
 
 This file is written for Codex, Claude, GPT-style agents, and human developers. Follow it as project policy.
 
+**🚨 CURRENT VERIFIED STATE (2026-05-03):**
+- Local: `/root/emart-platform` → `ba15ffd` (main)
+- VPS: `/var/www/emart-platform` → `ba15ffd` (main, origin/main)
+- Origin: `origin/main` → `ba15ffd` (GitHub)
+- **All three match at `ba15ffd fix(seo): disallow legacy redirect namespaces in robots`**
+- VPS has 39 uncommitted working-tree files (live config/env changes) — sync to Local before committing
+- Brand work (`5f7e792`, `949ca96`) is safely embedded as ancestors of `ba15ffd`
+
+**🛑 LIVE SITE PROTECTION — READ FIRST:**
+- **NEVER damage the live site** `https://e-mart.com.bd` served from `/var/www/emart-platform/apps/web`
+- **Site first, code second** — verify live state before any deploy/restart
+- **No blind changes** — always check VPS working tree before syncing
+- **No `git reset --hard` on VPS** without verifying live source state
+- **No `git add -A` on dirty VPS tree** without reviewing staged list
+
 Before editing anything related to SEO, metadata, sitemap, schema, brand pages, category pages, product pages, navigation, public copy, crawl/index behavior, or route redirects:
 
 1. Read this file.
@@ -200,18 +215,23 @@ When implementing SEO work, follow this order:
 
 This project follows the universal VPS deployment law in `/root/CLAUDE.md`. Read that file first when working on the VPS.
 
+**🚨 CRITICAL: LIVE SITE NEVER BREAKS — VERIFY FIRST, THEN PUBLISH**
+
 Use the verify-then-publish order:
 
-1. Edit on Local.
-2. Build/test on Local.
-3. Commit on Local.
-4. Sync Local -> VPS.
-5. Build on VPS.
-6. Restart `emartweb`.
-7. Smoke test the live site.
-8. Push `origin main` only after live verification passes.
+1. Edit on Local (`/root/emart-platform`).
+2. Build/test on Local (`npm run build`).
+3. Commit on Local (`git commit`).
+4. Sync Local -> VPS (`rsync` or `git push` + pull on VPS).
+5. Build on VPS (`cd /var/www/emart-platform/apps/web && npm run build`).
+6. Restart `emartweb` (`pm2 restart emartweb`).
+7. **Smoke test the live site** (`curl -s https://e-mart.com.bd/ | head -20`).
+8. **Only after live verification passes:** Push `origin main` (`git push origin main`).
 
-If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing.
+**If a hotfix is made directly on VPS:**
+- Reverse-sync VPS -> Local before committing
+- Never commit from VPS directly (VPS is runtime, not commit workspace)
+- Always verify VPS working tree isn't destroying live state
 
 ## 11. E-Mart Project Facts
 
@@ -253,3 +273,6 @@ If a hotfix is made directly on VPS, reverse-sync VPS -> Local before committing
 - Old project agent files mentioning `AGENTS.coding.md`, `AGENTS.design.md`, or `AGENTS.seo.md`; those were retired to reduce complexity.
 - Old docs that say to push before live verification.
 - Old rollback snippets that use `git reset --hard` without checking the live source state first.
+- **VPS dirty working tree** — VPS has 39 uncommitted files; always sync to Local before committing.
+- **Assuming VPS = clean git state** — VPS is runtime/live, not a clean commit workspace.
+- **Blind `git add -A` on VPS** — always review `git status` first, check `.gitignore`, then stage selectively.
