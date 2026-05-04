@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { WooProduct } from '@/lib/woocommerce';
+import type { HomeProductCard } from '@/components/home/HomepageSections';
 
 interface FlashSaleBannerProps {
-  products: WooProduct[];
+  products: HomeProductCard[];
 }
 
 function msUntilMidnight(): number {

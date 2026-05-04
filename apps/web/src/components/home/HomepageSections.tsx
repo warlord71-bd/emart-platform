@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { SocialChannelGrid } from '@/components/home/SocialChannelGrid';
 import { ShieldCheck, Truck, WalletCards, RotateCcw, Sparkles, MessageCircle, BadgeCheck, MapPin, ArrowRight, PlayCircle, Target, Droplets, CircleDot, Sun, Star, Clock3, Shield, Gift, MoonStar, BadgePercent, Boxes, Ticket, type LucideIcon } from 'lucide-react';
-import { formatPrice, getDiscountPercent, type WooProduct } from '@/lib/woocommerce';
+import { formatPrice, getDiscountPercent, type WooCategory, type WooImage } from '@/lib/woocommerce';
 import { CONCERN_DEFINITIONS, getConcernHref } from '@/lib/concerns';
 import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 
@@ -22,6 +22,20 @@ interface BlogPostSummary {
   excerpt: string;
   href: string;
   date: string;
+}
+
+export interface HomeProductCard {
+  id: number;
+  name: string;
+  slug: string;
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  on_sale: boolean;
+  stock_quantity?: number | null;
+  images: Pick<WooImage, 'id' | 'src' | 'name' | 'alt'>[];
+  categories: Pick<WooCategory, 'id' | 'name' | 'slug'>[];
+  average_rating: string;
 }
 
 const concernIconMap: Record<string, LucideIcon> = {
@@ -153,7 +167,7 @@ function ProductFeatureCard({
   badge,
   meta,
 }: {
-  product: WooProduct;
+  product: HomeProductCard;
   badge: string;
   meta: string;
 }) {
@@ -462,7 +476,7 @@ export function ProductGridSection({
 }: {
   title: string;
   eyebrow?: string;
-  products: WooProduct[];
+  products: HomeProductCard[];
   badge: string;
   viewAllHref: string;
   viewAllLabel: string;
