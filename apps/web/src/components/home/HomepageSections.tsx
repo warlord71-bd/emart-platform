@@ -12,6 +12,7 @@ import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 interface BrandLogo {
   id: number;
   name: string;
+  slug: string;
   logo: string;
 }
 
@@ -555,7 +556,7 @@ export function BrandLogoGridSection({ brands }: { brands: BrandLogo[] }) {
             {visible.filter((b) => b.logo).slice(0, 10).map((brand) => (
               <Link
                 key={brand.id}
-                href="/brands"
+                href={`/brands/${encodeURIComponent(brand.slug)}`}
                 title={brand.name}
                 className="flex h-24 w-[32vw] min-w-[110px] snap-start items-center justify-center rounded-2xl border border-hairline bg-white p-2 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
               >
@@ -571,7 +572,7 @@ export function BrandLogoGridSection({ brands }: { brands: BrandLogo[] }) {
           {visible.filter((b) => b.logo).map((brand) => (
             <Link
               key={brand.id}
-              href="/brands"
+              href={`/brands/${encodeURIComponent(brand.slug)}`}
               title={brand.name}
               className="flex h-24 items-center justify-center rounded-lg border border-hairline bg-white p-2 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30"
             >
@@ -902,6 +903,8 @@ export function WhatsappSignupSection() {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               <input
+                id="homepage-whatsapp-phone"
+                name="phone"
                 type="tel"
                 placeholder="01XXXXXXXXX"
                 className="h-12 flex-1 rounded-lg border border-hairline bg-white px-4 text-sm font-medium text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent/15"
@@ -925,6 +928,8 @@ export function WhatsappSignupSection() {
             </div>
             <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3 sm:flex-row">
               <input
+                id="homepage-newsletter-email"
+                name="email"
                 type="email"
                 required
                 value={email}

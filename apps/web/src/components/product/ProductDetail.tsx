@@ -10,6 +10,7 @@ import { formatPrice, getDiscountPercent, isInStock } from '@/lib/woocommerce';
 import type { WooProduct } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import { COMPANY } from '@/lib/companyProfile';
+import { sanitizeHtml } from '@/lib/sanitizeHtml';
 
 interface Props {
   product: WooProduct;
@@ -44,12 +45,9 @@ export default function ProductDetail({ product }: Props) {
     }
   };
 
-  // Extract brand from attributes
-  const brandAttr = product.attributes?.find(
-    (attr) => attr.name.toLowerCase() === 'brand' || attr.name.toLowerCase() === 'pa_brand'
-  );
-  const brandName = brandAttr?.options?.[0];
-  const brandSlug = brandName?.toLowerCase().replace(/\s+/g, '-');
+  const productBrand = product.brands?.[0];
+  const brandName = productBrand?.name;
+  const brandSlug = productBrand?.slug;
 
   // Filter out brand from other attributes for display
   const otherAttributes = product.attributes?.filter(
@@ -168,7 +166,7 @@ export default function ProductDetail({ product }: Props) {
         {product.short_description && (
           <div
             className="text-gray-600 text-sm leading-relaxed prose prose-sm max-w-none"
-            dangerouslySetInnerHTML={{ __html: product.short_description }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.short_description) }}
           />
         )}
 
@@ -307,7 +305,7 @@ export default function ProductDetail({ product }: Props) {
           <h2 className="text-xl font-bold text-[#1a1a2e] mb-4">Product Description</h2>
           <div
             className="prose prose-gray max-w-none text-sm leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: product.description }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
           />
         </div>
       )}

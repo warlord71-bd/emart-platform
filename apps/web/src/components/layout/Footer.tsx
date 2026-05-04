@@ -194,8 +194,7 @@ export default async function Footer() {
                   <Smartphone size={16} />
                 </span>
                 <span>
-                  <a href={COMPANY.whatsappHref} target="_blank" rel="noopener noreferrer" className="font-semibold text-white hover:text-accent">WhatsApp: {COMPANY.phones.sales}</a>
-                  <span className="mt-1 block text-xs text-bg-stone/60">Primary business support</span>
+                  <a href={COMPANY.whatsappHref} target="_blank" rel="noopener noreferrer" className="font-semibold text-white hover:text-accent">WhatsApp: {COMPANY.phones.sales} — Primary business support</a>
                 </span>
               </li>
               <li className="flex gap-3">

@@ -1,3 +1,5 @@
+import { sanitizeHtml } from '@/lib/sanitizeHtml';
+
 interface CollapsibleSectionProps {
   title: string;
   content: string;
@@ -25,7 +27,7 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
       <div className="mt-4 text-sm md:text-base text-lumiere-text-secondary prose prose-sm max-w-none">
         <div
           dangerouslySetInnerHTML={{
-            __html: content.replace(/\n/g, '<br />'),
+            __html: sanitizeHtml(content.replace(/\n/g, '<br />')),
           }}
         />
       </div>

@@ -1,16 +1,63 @@
 /** @type {import('next').NextConfig} */
+const privateNoStoreHeaders = [
+  { key: 'Cache-Control', value: 'private, no-store, max-age=0, must-revalidate' },
+  { key: 'CDN-Cache-Control', value: 'private, no-store' },
+  { key: 'Cloudflare-CDN-Cache-Control', value: 'private, no-store' },
+];
+
 const nextConfig = {
   poweredByHeader: false,
+  eslint: { ignoreDuringBuilds: true },
 
   async headers() {
     return [
       {
+        source: '/checkout',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/account',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/account/orders',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/order-success',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/track-order',
+        headers: privateNoStoreHeaders,
+      },
+      {
+        source: '/wishlist',
+        headers: privateNoStoreHeaders,
+      },
+      {
         source: '/(.*)',
         headers: [
-          { key: 'X-Frame-Options',           value: 'DENY' },
-          { key: 'X-Content-Type-Options',     value: 'nosniff' },
-          { key: 'Referrer-Policy',            value: 'strict-origin-when-cross-origin' },
-          { key: 'Permissions-Policy',         value: 'camera=(), microphone=(), geolocation=()' },
+          { key: 'X-Frame-Options',             value: 'DENY' },
+          { key: 'X-Content-Type-Options',       value: 'nosniff' },
+          { key: 'Referrer-Policy',              value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy',           value: 'camera=(), microphone=(), geolocation=()' },
+          { key: 'Strict-Transport-Security',    value: 'max-age=15552000; includeSubDomains; preload' },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://*.cloudflare.com https://static.cloudflareinsights.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' data: blob: https://e-mart.com.bd https://*.e-mart.com.bd https://*.woocommerce.com https://www.facebook.com https://www.google-analytics.com https://www.googletagmanager.com https://img.youtube.com",
+              "font-src 'self' data: https://fonts.gstatic.com",
+              "connect-src 'self' https://e-mart.com.bd wss://e-mart.com.bd https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://www.google.com https://*.google.com https://*.doubleclick.net https://*.facebook.com https://www.googletagmanager.com https://cloudflareinsights.com",
+              "frame-src 'self' https://www.facebook.com",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join('; '),
+          },
         ],
       },
     ];

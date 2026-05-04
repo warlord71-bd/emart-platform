@@ -1,4 +1,4 @@
-import { getBrandBySlug, getProducts } from '@/lib/woocommerce';
+import { getAllProductIdsByBrand, getBrandBySlug, getProducts } from '@/lib/woocommerce';
 import CatalogFilters from '@/components/product/CatalogFilters';
 import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
@@ -7,10 +7,17 @@ import { canonicalPath } from '@/lib/canonicalUrl';
 
 // All filter/sort params are stripped — only /shop is the canonical page for this route.
 export function generateMetadata({ searchParams }: { searchParams?: ShopPageProps['searchParams'] }): Metadata {
+  const canonical = canonicalPath('/shop', searchParams);
+
   return {
-    title: 'Shop Global Skincare Brands | Emart',
+    title: 'Shop Global Skincare Brands',
     description: 'Browse our collection of authentic global skincare products.',
-    alternates: { canonical: canonicalPath('/shop', searchParams) },
+    alternates: { canonical },
+    openGraph: {
+      title: 'Shop Global Skincare Brands | Emart',
+      description: 'Browse our collection of authentic global skincare products.',
+      url: canonical,
+    },
   };
 }
 
@@ -72,6 +79,7 @@ function getPageHref(basePath: string, searchParams: ShopPageProps['searchParams
 export default async function ShopPage({ searchParams }: ShopPageProps) {
   const page = parseInt(searchParams.page || '1');
   const activeBrand = searchParams.brand ? await getBrandBySlug(searchParams.brand) : null;
+  const activeBrandProductIds = activeBrand ? await getAllProductIdsByBrand(activeBrand.id) : [];
   const activeSearch = searchParams.search || '';
   const priceParams = getPriceParams(searchParams.price);
   const sortParams = getSortParams(searchParams.sort);
@@ -79,8 +87,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     page,
     per_page: 24,
     search: activeSearch,
-    attribute: activeBrand ? 'pa_brand' : undefined,
-    attribute_term: activeBrand ? String(activeBrand.id) : undefined,
+    include: activeBrand ? activeBrandProductIds.join(',') || '0' : undefined,
     category: searchParams.category || '',
     ...sortParams,
     ...priceParams,
@@ -134,7 +141,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <div className="flex-1">
           {products.length > 0 ? (
             <>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-4 min-[430px]:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
                 {products.map((product: any) => (
                   <ProductCard key={product.id} product={product} />
                 ))}

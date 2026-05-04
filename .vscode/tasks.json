@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Emart: Local Build",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${env:EMART_WEB_APP}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Emart: Sync Local To VPS",
+      "type": "shell",
+      "command": "${workspaceFolder}/workspace/scripts/sync-local-to-vps.sh",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Emart: VPS Build",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${env:EMART_VPS_WEB_APP}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

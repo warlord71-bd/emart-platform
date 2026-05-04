@@ -148,9 +148,6 @@ export default function CatalogFilters({
         : 'border-hairline bg-card text-ink-2'
     }`;
 
-  const disabledChipClass =
-    'min-h-11 cursor-not-allowed rounded-lg border border-hairline bg-bg-stone px-3 py-2 text-sm font-semibold text-muted-2';
-
   if (variant === 'mobile') {
     return (
       <div className="lg:hidden -mx-4 mb-5 bg-bg">
@@ -229,10 +226,13 @@ export default function CatalogFilters({
             <button
               type="button"
               aria-label="Close filters"
-              className="absolute inset-0 bg-black/45"
+              className="absolute inset-0 bg-black/50"
               onClick={closeDrawer}
             />
-            <div className="absolute right-0 top-0 flex h-full w-[86vw] max-w-sm flex-col bg-card shadow-pop">
+            <div className="absolute inset-x-0 bottom-0 flex max-h-[82vh] flex-col rounded-t-2xl bg-card shadow-pop">
+              <div className="flex justify-center pt-3">
+                <span className="h-1.5 w-11 rounded-full bg-bg-stone" />
+              </div>
               <div className="flex items-center justify-between border-b border-hairline px-5 py-4">
                 <div>
                   <p className="text-lg font-bold text-ink">Filter</p>
@@ -279,26 +279,9 @@ export default function CatalogFilters({
                 {contextOptions && (
                   <section>
                     <h3 className="mb-3 text-base font-bold text-ink">{contextOptions.heading}</h3>
-                    <div className="grid grid-cols-2 gap-2">
-                      {contextOptions.chips.map((chip) => (
-                        <button key={chip} type="button" disabled className={disabledChipClass}>
-                          {chip} soon
-                        </button>
-                      ))}
-                    </div>
-                  </section>
-                )}
-
-                {showOrigin && (
-                  <section>
-                    <h3 className="mb-3 text-base font-bold text-ink">Origin</h3>
-                    <div className="grid grid-cols-2 gap-2">
-                      {ORIGIN_OPTIONS.map((origin) => (
-                        <button key={origin} type="button" disabled className={disabledChipClass}>
-                          {origin} soon
-                        </button>
-                      ))}
-                    </div>
+                    <p className="rounded-lg border border-hairline bg-bg-alt px-3 py-3 text-sm text-muted">
+                      More filters are coming soon.
+                    </p>
                   </section>
                 )}
               </div>

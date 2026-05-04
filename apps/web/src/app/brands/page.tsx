@@ -4,7 +4,6 @@ import { Metadata } from 'next';
 import { permanentRedirect } from 'next/navigation';
 import { getBrands, type WooBrand } from '@/lib/woocommerce';
 import brandLogoManifest from '../../../public/images/brands-e-mart/manifest.json';
-import { CANONICAL_BRANDS } from '@/lib/brandWhitelist';
 import { canonicalPath } from '@/lib/canonicalUrl';
 import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
 
@@ -45,28 +44,13 @@ export default async function BrandsPage({
     permanentRedirect(`/brands/${encodeURIComponent(selectedBrandSlug)}${page > 1 ? `?page=${page}` : ''}`);
   }
 
-  // Pull WC terms (provides counts + ids for products-by-brand links) and merge
-  // with the curated CANONICAL_BRANDS whitelist so the page always shows the
-  // full ~95-brand list, even for brands without any WC products yet.
   let wcBrands: WooBrand[] = [];
   try {
     wcBrands = await getBrands({ orderby: 'name', order: 'asc' });
   } catch {
-    // WooCommerce API unreachable — show canonical brand list without WC counts
+    // WordPress API unreachable — show an empty brand list rather than noisy legacy attributes.
   }
-  const wcBySlug = new Map<string, WooBrand>();
-  for (const b of wcBrands) wcBySlug.set(b.slug.toLowerCase(), b);
-
-  const brands: WooBrand[] = CANONICAL_BRANDS.map((c, i) => {
-    let wc: WooBrand | undefined;
-    for (const alias of c.slugs) {
-      wc = wcBySlug.get(alias.toLowerCase());
-      if (wc) break;
-    }
-    return wc
-      ? { ...wc, name: c.name, slug: c.slugs[0] }
-      : { id: -1 - i, name: c.name, slug: c.slugs[0], count: 0 };
-  }).sort((a, b) => a.name.localeCompare(b.name));
+  const brands = wcBrands.sort((a, b) => a.name.localeCompare(b.name));
   const grouped = groupByLetter(brands);
   const letters = Object.keys(grouped).sort();
 

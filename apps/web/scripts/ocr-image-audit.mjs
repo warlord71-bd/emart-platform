@@ -8,8 +8,8 @@ import { promisify } from 'node:util';
 const execFileAsync = promisify(execFile);
 
 const WOO_URL = (process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd').replace(/\/$/, '');
-const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || 'ck_ff01ba6f574d9489426660c8599601c179664501';
-const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || 'cs_25754bbb91cb891225a4bb098682005a37334ca1';
+const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
+const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
 const OUT_DIR = process.env.OCR_AUDIT_DIR || '/tmp/emart-ocr-audit';
 const PAGE_SIZE = Number(process.env.OCR_AUDIT_PAGE_SIZE || 100);
 const CONCURRENCY = Number(process.env.OCR_AUDIT_CONCURRENCY || 2);
@@ -30,6 +30,10 @@ const stopWords = new Set([
 ]);
 
 async function main() {
+  if (!CONSUMER_KEY || !CONSUMER_SECRET) {
+    throw new Error('WOO_CONSUMER_KEY and WOO_CONSUMER_SECRET are required.');
+  }
+
   await fs.mkdir(tmpDir, { recursive: true });
   await writeCsvHeader();
 

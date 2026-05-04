@@ -33,14 +33,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
 
-  let body: { slug?: string; type?: 'product' | 'category'; path?: string; tag?: string };
+  let body: {
+    id?: number;
+    slug?: string;
+    type?: 'product' | 'category';
+    path?: string;
+    tag?: string;
+    permalink?: string;
+  };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ ok: false, error: 'invalid json' }, { status: 400 });
   }
 
-  const { slug, type, path, tag } = body;
+  const { type, path, tag } = body;
+  const slug = body.slug || body.permalink?.match(/\/product\/([^/]+)\/?$/)?.[1];
+  const isProductWebhook = Boolean(slug && (type === 'product' || body.id || body.permalink));
   const revalidated: string[] = [];
 
   if (tag) {
@@ -49,15 +58,17 @@ export async function POST(req: NextRequest) {
   } else if (path) {
     revalidatePath(path, 'page');
     revalidated.push(path);
-  } else if (slug && type === 'product') {
+  } else if (slug && isProductWebhook) {
     revalidatePath(`/shop/${slug}`);
     revalidatePath(`/${slug}`);
     revalidatePath('/shop');
-    revalidated.push(`/shop/${slug}`, `/${slug}`, '/shop');
+    revalidateTag('products');
+    revalidated.push(`/shop/${slug}`, `/${slug}`, '/shop', 'tag:products');
   } else if (slug && type === 'category') {
     revalidatePath(`/category/${slug}`);
     revalidatePath('/shop');
-    revalidated.push(`/category/${slug}`, '/shop');
+    revalidateTag('products');
+    revalidated.push(`/category/${slug}`, '/shop', 'tag:products');
   } else {
     return NextResponse.json(
       { ok: false, error: 'provide tag, path, or slug+type' },

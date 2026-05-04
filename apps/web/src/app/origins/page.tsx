@@ -1,4 +1,4 @@
-import { getBrandBySlug, getCategoryBySlug, getProducts, type WooProduct } from '@/lib/woocommerce';
+import { getAllProductIdsByBrand, getBrandBySlug, getCategoryBySlug, getProducts, type WooProduct } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
@@ -97,22 +97,25 @@ function sortProductsByDate(products: WooProduct[]) {
 
 async function getBrandMappedProducts(origin: Origin, page: number) {
   const brands = await Promise.all((origin.brandSlugs || []).map((slug) => getBrandBySlug(slug)));
-  const brandIds = [...new Set(brands.filter(Boolean).map((brand) => String(brand!.id)))];
+  const brandIds = [...new Set(brands.filter(Boolean).map((brand) => brand!.id))];
 
   if (brandIds.length === 0) {
     return { products: [], totalPages: 1, total: 0 };
   }
 
-  const brandResults = await Promise.all(
-    brandIds.map((brandId) => getProducts({
-      page: 1,
-      per_page: 100,
-      attribute: 'pa_brand',
-      attribute_term: brandId,
-      orderby: 'date',
-      order: 'desc',
-    }))
-  );
+  const brandProductIdGroups = await Promise.all(brandIds.map((brandId) => getAllProductIdsByBrand(brandId)));
+  const brandProductIds = [...new Set(brandProductIdGroups.flat())];
+  if (!brandProductIds.length) {
+    return { products: [], totalPages: 1, total: 0 };
+  }
+
+  const brandResults = await Promise.all(chunk(brandProductIds, 100).map((ids) => getProducts({
+    page: 1,
+    per_page: 100,
+    include: ids.join(','),
+    orderby: 'date',
+    order: 'desc',
+  })));
 
   const productMap = new Map<number, WooProduct>();
   brandResults.forEach(({ products }) => {
@@ -129,6 +132,12 @@ async function getBrandMappedProducts(origin: Origin, page: number) {
     totalPages,
     total,
   };
+}
+
+function chunk<T>(items: T[], size: number) {
+  const chunks: T[][] = [];
+  for (let index = 0; index < items.length; index += size) chunks.push(items.slice(index, index + size));
+  return chunks;
 }
 
 async function getProductsForOrigin(origin: Origin, page: number) {

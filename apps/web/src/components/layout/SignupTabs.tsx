@@ -61,6 +61,8 @@ export default function SignupTabs() {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               <input
+                id="signup-whatsapp-phone"
+                name="phone"
                 type="tel"
                 placeholder="01XXXXXXXXX"
                 className="h-12 flex-1 rounded-lg border border-hairline bg-white px-4 text-sm font-medium text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent/15"
@@ -84,6 +86,8 @@ export default function SignupTabs() {
             </div>
             <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3 sm:flex-row">
               <input
+                id="signup-email"
+                name="email"
                 type="email"
                 required
                 value={email}

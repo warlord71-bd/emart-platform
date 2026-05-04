@@ -75,7 +75,7 @@ export default async function HomePage() {
   const safeSaleProducts = saleProducts.length > 0 ? saleProducts : fallbackProducts.slice(0, 10);
   const brandLogos = brandLogoManifest
     .filter((b): b is typeof b & { logo: string } => !b.fallback && typeof b.logo === 'string')
-    .map(({ id, name, logo }) => ({ id, name, logo }));
+    .map(({ id, name, slug, logo }) => ({ id, name, slug, logo }));
   const categoriesBySlug = new Map(allCategories.map((category) => [category.slug, category]));
   const mobileDiscoveryCategories = HOME_TOP_CATEGORY_ORDER.map((item) => {
     const resolvedSlug = item.slug

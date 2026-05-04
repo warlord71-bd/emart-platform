@@ -14,3 +14,7 @@
 - [Token efficiency protocol](feedback_token_efficiency.md) — keep future sessions token-lean with narrow reads, concise updates, and minimal output
 - [2026-05-01 VPS reconciliation state](project_20260501_vps_reconciliation_state.md) — Local/Git clean at `61ca7be`; VPS git metadata old/dirty but header/category source matches; preserve live `HeroCarousel` tagline before broad sync
 - [Mobile-first UI preference](feedback_mobile_first_design.md) — user wants storefront UI work designed mobile-first by default; avoid cramped mobile nav/control additions
+- [2026-05-04 Local/VPS/Git reconciliation](project_20260504_reconciliation.md) — live work existed as VPS dirty files plus dangling commit chain; protect live, reverse-sync VPS→Local, build, commit, then align Git metadata only after verification
+- [Presence WebSocket service](project_presence_websocket.md) — live PM2 `emart-presence` serves same-origin `wss://e-mart.com.bd/ws/presence`; do not use unresolved `api.e-mart.com.bd`
+- [Catalog cache headers](project_catalog_cache_headers.md) — Nginx runtime override makes `/shop` and `/category/{slug}` return public `s-maxage`; Cloudflare HIT still needs dashboard/API cache rule
+- [2026-05-02 other-agent bug check](project_20260502_other_agent_bugcheck.md) — removed incompatible ESLint 10 / Next 16 lint config from local Next 14 app; bug report was mostly stale PM2 log output

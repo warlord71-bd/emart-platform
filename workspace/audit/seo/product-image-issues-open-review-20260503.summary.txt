@@ -1,0 +1,10 @@
+input_products=452
+written_rows=424
+already_fixed_skipped=0
+logical_ok_skipped=27
+not_live_skipped=1
+strict_safe_candidate=54
+variant_review=178
+wrong_image_review=21
+duplicate_thumbnail_review=170
+missing_thumbnail_review=1

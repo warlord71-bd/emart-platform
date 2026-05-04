@@ -185,17 +185,10 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     return attr?.options?.[0] || '';
   };
 
-  const rawBrandName = getAttributeValue('brand');
-  // Only show the brand chip when the product carries a real brand attribute
-  // that maps to our curated whitelist. Falling back to the first category
-  // name produced wrong tags like "Skincare" or "Sunscreen" appearing as a
-  // brand. If we can't resolve a canonical brand, hide the chip.
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { findCanonicalBrand } = require('@/lib/brandWhitelist') as typeof import('@/lib/brandWhitelist');
-  const canonical = rawBrandName ? findCanonicalBrand(slugify(rawBrandName)) : undefined;
-  const brandName = canonical?.name || (rawBrandName ? rawBrandName : '');
-  const brandSlug = canonical?.slugs[0] || (rawBrandName ? slugify(rawBrandName) : '');
-  const showBrandChip = Boolean(canonical);
+  const productBrand = product.brands?.[0];
+  const brandName = productBrand?.name || '';
+  const brandSlug = productBrand?.slug || '';
+  const showBrandChip = Boolean(productBrand);
   const madeIn = getAttributeValue('made in') || getAttributeValue('country') || getAttributeValue('origin') || 'South Korea';
   const sizeFromAttr = getAttributeValue('size') || getAttributeValue('volume');
   const sizeFromName = !sizeFromAttr

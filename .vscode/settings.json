@@ -1,0 +1,10 @@
+{
+  "terminal.integrated.cwd": "/root/emart-platform",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.env.linux": {
+    "EMART_LOCAL_ROOT": "/root/emart-platform",
+    "EMART_VPS_ROOT": "/var/www/emart-platform",
+    "EMART_WEB_APP": "/root/emart-platform/apps/web",
+    "EMART_VPS_WEB_APP": "/var/www/emart-platform/apps/web"
+  }
+}

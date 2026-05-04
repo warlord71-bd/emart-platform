@@ -176,6 +176,9 @@ MonoDevelop/
 .vscode/tasks.json
 .vscode/launch.json
 .vscode/extensions.json
+!.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
 
 # JetBrains
 .idea/
@@ -212,6 +215,19 @@ tramp
 # === workspace: exclude large binaries and screenshots ===
 workspace/snapshots/
 workspace/ui-audit/
+
+# Generated product-image audit outputs stay on the VPS/local workspace.
+# Keep scripts and concise checked-in reports, but do not commit large exports,
+# OCR logs, or one-off batch output directories.
+workspace/audit/seo/wc-product-export-*.csv
+workspace/audit/seo/product-image-brand-size-20260503.csv
+workspace/audit/seo/product-image-brand-size-with-*.csv
+workspace/audit/seo/product-image-issues-open-review-*.csv
+workspace/audit/seo/product-image-logic-*/
+workspace/audit/seo/product-image-ocr-*/
+workspace/audit/seo/product-image-targeted-ocr-*/
+workspace/audit/seo/brand-source-unification-*/
+workspace/DEPLOY-PLAN-*.md
 
 # === added 2026-04-26: exclude session/audit/handoff/temp + accidents ===
 # Build artifacts

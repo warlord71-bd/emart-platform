@@ -10,6 +10,7 @@ import { ReviewsSection } from '@/components/product/ReviewsSection';
 import ProductCard from '@/components/product/ProductCard';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { getProductSeo } from '@/lib/seo';
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 
 interface Props {
   params: { slug: string };
@@ -54,7 +55,7 @@ function getProductJsonLd(product: WooProduct) {
     category: product.categories?.[0]?.name,
     brand: {
       '@type': 'Brand',
-      name: getProductAttributeValue(product, /brand/i) || 'Emart',
+      name: getProductBrandName(product) || 'Emart',
     },
     offers: {
       '@type': 'Offer',
@@ -371,6 +372,10 @@ function getProductAttributeValue(product: WooProduct, matcher: RegExp): string 
   return attribute?.options?.filter(Boolean).slice(0, 3).join(', ') || '';
 }
 
+function getProductBrandName(product: WooProduct): string {
+  return product.brands?.[0]?.name || '';
+}
+
 function getProductType(product: WooProduct): string {
   const name = product.name.toLowerCase();
   const categoryText = product.categories?.map((category) => category.slug).join(' ') || '';
@@ -394,7 +399,7 @@ function getProductType(product: WooProduct): string {
 }
 
 function getGeneratedProductFaqItems(product: WooProduct): ProductFaqItem[] {
-  const brand = getProductAttributeValue(product, /brand/i);
+  const brand = getProductBrandName(product);
   const origin = getProductAttributeValue(product, /(origin|made in|country)/i);
   const skinType = getProductAttributeValue(product, /skin type/i) || 'most skin types';
   const concern = getProductAttributeValue(product, /concern/i);
@@ -503,7 +508,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
   const skinType = getProductAttributeValue(product, /skin type/i);
   const skinConcern = getProductAttributeValue(product, /concern/i);
-  const brandName = getProductAttributeValue(product, /brand/i);
+  const brandName = getProductBrandName(product);
 
   const keywords: string[] = [
     product.name,
@@ -572,7 +577,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(productJsonLd) }} />
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
         <ProductImage images={product.images} productName={product.name} />
         <ProductInfo product={product} />

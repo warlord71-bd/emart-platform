@@ -4,11 +4,12 @@
  * correctly without triggering the IP-redirect rule.
  */
 
-const GRAPHQL_URL = process.env.WOO_INTERNAL_URL
-  ? `${process.env.WOO_INTERNAL_URL}/graphql`
-  : 'https://e-mart.com.bd/graphql';
-
 const BASE_URL = 'https://e-mart.com.bd';
+const DEFAULT_INTERNAL_WORDPRESS_URL = process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '';
+const WORDPRESS_URL = process.env.WOO_INTERNAL_URL || DEFAULT_INTERNAL_WORDPRESS_URL;
+const GRAPHQL_URL = WORDPRESS_URL
+  ? `${WORDPRESS_URL.replace(/\/$/, '')}/graphql`
+  : `${BASE_URL}/graphql`;
 
 interface RankMathSeo {
   title: string | null;
@@ -63,7 +64,7 @@ async function rankMathFetch<T>(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Host': 'e-mart.com.bd',
+        ...(isLocalGraphQLUrl(GRAPHQL_URL) ? { Host: 'e-mart.com.bd' } : {}),
       },
       body: JSON.stringify({ query, variables }),
       next: { revalidate: 3600 },
@@ -74,6 +75,15 @@ async function rankMathFetch<T>(
     return json.data ?? null;
   } catch {
     return null;
+  }
+}
+
+function isLocalGraphQLUrl(value: string): boolean {
+  try {
+    const hostname = new URL(value).hostname;
+    return hostname === '127.0.0.1' || hostname === 'localhost';
+  } catch {
+    return false;
   }
 }
 

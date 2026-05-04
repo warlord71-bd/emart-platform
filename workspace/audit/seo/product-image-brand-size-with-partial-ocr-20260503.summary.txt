@@ -1,0 +1,14 @@
+report=/root/emart-platform/workspace/audit/seo/product-image-brand-size-with-partial-ocr-20260503.csv
+total_products=3665
+high_visual_mismatch=29
+medium_metadata_mismatch=235
+review=165
+ok=3236
+metadata_brand_mismatch=170
+metadata_size_mismatch=75
+ocr_visual_brand_mismatch=27
+ocr_visual_size_mismatch=2
+metadata_name_weak_match=128
+missing_thumbnail=1
+duplicate_thumbnail_meta=170
+duplicate_thumbnail_products=177

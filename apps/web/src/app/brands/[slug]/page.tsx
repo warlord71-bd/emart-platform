@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import ProductCard from '@/components/product/ProductCard';
-import { getBrandBySlug, getProducts } from '@/lib/woocommerce';
+import { getBrandBySlug, getProductsByProductBrand } from '@/lib/woocommerce';
 import brandLogoManifest from '../../../../public/images/brands-e-mart/manifest.json';
 import { ArrowLeft } from 'lucide-react';
 import { absoluteUrl } from '@/lib/siteUrl';
@@ -48,12 +48,8 @@ export default async function BrandPage({ params, searchParams }: Props) {
 
   const page = Math.max(1, parseInt(searchParams?.page || '1'));
 
-  const { products, total, totalPages } = await getProducts({
-    page,
-    per_page: 24,
-    attribute: 'pa_brand',
-    attribute_term: String(brand.id),
-  }).catch(() => ({ products: [], total: 0, totalPages: 0 }));
+  const { products, total, totalPages } = await getProductsByProductBrand(brand.id, page, 24)
+    .catch(() => ({ products: [], total: 0, totalPages: 0 }));
 
   const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
 

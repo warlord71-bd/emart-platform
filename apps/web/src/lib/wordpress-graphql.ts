@@ -1,5 +1,6 @@
-const WORDPRESS_URL = process.env.NEXT_PUBLIC_WOO_URL || '';
 const PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://e-mart.com.bd';
+const DEFAULT_INTERNAL_WORDPRESS_URL = process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '';
+const WORDPRESS_URL = process.env.WOO_INTERNAL_URL || DEFAULT_INTERNAL_WORDPRESS_URL || process.env.NEXT_PUBLIC_WOO_URL || '';
 const CONFIGURED_GRAPHQL_URL =
   process.env.WORDPRESS_GRAPHQL_URL ||
   process.env.WP_GRAPHQL_URL ||
@@ -442,6 +443,7 @@ async function graphqlRequest<TData>(
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        ...(isLocalWordPressUrl(GRAPHQL_URL) ? { Host: 'e-mart.com.bd' } : {}),
       },
       body: JSON.stringify({ query, variables }),
       signal: controller.signal,
@@ -607,6 +609,15 @@ function shouldInferGraphQLEndpoint(wordPressUrl: string, publicSiteUrl: string)
 
   try {
     return new URL(wordPressUrl).origin !== new URL(publicSiteUrl).origin;
+  } catch {
+    return false;
+  }
+}
+
+function isLocalWordPressUrl(value: string): boolean {
+  try {
+    const hostname = new URL(value).hostname;
+    return hostname === '127.0.0.1' || hostname === 'localhost';
   } catch {
     return false;
   }

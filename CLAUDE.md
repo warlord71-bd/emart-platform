@@ -4,20 +4,19 @@
 
 This file is written for Codex, Claude, GPT-style agents, and human developers. Follow it as project policy.
 
-**🚨 CURRENT VERIFIED STATE (2026-05-03):**
-- Local: `/root/emart-platform` → `ba15ffd` (main)
-- VPS: `/var/www/emart-platform` → `ba15ffd` (main, origin/main)
-- Origin: `origin/main` → `ba15ffd` (GitHub)
-- **All three match at `ba15ffd fix(seo): disallow legacy redirect namespaces in robots`**
-- VPS has 39 uncommitted working-tree files (live config/env changes) — sync to Local before committing
-- Brand work (`5f7e792`, `949ca96`) is safely embedded as ancestors of `ba15ffd`
+**CURRENT RECONCILIATION STATE (2026-05-04):**
+- A prior branch/log mismatch left live VPS source changes as an uncommitted `/var/www/emart-platform` working tree while `origin/main` pointed at a stale docs tip.
+- Recovery refs were created locally before reconciliation: `recovery-live-work-20260503` for the orphaned live-work chain and `recovery-origin-doc-tip-20260504` for the stale origin docs tip.
+- Local reconciliation commit: `chore: reconcile live VPS source state` (check `git log -1` for the current hash).
+- The safe repair path is VPS -> Local first, Local build, Local commit, live smoke, then push. Do not overwrite the live tree to match old Git history.
+- After the reconciliation commit is pushed, verify Local, VPS working tree, and origin all represent the same source before new deploy work.
 
-**🛑 LIVE SITE PROTECTION — READ FIRST:**
-- **NEVER damage the live site** `https://e-mart.com.bd` served from `/var/www/emart-platform/apps/web`
-- **Site first, code second** — verify live state before any deploy/restart
-- **No blind changes** — always check VPS working tree before syncing
-- **No `git reset --hard` on VPS** without verifying live source state
-- **No `git add -A` on dirty VPS tree** without reviewing staged list
+**LIVE SITE PROTECTION — READ FIRST:**
+- **Never damage the live site** `https://e-mart.com.bd` served from `/var/www/emart-platform/apps/web`.
+- **Site first, code second** — verify live state before any deploy/restart.
+- **No blind changes** — always check VPS working tree before syncing.
+- **No `git reset --hard` on VPS** without verifying live source state and receiving explicit approval.
+- **No `git add -A` on VPS** without reviewing staged list and `.gitignore`.
 
 Before editing anything related to SEO, metadata, sitemap, schema, brand pages, category pages, product pages, navigation, public copy, crawl/index behavior, or route redirects:
 
@@ -215,23 +214,23 @@ When implementing SEO work, follow this order:
 
 This project follows the universal VPS deployment law in `/root/CLAUDE.md`. Read that file first when working on the VPS.
 
-**🚨 CRITICAL: LIVE SITE NEVER BREAKS — VERIFY FIRST, THEN PUBLISH**
+**CRITICAL: LIVE SITE NEVER BREAKS — VERIFY FIRST, THEN PUBLISH**
 
 Use the verify-then-publish order:
 
 1. Edit on Local (`/root/emart-platform`).
 2. Build/test on Local (`npm run build`).
 3. Commit on Local (`git commit`).
-4. Sync Local -> VPS (`rsync` or `git push` + pull on VPS).
+4. Sync Local -> VPS (`rsync` or reviewed equivalent).
 5. Build on VPS (`cd /var/www/emart-platform/apps/web && npm run build`).
-6. Restart `emartweb` (`pm2 restart emartweb`).
-7. **Smoke test the live site** (`curl -s https://e-mart.com.bd/ | head -20`).
-8. **Only after live verification passes:** Push `origin main` (`git push origin main`).
+6. Restart `emartweb` only after source state is verified.
+7. Smoke test the live site.
+8. Push `origin main` only after live verification passes.
 
-**If a hotfix is made directly on VPS:**
-- Reverse-sync VPS -> Local before committing
-- Never commit from VPS directly (VPS is runtime, not commit workspace)
-- Always verify VPS working tree isn't destroying live state
+If a hotfix is made directly on VPS:
+- Reverse-sync VPS -> Local before committing.
+- Never commit from VPS directly; VPS is runtime, not the commit workspace.
+- Always verify the VPS working tree before changing its Git metadata.
 
 ## 11. E-Mart Project Facts
 
@@ -273,6 +272,5 @@ Use the verify-then-publish order:
 - Old project agent files mentioning `AGENTS.coding.md`, `AGENTS.design.md`, or `AGENTS.seo.md`; those were retired to reduce complexity.
 - Old docs that say to push before live verification.
 - Old rollback snippets that use `git reset --hard` without checking the live source state first.
-- **VPS dirty working tree** — VPS has 39 uncommitted files; always sync to Local before committing.
-- **Assuming VPS = clean git state** — VPS is runtime/live, not a clean commit workspace.
-- **Blind `git add -A` on VPS** — always review `git status` first, check `.gitignore`, then stage selectively.
+- Assuming VPS equals clean Git state; VPS is runtime/live, not a clean commit workspace.
+- Blind `git add -A` on VPS.

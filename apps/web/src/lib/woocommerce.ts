@@ -2,15 +2,16 @@
 // WooCommerce REST API v3 Client for Emart Skincare Bangladesh
 
 import axios from 'axios';
-import { CANONICAL_BRANDS } from '@/lib/brandWhitelist';
+import { unstable_cache } from 'next/cache';
 
-const WOO_URL = process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_WOO_URL || 'https://e-mart.com.bd';
 const PUBLIC_SITE_URL = 'https://e-mart.com.bd';
+const DEFAULT_INTERNAL_WOO_URL = process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '';
+const WOO_URL = process.env.WOO_INTERNAL_URL || DEFAULT_INTERNAL_WOO_URL || process.env.NEXT_PUBLIC_WOO_URL || PUBLIC_SITE_URL;
 const LEGACY_IP_HOST = ['5', '189', '188', '229'].join('.');
 const LOCAL_WORDPRESS_HOSTS = new Set(['127.0.0.1', 'localhost']);
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET || '';
-const WOO_READ_TIMEOUT_MS = 5000;
+const WOO_READ_TIMEOUT_MS = 8000;
 const IS_NEXT_BUILD = process.env.NEXT_PHASE === 'phase-production-build';
 const isHTTPS = WOO_URL.startsWith('https');
 const WOO_WRITE_URL = isHTTPS ? WOO_URL : PUBLIC_SITE_URL;
@@ -41,6 +42,12 @@ const wooWriteClient = axios.create({
   timeout: 20000,
 });
 
+const wordpressRestClient = axios.create({
+  baseURL: `${WOO_URL}/wp-json/wp/v2`,
+  headers: isHTTPS ? undefined : { Host: 'e-mart.com.bd' },
+  timeout: WOO_READ_TIMEOUT_MS,
+});
+
 // ══════════════════════════════
 // TYPES
 // ══════════════════════════════
@@ -62,6 +69,7 @@ export interface WooProduct {
   short_description: string;
   images: WooImage[];
   categories: WooCategory[];
+  brands?: WooProductBrand[];
   attributes: WooAttribute[];
   meta_data?: WooMetaData[];
   average_rating: string;
@@ -82,6 +90,12 @@ export interface WooCategory {
   slug: string;
   image?: WooImage;
   count?: number;
+}
+
+export interface WooProductBrand {
+  id: number;
+  name: string;
+  slug: string;
 }
 
 export interface WooAttribute {
@@ -178,9 +192,10 @@ export interface ProductsParams {
   search?: string;
   category?: string;
   tag?: string;
+  include?: string;
   attribute?: string;
   attribute_term?: string;
-  orderby?: 'date' | 'price' | 'popularity' | 'rating' | 'title';
+  orderby?: 'date' | 'price' | 'popularity' | 'rating' | 'title' | 'include';
   order?: 'asc' | 'desc';
   on_sale?: boolean;
   featured?: boolean;
@@ -265,6 +280,14 @@ function transformCategory(category: any): WooCategory {
   };
 }
 
+function transformProductBrand(brand: any): WooProductBrand {
+  return {
+    id: Number(brand?.id || 0),
+    name: decodeHtmlEntities(brand?.name),
+    slug: String(brand?.slug || ''),
+  };
+}
+
 const PUBLIC_PRODUCT_META_KEYS = new Set([
   '_woodmart_product_custom_tab_title',
   '_woodmart_product_custom_tab_content',
@@ -326,6 +349,9 @@ function transformProduct(product: any): WooProduct {
     short_description: decodeHtmlEntities(product.short_description),
     images: Array.isArray(product.images) ? product.images.map(transformImage) : [],
     categories: Array.isArray(product.categories) ? product.categories.map(transformCategory) : [],
+    brands: Array.isArray(product.brands)
+      ? product.brands.map(transformProductBrand).filter((brand: WooProductBrand) => brand.id && brand.name && brand.slug)
+      : [],
     attributes: Array.isArray(product.attributes)
       ? product.attributes.map((attribute: any) => ({
         id: Number(attribute.id || 0),
@@ -412,24 +438,43 @@ function logWooError(context: string, error: unknown, details?: Record<string, u
   });
 }
 
-export async function getProducts(params: ProductsParams = {}): Promise<{
-  products: WooProduct[];
-  total: number;
-  totalPages: number;
-}> {
-  try {
+function isWooNetworkError(error: any): boolean {
+  return (
+    error?.cause?.code === 'ECONNRESET' ||
+    error?.message?.includes('socket hang up') ||
+    error?.code === 'ECONNREFUSED' ||
+    error?.code === 'ETIMEDOUT' ||
+    error?.code === 'ECONNABORTED'
+  );
+}
+
+function isBlockedFallbackStatus(error: any): boolean {
+  const status = error?.response?.status;
+  return status === 401 || status === 403 || status === 404;
+}
+
+const _getProductsCached = unstable_cache(
+  async (params: ProductsParams): Promise<{ products: WooProduct[]; total: number; totalPages: number }> => {
     const response = await wooClient.get('/products', {
-      params: {
-        per_page: 20,
-        status: 'publish',
-        ...params,
-      },
+      params: { per_page: 20, status: 'publish', ...params },
     });
     return {
       products: transformImageUrls(response.data || []),
       total: parseInt(response.headers['x-wp-total'] || '0'),
       totalPages: parseInt(response.headers['x-wp-totalpages'] || '0'),
     };
+  },
+  ['woo-products'],
+  { revalidate: 300, tags: ['products'] },
+);
+
+export async function getProducts(params: ProductsParams = {}): Promise<{
+  products: WooProduct[];
+  total: number;
+  totalPages: number;
+}> {
+  try {
+    return await _getProductsCached(params);
   } catch (error) {
     logWooError('getProducts', error);
     return { products: [], total: 0, totalPages: 0 };
@@ -513,13 +558,6 @@ export async function getBrands(params: {
   orderby?: 'count' | 'name' | 'slug' | 'id';
   order?: 'asc' | 'desc';
 } = {}): Promise<WooBrand[]> {
-  const fallbackBrands = () => CANONICAL_BRANDS.map((brand, index) => ({
-    id: -1 - index,
-    name: brand.name,
-    slug: brand.slugs[0],
-    count: 0,
-  }));
-
   const baseParams = {
     per_page: 100,
     hide_empty: true,
@@ -538,44 +576,30 @@ export async function getBrands(params: {
         count: Number(brand.count || 0),
         link: typeof brand.link === 'string' ? brand.link : undefined,
       }))
-      .filter((brand: WooBrand) => brand.id && brand.name && brand.slug)
-      .map((brand: WooBrand) => {
-        const canonical = CANONICAL_BRANDS.find((item) => item.slugs.includes(brand.slug));
-        return canonical ? { ...brand, name: canonical.name } : brand;
-      })
-      .filter((brand: WooBrand) => CANONICAL_BRANDS.some((item) => item.slugs.includes(brand.slug)));
+      .filter((brand: WooBrand) => brand.id && brand.name && brand.slug);
   };
 
-  const whitelistSlugs = new Set(CANONICAL_BRANDS.flatMap((b) => b.slugs));
-
-  // Try internal URL first, fall back to public URL on socket errors
   for (const attempt of ['internal', 'public'] as const) {
     try {
       const allBrands: WooBrand[] = [];
-      // Paginate until all whitelist brands are found or no more pages
       for (let page = 1; page <= 10; page++) {
         const queryParams = { ...baseParams, page };
         let response;
         if (attempt === 'public') {
-          response = await axios.get(`${PUBLIC_SITE_URL}/wp-json/wc/v3/products/attributes/1/terms`, {
-            params: { ...queryParams, consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET },
+          response = await axios.get(`${PUBLIC_SITE_URL}/wp-json/wp/v2/product_brand`, {
+            params: queryParams,
             timeout: WOO_READ_TIMEOUT_MS,
           });
         } else {
-          response = await wooClient.get('/products/attributes/1/terms', {
+          response = await wordpressRestClient.get('/product_brand', {
             params: queryParams,
             timeout: WOO_READ_TIMEOUT_MS,
           });
         }
         const pageData: any[] = Array.isArray(response.data) ? response.data : [];
         allBrands.push(...parseBrands(pageData));
-        // Stop if last page (fewer than per_page results) or no whitelist hits remain
         if (pageData.length < 100) break;
-        const foundSlugs = new Set(allBrands.map((b) => b.slug));
-        const stillMissing = [...whitelistSlugs].some((s) => !foundSlugs.has(s));
-        if (!stillMissing) break;
       }
-      // Deduplicate by id, keep highest count
       const seen = new Map<number, WooBrand>();
       for (const b of allBrands) {
         const existing = seen.get(b.id);
@@ -585,13 +609,13 @@ export async function getBrands(params: {
       if (brands.length > 0) return brands;
     } catch (error: any) {
       const isSocketError = error?.cause?.code === 'ECONNRESET' || error?.message?.includes('socket hang up');
-      if (IS_NEXT_BUILD) return fallbackBrands();
+      if (IS_NEXT_BUILD) return [];
       if (attempt === 'internal' && isSocketError) continue;
       logWooError('getBrands', error);
-      if (attempt === 'public') return fallbackBrands();
+      if (attempt === 'public') return [];
     }
   }
-  return fallbackBrands();
+  return [];
 }
 
 export async function getBrandBySlug(slug: string): Promise<WooBrand | null> {
@@ -626,11 +650,11 @@ export async function getBrandBySlug(slug: string): Promise<WooBrand | null> {
     params: Record<string, string | number | boolean>,
   ) => {
     return attempt === 'public'
-      ? axios.get(`${PUBLIC_SITE_URL}/wp-json/wc/v3/products/attributes/1/terms`, {
-        params: { ...params, consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET },
+      ? axios.get(`${PUBLIC_SITE_URL}/wp-json/wp/v2/product_brand`, {
+        params,
         timeout: WOO_READ_TIMEOUT_MS,
       })
-      : wooClient.get('/products/attributes/1/terms', {
+      : wordpressRestClient.get('/product_brand', {
         params,
         timeout: WOO_READ_TIMEOUT_MS,
       });
@@ -654,21 +678,85 @@ export async function getBrandBySlug(slug: string): Promise<WooBrand | null> {
     return null;
   };
 
+  let shouldTryPublicFallback = false;
+
   for (const attempt of ['internal', 'public'] as const) {
+    if (attempt === 'public' && !shouldTryPublicFallback) return null;
+
     try {
       const response = await fetchBrandTerms(attempt, queryParams);
 
       const brand = findExactBrand(response.data) || await findByPagedScan(attempt);
       if (brand) return brand;
+      if (attempt === 'internal') return null;
     } catch (error: any) {
-      const isSocketError = error?.cause?.code === 'ECONNRESET' || error?.message?.includes('socket hang up');
-      if (attempt === 'internal' && isSocketError) continue;
+      if (attempt === 'internal' && isWooNetworkError(error)) {
+        shouldTryPublicFallback = true;
+        continue;
+      }
+      if (attempt === 'public' && isBlockedFallbackStatus(error)) return null;
       logWooError('getBrandBySlug', error, { slug: safeSlug });
       if (attempt === 'public') return null;
     }
   }
 
   return null;
+}
+
+export async function getProductIdsByBrand(brandId: number, page = 1, perPage = 24): Promise<{
+  ids: number[];
+  total: number;
+  totalPages: number;
+}> {
+  try {
+    const response = await wordpressRestClient.get('/product', {
+      params: {
+        product_brand: brandId,
+        status: 'publish',
+        per_page: perPage,
+        page,
+        _fields: 'id',
+      },
+      timeout: WOO_READ_TIMEOUT_MS,
+    });
+    return {
+      ids: Array.isArray(response.data) ? response.data.map((item: any) => Number(item.id)).filter(Boolean) : [],
+      total: parseInt(response.headers['x-wp-total'] || '0'),
+      totalPages: parseInt(response.headers['x-wp-totalpages'] || '0'),
+    };
+  } catch (error) {
+    logWooError('getProductIdsByBrand', error, { brandId });
+    return { ids: [], total: 0, totalPages: 0 };
+  }
+}
+
+export async function getAllProductIdsByBrand(brandId: number): Promise<number[]> {
+  const ids: number[] = [];
+  for (let page = 1; page <= 20; page += 1) {
+    const result = await getProductIdsByBrand(brandId, page, 100);
+    ids.push(...result.ids);
+    if (!result.ids.length || page >= result.totalPages) break;
+  }
+  return [...new Set(ids)];
+}
+
+export async function getProductsByProductBrand(brandId: number, page = 1, perPage = 24): Promise<{
+  products: WooProduct[];
+  total: number;
+  totalPages: number;
+}> {
+  const { ids, total, totalPages } = await getProductIdsByBrand(brandId, page, perPage);
+  if (!ids.length) return { products: [], total, totalPages };
+
+    const { products } = await getProducts({
+    include: ids.join(','),
+    per_page: perPage,
+    orderby: 'include',
+  });
+  const order = new Map(ids.map((id, index) => [id, index]));
+  products.sort((a, b) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
+
+  return { products, total, totalPages };
 }
 
 export async function getProductsByCategory(categoryId: number, limit = 5): Promise<WooProduct[]> {
@@ -754,13 +842,19 @@ export async function getCategories(params: {
   }
 }
 
-export async function getCategoryBySlug(slug: string): Promise<WooCategory | null> {
-  try {
-    const response = await wooClient.get('/products/categories', {
-      params: { slug },
-    });
+const _getCategoryBySlugCached = unstable_cache(
+  async (slug: string): Promise<WooCategory | null> => {
+    const response = await wooClient.get('/products/categories', { params: { slug } });
     const categories = Array.isArray(response.data) ? response.data.map(transformCategory) : [];
     return categories[0] || null;
+  },
+  ['woo-category-by-slug'],
+  { revalidate: 600, tags: ['categories'] },
+);
+
+export async function getCategoryBySlug(slug: string): Promise<WooCategory | null> {
+  try {
+    return await _getCategoryBySlugCached(slug);
   } catch (error) {
     logWooError('getCategoryBySlug', error, { slug });
     return null;
