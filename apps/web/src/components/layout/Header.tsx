@@ -727,15 +727,15 @@ export default function Header() {
 
               {UNIFIED_BROWSE_TREE.map((group) => (
                 <div key={group.label} className="group relative h-full">
-                  <button
-                    type="button"
-                    className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink transition-colors hover:bg-white hover:text-accent"
+                  <Link
+                    href={group.href}
+                    className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink transition-colors hover:bg-white hover:text-accent focus:bg-white focus:text-accent"
                   >
                     <span className={group.tone}>●</span>
                     {group.label}
-                    <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
-                  </button>
-                  <div className={`invisible absolute left-0 top-full z-[70] translate-y-1 rounded-lg border border-hairline bg-white p-5 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ${getMegaPanelClass(group.label)}`}>
+                    <ChevronDown size={14} className="transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
+                  </Link>
+                  <div className={`invisible absolute left-0 top-full z-[70] translate-y-1 rounded-lg border border-hairline bg-white p-5 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 ${getMegaPanelClass(group.label)}`}>
                     <div className={getMegaGridClass(group.label)}>
                       {group.sections.map((section) => (
                         <div key={section.title} className="min-w-0">
