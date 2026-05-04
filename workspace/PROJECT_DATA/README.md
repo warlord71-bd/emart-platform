@@ -8,13 +8,14 @@ Use this folder for non-runtime data:
 - `docs` - session/supporting documentation
 - `snapshots` - archived source snapshots
 - `ui-audit` - screenshots and visual audit images
-- `CURRENT_BRAND_CORRECTION_FILE.csv` - current brand correction CSV shortcut
 - linked planning/reference docs such as `SEO_TODO.md`, `BRAND_GUIDE.md`, and audit summaries
 
-The current brand correction file is:
+Brand correction status:
 
-`workspace/PROJECT_DATA/CURRENT_BRAND_CORRECTION_FILE.csv`
+- Completed on 2026-05-04.
+- The old shortcut `CURRENT_BRAND_CORRECTION_FILE.csv` and completed brand-source audit folder were archived to `/root/.attic-2026-05-04/emart-platform/cleanup-pass-1-2/`.
 
-It points to:
+Current manual review focus:
 
-`workspace/audit/seo/brand-source-unification-20260503/manual-review.csv`
+- Product image issues under `workspace/audit/seo/product-image-logic-20260503/`.
+- Keep `safe-auto-fixes.csv`, `manual-review.csv`, rollback SQL, and summary files available for the next image review/apply pass.

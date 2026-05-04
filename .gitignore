@@ -219,6 +219,7 @@ workspace/ui-audit/
 # Generated product-image audit outputs stay on the VPS/local workspace.
 # Keep scripts and concise checked-in reports, but do not commit large exports,
 # OCR logs, or one-off batch output directories.
+workspace/audit/processed/product-faq-normalization-*.csv
 workspace/audit/seo/wc-product-export-*.csv
 workspace/audit/seo/product-image-brand-size-20260503.csv
 workspace/audit/seo/product-image-brand-size-with-*.csv
