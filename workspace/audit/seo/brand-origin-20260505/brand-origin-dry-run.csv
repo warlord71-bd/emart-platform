@@ -1,0 +1,398 @@
+term_id,brand_name,brand_slug,product_count,proposed_origin,confidence,source,proposed_wp_term,action
+7006,Dabo,dabo,163,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7044,Cosrx,cosrx,91,korea,safe,official_cosrx_k_beauty_brand,korea,can_assign_after_review
+7606,CeraVe,cerave,90,usa,safe,known_usa_brand,usa,can_assign_after_review
+9351,Some By Mi,some-by-mi,77,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7014,SKIN1004,skin1004,70,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9368,Neutrogena,neutrogena,63,usa,safe,known_usa_brand,usa,can_assign_after_review
+6813,innisfree,innisfree,61,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9373,Cos De Baha,cos-de-baha,60,korea,safe,official_company_location_korea,korea,can_assign_after_review
+9380,Heimish,heimish,59,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+6864,APLB,aplb,58,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+6784,Anua,anua,51,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9304,Purito Seoul,purito-seoul,50,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9378,Maybelline,maybelline,47,usa,safe,known_usa_brand,usa,can_assign_after_review
+6785,Medicube,medicube,46,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9369,The Body Shop,the-body-shop,45,uk,safe,known_uk_brand,uk,can_assign_after_review
+7586,3W Clinic,3w-clinic,43,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9482,The Derma Co,the-derma-co,43,india,safe,known_indian_brand,india,can_assign_after_review
+7020,The Ordinary,the-ordinary,42,canada,safe,official_deciem_toronto_canada,canada,can_assign_after_review
+9365,ISNTREE,isntree,40,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9413,Numbuzin,numbuzin,39,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7597,Beauty of Joseon,beauty-of-joseon,35,korea,safe,official_korean_skincare_brand,korea,can_assign_after_review
+9306,Simple,simple,34,uk,safe,known_uk_brand,uk,can_assign_after_review
+9462,Beauty Glazed,beauty-glazed,31,china,safe,known_chinese_brand,china,can_assign_after_review
+9418,Mary &amp; May,mary-and-may,30,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7024,Missha,missha,29,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9377,The Inkey List,the-inkey-list,28,uk,safe,known_uk_brand,uk,can_assign_after_review
+7059,Axis-Y,axis-y,27,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9468,Insight,insight,26,india,safe,known_indian_brand,india,can_assign_after_review
+7069,Nivea,nivea,26,germany,safe,known_german_brand,germany,can_assign_after_review
+9350,I am From,i-am-from,25,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9421,La Roche Posay,la-roche-posay,25,france,safe,known_french_brand,france,can_assign_after_review
+9388,M.A.C,m-a-c,25,usa,safe,known_usa_brand,usa,can_assign_after_review
+9367,Benton,benton,24,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7607,Cetaphil,cetaphil,24,usa,safe,known_usa_brand,usa,can_assign_after_review
+9415,Haruharu Wonder,haruharu-wonder,24,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7019,Tiam,tiam,24,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9331,Skin'O,skino,23,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9423,KSECRET,ksecret,22,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7066,On The Body,on-the-body,22,korea,safe,known_korean_lg_brand,korea,can_assign_after_review
+7051,Raip,raip,22,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9448,Bonajour,bonajour,21,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7061,Celimax,celimax,21,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9409,Round Lab,round-lab,21,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9428,Bellflower,bellflower,20,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7034,Dr. Althea,dr-althea,20,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9444,Dr.ForHair,dr-forhair,20,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7018,Ryo,ryo,20,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+6804,Tocobo,tocobo,20,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7029,Carenel,carenel,19,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9366,iUNIK,iunik,19,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9362,Jumiso,jumiso,19,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9476,Mamaearth,mamaearth,19,india,safe,known_indian_brand,india,can_assign_after_review
+9363,NEOGEN,neogen,19,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9372,Rovectin,rovectin,19,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9328,Swiss Beauty,swiss-beauty,19,india,safe,official_indian_beauty_brand,india,can_assign_after_review
+9449,Bath &amp; Body Works,bath-and-body-works,18,usa,safe,known_usa_brand,usa,can_assign_after_review
+9382,Biore,biore,18,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9314,Emart Combo,emart-combo,18,internal,review,store_combo_not_origin_brand,,review_before_assign
+9426,Eqqualberry,eqqualberry,18,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7047,Laneige,laneige,18,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9419,Pyunkang Yul,pyunkang-yul,18,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9337,Sadoer,sadoer,18,china,safe,known_chinese_brand,china,can_assign_after_review
+9352,Skinfood,skinfood,18,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7600,Bioderma,bioderma,17,france,safe,known_french_brand,france,can_assign_after_review
+9467,Imagic,imagic,17,china,safe,known_chinese_brand,china,can_assign_after_review
+9478,Minimalist,minimalist,17,india,safe,known_indian_brand,india,can_assign_after_review
+9440,Nineless,nineless,17,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9446,IZEZE,izeze,16,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7027,Kerasys,kerasys,16,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7099,The Face Shop,the-face-shop,16,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7023,Beaute,beaute,15,,unknown,needs_research_or_user_review,,review_before_assign
+9398,Garnier,garnier,15,france,safe,known_french_brand,france,can_assign_after_review
+9400,Palmers,palmers,15,usa,safe,known_usa_brand,usa,can_assign_after_review
+7055,Phytotree,phytotree,15,korea,review,web_verify_needed,korea,review_before_assign
+9405,Rohto Mentholatum,rohto-mentholatum,15,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9315,Romnd,romnd,15,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9320,Wskinlab,wskinlab,15,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7008,Illiyoon,illiyoon,14,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9327,Technic,technic,14,uk,safe,known_uk_brand,uk,can_assign_after_review
+9417,Tirtir,tirtir,14,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9318,Wishcare,wishcare,14,india,safe,known_indian_brand,india,can_assign_after_review
+9436,Bad Skin,bad-skin,13,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9460,BIOAQUA,bioaqua,13,china,safe,known_chinese_brand,china,can_assign_after_review
+7611,Coxir,coxir,13,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9386,Eucerin,eucerin,13,germany,safe,known_german_brand,germany,can_assign_after_review
+9404,Hada Labo,hada-labo,13,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9410,KAINE,kaine,13,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7039,Mise en Scene,mise-en-scene,13,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7017,Oriox,oriox,13,,unknown,needs_research_or_user_review,,review_before_assign
+9333,Skincafe,skincafe,13,bangladesh,safe,known_bd_brand,bangladesh,can_assign_after_review
+9425,Abib,abib,12,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9349,Dear Klairs,dear-klairs,12,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9465,Durex,durex,12,uk,safe,official_reckitt_uk_brand,uk,can_assign_after_review
+9572,Everly Beauties,everly-beauties,12,,unknown,needs_research_or_user_review,,review_before_assign
+7590,Aveeno,aveeno,11,usa,safe,known_usa_brand,usa,can_assign_after_review
+7078,Etude House,etude-house,11,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7031,Green Finger,green-finger,11,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9393,L'Oreal,loreal,11,france,safe,known_french_brand,france,can_assign_after_review
+9589,Lmltop,lmltop,11,,unknown,needs_research_or_user_review,,review_before_assign
+7100,Nature Republic,nature-republic,11,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9344,PinkFlash,pinkflash,11,china,safe,known_chinese_brand,china,can_assign_after_review
+9453,Torriden,torriden,11,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9322,vaseline,vaseline,11,usa,safe,legacy_usa_brand_unilever,usa,can_assign_after_review
+9305,Welcos Confume,welcos-confume,11,korea,safe,known_korean_brand,korea,can_assign_after_review
+9381,Clean &amp; Clear,clean-and-clear,10,usa,safe,known_usa_brand,usa,can_assign_after_review
+9371,Farmstay,farmstay,10,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7022,Holika Holika,holika-holika,10,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9441,House of Hur,house-of-hur,10,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9459,Rated Green,rated-green,10,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9338,SkinAqua,skinaqua,10,japan,safe,official_rohto_japan_product_line,japan,can_assign_after_review
+9427,Arencia,arencia,9,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9370,Banila Co,banila-co,9,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9452,Be The Skin,be-the-skin,9,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7035,Foodaholic,foodaholic,9,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9408,Goodal,goodal,9,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7026,Jigott,jigott,9,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9414,Mixsoon,mixsoon,9,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9599,Nature Beauty,nature-beauty,9,,unknown,needs_research_or_user_review,,review_before_assign
+9347,Ombre,ombre,9,,unknown,needs_research_or_user_review,,review_before_assign
+9343,Ponds,ponds,9,usa,safe,legacy_usa_brand_unilever,usa,can_assign_after_review
+9546,ReturnU,returnu,9,,unknown,needs_research_or_user_review,,review_before_assign
+9336,SebaMed,sebamed,9,germany,safe,known_german_brand,germany,can_assign_after_review
+7108,TonyMoly,tonymoly,9,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9324,Trendy Beautis,trendy-beautis,9,,unknown,needs_research_or_user_review,,review_before_assign
+9488,Unilever,unilever,9,,unknown,needs_research_or_user_review,,review_before_assign
+9424,VT Cosmetics,vt-cosmetics,9,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7588,Aqualogica,aqualogica,8,india,safe,known_indian_brand,india,can_assign_after_review
+9433,Daily Comma,daily-comma,8,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9464,Dot &amp; Key,dot-and-key,8,india,safe,known_indian_brand,india,can_assign_after_review
+9435,Dr. Ceuracle,dr-ceuracle,8,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9397,Freeman,freeman,8,usa,safe,known_usa_brand,usa,can_assign_after_review
+9442,FULLY,fully,8,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7010,Nature Skin,nature-skin,8,,unknown,needs_research_or_user_review,,review_before_assign
+9342,Rajkonna,rajkonna,8,,unknown,needs_research_or_user_review,,review_before_assign
+9392,St. Ives,st-ives,8,usa,safe,known_usa_brand,usa,can_assign_after_review
+9450,W.Dressroom,w-dressroom,8,korea,safe,known_korean_brand,korea,can_assign_after_review
+6906,Aprilskin,aprilskin,7,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9432,Belif,belif,7,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9355,By Wishtrend,by-wishtrend,7,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9565,Daiso,daiso,7,japan,safe,known_japanese_brand,japan,can_assign_after_review
+9558,Innsaei,innsaei,7,,unknown,needs_research_or_user_review,,review_before_assign
+9470,Kota Cosmetics,kota-cosmetics,7,,unknown,needs_research_or_user_review,,review_before_assign
+9471,L.A. Girl,l-a-girl,7,usa,safe,known_usa_brand,usa,can_assign_after_review
+9473,Laxzin,laxzin,7,,unknown,needs_research_or_user_review,,review_before_assign
+9354,Nacific,nacific,7,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7096,P.Calm,p-calm,7,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9375,Paula's Choice,paulas-choice,7,usa,safe,known_usa_brand,usa,can_assign_after_review
+9356,Paxmoly,paxmoly,7,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9374,Thank You Farmer,thank-you-farmer,7,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7603,Boots,boots,6,uk,safe,known_uk_brand,uk,can_assign_after_review
+9403,Kose,kose,6,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9461,LAIKOU,laikou,6,china,safe,known_chinese_brand,china,can_assign_after_review
+6783,Shiseido,shiseido,6,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9544,SimplyO,simplyo,6,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9319,W7,w7,6,uk,safe,known_uk_brand,uk,can_assign_after_review
+7046,AESTURA,aestura,5,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9379,Athena,athena,5,,unknown,needs_research_or_user_review,,review_before_assign
+7591,Avene,avene,5,france,safe,known_french_brand,france,can_assign_after_review
+9434,CNP Laboratory,cnp-laboratory,5,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9487,Gillette,gillette,5,usa,safe,known_usa_brand,usa,can_assign_after_review
+9502,Korean Ginseng,korean-ginseng,5,korea,safe,known_korean_origin,korea,can_assign_after_review
+7106,Lebelage,lebelage,5,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9592,Maange,maange,5,china,safe,known_chinese_brand,china,can_assign_after_review
+9475,MAKE9,make9,5,,unknown,needs_research_or_user_review,,review_before_assign
+9407,Medi-Peel,medi-peel,5,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9412,Mielle,mielle,5,usa,safe,known_usa_brand,usa,can_assign_after_review
+9348,OgX,ogx,5,,unknown,needs_research_or_user_review,,review_before_assign
+9406,PanOxyl,panoxyl,5,usa,safe,known_usa_brand,usa,can_assign_after_review
+9329,Sunsilk,sunsilk,5,,unknown,needs_research_or_user_review,,review_before_assign
+7057,Anjo,anjo,4,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9411,Aromatica,aromatica,4,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9569,Enchanteur,enchanteur,4,malaysia,safe,known_malaysian_brand,malaysia,can_assign_after_review
+7104,Enguun,enguun,4,korea,review,verify_brand_origin,korea,review_before_assign
+9443,Frankly,frankly,4,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9509,Happy Bath,happy-bath,4,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9466,Herbal Essences,herbal-essences,4,,unknown,needs_research_or_user_review,,review_before_assign
+9469,Kiss Beauty,kiss-beauty,4,china,safe,known_chinese_brand,china,can_assign_after_review
+9422,Kojie San,kojie-san,4,philippines,safe,official_bevi_philippines_brand,philippines,can_assign_after_review
+9591,Lavino,lavino,4,,unknown,needs_research_or_user_review,,review_before_assign
+9474,Lilac,lilac,4,,unknown,needs_research_or_user_review,,review_before_assign
+7041,Lipvive,lipvive,4,,unknown,needs_research_or_user_review,,review_before_assign
+9495,Lucido-L,lucido-l,4,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9477,Matrix,matrix,4,,unknown,needs_research_or_user_review,,review_before_assign
+7032,Nella,nella,4,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9346,Oporajita,oporajita,4,,unknown,needs_research_or_user_review,,review_before_assign
+7094,Pororo,pororo,4,korea,safe,known_korean_brand,korea,can_assign_after_review
+9561,Retina,retina,4,,unknown,needs_research_or_user_review,,review_before_assign
+9340,Ribana,ribana,4,bangladesh,safe,known_bd_brand,bangladesh,can_assign_after_review
+9430,The Saem,the-saem,4,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9361,The Yeon,the-yeon,4,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9581,&amp;Honey,andhoney,3,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9416,A'pieu,apieu,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9364,Acwell,acwell,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9456,B:Lab,b-lab,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9505,Bi-Es,bi-es,3,poland,safe,known_polish_brand,poland,can_assign_after_review
+9463,Blaze O Skin,blaze-o-skin,3,,unknown,needs_research_or_user_review,,review_before_assign
+9494,Boom de Ah dah,boom-de-ah-dah,3,,unknown,needs_research_or_user_review,,review_before_assign
+9390,Botanics,botanics,3,uk,safe,known_uk_brand,uk,can_assign_after_review
+9529,Bring Green,bring-green,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7048,Christian Dean,christian-dean,3,,unknown,needs_research_or_user_review,,review_before_assign
+9566,Deconstruct,deconstruct,3,india,safe,known_indian_brand,india,can_assign_after_review
+9499,Derma Factory,derma-factory,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9420,Differin,differin,3,usa,safe,known_usa_brand,usa,can_assign_after_review
+9384,Dove,dove,3,usa,safe,global_brand_map_usa,usa,can_assign_after_review
+9501,Dr. Gilla,dr-gilla,3,korea,review,verify_brand_origin,korea,review_before_assign
+9429,Dr.G,dr-g,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7088,Elastine,elastine,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9601,Emart Exclusive,emart-exclusive,3,internal,review,store_label_not_origin_brand,,review_before_assign
+7043,Essance,essance,3,,unknown,needs_research_or_user_review,,review_before_assign
+9571,Essence,essence,3,,unknown,needs_research_or_user_review,,review_before_assign
+9573,Fayankou,fayankou,3,china,safe,known_chinese_brand,china,can_assign_after_review
+9575,Gfors,gfors,3,,unknown,needs_research_or_user_review,,review_before_assign
+9576,Groome,groome,3,,unknown,needs_research_or_user_review,,review_before_assign
+9538,Healthy Place,healthy-place,3,korea,review,user_requested_confirm_healthy_place,korea,review_before_assign
+9438,Julyme,julyme,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9586,Kodomo,kodomo,3,japan,safe,known_japanese_brand,japan,can_assign_after_review
+7073,Kolon Pharmaceutical,kolon-pharmaceutical,3,korea,safe,known_korean_company,korea,can_assign_after_review
+9500,Korean Home Acc.,korean-home-acc,3,korea,review,category_like_brand,korea,review_before_assign
+9458,Lubriderm,lubriderm,3,usa,safe,known_usa_brand,usa,can_assign_after_review
+7067,Mamonde,mamonde,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7086,Maxim,maxim,3,,unknown,needs_research_or_user_review,,review_before_assign
+7090,Mediflower,mediflower,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9345,Pastel Beauty,pastel-beauty,3,,unknown,needs_research_or_user_review,,review_before_assign
+9519,Plu,plu,3,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9479,Pure Ground,pure-ground,3,,unknown,needs_research_or_user_review,,review_before_assign
+9339,Rimmel,rimmel,3,uk,safe,known_uk_brand,uk,can_assign_after_review
+9335,Seravix,seravix,3,,unknown,needs_research_or_user_review,,review_before_assign
+9334,Shiliya,shiliya,3,korea,review,verify_brand_origin,korea,review_before_assign
+9396,Superdrug,superdrug,3,uk,safe,known_uk_brand,uk,can_assign_after_review
+9325,Tresemme,tresemme,3,usa,safe,global_brand_map_usa,usa,can_assign_after_review
+9394,Xpel,xpel,3,uk,safe,known_uk_brand,uk,can_assign_after_review
+7053,2080,2080,2,,unknown,needs_research_or_user_review,,review_before_assign
+9391,Astral,astral,2,uk,safe,known_uk_brand,uk,can_assign_after_review
+6911,B:Lab,blab,2,,unknown,needs_research_or_user_review,,review_before_assign
+7595,Beauty Formulas,beauty-formulas-skin,2,uk,safe,known_uk_brand,uk,can_assign_after_review
+9447,Biodance,biodance,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7602,Bob,bob,2,,unknown,needs_research_or_user_review,,review_before_assign
+9521,Charmzone,charmzone,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9454,DHC,dhc,2,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+7110,Dongsung,dongsung,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9451,Embryolisse,embryolisse,2,france,safe,known_french_brand,france,can_assign_after_review
+9507,Enprani,enprani,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9574,Fenyi,fenyi,2,china,safe,known_chinese_brand,china,can_assign_after_review
+9431,Freemo Factory,freemo-factory,2,korea,review,verify_brand_origin,korea,review_before_assign
+9445,Fruida,fruida,2,korea,safe,likely_frudia_slug_variant,korea,can_assign_after_review
+9457,G9 Skin,g9-skin,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9554,Good Molecules,good-molecules,2,usa,safe,known_usa_brand,usa,can_assign_after_review
+9578,Handaiyan,handaiyan,2,china,safe,known_chinese_brand,china,can_assign_after_review
+9580,Hojo Luminous,hojo-luminous,2,china,review,verify_brand_origin,china,review_before_assign
+7084,JMsolution,jmsolution,2,,unknown,needs_research_or_user_review,,review_before_assign
+9484,Jnh,jnh,2,,unknown,needs_research_or_user_review,,review_before_assign
+9584,Keli,keli,2,china,safe,known_chinese_brand,china,can_assign_after_review
+9585,Kikumasamune,kikumasamune,2,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9590,Lady Speed,lady-speed,2,usa,safe,known_usa_brand,usa,can_assign_after_review
+9472,Lakme,lakme,2,india,safe,known_indian_brand,india,can_assign_after_review
+9439,Lion,lion,2,japan,safe,known_japanese_brand,japan,can_assign_after_review
+9387,MamyPoko,mamypoko,2,,unknown,needs_research_or_user_review,,review_before_assign
+9497,MANDOM,mandom,2,japan,safe,known_japanese_brand,japan,can_assign_after_review
+9552,Manyo,manyo,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9353,MIZON,mizon,2,,unknown,needs_research_or_user_review,,review_before_assign
+9535,Moev,moev,2,,unknown,needs_research_or_user_review,,review_before_assign
+9395,Nair,nair,2,usa,safe,known_usa_brand,usa,can_assign_after_review
+9547,NEEDLY,needly,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9600,Nirvana,nirvana,2,,unknown,needs_research_or_user_review,,review_before_assign
+9510,Orion,orion,2,,unknown,needs_research_or_user_review,,review_before_assign
+9604,Party Queen,party-queen,2,,unknown,needs_research_or_user_review,,review_before_assign
+9402,Philosophy,philosophy,2,usa,safe,known_usa_brand,usa,can_assign_after_review
+7065,Plu365,plu365,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9437,Roothair,roothair,2,korea,review,verify_brand_origin,korea,review_before_assign
+9480,Sana,sana,2,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9514,Secret Day,secret-day,2,korea,safe,known_korean_brand,korea,can_assign_after_review
+9358,Secret Key,secret-key,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9498,Seoul 1988,seoul-1988,2,korea,safe,brand_name_origin_signal,korea,can_assign_after_review
+9481,Sheglam,sheglam,2,usa,safe,known_usa_brand,usa,can_assign_after_review
+9357,Skinmiso,skinmiso,2,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9330,Streax,streax,2,,unknown,needs_research_or_user_review,,review_before_assign
+7102,Tenzero,tenzero,2,,unknown,needs_research_or_user_review,,review_before_assign
+9611,The Derma Plus,the-derma-plus,2,,unknown,needs_research_or_user_review,,review_before_assign
+9612,The Dermalix,the-dermalix,2,,unknown,needs_research_or_user_review,,review_before_assign
+9455,Topicals,topicals,2,usa,safe,known_usa_brand,usa,can_assign_after_review
+9321,Vatika Naturals,vatika-naturals,2,uae,safe,dabur_uae_or_india_group_review_if_needed,uae,can_assign_after_review
+9399,Veet,veet,2,uk,safe,known_uk_brand,uk,can_assign_after_review
+9483,Wet n Wild,wet-n-wild,2,usa,safe,known_usa_brand,usa,can_assign_after_review
+7587,Absolute New York,absolute-new-york,1,usa,safe,known_usa_brand,usa,can_assign_after_review
+9556,AHC,ahc,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9555,Ample-N,ample-n,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9527,Atomy,atomy,1,,unknown,needs_research_or_user_review,,review_before_assign
+9559,Aztec Secret,aztec-secret,1,usa,safe,known_usa_brand,usa,can_assign_after_review
+9526,Barulab,barulab,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9533,Be Hope,be-hope,1,,unknown,needs_research_or_user_review,,review_before_assign
+9401,Beauty Formulas,beauty-formulas,1,uk,safe,known_uk_brand,uk,can_assign_after_review
+9517,Beyond Angel,beyond-angel,1,,unknown,needs_research_or_user_review,,review_before_assign
+7599,Bio Oil,bio-oil-scars-stretch-marks-even-skin-tone,1,,unknown,needs_research_or_user_review,,review_before_assign
+9548,Bio Salix,bio-salix,1,,unknown,needs_research_or_user_review,,review_before_assign
+9522,By Phase,by-phase,1,,unknown,needs_research_or_user_review,,review_before_assign
+9492,Carene,carene,1,,unknown,needs_research_or_user_review,,review_before_assign
+9545,Cellpod,cellpod,1,,unknown,needs_research_or_user_review,,review_before_assign
+9608,Cezanne,cezanne,1,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9308,Claires,claires,1,,unknown,needs_research_or_user_review,,review_before_assign
+9506,Clairs Korea,clairs-korea,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7075,Clean Lab,clean-lab,1,,unknown,needs_research_or_user_review,,review_before_assign
+7608,Clear Men,clear-men,1,,unknown,needs_research_or_user_review,,review_before_assign
+7116,Cloud 9,cloud-9,1,,unknown,needs_research_or_user_review,,review_before_assign
+9359,Coreana,coreana,1,,unknown,needs_research_or_user_review,,review_before_assign
+9537,Cow Brand,cow-brand,1,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+7063,Derma House,derma-house,1,,unknown,needs_research_or_user_review,,review_before_assign
+9563,dermalix,dermalix,1,,unknown,needs_research_or_user_review,,review_before_assign
+9568,Dr Shethas,dr-shethas,1,india,safe,known_indian_brand,india,can_assign_after_review
+9508,Dr.meloso,dr-meloso,1,,unknown,needs_research_or_user_review,,review_before_assign
+9540,DR.Reju,dr-reju,1,,unknown,needs_research_or_user_review,,review_before_assign
+7071,Ekel,ekel,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9493,Embela,embela,1,,unknown,needs_research_or_user_review,,review_before_assign
+9570,Ensoskin,ensoskin,1,,unknown,needs_research_or_user_review,,review_before_assign
+9383,Farlin,farlin,1,,unknown,needs_research_or_user_review,,review_before_assign
+9562,Femi-fresh,femi-fresh,1,uk,safe,known_uk_brand,uk,can_assign_after_review
+9524,Fiorese,fiorese,1,,unknown,needs_research_or_user_review,,review_before_assign
+9515,Gamdong,gamdong,1,korea,review,verify_brand_origin,korea,review_before_assign
+9491,GoldMyGin,goldmygin,1,,unknown,needs_research_or_user_review,,review_before_assign
+7082,Grincelllabs,grincelllabs,1,,unknown,needs_research_or_user_review,,review_before_assign
+9553,H&amp;C,handc,1,,unknown,needs_research_or_user_review,,review_before_assign
+9577,Hair got Right,hair-got-right,1,,unknown,needs_research_or_user_review,,review_before_assign
+9496,HARADA,harada,1,japan,safe,known_japanese_brand,japan,can_assign_after_review
+9579,Hawaa,hawaa,1,,unknown,needs_research_or_user_review,,review_before_assign
+9312,Heeyul,heeyul,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9511,Hera,hera,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+7112,Holidays,holidays,1,,unknown,needs_research_or_user_review,,review_before_assign
+9307,HTS,hts,1,,unknown,needs_research_or_user_review,,review_before_assign
+9541,ILSO,ilso,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9582,J.cat,j-cat,1,usa,safe,known_usa_brand,usa,can_assign_after_review
+9557,Jamaican,jamaican,1,,unknown,needs_research_or_user_review,,review_before_assign
+9551,Jamaican-mango,jamaican-mango,1,,unknown,needs_research_or_user_review,,review_before_assign
+9313,Jiggot,jiggot,1,,unknown,needs_research_or_user_review,,review_before_assign
+7092,Kanghwa,kanghwa,1,korea,review,verify_brand_origin,korea,review_before_assign
+9583,Karite,karite,1,china,safe,known_chinese_brand,china,can_assign_after_review
+9360,Koelcia,koelcia,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9530,Kopher,kopher,1,,unknown,needs_research_or_user_review,,review_before_assign
+9485,Korea Red Ginseng,korea-red-ginseng,1,korea,safe,known_korean_origin,korea,can_assign_after_review
+9309,Kosmedica,kosmedica,1,korea,review,verify_brand_origin,korea,review_before_assign
+9587,Kota,kota,1,,unknown,needs_research_or_user_review,,review_before_assign
+9490,Krave beauty,krave-beauty,1,,unknown,needs_research_or_user_review,,review_before_assign
+9512,Kundal,kundal,1,,unknown,needs_research_or_user_review,,review_before_assign
+9588,Lanbena,lanbena,1,china,safe,known_chinese_brand,china,can_assign_after_review
+9504,Lebel Young,lebel-young,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9520,Luzin,luzin,1,,unknown,needs_research_or_user_review,,review_before_assign
+9376,MedB,medb,1,korea,review,verify_brand_origin,korea,review_before_assign
+9516,Median,median,1,,unknown,needs_research_or_user_review,,review_before_assign
+9593,Mefy,mefy,1,,unknown,needs_research_or_user_review,,review_before_assign
+9518,Milk Baobab,milk-baobab,1,,unknown,needs_research_or_user_review,,review_before_assign
+9594,Miss Mrs,miss-mrs,1,,unknown,needs_research_or_user_review,,review_before_assign
+9595,Mistine,mistine,1,thailand,safe,known_thai_brand,thailand,can_assign_after_review
+9596,Miyako,miyako,1,,unknown,needs_research_or_user_review,,review_before_assign
+9567,Moist Diane,moist-diane,1,,unknown,needs_research_or_user_review,,review_before_assign
+9597,Muji,muji,1,,unknown,needs_research_or_user_review,,review_before_assign
+9598,Muuchstac,muuchstac,1,india,safe,known_indian_brand,india,can_assign_after_review
+9539,Naturie Hatomagi,naturie-hatomagi,1,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9489,Nekoma,nekoma,1,,unknown,needs_research_or_user_review,,review_before_assign
+9543,Nizoral,nizoral,1,,unknown,needs_research_or_user_review,,review_before_assign
+9560,Noval,noval,1,,unknown,needs_research_or_user_review,,review_before_assign
+9528,Omi Brotherhood,omi-brotherhood,1,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9531,Ongredients,ongredients,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9389,Oral-B,oral-b,1,usa,safe,known_usa_brand,usa,can_assign_after_review
+9525,Ottogi,ottogi,1,,unknown,needs_research_or_user_review,,review_before_assign
+9602,Out of Beauty,out-of-beauty,1,,unknown,needs_research_or_user_review,,review_before_assign
+9603,Panam,panam,1,,unknown,needs_research_or_user_review,,review_before_assign
+9534,Purecell,purecell,1,,unknown,needs_research_or_user_review,,review_before_assign
+9536,Reikhaku,reikhaku,1,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9341,Remington,remington,1,usa,safe,known_usa_brand,usa,can_assign_after_review
+9605,Revolution,revolution,1,,unknown,needs_research_or_user_review,,review_before_assign
+9606,Rivaj,rivaj,1,pakistan,safe,known_pakistani_brand,pakistan,can_assign_after_review
+9549,Rom &amp; Nd,rom-and-nd,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9532,RuthAir,ruthair,1,,unknown,needs_research_or_user_review,,review_before_assign
+9503,Samyang,samyang,1,,unknown,needs_research_or_user_review,,review_before_assign
+9385,Savlon,savlon,1,bangladesh,safe,bd_market_brand,bangladesh,can_assign_after_review
+9542,Seapuri,seapuri,1,,unknown,needs_research_or_user_review,,review_before_assign
+9607,Skin Aqua,skin-aqua,1,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9564,Skinlife,skinlife,1,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+9332,skinLogic,skinlogic,1,,unknown,needs_research_or_user_review,,review_before_assign
+9310,Skylake,skylake,1,,unknown,needs_research_or_user_review,,review_before_assign
+9311,Son &amp; Park,son-and-park,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9326,Sudocrem,sudocrem,1,uk,safe,known_uk_brand,uk,can_assign_after_review
+9513,Sulwhasoo,sulwhasoo,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9616,Sungboon,sungboon,1,korea,safe,known_k_beauty_brand,korea,can_assign_after_review
+9609,Sweet Beauty,sweet-beauty,1,china,review,verify_brand_origin,china,review_before_assign
+9523,Syoss,syoss,1,japan,safe,owned_by_japanese_company,japan,can_assign_after_review
+9610,Tpark,tpark,1,,unknown,needs_research_or_user_review,,review_before_assign
+9613,Trendy Beauties,trendy-beauties,1,,unknown,needs_research_or_user_review,,review_before_assign
+9486,Twinkle,twinkle,1,,unknown,needs_research_or_user_review,,review_before_assign
+9323,Valencia Gio,valencia-gio,1,,unknown,needs_research_or_user_review,,review_before_assign
+9550,Valentine,valentine,1,china,review,verify_brand_origin,china,review_before_assign
+9614,Vanicream,vanicream,1,usa,safe,known_usa_brand,usa,can_assign_after_review
+9317,Xisjoem,xisjoem,1,china,review,verify_brand_origin,china,review_before_assign
+9316,Yadha,yadha,1,,unknown,needs_research_or_user_review,,review_before_assign
+9615,Yanagiya,yanagiya,1,japan,safe,known_j_beauty_brand,japan,can_assign_after_review
+7080,Young Plan,young-plan,1,korea,review,verify_brand_origin,korea,review_before_assign
+7114,YUHAN,yuhan,1,,unknown,needs_research_or_user_review,,review_before_assign
+7098,Zact Plus,zact-plus,1,,unknown,needs_research_or_user_review,,review_before_assign
+9617,Zeze,zeze,1,china,review,verify_brand_origin,china,review_before_assign

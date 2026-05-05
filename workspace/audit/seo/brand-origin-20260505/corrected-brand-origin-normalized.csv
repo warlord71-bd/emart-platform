@@ -1,0 +1,398 @@
+term_id,brand_name,brand_slug,product_count,raw_proposed_origin,origin_slug,origin_name,confidence,source,action
+7006,Dabo,dabo,163,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7044,Cosrx,cosrx,91,korea,south-korea,South Korea,safe,official_cosrx_k_beauty_brand,assign_pa_origin
+7606,CeraVe,cerave,90,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9351,Some By Mi,some-by-mi,77,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7014,SKIN1004,skin1004,70,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9368,Neutrogena,neutrogena,63,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+6813,innisfree,innisfree,61,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9373,Cos De Baha,cos-de-baha,60,korea,south-korea,South Korea,safe,official_company_location_korea,assign_pa_origin
+9380,Heimish,heimish,59,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+6864,APLB,aplb,58,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+6784,Anua,anua,51,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9304,Purito Seoul,purito-seoul,50,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9378,Maybelline,maybelline,47,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+6785,Medicube,medicube,46,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9369,The Body Shop,the-body-shop,45,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+7586,3W Clinic,3w-clinic,43,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9482,The Derma Co,the-derma-co,43,india,india,India,safe,known_indian_brand,assign_pa_origin
+7020,The Ordinary,the-ordinary,42,canada,canada,Canada,safe,official_deciem_toronto_canada,assign_pa_origin
+9365,ISNTREE,isntree,40,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9413,Numbuzin,numbuzin,39,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7597,Beauty of Joseon,beauty-of-joseon,35,korea,south-korea,South Korea,safe,official_korean_skincare_brand,assign_pa_origin
+9306,Simple,simple,34,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9462,Beauty Glazed,beauty-glazed,31,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9418,Mary &amp; May,mary-and-may,30,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7024,Missha,missha,29,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9377,The Inkey List,the-inkey-list,28,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+7059,Axis-Y,axis-y,27,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9468,Insight,insight,26,india,india,India,safe,known_indian_brand,assign_pa_origin
+7069,Nivea,nivea,26,germany,germany,Germany,safe,known_german_brand,assign_pa_origin
+9350,I am From,i-am-from,25,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9421,La Roche Posay,la-roche-posay,25,france,france,France,safe,known_french_brand,assign_pa_origin
+9388,M.A.C,m-a-c,25,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9367,Benton,benton,24,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7607,Cetaphil,cetaphil,24,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9415,Haruharu Wonder,haruharu-wonder,24,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7019,Tiam,tiam,24,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9331,Skin'O,skino,23,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9423,KSECRET,ksecret,22,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7066,On The Body,on-the-body,22,korea,south-korea,South Korea,safe,known_korean_lg_brand,assign_pa_origin
+7051,Raip,raip,22,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9448,Bonajour,bonajour,21,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7061,Celimax,celimax,21,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9409,Round Lab,round-lab,21,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9428,Bellflower,bellflower,20,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7034,Dr. Althea,dr-althea,20,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9444,Dr.ForHair,dr-forhair,20,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7018,Ryo,ryo,20,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+6804,Tocobo,tocobo,20,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7029,Carenel,carenel,19,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9366,iUNIK,iunik,19,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9362,Jumiso,jumiso,19,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9476,Mamaearth,mamaearth,19,india,india,India,safe,known_indian_brand,assign_pa_origin
+9363,NEOGEN,neogen,19,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9372,Rovectin,rovectin,19,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9328,Swiss Beauty,swiss-beauty,19,india,india,India,safe,official_indian_beauty_brand,assign_pa_origin
+9449,Bath &amp; Body Works,bath-and-body-works,18,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9382,Biore,biore,18,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9314,Emart Combo,emart-combo,18,internal,,,review,store_combo_not_origin_brand,skip_non_country_origin
+9426,Eqqualberry,eqqualberry,18,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7047,Laneige,laneige,18,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9419,Pyunkang Yul,pyunkang-yul,18,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9337,Sadoer,sadoer,18,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9352,Skinfood,skinfood,18,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7600,Bioderma,bioderma,17,france,france,France,safe,known_french_brand,assign_pa_origin
+9467,Imagic,imagic,17,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9478,Minimalist,minimalist,17,india,india,India,safe,known_indian_brand,assign_pa_origin
+9440,Nineless,nineless,17,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9446,IZEZE,izeze,16,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7027,Kerasys,kerasys,16,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7099,The Face Shop,the-face-shop,16,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7023,Beaute,beaute,15,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9398,Garnier,garnier,15,france,france,France,safe,known_french_brand,assign_pa_origin
+9400,Palmers,palmers,15,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+7055,Phytotree,phytotree,15,korea,south-korea,South Korea,review,web_verify_needed,assign_pa_origin
+9405,Rohto Mentholatum,rohto-mentholatum,15,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9315,Romnd,romnd,15,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9320,Wskinlab,wskinlab,15,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7008,Illiyoon,illiyoon,14,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9327,Technic,technic,14,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9417,Tirtir,tirtir,14,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9318,Wishcare,wishcare,14,india,india,India,safe,known_indian_brand,assign_pa_origin
+9436,Bad Skin,bad-skin,13,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9460,BIOAQUA,bioaqua,13,china,china,China,safe,known_chinese_brand,assign_pa_origin
+7611,Coxir,coxir,13,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9386,Eucerin,eucerin,13,germany,germany,Germany,safe,known_german_brand,assign_pa_origin
+9404,Hada Labo,hada-labo,13,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9410,KAINE,kaine,13,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7039,Mise en Scene,mise-en-scene,13,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7017,Oriox,oriox,13,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9333,Skincafe,skincafe,13,bangladesh,bangladesh,Bangladesh,safe,known_bd_brand,assign_pa_origin
+9425,Abib,abib,12,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9349,Dear Klairs,dear-klairs,12,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9465,Durex,durex,12,uk,uk,UK,safe,official_reckitt_uk_brand,assign_pa_origin
+9572,Everly Beauties,everly-beauties,12,uk,uk,UK,unknown,needs_research_or_user_review,assign_pa_origin
+7590,Aveeno,aveeno,11,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+7078,Etude House,etude-house,11,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7031,Green Finger,green-finger,11,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9393,L'Oreal,loreal,11,france,france,France,safe,known_french_brand,assign_pa_origin
+9589,Lmltop,lmltop,11,china,china,China,unknown,needs_research_or_user_review,assign_pa_origin
+7100,Nature Republic,nature-republic,11,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9344,PinkFlash,pinkflash,11,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9453,Torriden,torriden,11,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9322,vaseline,vaseline,11,usa,usa,USA,safe,legacy_usa_brand_unilever,assign_pa_origin
+9305,Welcos Confume,welcos-confume,11,korea,south-korea,South Korea,safe,known_korean_brand,assign_pa_origin
+9381,Clean &amp; Clear,clean-and-clear,10,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9371,Farmstay,farmstay,10,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7022,Holika Holika,holika-holika,10,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9441,House of Hur,house-of-hur,10,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9459,Rated Green,rated-green,10,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9338,SkinAqua,skinaqua,10,japan,japan,Japan,safe,official_rohto_japan_product_line,assign_pa_origin
+9427,Arencia,arencia,9,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9370,Banila Co,banila-co,9,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9452,Be The Skin,be-the-skin,9,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7035,Foodaholic,foodaholic,9,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9408,Goodal,goodal,9,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7026,Jigott,jigott,9,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9414,Mixsoon,mixsoon,9,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9599,Nature Beauty,nature-beauty,9,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9347,Ombre,ombre,9,Poland,poland,Poland,unknown,needs_research_or_user_review,assign_pa_origin
+9343,Ponds,ponds,9,usa,usa,USA,safe,legacy_usa_brand_unilever,assign_pa_origin
+9546,ReturnU,returnu,9,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9336,SebaMed,sebamed,9,germany,germany,Germany,safe,known_german_brand,assign_pa_origin
+7108,TonyMoly,tonymoly,9,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9324,Trendy Beautis,trendy-beautis,9,China,china,China,unknown,needs_research_or_user_review,assign_pa_origin
+9488,Unilever,unilever,9,Mulitinational,multinational,Multinational,unknown,needs_research_or_user_review,assign_pa_origin
+9424,VT Cosmetics,vt-cosmetics,9,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7588,Aqualogica,aqualogica,8,india,india,India,safe,known_indian_brand,assign_pa_origin
+9433,Daily Comma,daily-comma,8,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9464,Dot &amp; Key,dot-and-key,8,india,india,India,safe,known_indian_brand,assign_pa_origin
+9435,Dr. Ceuracle,dr-ceuracle,8,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9397,Freeman,freeman,8,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9442,FULLY,fully,8,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7010,Nature Skin,nature-skin,8,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9342,Rajkonna,rajkonna,8,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9392,St. Ives,st-ives,8,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9450,W.Dressroom,w-dressroom,8,korea,south-korea,South Korea,safe,known_korean_brand,assign_pa_origin
+6906,Aprilskin,aprilskin,7,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9432,Belif,belif,7,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9355,By Wishtrend,by-wishtrend,7,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9565,Daiso,daiso,7,japan,japan,Japan,safe,known_japanese_brand,assign_pa_origin
+9558,Innsaei,innsaei,7,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9470,Kota Cosmetics,kota-cosmetics,7,Thailand,thailand,Thailand,unknown,needs_research_or_user_review,assign_pa_origin
+9471,L.A. Girl,l-a-girl,7,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9473,Laxzin,laxzin,7,france,france,France,unknown,needs_research_or_user_review,assign_pa_origin
+9354,Nacific,nacific,7,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7096,P.Calm,p-calm,7,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9375,Paula's Choice,paulas-choice,7,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9356,Paxmoly,paxmoly,7,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9374,Thank You Farmer,thank-you-farmer,7,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7603,Boots,boots,6,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9403,Kose,kose,6,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9461,LAIKOU,laikou,6,china,china,China,safe,known_chinese_brand,assign_pa_origin
+6783,Shiseido,shiseido,6,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9544,SimplyO,simplyo,6,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9319,W7,w7,6,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+7046,AESTURA,aestura,5,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9379,Athena,athena,5,China,china,China,unknown,needs_research_or_user_review,assign_pa_origin
+7591,Avene,avene,5,france,france,France,safe,known_french_brand,assign_pa_origin
+9434,CNP Laboratory,cnp-laboratory,5,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9487,Gillette,gillette,5,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9502,Korean Ginseng,korean-ginseng,5,korea,south-korea,South Korea,safe,known_korean_origin,assign_pa_origin
+7106,Lebelage,lebelage,5,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9592,Maange,maange,5,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9475,MAKE9,make9,5,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9407,Medi-Peel,medi-peel,5,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9412,Mielle,mielle,5,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9348,OgX,ogx,5,Usa,usa,USA,unknown,needs_research_or_user_review,assign_pa_origin
+9406,PanOxyl,panoxyl,5,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9329,Sunsilk,sunsilk,5,Mulitinational,multinational,Multinational,unknown,needs_research_or_user_review,assign_pa_origin
+7057,Anjo,anjo,4,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9411,Aromatica,aromatica,4,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9569,Enchanteur,enchanteur,4,malaysia,malaysia,Malaysia,safe,known_malaysian_brand,assign_pa_origin
+7104,Enguun,enguun,4,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+9443,Frankly,frankly,4,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9509,Happy Bath,happy-bath,4,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9466,Herbal Essences,herbal-essences,4,USA,usa,USA,unknown,needs_research_or_user_review,assign_pa_origin
+9469,Kiss Beauty,kiss-beauty,4,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9422,Kojie San,kojie-san,4,philippines,philippines,Philippines,safe,official_bevi_philippines_brand,assign_pa_origin
+9591,Lavino,lavino,4,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9474,Lilac,lilac,4,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+7041,Lipvive,lipvive,4,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9495,Lucido-L,lucido-l,4,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9477,Matrix,matrix,4,UK,uk,UK,unknown,needs_research_or_user_review,assign_pa_origin
+7032,Nella,nella,4,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9346,Oporajita,oporajita,4,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+7094,Pororo,pororo,4,korea,south-korea,South Korea,safe,known_korean_brand,assign_pa_origin
+9561,Retina,retina,4,USA,usa,USA,unknown,needs_research_or_user_review,assign_pa_origin
+9340,Ribana,ribana,4,bangladesh,bangladesh,Bangladesh,safe,known_bd_brand,assign_pa_origin
+9430,The Saem,the-saem,4,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9361,The Yeon,the-yeon,4,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9581,&amp;Honey,andhoney,3,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9416,A'pieu,apieu,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9364,Acwell,acwell,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9456,B:Lab,b-lab,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9505,Bi-Es,bi-es,3,poland,poland,Poland,safe,known_polish_brand,assign_pa_origin
+9463,Blaze O Skin,blaze-o-skin,3,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9494,Boom de Ah dah,boom-de-ah-dah,3,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9390,Botanics,botanics,3,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9529,Bring Green,bring-green,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7048,Christian Dean,christian-dean,3,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9566,Deconstruct,deconstruct,3,india,india,India,safe,known_indian_brand,assign_pa_origin
+9499,Derma Factory,derma-factory,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9420,Differin,differin,3,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9384,Dove,dove,3,usa,usa,USA,safe,global_brand_map_usa,assign_pa_origin
+9501,Dr. Gilla,dr-gilla,3,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+9429,Dr.G,dr-g,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7088,Elastine,elastine,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9601,Emart Exclusive,emart-exclusive,3,internal,,,review,store_label_not_origin_brand,skip_non_country_origin
+7043,Essance,essance,3,USA,usa,USA,unknown,needs_research_or_user_review,assign_pa_origin
+9571,Essence,essence,3,Usa,usa,USA,unknown,needs_research_or_user_review,assign_pa_origin
+9573,Fayankou,fayankou,3,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9575,Gfors,gfors,3,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9576,Groome,groome,3,Thailand,thailand,Thailand,unknown,needs_research_or_user_review,assign_pa_origin
+9538,Healthy Place,healthy-place,3,korea,south-korea,South Korea,review,user_requested_confirm_healthy_place,assign_pa_origin
+9438,Julyme,julyme,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9586,Kodomo,kodomo,3,japan,japan,Japan,safe,known_japanese_brand,assign_pa_origin
+7073,Kolon Pharmaceutical,kolon-pharmaceutical,3,korea,south-korea,South Korea,safe,known_korean_company,assign_pa_origin
+9500,Korean Home Acc.,korean-home-acc,3,korea,south-korea,South Korea,review,category_like_brand,assign_pa_origin
+9458,Lubriderm,lubriderm,3,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+7067,Mamonde,mamonde,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7086,Maxim,maxim,3,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+7090,Mediflower,mediflower,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9345,Pastel Beauty,pastel-beauty,3,uk,uk,UK,unknown,needs_research_or_user_review,assign_pa_origin
+9519,Plu,plu,3,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9479,Pure Ground,pure-ground,3,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9339,Rimmel,rimmel,3,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9335,Seravix,seravix,3,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9334,Shiliya,shiliya,3,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+9396,Superdrug,superdrug,3,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9325,Tresemme,tresemme,3,usa,usa,USA,safe,global_brand_map_usa,assign_pa_origin
+9394,Xpel,xpel,3,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+7053,2080,2080,2,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9391,Astral,astral,2,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+6911,B:Lab,blab,2,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+7595,Beauty Formulas,beauty-formulas-skin,2,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9447,Biodance,biodance,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7602,Bob,bob,2,china,china,China,unknown,needs_research_or_user_review,assign_pa_origin
+9521,Charmzone,charmzone,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9454,DHC,dhc,2,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+7110,Dongsung,dongsung,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9451,Embryolisse,embryolisse,2,france,france,France,safe,known_french_brand,assign_pa_origin
+9507,Enprani,enprani,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9574,Fenyi,fenyi,2,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9431,Freemo Factory,freemo-factory,2,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+9445,Fruida,fruida,2,korea,south-korea,South Korea,safe,likely_frudia_slug_variant,assign_pa_origin
+9457,G9 Skin,g9-skin,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9554,Good Molecules,good-molecules,2,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9578,Handaiyan,handaiyan,2,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9580,Hojo Luminous,hojo-luminous,2,china,china,China,review,verify_brand_origin,assign_pa_origin
+7084,JMsolution,jmsolution,2,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9484,Jnh,jnh,2,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9584,Keli,keli,2,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9585,Kikumasamune,kikumasamune,2,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9590,Lady Speed,lady-speed,2,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9472,Lakme,lakme,2,india,india,India,safe,known_indian_brand,assign_pa_origin
+9439,Lion,lion,2,japan,japan,Japan,safe,known_japanese_brand,assign_pa_origin
+9387,MamyPoko,mamypoko,2,india,india,India,unknown,needs_research_or_user_review,assign_pa_origin
+9497,MANDOM,mandom,2,japan,japan,Japan,safe,known_japanese_brand,assign_pa_origin
+9552,Manyo,manyo,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9353,MIZON,mizon,2,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9535,Moev,moev,2,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9395,Nair,nair,2,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9547,NEEDLY,needly,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9600,Nirvana,nirvana,2,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9510,Orion,orion,2,Srilankaka,sri-lanka,Sri Lanka,unknown,needs_research_or_user_review,assign_pa_origin
+9604,Party Queen,party-queen,2,china,china,China,unknown,needs_research_or_user_review,assign_pa_origin
+9402,Philosophy,philosophy,2,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+7065,Plu365,plu365,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9437,Roothair,roothair,2,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+9480,Sana,sana,2,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9514,Secret Day,secret-day,2,korea,south-korea,South Korea,safe,known_korean_brand,assign_pa_origin
+9358,Secret Key,secret-key,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9498,Seoul 1988,seoul-1988,2,korea,south-korea,South Korea,safe,brand_name_origin_signal,assign_pa_origin
+9481,Sheglam,sheglam,2,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9357,Skinmiso,skinmiso,2,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9330,Streax,streax,2,UK,uk,UK,unknown,needs_research_or_user_review,assign_pa_origin
+7102,Tenzero,tenzero,2,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9611,The Derma Plus,the-derma-plus,2,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9612,The Dermalix,the-dermalix,2,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9455,Topicals,topicals,2,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9321,Vatika Naturals,vatika-naturals,2,uae,uae,UAE,safe,dabur_uae_or_india_group_review_if_needed,assign_pa_origin
+9399,Veet,veet,2,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9483,Wet n Wild,wet-n-wild,2,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+7587,Absolute New York,absolute-new-york,1,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9556,AHC,ahc,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9555,Ample-N,ample-n,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9527,Atomy,atomy,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9559,Aztec Secret,aztec-secret,1,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9526,Barulab,barulab,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9533,Be Hope,be-hope,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9401,Beauty Formulas,beauty-formulas,1,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9517,Beyond Angel,beyond-angel,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+7599,Bio Oil,bio-oil-scars-stretch-marks-even-skin-tone,1,South Africa,south-africa,South Africa,unknown,needs_research_or_user_review,assign_pa_origin
+9548,Bio Salix,bio-salix,1,South Korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9522,By Phase,by-phase,1,Spain,spain,Spain,unknown,needs_research_or_user_review,assign_pa_origin
+9492,Carenel,carene,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9545,Cellpod,cellpod,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9608,Cezanne,cezanne,1,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9308,Claires,claires,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9506,Clairs Korea,clairs-korea,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7075,Clean Lab,clean-lab,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+7608,Clear Men,clear-men,1,Mulitinational,multinational,Multinational,unknown,needs_research_or_user_review,assign_pa_origin
+7116,Cloud 9,cloud-9,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9359,Coreana,coreana,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9537,Cow Brand,cow-brand,1,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+7063,Derma House,derma-house,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9563,dermalix,dermalix,1,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9568,Dr Shethas,dr-shethas,1,india,india,India,safe,known_indian_brand,assign_pa_origin
+9508,Dr.meloso,dr-meloso,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9540,DR.Reju,dr-reju,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+7071,Ekel,ekel,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9493,Embela,embela,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9570,Ensoskin,ensoskin,1,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9383,Farlin,farlin,1,taiwan,taiwan,Taiwan,unknown,needs_research_or_user_review,assign_pa_origin
+9562,Femi-fresh,femi-fresh,1,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9524,Fiorese,fiorese,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9515,Gamdong,gamdong,1,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+9491,GoldMyGin,goldmygin,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+7082,Grincell Labs,grincelllabs,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9553,H&C,handc,1,india,india,India,unknown,needs_research_or_user_review,assign_pa_origin
+9577,Hair got Right,hair-got-right,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9496,HARADA,harada,1,japan,japan,Japan,safe,known_japanese_brand,assign_pa_origin
+9579,Hawaa,hawaa,1,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9312,Heeyul,heeyul,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9511,Hera,hera,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+7112,Holidays,holidays,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9307,HTS,hts,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9541,ILSO,ilso,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9582,J.cat,j-cat,1,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9557,Jamaican,jamaican,1,usa,usa,USA,unknown,needs_research_or_user_review,assign_pa_origin
+9551,Jamaican-mango,jamaican-mango,1,usa,usa,USA,unknown,needs_research_or_user_review,assign_pa_origin
+9313,Jiggot,jiggot,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+7092,Kanghwa,kanghwa,1,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+9583,Karite,karite,1,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9360,Koelcia,koelcia,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9530,Kopher,kopher,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9485,Korea Red Ginseng,korea-red-ginseng,1,korea,south-korea,South Korea,safe,known_korean_origin,assign_pa_origin
+9309,Kosmedica,kosmedica,1,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+9587,Kota,kota,1,thailand,thailand,Thailand,unknown,needs_research_or_user_review,assign_pa_origin
+9490,Krave beauty,krave-beauty,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9512,Kundal,kundal,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9588,Lanbena,lanbena,1,china,china,China,safe,known_chinese_brand,assign_pa_origin
+9504,Lebel Young,lebel-young,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9520,Luzin,luzin,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9376,MedB,medb,1,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+9516,Median,median,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9593,Mefy,mefy,1,Turkey,turkey,Turkey,unknown,needs_research_or_user_review,assign_pa_origin
+9518,Milk Baobab,milk-baobab,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9594,Miss Mrs,miss-mrs,1,germany,germany,Germany,unknown,needs_research_or_user_review,assign_pa_origin
+9595,Mistine,mistine,1,thailand,thailand,Thailand,safe,known_thai_brand,assign_pa_origin
+9596,Miyako,miyako,1,china,china,China,unknown,needs_research_or_user_review,assign_pa_origin
+9567,Moist Diane,moist-diane,1,japan,japan,Japan,unknown,needs_research_or_user_review,assign_pa_origin
+9597,Muji,muji,1,japan,japan,Japan,unknown,needs_research_or_user_review,assign_pa_origin
+9598,Muuchstac,muuchstac,1,india,india,India,safe,known_indian_brand,assign_pa_origin
+9539,Naturie Hatomagi,naturie-hatomagi,1,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9489,Nekoma,nekoma,1,japan,japan,Japan,unknown,needs_research_or_user_review,assign_pa_origin
+9543,Nizoral,nizoral,1,thailand,thailand,Thailand,unknown,needs_research_or_user_review,assign_pa_origin
+9560,Noval,noval,1,Uk,uk,UK,unknown,needs_research_or_user_review,assign_pa_origin
+9528,Omi Brotherhood,omi-brotherhood,1,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9531,Ongredients,ongredients,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9389,Oral-B,oral-b,1,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9525,Ottogi,ottogi,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9602,Out of Beauty,out-of-beauty,1,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9603,Panam,panam,1,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9534,Purecell,purecell,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9536,Reikhaku,reikhaku,1,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9341,Remington,remington,1,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9605,Revolution,revolution,1,uk,uk,UK,unknown,needs_research_or_user_review,assign_pa_origin
+9606,Rivaj,rivaj,1,pakistan,pakistan,Pakistan,safe,known_pakistani_brand,assign_pa_origin
+9549,Rom &amp; Nd,rom-and-nd,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9532,RuthAir,ruthair,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9503,Samyang,samyang,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9385,Savlon,savlon,1,bangladesh,bangladesh,Bangladesh,safe,bd_market_brand,assign_pa_origin
+9542,Seapuri,seapuri,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9607,Skin Aqua,skin-aqua,1,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9564,Skinlife,skinlife,1,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+9332,skinLogic,skinlogic,1,usa,usa,USA,unknown,needs_research_or_user_review,assign_pa_origin
+9310,Skylake,skylake,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9311,Son &amp; Park,son-and-park,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9326,Sudocrem,sudocrem,1,uk,uk,UK,safe,known_uk_brand,assign_pa_origin
+9513,Sulwhasoo,sulwhasoo,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9616,Sungboon,sungboon,1,korea,south-korea,South Korea,safe,known_k_beauty_brand,assign_pa_origin
+9609,Sweet Beauty,sweet-beauty,1,china,china,China,review,verify_brand_origin,assign_pa_origin
+9523,Syoss,syoss,1,japan,japan,Japan,safe,owned_by_japanese_company,assign_pa_origin
+9610,Tpark,tpark,1,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9613,Trendy Beauties,trendy-beauties,1,china,china,China,unknown,needs_research_or_user_review,assign_pa_origin
+9486,Twinkle,twinkle,1,bangladesh,bangladesh,Bangladesh,unknown,needs_research_or_user_review,assign_pa_origin
+9323,Valencia Gio,valencia-gio,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9550,Valentine,valentine,1,china,china,China,review,verify_brand_origin,assign_pa_origin
+9614,Vanicream,vanicream,1,usa,usa,USA,safe,known_usa_brand,assign_pa_origin
+9317,Xisjoem,xisjoem,1,china,china,China,review,verify_brand_origin,assign_pa_origin
+9316,Yadha,yadha,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+9615,Yanagiya,yanagiya,1,japan,japan,Japan,safe,known_j_beauty_brand,assign_pa_origin
+7080,Young Plan,young-plan,1,korea,south-korea,South Korea,review,verify_brand_origin,assign_pa_origin
+7114,YUHAN,yuhan,1,korea,south-korea,South Korea,unknown,needs_research_or_user_review,assign_pa_origin
+7098,Zact Plus,zact-plus,1,japan,japan,Japan,unknown,needs_research_or_user_review,assign_pa_origin
+9617,Zeze,zeze,1,china,china,China,review,verify_brand_origin,assign_pa_origin

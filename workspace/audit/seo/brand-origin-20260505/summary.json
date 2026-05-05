@@ -1,0 +1,29 @@
+{
+  "brands_total": 397,
+  "products_with_brand_total": 3662,
+  "brands_safe": 263,
+  "brands_review": 20,
+  "brands_unknown": 114,
+  "products_safe": 3288,
+  "products_review": 374,
+  "by_origin": {
+    "korea": 2182,
+    "usa": 400,
+    "uk": 166,
+    "india": 161,
+    "canada": 42,
+    "china": 122,
+    "germany": 48,
+    "france": 75,
+    "japan": 105,
+    "internal": 21,
+    "unknown": 307,
+    "bangladesh": 18,
+    "malaysia": 4,
+    "philippines": 4,
+    "poland": 3,
+    "uae": 2,
+    "thailand": 1,
+    "pakistan": 1
+  }
+}

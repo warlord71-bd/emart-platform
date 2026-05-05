@@ -18,3 +18,4 @@
 - [Presence WebSocket service](project_presence_websocket.md) — live PM2 `emart-presence` serves same-origin `wss://e-mart.com.bd/ws/presence`; do not use unresolved `api.e-mart.com.bd`
 - [Catalog cache headers](project_catalog_cache_headers.md) — Nginx runtime override makes `/shop` and `/category/{slug}` return public `s-maxage`; Cloudflare HIT still needs dashboard/API cache rule
 - [2026-05-02 other-agent bug check](project_20260502_other_agent_bugcheck.md) — removed incompatible ESLint 10 / Next 16 lint config from local Next 14 app; bug report was mostly stale PM2 log output
+- [Brand-level origin assignment](project_origin_brand_assignment.md) — `pa_origin` created and assigned by `product_brand`; 3,641 published products assigned from user-corrected XLSX on 2026-05-05

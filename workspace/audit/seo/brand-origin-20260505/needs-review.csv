@@ -1,0 +1,135 @@
+term_id,brand_name,brand_slug,product_count,proposed_origin,confidence,source,action
+9314,Emart Combo,emart-combo,18,internal,review,store_combo_not_origin_brand,review_before_assign
+7023,Beaute,beaute,15,,unknown,needs_research_or_user_review,review_before_assign
+7055,Phytotree,phytotree,15,korea,review,web_verify_needed,review_before_assign
+7017,Oriox,oriox,13,,unknown,needs_research_or_user_review,review_before_assign
+9572,Everly Beauties,everly-beauties,12,,unknown,needs_research_or_user_review,review_before_assign
+9589,Lmltop,lmltop,11,,unknown,needs_research_or_user_review,review_before_assign
+9599,Nature Beauty,nature-beauty,9,,unknown,needs_research_or_user_review,review_before_assign
+9347,Ombre,ombre,9,,unknown,needs_research_or_user_review,review_before_assign
+9546,ReturnU,returnu,9,,unknown,needs_research_or_user_review,review_before_assign
+9324,Trendy Beautis,trendy-beautis,9,,unknown,needs_research_or_user_review,review_before_assign
+9488,Unilever,unilever,9,,unknown,needs_research_or_user_review,review_before_assign
+7010,Nature Skin,nature-skin,8,,unknown,needs_research_or_user_review,review_before_assign
+9342,Rajkonna,rajkonna,8,,unknown,needs_research_or_user_review,review_before_assign
+9558,Innsaei,innsaei,7,,unknown,needs_research_or_user_review,review_before_assign
+9470,Kota Cosmetics,kota-cosmetics,7,,unknown,needs_research_or_user_review,review_before_assign
+9473,Laxzin,laxzin,7,,unknown,needs_research_or_user_review,review_before_assign
+9379,Athena,athena,5,,unknown,needs_research_or_user_review,review_before_assign
+9475,MAKE9,make9,5,,unknown,needs_research_or_user_review,review_before_assign
+9348,OgX,ogx,5,,unknown,needs_research_or_user_review,review_before_assign
+9329,Sunsilk,sunsilk,5,,unknown,needs_research_or_user_review,review_before_assign
+7104,Enguun,enguun,4,korea,review,verify_brand_origin,review_before_assign
+9466,Herbal Essences,herbal-essences,4,,unknown,needs_research_or_user_review,review_before_assign
+9591,Lavino,lavino,4,,unknown,needs_research_or_user_review,review_before_assign
+9474,Lilac,lilac,4,,unknown,needs_research_or_user_review,review_before_assign
+7041,Lipvive,lipvive,4,,unknown,needs_research_or_user_review,review_before_assign
+9477,Matrix,matrix,4,,unknown,needs_research_or_user_review,review_before_assign
+9346,Oporajita,oporajita,4,,unknown,needs_research_or_user_review,review_before_assign
+9561,Retina,retina,4,,unknown,needs_research_or_user_review,review_before_assign
+9463,Blaze O Skin,blaze-o-skin,3,,unknown,needs_research_or_user_review,review_before_assign
+9494,Boom de Ah dah,boom-de-ah-dah,3,,unknown,needs_research_or_user_review,review_before_assign
+7048,Christian Dean,christian-dean,3,,unknown,needs_research_or_user_review,review_before_assign
+9501,Dr. Gilla,dr-gilla,3,korea,review,verify_brand_origin,review_before_assign
+9601,Emart Exclusive,emart-exclusive,3,internal,review,store_label_not_origin_brand,review_before_assign
+7043,Essance,essance,3,,unknown,needs_research_or_user_review,review_before_assign
+9571,Essence,essence,3,,unknown,needs_research_or_user_review,review_before_assign
+9575,Gfors,gfors,3,,unknown,needs_research_or_user_review,review_before_assign
+9576,Groome,groome,3,,unknown,needs_research_or_user_review,review_before_assign
+9538,Healthy Place,healthy-place,3,korea,review,user_requested_confirm_healthy_place,review_before_assign
+9500,Korean Home Acc.,korean-home-acc,3,korea,review,category_like_brand,review_before_assign
+7086,Maxim,maxim,3,,unknown,needs_research_or_user_review,review_before_assign
+9345,Pastel Beauty,pastel-beauty,3,,unknown,needs_research_or_user_review,review_before_assign
+9479,Pure Ground,pure-ground,3,,unknown,needs_research_or_user_review,review_before_assign
+9335,Seravix,seravix,3,,unknown,needs_research_or_user_review,review_before_assign
+9334,Shiliya,shiliya,3,korea,review,verify_brand_origin,review_before_assign
+7053,2080,2080,2,,unknown,needs_research_or_user_review,review_before_assign
+6911,B:Lab,blab,2,,unknown,needs_research_or_user_review,review_before_assign
+7602,Bob,bob,2,,unknown,needs_research_or_user_review,review_before_assign
+9431,Freemo Factory,freemo-factory,2,korea,review,verify_brand_origin,review_before_assign
+9580,Hojo Luminous,hojo-luminous,2,china,review,verify_brand_origin,review_before_assign
+7084,JMsolution,jmsolution,2,,unknown,needs_research_or_user_review,review_before_assign
+9484,Jnh,jnh,2,,unknown,needs_research_or_user_review,review_before_assign
+9387,MamyPoko,mamypoko,2,,unknown,needs_research_or_user_review,review_before_assign
+9353,MIZON,mizon,2,,unknown,needs_research_or_user_review,review_before_assign
+9535,Moev,moev,2,,unknown,needs_research_or_user_review,review_before_assign
+9600,Nirvana,nirvana,2,,unknown,needs_research_or_user_review,review_before_assign
+9510,Orion,orion,2,,unknown,needs_research_or_user_review,review_before_assign
+9604,Party Queen,party-queen,2,,unknown,needs_research_or_user_review,review_before_assign
+9437,Roothair,roothair,2,korea,review,verify_brand_origin,review_before_assign
+9330,Streax,streax,2,,unknown,needs_research_or_user_review,review_before_assign
+7102,Tenzero,tenzero,2,,unknown,needs_research_or_user_review,review_before_assign
+9611,The Derma Plus,the-derma-plus,2,,unknown,needs_research_or_user_review,review_before_assign
+9612,The Dermalix,the-dermalix,2,,unknown,needs_research_or_user_review,review_before_assign
+9527,Atomy,atomy,1,,unknown,needs_research_or_user_review,review_before_assign
+9533,Be Hope,be-hope,1,,unknown,needs_research_or_user_review,review_before_assign
+9517,Beyond Angel,beyond-angel,1,,unknown,needs_research_or_user_review,review_before_assign
+7599,Bio Oil,bio-oil-scars-stretch-marks-even-skin-tone,1,,unknown,needs_research_or_user_review,review_before_assign
+9548,Bio Salix,bio-salix,1,,unknown,needs_research_or_user_review,review_before_assign
+9522,By Phase,by-phase,1,,unknown,needs_research_or_user_review,review_before_assign
+9492,Carene,carene,1,,unknown,needs_research_or_user_review,review_before_assign
+9545,Cellpod,cellpod,1,,unknown,needs_research_or_user_review,review_before_assign
+9308,Claires,claires,1,,unknown,needs_research_or_user_review,review_before_assign
+7075,Clean Lab,clean-lab,1,,unknown,needs_research_or_user_review,review_before_assign
+7608,Clear Men,clear-men,1,,unknown,needs_research_or_user_review,review_before_assign
+7116,Cloud 9,cloud-9,1,,unknown,needs_research_or_user_review,review_before_assign
+9359,Coreana,coreana,1,,unknown,needs_research_or_user_review,review_before_assign
+7063,Derma House,derma-house,1,,unknown,needs_research_or_user_review,review_before_assign
+9563,dermalix,dermalix,1,,unknown,needs_research_or_user_review,review_before_assign
+9508,Dr.meloso,dr-meloso,1,,unknown,needs_research_or_user_review,review_before_assign
+9540,DR.Reju,dr-reju,1,,unknown,needs_research_or_user_review,review_before_assign
+9493,Embela,embela,1,,unknown,needs_research_or_user_review,review_before_assign
+9570,Ensoskin,ensoskin,1,,unknown,needs_research_or_user_review,review_before_assign
+9383,Farlin,farlin,1,,unknown,needs_research_or_user_review,review_before_assign
+9524,Fiorese,fiorese,1,,unknown,needs_research_or_user_review,review_before_assign
+9515,Gamdong,gamdong,1,korea,review,verify_brand_origin,review_before_assign
+9491,GoldMyGin,goldmygin,1,,unknown,needs_research_or_user_review,review_before_assign
+7082,Grincelllabs,grincelllabs,1,,unknown,needs_research_or_user_review,review_before_assign
+9553,H&amp;C,handc,1,,unknown,needs_research_or_user_review,review_before_assign
+9577,Hair got Right,hair-got-right,1,,unknown,needs_research_or_user_review,review_before_assign
+9579,Hawaa,hawaa,1,,unknown,needs_research_or_user_review,review_before_assign
+7112,Holidays,holidays,1,,unknown,needs_research_or_user_review,review_before_assign
+9307,HTS,hts,1,,unknown,needs_research_or_user_review,review_before_assign
+9557,Jamaican,jamaican,1,,unknown,needs_research_or_user_review,review_before_assign
+9551,Jamaican-mango,jamaican-mango,1,,unknown,needs_research_or_user_review,review_before_assign
+9313,Jiggot,jiggot,1,,unknown,needs_research_or_user_review,review_before_assign
+7092,Kanghwa,kanghwa,1,korea,review,verify_brand_origin,review_before_assign
+9530,Kopher,kopher,1,,unknown,needs_research_or_user_review,review_before_assign
+9309,Kosmedica,kosmedica,1,korea,review,verify_brand_origin,review_before_assign
+9587,Kota,kota,1,,unknown,needs_research_or_user_review,review_before_assign
+9490,Krave beauty,krave-beauty,1,,unknown,needs_research_or_user_review,review_before_assign
+9512,Kundal,kundal,1,,unknown,needs_research_or_user_review,review_before_assign
+9520,Luzin,luzin,1,,unknown,needs_research_or_user_review,review_before_assign
+9376,MedB,medb,1,korea,review,verify_brand_origin,review_before_assign
+9516,Median,median,1,,unknown,needs_research_or_user_review,review_before_assign
+9593,Mefy,mefy,1,,unknown,needs_research_or_user_review,review_before_assign
+9518,Milk Baobab,milk-baobab,1,,unknown,needs_research_or_user_review,review_before_assign
+9594,Miss Mrs,miss-mrs,1,,unknown,needs_research_or_user_review,review_before_assign
+9596,Miyako,miyako,1,,unknown,needs_research_or_user_review,review_before_assign
+9567,Moist Diane,moist-diane,1,,unknown,needs_research_or_user_review,review_before_assign
+9597,Muji,muji,1,,unknown,needs_research_or_user_review,review_before_assign
+9489,Nekoma,nekoma,1,,unknown,needs_research_or_user_review,review_before_assign
+9543,Nizoral,nizoral,1,,unknown,needs_research_or_user_review,review_before_assign
+9560,Noval,noval,1,,unknown,needs_research_or_user_review,review_before_assign
+9525,Ottogi,ottogi,1,,unknown,needs_research_or_user_review,review_before_assign
+9602,Out of Beauty,out-of-beauty,1,,unknown,needs_research_or_user_review,review_before_assign
+9603,Panam,panam,1,,unknown,needs_research_or_user_review,review_before_assign
+9534,Purecell,purecell,1,,unknown,needs_research_or_user_review,review_before_assign
+9605,Revolution,revolution,1,,unknown,needs_research_or_user_review,review_before_assign
+9532,RuthAir,ruthair,1,,unknown,needs_research_or_user_review,review_before_assign
+9503,Samyang,samyang,1,,unknown,needs_research_or_user_review,review_before_assign
+9542,Seapuri,seapuri,1,,unknown,needs_research_or_user_review,review_before_assign
+9332,skinLogic,skinlogic,1,,unknown,needs_research_or_user_review,review_before_assign
+9310,Skylake,skylake,1,,unknown,needs_research_or_user_review,review_before_assign
+9609,Sweet Beauty,sweet-beauty,1,china,review,verify_brand_origin,review_before_assign
+9610,Tpark,tpark,1,,unknown,needs_research_or_user_review,review_before_assign
+9613,Trendy Beauties,trendy-beauties,1,,unknown,needs_research_or_user_review,review_before_assign
+9486,Twinkle,twinkle,1,,unknown,needs_research_or_user_review,review_before_assign
+9323,Valencia Gio,valencia-gio,1,,unknown,needs_research_or_user_review,review_before_assign
+9550,Valentine,valentine,1,china,review,verify_brand_origin,review_before_assign
+9317,Xisjoem,xisjoem,1,china,review,verify_brand_origin,review_before_assign
+9316,Yadha,yadha,1,,unknown,needs_research_or_user_review,review_before_assign
+7080,Young Plan,young-plan,1,korea,review,verify_brand_origin,review_before_assign
+7114,YUHAN,yuhan,1,,unknown,needs_research_or_user_review,review_before_assign
+7098,Zact Plus,zact-plus,1,,unknown,needs_research_or_user_review,review_before_assign
+9617,Zeze,zeze,1,china,review,verify_brand_origin,review_before_assign
