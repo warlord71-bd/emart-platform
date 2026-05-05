@@ -732,3 +732,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local lint passed with the pre-existing `LiveTickerBar.tsx` warning; local build passed; warmed VPS build passed; standard VPS build passed; live `/` and `/shop/izeze-soul-hna-hydro-toner-150ml` returned 200 after both warmed switch and final port-3000 return.
 - Blockers hit: none. RN app exists under `apps/mobile`; parity was documented only because this job was scoped to `apps/web`.
 - Next step: visually review PDP on mobile for sticky bar spacing, thumbnail click behavior, WhatsApp message URL, and cart drawer progress with real cart quantities.
+
+## 2026-05-05 21:24 CEST — Codex
+- Did: Fixed mobile left drawer responsiveness after live visual report; widened drawer, restored a true fixed-height flex layout, made Sale/New Arrivals/Shop/Men's a horizontal quick-link row, moved Account/Track order/Privacy Policy/WhatsApp into the lower utility area, and made the category accordion area independently scrollable.
+- Completed tasks: mobile drawer category expansion no longer traps the lower controls; quick shopping links no longer wrap into a cramped cluster on Galaxy S8-width viewports.
+- Verification: Local lint passed with the pre-existing `LiveTickerBar.tsx` warning; local build passed; warmed VPS build passed; standard VPS build passed; live `/` returned 200 after final return to port 3000.
+- Blockers hit: none.
+- Next step: user hard-refreshes mobile and checks hamburger drawer on Galaxy S8/360px width, especially Categories expanded + Show more.
