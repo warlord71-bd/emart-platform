@@ -188,7 +188,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
         )}
       </div>
 
-      {reviews.length > 0 ? (
+      {reviews.length > 0 && (
         <div className="space-y-4">
           {reviews.slice(0, 6).map((item) => (
             <article key={item.id} className="grid gap-3 rounded-2xl border border-hairline bg-white p-4 md:grid-cols-[220px_1fr_120px] md:items-start">
@@ -207,11 +207,6 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
               </div>
             </article>
           ))}
-        </div>
-      ) : (
-        <div className="rounded-2xl border border-dashed border-hairline bg-white p-5 text-sm text-muted">
-          <p className="font-semibold text-ink">Be the first to review this product.</p>
-          <p className="mt-1">Verified buyer reviews help other customers choose confidently.</p>
         </div>
       )}
 
