@@ -79,7 +79,7 @@ function slugify(value: string): string {
 function getOriginCountrySlug(value: string): string {
   const normalized = value.toLowerCase().trim();
 
-  if (normalized.includes('korea')) return 'korea';
+  if (normalized.includes('korea')) return 'south-korea';
   if (normalized.includes('japan')) return 'japan';
   if (normalized.includes('india')) return 'india';
   if (normalized.includes('france')) return 'france';

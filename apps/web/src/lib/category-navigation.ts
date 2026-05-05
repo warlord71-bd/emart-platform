@@ -1,4 +1,5 @@
 import { CONCERN_DEFINITIONS } from '@/lib/concerns';
+import { ORIGIN_DEFINITIONS, ORIGIN_SECTIONS } from '@/lib/origin-navigation';
 
 export interface TopCategoryConfig {
   name: string;
@@ -130,14 +131,14 @@ export const CATEGORY_NAV_SECTIONS: MenuCategoryGroup[] = [
 export const MENU_CATEGORY_GROUPS = CATEGORY_NAV_SECTIONS;
 
 export const ORIGIN_NAV_ITEMS: OriginNavItem[] = [
-  { name: 'K-Beauty', slug: 'korea', country: 'korea', flag: 'KR', href: '/origins?country=korea', description: 'Korean skincare and makeup picks.' },
-  { name: 'J-Beauty', slug: 'japan', country: 'japan', flag: 'JP', href: '/origins?country=japan', description: 'Japanese beauty and sunscreen finds.' },
-  { name: 'USA Beauty', slug: 'usa', country: 'usa', flag: 'US', href: '/origins?country=usa' },
-  { name: 'UK Beauty', slug: 'uk', country: 'uk', flag: 'UK', href: '/origins?country=uk' },
-  { name: 'French Beauty', slug: 'france', country: 'france', flag: 'FR', href: '/origins?country=france' },
-  { name: 'Indian Beauty', slug: 'india', country: 'india', flag: 'IN', href: '/origins?country=india' },
-  { name: 'Thai Beauty', slug: 'thailand', country: 'thailand', flag: 'TH', href: '/origins?country=thailand' },
-  { name: 'Other Global Beauty', slug: 'other', country: 'other', flag: 'GL', href: '/origins?country=other' },
+  ...ORIGIN_DEFINITIONS.map((origin) => ({
+    name: origin.label,
+    slug: origin.country,
+    country: origin.country,
+    flag: origin.flag,
+    href: `/origins?country=${origin.country}`,
+    description: origin.desc,
+  })),
 ];
 
 const toCategoryItem = (item: MenuCategoryItem): MenuCategoryItem => ({
@@ -176,21 +177,11 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     label: 'SHOP BY ORIGIN',
     href: '/origins',
     tone: 'text-brass',
-    panelClassName: 'w-[640px]',
-    sections: [
-      {
-        title: 'K-Beauty & J-Beauty',
-        items: ORIGIN_NAV_ITEMS.slice(0, 2),
-      },
-      {
-        title: 'Western Beauty',
-        items: ORIGIN_NAV_ITEMS.filter((item) => ['usa', 'uk', 'france'].includes(item.country)),
-      },
-      {
-        title: 'More origins',
-        items: ORIGIN_NAV_ITEMS.filter((item) => ['india', 'thailand', 'other'].includes(item.country)),
-      },
-    ],
+    panelClassName: 'w-[780px]',
+    sections: ORIGIN_SECTIONS.map((section) => ({
+      title: section.title,
+      items: ORIGIN_NAV_ITEMS.filter((item) => section.countries.includes(item.country)),
+    })),
   },
 ];
 

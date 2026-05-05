@@ -165,12 +165,18 @@ function getMegaPanelClass(label: string) {
   if (label === 'SHOP BY CONCERN') {
     return 'w-[560px] max-w-[calc(100vw-7rem)]';
   }
+  if (label === 'SHOP BY ORIGIN') {
+    return 'w-[780px] max-w-[calc(100vw-7rem)]';
+  }
   return 'w-[520px] max-w-[calc(100vw-7rem)]';
 }
 
 function getMegaGridClass(label: string) {
   if (label === 'SHOP BY CATEGORY') {
     return 'grid grid-cols-3 gap-x-8 gap-y-6';
+  }
+  if (label === 'SHOP BY ORIGIN') {
+    return 'grid grid-cols-4 gap-x-6 gap-y-5';
   }
   return 'grid grid-cols-2 gap-x-6 gap-y-5';
 }

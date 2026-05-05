@@ -759,6 +759,43 @@ export async function getProductsByProductBrand(brandId: number, page = 1, perPa
   return { products, total, totalPages };
 }
 
+const ORIGIN_ATTRIBUTE_ID = 9;
+
+export async function getOriginTermBySlug(slug: string): Promise<{ id: number; name: string; slug: string } | null> {
+  try {
+    const response = await wooClient.get(`/products/attributes/${ORIGIN_ATTRIBUTE_ID}/terms`, {
+      params: {
+        slug,
+        per_page: 1,
+      },
+      timeout: WOO_READ_TIMEOUT_MS,
+    });
+    const term = Array.isArray(response.data) ? response.data[0] : null;
+    return term ? { id: Number(term.id), name: term.name, slug: term.slug } : null;
+  } catch (error) {
+    logWooError('getOriginTermBySlug', error, { slug });
+    return null;
+  }
+}
+
+export async function getProductsByOriginTermSlug(slug: string, page = 1, perPage = 24): Promise<{
+  products: WooProduct[];
+  total: number;
+  totalPages: number;
+}> {
+  const term = await getOriginTermBySlug(slug);
+  if (!term) return { products: [], total: 0, totalPages: 0 };
+
+  return getProducts({
+    page,
+    per_page: perPage,
+    orderby: 'date',
+    order: 'desc',
+    attribute: 'pa_origin',
+    attribute_term: String(term.id),
+  });
+}
+
 export async function getProductsByCategory(categoryId: number, limit = 5): Promise<WooProduct[]> {
   try {
     const { products } = await getProducts({
