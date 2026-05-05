@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ShoppingCart } from 'lucide-react';
+import { MessageCircle, ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { isInStock } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import type { WooProduct } from '@/lib/woocommerce';
 import { formatPrice } from '@/lib/woocommerce';
 import { formatBDT } from '@/lib/formatters';
+import { COMPANY } from '@/lib/companyProfile';
 
 interface ProductInfoProps {
   product: WooProduct;
@@ -140,6 +141,18 @@ function getDisplayCategory(product: WooProduct): string {
   return category?.name || 'Products';
 }
 
+function getProductDisplayPrice(product: WooProduct): string {
+  return product.sale_price || product.price || product.regular_price || '0';
+}
+
+function getWhatsAppOrderHref(product: WooProduct): string {
+  const productUrl = `https://e-mart.com.bd/shop/${product.slug}`;
+  const message = `Hi Emart, I want to order ${product.name}. Product link: ${productUrl}`;
+  const separator = COMPANY.whatsappHref.includes('?') ? '&' : '?';
+
+  return `${COMPANY.whatsappHref}${separator}text=${encodeURIComponent(message)}`;
+}
+
 export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
@@ -199,6 +212,8 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const categoryName = getDisplayCategory(product);
   const brandHref = brandName ? `/brands/${encodeURIComponent(brandSlug)}` : '/brands';
   const originHref = madeIn ? `/origins?country=${encodeURIComponent(getOriginCountrySlug(madeIn))}` : '/origins';
+  const productDisplayPrice = getProductDisplayPrice(product);
+  const whatsappOrderHref = getWhatsAppOrderHref(product);
 
   return (
     <div className="w-full max-w-[calc(100vw-2rem)] min-w-0 space-y-4 md:max-w-full md:space-y-6">
@@ -344,6 +359,15 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           Buy Now
         </button>
       </div>
+      <a
+        href={whatsappOrderHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center gap-2 rounded-xl border border-hairline bg-white px-4 py-3 text-sm font-semibold text-ink transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:bg-accent-soft hover:text-accent"
+      >
+        <MessageCircle size={17} />
+        Order on WhatsApp
+      </a>
 
 
       {/* Info Box - 2x2 Grid */}
@@ -370,18 +394,26 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       {/* Sticky ATC — mobile only, appears when buttons scroll out of view */}
       {stickyVisible && inStock && (
         <div className="fixed inset-x-0 bottom-[72px] z-40 border-t border-hairline bg-white/95 px-4 py-3 shadow-[0_-12px_30px_rgba(17,17,17,0.08)] backdrop-blur lg:hidden">
-          <div className="mx-auto flex max-w-2xl items-center gap-3 rounded-2xl border border-hairline bg-card px-3 py-3 shadow-card">
+          <div className="mx-auto grid max-w-2xl grid-cols-[minmax(0,1fr)_minmax(150px,auto)] items-center gap-3 rounded-2xl border border-hairline bg-card px-3 py-3 shadow-card">
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-ink">{product.name}</p>
-              <p className="text-base font-bold text-accent">{formatPrice(product.price)}</p>
+              <p className="text-base font-bold text-accent">{formatBDT(productDisplayPrice)}</p>
             </div>
-            <button
-              onClick={handleAddToCart}
-              className="flex shrink-0 items-center gap-2 rounded-xl bg-ink px-5 py-3 text-sm font-semibold text-white transition-all active:translate-y-px active:bg-black"
-            >
-              <ShoppingCart size={16} />
-              Add to Cart
-            </button>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={handleAddToCart}
+                className="flex min-h-11 items-center justify-center gap-1 rounded-xl bg-ink px-3 py-2 text-xs font-semibold text-white transition-all active:translate-y-px active:bg-black"
+              >
+                <ShoppingCart size={15} />
+                <span>Add to Cart</span>
+              </button>
+              <button
+                onClick={handleBuyNow}
+                className="min-h-11 rounded-xl border border-hairline bg-bg-alt px-3 py-2 text-xs font-semibold text-ink transition-all active:translate-y-px active:bg-accent-soft"
+              >
+                Buy Now
+              </button>
+            </div>
           </div>
         </div>
       )}

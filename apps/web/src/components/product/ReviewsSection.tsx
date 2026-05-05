@@ -181,7 +181,10 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
             </div>
           </div>
         ) : (
-          <p className="text-sm text-muted">No reviews yet. Be the first verified buyer to share your experience.</p>
+          <div className="space-y-1 text-sm text-muted">
+            <p className="font-semibold text-ink">Be the first to review this product.</p>
+            <p>Verified buyer reviews help other customers choose confidently.</p>
+          </div>
         )}
       </div>
 
@@ -207,7 +210,8 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-hairline bg-white p-5 text-sm text-muted">
-          No customer reviews yet. Verified buyers can be the first to review this product.
+          <p className="font-semibold text-ink">Be the first to review this product.</p>
+          <p className="mt-1">Verified buyer reviews help other customers choose confidently.</p>
         </div>
       )}
 

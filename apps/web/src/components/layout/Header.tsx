@@ -149,39 +149,39 @@ function AccountDropdown() {
 }
 
 function getMegaPanelClass(label: string) {
-  if (label === 'SHOP BY CATEGORY') {
+  if (label === 'Categories') {
     return 'w-[960px] max-w-[calc(100vw-7rem)]';
   }
-  if (label === 'SHOP BY CONCERN') {
+  if (label === 'Concerns') {
     return 'w-[560px] max-w-[calc(100vw-7rem)]';
   }
-  if (label === 'SHOP BY ORIGIN') {
+  if (label === 'Origins') {
     return 'w-[780px] max-w-[calc(100vw-7rem)]';
   }
-  if (label === 'BRANDS') {
+  if (label === 'Brands') {
     return 'w-[560px] max-w-[calc(100vw-7rem)]';
   }
   return 'w-[520px] max-w-[calc(100vw-7rem)]';
 }
 
 function getMegaGridClass(label: string) {
-  if (label === 'SHOP BY CATEGORY') {
+  if (label === 'Categories') {
     return 'grid grid-cols-3 gap-x-8 gap-y-6';
   }
-  if (label === 'SHOP BY ORIGIN') {
+  if (label === 'Origins') {
     return 'grid grid-cols-4 gap-x-6 gap-y-5';
   }
-  if (label === 'BRANDS') {
+  if (label === 'Brands') {
     return 'grid grid-cols-2 gap-x-6 gap-y-5';
   }
   return 'grid grid-cols-2 gap-x-6 gap-y-5';
 }
 
 const DRAWER_VISIBLE_LIMIT: Record<string, number> = {
-  'SHOP BY CATEGORY': 8,
-  'SHOP BY CONCERN': 8,
-  'SHOP BY ORIGIN': 8,
-  BRANDS: 8,
+  Categories: 8,
+  Concerns: 8,
+  Origins: 8,
+  Brands: 8,
 };
 
 function getGroupItemCount(group: NavigationGroup) {
@@ -208,7 +208,7 @@ function isGroupActive(pathname: string, group: NavigationGroup) {
 }
 
 const TONE_BORDER_COLOR: Record<string, string> = {
-  'text-accent': '#e11d48',
+  'text-accent': '#e8197a',
   'text-warning': '#d97706',
   'text-brass': '#b8860b',
   'text-cyan-600': '#0891b2',
@@ -227,7 +227,7 @@ export default function Header() {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openDrawerGroups, setOpenDrawerGroups] = useState<string[]>(['SHOP BY CATEGORY']);
+  const [openDrawerGroups, setOpenDrawerGroups] = useState<string[]>(['Categories']);
   const [expandedDrawerGroups, setExpandedDrawerGroups] = useState<string[]>([]);
   const [isListening, setIsListening] = useState(false);
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
@@ -769,7 +769,7 @@ export default function Header() {
           <nav className="flex h-12 items-center gap-1 border-t border-hairline bg-bg-alt" aria-label="Primary navigation">
               <Link href="/shop" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
                 <ShoppingBag size={15} className="text-accent" />
-                SHOP ALL
+                Shop
               </Link>
 
               {UNIFIED_BROWSE_TREE.map((group) => {
@@ -827,11 +827,11 @@ export default function Header() {
 
               <Link href="/sale" className="ml-auto flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent-soft px-3 text-sm font-extrabold text-accent hover:bg-accent-soft/80">
                 <Flame size={15} />
-                SALE
+                Sale
               </Link>
               <Link href="/new-arrivals" className="flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-brass-soft px-3 text-sm font-extrabold text-ink hover:bg-bg-alt">
                 <Sparkles size={15} />
-                NEW ARRIVALS
+                New Arrivals
               </Link>
           </nav>
         </div>
@@ -870,7 +870,7 @@ export default function Header() {
                   className="inline-flex items-center gap-1 rounded-full border border-hairline bg-accent-soft px-3 py-1.5 text-xs font-extrabold text-accent transition-colors hover:bg-accent hover:text-white active:scale-95"
                 >
                   <Flame size={13} />
-                  SALE
+                  Sale
                 </Link>
                 <Link
                   href="/new-arrivals"
@@ -878,7 +878,7 @@ export default function Header() {
                   className="inline-flex items-center gap-1 rounded-full border border-hairline bg-brass-soft px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:bg-brass hover:text-white active:scale-95"
                 >
                   <Sparkles size={13} />
-                  NEW
+                  New Arrivals
                 </Link>
                 <Link
                   href="/account"
@@ -901,7 +901,7 @@ export default function Header() {
                   className="inline-flex items-center gap-1 rounded-full border border-hairline bg-ink px-3 py-1.5 text-xs font-extrabold text-white transition-colors hover:bg-black active:scale-95"
                 >
                   <ShoppingBag size={13} />
-                  Shop All
+                  Shop
                 </Link>
               </div>
 
@@ -1026,15 +1026,15 @@ export default function Header() {
         </Link>
         <Link href="/categories" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
           <Sparkles size={20} />
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">Browse</span>
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">Categories</span>
         </Link>
         <Link
-          href="/wishlist"
+          href="/account"
           className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent"
-          aria-label="Wishlist"
+          aria-label="Account"
         >
-          <Heart size={20} />
-          <span className="max-w-full truncate text-[10px] font-medium leading-4">Wishlist</span>
+          <User size={20} />
+          <span className="max-w-full truncate text-[10px] font-medium leading-4">Account</span>
         </Link>
         <button
           type="button"

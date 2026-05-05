@@ -8,6 +8,7 @@ import { ProductInfo } from '@/components/product/ProductInfo';
 import { DetailsTabs } from '@/components/product/DetailsTabs';
 import { ReviewsSection } from '@/components/product/ReviewsSection';
 import ProductCard from '@/components/product/ProductCard';
+import Breadcrumbs from '@/components/common/Breadcrumbs';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { getProductSeo } from '@/lib/seo';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
@@ -398,6 +399,26 @@ function getProductType(product: WooProduct): string {
   return category?.name.toLowerCase() || 'skincare product';
 }
 
+function getProductBreadcrumbParent(product: WooProduct) {
+  const category = product.categories?.find(
+    (item) =>
+      item.name &&
+      item.slug &&
+      !['k-beauty-j-beauty', 'korean-beauty', 'japanese-beauty', 'skincare-essentials'].includes(item.slug)
+  );
+
+  if (category) {
+    return { label: category.name, href: `/category/${category.slug}` };
+  }
+
+  const brand = product.brands?.[0];
+  if (brand?.name && brand.slug) {
+    return { label: brand.name, href: `/brands/${brand.slug}` };
+  }
+
+  return null;
+}
+
 function getGeneratedProductFaqItems(product: WooProduct): ProductFaqItem[] {
   const brand = getProductBrandName(product);
   const origin = getProductAttributeValue(product, /(origin|made in|country)/i);
@@ -574,10 +595,19 @@ export default async function ProductPage({ params }: Props) {
   const howToUseHtml = getHowToUseHtml(product);
   const faqItems = getProductFaqItems(product);
   const productJsonLd = getProductJsonLd(product);
+  const breadcrumbParent = getProductBreadcrumbParent(product);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(productJsonLd) }} />
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Shop', href: '/shop' },
+          ...(breadcrumbParent ? [breadcrumbParent] : []),
+          { label: product.name },
+        ]}
+      />
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
         <ProductImage images={product.images} productName={product.name} />
         <ProductInfo product={product} />

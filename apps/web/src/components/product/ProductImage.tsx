@@ -48,7 +48,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         />
         {images.length > 1 && (
           <div className="absolute right-4 top-4 rounded bg-white px-3 py-1 text-sm text-gray-600 opacity-0 transition-opacity group-hover:opacity-100">
-            🔍 Zoom
+            Zoom
           </div>
         )}
       </div>
@@ -58,8 +58,11 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {images.map((image, index) => (
             <button
-              key={index}
+              key={image.id || image.src || index}
+              type="button"
               onClick={() => setSelectedImageIndex(index)}
+              aria-label={`Show image ${index + 1} for ${productName}`}
+              aria-current={selectedImageIndex === index ? 'true' : undefined}
               className={`h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 bg-white transition-all ${
                 selectedImageIndex === index
                   ? 'border-lumiere-primary'

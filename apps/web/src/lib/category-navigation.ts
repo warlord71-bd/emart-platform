@@ -174,7 +174,7 @@ const chunkItems = <T,>(items: T[], columns: number): T[][] => {
 
 export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
   {
-    label: 'SHOP BY CATEGORY',
+    label: 'Categories',
     href: '/categories',
     tone: 'text-accent',
     panelClassName: 'w-[min(1040px,calc(100vw-2rem))]',
@@ -186,7 +186,7 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     })),
   },
   {
-    label: 'SHOP BY CONCERN',
+    label: 'Concerns',
     href: '/concerns',
     tone: 'text-warning',
     panelClassName: 'w-[700px]',
@@ -204,7 +204,7 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     ],
   },
   {
-    label: 'SHOP BY ORIGIN',
+    label: 'Origins',
     href: '/origins',
     tone: 'text-brass',
     panelClassName: 'w-[780px]',
@@ -216,7 +216,7 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     })),
   },
   {
-    label: 'BRANDS',
+    label: 'Brands',
     href: '/brands',
     tone: 'text-cyan-600',
     panelClassName: 'w-[560px]',
