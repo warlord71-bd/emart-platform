@@ -761,6 +761,46 @@ export async function getProductsByProductBrand(brandId: number, page = 1, perPa
 
 const ORIGIN_ATTRIBUTE_ID = 9;
 
+export interface WooOriginTerm {
+  id: number;
+  name: string;
+  slug: string;
+  count: number;
+}
+
+const _getOriginTermsCached = unstable_cache(
+  async (): Promise<WooOriginTerm[]> => {
+    const response = await wooClient.get(`/products/attributes/${ORIGIN_ATTRIBUTE_ID}/terms`, {
+      params: {
+        per_page: 100,
+        orderby: 'count',
+        order: 'desc',
+      },
+      timeout: WOO_READ_TIMEOUT_MS,
+    });
+    return Array.isArray(response.data)
+      ? response.data.map((term: any) => ({
+          id: Number(term.id),
+          name: term.name,
+          slug: term.slug,
+          count: Number(term.count || 0),
+        }))
+      : [];
+  },
+  ['woo-origin-terms'],
+  { revalidate: 300, tags: ['products'] },
+);
+
+export async function getOriginTermCounts(): Promise<Record<string, number>> {
+  try {
+    const terms = await _getOriginTermsCached();
+    return Object.fromEntries(terms.map((term) => [term.slug, term.count]));
+  } catch (error) {
+    logWooError('getOriginTermCounts', error);
+    return {};
+  }
+}
+
 export async function getOriginTermBySlug(slug: string): Promise<{ id: number; name: string; slug: string } | null> {
   try {
     const response = await wooClient.get(`/products/attributes/${ORIGIN_ATTRIBUTE_ID}/terms`, {
