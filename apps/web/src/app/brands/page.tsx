@@ -50,6 +50,21 @@ function BrandLogo({ brand, className = 'h-9 w-16' }: { brand: WooBrand; classNa
   );
 }
 
+function BrandRow({ brand }: { brand: WooBrand }) {
+  return (
+    <Link
+      href={`/brands/${encodeURIComponent(brand.slug)}`}
+      className="group flex min-w-0 items-center gap-3 px-3 py-2.5 transition-colors hover:bg-accent-soft"
+    >
+      <BrandLogo brand={brand} />
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-sm font-black text-ink group-hover:text-accent">{brand.name}</span>
+        <span className="text-xs text-muted">{brand.count} item{brand.count === 1 ? '' : 's'}</span>
+      </span>
+    </Link>
+  );
+}
+
 export default async function BrandsPage({
   searchParams,
 }: {
@@ -166,22 +181,24 @@ export default async function BrandsPage({
             </div>
 
             <div className="grid grid-cols-1 divide-y divide-hairline sm:grid-cols-2 sm:divide-x sm:divide-y-0 md:grid-cols-1 md:divide-x-0 md:divide-y xl:grid-cols-1">
-              {grouped[letter].map((brand) => {
-                return (
-                  <Link
-                    key={brand.slug}
-                    href={`/brands/${encodeURIComponent(brand.slug)}`}
-                    className="group flex min-w-0 items-center gap-3 px-3 py-2.5 transition-colors hover:bg-accent-soft"
-                  >
-                    <BrandLogo brand={brand} />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-black text-ink group-hover:text-accent">{brand.name}</span>
-                      <span className="text-xs text-muted">{brand.count} item{brand.count === 1 ? '' : 's'}</span>
-                    </span>
-                  </Link>
-                );
-              })}
+              {grouped[letter].slice(0, 3).map((brand) => (
+                <BrandRow key={brand.slug} brand={brand} />
+              ))}
             </div>
+            {grouped[letter].length > 3 && (
+              <details className="group border-t border-hairline">
+                <summary className="flex cursor-pointer list-none items-center justify-between bg-bg px-3 py-2 text-xs font-black text-accent transition-colors hover:bg-accent-soft [&::-webkit-details-marker]:hidden">
+                  <span>Show more</span>
+                  <span className="text-muted group-open:hidden">+{grouped[letter].length - 3}</span>
+                  <span className="hidden text-muted group-open:inline">Show less</span>
+                </summary>
+                <div className="grid grid-cols-1 divide-y divide-hairline sm:grid-cols-2 sm:divide-x sm:divide-y-0 md:grid-cols-1 md:divide-x-0 md:divide-y xl:grid-cols-1">
+                  {grouped[letter].slice(3).map((brand) => (
+                    <BrandRow key={brand.slug} brand={brand} />
+                  ))}
+                </div>
+              </details>
+            )}
           </section>
         ))}
         </div>
