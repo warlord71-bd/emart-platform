@@ -90,7 +90,9 @@ export default function CatalogFilters({
   const selectedOriginLabel = ORIGIN_OPTIONS.find((option) => option.value === searchParams.origin)?.label;
   const activeCount = ACTIVE_KEYS.filter((key) => Boolean(searchParams[key])).length;
   const hasAnyActive = CLEARABLE_KEYS.some((key) => Boolean(searchParams[key]));
-  const contextOptions = context ? CONTEXT_OPTIONS[context] : undefined;
+  // TODO: ship skin-type filter (and hair-type, finish) — hide until feature is ready
+  const contextFilterEnabled = process.env.NEXT_PUBLIC_FEATURE_SKIN_TYPE_FILTER === 'true';
+  const contextOptions = contextFilterEnabled && context ? CONTEXT_OPTIONS[context] : undefined;
   const visibleOriginOptions = originExpanded
     ? ORIGIN_OPTIONS
     : [

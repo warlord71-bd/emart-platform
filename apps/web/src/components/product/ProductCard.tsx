@@ -54,9 +54,7 @@ export default function ProductCard({ product }: Props) {
     });
   };
 
-  const imageAlt = product.images[0]?.alt
-    ? `${product.images[0].alt} - ${product.name}`
-    : `${product.name}${categoryName ? ` - ${categoryName}` : ''} - authentic global skincare product`;
+  const imageAlt = product.name;
 
   return (
     <div className="group card relative flex h-full flex-col p-2 sm:p-3">

@@ -38,8 +38,10 @@ function discountPercent(regular: string, sale: string): number | null {
 
 export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) => {
   const [remaining, setRemaining] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const tick = () => setRemaining(msUntilMidnight());
     tick();
     const id = setInterval(tick, 1000);
@@ -49,7 +51,7 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
   if (!products || products.length === 0) return null;
 
   const items = products.slice(0, 10);
-  const time = remaining === null ? { h: '--', m: '--', s: '--' } : splitHMS(remaining);
+  const time = remaining !== null ? splitHMS(remaining) : null;
 
   return (
     <section className="w-full bg-ink px-4 py-8 text-white">
@@ -62,14 +64,18 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
           <div className="flex items-center gap-1 text-xs font-bold sm:gap-2 sm:text-sm" aria-label="Time remaining until midnight">
             <span className="hidden text-white/70 sm:inline">Ends in</span>
             <span className="text-white/70 sm:hidden">Ends</span>
-            {[time.h, time.m, time.s].map((unit, i) => (
-              <span key={i} className="flex items-center">
-                <span className="rounded-md bg-white/12 px-1.5 py-1 font-mono text-xs tabular-nums sm:rounded-lg sm:px-3 sm:py-2 sm:text-base">
-                  {unit}
+            {!mounted ? (
+              <span className="animate-pulse rounded bg-stone-200/20 h-5 w-24" aria-hidden="true" />
+            ) : (
+              time && [time.h, time.m, time.s].map((unit, i) => (
+                <span key={i} className="flex items-center" suppressHydrationWarning>
+                  <span className="rounded-md bg-white/12 px-1.5 py-1 font-mono text-xs tabular-nums sm:rounded-lg sm:px-3 sm:py-2 sm:text-base">
+                    {unit}
+                  </span>
+                  {i < 2 && <span className="px-0.5 text-white/60 sm:px-1">:</span>}
                 </span>
-                {i < 2 && <span className="px-0.5 text-white/60 sm:px-1">:</span>}
-              </span>
-            ))}
+              ))
+            )}
           </div>
         </div>
 

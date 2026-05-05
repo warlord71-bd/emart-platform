@@ -20,7 +20,7 @@ export type InstagramEntry = {
 
 // YouTube fallback (shown if RSS fails or YOUTUBE_CHANNEL_ID not set)
 export const YOUTUBE_FALLBACK_VIDEOS: VideoEntry[] = [
-  { id: 'j7anBWKrzYo', title: 'eMart Skincare Bangladesh' },
+  { id: 'j7anBWKrzYo', title: 'Emart Skincare Bangladesh' },
   { id: 'XNvxeRLA2No', title: 'Choose the right product for your skin concerns' },
   { id: 'tPlb1vVc08o', title: 'Choose your product – skin concerns' },
   { id: 'mbVkJThHGqQ', title: 'Best Korean skincare for oily skin' },

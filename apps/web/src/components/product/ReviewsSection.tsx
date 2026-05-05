@@ -149,36 +149,40 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
       </div>
 
       <div className="rounded-2xl bg-[#eaf6ff] p-5 md:p-7">
-        <div className="grid gap-6 md:grid-cols-[220px_1fr] md:items-center">
-          <div>
-            <div className="text-5xl font-bold text-ink">{average > 0 ? average.toFixed(1) : '-'}</div>
-            <div className="mt-2 text-xl">
-              <StarRating rating={average} />
+        {totalReviews > 0 ? (
+          <div className="grid gap-6 md:grid-cols-[220px_1fr] md:items-center">
+            <div>
+              <div className="text-5xl font-bold text-ink">{average.toFixed(1)}</div>
+              <div className="mt-2 text-xl">
+                <StarRating rating={average} />
+              </div>
+              <p className="mt-2 text-sm text-muted">
+                {totalReviews} verified review{totalReviews === 1 ? '' : 's'}
+              </p>
             </div>
-            <p className="mt-2 text-sm text-muted">
-              {totalReviews > 0 ? `${totalReviews} verified review${totalReviews === 1 ? '' : 's'}` : 'No reviews yet'}
-            </p>
-          </div>
 
-          <div className="space-y-3">
-            {counts.map(({ star, count }) => {
-              const width = totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
+            <div className="space-y-3">
+              {counts.map(({ star, count }) => {
+                const width = Math.round((count / totalReviews) * 100);
 
-              return (
-                <div key={star} className="grid grid-cols-[20px_1fr_42px] items-center gap-3 text-sm text-ink">
-                  <span>{star}</span>
-                  <div className="h-2.5 overflow-hidden rounded-full bg-white">
-                    <div
-                      className="h-full rounded-full bg-[#3498db]"
-                      style={{ width: `${width}%` }}
-                    />
+                return (
+                  <div key={star} className="grid grid-cols-[20px_1fr_42px] items-center gap-3 text-sm text-ink">
+                    <span>{star}</span>
+                    <div className="h-2.5 overflow-hidden rounded-full bg-white">
+                      <div
+                        className="h-full rounded-full bg-[#3498db]"
+                        style={{ width: `${width}%` }}
+                      />
+                    </div>
+                    <span className="text-right text-muted">({count})</span>
                   </div>
-                  <span className="text-right text-muted">({count})</span>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
+        ) : (
+          <p className="text-sm text-muted">No reviews yet. Be the first verified buyer to share your experience.</p>
+        )}
       </div>
 
       {reviews.length > 0 ? (
