@@ -63,14 +63,6 @@ const POPULAR_SEARCHES = [
   'Cerave cleanser',
 ];
 
-const DRAWER_LINKS: MenuItem[] = [
-  { label: 'Shop All', href: '/shop' },
-  { label: 'Account', href: '/account' },
-  { label: "Men's Care", href: '/search?q=mens+care' },
-  { label: 'Sale', href: '/sale' },
-  { label: 'New', href: '/new-arrivals' },
-];
-
 const formatPrice = (value: string | number) => {
   const amount = typeof value === 'number' ? value : parseFloat(value);
   return Number.isFinite(amount) ? `৳${Math.round(amount).toLocaleString('en-BD')}` : '৳0';
@@ -214,6 +206,13 @@ function getVisibleDrawerSections(group: NavigationGroup, expanded: boolean): Na
 function isGroupActive(pathname: string, group: NavigationGroup) {
   return pathname === group.href || pathname.startsWith(`${group.href}/`);
 }
+
+const TONE_BORDER_COLOR: Record<string, string> = {
+  'text-accent': '#e11d48',
+  'text-warning': '#d97706',
+  'text-brass': '#b8860b',
+  'text-cyan-600': '#0891b2',
+};
 
 export default function Header() {
   const router = useRouter();
@@ -863,6 +862,51 @@ export default function Header() {
             </div>
 
             <div className="space-y-3 overflow-y-auto pb-28">
+              {/* Quick action pills */}
+              <div className="flex flex-wrap gap-1.5 pb-2">
+                <Link
+                  href="/sale"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-accent-soft px-3 py-1.5 text-xs font-extrabold text-accent transition-colors hover:bg-accent hover:text-white active:scale-95"
+                >
+                  <Flame size={13} />
+                  SALE
+                </Link>
+                <Link
+                  href="/new-arrivals"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-brass-soft px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:bg-brass hover:text-white active:scale-95"
+                >
+                  <Sparkles size={13} />
+                  NEW
+                </Link>
+                <Link
+                  href="/account"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-bg-alt px-3 py-1.5 text-xs font-extrabold text-muted transition-colors hover:bg-ink hover:text-white active:scale-95"
+                >
+                  <User size={13} />
+                  Account
+                </Link>
+                <Link
+                  href="/search?q=mens+care"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-cyan-50 px-3 py-1.5 text-xs font-extrabold text-cyan-700 transition-colors hover:bg-cyan-600 hover:text-white active:scale-95"
+                >
+                  MEN'S
+                </Link>
+                <Link
+                  href="/shop"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-ink px-3 py-1.5 text-xs font-extrabold text-white transition-colors hover:bg-black active:scale-95"
+                >
+                  <ShoppingBag size={13} />
+                  Shop All
+                </Link>
+              </div>
+
+              <div className="border-t border-hairline" />
+
               {DRAWER_NAV_GROUPS.map((group) => {
                 const isOpen = openDrawerGroups.includes(group.label);
                 const isExpanded = expandedDrawerGroups.includes(group.label);
@@ -870,7 +914,15 @@ export default function Header() {
                 const visibleCount = visibleSections.reduce((sum, section) => sum + section.items.length, 0);
                 const hiddenCount = Math.max(0, getGroupItemCount(group) - visibleCount);
                 return (
-                  <div key={group.label} className="overflow-hidden rounded-lg border border-hairline bg-white shadow-sm">
+                  <div
+                    key={group.label}
+                    className={`overflow-hidden rounded-lg border shadow-sm transition-colors ${
+                      isOpen
+                        ? 'border-hairline bg-white'
+                        : 'border-hairline bg-white'
+                    }`}
+                    style={isOpen ? { borderLeftWidth: '3px', borderLeftColor: TONE_BORDER_COLOR[group.tone] || '#64748b' } : undefined}
+                  >
                     <button
                       type="button"
                       onClick={() => toggleDrawerGroup(group.label)}
@@ -879,12 +931,12 @@ export default function Header() {
                     >
                       <span className="min-w-0">
                         <span className="flex items-center gap-2">
-                          <span className={group.tone}>●</span>
+                          <span className={`${group.tone} ${isOpen ? 'scale-110' : ''} transition-transform`}>●</span>
                           <span className="truncate">{group.label}</span>
                         </span>
                         {group.summary ? <span className="mt-0.5 block truncate text-xs font-semibold text-muted">{group.summary}</span> : null}
                       </span>
-                      <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown size={16} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {isOpen && (
                       <div className="border-t border-hairline px-3 py-3">
@@ -901,7 +953,7 @@ export default function Header() {
                                   key={item.href || item.slug}
                                   href={item.href || `/category/${item.slug}`}
                                   onClick={() => setMobileOpen(false)}
-                                  className="flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-semibold text-muted hover:bg-accent-soft hover:text-accent"
+                                  className="flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:bg-accent-soft hover:text-accent active:bg-accent-soft/70 active:scale-[0.98]"
                                 >
                                   {item.name}
                                 </Link>
@@ -933,18 +985,6 @@ export default function Header() {
                 );
               })}
 
-              <div className="grid gap-2 border-t border-hairline pt-3">
-                {DRAWER_LINKS.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="rounded-lg border border-hairline px-4 py-3 text-sm font-bold text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
