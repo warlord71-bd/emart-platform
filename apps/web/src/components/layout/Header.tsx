@@ -845,29 +845,30 @@ export default function Header() {
             className="absolute inset-0 bg-ink/30"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="relative h-full w-[84vw] max-w-[320px] bg-white p-4 shadow-2xl">
-            <div className="mb-3 flex items-center justify-between border-b border-hairline pb-2">
-              <div className="flex items-center gap-2">
-                <Image src="/logo.png" alt="Emart" width={24} height={24} className="rounded-md" />
-                <div className="font-extrabold text-ink">Emart</div>
+          <aside className="relative flex h-dvh w-[92vw] max-w-[360px] flex-col bg-white shadow-2xl">
+            <div className="shrink-0 px-4 pt-4">
+              <div className="flex items-center justify-between border-b border-hairline pb-2">
+                <div className="flex items-center gap-2">
+                  <Image src="/logo.png" alt="Emart" width={24} height={24} className="rounded-md" />
+                  <div className="font-extrabold text-ink">Emart</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-50"
+                  aria-label="Close menu"
+                >
+                  <X size={22} />
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setMobileOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-50"
-                aria-label="Close menu"
-              >
-                <X size={22} />
-              </button>
             </div>
 
-            <div className="space-y-3 overflow-y-auto pb-28">
-              {/* Quick action pills */}
-              <div className="flex flex-wrap gap-1.5 pb-2">
+            <div className="shrink-0 px-4 pt-3">
+              <div className="flex gap-2 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Quick shopping links">
                 <Link
                   href="/sale"
                   onClick={() => setMobileOpen(false)}
-                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-accent-soft px-3 py-1.5 text-xs font-extrabold text-accent transition-colors hover:bg-accent hover:text-white active:scale-95"
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-hairline bg-accent-soft px-3 py-1.5 text-xs font-extrabold text-accent transition-colors hover:bg-accent hover:text-white active:scale-95"
                 >
                   <Flame size={13} />
                   Sale
@@ -875,38 +876,31 @@ export default function Header() {
                 <Link
                   href="/new-arrivals"
                   onClick={() => setMobileOpen(false)}
-                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-brass-soft px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:bg-brass hover:text-white active:scale-95"
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-hairline bg-brass-soft px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:bg-brass hover:text-white active:scale-95"
                 >
                   <Sparkles size={13} />
                   New Arrivals
                 </Link>
                 <Link
-                  href="/account"
-                  onClick={() => setMobileOpen(false)}
-                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-bg-alt px-3 py-1.5 text-xs font-extrabold text-muted transition-colors hover:bg-ink hover:text-white active:scale-95"
-                >
-                  <User size={13} />
-                  Account
-                </Link>
-                <Link
-                  href="/search?q=mens+care"
-                  onClick={() => setMobileOpen(false)}
-                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-cyan-50 px-3 py-1.5 text-xs font-extrabold text-cyan-700 transition-colors hover:bg-cyan-600 hover:text-white active:scale-95"
-                >
-                  MEN'S
-                </Link>
-                <Link
                   href="/shop"
                   onClick={() => setMobileOpen(false)}
-                  className="inline-flex items-center gap-1 rounded-full border border-hairline bg-ink px-3 py-1.5 text-xs font-extrabold text-white transition-colors hover:bg-black active:scale-95"
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-hairline bg-ink px-3 py-1.5 text-xs font-extrabold text-white transition-colors hover:bg-black active:scale-95"
                 >
                   <ShoppingBag size={13} />
                   Shop
                 </Link>
+                <Link
+                  href="/search?q=mens+care"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-hairline bg-cyan-50 px-3 py-1.5 text-xs font-extrabold text-cyan-700 transition-colors hover:bg-cyan-600 hover:text-white active:scale-95"
+                >
+                  MEN'S
+                </Link>
               </div>
-
               <div className="border-t border-hairline" />
+            </div>
 
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 overscroll-contain">
               {DRAWER_NAV_GROUPS.map((group) => {
                 const isOpen = openDrawerGroups.includes(group.label);
                 const isExpanded = expandedDrawerGroups.includes(group.label);
@@ -987,22 +981,38 @@ export default function Header() {
 
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              <Link
-                href="/track-order"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-lg bg-bg-alt px-3 py-3 text-center text-xs font-bold text-ink"
-              >
-                Track order
-              </Link>
-              <a
-                href="https://wa.me/8801717082135"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg bg-[#25D366] px-3 py-3 text-center text-xs font-extrabold text-white"
-              >
-                WhatsApp
-              </a>
+            <div className="shrink-0 border-t border-hairline bg-white px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3">
+              <div className="grid grid-cols-2 gap-2">
+                <Link
+                  href="/account"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-lg bg-ink px-3 py-3 text-center text-xs font-extrabold text-white"
+                >
+                  Account
+                </Link>
+                <Link
+                  href="/track-order"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-lg bg-bg-alt px-3 py-3 text-center text-xs font-bold text-ink"
+                >
+                  Track order
+                </Link>
+                <Link
+                  href="/privacy-policy"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-lg bg-bg-alt px-3 py-3 text-center text-xs font-bold text-ink"
+                >
+                  Privacy Policy
+                </Link>
+                <a
+                  href="https://wa.me/8801717082135"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg bg-[#25D366] px-3 py-3 text-center text-xs font-extrabold text-white"
+                >
+                  WhatsApp
+                </a>
+              </div>
             </div>
           </aside>
         </div>
