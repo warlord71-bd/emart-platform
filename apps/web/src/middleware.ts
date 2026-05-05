@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Junk/test WordPress pages that were indexed and should be permanently removed.
+// 410 Gone signals to Google that these URLs are dead and should be dropped from index.
+const GONE_PATHS = new Set(['/fdght', '/test-page', '/sample-page']);
+
 // Query parameters that pollute canonical URLs — strip and 301 to clean path
 const STRIP_PARAMS = [
   'srsltid',      // Google Search result session link ID
@@ -13,6 +17,13 @@ const STRIP_PARAMS = [
 ];
 
 export function middleware(req: NextRequest): NextResponse | undefined {
+  const pathname = req.nextUrl.pathname.replace(/\/$/, '') || '/';
+
+  // Return 410 Gone for permanently removed junk/test pages
+  if (GONE_PATHS.has(pathname)) {
+    return new NextResponse(null, { status: 410 });
+  }
+
   const url = req.nextUrl.clone();
   let stripped = false;
 

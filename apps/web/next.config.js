@@ -83,6 +83,10 @@ const nextConfig = {
       { source: '/category/night-crime',   destination: '/category/night-cream', permanent: true },
       { source: '/about-us',              destination: '/our-story',      permanent: true },
       { source: '/about-us/',             destination: '/our-story',      permanent: true },
+      { source: '/about-us-2',            destination: '/our-story',      permanent: true },
+      { source: '/about-us-2/',           destination: '/our-story',      permanent: true },
+      { source: '/term-conditions',       destination: '/terms-conditions', permanent: true },
+      { source: '/term-conditions/',      destination: '/terms-conditions', permanent: true },
     ];
   },
 
