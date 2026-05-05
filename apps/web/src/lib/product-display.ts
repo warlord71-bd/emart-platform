@@ -1,4 +1,4 @@
-// Shared product display helpers for ProductCard eyebrow labels.
+// Shared product display helpers for ProductCard eyebrow labels and breadcrumbs.
 // Priority: brand → useful type category → null (hide eyebrow).
 
 import type { WooProduct } from '@/lib/woocommerce';
@@ -171,5 +171,32 @@ export function getProductCardEyebrow(product: WooProduct): string | null {
   }
 
   // 5. Nothing useful — hide the eyebrow
+  return null;
+}
+
+/**
+ * Returns the best breadcrumb parent category for the PDP.
+ * Priority: explicit product-type category → first non-blocked category → null.
+ * Returning null means breadcrumb falls back to: Home → Shop → Product.
+ * Never returns brand (brand has its own browse path, not a product-type category).
+ */
+export function getCleanBreadcrumbCategory(
+  product: WooProduct,
+): { label: string; href: string } | null {
+  // Priority 1: explicit product-type category with a clean label
+  for (const cat of product.categories ?? []) {
+    if (isBlockedCategory(cat)) continue;
+    const label = PRODUCT_TYPE_LABELS[cat.slug];
+    if (label) return { label, href: `/category/${cat.slug}` };
+  }
+
+  // Priority 2: any non-blocked category with a valid name and slug
+  for (const cat of product.categories ?? []) {
+    if (isBlockedCategory(cat)) continue;
+    if (cat.name?.trim() && cat.slug?.trim()) {
+      return { label: cat.name.trim(), href: `/category/${cat.slug}` };
+    }
+  }
+
   return null;
 }

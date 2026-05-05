@@ -12,6 +12,7 @@ import Breadcrumbs from '@/components/common/Breadcrumbs';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { getProductSeo } from '@/lib/seo';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
+import { getCleanBreadcrumbCategory } from '@/lib/product-display';
 
 interface Props {
   params: { slug: string };
@@ -399,24 +400,9 @@ function getProductType(product: WooProduct): string {
   return category?.name.toLowerCase() || 'skincare product';
 }
 
+// Delegates to the shared product-display helper which uses the full category blocklist.
 function getProductBreadcrumbParent(product: WooProduct) {
-  const category = product.categories?.find(
-    (item) =>
-      item.name &&
-      item.slug &&
-      !['k-beauty-j-beauty', 'korean-beauty', 'japanese-beauty', 'skincare-essentials'].includes(item.slug)
-  );
-
-  if (category) {
-    return { label: category.name, href: `/category/${category.slug}` };
-  }
-
-  const brand = product.brands?.[0];
-  if (brand?.name && brand.slug) {
-    return { label: brand.name, href: `/brands/${brand.slug}` };
-  }
-
-  return null;
+  return getCleanBreadcrumbCategory(product);
 }
 
 function getGeneratedProductFaqItems(product: WooProduct): ProductFaqItem[] {

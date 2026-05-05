@@ -111,9 +111,20 @@ const CATEGORY_DISPLAY_PRIORITY: Record<string, string> = {
 
 const CATEGORY_DISPLAY_EXCLUSIONS = new Set([
   'k-beauty-j-beauty',
+  'k-beauty',
+  'j-beauty',
   'korean-beauty',
   'japanese-beauty',
   'skincare-essentials',
+  'skin-care',
+  'skincare',
+  'beauty-personal-care',
+  'products',
+  'all-products',
+  'uncategorized',
+  'sale',
+  'new-arrivals',
+  'featured',
   'shop-by-concern',
   'health-wellbeing',
   'beauty-supplements',
@@ -138,7 +149,7 @@ function getDisplayCategory(product: WooProduct): string {
   if (/lip/.test(name)) return 'Lip Care';
 
   const category = product.categories?.find((item) => !CATEGORY_DISPLAY_EXCLUSIONS.has(item.slug));
-  return category?.name || 'Products';
+  return category?.name || '';
 }
 
 function getProductDisplayPrice(product: WooProduct): string {
@@ -203,7 +214,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const brandName = productBrand?.name || '';
   const brandSlug = productBrand?.slug || '';
   const showBrandChip = Boolean(productBrand);
-  const madeIn = getAttributeValue('made in') || getAttributeValue('country') || getAttributeValue('origin') || 'South Korea';
+  const madeIn = getAttributeValue('made in') || getAttributeValue('country') || getAttributeValue('origin') || '';
   const sizeFromAttr = getAttributeValue('size') || getAttributeValue('volume');
   const sizeFromName = !sizeFromAttr
     ? product.name.match(/(\d+(?:\.\d+)?)\s*(ml|g|oz|L)/i)
@@ -228,13 +239,15 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             {brandName}
           </Link>
         )}
-        <Link
-          href={originHref}
-          className="bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 transition-colors hover:bg-blue-600 hover:text-white"
-          aria-label={`Shop ${madeIn} origin products`}
-        >
-          {madeIn}
-        </Link>
+        {madeIn && (
+          <Link
+            href={originHref}
+            className="bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 transition-colors hover:bg-blue-600 hover:text-white"
+            aria-label={`Shop ${madeIn} origin products`}
+          >
+            {madeIn}
+          </Link>
+        )}
         {size && (
           <span className="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1">
             {size}
@@ -384,10 +397,12 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           <p className="text-xs text-blue-600 font-semibold">Estimate Delivery</p>
           <p className="text-sm text-blue-900 font-medium">Within 1-3 Days</p>
         </div>
-        <div>
-          <p className="text-xs text-blue-600 font-semibold">Category</p>
-          <p className="text-sm text-blue-900 font-medium">{categoryName}</p>
-        </div>
+        {categoryName && (
+          <div>
+            <p className="text-xs text-blue-600 font-semibold">Category</p>
+            <p className="text-sm text-blue-900 font-medium">{categoryName}</p>
+          </div>
+        )}
       </div>
 
 
