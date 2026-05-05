@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Junk/test WordPress pages that were indexed and should be permanently removed.
 // 410 Gone signals to Google that these URLs are dead and should be dropped from index.
-const GONE_PATHS = new Set(['/fdght', '/test-page', '/sample-page']);
+const GONE_PATHS = new Set([
+  '/fdght', '/test-page', '/sample-page', '/hello-world',
+  '/elementor-57159', '/compare-2',
+  // WP client portal pages — private, no public Next.js equivalent
+  '/clients', '/clients-2', '/clients-3', '/clients-4', '/clients-5',
+  '/clients-6', '/clients-7', '/clients-8', '/clients-9', '/clients-10',
+]);
 
 // Query parameters that pollute canonical URLs — strip and 301 to clean path
 const STRIP_PARAMS = [

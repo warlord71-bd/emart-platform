@@ -8,6 +8,7 @@ const privateNoStoreHeaders = [
 const nextConfig = {
   poweredByHeader: false,
   eslint: { ignoreDuringBuilds: true },
+  trailingSlash: false,
 
   async headers() {
     return [
@@ -87,6 +88,16 @@ const nextConfig = {
       { source: '/about-us-2/',           destination: '/our-story',      permanent: true },
       { source: '/term-conditions',       destination: '/terms-conditions', permanent: true },
       { source: '/term-conditions/',      destination: '/terms-conditions', permanent: true },
+      // WP pages found via wp post list — redirect to nearest Next.js equivalent
+      { source: '/home2',                 destination: '/',                 permanent: true },
+      { source: '/how-to-buy',            destination: '/faq',              permanent: true },
+      { source: '/help-center',           destination: '/contact',          permanent: true },
+      { source: '/shipping-delivery',     destination: '/shipping-policy',  permanent: true },
+      { source: '/refund_returns',        destination: '/return-policy',    permanent: true },
+      { source: '/my-orders',             destination: '/account/orders',   permanent: true },
+      { source: '/dashboard',             destination: '/account',          permanent: true },
+      { source: '/wishlist-2',            destination: '/wishlist',         permanent: true },
+      { source: '/policy',               destination: '/return-policy',    permanent: true },
     ];
   },
 
