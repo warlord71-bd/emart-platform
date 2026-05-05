@@ -10,12 +10,6 @@ export interface OriginDefinition {
   story: string;
 }
 
-export interface OriginSectionDefinition {
-  title: string;
-  description: string;
-  countries: string[];
-}
-
 export const ORIGIN_DEFINITIONS: OriginDefinition[] = [
   {
     country: 'south-korea',
@@ -237,29 +231,6 @@ export const ORIGIN_DEFINITIONS: OriginDefinition[] = [
     hue: 185,
     desc: 'Brands with multinational origin or ownership.',
     story: 'Global beauty groups and brands where ownership, manufacturing, or heritage spans multiple countries.',
-  },
-];
-
-export const ORIGIN_SECTIONS: OriginSectionDefinition[] = [
-  {
-    title: 'East Asian Beauty',
-    description: 'Country-level origin buckets from the cleaned brand-origin taxonomy.',
-    countries: ['south-korea', 'japan', 'china', 'taiwan'],
-  },
-  {
-    title: 'Western Beauty',
-    description: 'USA, UK, Canada, and European brand origins.',
-    countries: ['usa', 'uk', 'france', 'germany', 'canada', 'poland', 'spain'],
-  },
-  {
-    title: 'South & Southeast Asia',
-    description: 'Regional origins mapped brand-first, then assigned to products.',
-    countries: ['india', 'thailand', 'bangladesh', 'malaysia', 'philippines', 'sri-lanka', 'pakistan'],
-  },
-  {
-    title: 'More Origins',
-    description: 'Additional verified country and multinational origin terms.',
-    countries: ['uae', 'south-africa', 'turkey', 'multinational'],
   },
 ];
 

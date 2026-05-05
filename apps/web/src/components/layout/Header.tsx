@@ -744,10 +744,12 @@ export default function Header() {
                   <div className={`invisible absolute left-0 top-full z-[70] translate-y-1 rounded-lg border border-hairline bg-white p-5 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 ${getMegaPanelClass(group.label)}`}>
                     <div className={getMegaGridClass(group.label)}>
                       {group.sections.map((section) => (
-                        <div key={section.title} className="min-w-0">
-                          <div className="mb-2 text-[11px] font-bold uppercase tracking-normal text-gray-400">
-                            {section.title}
-                          </div>
+                        <div key={`${group.label}-${section.title || section.items[0]?.slug}`} className="min-w-0">
+                          {section.title ? (
+                            <div className="mb-2 text-[11px] font-bold uppercase tracking-normal text-gray-400">
+                              {section.title}
+                            </div>
+                          ) : null}
                           <div className="space-y-1">
                             {section.items.map((item) => (
                               <Link
@@ -828,10 +830,12 @@ export default function Header() {
                     {isOpen && (
                       <div className="border-t border-hairline px-3 py-3">
                         {group.sections.map((section) => (
-                          <div key={section.title} className="mb-3 last:mb-0">
-                            <div className="mb-1 px-1 text-[11px] font-bold uppercase tracking-normal text-gray-400">
-                              {section.title}
-                            </div>
+                          <div key={`${group.label}-${section.title || section.items[0]?.slug}`} className="mb-3 last:mb-0">
+                            {section.title ? (
+                              <div className="mb-1 px-1 text-[11px] font-bold uppercase tracking-normal text-gray-400">
+                                {section.title}
+                              </div>
+                            ) : null}
                             <div className="grid gap-1">
                               {section.items.map((item) => (
                                 <Link

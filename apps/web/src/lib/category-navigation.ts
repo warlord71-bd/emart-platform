@@ -1,5 +1,5 @@
 import { CONCERN_DEFINITIONS } from '@/lib/concerns';
-import { ORIGIN_DEFINITIONS, ORIGIN_SECTIONS } from '@/lib/origin-navigation';
+import { ORIGIN_DEFINITIONS } from '@/lib/origin-navigation';
 
 export interface TopCategoryConfig {
   name: string;
@@ -146,6 +146,15 @@ const toCategoryItem = (item: MenuCategoryItem): MenuCategoryItem => ({
   href: item.href || `/category/${item.slug}`,
 });
 
+const chunkItems = <T,>(items: T[], columns: number): T[][] => {
+  const size = Math.ceil(items.length / columns);
+  const chunks: T[][] = [];
+  for (let index = 0; index < columns; index += 1) {
+    chunks.push(items.slice(index * size, (index + 1) * size));
+  }
+  return chunks.filter((chunk) => chunk.length > 0);
+};
+
 export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
   {
     label: 'SHOP BY CATEGORY',
@@ -178,9 +187,9 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     href: '/origins',
     tone: 'text-brass',
     panelClassName: 'w-[780px]',
-    sections: ORIGIN_SECTIONS.map((section) => ({
-      title: section.title,
-      items: ORIGIN_NAV_ITEMS.filter((item) => section.countries.includes(item.country)),
+    sections: chunkItems(ORIGIN_NAV_ITEMS, 4).map((items) => ({
+      title: '',
+      items,
     })),
   },
 ];

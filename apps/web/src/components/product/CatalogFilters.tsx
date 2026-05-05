@@ -37,7 +37,6 @@ const SORT_OPTIONS: { label: string; value: SortValue }[] = [
 const ORIGIN_OPTIONS = ORIGIN_DEFINITIONS.map((origin) => ({
   label: origin.label,
   value: origin.country,
-  region: origin.region,
 }));
 const ORIGIN_VISIBLE_LIMIT = 7;
 
@@ -296,7 +295,6 @@ export default function CatalogFilters({
                           className={drawerChipClass(searchParams.origin === origin.value)}
                         >
                           <span className="block truncate">{origin.label}</span>
-                          <span className="block truncate text-[10px] font-medium opacity-70">{origin.region}</span>
                         </button>
                       ))}
                     </div>
@@ -467,7 +465,6 @@ export default function CatalogFilters({
                   className={buttonClass(searchParams.origin === origin.value)}
                 >
                   <span className="block truncate">{origin.label}</span>
-                  <span className="block truncate text-[10px] font-medium opacity-70">{origin.region}</span>
                 </button>
               ))}
             </div>

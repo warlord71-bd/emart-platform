@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
-import { getOriginByCountry, ORIGIN_DEFINITIONS, ORIGIN_SECTIONS } from '@/lib/origin-navigation';
+import { getOriginByCountry, ORIGIN_DEFINITIONS } from '@/lib/origin-navigation';
 
 const PRODUCTS_PER_PAGE = 24;
 
@@ -72,70 +72,46 @@ export default async function OriginsPage({ searchParams }: OriginsPageProps) {
         </div>
 
         <div className="mx-auto max-w-7xl px-4 py-6">
-          <div className="mb-6 flex gap-2 overflow-x-auto pb-1">
-            <a href="#all-origins" className="shrink-0 rounded-full bg-ink px-4 py-2 text-xs font-extrabold text-white">All origins</a>
-            {ORIGIN_SECTIONS.map((section) => (
-              <a
-                key={section.title}
-                href={`#${section.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                className="shrink-0 rounded-full border border-hairline bg-white px-4 py-2 text-xs font-extrabold text-ink transition-colors hover:border-accent/30 hover:bg-accent-soft hover:text-accent"
-              >
-                {section.title}
-              </a>
-            ))}
+          <div className="mb-5 flex items-center justify-between gap-3">
+            <h2 className="text-xl font-extrabold text-ink">Countries</h2>
+            <span className="text-xs font-bold uppercase tracking-normal text-muted">
+              {definedOriginTotal.toLocaleString()} items
+            </span>
           </div>
 
-          <div id="all-origins" className="grid gap-7">
-            {ORIGIN_SECTIONS.map((section) => (
-              <section key={section.title} id={section.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}>
-                <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-                  <div>
-                    <h2 className="text-xl font-extrabold text-ink">{section.title}</h2>
-                    <p className="mt-1 text-sm text-muted">{section.description}</p>
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-normal text-muted">
-                    {section.countries.reduce((sum, country) => sum + (originCounts[country] || 0), 0).toLocaleString()} items
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                  {section.countries.map((country) => {
-                    const origin = ORIGIN_DEFINITIONS.find((item) => item.country === country);
-                    if (!origin) return null;
-                    const itemCount = originCounts[origin.country] || 0;
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {ORIGIN_DEFINITIONS.map((origin) => {
+              const itemCount = originCounts[origin.country] || 0;
 
-                    return (
-                      <Link
-                        key={origin.country}
-                        href={`/origins?country=${origin.country}`}
-                        className="group flex min-h-[178px] flex-col rounded-lg border border-hairline bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-card"
-                        style={{
-                          ['--origin-soft' as string]: `oklch(0.94 0.06 ${origin.hue})`,
-                          ['--origin-deep' as string]: `oklch(0.42 0.14 ${origin.hue})`,
-                        }}
-                      >
-                        <div className="mb-3 flex items-start justify-between gap-2">
-                          <div className="flex items-center gap-2">
-                            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--origin-soft)] text-xl">
-                              {origin.flag}
-                            </span>
-                            <div className="min-w-0">
-                              <div className="truncate text-sm font-extrabold text-ink">{origin.label}</div>
-                              <div className="text-[11px] font-bold uppercase tracking-normal text-muted">{origin.region}</div>
-                            </div>
-                          </div>
-                          <span className="rounded-full bg-bg-alt px-2 py-1 text-[10px] font-extrabold text-ink">{origin.code}</span>
-                        </div>
-                        <p className="line-clamp-3 text-xs leading-5 text-muted">{origin.story}</p>
-                        <div className="mt-auto flex items-center justify-between pt-3">
-                          <span className="text-xs font-bold text-muted">{itemCount.toLocaleString()} items</span>
-                          <span className="text-xs font-extrabold text-[var(--origin-deep)]">View products</span>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </section>
-            ))}
+              return (
+                <Link
+                  key={origin.country}
+                  href={`/origins?country=${origin.country}`}
+                  className="group flex min-h-[164px] flex-col rounded-lg border border-hairline bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-card"
+                  style={{
+                    ['--origin-soft' as string]: `oklch(0.94 0.06 ${origin.hue})`,
+                    ['--origin-deep' as string]: `oklch(0.42 0.14 ${origin.hue})`,
+                  }}
+                >
+                  <div className="mb-3 flex items-start justify-between gap-2">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--origin-soft)] text-xl">
+                        {origin.flag}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="truncate text-sm font-extrabold text-ink">{origin.label}</div>
+                        <div className="text-[11px] font-bold uppercase tracking-normal text-muted">{origin.code}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="line-clamp-3 text-xs leading-5 text-muted">{origin.story}</p>
+                  <div className="mt-auto flex items-center justify-between pt-3">
+                    <span className="text-xs font-bold text-muted">{itemCount.toLocaleString()} items</span>
+                    <span className="text-xs font-extrabold text-[var(--origin-deep)]">View</span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -162,7 +138,7 @@ export default async function OriginsPage({ searchParams }: OriginsPageProps) {
               {selectedOrigin?.flag}
             </span>
             <div>
-              <p className="text-xs font-extrabold uppercase tracking-normal text-accent">{selectedOrigin?.region}</p>
+              <p className="text-xs font-extrabold uppercase tracking-normal text-accent">{selectedOrigin?.code}</p>
               <h1 className="mt-1 text-3xl font-extrabold leading-tight text-ink">{selectedOrigin?.label} Products</h1>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">{selectedOrigin?.story}</p>
             </div>
