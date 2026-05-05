@@ -8,6 +8,7 @@ import { ShoppingCart, Heart } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { getDiscountPercent, isInStock } from '@/lib/woocommerce';
 import { formatBDT } from '@/lib/formatters';
+import { getProductCardEyebrow } from '@/lib/product-display';
 import type { WooProduct } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 
@@ -27,7 +28,7 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
     : 0;
 
   const inStock = isInStock(product);
-  const categoryName = product.categories?.[0]?.name;
+  const eyebrow = getProductCardEyebrow(product);
   const rating = Number(product.average_rating || 0);
   const hasRating = rating > 0;
   const isCompact = variant === 'compact' || variant === 'related' || variant === 'carousel';
@@ -97,9 +98,9 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
         </div>
 
         <div className="flex flex-1 flex-col px-1 pb-1">
-          {categoryName && (
-            <span className="type-meta font-semibold uppercase tracking-[0.18em] text-muted-2">
-              {categoryName}
+          {eyebrow && (
+            <span className="type-meta font-semibold uppercase tracking-[0.06em] text-muted-2">
+              {eyebrow}
             </span>
           )}
 
@@ -126,9 +127,7 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
                 </div>
                 <span className="type-meta text-muted-2">{product.rating_count} reviews</span>
               </div>
-            ) : (
-              <span className="type-meta text-muted">Hand-picked global skincare</span>
-            )}
+            ) : null}
           </div>
 
           <div className="mt-3 flex items-end justify-between gap-3">
