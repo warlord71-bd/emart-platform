@@ -16,7 +16,7 @@ for (const entry of brandLogoManifest as Array<{ slug: string; logo: string | nu
 export function generateMetadata({ searchParams }: { searchParams?: { brand?: string; page?: string } }): Metadata {
   return {
     title: 'Shop By Brands | Emart Skincare Bangladesh',
-    description: 'Browse all available beauty brands at Emart Skincare Bangladesh.',
+    description: 'Browse authentic Korean, Japanese and global beauty brands at Emart. Shop original skincare in Bangladesh with COD and fast nationwide delivery.',
     alternates: { canonical: canonicalPath('/brands', searchParams) },
   };
 }
@@ -163,7 +163,7 @@ export default async function BrandsPage({
         </div>
       </div>
 
-      <main className="mx-auto max-w-7xl px-4 py-5">
+      <div className="mx-auto max-w-7xl px-4 py-5">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {letters.map((letter) => (
           <section
@@ -211,7 +211,7 @@ export default async function BrandsPage({
             Shop All Products
           </Link>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

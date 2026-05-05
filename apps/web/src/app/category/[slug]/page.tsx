@@ -150,10 +150,25 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     breadcrumb: breadcrumbJsonLd,
   };
 
+  const itemListJsonLd = products.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: category.name,
+    url: `https://e-mart.com.bd/category/${category.slug}`,
+    numberOfItems: products.length,
+    itemListElement: products.slice(0, 20).map((p, i) => ({
+      '@type': 'ListItem',
+      position: (page - 1) * 24 + i + 1,
+      name: p.name,
+      url: `https://e-mart.com.bd/shop/${p.slug}`,
+    })),
+  } : null;
+
   return (
     <div className="min-h-screen bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
+      {itemListJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />}
 
       <div className="mx-auto max-w-7xl px-4 py-8">
 

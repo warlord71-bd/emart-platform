@@ -12,7 +12,7 @@ export default function TrustStrip() {
     { icon: CreditCard, label: t('trustPayment') },
   ];
   return (
-    <section className="border-y border-[var(--mb-line)] bg-[var(--mb-paper)]">
+    <section data-nosnippet className="border-y border-[var(--mb-line)] bg-[var(--mb-paper)]">
       <div className="mb-container grid grid-cols-2 gap-px py-3 sm:grid-cols-4">
         {items.map((item) => {
           const Icon = item.icon;

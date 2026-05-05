@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!brand) return { title: 'Brand Not Found' };
 
   const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
-  const desc = `Shop authentic ${brand.name} products in Bangladesh. Buy original ${brand.name} skincare at Emart with verified stock and nationwide delivery.`;
+  const desc = `Buy original ${brand.name} skincare in Bangladesh at Emart. Best prices for ${brand.name} products with COD and fast nationwide delivery.`;
   const title = `${brand.name} Bangladesh | Authentic ${brand.name} Products | Emart`;
 
   return {
@@ -54,7 +54,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
   const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
 
   return (
-    <main className="min-h-screen bg-bg">
+    <div className="min-h-screen bg-bg">
       {/* Brand header */}
       <div className="border-b border-hairline bg-card px-4 py-8">
         <div className="mx-auto max-w-7xl">
@@ -123,6 +123,6 @@ export default async function BrandPage({ params, searchParams }: Props) {
           </>
         )}
       </div>
-    </main>
+    </div>
   );
 }

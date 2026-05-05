@@ -68,7 +68,7 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
 
   return (
     <div className={`group card relative flex h-full flex-col ${isCompact ? 'p-2' : 'p-2 sm:p-3'}`}>
-      <div className="absolute left-4 top-4 z-10 flex max-w-[calc(100%-4.5rem)] flex-wrap gap-1.5">
+      <div data-nosnippet className="absolute left-4 top-4 z-10 flex max-w-[calc(100%-4.5rem)] flex-wrap gap-1.5">
         {badgeItems.slice(0, 2).map((badge) => badge)}
         <div className="hidden sm:contents">
           {badgeItems.slice(2).map((badge) => badge)}
@@ -143,11 +143,11 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
                 )}
               </div>
               {discount > 0 && (
-                <div className="type-meta mt-1 text-muted">Save {discount}% today</div>
+                <div data-nosnippet className="type-meta mt-1 text-muted">Save {discount}% today</div>
               )}
             </div>
 
-            <div className="hidden rounded-full border border-hairline bg-bg-alt px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-ink sm:flex">
+            <div data-nosnippet className="hidden rounded-full border border-hairline bg-bg-alt px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-ink sm:flex">
               COD
             </div>
           </div>

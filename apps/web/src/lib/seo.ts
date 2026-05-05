@@ -143,7 +143,7 @@ export async function getCategorySeo(
   const name = data?.productCategory?.name || categoryName || slug;
 
   const titleFallback = `${name} in Bangladesh | Emart Skincare Bangladesh`;
-  const descFallback = `Shop authentic ${name} products in Bangladesh from Emart. 100% verified imports, COD available, fast delivery.`;
+  const descFallback = `Buy original ${name} skincare in Bangladesh at Emart. Shop authentic products with COD, fast delivery, and trusted prices.`;
 
   const rawTitle = seo?.title ?? null;
   const isBroken =

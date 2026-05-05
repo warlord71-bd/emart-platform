@@ -9,7 +9,7 @@ const TRUST_ITEMS = [
 
 export default function TrustStrip() {
   return (
-    <section className="border-y border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] px-4 py-4">
+    <section data-nosnippet className="border-y border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] px-4 py-4">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
         {TRUST_ITEMS.map(({ icon: Icon, label }) => (
           <div

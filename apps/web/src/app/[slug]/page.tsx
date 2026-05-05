@@ -597,9 +597,28 @@ export default async function ProductPage({ params }: Props) {
   const productJsonLd = getProductJsonLd(product);
   const breadcrumbParent = getProductBreadcrumbParent(product);
 
+  const breadcrumbItems = [
+    { name: 'Home', item: absoluteUrl('/') },
+    { name: 'Shop', item: absoluteUrl('/shop') },
+    ...(breadcrumbParent ? [{ name: breadcrumbParent.label, item: absoluteUrl(breadcrumbParent.href) }] : []),
+    { name: product.name, item: absoluteUrl(`/shop/${product.slug}`) },
+  ];
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems.map((crumb, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: crumb.name,
+      item: crumb.item,
+    })),
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(productJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       <Breadcrumbs
         items={[
           { label: 'Home', href: '/' },

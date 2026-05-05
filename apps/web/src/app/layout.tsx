@@ -229,8 +229,14 @@ export default function RootLayout({
       </head>
       <body className="max-w-full overflow-x-hidden bg-bg font-body text-ink-2 antialiased">
         <Providers>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink focus:shadow-lg focus:outline-none"
+          >
+            Skip to content
+          </a>
           <Header />
-          <main className="min-h-screen max-w-full overflow-x-hidden">{children}</main>
+          <main id="main-content" className="min-h-screen max-w-full overflow-x-hidden">{children}</main>
           <Footer />
           <CartDrawer />
           {/* WhatsApp Float Button */}
