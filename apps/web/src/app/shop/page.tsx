@@ -1,9 +1,10 @@
-import { getAllProductIdsByBrand, getBrandBySlug, getProducts } from '@/lib/woocommerce';
+import { getAllProductIdsByBrand, getBrandBySlug, getOriginTermBySlug, getProducts } from '@/lib/woocommerce';
 import CatalogFilters from '@/components/product/CatalogFilters';
 import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { canonicalPath } from '@/lib/canonicalUrl';
+import { getOriginByCountry } from '@/lib/origin-navigation';
 
 // All filter/sort params are stripped — only /shop is the canonical page for this route.
 export function generateMetadata({ searchParams }: { searchParams?: ShopPageProps['searchParams'] }): Metadata {
@@ -80,6 +81,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const page = parseInt(searchParams.page || '1');
   const activeBrand = searchParams.brand ? await getBrandBySlug(searchParams.brand) : null;
   const activeBrandProductIds = activeBrand ? await getAllProductIdsByBrand(activeBrand.id) : [];
+  const activeOrigin = getOriginByCountry(searchParams.origin);
+  const activeOriginTerm = activeOrigin ? await getOriginTermBySlug(activeOrigin.country) : null;
   const activeSearch = searchParams.search || '';
   const priceParams = getPriceParams(searchParams.price);
   const sortParams = getSortParams(searchParams.sort);
@@ -92,9 +95,11 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     ...sortParams,
     ...priceParams,
     stock_status: searchParams.in_stock === '1' ? 'instock' : undefined,
+    attribute: activeOriginTerm ? 'pa_origin' : undefined,
+    attribute_term: activeOriginTerm ? String(activeOriginTerm.id) : undefined,
   });
-  const title = activeBrand ? activeBrand.name : activeSearch ? `Search: ${activeSearch}` : 'All Products';
-  const hasBrandOrSearch = Boolean(activeBrand || activeSearch);
+  const title = activeBrand ? activeBrand.name : activeOrigin ? `${activeOrigin.label} Products` : activeSearch ? `Search: ${activeSearch}` : 'All Products';
+  const hasPrimaryFilter = Boolean(activeBrand || activeOrigin || activeSearch);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -107,7 +112,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           <Link href="/categories" className="font-semibold text-ink transition-colors hover:text-accent">
             Browse categories
           </Link>
-          {hasBrandOrSearch && (
+          {hasPrimaryFilter && (
             <Link href="/shop" className="font-semibold text-accent hover:underline">
               Clear filter
             </Link>

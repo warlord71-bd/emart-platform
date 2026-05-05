@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { ORIGIN_DEFINITIONS } from '@/lib/origin-navigation';
 
 type CatalogContext = 'skincare' | 'hair' | 'makeup';
 type SortValue = 'newest' | 'price-asc' | 'price-desc' | 'popularity' | 'rating';
@@ -33,7 +34,12 @@ const SORT_OPTIONS: { label: string; value: SortValue }[] = [
   { label: 'Rating', value: 'rating' },
 ];
 
-const ORIGIN_OPTIONS = ['Korea', 'Japan', 'UK', 'USA', 'France', 'India', 'Bangladesh'];
+const ORIGIN_OPTIONS = ORIGIN_DEFINITIONS.map((origin) => ({
+  label: origin.label,
+  value: origin.country,
+  region: origin.region,
+}));
+const ORIGIN_VISIBLE_LIMIT = 7;
 
 const CONTEXT_OPTIONS: Record<CatalogContext, { heading: string; chips: string[] }> = {
   skincare: {
@@ -51,7 +57,7 @@ const CONTEXT_OPTIONS: Record<CatalogContext, { heading: string; chips: string[]
 };
 
 const CLEARABLE_KEYS = ['price', 'sort', 'in_stock', 'origin', 'skin_type', 'hair_type', 'finish'];
-const ACTIVE_KEYS = ['price', 'sort', 'in_stock'];
+const ACTIVE_KEYS = ['price', 'sort', 'in_stock', 'origin'];
 
 function toUrlSearchParams(searchParams: Record<string, string | undefined>) {
   const params = new URLSearchParams();
@@ -77,13 +83,24 @@ export default function CatalogFilters({
   const pathname = usePathname();
   const liveSearchParams = useSearchParams();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [originExpanded, setOriginExpanded] = useState(false);
   const targetPath = basePath || pathname;
   const selectedSort = (searchParams.sort as SortValue | undefined) || defaultSort;
   const selectedSortLabel = SORT_OPTIONS.find((option) => option.value === selectedSort)?.label || 'Sort by';
   const selectedPriceLabel = PRICE_OPTIONS.find((option) => option.value === searchParams.price)?.label;
+  const selectedOriginLabel = ORIGIN_OPTIONS.find((option) => option.value === searchParams.origin)?.label;
   const activeCount = ACTIVE_KEYS.filter((key) => Boolean(searchParams[key])).length;
   const hasAnyActive = CLEARABLE_KEYS.some((key) => Boolean(searchParams[key]));
   const contextOptions = context ? CONTEXT_OPTIONS[context] : undefined;
+  const visibleOriginOptions = originExpanded
+    ? ORIGIN_OPTIONS
+    : [
+        ...ORIGIN_OPTIONS.slice(0, ORIGIN_VISIBLE_LIMIT),
+        ...ORIGIN_OPTIONS.filter((origin) => (
+          origin.value === searchParams.origin &&
+          !ORIGIN_OPTIONS.slice(0, ORIGIN_VISIBLE_LIMIT).some((item) => item.value === origin.value)
+        )),
+      ];
 
   const pushParams = (params: URLSearchParams) => {
     params.delete('page');
@@ -196,8 +213,17 @@ export default function CatalogFilters({
             )}
           </div>
 
-          {(selectedPriceLabel || searchParams.in_stock === '1' || searchParams.sort) && (
+          {(selectedPriceLabel || selectedOriginLabel || searchParams.in_stock === '1' || searchParams.sort) && (
             <div className="mt-3 flex gap-2 overflow-x-auto">
+              {selectedOriginLabel && (
+                <button
+                  type="button"
+                  onClick={() => toggle('origin', searchParams.origin || '')}
+                  className={chipClass(true)}
+                >
+                  {selectedOriginLabel}
+                </button>
+              )}
               {selectedPriceLabel && (
                 <button
                   type="button"
@@ -249,6 +275,34 @@ export default function CatalogFilters({
               </div>
 
               <div className="flex-1 space-y-7 overflow-y-auto px-5 py-5">
+                {showOrigin && (
+                  <section>
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <h3 className="text-base font-bold text-ink">Origin</h3>
+                      <button
+                        type="button"
+                        onClick={() => setOriginExpanded((value) => !value)}
+                        className="text-xs font-bold text-accent"
+                      >
+                        {originExpanded ? 'Show less' : 'Show more'}
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {visibleOriginOptions.map((origin) => (
+                        <button
+                          key={origin.value}
+                          type="button"
+                          onClick={() => toggle('origin', origin.value)}
+                          className={drawerChipClass(searchParams.origin === origin.value)}
+                        >
+                          <span className="block truncate">{origin.label}</span>
+                          <span className="block truncate text-[10px] font-medium opacity-70">{origin.region}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
                 <section>
                   <h3 className="mb-3 text-xl font-bold text-ink">Price</h3>
                   <div className="grid grid-cols-2 gap-2">
@@ -394,16 +448,26 @@ export default function CatalogFilters({
 
         {showOrigin && (
           <section>
-            <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-ink">Origin</h3>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <h3 className="text-xs font-bold uppercase tracking-wide text-ink">Origin</h3>
+              <button
+                type="button"
+                onClick={() => setOriginExpanded((value) => !value)}
+                className="text-xs font-bold text-accent hover:underline"
+              >
+                {originExpanded ? 'Show less' : 'Show more'}
+              </button>
+            </div>
             <div className="space-y-1">
-              {ORIGIN_OPTIONS.map((origin) => (
+              {visibleOriginOptions.map((origin) => (
                 <button
-                  key={origin}
+                  key={origin.value}
                   type="button"
-                  disabled
-                  className="w-full cursor-not-allowed rounded-lg px-3 py-2 text-left text-sm text-gray-400 opacity-60"
+                  onClick={() => toggle('origin', origin.value)}
+                  className={buttonClass(searchParams.origin === origin.value)}
                 >
-                  {origin} soon
+                  <span className="block truncate">{origin.label}</span>
+                  <span className="block truncate text-[10px] font-medium opacity-70">{origin.region}</span>
                 </button>
               ))}
             </div>
