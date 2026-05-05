@@ -719,3 +719,9 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: local theme contract, token CSS, formatter utilities, ProductCard variants/price/label cleanup, compact listing headers, canonical TrustStrip.
 - Blockers hit: none; local lint/build passed, with one pre-existing lint warning in `LiveTickerBar.tsx`.
 - Next step: visually review locally, then deploy through Local → VPS → live smoke → repo only when ready.
+
+## 2026-05-05 20:46 CEST — Codex
+- Did: Deployed the P1 design-system and commerce UI unification live using a warmed release on port 3020, then returned Nginx to the rebuilt standard `emartweb` process on port 3000.
+- Completed tasks: live release visible on `/`, `/shop`, and `/category/sunscreen`; Local, VPS, and origin aligned at `bc0fadc`.
+- Blockers hit: initial Nginx backup was placed in `sites-enabled`, causing `nginx -t` to fail before reload; moved backup to `sites-available`, retested cleanly, then reloaded. No bad config was loaded.
+- Next step: user visually reviews live mobile and desktop product cards, listing headers, homepage rails, and PDP meta spacing.
