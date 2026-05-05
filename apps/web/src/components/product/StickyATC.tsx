@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import type { WooProduct } from '@/lib/woocommerce';
+import { formatBDT } from '@/lib/formatters';
 
 interface StickyATCProps {
   product: WooProduct;
@@ -30,7 +31,6 @@ export function StickyATC({ product, triggerRef }: StickyATCProps) {
     addItem(product);
   };
 
-  const price = Math.round(parseFloat(product.price || '0'));
   const inStock = product.stock_status === 'instock';
 
   if (!visible || !inStock) return null;
@@ -40,7 +40,7 @@ export function StickyATC({ product, triggerRef }: StickyATCProps) {
       <div className="flex items-center gap-3">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold text-ink">{product.name}</p>
-          <p className="text-base font-bold text-accent">৳{price.toLocaleString('en-BD')}</p>
+          <p className="text-base font-bold text-accent">{formatBDT(product.price)}</p>
         </div>
         <button
           onClick={handleAdd}

@@ -5,7 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { SocialChannelGrid } from '@/components/home/SocialChannelGrid';
 import { ShieldCheck, Truck, WalletCards, RotateCcw, Sparkles, MessageCircle, BadgeCheck, MapPin, ArrowRight, PlayCircle, Target, Droplets, CircleDot, Sun, Star, Clock3, Shield, Gift, MoonStar, BadgePercent, Boxes, Ticket, type LucideIcon } from 'lucide-react';
-import { formatPrice, getDiscountPercent, type WooCategory, type WooImage } from '@/lib/woocommerce';
+import ProductCard from '@/components/product/ProductCard';
+import type { WooProduct } from '@/lib/woocommerce';
 import { CONCERN_DEFINITIONS, getConcernHref } from '@/lib/concerns';
 import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 
@@ -22,20 +23,6 @@ interface BlogPostSummary {
   excerpt: string;
   href: string;
   date: string;
-}
-
-export interface HomeProductCard {
-  id: number;
-  name: string;
-  slug: string;
-  price: string;
-  regular_price: string;
-  sale_price: string;
-  on_sale: boolean;
-  stock_quantity?: number | null;
-  images: Pick<WooImage, 'id' | 'src' | 'name' | 'alt'>[];
-  categories: Pick<WooCategory, 'id' | 'name' | 'slug'>[];
-  average_rating: string;
 }
 
 const concernIconMap: Record<string, LucideIcon> = {
@@ -160,54 +147,6 @@ function formatBlogDate(value: string) {
     month: 'short',
     year: 'numeric',
   }).format(new Date(value));
-}
-
-function ProductFeatureCard({
-  product,
-  badge,
-  meta,
-}: {
-  product: HomeProductCard;
-  badge: string;
-  meta: string;
-}) {
-  const discount = product.on_sale ? getDiscountPercent(product.regular_price, product.sale_price) : 0;
-
-  return (
-    <Link
-      href={`/shop/${product.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-lg border border-hairline bg-white shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-pop"
-    >
-      <div className="relative aspect-[4/4.4] overflow-hidden bg-bg-alt">
-        <Image
-          src={product.images[0]?.src || '/images/placeholder.jpg'}
-          alt={product.images[0]?.alt || product.name}
-          fill
-          sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-        <div className="absolute left-3 top-3 flex flex-wrap gap-2">
-          <span className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-bold text-white">{badge}</span>
-          {discount > 0 && (
-            <span className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-bold text-white">-{discount}%</span>
-          )}
-        </div>
-      </div>
-      <div className="flex flex-1 flex-col p-4">
-        <div className="text-[11px] font-bold uppercase tracking-wide text-gray-400">
-          {product.categories[0]?.name || 'Beauty'}
-        </div>
-        <h3 className="mt-1 line-clamp-2 text-sm font-bold leading-6 text-ink">{product.name}</h3>
-        <div className="mt-2 flex items-baseline gap-2">
-          <span className="text-lg font-extrabold text-accent">{formatPrice(product.sale_price || product.price)}</span>
-          {product.on_sale && product.regular_price && (
-            <span className="text-xs text-gray-400 line-through">{formatPrice(product.regular_price)}</span>
-          )}
-        </div>
-        <div className="mt-auto pt-3 text-xs font-semibold text-gray-500">{meta}</div>
-      </div>
-    </Link>
-  );
 }
 
 interface CategoryTile {
@@ -476,7 +415,7 @@ export function ProductGridSection({
 }: {
   title: string;
   eyebrow?: string;
-  products: HomeProductCard[];
+  products: WooProduct[];
   badge: string;
   viewAllHref: string;
   viewAllLabel: string;
@@ -485,6 +424,7 @@ export function ProductGridSection({
   desktopLimit?: number;
 }) {
   if (!products.length) return null;
+  void metaPrefix;
 
   const visible = products.slice(0, desktopLimit);
   const mobileVisible = visible.slice(0, mobileLimit);
@@ -506,10 +446,11 @@ export function ProductGridSection({
           <div className="flex w-max gap-4">
             {mobileVisible.map((product) => (
               <div key={product.id} className="w-[46vw] min-w-[172px] max-w-[220px]">
-                <ProductFeatureCard
+                <ProductCard
                   product={product}
-                  badge={badge}
-                  meta={badge === 'NEW' ? 'Just in this week' : `${product.average_rating || '4.9'}★ · ${metaPrefix} ${((product.id % 3) + 2).toString()} days`}
+                  variant="carousel"
+                  badgeLabel={badge === 'New' ? 'New' : 'Best Seller'}
+                  priority={product.id === mobileVisible[0]?.id}
                 />
               </div>
             ))}
@@ -535,10 +476,10 @@ export function ProductGridSection({
         <div className="hidden grid-cols-2 gap-4 lg:grid lg:grid-cols-4">
           {visible.map((product, index) => (
             <div key={product.id} className={index >= mobileLimit ? 'hidden lg:block' : ''}>
-              <ProductFeatureCard
+              <ProductCard
                 product={product}
-                badge={badge}
-                meta={badge === 'NEW' ? 'Just in this week' : `${product.average_rating || '4.9'}★ · ${metaPrefix} ${((product.id % 3) + 2).toString()} days`}
+                badgeLabel={badge === 'New' ? 'New' : 'Best Seller'}
+                priority={index < 4}
               />
             </div>
           ))}

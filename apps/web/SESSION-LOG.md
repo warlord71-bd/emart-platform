@@ -714,3 +714,8 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local build passed; VPS build passed; `emartweb` restarted; live `/`, `/brands`, `/shop` returned 200; Local/VPS/origin clean at `a742994`.
 - Blockers hit: None.
 - Next step: User opens mobile hamburger menu and checks the new pill row + accordion borders.
+## 2026-05-05 20:35 CEST — Codex
+- Did: Implemented local P1 design-system and commerce UI unification pass without touching live runtime.
+- Completed tasks: local theme contract, token CSS, formatter utilities, ProductCard variants/price/label cleanup, compact listing headers, canonical TrustStrip.
+- Blockers hit: none; local lint/build passed, with one pre-existing lint warning in `LiveTickerBar.tsx`.
+- Next step: visually review locally, then deploy through Local → VPS → live smoke → repo only when ready.

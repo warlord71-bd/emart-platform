@@ -58,7 +58,7 @@ export function HomeProductRail({
               </span>
             </span>
             <span className="relative mt-4 inline-flex items-center gap-2 text-sm font-bold text-accent">
-              View all
+              View All →
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-white">
                 <ArrowRight size={16} />
               </span>
@@ -69,7 +69,7 @@ export function HomeProductRail({
 
       <Link
         href={viewAllHref}
-        aria-label={`View all ${viewAllLabel}`}
+        aria-label={`View All ${viewAllLabel}`}
         className="absolute -right-6 top-1/2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-card text-ink shadow-card transition-transform hover:scale-105 lg:flex"
       >
         <ChevronRight size={24} />

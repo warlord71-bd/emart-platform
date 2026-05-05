@@ -34,9 +34,10 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-8 rounded-2xl border border-hairline bg-card px-5 py-5 shadow-card">
-        <h1 className="mb-2 text-3xl font-bold text-ink">New Arrivals</h1>
-        <p className="text-sm text-muted">{total} new products in the last 60 days</p>
+      <div className="mb-6 border-b border-hairline pb-5">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">New</p>
+        <h1 className="text-2xl font-bold text-ink sm:text-3xl">New Arrivals</h1>
+        <p className="mt-1 text-sm text-muted">{total} new products in the last 60 days</p>
       </div>
       {products.length > 0 ? (
         <>

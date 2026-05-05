@@ -3,6 +3,7 @@
 
 import axios from 'axios';
 import { unstable_cache } from 'next/cache';
+import { formatBDT } from '@/lib/formatters';
 
 const PUBLIC_SITE_URL = 'https://e-mart.com.bd';
 const DEFAULT_INTERNAL_WOO_URL = process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '';
@@ -1136,10 +1137,8 @@ export async function updateCustomer(id: number, data: Record<string, unknown>):
 // HELPER FUNCTIONS
 // ══════════════════════════════
 
-export function formatPrice(price: string): string {
-  const num = parseFloat(price);
-  if (isNaN(num)) return '৳0';
-  return `৳${Math.round(num).toLocaleString('en-BD')}`;
+export function formatPrice(price: string | number | null | undefined): string {
+  return formatBDT(price);
 }
 
 export function getDiscountPercent(regular: string, sale: string): number {

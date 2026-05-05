@@ -1,0 +1,23 @@
+:root {
+  --color-brand-primary: #e8197a;
+  --color-brand-primary-hover: #c01264;
+  --color-brand-dark: #1a1a2e;
+  --color-brand-muted: #6b7280;
+  --color-brand-gold: #d4a248;
+  --color-surface: #fff;
+  --color-surface-soft: #f8fafc;
+  --color-border-soft: #e5e7eb;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-card: 14px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 8px 24px rgba(26, 26, 46, 0.07);
+  --shadow-card: 0 1px 2px rgba(26, 26, 46, 0.04), 0 10px 28px rgba(26, 26, 46, 0.08);
+
+  --space-container-x: clamp(1rem, 3vw, 2rem);
+  --space-section-y: clamp(2rem, 5vw, 4rem);
+}

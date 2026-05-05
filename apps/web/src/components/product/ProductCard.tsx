@@ -6,16 +6,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice, getDiscountPercent, isInStock } from '@/lib/woocommerce';
+import { getDiscountPercent, isInStock } from '@/lib/woocommerce';
+import { formatBDT } from '@/lib/formatters';
 import type { WooProduct } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 
 interface Props {
   product: WooProduct;
+  variant?: 'grid' | 'compact' | 'related' | 'carousel';
+  priority?: boolean;
+  badgeLabel?: 'Authentic' | 'COD' | 'In Stock' | 'Sale' | 'New' | 'Best Seller';
 }
 
-export default function ProductCard({ product }: Props) {
-  const [imageSrc, setImageSrc] = useState(product.images[0]?.src || '/logo.png');
+export default function ProductCard({ product, variant = 'grid', priority = false, badgeLabel }: Props) {
+  const [imageSrc, setImageSrc] = useState(product.images?.[0]?.src || '/logo.png');
   const addItem = useCartStore((s) => s.addItem);
 
   const discount = product.on_sale
@@ -26,20 +30,25 @@ export default function ProductCard({ product }: Props) {
   const categoryName = product.categories?.[0]?.name;
   const rating = Number(product.average_rating || 0);
   const hasRating = rating > 0;
-  const shortName = product.name.length > 34 ? `${product.name.slice(0, 34)}...` : product.name;
+  const isCompact = variant === 'compact' || variant === 'related' || variant === 'carousel';
   const badgeItems = [
+    badgeLabel ? (
+      <span key="provided" className={badgeLabel === 'New' ? 'badge-new type-meta font-bold' : 'badge-sale type-meta font-bold'}>
+        {badgeLabel}
+      </span>
+    ) : null,
     discount > 0 ? (
-      <span key="discount" className="badge-sale type-meta font-bold">-{discount}%</span>
+      <span key="discount" className="badge-sale type-meta font-bold">Sale</span>
     ) : null,
     product.featured ? (
-      <span key="featured" className="badge-new type-meta font-bold">Featured</span>
+      <span key="featured" className="badge-new type-meta font-bold">Best Seller</span>
     ) : null,
     !product.featured && inStock ? (
-      <span key="auth" className="badge-auth">AUTHENTIC</span>
+      <span key="auth" className="badge-auth">Authentic</span>
     ) : null,
     !inStock ? (
       <span key="stock" className="badge type-meta border border-black/10 bg-white/95 font-bold text-ink">
-        Out of stock
+        Out of Stock
       </span>
     ) : null,
   ].filter(Boolean);
@@ -49,7 +58,7 @@ export default function ProductCard({ product }: Props) {
     e.stopPropagation();
     if (!inStock) return;
     addItem(product);
-    toast.success(`${shortName} added to cart`, {
+    toast.success('Added to Cart', {
       duration: 2000,
     });
   };
@@ -57,7 +66,7 @@ export default function ProductCard({ product }: Props) {
   const imageAlt = product.name;
 
   return (
-    <div className="group card relative flex h-full flex-col p-2 sm:p-3">
+    <div className={`group card relative flex h-full flex-col ${isCompact ? 'p-2' : 'p-2 sm:p-3'}`}>
       <div className="absolute left-4 top-4 z-10 flex max-w-[calc(100%-4.5rem)] flex-wrap gap-1.5">
         {badgeItems.slice(0, 2).map((badge) => badge)}
         <div className="hidden sm:contents">
@@ -82,6 +91,7 @@ export default function ProductCard({ product }: Props) {
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover object-center transition-transform duration-300 group-hover:scale-[1.04]"
             quality={85}
+            priority={priority}
             onError={() => setImageSrc('/logo.png')}
           />
         </div>
@@ -93,7 +103,7 @@ export default function ProductCard({ product }: Props) {
             </span>
           )}
 
-          <h3 className="type-product-title mt-1 line-clamp-2 min-h-[2.6rem] text-[15px] leading-snug text-ink md:text-base">
+          <h3 className={`type-product-title mt-1 line-clamp-2 min-h-[2.6rem] text-[15px] leading-snug text-ink md:text-base ${isCompact ? 'md:text-[15px]' : ''}`}>
             {product.name}
           </h3>
 
@@ -125,11 +135,11 @@ export default function ProductCard({ product }: Props) {
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <span className="price type-product-price">
-                  {formatPrice(product.sale_price || product.price)}
+                  {formatBDT(product.sale_price || product.price)}
                 </span>
                 {product.on_sale && product.regular_price && (
                   <span className="price-old text-[12px] font-normal leading-tight md:text-[13px]">
-                    {formatPrice(product.regular_price)}
+                    {formatBDT(product.regular_price)}
                   </span>
                 )}
               </div>
@@ -152,7 +162,7 @@ export default function ProductCard({ product }: Props) {
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-white transition-all hover:-translate-y-0.5 hover:bg-black disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
         >
           <ShoppingCart size={16} />
-          <span className="type-button">{inStock ? 'Add to cart' : 'Out of stock'}</span>
+          <span className="type-button">{inStock ? 'Add to Cart' : 'Out of Stock'}</span>
         </button>
       </div>
     </div>

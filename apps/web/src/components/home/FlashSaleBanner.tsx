@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { HomeProductCard } from '@/components/home/HomepageSections';
+import type { WooProduct } from '@/lib/woocommerce';
+import { formatBDT } from '@/lib/formatters';
 
 interface FlashSaleBannerProps {
-  products: HomeProductCard[];
+  products: WooProduct[];
 }
 
 function msUntilMidnight(): number {
@@ -112,9 +113,9 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
                     <div className="p-3">
                       <p className="line-clamp-2 min-h-[2.6rem] text-sm font-bold leading-5">{p.name}</p>
                       <div className="mt-2 flex items-baseline gap-1.5">
-                        <span className="text-base font-extrabold text-accent">৳{p.sale_price}</span>
+                        <span className="text-base font-extrabold text-accent">{formatBDT(p.sale_price || p.price)}</span>
                         {p.regular_price && p.regular_price !== p.sale_price && (
-                          <span className="text-xs text-gray-500 line-through">৳{p.regular_price}</span>
+                          <span className="text-xs text-gray-500 line-through">{formatBDT(p.regular_price)}</span>
                         )}
                       </div>
                       <div className="mt-3">
@@ -137,14 +138,14 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
                 className="flex h-full min-h-[100%] flex-col justify-between rounded-lg border border-dashed border-white/20 bg-white/6 p-5 text-white"
               >
                 <div>
-                  <div className="text-xs font-bold uppercase tracking-[0.24em] text-accent-soft">View more</div>
+                  <div className="text-xs font-bold uppercase tracking-[0.24em] text-accent-soft">View All</div>
                   <div className="mt-3 text-2xl font-extrabold">All flash deals</div>
                   <p className="mt-3 text-sm leading-7 text-white/75">
                     See the full sale edit before the timer resets tonight.
                   </p>
                 </div>
                 <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-white">
-                  View all flash deals <span>→</span>
+                  View All →
                 </span>
               </Link>
             </li>

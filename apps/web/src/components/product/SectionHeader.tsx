@@ -22,13 +22,12 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             {title}
           </h2>
 
-          {/* Right: See All link */}
+          {/* Right: View All link */}
           <a
             href={seeAllLink}
             className="text-gray-800 hover:text-gray-900 font-semibold text-sm md:text-base flex items-center gap-1 whitespace-nowrap"
           >
-            See All
-            <span>→</span>
+            View All →
           </a>
         </div>
       </div>

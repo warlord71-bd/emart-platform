@@ -1,3 +1,5 @@
+@import "../styles/tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -19,12 +21,12 @@
   --color-hairline: rgba(17, 17, 17, 0.1);
 
   /* Accent — muted rose */
-  --color-accent: #d4596e;
-  --color-accent-soft: #f8e6ea;
-  --color-accent-deep: #a13f52;
+  --color-accent: var(--color-brand-primary);
+  --color-accent-soft: #fce7f0;
+  --color-accent-deep: var(--color-brand-primary-hover);
 
   /* Brass (premium / ratings) */
-  --color-brass: #c9a961;
+  --color-brass: var(--color-brand-gold);
   --color-brass-soft: #f5ecd4;
 
   /* Semantic */
@@ -297,6 +299,21 @@
 
   .product-img-wrap img {
     @apply h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105;
+  }
+
+  .line-clamp-2,
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    -webkit-line-clamp: 3;
   }
 
   @media (max-width: 640px) {

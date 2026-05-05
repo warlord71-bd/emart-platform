@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { DRAWER_NAV_GROUPS, UNIFIED_BROWSE_TREE, type NavigationGroup, type NavigationSection } from '@/lib/category-navigation';
+import { formatBDT } from '@/lib/formatters';
 import type { WooCategory, WooImage } from '@/lib/woocommerce';
 
 interface SearchSuggestion {
@@ -64,8 +65,7 @@ const POPULAR_SEARCHES = [
 ];
 
 const formatPrice = (value: string | number) => {
-  const amount = typeof value === 'number' ? value : parseFloat(value);
-  return Number.isFinite(amount) ? `৳${Math.round(amount).toLocaleString('en-BD')}` : '৳0';
+  return formatBDT(value);
 };
 
 const getScopedSearchTerm = (query: string, scope: SearchScope) => {
@@ -791,7 +791,7 @@ export default function Header() {
                         {group.summary ? <div className="mt-0.5 truncate text-xs text-muted">{group.summary}</div> : null}
                       </div>
                       <Link href={group.href} className="shrink-0 rounded-lg bg-ink px-3 py-2 text-xs font-extrabold text-white transition-colors hover:bg-black">
-                        {group.ctaLabel || 'View all'}
+                        {group.ctaLabel || 'View All →'}
                       </Link>
                     </div>
                     <div className={getMegaGridClass(group.label)}>
@@ -967,7 +967,7 @@ export default function Header() {
                             onClick={() => setMobileOpen(false)}
                             className="rounded-lg bg-ink px-3 py-2 text-center text-xs font-extrabold text-white"
                           >
-                            {group.ctaLabel || 'View all'}
+                            {group.ctaLabel || 'View All →'}
                           </Link>
                           {hiddenCount > 0 || isExpanded ? (
                             <button

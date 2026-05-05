@@ -172,7 +172,7 @@ export default async function OriginsPage({ searchParams }: OriginsPageProps) {
       ) : (
         <div className="py-20 text-center text-muted-2">
           <p className="text-lg text-ink">No products found for this origin</p>
-          <Link href="/origins" className="mt-2 block text-accent hover:underline">View all origins</Link>
+          <Link href="/origins" className="mt-2 block text-accent hover:underline">View All →</Link>
         </div>
       )}
       </div>

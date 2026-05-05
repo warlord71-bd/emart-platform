@@ -41,9 +41,10 @@ export default async function SalePage({ searchParams }: SalePageProps) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       {/* Header */}
-      <div className="mb-6 rounded-2xl border border-hairline bg-card px-5 py-5 shadow-card">
-        <h1 className="mb-2 text-3xl font-bold text-ink">🔥 Massive Sale</h1>
-        <p className="text-muted">{total} products on sale</p>
+      <div className="mb-6 border-b border-hairline pb-5">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Sale</p>
+        <h1 className="text-2xl font-bold text-ink sm:text-3xl">Sale</h1>
+        <p className="mt-1 text-sm text-muted">{total} products on sale</p>
       </div>
 
       <div className="flex gap-6">
@@ -84,7 +85,6 @@ export default async function SalePage({ searchParams }: SalePageProps) {
             </>
           ) : (
             <div className="py-20 text-center text-muted-2">
-              <div className="mb-4 text-5xl">🎉</div>
               <p className="text-lg font-medium text-ink">No sale items right now</p>
               <a href="/shop" className="mt-2 block text-accent hover:underline">
                 Browse all products

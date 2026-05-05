@@ -1,5 +1,5 @@
 // src/app/page.tsx
-import { getBestSellingProducts, getCategories, getNewArrivals, getProducts, getSaleProducts, type WooProduct } from '@/lib/woocommerce';
+import { getBestSellingProducts, getCategories, getNewArrivals, getProducts, getSaleProducts } from '@/lib/woocommerce';
 import { getWordPressPosts } from '@/lib/wordpress-posts';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { FlashSaleBanner } from '@/components/home/FlashSaleBanner';
@@ -14,10 +14,9 @@ import {
   SkinQuizCTA,
   OriginStoryBlock,
   BlogTeaserSection,
-  ShippingPaymentReturns,
-  type HomeProductCard,
 } from '@/components/home/HomepageSections';
 import ShopByCategory from '@/components/home/ShopByCategory';
+import TrustStrip from '@/components/common/TrustStrip';
 import { HOME_TOP_CATEGORY_ORDER, TOP_CATEGORY_IMAGE_OVERRIDES } from '@/lib/category-navigation';
 import brandLogoManifest from '../../public/images/brands-e-mart/manifest.json';
 import type { Metadata } from 'next';
@@ -38,40 +37,8 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
-function trimProductForHome(product: WooProduct): HomeProductCard {
-  const image = product.images?.[0];
-  const category = product.categories?.[0];
-
-  return {
-    id: product.id,
-    name: product.name,
-    slug: product.slug,
-    price: product.price,
-    regular_price: product.regular_price,
-    sale_price: product.sale_price,
-    on_sale: product.on_sale,
-    stock_quantity: product.stock_quantity,
-    images: image
-      ? [{
-          id: image.id,
-          src: image.src,
-          name: image.name,
-          alt: image.alt,
-        }]
-      : [],
-    categories: category
-      ? [{
-          id: category.id,
-          name: category.name,
-          slug: category.slug,
-        }]
-      : [],
-    average_rating: product.average_rating,
-  };
-}
-
 function filterProductsWithImages(products: Awaited<ReturnType<typeof getBestSellingProducts>>) {
-  return products.filter((product) => product?.id && product?.name).map(trimProductForHome);
+  return products.filter((product) => product?.id && product?.name);
 }
 
 export default async function HomePage() {
@@ -151,9 +118,9 @@ export default async function HomePage() {
         title="Best sellers"
         eyebrow="Curated edit"
         products={safeBestSellers}
-        badge="Best seller"
+        badge="Best Seller"
         viewAllHref="/shop?sort=popularity"
-        viewAllLabel="View all"
+        viewAllLabel="View All"
         metaPrefix="Refill in"
         mobileLimit={4}
         desktopLimit={8}
@@ -163,9 +130,9 @@ export default async function HomePage() {
         title="New arrivals"
         eyebrow="Just in this week"
         products={safeNewArrivals}
-        badge="NEW"
+        badge="New"
         viewAllHref="/new-arrivals"
-        viewAllLabel="View all"
+        viewAllLabel="View All"
         metaPrefix="Restock in"
         mobileLimit={4}
         desktopLimit={4}
@@ -181,7 +148,7 @@ export default async function HomePage() {
       <OriginStoryBlock />
 
       <BlogTeaserSection posts={blogPosts} />
-      <ShippingPaymentReturns />
+      <TrustStrip />
 
     </div>
   );

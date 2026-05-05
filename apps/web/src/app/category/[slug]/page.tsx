@@ -166,35 +166,24 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           <span className="text-ink">{category.name}</span>
         </nav>
 
-        {/* CATEGORY HERO */}
-        <section className="relative mb-6 overflow-hidden rounded-[28px] border border-hairline bg-ink px-5 py-6 text-white shadow-card md:px-7">
-          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-accent via-brass to-accent" />
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+        {/* CATEGORY HEADER */}
+        <section className="mb-5 border-b border-hairline pb-5">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            Category
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-3xl">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-brass">
-                Category
-              </p>
-              <h1 className="text-[28px] font-bold leading-tight text-white">
+              <h1 className="text-2xl font-bold leading-tight text-ink sm:text-3xl">
                 {category.name}
               </h1>
-              <p className="mt-3 max-w-3xl overflow-hidden text-sm leading-6 text-white/72 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]">
+              <p className="mt-2 max-w-3xl overflow-hidden text-sm leading-6 text-muted [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]">
                 {introText}
               </p>
             </div>
-
-            <div className="grid gap-2 sm:grid-cols-3 lg:min-w-48 lg:grid-cols-1">
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
-                <span className="block text-lg font-bold text-white">{total}</span>
-                <span className="text-xs font-medium text-white/70">Products</span>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
-                <span className="block text-sm font-bold text-white">Free Delivery</span>
-                <span className="text-xs font-medium text-white/70">৳3,000+</span>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
-                <span className="block text-sm font-bold text-white">100% Authentic</span>
-                <span className="text-xs font-medium text-white/70">Verified imports</span>
-              </div>
+            <div className="flex flex-wrap gap-2 text-xs font-semibold text-muted">
+              <span className="rounded-full border border-hairline bg-bg-alt px-3 py-1.5">{total} products</span>
+              <span className="rounded-full border border-hairline bg-bg-alt px-3 py-1.5">Authentic</span>
+              <span className="rounded-full border border-hairline bg-bg-alt px-3 py-1.5">COD</span>
             </div>
           </div>
         </section>

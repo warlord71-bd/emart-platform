@@ -94,7 +94,7 @@ export default async function ConcernsPage({ searchParams }: ConcernsPageProps) 
           <h1 className="text-2xl font-bold text-ink">Concern not found</h1>
           <p className="mt-3 text-sm text-muted">That concern is not part of the current Emart concern library.</p>
           <Link href="/concerns" className="mt-5 inline-flex text-sm font-semibold text-accent hover:underline">
-            View all concerns
+            View All →
           </Link>
         </div>
       </div>
@@ -182,7 +182,7 @@ export default async function ConcernsPage({ searchParams }: ConcernsPageProps) 
         <div className="py-20 text-center text-muted-2">
           <p className="text-lg text-ink">No products found for this concern</p>
           <p className="mt-2 text-sm text-muted">Try another concern from the list above or browse the full shop.</p>
-          <Link href="/concerns" className="mt-2 block text-accent hover:underline">View all concerns</Link>
+          <Link href="/concerns" className="mt-2 block text-accent hover:underline">View All →</Link>
         </div>
       )}
       </div>

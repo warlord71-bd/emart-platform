@@ -8,6 +8,7 @@ import { isInStock } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import type { WooProduct } from '@/lib/woocommerce';
 import { formatPrice } from '@/lib/woocommerce';
+import { formatBDT } from '@/lib/formatters';
 
 interface ProductInfoProps {
   product: WooProduct;
@@ -62,10 +63,10 @@ function formatSavingsAmount(regularPrice: string, salePrice: string): string {
   const savings = regular - sale;
 
   if (!Number.isFinite(savings) || savings <= 0) {
-    return 'Tk 0.00';
+    return formatBDT(0);
   }
 
-  return `Tk ${savings.toFixed(2)}`;
+  return formatBDT(savings);
 }
 
 function slugify(value: string): string {
@@ -166,7 +167,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     for (let i = 0; i < quantity; i++) { addItem(product); }
     setIsAdded(true);
     openCart();
-    toast.success('Added to cart!');
+    toast.success('Added to Cart');
     setTimeout(() => setIsAdded(false), 2000);
   };
 
@@ -209,7 +210,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             className="flex items-center gap-1 rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold text-accent transition-colors hover:bg-accent hover:text-white"
             aria-label={`Shop ${brandName} products`}
           >
-            🏷️ {brandName}
+            {brandName}
           </Link>
         )}
         <Link
@@ -217,11 +218,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           className="bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 transition-colors hover:bg-blue-600 hover:text-white"
           aria-label={`Shop ${madeIn} origin products`}
         >
-          📍 {madeIn}
+          {madeIn}
         </Link>
         {size && (
           <span className="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1">
-            📦 {size}
+            {size}
           </span>
         )}
       </div>
@@ -246,11 +247,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         <div className="flex flex-wrap items-center gap-2">
           {product.stock_status === 'instock' ? (
             <div className="inline-block w-fit bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded">
-              ✓ PRODUCT IN STOCK
+              In Stock
             </div>
           ) : (
             <div className="inline-block w-fit bg-red-100 text-red-700 text-xs font-semibold px-3 py-1 rounded">
-              OUT OF STOCK
+              Out of Stock
             </div>
           )}
           <div className="inline-block w-fit rounded bg-[#fff4e8] px-3 py-1 text-xs font-semibold text-[#c26a00]">

@@ -484,7 +484,7 @@ export default function AccountPage() {
                   <Package className="mr-3 h-6 w-6 text-primary-600" />
                   <div>
                     <p className="font-medium text-gray-900">Order History</p>
-                    <p className="text-sm text-gray-500">View all past orders</p>
+                    <p className="text-sm text-gray-500">View order history</p>
                   </div>
                 </Link>
                 <Link href="/wishlist" className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:border-primary-600 hover:bg-primary-50">
