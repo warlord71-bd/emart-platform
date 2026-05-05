@@ -628,7 +628,7 @@ ps aux | grep "image-import-v2" | grep -v grep
 ## 2026-05-04 11:20 CEST — Codex header browse nav correction
 - Did: Fixed the desktop header browse items so top-level `SHOP BY CATEGORY`, `SHOP BY CONCERN`, and `SHOP BY ORIGIN` navigate to `/categories`, `/concerns`, and `/origins`; kept `BRANDS` as `/brands`; removed the duplicate body-level browse hub pill row shown under those pages.
 - Completed tasks: Updated `Header.tsx` to render top browse groups as links instead of dead buttons; disabled `BrowseHubNav` output; corrected a brief rsync path mistake by deleting two accidental extra files from the VPS components root before build; committed and pushed `f0c7229 fix(header): make browse tabs navigate to hub pages`; aligned VPS Git metadata to `origin/main`.
-- Verification: Local build passed; VPS build passed; `emartweb` restarted; live origin-local `/origins?country=korea`, `/categories`, `/concerns`, and `/brands` returned `200`; rendered `/origins?country=korea` HTML includes `href="/categories"`, `href="/concerns"`, `href="/origins"`, and `href="/brands"` and no `aria-label="Browse hubs"` duplicate row; Local/VPS/origin all clean at `f0c7229`.
+- Verification: Local build passed; VPS build passed; `emartweb` restarted; live origin-local `/origins?country=korea`, `/categories`, `/concerns`, and `/brands` returned `200`; rendered `/origins?country=korea` HTML includes `href="/categories"`, `href="/concerns"`, `href="/origins"`, and `href="/brands"` and no `aria-label="Browse hubs"` duplicate row; Local/VPS/origin clean at `f0c7229`.
 - Blockers hit: none after correcting the rsync path.
 - Next step: User hard-refreshes the page and checks that the circled duplicate row is gone and the top browse labels open their hub pages.
 
@@ -707,3 +707,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local build passed; VPS build passed; `emartweb` restarted; live `/origins`, `/shop`, and `/shop?origin=south-korea` returned 200; rendered HTML no longer contains East Asian Beauty, Western Beauty, South & Southeast Asia, or More Origins labels on those pages; Local/VPS/origin clean at `6687e3e`.
 - Blockers hit: PM2 error log still contains a pre-existing Next prerender cache warning for an old product path, unrelated to the flattened origin UI.
 - Next step: User visually checks desktop/mobile spacing; continue with country-only pattern for future origin UI.
+
+## 2026-05-05 — Codex mobile drawer enhancement
+- Did: Redesigned mobile drawer with quick-action pill row (Sale, New, Account, Men's, Shop All) at the top, accent-colored left borders on open accordion cards, touch-feedback scaling on item rows, and removed the old bottom link cards.
+- Completed tasks: Mobile drawer UX polish
+- Verification: Local build passed; VPS build passed; `emartweb` restarted; live `/`, `/brands`, `/shop` returned 200; Local/VPS/origin clean at `a742994`.
+- Blockers hit: None.
+- Next step: User opens mobile hamburger menu and checks the new pill row + accordion borders.
