@@ -725,3 +725,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: live release visible on `/`, `/shop`, and `/category/sunscreen`; Local, VPS, and origin aligned at `bc0fadc`.
 - Blockers hit: initial Nginx backup was placed in `sites-enabled`, causing `nginx -t` to fail before reload; moved backup to `sites-available`, retested cleanly, then reloaded. No bad config was loaded.
 - Next step: user visually reviews live mobile and desktop product cards, listing headers, homepage rails, and PDP meta spacing.
+
+## 2026-05-05 21:06 CEST — Codex
+- Did: Implemented and deployed P2 conversion polish plus P3 surface parity audit using a warmed release on port 3020, then returned Nginx to rebuilt standard `emartweb` on port 3000.
+- Completed tasks: PDP breadcrumbs, PDP WhatsApp order CTA, mobile sticky Add to Cart/Buy Now bar polish, cart drawer free-delivery progress, review empty state copy, gallery thumbnail accessibility polish, web nav label parity, and `docs/surface-parity.md`.
+- Verification: Local lint passed with the pre-existing `LiveTickerBar.tsx` warning; local build passed; warmed VPS build passed; standard VPS build passed; live `/` and `/shop/izeze-soul-hna-hydro-toner-150ml` returned 200 after both warmed switch and final port-3000 return.
+- Blockers hit: none. RN app exists under `apps/mobile`; parity was documented only because this job was scoped to `apps/web`.
+- Next step: visually review PDP on mobile for sticky bar spacing, thumbnail click behavior, WhatsApp message URL, and cart drawer progress with real cart quantities.
