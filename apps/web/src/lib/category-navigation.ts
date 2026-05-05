@@ -33,6 +33,8 @@ export interface NavigationGroup {
   href: string;
   tone: string;
   panelClassName: string;
+  summary?: string;
+  ctaLabel?: string;
   sections: NavigationSection[];
 }
 
@@ -141,6 +143,21 @@ export const ORIGIN_NAV_ITEMS: OriginNavItem[] = [
   })),
 ];
 
+export const BRAND_NAV_ITEMS: MenuCategoryItem[] = [
+  { name: 'Dabo', slug: 'dabo', href: '/brands/dabo' },
+  { name: 'COSRX', slug: 'cosrx', href: '/brands/cosrx' },
+  { name: 'CeraVe', slug: 'cerave', href: '/brands/cerave' },
+  { name: 'Some By Mi', slug: 'some-by-mi', href: '/brands/some-by-mi' },
+  { name: 'SKIN1004', slug: 'skin1004', href: '/brands/skin1004' },
+  { name: 'Neutrogena', slug: 'neutrogena', href: '/brands/neutrogena' },
+  { name: 'Innisfree', slug: 'innisfree', href: '/brands/innisfree' },
+  { name: 'Cos De Baha', slug: 'cos-de-baha', href: '/brands/cos-de-baha' },
+  { name: 'Heimish', slug: 'heimish', href: '/brands/heimish' },
+  { name: 'APLB', slug: 'aplb', href: '/brands/aplb' },
+  { name: 'Anua', slug: 'anua', href: '/brands/anua' },
+  { name: 'Purito Seoul', slug: 'purito-seoul', href: '/brands/purito-seoul' },
+];
+
 const toCategoryItem = (item: MenuCategoryItem): MenuCategoryItem => ({
   ...item,
   href: item.href || `/category/${item.slug}`,
@@ -161,6 +178,8 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     href: '/categories',
     tone: 'text-accent',
     panelClassName: 'w-[min(1040px,calc(100vw-2rem))]',
+    summary: 'Browse by product type.',
+    ctaLabel: 'All categories',
     sections: CATEGORY_NAV_SECTIONS.map((section) => ({
       title: section.title,
       items: section.items.map(toCategoryItem),
@@ -171,6 +190,8 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     href: '/concerns',
     tone: 'text-warning',
     panelClassName: 'w-[700px]',
+    summary: 'Shop by skin goals.',
+    ctaLabel: 'All concerns',
     sections: [
       {
         title: 'Skin goals',
@@ -187,10 +208,30 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     href: '/origins',
     tone: 'text-brass',
     panelClassName: 'w-[780px]',
+    summary: 'Shop by country of origin.',
+    ctaLabel: 'All origins',
     sections: chunkItems(ORIGIN_NAV_ITEMS, 4).map((items) => ({
       title: '',
       items,
     })),
+  },
+  {
+    label: 'BRANDS',
+    href: '/brands',
+    tone: 'text-cyan-600',
+    panelClassName: 'w-[560px]',
+    summary: 'Popular stocked brands.',
+    ctaLabel: 'All brands',
+    sections: [
+      {
+        title: 'Popular brands',
+        items: BRAND_NAV_ITEMS.slice(0, 6),
+      },
+      {
+        title: 'More brands',
+        items: BRAND_NAV_ITEMS.slice(6),
+      },
+    ],
   },
 ];
 

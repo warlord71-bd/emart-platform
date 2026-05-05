@@ -17,13 +17,12 @@ import {
   ShoppingBag,
   ShoppingCart,
   Sparkles,
-  Tags,
   User,
   X,
   type LucideIcon,
 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
-import { DRAWER_NAV_GROUPS, UNIFIED_BROWSE_TREE } from '@/lib/category-navigation';
+import { DRAWER_NAV_GROUPS, UNIFIED_BROWSE_TREE, type NavigationGroup, type NavigationSection } from '@/lib/category-navigation';
 import type { WooCategory, WooImage } from '@/lib/woocommerce';
 
 interface SearchSuggestion {
@@ -68,7 +67,6 @@ const DRAWER_LINKS: MenuItem[] = [
   { label: 'Shop All', href: '/shop' },
   { label: 'Account', href: '/account' },
   { label: "Men's Care", href: '/search?q=mens+care' },
-  { label: 'Brands', href: '/brands' },
   { label: 'Sale', href: '/sale' },
   { label: 'New', href: '/new-arrivals' },
 ];
@@ -168,6 +166,9 @@ function getMegaPanelClass(label: string) {
   if (label === 'SHOP BY ORIGIN') {
     return 'w-[780px] max-w-[calc(100vw-7rem)]';
   }
+  if (label === 'BRANDS') {
+    return 'w-[560px] max-w-[calc(100vw-7rem)]';
+  }
   return 'w-[520px] max-w-[calc(100vw-7rem)]';
 }
 
@@ -178,7 +179,40 @@ function getMegaGridClass(label: string) {
   if (label === 'SHOP BY ORIGIN') {
     return 'grid grid-cols-4 gap-x-6 gap-y-5';
   }
+  if (label === 'BRANDS') {
+    return 'grid grid-cols-2 gap-x-6 gap-y-5';
+  }
   return 'grid grid-cols-2 gap-x-6 gap-y-5';
+}
+
+const DRAWER_VISIBLE_LIMIT: Record<string, number> = {
+  'SHOP BY CATEGORY': 8,
+  'SHOP BY CONCERN': 8,
+  'SHOP BY ORIGIN': 8,
+  BRANDS: 8,
+};
+
+function getGroupItemCount(group: NavigationGroup) {
+  return group.sections.reduce((sum, section) => sum + section.items.length, 0);
+}
+
+function getVisibleDrawerSections(group: NavigationGroup, expanded: boolean): NavigationSection[] {
+  if (expanded) return group.sections;
+  let remaining = DRAWER_VISIBLE_LIMIT[group.label] || 8;
+  const visible: NavigationSection[] = [];
+
+  group.sections.forEach((section) => {
+    if (remaining <= 0) return;
+    const items = section.items.slice(0, remaining);
+    remaining -= items.length;
+    if (items.length) visible.push({ ...section, items });
+  });
+
+  return visible;
+}
+
+function isGroupActive(pathname: string, group: NavigationGroup) {
+  return pathname === group.href || pathname.startsWith(`${group.href}/`);
 }
 
 export default function Header() {
@@ -195,6 +229,7 @@ export default function Header() {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDrawerGroups, setOpenDrawerGroups] = useState<string[]>(['SHOP BY CATEGORY']);
+  const [expandedDrawerGroups, setExpandedDrawerGroups] = useState<string[]>([]);
   const [isListening, setIsListening] = useState(false);
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
   const cartItems = useCartStore((s) => s.items);
@@ -209,6 +244,13 @@ export default function Header() {
   const isCategoriesRoute = pathname === '/categories';
   const toggleDrawerGroup = (label: string) => {
     setOpenDrawerGroups((current) =>
+      current.includes(label)
+        ? current.filter((item) => item !== label)
+        : [...current, label]
+    );
+  };
+  const toggleDrawerExpanded = (label: string) => {
+    setExpandedDrawerGroups((current) =>
       current.includes(label)
         ? current.filter((item) => item !== label)
         : [...current, label]
@@ -731,17 +773,28 @@ export default function Header() {
                 SHOP ALL
               </Link>
 
-              {UNIFIED_BROWSE_TREE.map((group) => (
+              {UNIFIED_BROWSE_TREE.map((group) => {
+                const active = isGroupActive(pathname, group);
+                return (
                 <div key={group.label} className="group relative h-full">
                   <Link
                     href={group.href}
-                    className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink transition-colors hover:bg-white hover:text-accent focus:bg-white focus:text-accent"
+                    className={`flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold transition-colors hover:bg-white hover:text-accent focus:bg-white focus:text-accent ${active ? 'bg-white text-accent shadow-sm' : 'text-ink'}`}
                   >
                     <span className={group.tone}>●</span>
                     {group.label}
                     <ChevronDown size={14} className="transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
                   </Link>
-                  <div className={`invisible absolute left-0 top-full z-[70] translate-y-1 rounded-lg border border-hairline bg-white p-5 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 ${getMegaPanelClass(group.label)}`}>
+                  <div className={`invisible absolute left-0 top-full z-[70] translate-y-1 rounded-lg border border-hairline bg-white p-4 opacity-0 shadow-card transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 ${getMegaPanelClass(group.label)}`}>
+                    <div className="mb-3 flex items-center justify-between gap-3 border-b border-hairline pb-3">
+                      <div className="min-w-0">
+                        <div className="truncate text-xs font-extrabold uppercase tracking-normal text-ink">{group.label}</div>
+                        {group.summary ? <div className="mt-0.5 truncate text-xs text-muted">{group.summary}</div> : null}
+                      </div>
+                      <Link href={group.href} className="shrink-0 rounded-lg bg-ink px-3 py-2 text-xs font-extrabold text-white transition-colors hover:bg-black">
+                        {group.ctaLabel || 'View all'}
+                      </Link>
+                    </div>
                     <div className={getMegaGridClass(group.label)}>
                       {group.sections.map((section) => (
                         <div key={`${group.label}-${section.title || section.items[0]?.slug}`} className="min-w-0">
@@ -766,12 +819,8 @@ export default function Header() {
                     </div>
                   </div>
                 </div>
-              ))}
-
-              <Link href="/brands" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
-                <Tags size={15} className="text-brass" />
-                BRANDS
-              </Link>
+                );
+              })}
               <Link href="/search?q=mens+care" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
                 <span className="text-cyan-600">●</span>
                 MEN&apos;S
@@ -816,20 +865,30 @@ export default function Header() {
             <div className="space-y-3 overflow-y-auto pb-28">
               {DRAWER_NAV_GROUPS.map((group) => {
                 const isOpen = openDrawerGroups.includes(group.label);
+                const isExpanded = expandedDrawerGroups.includes(group.label);
+                const visibleSections = getVisibleDrawerSections(group, isExpanded);
+                const visibleCount = visibleSections.reduce((sum, section) => sum + section.items.length, 0);
+                const hiddenCount = Math.max(0, getGroupItemCount(group) - visibleCount);
                 return (
-                  <div key={group.label} className="rounded-lg border border-hairline bg-white">
+                  <div key={group.label} className="overflow-hidden rounded-lg border border-hairline bg-white shadow-sm">
                     <button
                       type="button"
                       onClick={() => toggleDrawerGroup(group.label)}
-                      className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-extrabold text-ink"
+                      className="flex min-h-12 w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-extrabold text-ink"
                       aria-expanded={isOpen}
                     >
-                      <span>{group.label}</span>
+                      <span className="min-w-0">
+                        <span className="flex items-center gap-2">
+                          <span className={group.tone}>●</span>
+                          <span className="truncate">{group.label}</span>
+                        </span>
+                        {group.summary ? <span className="mt-0.5 block truncate text-xs font-semibold text-muted">{group.summary}</span> : null}
+                      </span>
                       <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {isOpen && (
                       <div className="border-t border-hairline px-3 py-3">
-                        {group.sections.map((section) => (
+                        {visibleSections.map((section) => (
                           <div key={`${group.label}-${section.title || section.items[0]?.slug}`} className="mb-3 last:mb-0">
                             {section.title ? (
                               <div className="mb-1 px-1 text-[11px] font-bold uppercase tracking-normal text-gray-400">
@@ -842,7 +901,7 @@ export default function Header() {
                                   key={item.href || item.slug}
                                   href={item.href || `/category/${item.slug}`}
                                   onClick={() => setMobileOpen(false)}
-                                  className="rounded-lg px-3 py-2 text-sm font-semibold text-muted hover:bg-accent-soft hover:text-accent"
+                                  className="flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-semibold text-muted hover:bg-accent-soft hover:text-accent"
                                 >
                                   {item.name}
                                 </Link>
@@ -850,6 +909,24 @@ export default function Header() {
                             </div>
                           </div>
                         ))}
+                        <div className="mt-3 grid grid-cols-2 gap-2 border-t border-hairline pt-3">
+                          <Link
+                            href={group.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="rounded-lg bg-ink px-3 py-2 text-center text-xs font-extrabold text-white"
+                          >
+                            {group.ctaLabel || 'View all'}
+                          </Link>
+                          {hiddenCount > 0 || isExpanded ? (
+                            <button
+                              type="button"
+                              onClick={() => toggleDrawerExpanded(group.label)}
+                              className="rounded-lg border border-hairline px-3 py-2 text-xs font-extrabold text-accent"
+                            >
+                              {isExpanded ? 'Show less' : `Show more (${hiddenCount})`}
+                            </button>
+                          ) : null}
+                        </div>
                       </div>
                     )}
                   </div>
