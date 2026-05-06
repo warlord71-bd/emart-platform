@@ -30,6 +30,11 @@ export function middleware(req: NextRequest): NextResponse | undefined {
     return new NextResponse(null, { status: 410 });
   }
 
+  // Strip old WordPress ?p= post ID parameter — redirect root to clean /
+  if (pathname === '/' && req.nextUrl.searchParams.has('p')) {
+    return NextResponse.redirect(new URL('/', req.url), { status: 301 });
+  }
+
   const url = req.nextUrl.clone();
   let stripped = false;
 
