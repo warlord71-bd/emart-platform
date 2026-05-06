@@ -53,7 +53,7 @@ function getProductJsonLd(product: WooProduct) {
     description: getSeoDescription(product),
     image: imageUrls,
     ...(product.sku?.trim() ? { sku: product.sku } : {}),
-    category: product.categories?.[0]?.name,
+    category: getCleanBreadcrumbCategory(product)?.label ?? getProductType(product),
     ...(getProductBrandName(product) ? {
       brand: {
         '@type': 'Brand',
@@ -380,11 +380,8 @@ function getProductType(product: WooProduct): string {
   if (/lip/.test(source)) return 'lip care product';
   if (/body/.test(source)) return 'body care product';
 
-  const category = product.categories?.find(
-    (item) =>
-      !['k-beauty-j-beauty', 'korean-beauty', 'japanese-beauty', 'skincare-essentials'].includes(item.slug)
-  );
-  return category?.name.toLowerCase() || 'skincare product';
+  const cleanCat = getCleanBreadcrumbCategory(product);
+  return cleanCat?.label.toLowerCase() || 'skincare product';
 }
 
 function getProductBreadcrumbParent(product: WooProduct) {
@@ -531,8 +528,13 @@ export default async function ProductPage({ params }: Props) {
 
   if (!product) notFound();
 
+  const _relatedCatSlug = getCleanBreadcrumbCategory(product)?.href?.split('/').pop();
+  const _relatedCat = _relatedCatSlug
+    ? product.categories.find(c => c.slug === _relatedCatSlug)
+    : product.categories[0];
+
   const [relatedResult, reviews] = await Promise.all([
-    getProducts({ category: product.categories[0]?.id?.toString(), per_page: 4, exclude: [product.id].join(',') }).catch(() => ({ products: [] })),
+    getProducts({ category: _relatedCat?.id?.toString(), per_page: 4, exclude: [product.id].join(',') }).catch(() => ({ products: [] })),
     getProductReviews(product.id).catch(() => []),
   ]);
   const { products: related } = relatedResult;
