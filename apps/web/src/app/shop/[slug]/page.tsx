@@ -54,10 +54,12 @@ function getProductJsonLd(product: WooProduct) {
     image: imageUrls,
     ...(product.sku?.trim() ? { sku: product.sku } : {}),
     category: product.categories?.[0]?.name,
-    brand: {
-      '@type': 'Brand',
-      name: getProductBrandName(product) || 'Unknown',
-    },
+    ...(getProductBrandName(product) ? {
+      brand: {
+        '@type': 'Brand',
+        name: getProductBrandName(product),
+      },
+    } : {}),
     offers: {
       '@type': 'Offer',
       url: absoluteUrl(`/shop/${product.slug}`),
