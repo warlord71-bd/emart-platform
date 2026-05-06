@@ -760,3 +760,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local build passed; VPS build passed; `pm2 restart emartweb` succeeded; live `robots.txt` shows `User-Agent: Googlebot` and `User-Agent: Googlebot-image` with `Allow: /`; live Anua PDP returned `200` to `Googlebot`; live Anua product image returned `200 image/jpeg` to `Googlebot-image`; impacted SKIN1004 URL `/shop/skin1004-madagascar-centella-tone-brightening-capsule-ampoule-100ml` returned `200` to `Googlebot`, and its product image returned `200 image/jpeg` to `Googlebot-image`.
 - Blockers hit: None.
 - Next step: Use Google Merchant Center/GSC URL Inspection for the impacted item, then continue only GSC removals, sitemap cleanup, and request indexing.
+
+## 2026-05-06 19:59 CEST — Codex
+- Did: Fixed Merchant Center item `gla_2611` crawl failure by restoring Woo product `2611` from trash to publish with clean slug `innisfree-super-volcanic-pore-clay-mask-100ml`, clearing stale Next route cache, and restarting `emartweb`.
+- Completed tasks: Merchant Center landing page for Innisfree Super Volcanic Pore Clay Mask 2X 100ml now resolves on the public `/shop/` URL.
+- Verification: Woo REST returns product `2611` as `publish` and `sync-and-show`; live `/shop/innisfree-super-volcanic-pore-clay-mask-100ml` returns `200` to Googlebot; legacy `/product/innisfree-super-volcanic-pore-clay-mask-100ml` 301s to the clean `/shop/` URL; main image `/wp-content/uploads/2022/04/Vol2.webp` returns `200 image/webp` to Googlebot-image; `emartweb` is online.
+- Blockers hit: External DNS remained intermittently flaky from shell; local loopback and public status checks succeeded when DNS resolved. Rank Math/GraphQL still renders an old title string in generated HTML despite the stored product meta title being updated to the approved Emart format; this does not block Merchant Center crawl access.
+- Next step: In Merchant Center, open this item and click URL Inspection / reprocess or wait for Google for WooCommerce to resync the item.
