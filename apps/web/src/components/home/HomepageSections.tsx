@@ -442,7 +442,7 @@ export function ProductGridSection({
           </Link>
         </div>
 
-        <div className="-mx-4 overflow-x-auto px-4 pb-1 lg:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div aria-hidden="true" className="-mx-4 overflow-x-auto px-4 pb-1 lg:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex w-max gap-4">
             {mobileVisible.map((product) => (
               <div key={product.id} className="w-[46vw] min-w-[172px] max-w-[220px]">
@@ -657,8 +657,8 @@ export function BlogTeaserSection({ posts }: { posts: BlogPostSummary[] }) {
           </Link>
         </div>
 
-        {/* Mobile: horizontal scroll */}
-        <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:hidden">
+        {/* Mobile: horizontal scroll — aria-hidden because desktop grid below is the canonical source */}
+        <div aria-hidden="true" className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:hidden">
           <div className="flex w-max snap-x snap-mandatory gap-4 pb-1">
             {visible.map((post) => (
               <article key={post.id} className="w-[78vw] max-w-[300px] snap-start">

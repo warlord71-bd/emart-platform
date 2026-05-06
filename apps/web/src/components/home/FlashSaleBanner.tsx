@@ -3,11 +3,24 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { WooProduct } from '@/lib/woocommerce';
 import { formatBDT } from '@/lib/formatters';
 
+// Slim type — only the fields rendered in this component.
+// Keeps the serialised hydration JSON small and avoids leaking
+// raw price strings from short_description/description fields.
+interface FlashProduct {
+  id: number;
+  slug: string;
+  name: string;
+  images?: Array<{ src: string; alt?: string }>;
+  price: string;
+  sale_price: string;
+  regular_price: string;
+  stock_quantity: number | null;
+}
+
 interface FlashSaleBannerProps {
-  products: WooProduct[];
+  products: FlashProduct[];
 }
 
 function msUntilMidnight(): number {
@@ -38,21 +51,20 @@ function discountPercent(regular: string, sale: string): number | null {
 }
 
 export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) => {
-  const [remaining, setRemaining] = useState<number | null>(null);
-  const [mounted, setMounted] = useState(false);
+  // Initialise with a real server-side time so SSR shows actual digits.
+  // suppressHydrationWarning on the individual units handles the tiny
+  // server/client skew (< 1 s).
+  const [remaining, setRemaining] = useState<number>(() => msUntilMidnight());
 
   useEffect(() => {
-    setMounted(true);
-    const tick = () => setRemaining(msUntilMidnight());
-    tick();
-    const id = setInterval(tick, 1000);
+    const id = setInterval(() => setRemaining(msUntilMidnight()), 1000);
     return () => clearInterval(id);
   }, []);
 
   if (!products || products.length === 0) return null;
 
   const items = products.slice(0, 10);
-  const time = remaining !== null ? splitHMS(remaining) : null;
+  const time = splitHMS(remaining);
 
   return (
     <section className="w-full bg-ink px-4 py-8 text-white">
@@ -63,20 +75,18 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
             <span className="shrink-0">Flash Sale</span>
           </h2>
           <div className="flex items-center gap-1 text-xs font-bold sm:gap-2 sm:text-sm" aria-label="Time remaining until midnight">
-            <span className="hidden text-white/70 sm:inline">Ends in</span>
-            <span className="text-white/70 sm:hidden">Ends</span>
-            {!mounted ? (
-              <span className="animate-pulse rounded bg-stone-200/20 h-5 w-24" aria-hidden="true" />
-            ) : (
-              time && [time.h, time.m, time.s].map((unit, i) => (
-                <span key={i} className="flex items-center" suppressHydrationWarning>
-                  <span className="rounded-md bg-white/12 px-1.5 py-1 font-mono text-xs tabular-nums sm:rounded-lg sm:px-3 sm:py-2 sm:text-base">
-                    {unit}
-                  </span>
-                  {i < 2 && <span className="px-0.5 text-white/60 sm:px-1">:</span>}
+            <span className="text-white/70" aria-hidden="true">
+              <span className="hidden sm:inline">Ends in</span>
+              <span className="sm:hidden">Ends</span>
+            </span>
+            {[time.h, time.m, time.s].map((unit, i) => (
+              <span key={i} className="flex items-center">
+                <span suppressHydrationWarning className="rounded-md bg-white/12 px-1.5 py-1 font-mono text-xs tabular-nums sm:rounded-lg sm:px-3 sm:py-2 sm:text-base">
+                  {unit}
                 </span>
-              ))
-            )}
+                {i < 2 && <span className="px-0.5 text-white/60 sm:px-1">:</span>}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -119,9 +129,8 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
                         )}
                       </div>
                       <div className="mt-3">
-                        <div className="mb-1 flex items-center justify-between text-[11px] font-semibold text-gray-500">
-                          <span>Only {stockLeft} left</span>
-                          <span>{stockLeft} টি বাকি</span>
+                        <div className="mb-1 text-[11px] font-semibold text-gray-500">
+                          Only {stockLeft} left
                         </div>
                         <div className="h-2 overflow-hidden rounded-full bg-gray-100">
                           <div className="h-full rounded-full bg-accent" style={{ width: `${stockProgress}%` }} />

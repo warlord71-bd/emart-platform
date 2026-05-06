@@ -112,7 +112,7 @@ export default async function HomePage() {
       <MobileDiscovery categories={mobileDiscoveryCategories} showChips={false} showCategories={false} />
       <ShopByCategory />
       <OfferCollectionsRail />
-      <FlashSaleBanner products={safeSaleProducts} />
+      <FlashSaleBanner products={safeSaleProducts.map(({ id, slug, name, images, price, sale_price, regular_price, stock_quantity }) => ({ id, slug, name, images, price, sale_price, regular_price, stock_quantity }))} />
 
       <ProductGridSection
         title="Best sellers"
