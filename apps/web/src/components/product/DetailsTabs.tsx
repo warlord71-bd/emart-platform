@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { rewriteInternalLinks } from '@/lib/rewriteInternalLinks';
 import { sanitizeHtml } from '@/lib/sanitizeHtml';
 
 interface DetailsTabsProps {
@@ -47,7 +48,7 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
           <div
             className="text-lumiere-text-secondary"
             dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(description, '<p>No description available.</p>'),
+              __html: sanitizeHtml(rewriteInternalLinks(description), '<p>No description available.</p>'),
             }}
           />
         )}
@@ -55,7 +56,7 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
           <div
             className="text-lumiere-text-secondary"
             dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(ingredients, '<p>No ingredients information available.</p>'),
+              __html: sanitizeHtml(rewriteInternalLinks(ingredients), '<p>No ingredients information available.</p>'),
             }}
           />
         )}
@@ -63,7 +64,7 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
           <div
             className="text-lumiere-text-secondary"
             dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(howToUse, '<p>No usage instructions available.</p>'),
+              __html: sanitizeHtml(rewriteInternalLinks(howToUse), '<p>No usage instructions available.</p>'),
             }}
           />
         )}

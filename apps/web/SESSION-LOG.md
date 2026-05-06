@@ -739,3 +739,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local lint passed with the pre-existing `LiveTickerBar.tsx` warning; local build passed; warmed VPS build passed; standard VPS build passed; live `/` returned 200 after final return to port 3000.
 - Blockers hit: none.
 - Next step: user hard-refreshes mobile and checks hamburger drawer on Galaxy S8/360px width, especially Categories expanded + Show more.
+
+## 2026-05-06 11:56 CEST — Codex
+- Did: Completed final PDP SEO URL cleanup on Local and live VPS: added product-description internal link rewriting before sanitization and changed missing Product JSON-LD brand fallback from `Emart` to `Unknown`.
+- Completed tasks: PDP canonical/OG/Product JSON-LD verification; robots/query cleanup live verification; Rank Math decimal-price DB check completed as no-op.
+- Verification: Local build passed; VPS build passed; `pm2 restart emartweb` succeeded; live `/robots.txt` advertises only `https://e-mart.com.bd/sitemap.xml`; live query URLs with `per_page`, `shop_view`, `srsltid`, `add-to-cart`, and root `?p=` 301 to clean URLs; live Anua, I'm From Mugwort, and COSRX PDPs return `/shop/` canonical + OG URLs, Product JSON-LD with `priceCurrency":"BDT"`, and no legacy `/product/` or `/product-category/` hrefs.
+- Blockers hit: Local and VPS git trees are intentionally not clean/aligned because unrelated pre-existing live SEO/UI changes are present; no repo push attempted.
+- Next step: Only GSC removals, sitemap cleanup, and request indexing remain.

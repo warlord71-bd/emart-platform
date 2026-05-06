@@ -56,7 +56,7 @@ function getProductJsonLd(product: WooProduct) {
     category: product.categories?.[0]?.name,
     brand: {
       '@type': 'Brand',
-      name: getProductBrandName(product) || 'Emart',
+      name: getProductBrandName(product) || 'Unknown',
     },
     offers: {
       '@type': 'Offer',
