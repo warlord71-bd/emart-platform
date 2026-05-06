@@ -753,3 +753,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local build passed; VPS build passed; `emartweb` restarted online; tracked `git status --short` clean on Local and VPS; Local HEAD, VPS HEAD, and `origin/main` all match.
 - Blockers hit: External DNS resolution from shell became intermittent after live smoke; direct process/PM2 checks remained healthy.
 - Next step: Proceed only with GSC removals, sitemap cleanup, and request indexing.
+
+## 2026-05-06 12:20 CEST — Codex
+- Did: Fixed Merchant Center/GSC product crawl access by adding explicit `Googlebot` and `Googlebot-image` full-site allow groups before the generic robots rules.
+- Completed tasks: Google product landing-page crawler and image crawler robots access fix.
+- Verification: Local build passed; VPS build passed; `pm2 restart emartweb` succeeded; live `robots.txt` shows `User-Agent: Googlebot` and `User-Agent: Googlebot-image` with `Allow: /`; live Anua PDP returned `200` to `Googlebot`; live Anua product image returned `200 image/jpeg` to `Googlebot-image`; impacted SKIN1004 URL `/shop/skin1004-madagascar-centella-tone-brightening-capsule-ampoule-100ml` returned `200` to `Googlebot`, and its product image returned `200 image/jpeg` to `Googlebot-image`.
+- Blockers hit: None.
+- Next step: Use Google Merchant Center/GSC URL Inspection for the impacted item, then continue only GSC removals, sitemap cleanup, and request indexing.

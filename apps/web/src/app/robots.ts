@@ -3,6 +3,11 @@ import type { MetadataRoute } from 'next'
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
+      // Merchant Center/GSC product checks need unrestricted Google product
+      // landing-page and image crawling. Specific groups prevent Googlebot
+      // from inheriting generic query/path cleanup disallows below.
+      { userAgent: 'Googlebot', allow: '/' },
+      { userAgent: 'Googlebot-image', allow: '/' },
       {
         userAgent: '*',
         allow: '/',
