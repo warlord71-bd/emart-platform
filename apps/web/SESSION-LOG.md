@@ -746,3 +746,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local build passed; VPS build passed; `pm2 restart emartweb` succeeded; live `/robots.txt` advertises only `https://e-mart.com.bd/sitemap.xml`; live query URLs with `per_page`, `shop_view`, `srsltid`, `add-to-cart`, and root `?p=` 301 to clean URLs; live Anua, I'm From Mugwort, and COSRX PDPs return `/shop/` canonical + OG URLs, Product JSON-LD with `priceCurrency":"BDT"`, and no legacy `/product/` or `/product-category/` hrefs.
 - Blockers hit: Local and VPS git trees are intentionally not clean/aligned because unrelated pre-existing live SEO/UI changes are present; no repo push attempted.
 - Next step: Only GSC removals, sitemap cleanup, and request indexing remain.
+
+## 2026-05-06 12:07 CEST — Codex
+- Did: Reconciled Local, VPS, and origin using the latest compatible source set: kept the newer Local committed SEO/UI work, pulled the verified live PDP SEO patch back into Local, archived duplicate/scratch untracked files, committed from Local, synced Local -> VPS, rebuilt/restarted live, pushed origin, and aligned VPS Git metadata to origin/main.
+- Completed tasks: Local = VPS = origin standard restored at tracked source level; ignored `TASKS.md` updated and synced Local/VPS.
+- Verification: Local build passed; VPS build passed; `emartweb` restarted online; tracked `git status --short` clean on Local and VPS; Local HEAD, VPS HEAD, and `origin/main` all match.
+- Blockers hit: External DNS resolution from shell became intermittent after live smoke; direct process/PM2 checks remained healthy.
+- Next step: Proceed only with GSC removals, sitemap cleanup, and request indexing.
