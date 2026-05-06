@@ -1,0 +1,103 @@
+row_id,product_id,product_slug,product_name,current_regular_price,target_regular_price,current_sale_price_visibility_only,action,status,reason_note
+1,92958,cerave-foaming-facial-cleanser-237ml,CeraVe Foaming Facial Cleanser 237mL,2464,2464,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+2,92844,cerave-foaming-facial-cleanser-for-normal-to-oily-skin-355ml,CeraVe Foaming Facial Cleanser For Normal To Oily Skin 355ml,2728,2728,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+3,92824,cerave-hydrating-facial-cleanser-355ml,Cerave hydrating facial cleanser 355ml,2690,2690,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+4,92812,cerave-hydrating-cream-to-foam-cleanser-355-ml,Cerave Hydrating Cream-to-Foam Cleanser - 355 ml,2640,2640,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+5,63851,cerave-hydrating-mineral-sunscreen-spf-30-face-sheer-tint-50ml,Cerave Hydrating Mineral Sunscreen SPF 30 Face Sheer Tint 50ml,2420,2420,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+6,,,Cerave Eczema Relief Creamy Oil – 236 ml,,2332,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Eczema Relief Creamy Oil – 236 ml""."
+7,,,Cerave Daily Moisturizing Lotion – 355 ml,,2640,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Daily Moisturizing Lotion – 355 ml""."
+8,63841,cerave-moisturizing-cream-normal-to-dry-340-g,Cerave Moisturizing Cream (Normal To Dry) 340 g,3090,3090,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+9,,,Cerave PM Facial Moisturizing Lotion – 89 ml,,2494,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave PM Facial Moisturizing Lotion – 89 ml""."
+10,,,Cerave Hydrating Facial Cleanser – 473 ml,,3388,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Hydrating Facial Cleanser – 473 ml""."
+11,,,Cerave Foaming Facial Cleanser – 473 ml,,3872,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Foaming Facial Cleanser – 473 ml""."
+12,,,Cerave Hydrating Facial Cleanser – 87 ml,,1161,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Hydrating Facial Cleanser – 87 ml""."
+13,,,Cerave Foaming Facial Cleanser – 87 ml,,1161,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Foaming Facial Cleanser – 87 ml""."
+14,,,Cerave Skin Renewing Retinol Serum – 30 ml,,2883,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Skin Renewing Retinol Serum – 30 ml""."
+15,,,Cerave Baby Moisturizing Lotion – 237 ml,,2418,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Baby Moisturizing Lotion – 237 ml""."
+16,,,Cerave Itch Relief Moisturizing Lotion – 237 ml,,2418,,UPDATE_PRICE_TO_EMARTWAY,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Itch Relief Moisturizing Lotion – 237 ml""."
+17,63663,cerave-acne-control-gel-40ml,Cerave Acne Control Gel 40ml,2250,2250,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+18,63661,cerave-daily-moisturizing-lotion-87ml-for-normal-to-dry-skin,Cerave Daily Moisturizing Lotion 87ml (For Normal to Dry Skin),1232,1232,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+19,63659,cerave-acne-control-cleanser-237ml,Cerave Acne Control Cleanser 237ml,2772,2772,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+20,63657,cerave-skin-renewing-vitamin-c-serum-30ml,Cerave Skin Renewing Vitamin C Serum 30ml,2860,2860,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+21,63615,cerave-moisturizing-lotion-for-dry-to-very-dry-skin-236ml,Cerave Moisturizing Lotion For Dry To Very Dry Skin 236ml,2015.2,2015.2,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+22,63589,cerave-healing-ointment-85g,CeraVe Healing Ointment 85g,1628,1628,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+23,63513,cerave-moisturizing-cream-for-normal-to-dry-skin-56ml,CeraVe Moisturizing Cream For Normal To Dry Skin 56ml,1250,1250,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+24,63491,cerave-healing-ointment-54g,CeraVe Healing Ointment 54g,1276,1276,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+25,63473,cerave-pm-facial-moisturizing-lotion-60ml,Cerave PM Facial Moisturizing Lotion-60ml,1672,1672,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+26,63463,cerave-hydrating-cream-to-foam-cleanser-normal-to-dry-skin-473ml,Cerave Hydrating Cream To Foam Cleanser (normal-to-dry skin) 473ml,3388,3388,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+27,63457,cerave-renewing-sa-cleanser-for-normal-skin-473ml,CeraVe Renewing SA Cleanser For Normal Skin 473ml,3124,3124,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+28,63451,cerave-moisturising-cream-dry-to-very-dry-skin-177ml,CeraVe Moisturising Cream – Dry to Very Dry Skin 177ml,1832,1832,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+29,63449,cerave-sa-smoothing-cleanser-236ml,CeraVe SA Smoothing Cleanser 236ml,2000,2000,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+30,63437,cerave-blemish-control-cleanser-for-blemish-prone-skin-236ml,Cerave Blemish Control Cleanser for Blemish Prone Skin 236ml,2112,2112,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+31,63431,cerave-moisturizing-cream-for-normal-to-dry-skin-453g,Cerave Moisturizing Cream For Normal To Dry Skin 453g,3388,3388,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+32,63395,cerave-hydrating-facial-cleanser-for-normal-dry-skin-237ml,Cerave Hydrating Facial Cleanser (For Normal Dry Skin) 237ml,2508,2508,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+33,63379,cerave-hydrating-toner-200ml,CeraVe Hydrating Toner 200ml,2249,2249,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+34,63377,cerave-diabetics-dry-skin-relief-moisturizing-cream-236ml,CeraVe Diabetics Dry Skin Relief Moisturizing Cream 236ml,2350,2350,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+35,63347,cerave-hydrating-sunscreen-face-sheer-tint-spf-30-50ml,CeraVe Hydrating Sunscreen Face Sheer Tint SPF 30 (50ml),2420,2420,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+36,63345,cerave-hydrating-mineral-sunscreen-broad-spectrum-spf-30-75ml,CeraVe Hydrating Mineral Sunscreen Broad Spectrum SPF 30 (75ml),825,825,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+37,63129,cerave-hydrating-cream-to-foam-cleanser-87ml,Cerave Hydrating Cream-To-Foam Cleanser 87ml,1188,1188,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+38,63027,cerave-baby-moisturizing-cream-226g,CeraVe Baby Moisturizing Cream 226g,2437.5,2437.5,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+39,52358,buy-cerave-foaming-facial-cleanser-for-normal-to-oily-skin-355ml-usa-version,CeraVe Foaming Facial Cleanser For Normal To Oily Skin 355ml USA Version,2728,2728,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+40,52351,cerave-hydrating-facial-cleanser-473ml-2__trashed,CERAVE Hydrating Facial Cleanser (UK) 473ml,3388,3388,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+41,51309,cerave-sa-lotion-for-rough-bumpy-skin-237ml,CeraVe SA Lotion for Rough & Bumpy Skin 237ml,2728,2728,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+42,50875,cerave-moisturizing-cream-236ml-for-normal-to-dry-skin,CeraVe Moisturizing Cream 236ml (For Normal To Dry Skin),2392,2392,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+43,50630,cerave-skin-renewing-night-cream-48g,CeraVe Skin Renewing Night Cream 48g,2590,2590,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+44,36474,cerave-renewing-sa-face-cleanser-236ml,CeraVe Renewing SA Cleanser 237ml (USA Version),2390,2390,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+45,36469,buy-cerave-hydrating-cleanser-for-normal-to-dry-skin-236ml,CERAVE Hydrating Cleanser for Normal to Dry Skin 236ml,1936,1936,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+46,36453,cerave-moisturising-cream-177ml,CeraVe Moisturising Cream 56 ml,1250,1250,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+47,36439,cerave-hydrating-hyaluronic-acid-serum-30ml,CeraVe Hydrating Hyaluronic Acid Serum 30ml,2430,2430,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+48,26169,cerave-resurfacing-retinol-serum-30ml,CeraVe Resurfacing Retinol Serum 30ml,2650.5,2650.5,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+49,26158,cerave-am-facial-moisturizing-lotion-with-sunscreen-89ml,CERAVE AM Facial Moisturizing Lotion with Sunscreen 89ml,2244,2244,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+50,26157,cerave-pm-facial-moisturizing-lotion-89ml,CERAVE PM Facial Moisturizing Lotion 89ml,2494,2494,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+51,26156,cerave-hydrating-cream-to-foam-cleanser-236-ml,CERAVE Hydrating Cream-to-Foam Cleanser 236 ml,2200,2200,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+52,26135,cerave-moisturising-cream-454g,CeraVe moisturising cream 454g,3099.6,3099.6,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+53,26134,cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml,Cerave moisturising cream for dry to very dry skin 50ml,1080,1080,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+54,26099,buy-cerave-hydrating-cleanser-for-normal-to-dry-skin-237ml,Cerave Hydrating Cleanser For Normal To Dry Skin 237ml USA Version,2508,2508,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+55,26098,cerave-hydrating-facial-cleanser-473ml,CERAVE Hydrating Facial Cleanser 473ml,3388,3388,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+56,27258,cerave-foaming-cleanser-for-normal-to-oily-skin-236ml-2,Cerave Foaming Cleanser for Normal to Oily Skin 236ml (UK Version),1990,1990,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+57,24437,cerave-acne-foaming-cream-cleanser,CeraVe Acne Foaming Cream Cleanser 150ml,2596,2596,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+58,23486,cerave-skin-renewing-retinol-serum-30ml-2,CeraVe Skin Renewing Retinol Serum 30ml,2883,2883,,UPDATE_PRICE_TO_EMARTWAY,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+59,,,Cerave Eye Repair Cream – 14.2 g,,,,NO_ACTION_EMART_OK,NO_ACTION,Sheet says eMart item is OK.
+60,,,Cerave SA Cream for Rough & Bumpy Skin – 453g,,,,NO_ACTION_EMART_OK,NO_ACTION,Sheet says eMart item is OK.
+61,,,Cerave SA Body Wash for Rough & Bumpy Skin – 296 ml,,3300,,UPDATE_PRICE_TO_USER_LISTED_VALUE,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave SA Body Wash for Rough & Bumpy Skin – 296 ml""."
+62,,,Cerave Hydrating Body Wash – 296 ml,,3200,,UPDATE_PRICE_TO_USER_LISTED_VALUE,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Hydrating Body Wash – 296 ml""."
+63,,,Cerave Healing Ointment – 340 g,,4200,,UPDATE_PRICE_TO_USER_LISTED_VALUE,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Healing Ointment – 340 g""."
+64,,,Cerave Ultra-Light Moisturizing Lotion with Sunscreen SPF 30 – 50 ml,,2700,,UPDATE_PRICE_TO_USER_LISTED_VALUE,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Ultra-Light Moisturizing Lotion with Sunscreen SPF 30 – 50 ml""."
+65,,,Cerave Hydrating Mineral Sunscreen SPF 50 Face – 75 ml,,3200,,UPDATE_PRICE_TO_USER_LISTED_VALUE,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave Hydrating Mineral Sunscreen SPF 50 Face – 75 ml""."
+66,63493,cerave-healing-ointment-144g,CeraVe Healing Ointment 144g,2500,2500,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+67,63435,cerave-hydrating-mineral-body-sunscreen-broad-spectrum-spf-50-150ml,CeraVe Hydrating Mineral Body Sunscreen Broad Spectrum SPF 50 150ml,2700.0,,,REVIEW_UNSPECIFIED,MANUAL_REVIEW,Action is blank or review-only; no update prepared.
+68,63429,cerave-foaming-cleanser-bar-128gm,CeraVe Foaming Cleanser Bar – 128gm,1050.0,1050,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+69,63425,cerave-sunscreen-stick-broad-spectrum-spf-50-13-32gm,CeraVe Sunscreen Stick Broad Spectrum SPF 50 (13.32gm),1900,1900,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+70,,,Cerave SA Cream for Rough & Bumpy Skin – 340g,,3900,,UPDATE_PRICE_TO_USER_LISTED_VALUE,MANUAL_REVIEW,"No product matched by exact eMart product name ""Cerave SA Cream for Rough & Bumpy Skin – 340g""."
+71,63375,cerave-skin-renewing-nightly-exfoliating-treatment-50ml,Cerave Skin Renewing Nightly Exfoliating Treatment 50ml,2800,2800,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+72,63349,cerave-skin-renewing-eye-cream-14-2g,Cerave Skin Renewing Eye Cream 14.2g,2100,2100,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+73,63309,cerave-skin-renewing-gel-oil-29ml,CeraVe Skin Renewing Gel Oil 29ml,3100,3100,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+74,61844,cerave-gentle-hydrating-shampoo-355ml,CeraVe Gentle Hydrating Shampoo 355ml,3300.0,,,NO_ACTION_EMART_OK,NO_ACTION,Sheet says eMart item is OK.
+75,61838,cerave-anti-dandruff-hydrating-shampoo-355ml,CeraVe Anti-Dandruff Hydrating Shampoo 355ml,3300.0,,,NO_ACTION_EMART_OK,NO_ACTION,Sheet says eMart item is OK.
+76,,,CeraVe Neutrogena Deep Clean Facial Cleanser 200ml,,,,DELETE_EMART_ITEM,DELETE_CANDIDATE_ONLY,Delete candidate only; no automatic deletion.
+77,36463,cerave-moisturizing-cream-pump-453ml,CeraVe Moisturizing Cream Pump 453ml,3890,3890,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+78,36458,cerave-sa-smoothing-cream-anti-roughness-340ge,Cerave SA Smoothing Cream Anti Roughness 340ge,3990,3990,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+79,,,CeraVe Facial Moisturising Lotion (PM) 52ml,,,,UPDATE_SIZE_ONLY,MANUAL_REVIEW,"No product matched by exact eMart product name ""CeraVe Facial Moisturising Lotion (PM) 52ml""."
+80,36443,cerave-facial-moisturising-lotion-spf25-am-52ml,CeraVe Facial Moisturising Lotion SPF25 (AM) 52ml,2650,,,DELETE_EMART_ITEM,DELETE_CANDIDATE_ONLY,Delete candidate only; no automatic deletion.
+81,33897,cerave-hydrating-micellar-water-ultra-gentle-cleanser-296ml,CeraVe Hydrating Micellar Water Ultra Gentle Cleanser 296ml,2100,2100,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+82,26253,cerave-ultra-light-moisturizing-lotion-spf30,CeraVe Ultra-Light Moisturizing Lotion Spf30,2700,2700,,UPDATE_PRICE_TO_USER_LISTED_VALUE,NO_CHANGE,Current regular_price already matches target. sale_price ignored.
+83,26132,cerave-sa-smoothing-cream-with-salicylic-acid-340gm,CeraVe SA Smoothing Cream with Salicylic Acid 340gm,3800,,,NO_ACTION_EMART_OK,NO_ACTION,Sheet says eMart item is OK.
+84,26101,cerave-repairing-hand-cream-50ml,CeraVe Repairing Hand Cream 50ml,999,,,NO_ACTION_EMART_OK,NO_ACTION,Sheet says eMart item is OK.
+85,,,CeraVe Hydrating Cleanser Normal To Dry Skin 355ml (USA Version),,2690,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+86,,,CeraVe Hydrating Sunscreen SPF30 Medium Sheer Tint 50ml,,2464,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+87,,,CeraVe Hydrating Sunscreen SPF 30 Light Sheer Tint 50ml,,2464,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+88,,,CeraVe Acne Foaming Cream Wash 150ml (10% Benzoyl Peroxide),,2520,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+89,,,CeraVe Hydrating Cleanser 20ml,,645,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+90,,,Cerave Hydrating Facial Cleanser For Normal To Dry Skin (USA Version) 473ml,,3916,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+91,,,CeraVe Moisturising Lotion For Dry To Very Dry Skin 473ml (Uk Version),,3300,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+92,,,CeraVe Baby Wash & Shampoo 237ml,,2418,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+93,,,CeraVe Daily Moisturizing Lotion 473ml (Normal To Dry Skin),,3256,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+94,,,CeraVe Baby Moisturizing Cream 142g,,1799,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+95,,,CeraVe AM Facial Moisturizing Lotion with Sunscreen 60ml,,1540,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+96,,,Cerave Hydrating Cream To Foam Cleanser For Normal To Dry Skin 237ml,,2390,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+97,,,CeraVe Eye Repair Cream (USA Version),,2068,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+98,,,CeraVe SA Smoothing Cream 177ml,,2068,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+99,,,CeraVe Hydrating Foaming Oil Cleanser 236ml,,1990,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+100,,,CeraVe Resurfacing Retinol Serum 30ml (USA Version),,2590,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+101,,,CeraVe Daily Moisturizing Lotion 237ml (USA Version),,2390,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.
+102,,,CeraVe Moisturizing Cream 340g UK Version (Dry To Very Dry Skin),,2690,,ADD_TO_EMART,ADD_DRAFT_ONLY,Create CSV draft only; no product will be published automatically.

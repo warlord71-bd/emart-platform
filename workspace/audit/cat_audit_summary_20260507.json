@@ -1,0 +1,257 @@
+{
+  "total_products": 3654,
+  "already_have_product_type_cat": 1851,
+  "missing_product_type_cat": 1803,
+  "missing_pct": 49.3,
+  "suggestions": {
+    "HIGH_confidence": 211,
+    "MEDIUM_confidence": 11,
+    "LOW_confidence_manual": 1581
+  },
+  "breakdown_by_suggested_type": {
+    "face-cleansers": 117,
+    "toners-mists": 31,
+    "serums-ampoules-essences": 24,
+    "sunscreen": 23,
+    "makeup-cosmetics": 18,
+    "lips": 6,
+    "hair-care": 2,
+    "shampoos": 1
+  },
+  "sample_HIGH": [
+    {
+      "id": "93040",
+      "name": "IZEZE Exosome PDRN Firming Eye Cream 30ml",
+      "suggested": "serums-ampoules-essences"
+    },
+    {
+      "id": "93006",
+      "name": "RYO Scalp &amp; Volume Shampoo 400ml",
+      "suggested": "shampoos"
+    },
+    {
+      "id": "93002",
+      "name": "The Ordinary Multi-Peptide Serum for Hair Density 60ml",
+      "suggested": "serums-ampoules-essences"
+    },
+    {
+      "id": "92982",
+      "name": "VT COSMETICS PDRN REEDLE SHOT 100 50ML",
+      "suggested": "serums-ampoules-essences"
+    },
+    {
+      "id": "92968",
+      "name": "MISE EN SCENE Perfect Styling Serum 80ml",
+      "suggested": "serums-ampoules-essences"
+    },
+    {
+      "id": "92966",
+      "name": "Mise en scene Perfect Original Serum 80ml",
+      "suggested": "serums-ampoules-essences"
+    },
+    {
+      "id": "92810",
+      "name": "A’pieu Honey &amp; Milk Lip Oil 5g",
+      "suggested": "lips"
+    },
+    {
+      "id": "75613",
+      "name": "WishCare Underarm Roll On Serum 50ml",
+      "suggested": "serums-ampoules-essences"
+    },
+    {
+      "id": "75559",
+      "name": "WSKINLAB Triple Care Sunstick 17g",
+      "suggested": "sunscreen"
+    },
+    {
+      "id": "75391",
+      "name": "The Derma Co 2% Niacinamide Oily Skin Cleanser 125ml",
+      "suggested": "face-cleansers"
+    },
+    {
+      "id": "75389",
+      "name": "The Derma Co 2% Niacinamide Gentle Face Cleanser 125ml",
+      "suggested": "face-cleansers"
+    },
+    {
+      "id": "75345",
+      "name": "TECHNIC Primer Spray 31ml",
+      "suggested": "makeup-cosmetics"
+    },
+    {
+      "id": "75205",
+      "name": "Skin Cafe 100% Natural Rose Water Face And Body Mist 120ml",
+      "suggested": "toners-mists"
+    },
+    {
+      "id": "75185",
+      "name": "Simple Replenishing Cream Cleanser 230ml",
+      "suggested": "face-cleansers"
+    },
+    {
+      "id": "75178",
+      "name": "Shiliya Pink Flora Body Mist 100ml",
+      "suggested": "toners-mists"
+    }
+  ],
+  "sample_MEDIUM": [
+    {
+      "id": "62843",
+      "name": "TIRTIR MASK FIT RED CUSHION 17C PORCELAIN (mini) 4.5g",
+      "suggested": "makeup-cosmetics"
+    },
+    {
+      "id": "62646",
+      "name": "TIRTIR Mask Fit Red Cushion 6 Shade Trial Kit &#8211; 33N,37C,40N,43N,",
+      "suggested": "makeup-cosmetics"
+    },
+    {
+      "id": "62644",
+      "name": "TIRTIR Mask Fit Red Cushion 6 Shade Trial Kit – 33C,33N,33W,34C,34N,34",
+      "suggested": "makeup-cosmetics"
+    },
+    {
+      "id": "62614",
+      "name": "Bath &amp; Body Works Calypso Clementine Fine Fragrance Mist Travel Si",
+      "suggested": "toners-mists"
+    },
+    {
+      "id": "62418",
+      "name": "FULLY Green Tomato Clay Pack Cleanser 120ml",
+      "suggested": "face-cleansers"
+    },
+    {
+      "id": "62184",
+      "name": "TIRTIR Mask Fit Red Cushion 6 Shade Trial Kit (35N/37C/40N,43N/51N/55N",
+      "suggested": "makeup-cosmetics"
+    },
+    {
+      "id": "62134",
+      "name": "APRIL SKIN PINK ALOE PACK CLEANSER 120g",
+      "suggested": "face-cleansers"
+    },
+    {
+      "id": "62132",
+      "name": "FULLY Red Tomato Jam Pack Cleanser 120ml",
+      "suggested": "face-cleansers"
+    },
+    {
+      "id": "61676",
+      "name": "Belif Super Knights- Pore Firming Vegan Pack Cleanser 150 ml",
+      "suggested": "face-cleansers"
+    },
+    {
+      "id": "60793",
+      "name": "Student Combo: Dabo Rice Cleanser + Dabo Snail Moisturizer",
+      "suggested": "face-cleansers"
+    }
+  ],
+  "sample_LOW": [
+    {
+      "id": "93038",
+      "name": "IZEZE Black Cumin NSA Enrich Cream 50ml",
+      "current_cats": [
+        "cream-moisturizer"
+      ]
+    },
+    {
+      "id": "93030",
+      "name": "Isntree Hyaluronic Acid Moist Cream 100ml",
+      "current_cats": [
+        "cream-moisturizer"
+      ]
+    },
+    {
+      "id": "93026",
+      "name": "APLB Kojic Acid Vitamin C Body Lotion 300ml",
+      "current_cats": [
+        "body-lotion"
+      ]
+    },
+    {
+      "id": "93012",
+      "name": "Sungboon Editor Green Tomato Pore Peeling Jumbo Pad 180ml 60ea",
+      "current_cats": [
+        "skincare-essentials"
+      ]
+    },
+    {
+      "id": "92992",
+      "name": "Cetaphil Moisturizing Cream Dry to Very Dry Sensitive Skin 453g",
+      "current_cats": [
+        "cream-moisturizer"
+      ]
+    },
+    {
+      "id": "92990",
+      "name": "Heimish Bulgarian Rose Satin Cream 55ml",
+      "current_cats": [
+        "cream-moisturizer"
+      ]
+    },
+    {
+      "id": "92972",
+      "name": "KSECRET SEOUL 1988 Cream : Retinal Liposome 1% + Fermented Rice 50ml",
+      "current_cats": [
+        "lip-balm-care"
+      ]
+    },
+    {
+      "id": "92970",
+      "name": "Dabo All In One Black Snail Repair Cream 50ml",
+      "current_cats": [
+        "cream-moisturizer"
+      ]
+    },
+    {
+      "id": "92954",
+      "name": "Some By Mi Yuja Niacin Anti Blemish Starter Kit",
+      "current_cats": [
+        "skincare-essentials"
+      ]
+    },
+    {
+      "id": "92950",
+      "name": "Heimish Marine Care Algae+Peptide Eye Cream 30ml",
+      "current_cats": [
+        "eye-care"
+      ]
+    },
+    {
+      "id": "92942",
+      "name": "SKIN1004 Madagascar Centella Tea-Trica B5 Cream 75ml",
+      "current_cats": [
+        "cream-moisturizer"
+      ]
+    },
+    {
+      "id": "92936",
+      "name": "Round Lab Birch Juice Moisturizing Cream 80ml",
+      "current_cats": [
+        "cream-moisturizer"
+      ]
+    },
+    {
+      "id": "92926",
+      "name": "Goodal Green Tangerine Vita C Dark Spot Care Cream 50ml",
+      "current_cats": [
+        "cream-moisturizer"
+      ]
+    },
+    {
+      "id": "92920",
+      "name": "Heimish Watermelon Moisture Soothing Gel Cream 110ml",
+      "current_cats": [
+        "cream-moisturizer"
+      ]
+    },
+    {
+      "id": "92916",
+      "name": "Rom&amp;amp;nd THE JUICY LASTING TINT 17 DARK COCONUT",
+      "current_cats": [
+        "lipstick-tint"
+      ]
+    }
+  ]
+}

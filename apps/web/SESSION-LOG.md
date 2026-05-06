@@ -258,6 +258,18 @@ Format:
 ## 2026-04-26 — WordPress/Next product contract audit
 - Did: Audited product data flow from WordPress/WooCommerce to Next.js after the tab fix and found one real contract mismatch: native `_emart_ingredients`, `_emart_how_to_use`, and `_emart_product_faq` existed in WordPress but were filtered out by the Next Woo metadata whitelist.
 - Completed tasks: exposed native Emart product content metadata in `src/lib/woocommerce.ts`; deployed live; committed and pushed `f33724a fix: expose native product content metadata`.
+
+## 2026-05-07 00:30 CEST — Codex CeraVe dry-run workflow
+- Did: Created `scripts/cerave-update-from-xlsx.js` and generated CeraVe WooCommerce dry-run CSVs from `cerave_update_plan.xlsx`.
+- Completed tasks: dry-run only; `cerave_dry_run_report.csv`, `cerave_manual_review.csv`, and `cerave_add_to_emart.csv` created locally; no WooCommerce apply was run.
+- Blockers hit: none after switching the script to the VPS-local Woo API pattern (`127.0.0.1` + `Host: e-mart.com.bd`).
+- Next step: owner reviews dry-run/manual/add CSVs; live changes require a separate explicit apply run and must only send `regular_price`.
+
+## 2026-05-07 00:48 CEST — Codex CeraVe price apply
+- Did: Applied reviewed CeraVe price updates through `scripts/cerave-update-from-xlsx.js` after owner explicitly requested clearing sale/discount prices.
+- Completed tasks: 55 matched price rows applied to WooCommerce with `regular_price`; `sale_price` cleared on matched price-action rows; row 81 corrected to 2100 BDT before apply; one size-only row changed title to `CeraVe Facial Moisturising Lotion (PM) 60ml`; add/delete/manual rows were not applied.
+- Blockers hit: none.
+- Next step: review `cerave_manual_review.csv` for the remaining 20 rows; only 3 remaining sale-price visibility rows are non-price-update rows (`REVIEW_UNSPECIFIED`, `DELETE_EMART_ITEM`, `NO_ACTION_EMART_OK`).
 - Blockers hit: none. Local/VPS builds passed; `emartweb` restarted; live homepage returned 200; affected SKIN1004 product payload now includes `_emart_*` keys and still renders cleaned Ingredients plus populated How to use. Nonfatal existing build warning: custom GraphQL sitemap fallback still logs a missing query/queryId error.
 - Next step: optional future cleanup is data-level migration of the 353 Emart Ingredients rows into separate `_emart_ingredients` / `_emart_how_to_use`; not required for current storefront rendering.
 
@@ -767,3 +779,9 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Woo REST returns product `2611` as `publish` and `sync-and-show`; live `/shop/innisfree-super-volcanic-pore-clay-mask-100ml` returns `200` to Googlebot; legacy `/product/innisfree-super-volcanic-pore-clay-mask-100ml` 301s to the clean `/shop/` URL; main image `/wp-content/uploads/2022/04/Vol2.webp` returns `200 image/webp` to Googlebot-image; `emartweb` is online.
 - Blockers hit: External DNS remained intermittently flaky from shell; local loopback and public status checks succeeded when DNS resolved. Rank Math/GraphQL still renders an old title string in generated HTML despite the stored product meta title being updated to the approved Emart format; this does not block Merchant Center crawl access.
 - Next step: In Merchant Center, open this item and click URL Inspection / reprocess or wait for Google for WooCommerce to resync the item.
+
+## 2026-05-07 00:30 CEST — Codex CeraVe dry-run workflow
+- Did: Created `scripts/cerave-update-from-xlsx.js` and generated CeraVe WooCommerce dry-run CSVs from `cerave_update_plan.xlsx`.
+- Completed tasks: dry-run only; `cerave_dry_run_report.csv`, `cerave_manual_review.csv`, and `cerave_add_to_emart.csv` created locally; no WooCommerce apply was run.
+- Blockers hit: none after switching the script to the VPS-local Woo API pattern (`127.0.0.1` + `Host: e-mart.com.bd`).
+- Next step: owner reviews dry-run/manual/add CSVs; live changes require a separate explicit apply run and must only send `regular_price`.
