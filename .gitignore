@@ -1,5 +1,6 @@
 # Web artifacts
 *.html
+!apps/web/public/google044619be7a5ac216.html
 
 # Build outputs
 dist/
