@@ -112,6 +112,31 @@ Site: https://e-mart.com.bd
 
 ---
 
+### 10. Woo action / query URL pollution (handled)
+
+**What it means:** URLs like `/?add_to_wishlist=1756&add-to-cart=62326`, `/?action=yith-woocompare-add-product&id=3702`, `/?ref=aftership&add-to-cart=62921`, `/product/slug/?add-to-cart=74683` appear in GSC as 404s or redirects.
+**Status:** Fixed in `middleware.ts`. The following params are now stripped and 301-redirected to the clean path:
+- Always stripped: `add-to-cart`, `add_to_cart`, `add_to_wishlist`, `srsltid`, `orderby`, `order`, `per_page`, `paged`, `shop_view`
+- Stripped when value matches: `action=yith-woocompare-add-product` (also strips co-present `id`), `ref=aftership`
+- `/product/slug/?add-to-cart=xxx` → strips to `/product/slug/` → next.config 301 → `/shop/slug/` → final canonical
+- `/product-category/path/?add-to-cart=xxx` → strips to `/product-category/path/` → next.config 301 → `/category/path/`
+
+**GSC action:** After Google recrawls these URLs, they should move from "Not found 404" to "Page with redirect" and eventually drop from coverage as Google consolidates on the canonical.
+
+---
+
+### 11. Old sitemap discovery sources (handled)
+
+**What it means:** GSC may have old WordPress/Rank Math sitemap URLs submitted or discovered: `/page-sitemap.xml`, `/post-sitemap.xml`, `/product-sitemap.xml`, `/product_cat-sitemap.xml`, `/wp-sitemap.xml`, `/sitemap_index.xml`.
+**Status:** Nginx already 301-redirects all `*-sitemap*.xml` and `sitemap*` paths to `/sitemap.xml`. The `/wp-sitemap.xml` and `/sitemap_index.xml` are also in `robots.txt` Disallow.
+**GSC action:**
+1. Open GSC → Sitemaps.
+2. Remove any submitted sitemap URLs other than `https://e-mart.com.bd/sitemap.xml`.
+3. The only submitted sitemap should be: `https://e-mart.com.bd/sitemap.xml`.
+4. Do not resubmit old URLs.
+
+---
+
 ## Reference Routes
 
 | Route | File |

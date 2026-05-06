@@ -40,7 +40,6 @@ const SHOP_LINKS = [
   { label: 'New Arrivals', href: '/new-arrivals' },
   { label: 'Sale', href: '/sale' },
   { label: 'Wishlist', href: '/wishlist' },
-  { label: 'Checkout', href: '/checkout' },
 ];
 
 const SUPPORT_LINKS = [
@@ -54,7 +53,6 @@ const SUPPORT_LINKS = [
 
 const STORY_LINKS = [
   { label: 'Our Story', href: '/our-story' },
-  { label: 'About Us', href: '/about-us' },
   { label: 'Authenticity', href: '/authenticity' },
   { label: 'Editorial', href: '/blog' },
   { label: 'Social', href: '/social' },

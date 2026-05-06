@@ -4,11 +4,26 @@ import type { Metadata } from 'next';
 import { CONCERN_DEFINITIONS, getConcernBySlug, getConcernHref, getConcernListing } from '@/lib/concerns';
 import { Sparkles, Target, Droplets, CircleDot, Sun, Star, Clock3, Shield, ShieldCheck, type LucideIcon } from 'lucide-react';
 import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
+import { absoluteUrl } from '@/lib/siteUrl';
 
-export const metadata: Metadata = {
-  title: 'Shop By Concern | Emart Skincare Bangladesh',
-  description: 'Find the perfect skincare products for your skin concern',
-};
+export async function generateMetadata(
+  { searchParams }: { searchParams: { concern?: string } }
+): Promise<Metadata> {
+  const concern = getConcernBySlug(searchParams.concern);
+  const isConcernView = Boolean(searchParams.concern);
+  return {
+    title: concern
+      ? `${concern.label} Products | Emart`
+      : 'Shop By Concern | Emart Skincare Bangladesh',
+    description: concern
+      ? concern.description
+      : 'Find the perfect skincare products for your skin concern',
+    alternates: { canonical: absoluteUrl('/concerns') },
+    robots: isConcernView
+      ? { index: false, follow: true }
+      : { index: true, follow: true },
+  };
+}
 
 export const revalidate = 3600;
 

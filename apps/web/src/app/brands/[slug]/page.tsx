@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
   const desc = `Buy original ${brand.name} skincare in Bangladesh at Emart. Best prices for ${brand.name} products with COD and fast nationwide delivery.`;
-  const title = `${brand.name} Bangladesh | Authentic ${brand.name} Products | Emart`;
+  const title = `${brand.name} Products in Bangladesh | Emart`;
 
   return {
     title: { absolute: title },
