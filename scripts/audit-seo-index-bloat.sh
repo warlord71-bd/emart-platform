@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SEO index-bloat audit for e-mart.com.bd
 # Usage: bash scripts/audit-seo-index-bloat.sh
-set -euo pipefail
+set -eu
 
 SITE="https://e-mart.com.bd"
 SITEMAP_URL="${SITE}/sitemap.xml"
@@ -23,7 +23,7 @@ SHOP_COUNT=$(echo "$SITEMAP" | grep -c '/shop/' || true)
 CATEGORY_COUNT=$(echo "$SITEMAP" | grep -c '/category/' || true)
 OLD_PRODUCT=$(echo "$SITEMAP" | grep -c '/product/' | grep -v '/shop/' || true)
 OLD_PRODUCT_CAT=$(echo "$SITEMAP" | grep -c '/product-category/' || true)
-QUERY_COUNT=$(echo "$SITEMAP" | grep -c '?' || true)
+QUERY_COUNT=$(echo "$SITEMAP" | grep -oP '(?<=<loc>)[^<]+(?=</loc>)' | grep -c '?' || true)
 PRIVATE_COUNT=$(echo "$SITEMAP" | grep -cE '/(checkout|cart|my-account|order)' || true)
 
 # more accurate old-product count (exclude /shop/ prefix)
