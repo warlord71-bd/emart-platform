@@ -279,10 +279,8 @@ apps_web_backup/
 apps/web_backup/
 .codex
 docs/audit/
-scripts/apply-brand-corrections.php
-scripts/category-audit.php
-scripts/emart-safe-audit.sh
-scripts/full-image-sync.sh
+workspace/scripts/apply-brand-corrections.php
+workspace/scripts/category-audit.php
 image-audit.sh
 rebuild.sh
 resolved
