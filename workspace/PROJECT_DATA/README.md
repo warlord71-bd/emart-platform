@@ -1,6 +1,6 @@
 # Project Data Folder
 
-This folder is the data/audit/document entry point for the E-Mart project.
+This folder is the data/audit/document entry point for the Emart project.
 
 Use this folder for non-runtime data:
 

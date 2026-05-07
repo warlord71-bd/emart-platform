@@ -229,6 +229,19 @@ workspace/audit/seo/product-image-ocr-*/
 workspace/audit/seo/product-image-targeted-ocr-*/
 workspace/audit/seo/brand-source-unification-*/
 workspace/DEPLOY-PLAN-*.md
+*.xlsx
+*_dry_run*.csv
+*_manual_review*.csv
+*_add_to_emart*.csv
+workspace/*_woo_import.csv
+workspace/audit/*_report_*.csv
+workspace/audit/active/*_report_*.csv
+workspace/audit/boj_*_202*.json
+workspace/audit/product_cat_cleanup_map_*.csv
+workspace/audit/archive/*
+!workspace/audit/archive/README.md
+workspace/scripts/archive/*
+!workspace/scripts/archive/README.md
 
 # === added 2026-04-26: exclude session/audit/handoff/temp + accidents ===
 # Build artifacts
@@ -236,7 +249,6 @@ workspace/DEPLOY-PLAN-*.md
 .next/
 
 # Local-only docs / handoffs / session logs
-AGENTS.md
 AGENTS.*.md
 TASK_SUMMARY.md
 apps/web/MEMORY.md
@@ -274,5 +286,3 @@ scripts/full-image-sync.sh
 image-audit.sh
 rebuild.sh
 resolved
-e the current version from the branch (resolve conflict)
-olve the conflict - use the current version (HEAD)

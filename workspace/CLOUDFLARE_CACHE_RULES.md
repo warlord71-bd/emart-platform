@@ -1,4 +1,4 @@
-# E-Mart Cloudflare Cache Rules
+# Emart Cloudflare Cache Rules
 
 Cloudflare configuration is not stored in this repository. Apply these rules in
 the Cloudflare dashboard or API when dashboard access is available.

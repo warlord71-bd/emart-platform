@@ -10,6 +10,10 @@ Full name:
 
 - Emart Skincare Bangladesh
 
+Live domain / URL slug:
+
+- e-mart.com.bd
+
 Do not use:
 
 - E-Mart BD

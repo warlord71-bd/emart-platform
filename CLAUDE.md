@@ -1,4 +1,4 @@
-# E-Mart Agent Instructions
+# Emart Agent Instructions
 
 ## 0. Critical Operating Contract for AI Agents
 
@@ -36,6 +36,10 @@ Official full brand name:
 
 - Emart Skincare Bangladesh
 
+Live domain / URL slug:
+
+- e-mart.com.bd
+
 Approved tagline:
 
 - Global Beauty. Local Trust.
@@ -49,7 +53,7 @@ Do not introduce inconsistent variants such as:
 
 ## 2. Headless SEO Architecture Invariants
 
-E-mart.com.bd is a headless commerce system.
+Emart is a headless commerce system served at `e-mart.com.bd`.
 
 - Public SEO surface: Next.js frontend only.
 - Frontend app: `apps/web`.
@@ -233,7 +237,7 @@ If a hotfix is made directly on VPS:
 - Never commit from VPS directly; VPS is runtime, not the commit workspace.
 - Always verify the VPS working tree before changing its Git metadata.
 
-## 11. E-Mart Project Facts
+## 11. Emart Project Facts
 
 - Bangladesh eCommerce site for authentic K-beauty, J-beauty, and international beauty products.
 - Frontend: Next.js 14+, TypeScript, Tailwind CSS.
@@ -326,8 +330,8 @@ Cleanup rules:
 ## 17. Useful Current Memory
 
 - Universal deploy instructions: `/root/CLAUDE.md` and `/root/AGENTS.md`.
-- E-Mart session log: `/var/www/emart-platform/apps/web/SESSION-LOG.md`.
-- E-Mart task/source notes, when present: `/var/www/emart-platform/apps/web/TASKS.md`, `MEMORY.md`, and `LIVE-SOURCE-OF-TRUTH.md`.
+- Emart session log: `/var/www/emart-platform/apps/web/SESSION-LOG.md`.
+- Emart task/source notes, when present: `/var/www/emart-platform/apps/web/TASKS.md`, `MEMORY.md`, and `LIVE-SOURCE-OF-TRUTH.md`.
 - Cleanup restore point from 2026-04-26: `/root/.attic-2026-04-26/`.
 
 ## 18. What Not To Trust

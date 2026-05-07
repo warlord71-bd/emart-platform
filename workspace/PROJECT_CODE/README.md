@@ -1,6 +1,6 @@
 # Project Code Folder
 
-This folder is the code-side entry point for the E-Mart project.
+This folder is the code-side entry point for the Emart project.
 
 It contains compatibility links to the runtime source and helper code:
 
