@@ -1,0 +1,92 @@
+product_id,old_slug,clean_slug,action,note
+3217,the-face-shop-rice-water-bright-light-cleansing-oil-150ml-2,the-face-shop-rice-water-bright-light-cleansing-oil-150ml,SKIP_CONFLICT,"clean slug taken by another product"
+23486,cerave-skin-renewing-retinol-serum-30ml-2,cerave-skin-renewing-retinol-serum-30ml,RENAMED,
+26194,secret-key-snow-white-milky-pack-120g-2,secret-key-snow-white-milky-pack-120g,RENAMED,
+26291,innisfree-intensive-long-lasting-sunscreen-spf50-pa-2,innisfree-intensive-long-lasting-sunscreen-spf50-pa,SKIP_CONFLICT,"clean slug taken by another product"
+26332,confume-argan-smoothing-hair-essence-500-gm-2,confume-argan-smoothing-hair-essence-500-gm,RENAMED,
+26334,confume-argan-treatment-oil-120-ml-25-ml-2,confume-argan-treatment-oil-120-ml-25-ml,RENAMED,
+26400,tiam-anti-blemish-body-lotion-200ml-2,tiam-anti-blemish-body-lotion-200ml,RENAMED,
+26501,simple-protect-n-glow-rest-and-reset-72h-hydrating-gel-50ml-2,simple-protect-n-glow-rest-and-reset-72h-hydrating-gel-50ml,RENAMED,
+26541,im-from-rice-serum-30ml-2,im-from-rice-serum-30ml,RENAMED,
+26544,skinfood-yuja-c-dark-spot-clear-cream-2,skinfood-yuja-c-dark-spot-clear-cream,RENAMED,
+26545,skinfood-yuja-c-dark-spot-clear-essence-2,skinfood-yuja-c-dark-spot-clear-essence,RENAMED,
+26618,hts-anti-hair-loss-scalp-tonic-150ml-2,hts-anti-hair-loss-scalp-tonic-150ml,RENAMED,
+26621,claires-guerisson-9-complex-cream-70g-2,claires-guerisson-9-complex-cream-70g,RENAMED,
+26652,rovectin-travel-kit-4-step-2,rovectin-travel-kit-4-step,RENAMED,
+26748,buy-cos-de-baha-acne-clearing-serum-acne-treatment-30ml-2,buy-cos-de-baha-acne-clearing-serum-acne-treatment-30ml,RENAMED,
+26749,cos-de-baha-centella-asiatica-facial-serum-ch-30ml-2,cos-de-baha-centella-asiatica-facial-serum-ch-30ml,RENAMED,
+26750,cos-de-baha-aha-serum-60ml-n60-2,cos-de-baha-aha-serum-60ml-n60,RENAMED,
+26860,innisfree-perfect-9-repair-cream-ex-60ml-2,innisfree-perfect-9-repair-cream-ex-60ml,RENAMED,
+26867,some-by-mi-super-matcha-pore-clean-cleansing-gel-100ml-2,some-by-mi-super-matcha-pore-clean-cleansing-gel-100ml,RENAMED,
+26878,some-by-mi-super-matcha-pore-care-starter-kit-4pcs-2,some-by-mi-super-matcha-pore-care-starter-kit-4pcs,RENAMED,
+26899,melasma-x-glutathione-water-drop-skin-toner-260ml-2,melasma-x-glutathione-water-drop-skin-toner-260ml,RENAMED,
+26904,melasma-x-moringa-brightening-cool-soothing-gel-160ml-2,melasma-x-moringa-brightening-cool-soothing-gel-160ml,RENAMED,
+26910,beaute-24k-meladoctor-white-gold-repair-ampoule-30ml-2,beaute-24k-meladoctor-white-gold-repair-ampoule-30ml,RENAMED,
+26938,thank-you-farmer-rice-pure-clay-mask-to-foam-cleanser-150ml-2,thank-you-farmer-rice-pure-clay-mask-to-foam-cleanser-150ml,RENAMED,
+26940,thank-you-farmer-safe-sun-fluid-age-0880-spf50-pa-2,thank-you-farmer-safe-sun-fluid-age-0880-spf50-pa,RENAMED,
+26942,thank-you-farmer-sun-project-light-sun-essence-spf50-pa-40ml-2,thank-you-farmer-sun-project-light-sun-essence-spf50-pa-40ml,RENAMED,
+26971,mise-en-scene-golden-morocco-argan-oil-shampoo-680-ml-2,mise-en-scene-golden-morocco-argan-oil-shampoo-680-ml,RENAMED,
+26972,paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml-2,paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml,RENAMED,
+26973,farm-stay-cica-farm-nature-solution-cleansing-foam-180ml-2,farm-stay-cica-farm-nature-solution-cleansing-foam-180ml,RENAMED,
+27022,3w-clinic-relaxing-body-lotion-camellia-550ml-2,3w-clinic-relaxing-body-lotion-camellia-550ml,RENAMED,
+27041,the-face-shop-herb-day-365-master-blending-foaming-cleanser-peach-fig-170ml-2,the-face-shop-herb-day-365-master-blending-foaming-cleanser-peach-fig-170ml,RENAMED,
+27055,the-face-shop-herbday-365-cleansing-foam-aloe-green-tea-170ml-2,the-face-shop-herbday-365-cleansing-foam-aloe-green-tea-170ml,RENAMED,
+27064,mise-en-scene-scalp-care-shampoo-680ml-2,mise-en-scene-scalp-care-shampoo-680ml,RENAMED,
+27065,dabo-elegance-love-body-lotion-500ml-2,dabo-elegance-love-body-lotion-500ml,RENAMED,
+27066,dabo-white-musk-body-lotion-500ml-2,dabo-white-musk-body-lotion-500ml,RENAMED,
+27068,dabo-uv-protection-collagen-lifting-sun-cream-spf50-pa-70ml-2,dabo-uv-protection-collagen-lifting-sun-cream-spf50-pa-70ml,RENAMED,
+27069,dabo-s-o-s-recovery-cica-cream-50ml-2,dabo-s-o-s-recovery-cica-cream-50ml,RENAMED,
+27070,dabo-slimming-hot-gel-anti-cellulite-slim-body-massage-cream-200g-2,dabo-slimming-hot-gel-anti-cellulite-slim-body-massage-cream-200g,RENAMED,
+27071,dabo-eco-lifestyle-premium-cc-cream-spf50-pa-50ml-2,dabo-eco-lifestyle-premium-cc-cream-spf50-pa-50ml,RENAMED,
+27072,dabo-collagen-lifting-eye-cream-for-face-30ml-2,dabo-collagen-lifting-eye-cream-for-face-30ml,RENAMED,
+27073,nella-oneday-whitener-magical-whitening-lotion-40ml-2,nella-oneday-whitener-magical-whitening-lotion-40ml,RENAMED,
+27075,rovectin-clean-marine-micellar-deep-cleansing-water-400ml-2,rovectin-clean-marine-micellar-deep-cleansing-water-400ml,RENAMED,
+27078,kosmedica-organic-clean-gel-intimate-wash-80gm-2,kosmedica-organic-clean-gel-intimate-wash-80gm,RENAMED,
+27081,pax-moly-honey-radiant-glow-cream-100g-2,pax-moly-honey-radiant-glow-cream-100g,RENAMED,
+27082,jumiso-rich-nourishment-sheet-mask-26ml-2,jumiso-rich-nourishment-sheet-mask-26ml,RENAMED,
+27112,welcos-body-phren-shower-gel-oriental-rose-732g-2,welcos-body-phren-shower-gel-oriental-rose-732g,RENAMED,
+27114,medb-daily-snail-cream-100ml-2,medb-daily-snail-cream-100ml,RENAMED,
+27117,3w-clinic-enrich-lovely-foot-cream-100ml-2,3w-clinic-enrich-lovely-foot-cream-100ml,RENAMED,
+27142,skylake-oriental-herb-houttuynia-cordata-hair-tonic-2,skylake-oriental-herb-houttuynia-cordata-hair-tonic,RENAMED,
+27143,sonpark-beauty-water-mini-60ml-2,sonpark-beauty-water-mini-60ml,RENAMED,
+27145,heeyul-premium-24k-gold-ampoule-cream-2,heeyul-premium-24k-gold-ampoule-cream,RENAMED,
+27175,some-by-mi-charcoal-bha-pore-clay-bubble-mask-50ml-2,some-by-mi-charcoal-bha-pore-clay-bubble-mask-50ml,RENAMED,
+27205,benton-tea-tree-serum-30ml-2,benton-tea-tree-serum-30ml,RENAMED,
+27206,benton-snail-bee-ultimate-serum-35-ml-2,benton-snail-bee-ultimate-serum-35-ml,RENAMED,
+27207,benton-goodbye-redness-centella-spot-cream-15ml-2,benton-goodbye-redness-centella-spot-cream-15ml,RENAMED,
+27212,the-inkey-list-salicylic-acid-cleanser-150ml-2,the-inkey-list-salicylic-acid-cleanser-150ml,RENAMED,
+27227,the-inkey-list-succinic-acid-blemish-treatment-15ml-2,the-inkey-list-succinic-acid-blemish-treatment-15ml,RENAMED,
+27228,the-inkey-list-lactic-acid-serum-30ml-2,the-inkey-list-lactic-acid-serum-30ml,RENAMED,
+27229,jigott-goat-milk-whitening-cream-70ml-2,jigott-goat-milk-whitening-cream-70ml,RENAMED,
+27255,innisfree-black-tea-trial-kit-4pcs-2,innisfree-black-tea-trial-kit-4pcs,RENAMED,
+27256,innisfree-black-tea-youth-enhancing-ampoule-30-ml-2,innisfree-black-tea-youth-enhancing-ampoule-30-ml,RENAMED,
+27258,cerave-foaming-cleanser-for-normal-to-oily-skin-236ml-2,cerave-foaming-cleanser-for-normal-to-oily-skin-236ml,RENAMED,
+27298,banila-co-clean-it-zero-cleansing-balm-nourishing-100ml-2,banila-co-clean-it-zero-cleansing-balm-nourishing-100ml,RENAMED,
+27300,some-by-mi-total-care-serum-trial-kit-4pcs-2,some-by-mi-total-care-serum-trial-kit-4pcs,RENAMED,
+36066,m-a-c-amplified-lipstick-vegas-volt-3gm-2,m-a-c-amplified-lipstick-vegas-volt-3gm,RENAMED,
+38113,nature-republic-soothing-moisture-aloe-vera-92-soothing-gel-2,nature-republic-soothing-moisture-aloe-vera-92-soothing-gel,RENAMED,
+43862,cosrx-cica-7-relief-kit-3-step-2,cosrx-cica-7-relief-kit-3-step,SKIP_CONFLICT,"clean slug taken by another product"
+52351,cerave-hydrating-facial-cleanser-473ml-2,cerave-hydrating-facial-cleanser-473ml,SKIP_CONFLICT,"clean slug taken by another product"
+53339,anua-heartleaf-pore-control-cleansing-oil-200ml-2,anua-heartleaf-pore-control-cleansing-oil-200ml,RENAMED,
+55943,beauty-of-joseon-red-bean-water-gel-100ml-2,beauty-of-joseon-red-bean-water-gel-100ml,RENAMED,
+59241,aplb-glutathione-niacinamide-facial-cream-55ml-2,aplb-glutathione-niacinamide-facial-cream-55ml,SKIP_CONFLICT,"clean slug taken by another product"
+59538,ksecret-seoul-1988-essence-snail-mucin-97-rice-100ml-copy,ksecret-seoul-1988-essence-snail-mucin-97-rice-100ml,SKIP_CONFLICT,"clean slug taken by another product"
+59767,medicube-zero-pore-cream-50ml-2,medicube-zero-pore-cream-50ml,RENAMED,
+59897,aplb-glutathione-niacinamide-body-lotion-300ml-copy,aplb-glutathione-niacinamide-body-lotion-300ml,SKIP_CONFLICT,"clean slug taken by another product"
+61936,dr-althea-aqua-glowing-sunscreen-45ml-2,dr-althea-aqua-glowing-sunscreen-45ml,SKIP_CONFLICT,"clean slug taken by another product"
+62282,dr-althea-pure-grinding-cleansing-balm-50ml-2,dr-althea-pure-grinding-cleansing-balm-50ml,SKIP_CONFLICT,"clean slug taken by another product"
+63035,marymay-blackberry-complex-glow-washoff-pack-125g-2,marymay-blackberry-complex-glow-washoff-pack-125g,SKIP_CONFLICT,"clean slug taken by another product"
+63093,marymay-idebenone-blackberry-complex-intensive-total-care-cream-70g-2,marymay-idebenone-blackberry-complex-intensive-total-care-cream-70g,SKIP_CONFLICT,"clean slug taken by another product"
+63551,haruharu-wonder-black-rice-moisture-deep-cleansing-oil-150ml-2,haruharu-wonder-black-rice-moisture-deep-cleansing-oil-150ml,SKIP_CONFLICT,"clean slug taken by another product"
+63617,tiam-daily-sun-care-cream-50ml-2,tiam-daily-sun-care-cream-50ml,SKIP_CONFLICT,"clean slug taken by another product"
+74296,pookie-combo-offer-5-buy-2-trendy-beauties-liquid-matte-waterproof-lipstick-and-get-1-free-2,pookie-combo-offer-5-buy-2-trendy-beauties-liquid-matte-waterproof-lipstick-and-get-1-free,SKIP_CONFLICT,"clean slug taken by another product"
+74407,durex-durex-thin-feel-12-condoms-2,durex-durex-thin-feel-12-condoms,SKIP_CONFLICT,"clean slug taken by another product"
+74551,imagic-48-colors-eyeshadow-palette-2,imagic-48-colors-eyeshadow-palette,SKIP_CONFLICT,"clean slug taken by another product"
+74618,karite-bubble-pink-mud-mask-5ml-2,karite-bubble-pink-mud-mask-5ml,RENAMED,
+74668,kota-cosmetics-hair-color-tortilla-2,kota-cosmetics-hair-color-tortilla,SKIP_CONFLICT,"clean slug taken by another product"
+74669,kota-cosmetics-hair-color-mellow-2,kota-cosmetics-hair-color-mellow,SKIP_CONFLICT,"clean slug taken by another product"
+74686,la-girl-brow-pomade-long-lasting-gel-formula-soft-black-gpb-366-2,la-girl-brow-pomade-long-lasting-gel-formula-soft-black-gpb-366,SKIP_CONFLICT,"clean slug taken by another product"
+74687,l-a-girl-pro-matte-foundation-nude-glm716-2,l-a-girl-pro-matte-foundation-nude-glm716,SKIP_CONFLICT,"clean slug taken by another product"
+75176,sheglam-snatch-n-define-stick-terracotta-2,sheglam-snatch-n-define-stick-terracotta,SKIP_CONFLICT,"clean slug taken by another product"
+75486,trendy-beauties-liquid-matte-waterproof-lipstick-05-2,trendy-beauties-liquid-matte-waterproof-lipstick-05,SKIP_CONFLICT,"clean slug taken by another product"
+75513,trendy-beauties-liquid-matte-waterproof-lipstick-10-2,trendy-beauties-liquid-matte-waterproof-lipstick-10,SKIP_CONFLICT,"clean slug taken by another product"

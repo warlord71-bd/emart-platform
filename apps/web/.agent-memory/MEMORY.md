@@ -20,3 +20,5 @@
 - [2026-05-02 other-agent bug check](project_20260502_other_agent_bugcheck.md) — removed incompatible ESLint 10 / Next 16 lint config from local Next 14 app; bug report was mostly stale PM2 log output
 - [Brand-level origin assignment](project_origin_brand_assignment.md) — `pa_origin` created and assigned by `product_brand`; 3,641 published products assigned from user-corrected XLSX on 2026-05-05
 - [Catalog sale price cleanup](project_sale_price_cleanup.md) — Woo sale prices/dates cleared catalog-wide on 2026-05-08; homepage Flash Sale fallback fixed in `d23c37e`
+- [Product SKU audit state](project_sku_audit_state.md) — dry-run generated 2026-05-08: 119 published products missing `_sku`, 10 duplicate same-value `_sku` meta rows, no recoverable old SKUs for missing rows; await owner review before applying
+- [2026-05-08 WP cache/PHP-FPM stability fix](project_wp_cache_php_fpm_20260508.md) — stale WP Super Cache drop-in disabled; `WP_CACHE=false`; PHP-FPM pool raised from 5 to 12 children after WP admin/update 502/slowness
