@@ -80,6 +80,14 @@ export default function Navigation() {
               🏷️ BRANDS
             </Link>
 
+            {/* COMBOS & KITS */}
+            <Link
+              href="/category/emart-combos"
+              className={desktopLinkClass}
+            >
+              🎁 COMBOS
+            </Link>
+
             {/* SALE - with badge */}
             <Link
               href="/sale"
@@ -175,6 +183,15 @@ export default function Navigation() {
                   className={mobileLinkClass}
                 >
                   🏷️ BRANDS
+                </Link>
+
+                {/* COMBOS & KITS */}
+                <Link
+                  href="/category/emart-combos"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileLinkClass}
+                >
+                  🎁 COMBOS & KITS
                 </Link>
 
                 {/* SALE */}

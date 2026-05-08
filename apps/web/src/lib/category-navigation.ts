@@ -55,6 +55,7 @@ export const HOME_TOP_CATEGORY_ORDER: TopCategoryConfig[] = [
   { name: 'J-Beauty', slugCandidates: ['japanese-beauty', 'j-beauty', 'japanese-skincare'], fallbackSlug: 'japanese-beauty' },
   { name: 'Serum & Ampoule', slugCandidates: ['serums-ampoules-essences', 'toners-mists'], fallbackSlug: 'serums-ampoules-essences' },
   { name: 'Moisturizers', slugCandidates: ['night-cream', 'moisturizer', 'cream-moisturizers'], fallbackSlug: 'night-cream' },
+  { name: 'Kits & Combos', slug: 'emart-combos', href: '/category/emart-combos' },
   { name: 'Sunscreen', slugCandidates: ['sunscreen'], fallbackSlug: 'sunscreen' },
   { name: 'Cleansers', slugCandidates: ['face-cleansers'], fallbackSlug: 'face-cleansers' },
 ];
@@ -78,6 +79,7 @@ export const CATEGORY_NAV_SECTIONS: MenuCategoryGroup[] = [
       { name: 'Sunscreen', slug: 'sunscreen' },
       { name: 'Eye Care', slug: 'eye-care' },
       { name: 'Masks', slug: 'face-masks' },
+      { name: 'Kits & Combos', slug: 'emart-combos', href: '/category/emart-combos' },
     ],
   },
   {
