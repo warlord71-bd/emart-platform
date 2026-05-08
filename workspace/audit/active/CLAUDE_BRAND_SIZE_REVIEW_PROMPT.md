@@ -1,131 +1,81 @@
-# Claude Prompt: Apply skipped product brand + size review safely
+# Claude Prompt: Review skipped product brand + size rows only
 
-Use this prompt in Claude/Codex from the repository root after the review CSV files are present in `workspace/audit/active/`.
+## Source files
+
+Use these files from `workspace/audit/active/`:
+
+- `duplicate-products-brand-size-skipped.csv`
+- `duplicate-products-brand-size-skipped_brand_size_review.csv`
+- `duplicate-products-brand-size-apply-ready.csv`
+- `duplicate-products-brand-size-manual-review.csv`
+- `duplicate-products-brand-size-excluded-combos.csv`
+
+## Main rule
+
+Do **not** apply anything automatically.
+Do **not** decide all rows yourself.
+Do **not** delete, trash, merge, rename, change price, or change stock.
+
+Owner wants to see everything first and approve manually.
 
 ## Context
 
-We already completed the confirmed duplicate audit and cleanup for `duplicate-products-brand-size-audit.csv`.
+Confirmed duplicate cleanup is already done. This task is only for skipped products where brand/size metadata needs review.
 
-Now this task is for the skipped/manual metadata rows from:
+The skipped file is **not a delete list**.
 
-- `workspace/audit/active/duplicate-products-brand-size-skipped.csv`
-- `workspace/audit/active/duplicate-products-brand-size-apply-ready.csv`
-- `workspace/audit/active/duplicate-products-brand-size-manual-review.csv`
-- `workspace/audit/active/duplicate-products-brand-size-excluded-combos.csv`
+Known site info:
 
-The skipped file is **not a delete list**. It contains products that were skipped because brand or size could not be confidently normalized.
-
-## Goal
-
-Update product metadata only for safe rows:
-
-1. Confirm/propose correct brand first.
-2. Assign appropriate size only when confident.
-3. Do **not** assign size for combo/eMart combo rows.
-4. Do **not** delete, merge, trash, rename, or change price/stock.
-5. Create a dry-run report first.
-6. Apply only `duplicate-products-brand-size-apply-ready.csv` rows after dry run looks safe.
-7. Keep `manual-review.csv` rows untouched.
-
-## Safety rules
-
-- Read product data from WordPress DB/WooCommerce on VPS, not public frontend scraping.
-- Use `/var/www/wordpress/wp-config.php` for DB credentials.
-- DB is `emart_live`, table prefix is `wp4h_`.
-- Always use backups/logs.
-- Do not permanently delete anything.
-- Do not edit combo products, eMart combo products, bundles, sets, kits, or value packs unless a human approves.
-- Do not guess a size if product title and official/source data are unclear.
-- If there is a conflict between CSV and live product title, mark manual review.
-
-## Recommended workflow
-
-1. Verify files exist:
-
-```bash
-cd /root/emart-platform
-ls -lah workspace/audit/active/duplicate-products-brand-size-*.csv
-```
-
-2. Create a dry-run PHP script in `workspace/scripts/active/apply-brand-size-review-dry-run.php` that:
-
-- Reads `workspace/audit/active/duplicate-products-brand-size-apply-ready.csv`.
-- Checks each product ID exists and is published.
-- Checks the row is not combo/bundle/eMart combo.
-- Confirms proposed brand and proposed size columns exist.
-- Prints what would change:
-  - product_id
-  - current title
-  - current brand taxonomy terms
-  - proposed brand
-  - current size/attribute/meta if available
-  - proposed size
-  - confidence
-  - action
-- Outputs dry-run CSV:
-  - `workspace/audit/active/brand-size-apply-dry-run-YYYYMMDD-HHMMSS.csv`
-
-3. Review dry-run summary:
-
-- total rows read
-- safe rows
-- skipped rows
-- brand changes
-- size changes
-- manual conflicts
-
-4. Only after the dry run looks safe, create apply script:
-
-`workspace/scripts/active/apply-brand-size-review.php`
-
-It should update only safe apply-ready rows:
-
+- WordPress path: `/var/www/wordpress`
+- DB: `emart_live`
+- Prefix: `wp4h_`
 - Product brand taxonomy: `product_brand`
-- Size metadata or product attribute, using existing site convention first.
-- If site uses size only in title and no attribute/meta exists, do not invent a new taxonomy without checking existing implementation.
-- Prefer existing WooCommerce product attribute if a size/volume/weight attribute already exists.
 
-5. After apply, rerun duplicate audit:
+## Your job
 
-```bash
-cd /root/emart-platform/apps/web
-php /tmp/emart-logical-duplicate-db.php
-cat /root/emart-platform/workspace/audit/active/duplicate-products-brand-size-audit.json
-```
+Create a review table only.
 
-6. Commit scripts and reports, not raw secrets:
+For each row, show:
 
-```bash
-cd /root/emart-platform
-git status --short
-git add workspace/scripts/active/apply-brand-size-review-dry-run.php \
-        workspace/scripts/active/apply-brand-size-review.php \
-        workspace/audit/active/brand-size-apply-dry-run-*.csv \
-        workspace/audit/active/brand-size-apply-result-*.csv
+- product_id
+- product title
+- current brand from live DB
+- proposed brand from CSV
+- current size/attribute/meta if available
+- proposed size from CSV
+- confidence
+- source/reason
+- action suggestion
+- approve column blank for owner decision
 
-git commit -m "audit: apply safe brand and size metadata review"
-git push origin main
-```
+Group rows as:
 
-## Expected source files from ChatGPT review
+1. High confidence brand + size suggestions
+2. Brand-only suggestions
+3. Size-only suggestions
+4. Manual review needed
+5. Excluded combo/eMart combo/bundle/set rows
 
-The ChatGPT review split 446 skipped rows into:
+## Combo rule
 
-- Apply-ready rows: 67
-- Manual review rows: 343
-- Excluded combo/eMart combo rows: 36
+Do not assign size for combo/eMart combo/bundle/set/value-pack products. Mark them as excluded unless owner gives approval.
 
-Use only the apply-ready CSV for automatic metadata updates.
+## Output required
 
-## Final response required
+Create only review/dry-run report files, for example:
 
-After running, report:
+- `workspace/audit/active/brand-size-owner-approval-table-YYYYMMDD.csv`
+- `workspace/audit/active/brand-size-review-summary-YYYYMMDD.md`
 
-- How many apply-ready rows were read.
-- How many were updated.
-- How many were skipped and why.
-- Which metadata fields were changed.
-- Path to result CSV.
-- Whether duplicate audit count changed after rerun.
+Do not create an apply script yet unless owner asks after reviewing the approval table.
 
-Do not claim success unless the result CSV and rerun audit confirm it.
+## Final response to owner
+
+Report only:
+
+- source files found
+- number of rows by group
+- output report paths
+- no changes applied
+
+Again: no automatic apply, no deletion, no metadata update without owner approval.
