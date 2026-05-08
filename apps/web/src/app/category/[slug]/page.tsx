@@ -79,6 +79,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: { absolute: seo.title },
     description: seo.description,
+    robots: Number(cat.count || 0) <= 0
+      ? { index: false, follow: true }
+      : { index: true, follow: true },
     alternates: { canonical: seo.canonical },
     openGraph: {
       title: seo.title,
