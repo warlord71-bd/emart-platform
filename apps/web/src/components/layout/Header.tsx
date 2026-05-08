@@ -662,9 +662,19 @@ export default function Header() {
               <Menu size={24} />
             </button>
 
-            <Link href="/" className="mx-auto flex min-w-0 items-center justify-center gap-2">
-              <Image src="/logo.png" alt="Emart" width={34} height={34} className="h-8 w-8 rounded-lg" priority />
-              <span className="truncate text-base font-extrabold leading-none text-ink">Emart</span>
+            <Link href="/" className="mx-auto flex min-w-0 items-center gap-2">
+              <Image src="/logo.png" alt="Emart" width={36} height={36} className="h-9 w-9 shrink-0 rounded-xl" priority />
+              <div className="min-w-0">
+                <div className="flex items-center gap-1">
+                  <span className="text-[15px] font-extrabold leading-none text-ink">Emart</span>
+                  <span className="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-emerald-50 px-1.5 py-0.5 text-[9px] font-extrabold text-emerald-700">
+                    <BadgeCheck size={9} />Authentic
+                  </span>
+                </div>
+                <div className="truncate text-[10px] font-bold uppercase tracking-wide text-accent leading-tight mt-0.5">
+                  Emart Skincare BD
+                </div>
+              </div>
             </Link>
 
             <div className="flex items-center justify-end">
@@ -865,20 +875,50 @@ export default function Header() {
           />
           <aside className="relative flex h-dvh w-[92vw] max-w-[360px] flex-col bg-white shadow-2xl">
             <div className="shrink-0 px-4 pt-4">
-              <div className="flex items-center justify-between border-b border-hairline pb-2">
-                <div className="flex items-center gap-2">
-                  <Image src="/logo.png" alt="Emart" width={24} height={24} className="rounded-md" />
-                  <div className="font-extrabold text-ink">Emart</div>
-                </div>
+              <div className="flex items-center justify-between pb-4">
+                <Link href="/" onClick={() => setMobileOpen(false)} className="flex min-w-0 items-center gap-3">
+                  <div className="relative shrink-0">
+                    <Image src="/logo.png" alt="Emart" width={48} height={48} className="h-12 w-12 rounded-2xl shadow-sm" />
+                    <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-white">
+                      <BadgeCheck size={9} className="text-white" strokeWidth={3} />
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[17px] font-extrabold leading-none text-ink">Emart</span>
+                      <span className="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-extrabold text-emerald-700">
+                        <BadgeCheck size={10} />Authentic Only
+                      </span>
+                    </div>
+                    <div className="mt-1 text-[11px] font-bold uppercase tracking-wider text-accent">
+                      Emart Skincare Bangladesh
+                    </div>
+                  </div>
+                </Link>
                 <button
                   type="button"
                   onClick={() => setMobileOpen(false)}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-50"
+                  className="ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-50 hover:text-gray-600"
                   aria-label="Close menu"
                 >
-                  <X size={22} />
+                  <X size={20} />
                 </button>
               </div>
+              <div className="mb-3 grid grid-cols-3 divide-x divide-hairline rounded-xl border border-hairline bg-bg-alt/60 py-2 text-center">
+                <div className="px-2">
+                  <div className="text-[13px] font-extrabold text-ink">40+</div>
+                  <div className="text-[10px] font-semibold text-muted">Brands</div>
+                </div>
+                <div className="px-2">
+                  <div className="text-[13px] font-extrabold text-ink">100%</div>
+                  <div className="text-[10px] font-semibold text-muted">Authentic</div>
+                </div>
+                <div className="px-2">
+                  <div className="text-[13px] font-extrabold text-ink">COD</div>
+                  <div className="text-[10px] font-semibold text-muted">Nationwide</div>
+                </div>
+              </div>
+              <div className="border-t border-hairline" />
             </div>
 
             <div className="shrink-0 px-4 pt-3">

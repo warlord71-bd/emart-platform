@@ -1,4 +1,7 @@
 // src/app/page.tsx
+import Image from 'next/image';
+import Link from 'next/link';
+import { BadgeCheck, ShieldCheck, Truck } from 'lucide-react';
 import { getBestSellingProducts, getCategories, getNewArrivals, getProducts, getSaleProducts } from '@/lib/woocommerce';
 import { getWordPressPosts } from '@/lib/wordpress-posts';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
@@ -107,6 +110,47 @@ export default async function HomePage() {
   return (
     <div className="bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+
+      {/* Mobile store identity card — hidden on desktop */}
+      <section className="lg:hidden border-b border-hairline bg-white px-4 py-3">
+        <div className="flex items-center gap-3">
+          <div className="relative shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Emart"
+              width={56}
+              height={56}
+              className="h-14 w-14 rounded-2xl shadow-sm"
+              priority
+            />
+            <span className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-white">
+              <BadgeCheck size={11} className="text-white" strokeWidth={3} />
+            </span>
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-lg font-extrabold leading-none text-ink">Emart</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-extrabold text-emerald-700">
+                <BadgeCheck size={10} />Authentic Only
+              </span>
+            </div>
+            <div className="mt-0.5 text-[11px] font-bold uppercase tracking-wider text-accent">
+              Emart Skincare Bangladesh
+            </div>
+            <div className="mt-2 flex items-center gap-3 text-[11px] font-semibold text-muted">
+              <span className="flex items-center gap-1"><ShieldCheck size={11} className="text-emerald-500" />40+ Global Brands</span>
+              <span className="flex items-center gap-1"><Truck size={11} className="text-accent" />COD · All BD</span>
+            </div>
+          </div>
+          <Link
+            href="/shop"
+            className="shrink-0 rounded-xl bg-accent px-3 py-2 text-xs font-extrabold text-white shadow-sm transition-colors hover:bg-accent/90 active:scale-95"
+          >
+            Shop Now
+          </Link>
+        </div>
+      </section>
+
       <HeroCarousel />
       {/* Mobile: horizontal scroll discovery strip */}
       <MobileDiscovery categories={mobileDiscoveryCategories} showChips={false} showCategories={false} />
