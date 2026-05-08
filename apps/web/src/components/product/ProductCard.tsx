@@ -9,6 +9,7 @@ import { useCartStore } from '@/store/cartStore';
 import { getDiscountPercent, isInStock } from '@/lib/woocommerce';
 import { formatBDT } from '@/lib/formatters';
 import { getProductCardEyebrow } from '@/lib/product-display';
+import { getVersionBadge } from '@/lib/version-display';
 import type { WooProduct } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 
@@ -107,6 +108,16 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
           <h3 className={`type-product-title mt-1 line-clamp-2 min-h-[2.6rem] text-[15px] leading-snug text-ink md:text-base ${isCompact ? 'md:text-[15px]' : ''}`}>
             {product.name}
           </h3>
+
+          {(() => {
+            const vb = getVersionBadge(product.emart_version);
+            return vb ? (
+              <span className="mt-0.5 inline-flex items-center gap-0.5 text-[10px] leading-none text-gray-500">
+                <span>{vb.flag}</span>
+                <span>{vb.label}</span>
+              </span>
+            ) : null;
+          })()}
 
           <div className="mt-2 flex min-h-[20px] items-center justify-between gap-2">
             {hasRating ? (

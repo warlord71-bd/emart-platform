@@ -8,6 +8,7 @@ import { isInStock } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import type { WooProduct } from '@/lib/woocommerce';
 import { formatPrice } from '@/lib/woocommerce';
+import { getVersionBadge } from '@/lib/version-display';
 import { formatBDT } from '@/lib/formatters';
 import { COMPANY } from '@/lib/companyProfile';
 
@@ -259,6 +260,17 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       <h1 className="w-full max-w-[20ch] whitespace-normal break-words text-2xl font-serif font-bold leading-tight text-lumiere-text-primary [overflow-wrap:anywhere] sm:max-w-none md:text-3xl">
         {product.name}
       </h1>
+
+      {/* Version badge — shown below title, above rating */}
+      {(() => {
+        const vb = getVersionBadge(product.emart_version);
+        return vb ? (
+          <span className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-semibold text-gray-600">
+            <span>{vb.flag}</span>
+            <span>{vb.label}</span>
+          </span>
+        ) : null;
+      })()}
 
       {/* Rating & Stock */}
       <div className="flex flex-col gap-2">

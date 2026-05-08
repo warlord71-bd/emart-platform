@@ -76,6 +76,7 @@ export interface WooProduct {
   average_rating: string;
   rating_count: number;
   featured: boolean;
+  emart_version?: 'us' | 'uk' | 'eu' | 'fr';
 }
 
 export interface WooImage {
@@ -366,6 +367,7 @@ function transformProduct(product: any): WooProduct {
     average_rating: String(product.average_rating || '0'),
     rating_count: Number(product.rating_count || 0),
     featured: Boolean(product.featured),
+    ...(product.emart_version ? { emart_version: product.emart_version as WooProduct['emart_version'] } : {}),
   };
 }
 
