@@ -10,6 +10,7 @@ import {
   Camera,
   ChevronDown,
   Flame,
+  Gift,
   Heart,
   Menu,
   Mic,
@@ -825,6 +826,11 @@ export default function Header() {
                 MEN&apos;S
               </Link>
 
+              <Link href="/category/emart-combos" className="flex h-full items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-extrabold text-ink hover:bg-white hover:text-accent">
+                <span className="text-violet-500">●</span>
+                Combos &amp; Kits
+              </Link>
+
               <Link href="/sale" className="ml-auto flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent-soft px-3 text-sm font-extrabold text-accent hover:bg-accent-soft/80">
                 <Flame size={15} />
                 Sale
@@ -895,6 +901,14 @@ export default function Header() {
                   className="inline-flex shrink-0 items-center gap-1 rounded-full border border-hairline bg-cyan-50 px-3 py-1.5 text-xs font-extrabold text-cyan-700 transition-colors hover:bg-cyan-600 hover:text-white active:scale-95"
                 >
                   MEN'S
+                </Link>
+                <Link
+                  href="/category/emart-combos"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-hairline bg-violet-50 px-3 py-1.5 text-xs font-extrabold text-violet-700 transition-colors hover:bg-violet-600 hover:text-white active:scale-95"
+                >
+                  <Gift size={13} />
+                  Combos
                 </Link>
               </div>
               <div className="border-t border-hairline" />
