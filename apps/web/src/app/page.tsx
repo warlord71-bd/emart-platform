@@ -72,7 +72,7 @@ export default async function HomePage() {
 
   const safeBestSellers = bestSellerProducts.length > 0 ? bestSellerProducts : fallbackProducts.slice(0, 8);
   const safeNewArrivals = newArrivalProducts.length > 0 ? newArrivalProducts : fallbackProducts.slice(0, 8);
-  const safeSaleProducts = saleProducts.length > 0 ? saleProducts : fallbackProducts.slice(0, 10);
+  const safeSaleProducts = saleProducts;
   const brandLogos = brandLogoManifest
     .filter((b): b is typeof b & { logo: string } => !b.fallback && typeof b.logo === 'string')
     .map(({ id, name, slug, logo }) => ({ id, name, slug, logo }));

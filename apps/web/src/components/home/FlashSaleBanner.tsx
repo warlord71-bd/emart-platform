@@ -94,7 +94,8 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
           <ul className="flex w-max gap-4">
             {items.map((p) => {
               const img = p.images?.[0];
-              const pct = discountPercent(p.regular_price, p.sale_price);
+              const hasSalePrice = Boolean(p.sale_price && p.sale_price !== p.regular_price);
+              const pct = hasSalePrice ? discountPercent(p.regular_price, p.sale_price) : null;
               const stockLeft = Math.max(3, Math.min(12, p.stock_quantity ?? ((p.id % 8) + 3)));
               const stockProgress = Math.min(100, Math.round((stockLeft / 12) * 100));
               return (
@@ -124,7 +125,7 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
                       <p className="line-clamp-2 min-h-[2.6rem] text-sm font-bold leading-5">{p.name}</p>
                       <div className="mt-2 flex items-baseline gap-1.5">
                         <span className="text-base font-extrabold text-accent">{formatBDT(p.sale_price || p.price)}</span>
-                        {p.regular_price && p.regular_price !== p.sale_price && (
+                        {hasSalePrice && p.regular_price && (
                           <span className="text-xs text-gray-500 line-through">{formatBDT(p.regular_price)}</span>
                         )}
                       </div>
