@@ -154,6 +154,7 @@ Cargo.lock
 # Java
 *.class
 *.jar
+!apps/mobile/android/gradle/wrapper/gradle-wrapper.jar
 *.war
 *.ear
 hs_err_pid*
