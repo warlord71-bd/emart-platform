@@ -75,11 +75,50 @@ function limitProducts(primary: WooProduct[], fallback: WooProduct[], limit = 24
   return sanitizeOfferProducts(dedupeProducts([...primary, ...fallback])).slice(0, limit);
 }
 
+async function fetchProductsAtOrAbovePrice(minPrice: number) {
+  const firstPage = await getProducts({
+    min_price: String(minPrice),
+    per_page: 100,
+    page: 1,
+    orderby: 'price',
+    order: 'desc',
+    stock_status: 'instock',
+  });
+
+  const remainingPages = Array.from(
+    { length: Math.max(firstPage.totalPages - 1, 0) },
+    (_, index) => index + 2,
+  );
+  const remainingResults = await Promise.all(
+    remainingPages.map((page) =>
+      getProducts({
+        min_price: String(minPrice),
+        per_page: 100,
+        page,
+        orderby: 'price',
+        order: 'desc',
+        stock_status: 'instock',
+      }),
+    ),
+  );
+
+  return dedupeProducts([
+    ...firstPage.products,
+    ...remainingResults.flatMap((result) => result.products),
+  ])
+    .filter((product) => numericPrice(product) >= minPrice)
+    .sort((a, b) => numericPrice(b) - numericPrice(a));
+}
+
 export function getOfferCollectionConfig(slug: string) {
   return OFFER_CONFIG_MAP.get(slug as OfferCollectionSlug) || null;
 }
 
 export async function getOfferCollectionProducts(slug: OfferCollectionSlug, limit = 24) {
+  if (slug === 'free-delivery') {
+    return sanitizeOfferProducts(await fetchProductsAtOrAbovePrice(3000));
+  }
+
   const [
     comboSearch,
     bogoSearch,
@@ -113,12 +152,6 @@ export async function getOfferCollectionProducts(slug: OfferCollectionSlug, limi
     case 'clearance-sale': {
       const sorted = [...saleProducts].sort((a, b) => discountPercent(b) - discountPercent(a) || numericPrice(a) - numericPrice(b));
       return limitProducts(sorted, comboProducts, limit);
-    }
-
-    case 'free-delivery': {
-      const premiumCombos = comboProducts.filter((product) => numericPrice(product) >= 3000);
-      const premiumProducts = popularProducts.filter((product) => numericPrice(product) >= 3000);
-      return limitProducts(premiumCombos, premiumProducts, limit);
     }
 
     case 'coupon': {
