@@ -7,12 +7,13 @@ E-mart.com.bd is headless.
 - Do not expose backend URLs as SEO pages.
 - Do not canonical public pages to backend URLs.
 - Do not use WordPress theme SEO or Rank Math as the primary public SEO system.
+- Product pages should be the canonical public product truth for Google/Search/AI: visible facts, metadata, Product/Offer schema, Merchant Center feed, and Woo source data must agree.
 
 Official brand names:
 
 - Short: Emart
 - Full: Emart Skincare Bangladesh
-- Tagline: Global Beauty. Local Trust.
+- Tagline: Authentic Korean, Japanese & Global Skincare Bangladesh.
 
 ---
 

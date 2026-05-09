@@ -66,6 +66,10 @@ const nextConfig = {
 
   async redirects() {
     return [
+      { source: '/category/skincare',       destination: '/category/skincare-essentials', permanent: true },
+      { source: '/category/skin-care',      destination: '/category/skincare-essentials', permanent: true },
+      { source: '/product-category/skincare', destination: '/category/skincare-essentials', permanent: true },
+      { source: '/product-category/skin-care/:path*', destination: '/category/skincare-essentials', permanent: true },
       { source: '/product-category/:slug*', destination: '/category/:slug*', permanent: true },
       { source: '/product/:slug',           destination: '/shop/:slug',      permanent: true },
       { source: '/product-tag/:slug*',      destination: '/shop',            permanent: true },

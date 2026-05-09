@@ -15,6 +15,12 @@ Current brand names:
 - Full: Emart Skincare Bangladesh
 - Live domain/URL: e-mart.com.bd
 
+App surfaces:
+
+- Web: `apps/web` Next.js frontend for public storefront and SEO.
+- Mobile: `apps/mobile` Expo app (`emart-bd`) using secure API/BFF routes.
+- Backend/source: WooCommerce/WordPress private data source only.
+
 Core rule: edit on Local, sync to VPS, verify live, then push Repo last.
 
 Default workflow:
@@ -41,6 +47,12 @@ Data and app invariants:
 - Mobile: never ship WooCommerce consumer keys, secrets, tokens, or private API credentials inside the app bundle.
 - Mobile app should use approved secure API/BFF routes, not direct public Woo credentials.
 
+Brand and SEO wording:
+
+- Current public wording wins over old notes: user-provided live evidence or live/search-facing output, then `apps/web` metadata/source, then current brand docs.
+- Treat old decisions and session logs as historical unless confirmed current.
+- Never infer the current tagline from one old note; exact-search old wording before and after edits, and ask if sources conflict.
+
 SEO rules:
 
 - Optimize for Google first, but do not build Google-only SEO hacks.
@@ -48,14 +60,16 @@ SEO rules:
 - Every indexable public page must have one clean canonical URL based on `https://e-mart.com.bd`.
 - Dynamic sitemap must use current live Woo/API data, include only canonical public URLs, and use accurate `lastmod` when available.
 - `robots.ts` / `robots.txt` must allow important public pages and block private, duplicate, checkout, account, cart, order, internal API, and backend-like routes.
-- Product JSON-LD must match real visible product data: name, image, valid sku, price, BDT currency, availability, brand, url, and real reviews only.
+- Product pages should output Product + Offer JSON-LD from real visible product data: name, image, sku when valid, price, currency BDT, availability, brand, url, and reviews only when real.
 - Product schema, page text, Merchant Center feed, and WooCommerce product data must match; never fake price, stock, rating, review, brand, or availability.
+- Product pages should be the canonical public product truth for Google/Search/AI: visible facts, metadata, schema, Merchant Center data, and Woo source data must agree.
 - Merchant listing schema is only for pages where customers can buy directly from Emart.
 - Category, brand, concern, ingredient, and routine pages should be indexable only with useful unique content and real product listings.
 - Empty, duplicate, thin, parameter, filter, sort, and search-result pages should be noindex or canonicalized/redirected as appropriate.
 - For Google AI Overviews / AI Mode, use normal SEO: helpful text, internal links, crawlability, structured data matching visible content, fast mobile UX, and updated Merchant Center/Business Profile data.
 - Do not add special AI markup, `llms.txt` promises, or hidden AI content.
-- Use IndexNow only for added, updated, or deleted canonical URLs on supported engines; do not submit old unchanged URL dumps.
+- Use IndexNow only for added, updated, or deleted canonical URLs on supported engines; it supports discovery but does not guarantee indexing or ranking.
+- Do not submit old unchanged URL dumps to IndexNow.
 - For SEO changes, verify when possible with Search Console/Rich Results, Merchant Center, Bing Webmaster Tools, sitemap fetch, robots check, and live curl/status tests.
 - No agent may promise Google ranking #1/#2 or guaranteed indexing; report measurable technical improvements only.
 

@@ -42,7 +42,14 @@ Live domain / URL slug:
 
 Approved tagline:
 
-- Global Beauty. Local Trust.
+- Authentic Korean, Japanese & Global Skincare Bangladesh
+
+Brand/SEO wording verification rule:
+
+- For taglines, titles, meta descriptions, SEO copy, and brand promises, verify current public-facing wording before updating docs or code.
+- Source order: user-provided live evidence or live/search-facing output first, then `apps/web` metadata/source, then current brand docs.
+- Treat `apps/web/DECISIONS.md`, old `SESSION-LOG.md` entries, and old task-board notes as historical unless the current task confirms them.
+- Never infer the current tagline from one old note; exact-search old wording before and after edits, and ask if sources conflict.
 
 Do not introduce inconsistent variants such as:
 
@@ -257,6 +264,7 @@ Frontend vs backend data rule:
 
 - WooCommerce/WordPress is the source of truth for product facts: name, slug, price, sale price, stock, image, brand, category, origin, concerns, descriptions, reviews, and order/customer state.
 - Next.js is the public SEO/rendering surface. Generate metadata, canonicals, sitemap, JSON-LD, product pages, category pages, and brand pages from current Woo/API data.
+- Each Next.js product page should be the canonical public product truth for Google/Search/AI: visible facts, metadata, schema, Merchant Center feed, and Woo source data must agree.
 - Do not maintain duplicate product facts in frontend files except small curated mappings, display labels, route aliases, and design configuration. If Woo product data is wrong, fix Woo data through dry-run/report/apply, not by hiding the error in React.
 - Mobile app must use the same approved data contract as web. Prefer secure Next.js API/BFF routes over direct Woo REST credentials in the app bundle.
 

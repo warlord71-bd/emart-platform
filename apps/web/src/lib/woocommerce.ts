@@ -300,6 +300,7 @@ const PUBLIC_PRODUCT_META_KEYS = new Set([
   '_emart_ingredients',
   '_emart_how_to_use',
   '_emart_product_faq',
+  '_emart_meta_description',
   '_wc_facebook_enhanced_catalog_attributes_ingredients',
   '_wc_facebook_enhanced_catalog_attributes_instructions',
   '_wc_facebook_enhanced_catalog_attributes_care_instructions',

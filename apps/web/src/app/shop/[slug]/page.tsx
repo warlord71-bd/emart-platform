@@ -22,14 +22,18 @@ interface ProductFaqItem {
   answer: string;
 }
 
-function getRankMathMeta(product: WooProduct, key: string): string | null {
+function getProductMetaString(product: WooProduct, key: string): string | null {
   const v = product.meta_data?.find((m) => m.key === key)?.value;
   return v && typeof v === 'string' && v.trim().length > 5 ? v.trim() : null;
 }
 
 function getSeoDescription(product: WooProduct): string {
-  const rm = getRankMathMeta(product, '_rank_math_description');
-  if (rm) return rm;
+  const emartMeta = getProductMetaString(product, '_emart_meta_description');
+  if (emartMeta) return emartMeta;
+
+  const rankMathMeta = getProductMetaString(product, '_rank_math_description');
+  if (rankMathMeta) return rankMathMeta;
+
   return (
     product.short_description?.replace(/<[^>]+>/g, '').trim().substring(0, 160) ||
     product.name

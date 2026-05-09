@@ -29,7 +29,7 @@ Emart carries Korean beauty first, along with Japanese, UK, USA, France, Thailan
 
 ## Brand Promise
 
-Global Beauty. Local Trust.
+Authentic Korean, Japanese & Global Skincare Bangladesh.
 
 Emart connects global-standard beauty products with local verification, customer support, faster delivery, and Bangladesh-focused shopping guidance.
 
@@ -61,7 +61,9 @@ Core themes:
 
 ## Approved Tagline
 
-Global Beauty. Local Trust.
+Authentic Korean, Japanese & Global Skincare Bangladesh.
+
+Currentness rule: if tagline or SEO wording sources disagree, live/search-facing output and `apps/web` metadata/source win over old decision notes, task logs, or session history. Exact-search old wording before and after edits, and ask the owner if the current wording is still unclear.
 
 ## Approved SEO Brand Usage
 
