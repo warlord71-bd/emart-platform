@@ -11,6 +11,7 @@ import { formatPrice } from '@/lib/woocommerce';
 import { getVersionBadge } from '@/lib/version-display';
 import { formatBDT } from '@/lib/formatters';
 import { COMPANY } from '@/lib/companyProfile';
+import { getMetaPixelProductParams, trackMetaEvent } from '@/lib/metaPixel';
 
 interface ProductInfoProps {
   product: WooProduct;
@@ -190,6 +191,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const handleAddToCart = () => {
     if (!inStock) return;
     for (let i = 0; i < quantity; i++) { addItem(product); }
+    trackMetaEvent('AddToCart', getMetaPixelProductParams(product, quantity));
     setIsAdded(true);
     openCart();
     toast.success('Added to Cart');
@@ -200,6 +202,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     if (!inStock) return;
     clearCart();
     addItem(product, quantity);
+    trackMetaEvent('AddToCart', getMetaPixelProductParams(product, quantity));
     window.location.href = '/checkout';
   };
 

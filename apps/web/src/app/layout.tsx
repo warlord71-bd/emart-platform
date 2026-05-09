@@ -5,6 +5,7 @@ import '@/styles/midnight-blossom.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
+import MetaPixel from '@/components/analytics/MetaPixel';
 import { Toaster } from 'react-hot-toast';
 import Providers from './providers';
 import { GoogleAnalytics } from '@next/third-parties/google';
@@ -239,6 +240,7 @@ export default function RootLayout({
           <main id="main-content" className="min-h-screen max-w-full overflow-x-hidden">{children}</main>
           <Footer />
           <CartDrawer />
+          <MetaPixel />
           {/* WhatsApp Float Button */}
           <a
             href={COMPANY.whatsappHref}

@@ -11,6 +11,7 @@ import { formatBDT } from '@/lib/formatters';
 import { getProductCardEyebrow } from '@/lib/product-display';
 import { getVersionBadge } from '@/lib/version-display';
 import type { WooProduct } from '@/lib/woocommerce';
+import { getMetaPixelProductParams, trackMetaEvent } from '@/lib/metaPixel';
 import toast from 'react-hot-toast';
 
 interface Props {
@@ -60,6 +61,7 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
     e.stopPropagation();
     if (!inStock) return;
     addItem(product);
+    trackMetaEvent('AddToCart', getMetaPixelProductParams(product));
     toast.success('Added to Cart', {
       duration: 2000,
     });

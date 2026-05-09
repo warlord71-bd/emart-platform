@@ -8,6 +8,7 @@ import { DetailsTabs } from '@/components/product/DetailsTabs';
 import { ReviewsSection } from '@/components/product/ReviewsSection';
 import ProductCard from '@/components/product/ProductCard';
 import Breadcrumbs from '@/components/common/Breadcrumbs';
+import ProductViewContentEvent from '@/components/analytics/ProductViewContentEvent';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { getProductSeo } from '@/lib/seo';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
@@ -573,6 +574,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <ProductViewContentEvent product={product} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(productJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       <Breadcrumbs
