@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, Package, ArrowRight, User } from 'lucide-react';
 import { COMPANY } from '@/lib/companyProfile';
+import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue, trackMetaEvent } from '@/lib/metaPixel';
 
 export default function OrderSuccessPage() {
   const searchParams = useSearchParams();
@@ -15,6 +16,39 @@ export default function OrderSuccessPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!orderId) return;
+
+    const rawPayload = sessionStorage.getItem(META_PIXEL_PURCHASE_STORAGE_KEY);
+    if (!rawPayload) return;
+
+    try {
+      const payload = JSON.parse(rawPayload);
+      const value = parseMetaPixelValue(payload?.value);
+
+      if (payload?.orderId === orderId && value) {
+        trackMetaEvent('Purchase', {
+          content_ids: Array.isArray(payload.content_ids) ? payload.content_ids.map(String) : undefined,
+          content_type: 'product',
+          currency: 'BDT',
+          value,
+          contents: Array.isArray(payload.contents)
+            ? payload.contents.map((item: any) => ({
+                id: String(item.id),
+                quantity: Number(item.quantity) > 0 ? Number(item.quantity) : 1,
+                item_price: parseMetaPixelValue(item.item_price),
+              }))
+            : undefined,
+          num_items: Number(payload.num_items) > 0 ? Number(payload.num_items) : undefined,
+        });
+      }
+    } catch {
+      // Ignore malformed stored tracking payloads; checkout success must never fail because of analytics.
+    } finally {
+      sessionStorage.removeItem(META_PIXEL_PURCHASE_STORAGE_KEY);
+    }
+  }, [orderId]);
 
   if (!mounted) return null;
 

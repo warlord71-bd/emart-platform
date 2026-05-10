@@ -8,6 +8,7 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import { COMPANY } from '@/lib/companyProfile';
+import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue } from '@/lib/metaPixel';
 
 const DISTRICTS = [
   'Dhaka', 'Chittagong', 'Rajshahi', 'Khulna', 'Sylhet',
@@ -127,6 +128,22 @@ export default function CheckoutPage() {
 
       if (!response.ok || !orderId) {
         throw new Error(data?.error || 'Order creation failed');
+      }
+
+      const orderTotal = parseMetaPixelValue(data?.order?.total) || parseMetaPixelValue(totalPrice());
+      if (orderTotal) {
+        sessionStorage.setItem(META_PIXEL_PURCHASE_STORAGE_KEY, JSON.stringify({
+          orderId: String(orderId),
+          value: orderTotal,
+          currency: 'BDT',
+          content_ids: items.map((item) => String(item.id)),
+          contents: items.map((item) => ({
+            id: String(item.id),
+            quantity: item.quantity,
+            item_price: parseMetaPixelValue(item.price),
+          })),
+          num_items: totalItems(),
+        }));
       }
 
       clearCart();

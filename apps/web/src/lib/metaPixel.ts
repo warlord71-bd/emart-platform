@@ -6,12 +6,16 @@ declare global {
   interface Window {
     fbq?: (
       action: 'init' | 'track',
-      eventName: string,
+      eventName: MetaPixelEventName,
       parameters?: MetaPixelEventParameters
     ) => void;
     _fbq?: Window['fbq'];
   }
 }
+
+export const META_PIXEL_PURCHASE_STORAGE_KEY = 'emart-meta-purchase';
+
+type MetaPixelEventName = 'PageView' | 'ViewContent' | 'AddToCart' | 'Purchase';
 
 type MetaPixelEventParameters = {
   content_ids?: string[];
@@ -53,8 +57,15 @@ export function getMetaPixelProductParams(product: WooProduct, quantity = 1): Me
   };
 }
 
-export function trackMetaEvent(eventName: 'PageView' | 'ViewContent' | 'AddToCart', parameters?: MetaPixelEventParameters) {
+export function trackMetaEvent(eventName: MetaPixelEventName, parameters?: MetaPixelEventParameters) {
   if (typeof window === 'undefined' || typeof window.fbq !== 'function') return;
   window.fbq('track', eventName, parameters);
 }
 
+export function parseMetaPixelValue(value: unknown): number | undefined {
+  const parsed = typeof value === 'number'
+    ? value
+    : Number.parseFloat(String(value || '').replace(/[^\d.-]/g, ''));
+
+  return Number.isFinite(parsed) && parsed > 0 ? Number(parsed.toFixed(2)) : undefined;
+}
