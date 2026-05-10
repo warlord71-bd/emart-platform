@@ -207,10 +207,13 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   };
 
   // Extract attributes from product
-  const getAttributeValue = (attrName: string): string => {
-    const attr = product.attributes?.find((a) =>
+  const getAttributeValue = (attrName: string, preferTaxonomy = false): string => {
+    const matches = product.attributes?.filter((a) =>
       a.name.toLowerCase().includes(attrName.toLowerCase())
-    );
+    ) || [];
+    const attr = preferTaxonomy
+      ? matches.find((a) => a.id && a.id > 0) || matches[0]
+      : matches[0];
     return attr?.options?.[0] || '';
   };
 
@@ -218,7 +221,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const brandName = productBrand?.name || '';
   const brandSlug = productBrand?.slug || '';
   const showBrandChip = Boolean(productBrand);
-  const madeIn = getAttributeValue('made in') || getAttributeValue('country') || getAttributeValue('origin') || '';
+  const madeIn = getAttributeValue('origin', true) || getAttributeValue('made in') || getAttributeValue('country') || '';
   const sizeFromAttr = getAttributeValue('size') || getAttributeValue('volume');
   const sizeFromName = !sizeFromAttr
     ? product.name.match(/(\d+(?:\.\d+)?)\s*(ml|g|oz|L)/i)

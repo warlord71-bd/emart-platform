@@ -860,7 +860,7 @@ const ORIGIN_BRAND_MAP: Record<string, string[]> = {
   'uk': ['CeraVe', 'The Ordinary', 'Paula\'s Choice'],
   'usa': ['CeraVe', 'Cetaphil', 'Neutrogena'],
   'france': ['Bioderma', 'Eucerin', 'La Roche-Posay'],
-  'india': ['Minimalist', 'Dot & Key', 'Blessed Botanicals'],
+  'india': ['Minimalist', 'Dot & Key', 'The Derma Co', 'Mamaearth', 'Wishcare', 'Aqualogica', 'Blessed Botanicals'],
   'bangladesh': ['Dabo', 'Ponds', 'Himalaya']
 };
 

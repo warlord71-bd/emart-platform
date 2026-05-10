@@ -834,3 +834,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Plan anchored to existing `workspace/SEO_TODO.md`, `workspace/docs/gsc-final-indexing-action-plan.md`, 2026-05-09 product SEO audit summary, `pa_origin` dry-run, and recent session-log next steps.
 - Blockers hit: none.
 - Next step: Execute Week 2 items from the named `TASKS.md` section only, using read-only audits/dry-runs before any Woo data changes.
+
+## 2026-05-10 — Codex The Derma Co India origin correction
+- Did: Corrected The Derma Co origin handling: removed stale custom `Origin=Korea` from 43 Woo products, kept/verified taxonomy `pa_origin=India`, updated PDP/frontend origin lookup to prefer taxonomy origin, and wrote Baidu Qianfan instructions for stale product copy/meta cleanup.
+- Completed tasks: The Derma Co removed from Korean-origin handling and verified as Indian-origin in PDP chip/listing logic.
+- Verification: Local build passed; VPS build passed; `pm2 restart emartweb` succeeded; live `/` returned 200; sample PDP shows India origin chip; Woo check returned `pa_origin_india=43 custom_origin_korea=0`; South Korea origin check returned no The Derma Co matches.
+- Blockers hit: Existing product copy/meta/FAQ text can still say Korea import; this is intentionally left for Baidu Qianfan content/meta update via dry-run then approved apply.
+- Next step: Baidu Qianfan follows `workspace/audit/active/baidu-qianfan-the-derma-co-meta-instructions-20260510.md` to update The Derma Co product copy/meta only; no frontend product-fact edits needed.

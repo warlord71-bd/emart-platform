@@ -362,7 +362,11 @@ function getEmartFaqItems(product: WooProduct): ProductFaqItem[] {
 }
 
 function getProductAttributeValue(product: WooProduct, matcher: RegExp): string {
-  const attribute = product.attributes?.find((item) => matcher.test(item.name));
+  const attributes = product.attributes?.filter((item) => matcher.test(item.name)) || [];
+  const prefersOriginTaxonomy = matcher.test('origin') || matcher.test('made in') || matcher.test('country');
+  const attribute = prefersOriginTaxonomy
+    ? attributes.find((item) => item.id && item.id > 0) || attributes[0]
+    : attributes[0];
   return attribute?.options?.filter(Boolean).slice(0, 3).join(', ') || '';
 }
 
