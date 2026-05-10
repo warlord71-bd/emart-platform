@@ -820,3 +820,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Confirmed the wrapper JAR contains `org/gradle/wrapper/GradleWrapperMain.class` and Git tracks `gradlew` as `100755`; local Gradle execution was not run because Java is not installed on this server.
 - Blockers hit: Local sandbox bwrap unavailable, so shell reads/writes were run with approved escalation; Java missing locally prevents `./gradlew --version`.
 - Next step: Re-run the Expo/EAS Android build from the latest `origin/main`.
+
+## 2026-05-10 — Codex fbclid broken-path handoff correction
+- Did: Promoted the Meta/fbclid broken-path decision from audit/chat into `TASKS.md` and shared durable memory.
+- Completed tasks: L1.2.7 tracking-token/broken-path URL policy audit; no app/runtime change.
+- Verification: Live `/?fbclid=IwY2xtest` returned 200; live `/IwY2xtest` and `/.../celimax-poredark-spot?fbclid=IwY2xtest` returned 404; Local and VPS session logs matched before patch.
+- Blockers hit: none.
+- Next step: Fix the bad source ad/share URL to the exact canonical product URL; do not add a homepage redirect for random token paths.

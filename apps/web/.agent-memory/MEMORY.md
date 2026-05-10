@@ -22,3 +22,4 @@
 - [Catalog sale price cleanup](project_sale_price_cleanup.md) — Woo sale prices/dates cleared catalog-wide on 2026-05-08; homepage Flash Sale fallback fixed in `d23c37e`
 - [Product SKU audit state](project_sku_audit_state.md) — dry-run generated 2026-05-08: 119 published products missing `_sku`, 10 duplicate same-value `_sku` meta rows, no recoverable old SKUs for missing rows; await owner review before applying
 - [2026-05-08 WP cache/PHP-FPM stability fix](project_wp_cache_php_fpm_20260508.md) — stale WP Super Cache drop-in disabled; `WP_CACHE=false`; PHP-FPM pool raised from 5 to 12 children after WP admin/update 502/slowness
+- [Tracking-token broken-path URL policy](project_tracking_token_url_policy.md) — `fbclid` query URLs can be valid, but random token paths and ambiguous broken ad/share paths should stay real 404s unless the exact destination is proven
