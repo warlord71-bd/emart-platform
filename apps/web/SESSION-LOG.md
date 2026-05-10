@@ -827,3 +827,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Live `/?fbclid=IwY2xtest` returned 200; live `/IwY2xtest` and `/.../celimax-poredark-spot?fbclid=IwY2xtest` returned 404; Local and VPS session logs matched before patch.
 - Blockers hit: none.
 - Next step: Fix the bad source ad/share URL to the exact canonical product URL; do not add a homepage redirect for random token paths.
+
+## 2026-05-10 — Codex Week 2 SEO plan unification
+- Did: Added a named Week 2 SEO Completion Plan to `TASKS.md`, durable memory, `AGENTS.md`, and `CLAUDE.md` so agents stop mixing active SEO work with unrelated workstreams.
+- Completed tasks: documentation/state unification only; no app/runtime change.
+- Verification: Plan anchored to existing `workspace/SEO_TODO.md`, `workspace/docs/gsc-final-indexing-action-plan.md`, 2026-05-09 product SEO audit summary, `pa_origin` dry-run, and recent session-log next steps.
+- Blockers hit: none.
+- Next step: Execute Week 2 items from the named `TASKS.md` section only, using read-only audits/dry-runs before any Woo data changes.

@@ -31,6 +31,7 @@ Default workflow:
 - Inspect only relevant files; avoid whole-repo scans unless required.
 - Use low-token workflow: targeted `rg`/search, open only needed files, short summaries.
 - Keep changes minimal and scoped to the requested task.
+- For active Week 2 SEO work, use `apps/web/TASKS.md` section `Week 2 SEO Completion Plan` plus `apps/web/.agent-memory/project_week2_seo_completion_plan.md` as the current scope; do not blend in unrelated LLM, migration, mobile, or UI tasks.
 
 Protected areas:
 

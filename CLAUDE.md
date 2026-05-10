@@ -276,6 +276,13 @@ Business workstreams, in priority order:
 4. Product update loop: schedule regular product/price/image checks; output diff reports first; only apply Woo changes after owner review.
 5. Mobile app release: before Google Play production, verify production signing, versionCode, target API, privacy policy, Data safety, content rating, store listing assets, account/delete-data requirements, checkout/auth parity, crash-free testing, and staged rollout.
 
+Current Week 2 SEO completion source of truth:
+
+- Active checklist: `apps/web/TASKS.md` section `Week 2 SEO Completion Plan`.
+- Durable handoff: `apps/web/.agent-memory/project_week2_seo_completion_plan.md`.
+- Supporting docs: `workspace/SEO_TODO.md`, `workspace/docs/gsc-final-indexing-action-plan.md`, `workspace/audit/active/product-seo-audit-summary-20260509-205659.txt`, and `workspace/audit/active/pa-origin-gap-dry-run-20260508.csv`.
+- Do not mix Week 2 SEO with Free LLM pool setup, Exonhost migration, mobile release, or UI redesign work unless the user explicitly changes scope.
+
 Current mobile app notes:
 
 - `apps/mobile` is Expo/React Native and targets Android API 35 through Expo config/Gradle properties.
