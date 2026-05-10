@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createOrder } from '@/lib/woocommerce';
 import { ensureCustomerByEmail } from '@/lib/customerAccounts';
+import { sendMetaPurchaseEvent } from '@/lib/metaCapi';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -16,7 +17,7 @@ function isValidEmail(value: unknown): value is string {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { payment_method, billing, shipping, line_items, customer_note } = body ?? {};
+    const { payment_method, billing, shipping, line_items, customer_note, meta_event_id } = body ?? {};
 
     if (!isNonEmptyString(payment_method)) {
       return NextResponse.json({ error: 'Payment method is required' }, { status: 400 });
@@ -54,6 +55,19 @@ export async function POST(request: NextRequest) {
 
     if (!order?.id) {
       return NextResponse.json({ error: 'Order creation failed' }, { status: 502 });
+    }
+
+    const metaEventId = isNonEmptyString(meta_event_id)
+      ? meta_event_id.trim()
+      : `emart-purchase-${order.id}`;
+
+    try {
+      await sendMetaPurchaseEvent({ request, order, eventId: metaEventId });
+    } catch (error: any) {
+      console.error('Meta CAPI Purchase exception', {
+        orderId: order.id,
+        message: error?.message || 'Unknown Meta CAPI error',
+      });
     }
 
     return NextResponse.json({ success: true, order }, { status: 201 });

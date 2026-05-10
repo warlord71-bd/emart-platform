@@ -7,7 +7,8 @@ declare global {
     fbq?: (
       action: 'init' | 'track',
       eventName: MetaPixelEventName,
-      parameters?: MetaPixelEventParameters
+      parameters?: MetaPixelEventParameters,
+      options?: MetaPixelEventOptions
     ) => void;
     _fbq?: Window['fbq'];
   }
@@ -16,6 +17,10 @@ declare global {
 export const META_PIXEL_PURCHASE_STORAGE_KEY = 'emart-meta-purchase';
 
 type MetaPixelEventName = 'PageView' | 'ViewContent' | 'AddToCart' | 'Purchase';
+
+type MetaPixelEventOptions = {
+  eventID?: string;
+};
 
 type MetaPixelEventParameters = {
   content_ids?: string[];
@@ -57,9 +62,13 @@ export function getMetaPixelProductParams(product: WooProduct, quantity = 1): Me
   };
 }
 
-export function trackMetaEvent(eventName: MetaPixelEventName, parameters?: MetaPixelEventParameters) {
+export function trackMetaEvent(
+  eventName: MetaPixelEventName,
+  parameters?: MetaPixelEventParameters,
+  options?: MetaPixelEventOptions,
+) {
   if (typeof window === 'undefined' || typeof window.fbq !== 'function') return;
-  window.fbq('track', eventName, parameters);
+  window.fbq('track', eventName, parameters, options);
 }
 
 export function parseMetaPixelValue(value: unknown): number | undefined {

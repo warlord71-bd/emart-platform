@@ -88,6 +88,7 @@ export default function CheckoutPage() {
 
     setLoading(true);
     try {
+      const metaEventId = `emart-purchase-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
       const billing = {
         first_name: form.first_name,
         last_name: form.last_name,
@@ -112,6 +113,7 @@ export default function CheckoutPage() {
           form.note,
           paymentMethod !== 'cod' ? `TxnID: ${txnId}` : '',
         ].filter(Boolean).join(' | '),
+        meta_event_id: metaEventId,
       };
 
       const response = await fetch('/api/checkout', {
@@ -137,6 +139,7 @@ export default function CheckoutPage() {
           value: orderTotal,
           currency: 'BDT',
           content_ids: items.map((item) => String(item.id)),
+          eventID: metaEventId,
           contents: items.map((item) => ({
             id: String(item.id),
             quantity: item.quantity,

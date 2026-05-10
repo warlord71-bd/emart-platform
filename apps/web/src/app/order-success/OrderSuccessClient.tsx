@@ -41,7 +41,7 @@ export default function OrderSuccessPage() {
               }))
             : undefined,
           num_items: Number(payload.num_items) > 0 ? Number(payload.num_items) : undefined,
-        });
+        }, payload?.eventID ? { eventID: String(payload.eventID) } : undefined);
       }
     } catch {
       // Ignore malformed stored tracking payloads; checkout success must never fail because of analytics.
