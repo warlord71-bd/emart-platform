@@ -6,5 +6,23 @@
     "EMART_VPS_ROOT": "/var/www/emart-platform",
     "EMART_WEB_APP": "/root/emart-platform/apps/web",
     "EMART_VPS_WEB_APP": "/var/www/emart-platform/apps/web"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/.expo": true,
+    "workspace/audit/archive": true,
+    "workspace/audit/processed": true,
+    "workspace/audit/skincarebd": true,
+    "workspace/audit/seo/product-image-logic-*": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/.expo": true,
+    "workspace/audit/archive": true,
+    "workspace/audit/processed": true,
+    "workspace/audit/skincarebd": true,
+    "workspace/audit/seo/product-image-logic-*": true
   }
 }
