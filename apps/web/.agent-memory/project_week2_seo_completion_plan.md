@@ -59,6 +59,14 @@ Next action:
 - Test samples live before changing code.
 - For old `/product/*` URLs, verify 301 to `/shop/*`, final canonical, title, status, and sitemap presence.
 
+2026-05-11 audit update:
+
+- P0 old `/product/*` migration audit completed: sampled URLs 301 to clean `/shop/*`, final pages return 200, canonicals are clean `/shop/*`, pages are `index, follow`, clean `/shop/*` URLs are in sitemap, and old `/product/*` URLs are absent from sitemap. Classification: A — already fixed, waiting for Google. Report: `workspace/audit/active/p0-product-url-migration-audit-20260511.md`.
+- P1 Crawled currently not indexed export classified from 1,035 GSC rows. Pattern counts: 409 root/query junk, 346 old `/product/*`, 113 current `/shop/*` product, 44 policy/static/other, 43 current `/brands/*`, 37 old `/product-tag/*`, 19 old `/product-category/*`, 12 `_next/static`, 6 current `/category/*`, 6 old `/product-brand/*`.
+- P1 live-tested 106 representative URLs. Classification counts: A=61, D=43, E=2, B=0, C=0. Report: `workspace/audit/active/p1-crawled-not-indexed-classification-20260511.md`.
+- P1 important URL owner-review candidates: `/shop/cosrx-advanced-snail-96-mucin-power-essence-30ml-mini` and `/brands/april-skin`.
+- P1 possible technical follow-up: query/filter variants that survive as indexable `/shop?filter_brand=...` or `/shop?per_row=...`; inspect live samples before code changes.
+
 Week 2 policy:
 
 - Site health first: clean index, correct canonical/redirect behavior, sitemap accuracy, product schema, Merchant Center readiness, and product data quality.
