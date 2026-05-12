@@ -65,6 +65,15 @@ function getProductJsonLd(product: WooProduct) {
         name: getProductBrandName(product),
       },
     } : {}),
+    ...(parseFloat(product.average_rating) > 0 && product.rating_count > 0 ? {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: parseFloat(product.average_rating).toFixed(1),
+        reviewCount: product.rating_count,
+        bestRating: '5',
+        worstRating: '1',
+      },
+    } : {}),
     offers: {
       '@type': 'Offer',
       url: absoluteUrl(`/shop/${product.slug}`),
