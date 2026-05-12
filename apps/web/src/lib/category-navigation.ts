@@ -69,13 +69,16 @@ export const CONCERN_NAV_ITEMS: MenuCategoryItem[] = CONCERN_DEFINITIONS.map((co
   description: concern.description,
 }));
 
+// Skin type nav items point to the closest matching concern or ingredient page.
+// /shop?skin_type=X does NOT filter products (no shop-level param support) — avoid
+// those URLs to prevent duplicate-content issues.
 export const SKIN_TYPE_NAV_ITEMS: MenuCategoryItem[] = [
-  { name: 'Oily Skin',       slug: 'oily',        href: '/shop?skin_type=oily' },
-  { name: 'Dry Skin',        slug: 'dry',         href: '/shop?skin_type=dry' },
-  { name: 'Combination',     slug: 'combination', href: '/shop?skin_type=combination' },
-  { name: 'Sensitive Skin',  slug: 'sensitive',   href: '/shop?skin_type=sensitive' },
-  { name: 'Normal Skin',     slug: 'normal',      href: '/shop?skin_type=normal' },
-  { name: 'Acne Prone',      slug: 'acne-prone',  href: '/shop?skin_type=acne-prone' },
+  { name: 'Oily Skin',      slug: 'oily',       href: '/concerns/pores-oil-control' },
+  { name: 'Dry Skin',       slug: 'dry',        href: '/concerns/dryness-hydration' },
+  { name: 'Combination',    slug: 'combination',href: '/concerns/pores-oil-control' },
+  { name: 'Sensitive Skin', slug: 'sensitive',  href: '/concerns/sensitivity' },
+  { name: 'Acne Prone',     slug: 'acne-prone', href: '/concerns/acne-blemish-care' },
+  { name: 'Anti-Aging',     slug: 'aging',      href: '/concerns/anti-aging-repair' },
 ];
 
 export const INGREDIENT_NAV_ITEMS: MenuCategoryItem[] = INGREDIENT_DEFINITIONS.slice(0, 12).map((ing) => ({

@@ -35,6 +35,8 @@ const STRIP_PARAMS = [
   'add-to-cart',      // WooCommerce add-to-cart shortcut
   'add_to_cart',
   'add_to_wishlist',  // YITH Wishlist plugin shortcut
+  'skin_type',        // no shop-level skin_type filter exists — strips to canonical /shop
+  'ingredient',       // no shop-level ingredient filter exists — strips to canonical /shop
 ];
 
 // Strip these params only when value matches a known Woo/plugin pattern
