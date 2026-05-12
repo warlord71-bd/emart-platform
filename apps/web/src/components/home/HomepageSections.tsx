@@ -8,6 +8,8 @@ import { ShieldCheck, Truck, WalletCards, RotateCcw, Sparkles, MessageCircle, Ba
 import ProductCard from '@/components/product/ProductCard';
 import type { WooProduct } from '@/lib/woocommerce';
 import { CONCERN_DEFINITIONS, getConcernHref } from '@/lib/concerns';
+import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
+import { ROUTINE_STEPS } from '@/lib/routine';
 import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 
 interface BrandLogo {
@@ -325,6 +327,102 @@ export function ConcernTilesSection() {
                 </Link>
               );
             })()
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function IngredientTilesSection() {
+  const top = INGREDIENT_DEFINITIONS.slice(0, 8);
+  return (
+    <section className="bg-bg-alt px-4 py-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-5 flex items-end justify-between gap-3">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Shop by active</p>
+            <h2 className="mt-2 text-2xl font-extrabold text-ink lg:text-3xl">Star Ingredients</h2>
+          </div>
+          <Link href="/ingredients" className="shrink-0 text-xs font-semibold text-accent hover:underline">
+            All ingredients →
+          </Link>
+        </div>
+        {/* Mobile: horizontal scroll */}
+        <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:hidden">
+          <div className="flex w-max gap-3 pb-1">
+            {top.map((ing) => (
+              <Link
+                key={ing.slug}
+                href={`/ingredients/${ing.slug}`}
+                className="flex min-h-[64px] w-[140px] shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl border border-hairline bg-white px-3 py-3 transition-all hover:border-accent/30 hover:shadow-card"
+              >
+                <span className="text-xl">{ing.icon}</span>
+                <span className="text-center text-xs font-bold text-ink">{ing.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* Desktop: grid */}
+        <div className="hidden grid-cols-4 gap-3 sm:grid lg:grid-cols-8">
+          {top.map((ing) => (
+            <Link
+              key={ing.slug}
+              href={`/ingredients/${ing.slug}`}
+              className="flex flex-col items-center gap-2 rounded-xl border border-hairline bg-white p-3 text-center transition-all hover:border-accent/30 hover:shadow-card"
+            >
+              <span className="text-2xl">{ing.icon}</span>
+              <span className="text-xs font-semibold text-ink">{ing.label}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function RoutineTeaserSection() {
+  const steps = ROUTINE_STEPS.slice(0, 6);
+  return (
+    <section className="bg-bg px-4 py-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-5 flex items-end justify-between gap-3">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-success-DEFAULT" style={{ color: '#2E7D5B' }}>Step-by-step</p>
+            <h2 className="mt-2 text-2xl font-extrabold text-ink lg:text-3xl">Build Your Routine</h2>
+          </div>
+          <Link href="/routine" className="shrink-0 text-xs font-semibold text-accent hover:underline">
+            Full guide →
+          </Link>
+        </div>
+        {/* Mobile scroll */}
+        <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:hidden">
+          <div className="flex w-max gap-3 pb-1">
+            {steps.map((step) => (
+              <Link
+                key={step.slug}
+                href={`/routine/${step.slug}`}
+                className="flex min-h-[80px] w-[140px] shrink-0 flex-col items-start gap-1.5 rounded-2xl border border-hairline bg-white p-3 transition-all hover:border-accent/30 hover:shadow-card"
+              >
+                <span className="text-xl">{step.icon}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-muted">Step {step.step}</span>
+                <span className="text-xs font-bold text-ink">{step.shortLabel}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* Desktop grid */}
+        <div className="hidden grid-cols-3 gap-3 sm:grid lg:grid-cols-6">
+          {steps.map((step) => (
+            <Link
+              key={step.slug}
+              href={`/routine/${step.slug}`}
+              className="flex flex-col gap-2 rounded-xl border border-hairline bg-white p-4 transition-all hover:border-accent/30 hover:shadow-card"
+            >
+              <span className="text-2xl">{step.icon}</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted">Step {step.step}</span>
+              <span className="text-xs font-bold text-ink leading-tight">{step.shortLabel}</span>
+            </Link>
           ))}
         </div>
       </div>

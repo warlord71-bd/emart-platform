@@ -156,23 +156,32 @@ function AccountDropdown() {
 
 function getMegaPanelClass(label: string) {
   if (label === 'Categories') {
-    return 'w-[960px] max-w-[calc(100vw-7rem)]';
+    return 'w-[960px] max-w-[calc(100vw-2rem)] left-0';
   }
-  if (label === 'Concerns') {
-    return 'w-[560px] max-w-[calc(100vw-7rem)]';
+  if (label === 'Shop By') {
+    return 'w-[min(960px,calc(100vw-2rem))] left-0';
+  }
+  if (label === 'Routine') {
+    return 'w-[480px] max-w-[calc(100vw-2rem)] left-0';
   }
   if (label === 'Origins') {
-    return 'w-[780px] max-w-[calc(100vw-7rem)]';
+    return 'w-[780px] max-w-[calc(100vw-7rem)] left-0';
   }
   if (label === 'Brands') {
-    return 'w-[560px] max-w-[calc(100vw-7rem)]';
+    return 'w-[560px] max-w-[calc(100vw-7rem)] left-0';
   }
-  return 'w-[520px] max-w-[calc(100vw-7rem)]';
+  return 'w-[520px] max-w-[calc(100vw-7rem)] left-0';
 }
 
 function getMegaGridClass(label: string) {
   if (label === 'Categories') {
     return 'grid grid-cols-3 gap-x-8 gap-y-6';
+  }
+  if (label === 'Shop By') {
+    return 'grid grid-cols-4 gap-x-4 gap-y-0 items-start';
+  }
+  if (label === 'Routine') {
+    return 'grid grid-cols-2 gap-x-6 gap-y-5';
   }
   if (label === 'Origins') {
     return 'grid grid-cols-4 gap-x-6 gap-y-5';
@@ -185,7 +194,8 @@ function getMegaGridClass(label: string) {
 
 const DRAWER_VISIBLE_LIMIT: Record<string, number> = {
   Categories: 8,
-  Concerns: 8,
+  'Shop By': 32,
+  Routine: 10,
   Origins: 8,
   Brands: 8,
 };
@@ -830,7 +840,7 @@ export default function Header() {
                               <Link
                                 key={item.href || item.slug}
                                 href={item.href || `/category/${item.slug}`}
-                                className="block rounded-lg px-3 py-2 text-[13px] font-semibold leading-snug text-muted transition-colors hover:bg-accent-soft hover:text-accent"
+                                className="block rounded-lg px-3 py-2 text-[13px] font-semibold leading-snug text-muted transition-colors hover:bg-accent-soft hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30"
                               >
                                 {item.name}
                               </Link>

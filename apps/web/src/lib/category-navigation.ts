@@ -1,5 +1,6 @@
 import { CONCERN_DEFINITIONS } from '@/lib/concerns';
 import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
+import { ROUTINE_STEPS } from '@/lib/routine';
 import { ORIGIN_DEFINITIONS } from '@/lib/origin-navigation';
 
 export interface TopCategoryConfig {
@@ -82,6 +83,13 @@ export const INGREDIENT_NAV_ITEMS: MenuCategoryItem[] = INGREDIENT_DEFINITIONS.s
   slug: ing.slug,
   href: `/ingredients/${ing.slug}`,
   description: ing.description,
+}));
+
+export const ROUTINE_NAV_ITEMS: MenuCategoryItem[] = ROUTINE_STEPS.map((s) => ({
+  name: `${s.step}. ${s.shortLabel}`,
+  slug: s.slug,
+  href: `/routine/${s.slug}`,
+  description: s.description,
 }));
 
 export const CATEGORY_NAV_SECTIONS: MenuCategoryGroup[] = [
@@ -230,6 +238,24 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
           ...INGREDIENT_NAV_ITEMS.slice(6),
           { name: 'All Ingredients →', slug: 'all', href: '/ingredients' },
         ],
+      },
+    ],
+  },
+  {
+    label: 'Routine',
+    href: '/routine',
+    tone: 'text-success',
+    panelClassName: 'w-[480px]',
+    summary: 'Shop by skincare step.',
+    ctaLabel: 'Full routine guide',
+    sections: [
+      {
+        title: 'Skincare Steps',
+        items: ROUTINE_NAV_ITEMS.slice(0, 5),
+      },
+      {
+        title: 'More steps',
+        items: ROUTINE_NAV_ITEMS.slice(5),
       },
     ],
   },

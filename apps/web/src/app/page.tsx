@@ -6,6 +6,8 @@ import { FlashSaleBanner } from '@/components/home/FlashSaleBanner';
 import { MobileDiscovery } from '@/components/home/MobileDiscovery';
 import {
   ConcernTilesSection,
+  IngredientTilesSection,
+  RoutineTeaserSection,
   OfferCollectionsRail,
   AuthenticityStorySection,
   ProductGridSection,
@@ -140,6 +142,8 @@ export default async function HomePage() {
       />
 
       <ConcernTilesSection />
+      <IngredientTilesSection />
+      <RoutineTeaserSection />
 
       <AuthenticityStorySection />
       <BrandLogoGridSection brands={brandLogos} />

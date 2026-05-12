@@ -5,6 +5,7 @@ import { getWordPressPosts } from '@/lib/wordpress-posts';
 import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
 import { CONCERN_DEFINITIONS } from '@/lib/concerns';
 import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
+import { ROUTINE_STEPS } from '@/lib/routine';
 
 const CONCERN_SLUG_PAGES: MetadataRoute.Sitemap = CONCERN_DEFINITIONS.map((c) => ({
   url: absoluteUrl(`/concerns/${c.slug}`),
@@ -16,6 +17,12 @@ const INGREDIENT_SLUG_PAGES: MetadataRoute.Sitemap = INGREDIENT_DEFINITIONS.map(
   url: absoluteUrl(`/ingredients/${i.slug}`),
   changeFrequency: 'weekly' as const,
   priority: 0.7,
+}));
+
+const ROUTINE_SLUG_PAGES: MetadataRoute.Sitemap = ROUTINE_STEPS.map((s) => ({
+  url: absoluteUrl(`/routine/${s.slug}`),
+  changeFrequency: 'weekly' as const,
+  priority: 0.75,
 }));
 import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 
@@ -47,8 +54,10 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: absoluteUrl('/origins'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/concerns'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/ingredients'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/routine'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   ...CONCERN_SLUG_PAGES,
   ...INGREDIENT_SLUG_PAGES,
+  ...ROUTINE_SLUG_PAGES,
   { url: absoluteUrl('/blog'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
   { url: absoluteUrl('/social'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/our-story'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
