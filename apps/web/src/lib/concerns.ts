@@ -82,7 +82,7 @@ export function getConcernBySlug(slug?: string) {
 }
 
 export function getConcernHref(slug: string) {
-  return `/concerns?concern=${encodeURIComponent(slug)}`;
+  return `/concerns/${slug}`;
 }
 
 export async function getConcernListing(slug: string, page = 1, perPage = 24): Promise<{

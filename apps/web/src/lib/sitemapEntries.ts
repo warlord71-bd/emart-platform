@@ -3,6 +3,20 @@ import { getGraphQLSitemapData, isWordPressGraphQLConfigured } from '@/lib/wordp
 import { getProducts, getCategories, getBrands } from '@/lib/woocommerce';
 import { getWordPressPosts } from '@/lib/wordpress-posts';
 import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
+import { CONCERN_DEFINITIONS } from '@/lib/concerns';
+import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
+
+const CONCERN_SLUG_PAGES: MetadataRoute.Sitemap = CONCERN_DEFINITIONS.map((c) => ({
+  url: absoluteUrl(`/concerns/${c.slug}`),
+  changeFrequency: 'weekly' as const,
+  priority: 0.75,
+}));
+
+const INGREDIENT_SLUG_PAGES: MetadataRoute.Sitemap = INGREDIENT_DEFINITIONS.map((i) => ({
+  url: absoluteUrl(`/ingredients/${i.slug}`),
+  changeFrequency: 'weekly' as const,
+  priority: 0.7,
+}));
 import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 
 const BASE_URL = SITE_URL;
@@ -32,6 +46,9 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: absoluteUrl('/brands'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/origins'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/concerns'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/ingredients'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+  ...CONCERN_SLUG_PAGES,
+  ...INGREDIENT_SLUG_PAGES,
   { url: absoluteUrl('/blog'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
   { url: absoluteUrl('/social'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/our-story'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },

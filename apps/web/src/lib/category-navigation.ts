@@ -1,4 +1,5 @@
 import { CONCERN_DEFINITIONS } from '@/lib/concerns';
+import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
 import { ORIGIN_DEFINITIONS } from '@/lib/origin-navigation';
 
 export interface TopCategoryConfig {
@@ -63,8 +64,24 @@ export const HOME_TOP_CATEGORY_ORDER: TopCategoryConfig[] = [
 export const CONCERN_NAV_ITEMS: MenuCategoryItem[] = CONCERN_DEFINITIONS.map((concern) => ({
   name: concern.label,
   slug: concern.slug,
-  href: `/concerns?concern=${encodeURIComponent(concern.slug)}`,
+  href: `/concerns/${concern.slug}`,
   description: concern.description,
+}));
+
+export const SKIN_TYPE_NAV_ITEMS: MenuCategoryItem[] = [
+  { name: 'Oily Skin',       slug: 'oily',        href: '/shop?skin_type=oily' },
+  { name: 'Dry Skin',        slug: 'dry',         href: '/shop?skin_type=dry' },
+  { name: 'Combination',     slug: 'combination', href: '/shop?skin_type=combination' },
+  { name: 'Sensitive Skin',  slug: 'sensitive',   href: '/shop?skin_type=sensitive' },
+  { name: 'Normal Skin',     slug: 'normal',      href: '/shop?skin_type=normal' },
+  { name: 'Acne Prone',      slug: 'acne-prone',  href: '/shop?skin_type=acne-prone' },
+];
+
+export const INGREDIENT_NAV_ITEMS: MenuCategoryItem[] = INGREDIENT_DEFINITIONS.slice(0, 12).map((ing) => ({
+  name: ing.label,
+  slug: ing.slug,
+  href: `/ingredients/${ing.slug}`,
+  description: ing.description,
 }));
 
 export const CATEGORY_NAV_SECTIONS: MenuCategoryGroup[] = [
@@ -188,20 +205,31 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     })),
   },
   {
-    label: 'Concerns',
+    label: 'Shop By',
     href: '/concerns',
     tone: 'text-warning',
-    panelClassName: 'w-[700px]',
-    summary: 'Shop by skin goals.',
+    panelClassName: 'w-[min(980px,calc(100vw-2rem))]',
+    summary: 'Concern · Skin Type · Ingredients',
     ctaLabel: 'All concerns',
     sections: [
       {
-        title: 'Skin goals',
-        items: CONCERN_NAV_ITEMS.slice(0, 5),
+        title: 'Skin Concern',
+        items: CONCERN_NAV_ITEMS,
       },
       {
-        title: 'More concerns',
-        items: CONCERN_NAV_ITEMS.slice(5),
+        title: 'Skin Type',
+        items: SKIN_TYPE_NAV_ITEMS,
+      },
+      {
+        title: 'Star Ingredients',
+        items: INGREDIENT_NAV_ITEMS.slice(0, 6),
+      },
+      {
+        title: 'More Ingredients',
+        items: [
+          ...INGREDIENT_NAV_ITEMS.slice(6),
+          { name: 'All Ingredients →', slug: 'all', href: '/ingredients' },
+        ],
       },
     ],
   },

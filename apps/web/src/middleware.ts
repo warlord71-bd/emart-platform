@@ -10,6 +10,18 @@ const GONE_PATHS = new Set([
   '/clients-6', '/clients-7', '/clients-8', '/clients-9', '/clients-10',
 ]);
 
+// Concern query-param → clean path redirect (old noindexed → new canonical SEO pages)
+// /concerns?concern=acne-blemish-care → /concerns/acne-blemish-care
+function handleConcernRedirect(req: NextRequest): NextResponse | undefined {
+  if (req.nextUrl.pathname !== '/concerns') return undefined;
+  const concern = req.nextUrl.searchParams.get('concern');
+  if (!concern) return undefined;
+  const url = req.nextUrl.clone();
+  url.pathname = `/concerns/${concern}`;
+  url.search = '';
+  return NextResponse.redirect(url, { status: 301 });
+}
+
 // Query parameters that pollute canonical URLs — strip and 301 to clean path
 const STRIP_PARAMS = [
   'srsltid',          // Google Search result session link ID
@@ -38,6 +50,10 @@ export function middleware(req: NextRequest): NextResponse | undefined {
   if (GONE_PATHS.has(pathname)) {
     return new NextResponse(null, { status: 410 });
   }
+
+  // /concerns?concern=slug → /concerns/slug (clean 301, no trailing query param)
+  const concernRedirect = handleConcernRedirect(req);
+  if (concernRedirect) return concernRedirect;
 
   // Strip old WordPress ?p= post ID parameter — redirect root to clean /
   if (pathname === '/' && req.nextUrl.searchParams.has('p')) {
