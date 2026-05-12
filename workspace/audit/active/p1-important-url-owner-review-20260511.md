@@ -1,0 +1,16 @@
+# P1 Important URL Owner Review - 2026-05-11
+
+Scope: read-only review of the two P1 important URL candidates from the Crawled - currently not indexed audit. No code, Woo data, deploy, or push changes were made.
+
+## Decision Summary
+
+| Candidate URL | Current live state | Woo/source evidence | Replacement URL | GSC performance evidence | Recommendation | Later change area |
+| --- | --- | --- | --- | --- | --- | --- |
+| `https://e-mart.com.bd/shop/cosrx-advanced-snail-96-mucin-power-essence-30ml-mini` | `404`, no canonical, `noindex`, absent from sitemap | Exact slug has no current Woo product. Historical audit showed old ID `92928`, but `wp post get 92928` now returns not found. | `https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-96-power-essence-30ml` is live `200`; Woo product `50566`, published, title `Cosrx Advanced Snail Mucin 96 Power Essence 30ml`. Related 100ml replacement also exists at `/shop/cosrx-advanced-snail-96-mucin-power-essence-100ml`, Woo product `93028`, published. | Provided P1 export only includes URL, last crawled, status; no clicks/impressions columns. The URL appears in `Table.csv` as crawled on `2026-04-28`, `Pending`. No local performance export with clicks/impressions was found for this exact URL. | 301 redirect old mini slug to the live 30ml product URL if owner confirms it is the same product/size intent. Do not restore old deleted product unless inventory/data owner specifically wants a separate mini PDP. | `apps/web/next.config.js` duplicate/stale product redirect list. Woo product data only if owner chooses restore instead of redirect. |
+| `https://e-mart.com.bd/brands/april-skin` | `404`, no canonical, `noindex`, absent from sitemap | No `product_brand` term exists for slug `april-skin`. Current Woo term is `Aprilskin`, slug `aprilskin`, term `6906`, count `7`. Brand whitelist/logo data contains aliases/references, but brand page lookup requires the Woo slug. | `https://e-mart.com.bd/brands/aprilskin` is live `200`, canonical `/brands/aprilskin`, `index, follow`, present in sitemap. | Provided P1 export only includes URL, last crawled, status; no clicks/impressions columns. `/brands/aprilskin` appears in `Table.csv` crawled `2026-05-04`; `/brands/april-skin` appears crawled `2026-05-01`, both `Pending`. No local performance export with clicks/impressions was found for this exact URL. | 301 redirect `/brands/april-skin` to `/brands/aprilskin`. Do not create a duplicate `april-skin` brand term/page. | `apps/web/next.config.js` redirect list, or a brand alias map in `apps/web/src/app/brands/[slug]/page.tsx` / `apps/web/src/lib/woocommerce.ts` if more brand aliases appear. |
+
+## Notes
+
+- The COSRX candidate should not be left as a plain 404 if the owner agrees the live 30ml PDP is the intended replacement; a 301 preserves old URL signals and reduces repeated GSC crawl noise.
+- `/brands/april-skin` is a stale alias for the real brand slug `/brands/aprilskin`; redirect is safer than restoring because the Woo taxonomy has only `aprilskin`.
+- No app-code change was made in this review. The safest next implementation would be two surgical redirects in `apps/web/next.config.js`, followed by local build, VPS build, live smoke test, and push last.

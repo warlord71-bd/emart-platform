@@ -72,6 +72,8 @@ const nextConfig = {
       { source: '/product-category/skin-care/:path*', destination: '/category/skincare-essentials', permanent: true },
       { source: '/product-category/:slug*', destination: '/category/:slug*', permanent: true },
       { source: '/product/:slug',           destination: '/shop/:slug',      permanent: true },
+      { source: '/shop/cosrx-advanced-snail-96-mucin-power-essence-30ml-mini', destination: '/shop/cosrx-advanced-snail-mucin-96-power-essence-30ml', permanent: true },
+      { source: '/brands/april-skin',       destination: '/brands/aprilskin', permanent: true },
       { source: '/product-tag/:slug*',      destination: '/shop',            permanent: true },
       { source: '/tag/:slug*',              destination: '/shop',            permanent: true },
       { source: '/my-account',              destination: '/account',         permanent: true },
