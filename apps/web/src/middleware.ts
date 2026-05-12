@@ -16,8 +16,10 @@ const STRIP_PARAMS = [
   'orderby',          // WooCommerce sort parameter
   'order',
   'per_page',
+  'per_row',          // WooCommerce display param (products per row), ignored by Next.js shop
   'paged',
   'shop_view',
+  'filter_brand',     // WooCommerce attribute-filter param, ignored by Next.js shop
   'add-to-cart',      // WooCommerce add-to-cart shortcut
   'add_to_cart',
   'add_to_wishlist',  // YITH Wishlist plugin shortcut

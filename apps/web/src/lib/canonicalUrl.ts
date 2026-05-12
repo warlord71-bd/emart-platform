@@ -11,7 +11,9 @@ const STRIP_PARAMS = new Set([
   // WP/WC internals
   '_wpnonce', 'add-to-cart', 's', 'post_type', 'session_id',
   // WC attribute filters
-  'filter_color', 'filter_size', 'min_price', 'max_price',
+  'filter_brand', 'filter_color', 'filter_size', 'min_price', 'max_price',
+  // WC display params ignored by Next.js shop
+  'per_row',
   // Emart shop UI filters — sorted/filtered views are not canonical pages
   'sort', 'category', 'brand', 'origin', 'in_stock', 'price',
 ]);
