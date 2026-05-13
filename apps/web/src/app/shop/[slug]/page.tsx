@@ -57,9 +57,18 @@ function getNumericPrice(product: WooProduct): string {
   return Number.isFinite(price) && price > 0 ? price.toFixed(2) : '0.00';
 }
 
+function getGtinFields(sku: string): Record<string, string> {
+  const s = sku?.trim() || '';
+  if (/^\d{13}$/.test(s)) return { gtin13: s };
+  if (/^\d{12}$/.test(s)) return { gtin12: s };
+  if (/^\d{8}$/.test(s)) return { gtin8: s };
+  return {};
+}
+
 function getProductJsonLd(product: WooProduct) {
   const imageUrls = product.images?.map((image) => image.src).filter(Boolean) || [];
   const price = getNumericPrice(product);
+  const sku = product.sku?.trim() || '';
 
   return {
     '@context': 'https://schema.org',
@@ -68,7 +77,8 @@ function getProductJsonLd(product: WooProduct) {
     name: product.name,
     description: getSeoDescription(product),
     image: imageUrls,
-    ...(product.sku?.trim() ? { sku: product.sku } : {}),
+    ...(sku ? { sku } : {}),
+    ...getGtinFields(sku),
     category: getCleanBreadcrumbCategory(product)?.label ?? getProductType(product),
     ...(getProductBrandName(product) ? {
       brand: {
@@ -390,8 +400,31 @@ function getProductAttributeValue(product: WooProduct, matcher: RegExp): string 
   return attribute?.options?.filter(Boolean).slice(0, 3).join(', ') || '';
 }
 
+const BRAND_NAME_CORRECTIONS: Record<string, string> = {
+  cosrx: 'COSRX',
+  aplb: 'APLB',
+  skin1004: 'SKIN1004',
+  anua: 'ANUA',
+  'some by mi': 'Some By Mi',
+  innisfree: 'innisfree',
+  cerave: 'CeraVe',
+  laneige: 'LANEIGE',
+  'beauty of joseon': 'Beauty of Joseon',
+  heimish: 'Heimish',
+  'purito seoul': 'PURITO Seoul',
+  'cos de baha': 'Cos De BAHA',
+  rom_and: 'rom&nd',
+  'mary&may': 'Mary&May',
+  tirtir: 'TIRTIR',
+  isntree: 'Isntree',
+  ma_c: 'M·A·C',
+};
+
 function getProductBrandName(product: WooProduct): string {
-  return product.brands?.[0]?.name || '';
+  const raw = product.brands?.[0]?.name || '';
+  if (!raw) return '';
+  const key = raw.toLowerCase();
+  return BRAND_NAME_CORRECTIONS[key] ?? raw;
 }
 
 function getProductType(product: WooProduct): string {
