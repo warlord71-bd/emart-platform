@@ -305,6 +305,22 @@ const nextConfig = {
       { source: '/product/karite-bubble-pink-mud-mask-5ml-2', destination: '/shop/karite-bubble-pink-mud-mask-5ml', permanent: true },
       { source: '/shop/aplb-glutathione-niacinamide-body-lotion-300ml-copy', destination: '/shop/aplb-glutathione-niacinamide-body-lotion-300ml', permanent: true },
       { source: '/product/aplb-glutathione-niacinamide-body-lotion-300ml-copy', destination: '/shop/aplb-glutathione-niacinamide-body-lotion-300ml', permanent: true },
+      // Old WooCommerce concern categories → canonical concern pages (2026-05-13)
+      // These /category/* URLs are superseded by /concerns/* SEO pages.
+      // The WooCommerce taxonomy stays intact for product assignment; only the public URL changes.
+      { source: '/category/shop-by-concern',   destination: '/concerns',                        permanent: true },
+      { source: '/category/acne-blemish-care', destination: '/concerns/acne-blemish-care',      permanent: true },
+      { source: '/category/anti-aging-repair', destination: '/concerns/anti-aging-repair',      permanent: true },
+      { source: '/category/dryness-hydration', destination: '/concerns/dryness-hydration',      permanent: true },
+      { source: '/category/pores-oil-control', destination: '/concerns/pores-oil-control',      permanent: true },
+      { source: '/category/melasma',           destination: '/concerns/melasma',                permanent: true },
+      { source: '/category/brightening',       destination: '/concerns/brightening',            permanent: true },
+      { source: '/category/wrinkle',           destination: '/concerns/wrinkle',               permanent: true },
+      { source: '/category/sensitivity',       destination: '/concerns/sensitivity',            permanent: true },
+      // Broad parent/grouping categories with no useful standalone page → /shop
+      { source: '/category/skincare-essentials', destination: '/shop',                          permanent: true },
+      { source: '/category/k-beauty-j-beauty',   destination: '/category/korean-beauty',        permanent: true },
+      { source: '/category/shooting-gel',         destination: '/category/soothing-gel',         permanent: true },
     ];
   },
 
