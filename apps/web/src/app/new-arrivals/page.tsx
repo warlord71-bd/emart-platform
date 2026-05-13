@@ -6,8 +6,8 @@ import { canonicalPath } from '@/lib/canonicalUrl';
 
 export function generateMetadata({ searchParams }: { searchParams?: NewArrivalsPageProps['searchParams'] }): Metadata {
   return {
-    title: 'New Arrivals - Latest Global Skincare Brands | Emart',
-    description: 'Discover the newest global skincare products at Emart. Fresh arrivals every week!',
+    title: { absolute: 'New Arrivals — Latest Korean & Global Skincare in Bangladesh | Emart' },
+    description: 'Discover the latest skincare arrivals in Bangladesh. New Korean, Japanese and global beauty products added weekly — serums, sunscreens, moisturizers and more. COD available.',
     alternates: { canonical: canonicalPath('/new-arrivals', searchParams) },
   };
 }
@@ -43,7 +43,7 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {products.map((product: any) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} badgeLabel="New" />
             ))}
           </div>
           {totalPages > 1 && (

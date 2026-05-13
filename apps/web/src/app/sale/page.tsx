@@ -6,8 +6,8 @@ import { canonicalPath } from '@/lib/canonicalUrl';
 
 export function generateMetadata({ searchParams }: { searchParams?: SalePageProps['searchParams'] }): Metadata {
   return {
-    title: 'Sale - Best Deals on Global Skincare Brands | Emart',
-    description: 'Shop our exclusive sale collection. Get the best deals on authentic global skincare products.',
+    title: { absolute: 'Sale — Best Deals on Authentic Skincare in Bangladesh | Emart' },
+    description: 'Save on authentic Korean, Japanese and global skincare in Bangladesh. Real discounts on original serums, sunscreens, moisturizers and more. COD available, fast delivery nationwide.',
     alternates: { canonical: canonicalPath('/sale', searchParams) },
   };
 }

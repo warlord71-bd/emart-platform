@@ -13,12 +13,12 @@ export function generateMetadata({ searchParams }: { searchParams?: ShopPageProp
   const canonical = canonicalPath('/shop', searchParams);
 
   return {
-    title: 'Shop Global Skincare Brands',
-    description: 'Browse our collection of authentic global skincare products.',
+    title: { absolute: 'Buy Authentic Skincare Online in Bangladesh | Emart' },
+    description: 'Shop 3,500+ authentic Korean, Japanese and global skincare products in Bangladesh. Original serums, sunscreens, moisturizers, cleansers and more — COD available, fast delivery nationwide.',
     alternates: { canonical },
     openGraph: {
-      title: 'Shop Global Skincare Brands | Emart',
-      description: 'Browse our collection of authentic global skincare products.',
+      title: 'Buy Authentic Skincare Online in Bangladesh | Emart',
+      description: 'Shop 3,500+ authentic Korean, Japanese and global skincare products in Bangladesh. COD available, fast delivery nationwide.',
       url: canonical,
     },
   };
