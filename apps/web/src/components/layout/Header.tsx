@@ -178,7 +178,7 @@ function getMegaGridClass(label: string) {
     return 'grid grid-cols-3 gap-x-8 gap-y-6';
   }
   if (label === 'Shop By') {
-    return 'grid grid-cols-4 gap-x-4 gap-y-0 items-start';
+    return 'grid grid-cols-3 gap-x-6 gap-y-0 items-start';
   }
   if (label === 'Routine') {
     return 'grid grid-cols-2 gap-x-6 gap-y-5';
@@ -837,13 +837,23 @@ export default function Header() {
                           ) : null}
                           <div className="space-y-1">
                             {section.items.map((item) => (
-                              <Link
-                                key={item.href || item.slug}
-                                href={item.href || `/category/${item.slug}`}
-                                className="block rounded-lg px-3 py-2 text-[13px] font-semibold leading-snug text-muted transition-colors hover:bg-accent-soft hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30"
-                              >
-                                {item.name}
-                              </Link>
+                              item.slug === 'all-ingredients' ? (
+                                <Link
+                                  key={item.href || item.slug}
+                                  href={item.href!}
+                                  className="mt-2 flex items-center gap-1 rounded-lg border border-hairline bg-accent-soft px-3 py-2 text-[13px] font-bold text-accent transition-colors hover:bg-accent hover:text-white"
+                                >
+                                  {item.name}
+                                </Link>
+                              ) : (
+                                <Link
+                                  key={item.href || item.slug}
+                                  href={item.href || `/category/${item.slug}`}
+                                  className="block rounded-lg px-3 py-2 text-[13px] font-semibold leading-snug text-muted transition-colors hover:bg-accent-soft hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30"
+                                >
+                                  {item.name}
+                                </Link>
+                              )
                             ))}
                           </div>
                         </div>

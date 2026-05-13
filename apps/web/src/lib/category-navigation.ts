@@ -236,7 +236,7 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     label: 'Shop By',
     href: '/concerns',
     tone: 'text-warning',
-    panelClassName: 'w-[min(980px,calc(100vw-2rem))]',
+    panelClassName: 'w-[min(780px,calc(100vw-2rem))]',
     summary: 'Concern · Skin Type · Ingredients',
     ctaLabel: 'All concerns',
     sections: [
@@ -249,14 +249,10 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
         items: SKIN_TYPE_NAV_ITEMS,
       },
       {
-        title: 'Star Ingredients',
-        items: INGREDIENT_NAV_ITEMS.slice(0, 6),
-      },
-      {
-        title: 'More Ingredients',
+        title: 'Ingredients',
         items: [
-          ...INGREDIENT_NAV_ITEMS.slice(6),
-          { name: 'All Ingredients →', slug: 'all', href: '/ingredients' },
+          ...INGREDIENT_NAV_ITEMS,
+          { name: 'See all ingredients →', slug: 'all-ingredients', href: '/ingredients' },
         ],
       },
     ],
