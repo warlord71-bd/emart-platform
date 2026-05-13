@@ -16,6 +16,9 @@ const STRIP_PARAMS = new Set([
   'per_row',
   // Emart shop UI filters — sorted/filtered views are not canonical pages
   'sort', 'category', 'brand', 'origin', 'in_stock', 'price',
+  // Emart concern/skin-type/ingredient filter params — dedicated SEO pages exist at
+  // /concerns/[slug], so /shop?concern=slug is a filter UI variant, not a canonical page
+  'concern', 'skin_type', 'ingredient',
 ]);
 
 /**

@@ -244,17 +244,26 @@ async function getAllPublishedProductsViaWooRest(): Promise<SitemapProduct[]> {
   return products;
 }
 
+function deduplicateSitemap(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  const seen = new Set<string>();
+  return entries.filter((entry) => {
+    if (seen.has(entry.url)) return false;
+    seen.add(entry.url);
+    return true;
+  });
+}
+
 export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   try {
     if (isWordPressGraphQLConfigured()) {
-      return await getSitemapViaGraphQL();
+      return deduplicateSitemap(await getSitemapViaGraphQL());
     }
   } catch {
     // fall through to REST
   }
 
   try {
-    return await getSitemapViaREST();
+    return deduplicateSitemap(await getSitemapViaREST());
   } catch {
     return STATIC_PAGES;
   }

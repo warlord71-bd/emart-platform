@@ -67,7 +67,7 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
     });
   };
 
-  const imageAlt = product.name;
+  const imageAlt = `${product.name} - Emart Skincare Bangladesh`;
 
   return (
     <div className={`group card relative flex h-full flex-col ${isCompact ? 'p-2' : 'p-2 sm:p-3'}`}>

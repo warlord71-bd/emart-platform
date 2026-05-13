@@ -54,6 +54,9 @@ export default async function BrandPage({ params, searchParams }: Props) {
   const { products, total, totalPages } = await getProductsByProductBrand(brand.id, page, 24)
     .catch(() => ({ products: [], total: 0, totalPages: 0 }));
 
+  // Empty brand page: return noindex instead of thin indexable content
+  if (total === 0 && page === 1) notFound();
+
   const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
   const description = getBrandDescription(brand.name);
   const canonicalUrl = absoluteUrl(`/brands/${brand.slug}`);

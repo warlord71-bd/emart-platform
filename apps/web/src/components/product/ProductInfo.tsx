@@ -403,13 +403,21 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
       {/* Info Box - 2x2 Grid */}
       <div className="bg-blue-50 rounded-lg p-4 grid grid-cols-2 gap-4">
-        <div>
-          <p className="text-xs text-blue-600 font-semibold">SKU Code</p>
-          <p className="text-sm text-blue-900 font-medium">SKU-{product.id}</p>
-        </div>
+        {product.sku?.trim() && (
+          <div>
+            <p className="text-xs text-blue-600 font-semibold">SKU Code</p>
+            <p className="text-sm text-blue-900 font-medium">{product.sku}</p>
+          </div>
+        )}
         <div>
           <p className="text-xs text-blue-600 font-semibold">Stock</p>
-          <p className="text-sm text-blue-900 font-medium">{product.stock_quantity || 6} Pcs Available</p>
+          <p className="text-sm text-blue-900 font-medium">
+            {product.stock_status === 'instock'
+              ? (product.stock_quantity && product.stock_quantity > 0
+                  ? `${product.stock_quantity} Pcs Available`
+                  : 'In Stock')
+              : 'Out of Stock'}
+          </p>
         </div>
         <div>
           <p className="text-xs text-blue-600 font-semibold">Estimate Delivery</p>
