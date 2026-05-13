@@ -20,7 +20,7 @@ export async function GET() {
 }
 
 async function createSitemapXml(): Promise<string> {
-  const entries = await getSitemapEntries();
+  const entries = dedupeEntriesForXml(await getSitemapEntries());
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
@@ -29,6 +29,17 @@ async function createSitemapXml(): Promise<string> {
     ...entries.map(renderUrlEntry),
     '</urlset>',
   ].join('\n');
+}
+
+function dedupeEntriesForXml(entries: SitemapEntry[]): SitemapEntry[] {
+  const seen = new Set<string>();
+
+  return entries.filter((entry) => {
+    const key = getSitemapUrlKey(entry.url);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function renderUrlEntry(entry: SitemapEntry): string {
@@ -60,6 +71,19 @@ function formatLastmod(value?: Date | string): string | null {
   if (Number.isNaN(date.getTime())) return null;
 
   return date.toISOString();
+}
+
+function getSitemapUrlKey(value: string): string {
+  try {
+    const url = new URL(value);
+    const pathname = url.pathname === '/' ? '/' : url.pathname.replace(/\/+$/, '');
+    const searchParams = new URLSearchParams(url.search);
+    searchParams.sort();
+
+    return `${url.protocol}//${url.hostname.toLowerCase()}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+  } catch {
+    return value.trim().replace(/\/+$/, '');
+  }
 }
 
 function escapeXml(value: string): string {

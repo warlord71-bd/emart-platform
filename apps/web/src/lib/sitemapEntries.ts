@@ -247,10 +247,24 @@ async function getAllPublishedProductsViaWooRest(): Promise<SitemapProduct[]> {
 function deduplicateSitemap(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
   const seen = new Set<string>();
   return entries.filter((entry) => {
-    if (seen.has(entry.url)) return false;
-    seen.add(entry.url);
+    const key = getSitemapUrlKey(entry.url);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
     return true;
   });
+}
+
+function getSitemapUrlKey(value: string): string {
+  try {
+    const url = new URL(value);
+    const pathname = url.pathname === '/' ? '/' : url.pathname.replace(/\/+$/, '');
+    const searchParams = new URLSearchParams(url.search);
+    searchParams.sort();
+
+    return `${url.protocol}//${url.hostname.toLowerCase()}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+  } catch {
+    return value.trim().replace(/\/+$/, '');
+  }
 }
 
 export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
@@ -265,6 +279,6 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   try {
     return deduplicateSitemap(await getSitemapViaREST());
   } catch {
-    return STATIC_PAGES;
+    return deduplicateSitemap(STATIC_PAGES);
   }
 }
