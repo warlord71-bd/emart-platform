@@ -127,13 +127,21 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const effectiveSearch = concernSearch ?? ingredientSearch ?? skinTypeSearch ?? activeSearch;
   const effectiveCategory = concernCategoryId ?? searchParams.category ?? '';
 
+  // Search-driven filters (ingredient, skin_type, concern via searchQuery) must sort by
+  // popularity — otherwise newest products that merely *mention* the keyword dominate.
+  // Only override when the user hasn't explicitly chosen a sort.
+  const isSearchDrivenFilter = Boolean(ingredientSearch || skinTypeSearch || concernSearch);
+  const effectiveSortParams = isSearchDrivenFilter && !searchParams.sort
+    ? { orderby: 'popularity' as const, order: 'desc' as const }
+    : sortParams;
+
   const { products = [], totalPages = 1, total = 0 } = await getProducts({
     page,
     per_page: 24,
     search: effectiveSearch,
     include: activeBrand ? activeBrandProductIds.join(',') || '0' : undefined,
     category: effectiveCategory,
-    ...sortParams,
+    ...effectiveSortParams,
     ...priceParams,
     stock_status: searchParams.in_stock === '1' ? 'instock' : undefined,
     attribute: activeOriginTerm ? 'pa_origin' : undefined,
