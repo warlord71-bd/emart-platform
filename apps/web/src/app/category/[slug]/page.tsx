@@ -122,7 +122,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const page = parseInt(searchParams.page || '1');
   const priceParams = getPriceParams(searchParams.price);
   const sortParams = getSortParams(searchParams.sort);
-  const context = detectContext(category);
   const { products, total, totalPages } = await getProducts({
     category: category.id.toString(),
     per_page: 24,
@@ -191,10 +190,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         <CatalogFilters
           basePath={`/category/${params.slug}`}
           searchParams={searchParams}
-          context={context}
           resultCount={products.length}
           totalCount={total}
-          showOrigin
           defaultSort="popularity"
           variant="mobile"
         />
@@ -204,10 +201,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             <CatalogFilters
               basePath={`/category/${params.slug}`}
               searchParams={searchParams}
-              context={context}
               resultCount={products.length}
               totalCount={total}
-              showOrigin
               defaultSort="popularity"
               variant="desktop"
             />

@@ -1,10 +1,12 @@
-import { getAllProductIdsByBrand, getBrandBySlug, getOriginTermBySlug, getProducts } from '@/lib/woocommerce';
+import { getAllProductIdsByBrand, getBrandBySlug, getCategoryBySlug, getOriginTermBySlug, getProducts } from '@/lib/woocommerce';
 import CatalogFilters from '@/components/product/CatalogFilters';
 import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { canonicalPath } from '@/lib/canonicalUrl';
 import { getOriginByCountry } from '@/lib/origin-navigation';
+import { getConcernBySlug } from '@/lib/concerns';
+import { getIngredientBySlug } from '@/lib/ingredients';
 
 // All filter/sort params are stripped — only /shop is the canonical page for this route.
 export function generateMetadata({ searchParams }: { searchParams?: ShopPageProps['searchParams'] }): Metadata {
@@ -24,6 +26,13 @@ export function generateMetadata({ searchParams }: { searchParams?: ShopPageProp
 
 export const revalidate = 1800;
 
+const SKIN_TYPE_SEARCH: Record<string, string> = {
+  oily: 'oily',
+  dry: 'dry skin',
+  combination: 'combination',
+  sensitive: 'sensitive',
+};
+
 interface ShopPageProps {
   searchParams: {
     page?: string;
@@ -34,6 +43,9 @@ interface ShopPageProps {
     price?: string;
     in_stock?: string;
     origin?: string;
+    concern?: string;
+    skin_type?: string;
+    ingredient?: string;
   };
 }
 
@@ -86,20 +98,55 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const activeSearch = searchParams.search || '';
   const priceParams = getPriceParams(searchParams.price);
   const sortParams = getSortParams(searchParams.sort);
+
+  // Resolve concern → WooCommerce category or search
+  const activeConcern = searchParams.concern ? getConcernBySlug(searchParams.concern) : null;
+  let concernCategoryId: string | undefined;
+  let concernSearch: string | undefined;
+  if (activeConcern) {
+    if (activeConcern.categorySlug) {
+      const cat = await getCategoryBySlug(activeConcern.categorySlug);
+      if (cat?.id) {
+        concernCategoryId = String(cat.id);
+      } else {
+        concernSearch = activeConcern.searchQuery;
+      }
+    } else {
+      concernSearch = activeConcern.searchQuery;
+    }
+  }
+
+  // Resolve ingredient → search keyword
+  const activeIngredient = searchParams.ingredient ? getIngredientBySlug(searchParams.ingredient) : null;
+  const ingredientSearch = activeIngredient?.searchKeywords[0];
+
+  // Resolve skin_type → search keyword
+  const skinTypeSearch = searchParams.skin_type ? SKIN_TYPE_SEARCH[searchParams.skin_type] : undefined;
+
+  // Priority: concern > ingredient > skin_type > explicit search
+  const effectiveSearch = concernSearch ?? ingredientSearch ?? skinTypeSearch ?? activeSearch;
+  const effectiveCategory = concernCategoryId ?? searchParams.category ?? '';
+
   const { products = [], totalPages = 1, total = 0 } = await getProducts({
     page,
     per_page: 24,
-    search: activeSearch,
+    search: effectiveSearch,
     include: activeBrand ? activeBrandProductIds.join(',') || '0' : undefined,
-    category: searchParams.category || '',
+    category: effectiveCategory,
     ...sortParams,
     ...priceParams,
     stock_status: searchParams.in_stock === '1' ? 'instock' : undefined,
     attribute: activeOriginTerm ? 'pa_origin' : undefined,
     attribute_term: activeOriginTerm ? String(activeOriginTerm.id) : undefined,
   });
-  const title = activeBrand ? activeBrand.name : activeOrigin ? `${activeOrigin.label} Products` : activeSearch ? `Search: ${activeSearch}` : 'All Products';
-  const hasPrimaryFilter = Boolean(activeBrand || activeOrigin || activeSearch);
+
+  const title = activeBrand ? activeBrand.name
+    : activeConcern ? activeConcern.label
+    : activeIngredient ? activeIngredient.label
+    : activeOrigin ? `${activeOrigin.label} Products`
+    : activeSearch ? `Search: ${activeSearch}`
+    : 'All Products';
+  const hasPrimaryFilter = Boolean(activeBrand || activeConcern || activeIngredient || activeOrigin || activeSearch);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -125,7 +172,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         searchParams={searchParams}
         resultCount={products.length}
         totalCount={total}
-        showOrigin
+        showConcern
+        showSkinType
+        showIngredient
         defaultSort="newest"
         variant="mobile"
       />
@@ -137,7 +186,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
             searchParams={searchParams}
             resultCount={products.length}
             totalCount={total}
-            showOrigin
+            showConcern
+            showSkinType
+            showIngredient
             defaultSort="newest"
             variant="desktop"
           />
