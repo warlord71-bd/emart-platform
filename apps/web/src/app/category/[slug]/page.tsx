@@ -125,6 +125,8 @@ function getCategoryIntro(name: string, slug: string, description: string): stri
     'korean-beauty': `Discover authentic Korean skincare and beauty in Bangladesh at Emart. Shop K-Beauty essentials from COSRX, Some By Mi, Beauty of Joseon, ANUA, SKIN1004, and 100+ more Korean brands. From glass skin serums to cushion compacts and SPF sticks, find genuine Korean beauty products with fast Bangladesh delivery and COD.`,
     lip: `Shop authentic lip care, lip balms, lip tints, and lipsticks in Bangladesh. From ROMAND and 3CE to Vaseline and Innisfree, our lip collection covers colour, moisture, and care. Original Korean, Japanese, and global lip products available with fast delivery and COD across Bangladesh.`,
     'body-wash': `Cleanse and refresh with authentic body washes and shower gels in Bangladesh. From The Ordinary and CeraVe to Dove and Cetaphil, our body wash range includes hydrating, exfoliating, brightening, and sensitive skin formulas. Original imports, fast delivery, COD available.`,
+    'makeup-cosmetics': `Shop authentic makeup and cosmetics in Bangladesh at Emart. From Korean cushion compacts and lip tints to global brands like M.A.C, Essence, and NYX, our makeup collection covers foundation, eyes, lips, and face products. 100% original imports with fast Bangladesh delivery and Cash on Delivery available.`,
+    'bath-body': `Discover authentic bath and body care products in Bangladesh at Emart. Shop body lotions, body washes, scrubs, hand creams, and personal care essentials from global and Korean brands — Vaseline, Dove, Nivea, CeraVe, and more. Original imports, fast nationwide delivery, COD available.`,
   };
 
   const key = Object.keys(intros).find(k => slug.includes(k) || name.toLowerCase().includes(k));
