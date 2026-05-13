@@ -75,7 +75,9 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
   const pricing = getProductPrice(product);
   const images = getProductImages(product);
-  const brand = product.brands || product.attributes?.find(a => a.name === 'Brand')?.options?.[0] || '';
+  const brand = Array.isArray(product.brands)
+    ? product.brands[0]?.name || ''
+    : product.brands || product.attributes?.find(a => a.name === 'Brand')?.options?.[0] || '';
   const inStock = product.stock_status === 'instock';
 
   // Load reviews
@@ -109,7 +111,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
     });
 
     if (res.error) {
-      Alert.alert('Error', 'Could not submit review. Try again.');
+      Alert.alert('Error', res.error);
     } else {
       Alert.alert('Thank You!', 'Your review has been submitted.');
       setReviewText('');

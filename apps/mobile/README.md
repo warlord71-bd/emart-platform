@@ -2,7 +2,7 @@
 
 Korean & Japanese Beauty E-Commerce App for Bangladesh
 
-Built with Expo 52 + React Native 0.76 + WooCommerce REST API
+Built with Expo 52 + React Native 0.76 + secure Emart API routes
 
 ---
 
@@ -51,7 +51,7 @@ EmartBD/
 │
 └── src/
     ├── config/
-    │   └── api.js                 # WooCommerce API config
+    │   └── api.js                 # Public Emart API config
     │
     ├── theme/
     │   └── colors.js              # Midnight Blossom palette
@@ -67,7 +67,7 @@ EmartBD/
     │   └── OrderContext.js         # Orders + AsyncStorage persist
     │
     ├── services/
-    │   └── woocommerce.js         # WooCommerce REST API service
+    │   └── woocommerce.js         # Secure Emart BFF API service
     │
     ├── components/
     │   ├── ProductCard.js          # Product card (grid + compact)
@@ -111,7 +111,7 @@ EmartBD/
 - Expo 52 + React Native 0.76.9
 - React Navigation 7 (5 tab stacks)
 - AsyncStorage persistence for cart, auth, orders, language
-- WooCommerce REST API integration (e-mart.com.bd)
+- Secure Emart API integration (e-mart.com.bd)
 - Skeleton loaders and image loading states
 - Pull-to-refresh on home screen
 
@@ -181,8 +181,8 @@ Tab Navigator
 
 ## Configuration
 
-### WooCommerce API
-API config is in `src/config/api.js`. For production, move keys to environment variables.
+### Emart API
+API config is in `src/config/api.js`. The mobile app calls secure Next.js BFF routes on `https://e-mart.com.bd` and must not include WooCommerce consumer keys, secrets, or direct `/wp-json/wc/v3` URLs. For non-production testing, set `EXPO_PUBLIC_EMART_API_URL`.
 
 ### Theme
 Edit `src/theme/colors.js` for the complete Midnight Blossom palette.

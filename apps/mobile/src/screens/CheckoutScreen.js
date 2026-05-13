@@ -16,6 +16,7 @@ const CheckoutScreen = ({ navigation }) => {
   const { addOrder } = useOrders();
 
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [payment, setPayment] = useState("cod");
@@ -73,7 +74,8 @@ const CheckoutScreen = ({ navigation }) => {
   const removeCoupon = () => { setCouponCode(""); setCouponDiscount(0); setCouponApplied(null); };
 
   const placeOrder = async () => {
-    if (!name.trim() || !phone.trim() || !address.trim()) { Alert.alert("Missing Info", "Please fill all fields"); return; }
+    if (!name.trim() || !email.trim() || !phone.trim() || !address.trim()) { Alert.alert("Missing Info", "Please fill all fields"); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { Alert.alert("Invalid Email", "Please enter a valid email address"); return; }
     if ((payment === "bkash" || payment === "nagad") && !trxId.trim()) { Alert.alert("Transaction ID Required", `Please enter your ${payment === "bkash" ? "bKash" : "Nagad"} transaction ID`); return; }
     if (items.length === 0) { Alert.alert("Cart Empty", "Please add items before placing order"); return; }
 
@@ -83,9 +85,8 @@ const CheckoutScreen = ({ navigation }) => {
       const orderData = {
         payment_method: payment,
         payment_method_title: selectedMethod.title,
-        set_paid: payment !== "cod",
-        billing: { first_name: name, phone, address_1: address, country: "BD" },
-        shipping: { first_name: name, address_1: address, country: "BD" },
+        billing: { first_name: name, email: email.trim().toLowerCase(), phone, address_1: address, country: "BD" },
+        shipping: { first_name: name, phone, address_1: address, country: "BD" },
         customer_note: payment === "cod" ? "Cash on Delivery" : `${selectedMethod.title} Transaction ID: ${trxId}`,
         line_items: items.map((item) => ({ product_id: item.id, quantity: item.quantity })),
         coupon_lines: couponApplied ? [{ code: couponApplied.code }] : [],
@@ -122,6 +123,10 @@ const CheckoutScreen = ({ navigation }) => {
           <View style={styles.inputWrap}>
             <Ionicons name="person-outline" size={16} color={COLORS.textLight} />
             <TextInput style={styles.input} placeholder="Full Name" placeholderTextColor={COLORS.textLight} value={name} onChangeText={setName} />
+          </View>
+          <View style={styles.inputWrap}>
+            <Ionicons name="mail-outline" size={16} color={COLORS.textLight} />
+            <TextInput style={styles.input} placeholder="Email Address" placeholderTextColor={COLORS.textLight} keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} />
           </View>
           <View style={styles.inputWrap}>
             <Ionicons name="call-outline" size={16} color={COLORS.textLight} />

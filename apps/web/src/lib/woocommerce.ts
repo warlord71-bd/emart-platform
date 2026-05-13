@@ -188,6 +188,16 @@ export interface WooProductReview {
   status?: string;
 }
 
+export interface WooCoupon {
+  id: number;
+  code: string;
+  amount: string;
+  discount_type: string;
+  date_expires?: string | null;
+  minimum_amount?: string;
+  maximum_amount?: string;
+}
+
 export interface ProductsParams {
   page?: number;
   per_page?: number;
@@ -392,6 +402,18 @@ function transformProductReview(review: any): WooProductReview {
     date_created: String(review?.date_created || ''),
     verified: Boolean(review?.verified),
     status: typeof review?.status === 'string' ? review.status : undefined,
+  };
+}
+
+function transformCoupon(coupon: any): WooCoupon {
+  return {
+    id: Number(coupon?.id || 0),
+    code: String(coupon?.code || '').trim(),
+    amount: String(coupon?.amount || ''),
+    discount_type: String(coupon?.discount_type || ''),
+    date_expires: coupon?.date_expires ? String(coupon.date_expires) : null,
+    minimum_amount: coupon?.minimum_amount ? String(coupon.minimum_amount) : '',
+    maximum_amount: coupon?.maximum_amount ? String(coupon.maximum_amount) : '',
   };
 }
 
@@ -948,11 +970,13 @@ export async function getCategoryBySlug(slug: string): Promise<WooCategory | nul
 
 export async function createOrder(orderData: {
   payment_method: string;
+  payment_method_title?: string;
   billing: WooBilling;
   shipping: WooShipping;
   line_items: { product_id: number; quantity: number }[];
   customer_id?: number;
   customer_note?: string;
+  coupon_lines?: { code: string }[];
 }): Promise<WooOrder | null> {
   try {
     // Validate credentials are configured
@@ -1082,6 +1106,28 @@ export async function createProductReview(data: {
   } catch (error) {
     logWooError('createProductReview', error, { productId: data.product_id });
     return null;
+  }
+}
+
+// ══════════════════════════════
+// COUPONS API
+// ══════════════════════════════
+
+export async function getCouponsByCode(code: string): Promise<WooCoupon[]> {
+  const normalizedCode = code.trim();
+  if (!normalizedCode) return [];
+
+  try {
+    const response = await wooClient.get('/coupons', {
+      params: { code: normalizedCode, per_page: 5 },
+    });
+
+    return Array.isArray(response.data)
+      ? response.data.map(transformCoupon).filter((coupon) => coupon.id && coupon.code)
+      : [];
+  } catch (error) {
+    logWooError('getCouponsByCode', error);
+    return [];
   }
 }
 

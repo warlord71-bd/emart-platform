@@ -1,23 +1,49 @@
-import { API_CONFIG, getAuthParams } from '../config/api';
+import { API_CONFIG } from '../config/api';
 
 const BASE = API_CONFIG.baseUrl;
-const AUTH = getAuthParams();
 
 
 // ================================
 // API REQUEST WRAPPER
 // ================================
 
-const apiFetch = async (endpoint, params = '') => {
+const toQueryObject = (params = '') => {
+  if (!params) return {};
+  if (typeof params === 'object') return params;
 
-  const url = `${BASE}${endpoint}?${AUTH}${params ? '&' + params : ''}`;
+  const query = {};
+  const searchParams = new URLSearchParams(params);
+  searchParams.forEach((value, key) => {
+    query[key] = value;
+  });
+  return query;
+};
+
+const buildUrl = (endpoint, params = '') => {
+  const searchParams = new URLSearchParams();
+  const query = toQueryObject(params);
+
+  Object.keys(query).forEach((key) => {
+    const value = query[key];
+    if (value !== undefined && value !== null && value !== '') {
+      searchParams.append(key, String(value));
+    }
+  });
+
+  const queryString = searchParams.toString();
+  return `${BASE}${endpoint}${queryString ? `?${queryString}` : ''}`;
+};
+
+const apiFetch = async (endpoint, params = '') => {
+  const url = buildUrl(endpoint, params);
 
   try {
 
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(`WooCommerce API Error: ${response.status}`);
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error || errData.message || `API Error: ${response.status}`);
     }
 
     const data = await response.json();
@@ -33,7 +59,7 @@ const apiFetch = async (endpoint, params = '') => {
 
 const apiPost = async (endpoint, body) => {
 
-  const url = `${BASE}${endpoint}?${AUTH}`;
+  const url = `${BASE}${endpoint}`;
 
   try {
 
@@ -45,7 +71,7 @@ const apiPost = async (endpoint, body) => {
 
     if (!response.ok) {
       const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.message || `API Error: ${response.status}`);
+      throw new Error(errData.error || errData.message || `API Error: ${response.status}`);
     }
 
     const data = await response.json();
@@ -59,6 +85,17 @@ const apiPost = async (endpoint, body) => {
   }
 };
 
+const productListFetch = async (params = {}) => {
+  const res = await apiFetch('/api/mobile/products', params);
+  if (res.error) return res;
+
+  return {
+    data: res.data?.products || [],
+    total: res.data?.total || 0,
+    totalPages: res.data?.totalPages || 0,
+    error: null,
+  };
+};
 
 
 // ================================
@@ -71,77 +108,85 @@ export const getProducts = async (
   params = ''
 ) => {
 
-  return apiFetch(
-    '/products',
-    `page=${page}&per_page=${perPage}&status=publish&orderby=date&order=desc${params ? '&' + params : ''}`
-  );
+  return productListFetch({
+    page,
+    per_page: perPage,
+    orderby: 'date',
+    order: 'desc',
+    ...toQueryObject(params),
+  });
 
 };
 
 
 export const getProduct = async (id) => {
 
-  return apiFetch(`/products/${id}`);
+  return apiFetch(`/api/mobile/products/${id}`);
 
 };
 
 
 export const searchProducts = async (query, page = 1) => {
 
-  return apiFetch(
-    '/products',
-    `search=${encodeURIComponent(query)}&page=${page}&per_page=${API_CONFIG.perPage}&status=publish`
-  );
+  return productListFetch({
+    search: query,
+    page,
+    per_page: API_CONFIG.perPage,
+  });
 
 };
 
 
 export const getProductsByCategory = async (categoryId, page = 1) => {
 
-  return apiFetch(
-    '/products',
-    `category=${categoryId}&page=${page}&per_page=${API_CONFIG.perPage}&status=publish`
-  );
+  return productListFetch({
+    category: categoryId,
+    page,
+    per_page: API_CONFIG.perPage,
+  });
 
 };
 
 
 export const getFeaturedProducts = async () => {
 
-  return apiFetch(
-    '/products',
-    `featured=true&per_page=10&status=publish`
-  );
+  return productListFetch({
+    featured: true,
+    per_page: 10,
+  });
 
 };
 
 
-export const getOnSaleProducts = async () => {
+export const getOnSaleProducts = async (page = 1) => {
 
-  return apiFetch(
-    '/products',
-    `on_sale=true&per_page=10&status=publish`
-  );
+  return productListFetch({
+    on_sale: true,
+    page,
+    per_page: API_CONFIG.perPage,
+  });
 
 };
 
 
 export const getTopRatedProducts = async () => {
 
-  return apiFetch(
-    '/products',
-    `orderby=rating&order=desc&per_page=10&status=publish`
-  );
+  return productListFetch({
+    orderby: 'rating',
+    order: 'desc',
+    per_page: 10,
+  });
 
 };
 
 
 export const getLatestProducts = async () => {
 
-  return apiFetch(
-    '/products',
-    `orderby=date&order=desc&per_page=10&status=publish`
-  );
+  return productListFetch({
+    orderby: 'date',
+    order: 'desc',
+    per_page: 10,
+  });
 
 };
 
@@ -154,7 +199,7 @@ export const getLatestProducts = async () => {
 export const getCategories = async (params = '') => {
 
   return apiFetch(
-    '/products/categories',
+    '/api/mobile/categories',
     `per_page=100&orderby=count&order=desc&hide_empty=true${params ? '&' + params : ''}`
   );
 
@@ -164,7 +209,7 @@ export const getCategories = async (params = '') => {
 export const getParentCategories = async () => {
 
   return apiFetch(
-    '/products/categories',
+    '/api/mobile/categories',
     `parent=0&per_page=50&orderby=count&order=desc&hide_empty=true`
   );
 
@@ -174,7 +219,7 @@ export const getParentCategories = async () => {
 export const getSubCategories = async (parentId) => {
 
   return apiFetch(
-    '/products/categories',
+    '/api/mobile/categories',
     `parent=${parentId}&per_page=50&hide_empty=true`
   );
 
@@ -188,23 +233,25 @@ export const getSubCategories = async (parentId) => {
 
 export const getProductReviews = async (productId) => {
 
-  return apiFetch(
-    '/products/reviews',
-    `product=${productId}&per_page=20&orderby=date_created&order=desc`
-  );
+  const res = await apiFetch('/api/product-reviews', { productId });
+  if (res.error) return res;
+
+  return { data: res.data?.reviews || [], error: null };
 
 };
 
 
 export const submitProductReview = async (productId, reviewData) => {
 
-  return apiPost('/products/reviews', {
-    product_id: productId,
+  const res = await apiPost('/api/product-reviews', {
+    productId,
     review: reviewData.review,
-    reviewer: reviewData.name,
-    reviewer_email: reviewData.email,
     rating: reviewData.rating,
   });
+
+  if (res.error) return res;
+
+  return { data: res.data?.review || null, error: null };
 
 };
 
@@ -217,7 +264,7 @@ export const submitProductReview = async (productId, reviewData) => {
 export const validateCoupon = async (code) => {
 
   return apiFetch(
-    '/coupons',
+    '/api/mobile/coupons',
     `code=${encodeURIComponent(code)}`
   );
 
@@ -231,7 +278,10 @@ export const validateCoupon = async (code) => {
 
 export const createOrder = async (orderData) => {
 
-  return apiPost('/orders', orderData);
+  const res = await apiPost('/api/checkout', orderData);
+  if (res.error) return res;
+
+  return { data: res.data?.order || null, error: null };
 
 };
 

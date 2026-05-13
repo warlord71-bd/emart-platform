@@ -17,7 +17,16 @@ function isValidEmail(value: unknown): value is string {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { payment_method, billing, shipping, line_items, customer_note, meta_event_id } = body ?? {};
+    const {
+      payment_method,
+      payment_method_title,
+      billing,
+      shipping,
+      line_items,
+      coupon_lines,
+      customer_note,
+      meta_event_id,
+    } = body ?? {};
 
     if (!isNonEmptyString(payment_method)) {
       return NextResponse.json({ error: 'Payment method is required' }, { status: 400 });
@@ -41,8 +50,15 @@ export async function POST(request: NextRequest) {
       lastName: billing.last_name,
     });
 
+    const couponLines = Array.isArray(coupon_lines)
+      ? coupon_lines
+        .map((item) => ({ code: String(item?.code || '').trim() }))
+        .filter((item) => item.code)
+      : [];
+
     const order = await createOrder({
       payment_method,
+      payment_method_title: isNonEmptyString(payment_method_title) ? payment_method_title.trim() : undefined,
       billing: {
         ...billing,
         email: billing.email.trim().toLowerCase(),
@@ -51,6 +67,7 @@ export async function POST(request: NextRequest) {
       line_items,
       customer_id: customer.id,
       customer_note: isNonEmptyString(customer_note) ? customer_note : undefined,
+      coupon_lines: couponLines.length > 0 ? couponLines : undefined,
     });
 
     if (!order?.id) {
