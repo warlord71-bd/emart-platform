@@ -241,8 +241,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           {products.length > 0 ? (
             <>
               <div className="grid grid-cols-1 gap-4 min-[430px]:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
-                {products.map((product: any) => (
-                  <ProductCard key={product.id} product={product} />
+                {products.map((product: any, i: number) => (
+                  <ProductCard key={product.id} product={product} priority={i < 4} />
                 ))}
               </div>
               {totalPages > 1 && (
