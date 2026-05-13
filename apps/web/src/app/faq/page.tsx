@@ -71,8 +71,22 @@ export default function FAQPage() {
     }
   ];
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
+    })),
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <h1 className="mb-2 text-2xl font-bold text-ink">Frequently Asked Questions</h1>
       <p className="mb-6 text-sm text-muted">Find answers to common questions about Emart, our products, shipping, and more.</p>
 

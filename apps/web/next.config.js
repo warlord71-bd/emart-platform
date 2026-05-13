@@ -321,6 +321,8 @@ const nextConfig = {
       { source: '/category/skincare-essentials', destination: '/shop',                          permanent: true },
       { source: '/category/k-beauty-j-beauty',   destination: '/category/korean-beauty',        permanent: true },
       { source: '/category/shooting-gel',         destination: '/category/soothing-gel',         permanent: true },
+      // Celimax Meta ad broken slug — missing separator, 404 in GSC; redirect to serum
+      { source: '/shop/celimax-poredark-spot', destination: '/shop/celimax-poredark-spot-brightening-serum-30ml', permanent: true },
     ];
   },
 

@@ -94,13 +94,18 @@ function stripRankMathSuffix(raw: string): string {
     .trim();
 }
 
-/** Category: "Toners - Emart Skincare Bangladesh" → "Toners in Bangladesh | Emart Skincare Bangladesh" */
+/** Category: "Toners - Emart Skincare Bangladesh" → "Toners Prices in Bangladesh | Emart" */
 function reformatCategoryTitle(raw: string | null, fallback: string): string {
   if (!raw?.trim()) return fallback;
   const stripped = stripRankMathSuffix(raw);
   if (stripped.length < 3) return fallback;
-  const core = /in bangladesh/i.test(stripped) ? stripped : `${stripped} in Bangladesh`;
-  return `${core} | Emart Skincare Bangladesh`;
+  // Add "Prices in Bangladesh" if not already present
+  const hasBangladesh = /in bangladesh/i.test(stripped);
+  const hasPrices = /price/i.test(stripped);
+  let core = stripped;
+  if (!hasBangladesh) core = `${stripped} Prices in Bangladesh`;
+  else if (!hasPrices) core = stripped.replace(/in bangladesh/i, 'Prices in Bangladesh');
+  return `${core} | Emart`;
 }
 
 export async function getProductSeo(
@@ -134,7 +139,7 @@ export async function getCategorySeo(
   const seo = data?.productCategory?.seo;
   const name = data?.productCategory?.name || categoryName || slug;
 
-  const titleFallback = `${name} in Bangladesh | Emart Skincare Bangladesh`;
+  const titleFallback = `${name} Prices in Bangladesh | Emart`;
   const descFallback = `Buy original ${name} skincare in Bangladesh at Emart. Shop authentic products with COD, fast delivery, and trusted prices.`;
 
   const rawTitle = seo?.title ?? null;
