@@ -56,10 +56,10 @@ export default async function HomePage() {
 
   try {
     [bestSelling, newArrivals, onSale, fallbackResult, blogPosts, allCategories] = await Promise.all([
-      getBestSellingProducts(8),
-      getNewArrivals(8),
-      getSaleProducts(10),
-      getProducts({ per_page: 12, orderby: 'popularity' }),
+      getBestSellingProducts(4),
+      getNewArrivals(4),
+      getSaleProducts(6),
+      getProducts({ per_page: 4, orderby: 'popularity' }),
       getWordPressPosts({ perPage: 3 }),
       getCategories({ per_page: 100, hide_empty: true }),
     ]);
@@ -68,12 +68,12 @@ export default async function HomePage() {
   }
 
   const fallbackProducts = filterProductsWithImages(fallbackResult.products);
-  const bestSellerProducts = filterProductsWithImages(bestSelling).slice(0, 8);
-  const newArrivalProducts = filterProductsWithImages(newArrivals).slice(0, 8);
-  const saleProducts = filterProductsWithImages(onSale).slice(0, 10);
+  const bestSellerProducts = filterProductsWithImages(bestSelling).slice(0, 4);
+  const newArrivalProducts = filterProductsWithImages(newArrivals).slice(0, 4);
+  const saleProducts = filterProductsWithImages(onSale).slice(0, 6);
 
-  const safeBestSellers = bestSellerProducts.length > 0 ? bestSellerProducts : fallbackProducts.slice(0, 8);
-  const safeNewArrivals = newArrivalProducts.length > 0 ? newArrivalProducts : fallbackProducts.slice(0, 8);
+  const safeBestSellers = bestSellerProducts.length > 0 ? bestSellerProducts : fallbackProducts.slice(0, 4);
+  const safeNewArrivals = newArrivalProducts.length > 0 ? newArrivalProducts : fallbackProducts.slice(0, 4);
   const safeSaleProducts = saleProducts;
   const brandLogos = brandLogoManifest
     .filter((b): b is typeof b & { logo: string } => !b.fallback && typeof b.logo === 'string')
@@ -126,7 +126,7 @@ export default async function HomePage() {
         viewAllLabel="View All"
         metaPrefix="Refill in"
         mobileLimit={4}
-        desktopLimit={8}
+        desktopLimit={4}
       />
 
       <ProductGridSection
