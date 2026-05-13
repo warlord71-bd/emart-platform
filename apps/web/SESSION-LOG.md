@@ -862,3 +862,38 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local build/lint passed; VPS build passed; live `/sitemap.xml` returned 200 with 4,177 `<loc>` entries and 0 duplicate URLs; new concerns/ingredients/routine URLs are present.
 - Blockers hit: VPS still has unrelated dirty Claude/SEO work, so only exact sitemap files were synced.
 - Next step: Continue audit issue 4 product content/data triage only with read-only dry-runs before Woo mutations.
+
+---
+## Session 2026-05-13
+
+### Work done
+- pa_concern: assigned 3,247 products across 9 concern terms (acne-blemish, anti-aging, brightening, dryness-hydration, hyperpigmentation, pores-blackheads, sensitivity, sunscreen, wrinkle)
+- pa_origin: closed gap — 21 CeraVe/Beauty of Joseon products assigned brand + origin; 17 combos intentionally skipped
+- &amp; database fix: 141 product/post titles cleaned (stored & not &amp;)
+- Rank Math meta: 19 new CeraVe/BoJ products assigned descriptions
+- SKU: 149 missing/invalid SKUs assigned (EM-{ID} format); 10 duplicate meta rows cleaned — 100% coverage
+- Category titles: "Prices in Bangladesh | Emart" format via seo.ts
+- FAQ: layout.tsx metadata + FAQPage JSON-LD (10 Q&A pairs)
+- Redirects: Celimax broken slug, 12 deprecated category 308s verified
+- K-Beauty/J-Beauty: separated as distinct nav links (desktop + mobile + chips)
+- makeup-cosmetics + bath-body: added to nav; intro text added
+- Double title suffix: fixed on 7 pages (faq, brands, sitemap, ingredients, social, routine, origins)
+- Shop/sale/new-arrivals: SEO meta rewrites; NEW badge on new-arrivals cards
+- gtin13/gtin12/gtin8: auto-detected from barcode SKUs in Product JSON-LD (748 products)
+- Brand name casing: BRAND_NAME_CORRECTIONS map (COSRX, CeraVe, SKIN1004, etc.)
+- Skeleton loading: ProductCardSkeleton, shop/loading.tsx, category/[slug]/loading.tsx
+- Homepage product payload: reduced 38→18 products (457KB from 531KB)
+- FB pixel preload: removed spurious Next.js preload for FB noscript tracker
+- hreflang: Bengali/English detection on blog posts; og:locale set correctly
+- Author URL: blog Article schema /about-us → /our-story
+
+### Blockers / manual actions needed
+- GSC: submit sitemap.xml, request indexing for top pages
+- Merchant Center: reprocess gla_2611
+- GA4 DebugView: visit a 404 URL, confirm headless_migration_404 fires
+- Product reviews: only 16 approved — need post-order WhatsApp/email review prompt
+- Blog authors: add named author on key posts for E-E-A-T
+
+### Next steps
+- Write 2-3 in-depth blog guides (best sunscreen Bangladesh, niacinamide guide, K-beauty routine)
+- Review product image quality for products with watermarked/imported images
