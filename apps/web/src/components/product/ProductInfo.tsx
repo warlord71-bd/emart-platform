@@ -412,11 +412,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         <div>
           <p className="text-xs text-blue-600 font-semibold">Stock</p>
           <p className="text-sm text-blue-900 font-medium">
-            {product.stock_status === 'instock'
-              ? (product.stock_quantity && product.stock_quantity > 0
-                  ? `${product.stock_quantity} Pcs Available`
-                  : 'In Stock')
-              : 'Out of Stock'}
+            {product.stock_status === 'instock' ? 'In Stock' : 'Out of Stock'}
           </p>
         </div>
         <div>

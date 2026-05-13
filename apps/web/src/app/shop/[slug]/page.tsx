@@ -35,10 +35,21 @@ function getSeoDescription(product: WooProduct): string {
   const rankMathMeta = getProductMetaString(product, '_rank_math_description');
   if (rankMathMeta) return rankMathMeta;
 
-  return (
-    product.short_description?.replace(/<[^>]+>/g, '').trim().substring(0, 160) ||
-    product.name
-  );
+  const shortDesc = product.short_description?.replace(/<[^>]+>/g, '').trim();
+  if (shortDesc && shortDesc.length > 20) return shortDesc.substring(0, 160);
+
+  // Auto-generate from product data when no editorial description exists.
+  // Covers newly added products with missing Rank Math meta and empty short descriptions.
+  const brand = getProductBrandName(product);
+  const category = getCleanBreadcrumbCategory(product)?.label;
+  const price = parseFloat(product.price || product.regular_price || '0');
+  const priceStr = price > 0 ? ` ৳${Math.round(price).toLocaleString('en-BD')} price.` : '';
+
+  const parts: string[] = [`Buy ${product.name} in Bangladesh from Emart.`];
+  if (brand) parts.push(`Authentic ${brand}${category ? ` ${category}` : ''} product.`);
+  parts.push(`Fast delivery & COD available.${priceStr}`);
+
+  return parts.join(' ').substring(0, 160);
 }
 
 function getNumericPrice(product: WooProduct): string {
