@@ -841,3 +841,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local build passed; VPS build passed; `pm2 restart emartweb` succeeded; live `/` returned 200; sample PDP shows India origin chip; Woo check returned `pa_origin_india=43 custom_origin_korea=0`; South Korea origin check returned no The Derma Co matches.
 - Blockers hit: Existing product copy/meta/FAQ text can still say Korea import; this is intentionally left for Baidu Qianfan content/meta update via dry-run then approved apply.
 - Next step: Baidu Qianfan follows `workspace/audit/active/baidu-qianfan-the-derma-co-meta-instructions-20260510.md` to update The Derma Co product copy/meta only; no frontend product-fact edits needed.
+
+## 2026-05-13 12:25 CEST — Codex mobile Woo credential removal
+- Did: Removed mobile direct WooCommerce credential/API usage and routed mobile products, categories, coupons, checkout, and reviews through secure Next.js API routes.
+- Completed tasks: Commit `cf1cdbc` on `origin/main`; live `/api/mobile/products`, `/api/mobile/categories`, and `/api/mobile/coupons` returned `200 application/json`; no PM2 restart was needed because the VPS already served the matching routes.
+- Verification: Local `npm run build` passed; `npm run lint` passed with one pre-existing `LiveTickerBar` warning; Expo/Babel syntax check passed for changed mobile files; source grep found no mobile Woo keys/direct `/wp-json/wc/v3`.
+- Blockers hit: VPS tree has unrelated dirty Claude/SEO work, so broad rsync/restart was avoided; published mobile app still needs a new build/release and Woo key rotation if old keys were ever bundled.
+- Next step: Build/release the mobile app from latest `origin/main`, then rotate any exposed Woo consumer keys.
