@@ -1,3 +1,18 @@
+// DEPRECATED CATEGORIES — do not add these slugs to any nav, filter, sitemap, or product mapping.
+// Full status reference: workspace/docs/category-taxonomy-status.md
+// Redirected (301 in next.config.js):
+//   shop-by-concern → /concerns
+//   acne-blemish-care → /concerns/acne-blemish-care
+//   anti-aging-repair → /concerns/anti-aging-repair
+//   dryness-hydration → /concerns/dryness-hydration
+//   pores-oil-control → /concerns/pores-oil-control
+//   melasma → /concerns/melasma
+//   brightening, wrinkle, sensitivity → matching /concerns/*
+//   skincare-essentials → /shop
+//   k-beauty-j-beauty → /category/korean-beauty
+//   shooting-gel → /category/soothing-gel
+// Backend-only grouping (no nav): hair-personal-care, makeup-cosmetics, health-wellbeing
+
 import { CONCERN_DEFINITIONS } from '@/lib/concerns';
 import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
 import { ROUTINE_STEPS } from '@/lib/routine';
