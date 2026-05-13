@@ -26,11 +26,16 @@ export function generateMetadata({ searchParams }: { searchParams?: ShopPageProp
 
 export const revalidate = 1800;
 
+// Skin types that have a matching Woo concern category → use category filter (precise)
+// Others fall back to text search with popularity sort
+const SKIN_TYPE_CATEGORY: Record<string, string> = {
+  oily: 'pores-oil-control',       // products for oily/congested skin
+  dry: 'dryness-hydration',        // products for dry/dehydrated skin
+};
 const SKIN_TYPE_SEARCH: Record<string, string> = {
-  oily: 'oily',
-  dry: 'dry skin',
-  combination: 'combination',
   sensitive: 'sensitive',
+  combination: 'combination',
+  normal: 'normal',
 };
 
 interface ShopPageProps {
@@ -116,21 +121,34 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     }
   }
 
-  // Resolve ingredient → search keyword
+  // Ingredient → WooCommerce product tag (slug matches ingredient slug, e.g. "vitamin-c").
+  // Tag filter is precise: only products explicitly tagged with that ingredient appear.
+  // If no tag is set up in WooCommerce admin, 0 results → clear "no products" message.
   const activeIngredient = searchParams.ingredient ? getIngredientBySlug(searchParams.ingredient) : null;
-  const ingredientSearch = activeIngredient?.searchKeywords[0];
+  const ingredientTag = activeIngredient?.slug;
 
-  // Resolve skin_type → search keyword
-  const skinTypeSearch = searchParams.skin_type ? SKIN_TYPE_SEARCH[searchParams.skin_type] : undefined;
+  // Skin type: map to Woo category when available (oily/dry), else text search (sensitive/combination)
+  const skinTypeCategorySlug = searchParams.skin_type ? SKIN_TYPE_CATEGORY[searchParams.skin_type] : undefined;
+  const skinTypeSearch = searchParams.skin_type && !skinTypeCategorySlug
+    ? SKIN_TYPE_SEARCH[searchParams.skin_type]
+    : undefined;
 
-  // Priority: concern > ingredient > skin_type > explicit search
-  const effectiveSearch = concernSearch ?? ingredientSearch ?? skinTypeSearch ?? activeSearch;
-  const effectiveCategory = concernCategoryId ?? searchParams.category ?? '';
+  let skinTypeCategoryId: string | undefined;
+  if (skinTypeCategorySlug) {
+    const skinCat = await getCategoryBySlug(skinTypeCategorySlug);
+    if (skinCat?.id) skinTypeCategoryId = String(skinCat.id);
+  }
 
-  // Search-driven filters (ingredient, skin_type, concern via searchQuery) must sort by
-  // popularity — otherwise newest products that merely *mention* the keyword dominate.
-  // Only override when the user hasn't explicitly chosen a sort.
-  const isSearchDrivenFilter = Boolean(ingredientSearch || skinTypeSearch || concernSearch);
+  // Search: concern > skin_type search > explicit user search
+  // (ingredient uses tag, not search — excluded here)
+  const effectiveSearch = concernSearch ?? skinTypeSearch ?? activeSearch;
+
+  // Category: concern > skin_type category > explicit category param
+  const effectiveCategory = concernCategoryId ?? skinTypeCategoryId ?? searchParams.category ?? '';
+
+  // Search-driven filters need popularity sort — prevents newly-added off-target products
+  // from dominating just because they mention the keyword somewhere in their description.
+  const isSearchDrivenFilter = Boolean(skinTypeSearch || concernSearch);
   const effectiveSortParams = isSearchDrivenFilter && !searchParams.sort
     ? { orderby: 'popularity' as const, order: 'desc' as const }
     : sortParams;
@@ -138,7 +156,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const { products = [], totalPages = 1, total = 0 } = await getProducts({
     page,
     per_page: 24,
-    search: effectiveSearch,
+    search: effectiveSearch || undefined,
+    tag: ingredientTag,
     include: activeBrand ? activeBrandProductIds.join(',') || '0' : undefined,
     category: effectiveCategory,
     ...effectiveSortParams,
@@ -231,7 +250,15 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           ) : (
             <div className="py-20 text-center text-muted-2">
               <p className="text-lg text-ink">No products found</p>
-              <Link href="/shop" className="mt-2 block text-accent hover:underline">
+              {activeIngredient && (
+                <p className="mt-2 text-sm text-muted">
+                  Try the{' '}
+                  <Link href={`/ingredients/${activeIngredient.slug}`} className="text-accent hover:underline">
+                    {activeIngredient.label} ingredient page
+                  </Link>
+                </p>
+              )}
+              <Link href="/shop" className="mt-3 block text-accent hover:underline">
                 Clear filters
               </Link>
             </div>
