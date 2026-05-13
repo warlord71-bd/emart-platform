@@ -30,6 +30,7 @@ const QUICK_CHIPS = [
   { label: 'Combos', href: '/category/emart-combos', icon: Gift },
   { label: 'Sunscreen', href: '/category/sunscreen', icon: Sun },
   { label: 'K-Beauty', href: '/category/korean-beauty', icon: BadgeCheck },
+  { label: 'J-Beauty', href: '/category/japanese-beauty', icon: BadgeCheck },
   { label: 'Brands', href: '/brands', icon: Tags },
   { label: 'Track Order', href: '/track-order', icon: PackageSearch },
 ];

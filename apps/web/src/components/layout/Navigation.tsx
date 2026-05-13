@@ -64,6 +64,22 @@ export default function Navigation() {
               🎯 CONCERN
             </Link>
 
+            {/* K-BEAUTY */}
+            <Link
+              href="/category/korean-beauty"
+              className={desktopLinkClass}
+            >
+              🇰🇷 K-BEAUTY
+            </Link>
+
+            {/* J-BEAUTY */}
+            <Link
+              href="/category/japanese-beauty"
+              className={desktopLinkClass}
+            >
+              🇯🇵 J-BEAUTY
+            </Link>
+
             {/* ORIGINS */}
             <Link
               href="/origins"
@@ -165,6 +181,24 @@ export default function Navigation() {
                   className={mobileLinkClass}
                 >
                   🎯 SHOP BY CONCERN
+                </Link>
+
+                {/* K-BEAUTY */}
+                <Link
+                  href="/category/korean-beauty"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileLinkClass}
+                >
+                  🇰🇷 K-BEAUTY
+                </Link>
+
+                {/* J-BEAUTY */}
+                <Link
+                  href="/category/japanese-beauty"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileLinkClass}
+                >
+                  🇯🇵 J-BEAUTY
                 </Link>
 
                 {/* ORIGINS */}

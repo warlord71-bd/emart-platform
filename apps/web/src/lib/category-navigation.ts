@@ -61,15 +61,15 @@ export interface OriginNavItem extends MenuCategoryItem {
 }
 
 export const TOP_CATEGORY_IMAGE_OVERRIDES: Record<string, string> = {
-  'k-beauty-j-beauty': '/images/home-categories/viral-kbeauty.jpg',
+  'korean-beauty': '/images/home-categories/viral-kbeauty.jpg',
   'night-cream': '/images/home-categories/cosrx-snail-92-cream.png',
   'sunscreen': '/images/home-categories/cosrx-sunscreen.jpg',
   'hair-care': '/images/home-categories/hair-care.jpg',
 };
 
 export const HOME_TOP_CATEGORY_ORDER: TopCategoryConfig[] = [
-  { name: 'K-Beauty', slugCandidates: ['korean-beauty', 'k-beauty-j-beauty', 'korean-skincare'], fallbackSlug: 'korean-beauty' },
-  { name: 'J-Beauty', slugCandidates: ['japanese-beauty', 'j-beauty', 'japanese-skincare'], fallbackSlug: 'japanese-beauty' },
+  { name: 'K-Beauty', slug: 'korean-beauty', href: '/category/korean-beauty' },
+  { name: 'J-Beauty', slug: 'japanese-beauty', href: '/category/japanese-beauty' },
   { name: 'Serum & Ampoule', slugCandidates: ['serums-ampoules-essences', 'toners-mists'], fallbackSlug: 'serums-ampoules-essences' },
   { name: 'Moisturizers', slugCandidates: ['night-cream', 'moisturizer', 'cream-moisturizers'], fallbackSlug: 'night-cream' },
   { name: 'Kits & Combos', slug: 'emart-combos', href: '/category/emart-combos' },
