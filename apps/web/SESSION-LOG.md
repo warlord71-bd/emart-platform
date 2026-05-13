@@ -855,3 +855,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verification: Local build and lint passed; VPS build passed; live sample PDP and homepage returned 200; focused live/source grep found no fake SKU/stock fallback strings.
 - Blockers hit: VPS still has unrelated dirty Claude/SEO work, so only the exact PDP component was synced.
 - Next step: Continue audit issue 3 sitemap duplicate cleanup when requested.
+
+## 2026-05-13 12:45 CEST — Codex audit issue 3 sitemap de-dupe
+- Did: Closed audit issue 3 by hardening sitemap de-dupe with canonical URL normalization and a final XML render guard while preserving today’s new concerns, ingredients, and routine pages.
+- Completed tasks: Commit `6ed47a7` pushed to `origin/main`; exact sitemap files synced to VPS; `emartweb` restarted.
+- Verification: Local build/lint passed; VPS build passed; live `/sitemap.xml` returned 200 with 4,177 `<loc>` entries and 0 duplicate URLs; new concerns/ingredients/routine URLs are present.
+- Blockers hit: VPS still has unrelated dirty Claude/SEO work, so only exact sitemap files were synced.
+- Next step: Continue audit issue 4 product content/data triage only with read-only dry-runs before Woo mutations.
