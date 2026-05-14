@@ -74,36 +74,30 @@ export async function SocialChannelGrid() {
           <CardFooter handle="@emart_bdofficial" title={ttTitle} />
         </SocialCard>
 
-        {/* Facebook: makeup illustration on bold pink */}
+        {/* Facebook: real product photo */}
         <SocialCard href="/social" ariaLabel="Watch Facebook content">
-          <div className="absolute inset-0 bg-[#FF3D7F]" />
-          <div className="absolute inset-4 flex items-center justify-center">
-            <Image
-              src="/images/home-categories/makeup-illus.png"
-              alt="Emart Facebook — makeup & product drops"
-              fill
-              sizes="(max-width: 640px) 50vw, 25vw"
-              className="object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-[1.06]"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <Image
+            src="/images/home-categories/fb-hero.webp"
+            alt="Emart Facebook — product drops & reels"
+            fill
+            sizes="(max-width: 640px) 50vw, 25vw"
+            className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.08]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
           <PlatformBadge color="bg-[#1877F2]" icon={<FBIcon />} label="Facebook" />
           <CardFooter handle="emartbd.official" title="Product drops & reels" />
         </SocialCard>
 
-        {/* Instagram: face mask illustration on bold purple */}
+        {/* Instagram: real product photo */}
         <SocialCard href="/social" ariaLabel="Watch Instagram content">
-          <div className="absolute inset-0 bg-[#7C3AED]" />
-          <div className="absolute inset-4 flex items-center justify-center">
-            <Image
-              src="/images/home-categories/skincare-illus.png"
-              alt="Emart Instagram — skincare looks & shelf shots"
-              fill
-              sizes="(max-width: 640px) 50vw, 25vw"
-              className="object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-[1.06]"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <Image
+            src="/images/home-categories/insta-hero.webp"
+            alt="Emart Instagram — skincare looks & shelf shots"
+            fill
+            sizes="(max-width: 640px) 50vw, 25vw"
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.08]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
           <PlatformBadge color="bg-gradient-to-r from-[#833ab4] to-[#fd1d1d]" icon={<IGIcon className="h-3 w-3 fill-white" />} label="Instagram" />
           <CardFooter handle="@emartbd.official" title="Skincare looks & shelf shots" />
         </SocialCard>
