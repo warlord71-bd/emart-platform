@@ -709,11 +709,11 @@ export function OriginStoryBlock() {
       <div className="mx-auto grid max-w-6xl gap-5 overflow-hidden rounded-lg border border-hairline bg-bg-alt lg:grid-cols-[0.95fr_1.05fr]">
         <div className="relative min-h-[260px]">
           <Image
-            src="/images/home-categories/viral-kbeauty.jpg"
-            alt="Emart beauty curation and store story"
+            src="/images/store-interior.webp"
+            alt="Emart skincare store in Dhanmondi — shelves stocked with authentic global beauty products"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-contain object-center"
+            className="object-cover object-center"
           />
         </div>
         <div className="p-6 lg:p-8">
