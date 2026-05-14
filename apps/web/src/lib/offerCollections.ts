@@ -19,31 +19,8 @@ const BAD_OFFER_IMAGE_SLUGS = new Set([
   'pookie-combo-offer-5-buy-2-trendy-beauties-liquid-matte-waterproof-lipstick-and-get-1-free-2',
 ]);
 
-const EMARTWAY_IMAGE_OVERRIDES: Record<string, string> = {
-  'buy-1-get-1-buy-christian-dean-secret-tone-up-sun-cream-spf50-pa-70ml-the-dermalix-niacinamide-4-alpha-arbutin-2-brightening-serum-30ml':
-    'https://d1puc9h291tp0h.cloudfront.net/uploads/all/AiHRHOfX8LMeMgevbnBE8cdAkP8K6V3Tqrx1xA8m.webp',
-  'combo-dabo-all-in-one-snail-96-mucin-essence-100ml-dabo-all-in-one-black-snail-repair-cream-50ml':
-    'https://d1puc9h291tp0h.cloudfront.net/uploads/all/ZmDG7dIuXKQpwadtIilsuu4akUdGui0CiLm8Ljk1.webp',
-};
-
 function sanitizeOfferProducts(products: WooProduct[]) {
-  return products
-    .filter((product) => product?.slug && !BAD_OFFER_IMAGE_SLUGS.has(product.slug))
-    .map((product) => {
-      const override = EMARTWAY_IMAGE_OVERRIDES[product.slug];
-      if (!override || !product.images?.length) return product;
-
-      return {
-        ...product,
-        images: [
-          {
-            ...product.images[0],
-            src: override,
-          },
-          ...product.images.slice(1),
-        ],
-      };
-    });
+  return products.filter((product) => product?.slug && !BAD_OFFER_IMAGE_SLUGS.has(product.slug));
 }
 
 function dedupeProducts(products: WooProduct[]) {

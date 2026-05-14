@@ -1,6 +1,6 @@
 # Session Resume Guide — 2026-04-28
 
-The long 2026-04-27 skincarebd/product-import jobs have completed or been closed out. Do not restart the product importer for the same 633-candidate batch unless the user explicitly asks to reset and rerun it.
+The long 2026-04-27 legacy-import product-import jobs have completed or been closed out. Do not restart the product importer for the same 633-candidate batch unless the user explicitly asks to reset and rerun it.
 
 ---
 
@@ -11,7 +11,7 @@ The long 2026-04-27 skincarebd/product-import jobs have completed or been closed
 # Check progress file
 python3 -c "
 import json; from pathlib import Path
-p = Path('/root/emart-platform/audit/skincarebd/product-import-progress.json')
+p = Path('/root/.attic-2026-05-14/emart-platform/legacy-import-residue/product-import-progress.json')
 if not p.exists(): print('Not started yet'); exit()
 d = json.loads(p.read_text())
 created  = len([v for v in d.values() if v.get('status') == 'created'])
@@ -25,7 +25,7 @@ print(f'Product import: {len(d)}/633 | created={created} | oos={oos} | errors={e
 Final known status: 633/633 processed — 92 created/published, 159 duplicate_existing/skipped or drafted, 380 out_of_stock, 2 source 404.
 
 Duplicate cleanup notes:
-- Reports: `/root/emart-platform/audit/skincarebd/import-duplicate-audit.csv` and `/root/emart-platform/audit/skincarebd/import-high-confidence-duplicates.csv`
+- Reports were archived with the removed legacy-import audit artifacts.
 - High-confidence same-size duplicate imports were drafted; older products stayed published.
 - Final corrected duplicate verifier found 0 same-size high-confidence duplicates still published.
 - ACWELL 30ml and Neutrogena SPF70 were intentionally kept live as likely variants.
@@ -34,7 +34,7 @@ Duplicate cleanup notes:
 ```bash
 python3 -c "
 import json; from pathlib import Path
-p = Path('/root/emart-platform/audit/skincarebd/image-v2-progress.json')
+p = Path('/root/.attic-2026-05-14/emart-platform/legacy-import-residue/image-v2-progress.json')
 d = json.loads(p.read_text())
 imported = len([v for v in d.values() if v == 'imported'])
 skipped  = len([v for v in d.values() if v == 'skipped_not_white'])
@@ -47,10 +47,10 @@ print(f'Image import: {len(d)}/1282 | imported={imported} | non-white={skipped} 
 
 ## What was completed this session (2026-04-27)
 
-- [x] skincarebd.com: 1,282 products scraped (prices + images)
-- [x] 637 price updates applied to WooCommerce (sale_price where skbd lower)
+- [x] legacy import reference audit: 1,282 products scraped (prices + images)
+- [x] 637 price updates applied to WooCommerce (sale_price where legacy import reference was lower)
 - [x] 1,091 white-bg images imported as featured images
-- [x] Concern categories: 1,162 new assignments via thekoreanmall + keyword rules
+- [x] Concern categories: 1,162 new assignments via legacy taxonomy reference + keyword rules
 - [x] Alt text bulk fix: 2,631 product images → "{Name} Price in Bangladesh | Emart"
 - [x] ShopByCategorySection: desktop category grid added to homepage
 - [x] MailPoet: welcome/cart/transactional emails rebuilt with Emart branding
@@ -73,7 +73,7 @@ print(f'Image import: {len(d)}/1282 | imported={imported} | non-white={skipped} 
 echo "=== Product Import ===" && \
 python3 -c "
 import json; from pathlib import Path
-p = Path('/root/emart-platform/audit/skincarebd/product-import-progress.json')
+p = Path('/root/.attic-2026-05-14/emart-platform/legacy-import-residue/product-import-progress.json')
 if not p.exists(): print('Not started'); exit()
 d = json.loads(p.read_text())
 created = len([v for v in d.values() if v.get('status') == 'created'])
@@ -85,7 +85,7 @@ print(f'{len(d)}/633 done | {created} created | {dups} duplicates | {oos} OOS | 
 echo "=== Image Import ===" && \
 python3 -c "
 import json; from pathlib import Path
-p = Path('/root/emart-platform/audit/skincarebd/image-v2-progress.json')
+p = Path('/root/.attic-2026-05-14/emart-platform/legacy-import-residue/image-v2-progress.json')
 d = json.loads(p.read_text())
 imported = sum(1 for v in d.values() if v == 'imported')
 print(f'{len(d)}/1282 | {imported} imported')

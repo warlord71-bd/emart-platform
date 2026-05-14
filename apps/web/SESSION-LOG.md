@@ -309,21 +309,21 @@ Format:
 - Blockers hit: none. Local build and VPS build passed; VPS build still logged nonfatal Woo `getProducts` 5000ms timeouts, but the build completed. `emartweb` restarted and live smoke through local nginx returned 200 with `OnlineStore=true`, `LocalBusiness=false`, old Dhanmondi-first phrase absent, and `kbeauty bangladesh` present.
 - Next step: remaining audit items are GA4 404 event `page_location` wiring and a stronger stale cache layer for Woo product/category build fetches if desired.
 
-## 2026-04-27 — Claude Code — Session 2 (skincarebd + SEO + concern mapping)
+## 2026-04-27 — Claude Code — Session 2 (legacy-import audit + SEO + concern mapping)
 
 ### Done
-- Scraped skincarebd.com: 1,282 slug-matched products → prices + images
-- Applied 637 price updates (sale_price) where skbd lower than Emart, via WP-CLI
+- Scraped legacy import reference audit: 1,282 slug-matched products → prices + images
+- Applied 637 price updates (sale_price) where legacy import reference was lower than Emart, via WP-CLI
 - Image import v2 running: ~397 white-bg images imported to WC as featured images; 54 non-white skipped
 - Alt text bulk fix: 2,631 existing product images missing alt text → "{Name} Price in Bangladesh | Emart"
-- Concern mapping: scraped thekoreanmall.com 11 concern subcats (617 slugs) + keyword rules → applied 1,162 concern category assignments; total concern-categorized: ~1,797/3,564
+- Concern mapping: scraped legacy taxonomy reference 11 concern subcats (617 slugs) + keyword rules → applied 1,162 concern category assignments; total concern-categorized: ~1,797/3,564
 - ShopByCategorySection: new 6-tile category grid visible on all screen sizes (MobileDiscovery was lg:hidden on desktop)
 - MailPoet email templates: welcome (ID2), abandoned cart (ID3), WC transactional (ID4) rebuilt with Emart branding
-- Sourcing gap: 1,100 skincarebd + 454 emartway products not on Emart → combined CSV with white-bg flags
+- Sourcing gap: 1,100 legacy-import + 454 legacy catalog products not on Emart → combined CSV with white-bg flags
 
 ### Blockers / Pending
 - Image import v2 still running (PID 424373) — ~828 remaining, ~0.3s/image
-- Sourcing gap merge still running (~426/1100 skincarebd pages scraped)
+- Sourcing gap merge still running (~426/1100 legacy-import pages scraped)
 - Brand corrections rows 681+ still waiting for CSV from user
 - Concern mapping: 1,767/3,564 products still uncategorized (non-K-beauty products mainly)
 - ShopByCategorySection needs real category images (currently using TOP_CATEGORY_IMAGE_OVERRIDES which covers only 4 slugs)
@@ -348,19 +348,19 @@ Format:
 ### Download links (public)
 - https://e-mart.com.bd/audit/sourcing-gap-import-ready-2026-04-27.csv (633 products)
 - https://e-mart.com.bd/audit/sourcing-gap-combined-2026-04-27.csv (1,551 products)
-- https://e-mart.com.bd/audit/skincarebd-match-report-2026-04-27.csv (1,282 matched)
+- Archived legacy-import match report (1,282 matched)
 
 ### If image import is still running on next session
 ```bash
 ps aux | grep "image-import-v2" | grep -v grep
-# If dead: cd /root/emart-platform/apps/web && nohup python3 scripts/skincarebd-image-import-v2.py > /tmp/image-import-v2.log 2>&1 &
+# If dead: archived legacy-import image import script was moved out of the workspace on 2026-05-14.
 ```
 
 ## 2026-04-28 — Codex product import close-out
 - Did: Closed out the sourcing-gap product importer after the completed run and duplicate cleanup, without touching frontend UI/UX or restarting `emartweb`.
 - Completed tasks: Importer processed all 633 candidates; final progress is 92 created/published, 159 duplicate_existing/skipped or drafted, 380 out_of_stock, and 2 source 404s. Old-catalog duplicate audit was run with exact/same-size matching; high-confidence duplicate imports were drafted while older products stayed published. Final corrected duplicate verifier found 0 same-size high-confidence duplicates still published. Price parsing, category assignment, and HTML-entity title cleanup safeguards are committed in `d374925` and `563e1a2`.
 - Blockers hit: Broad duplicate matching initially over-flagged size variants, so it was narrowed to same-size/high-confidence logic. ACWELL 30ml was kept live as a likely mini/full-size variant; Neutrogena SPF70 was kept live as a different SPF variant from SPF45.
-- Next step: Do not rerun `scripts/import-instock-products.py` for this batch unless the progress file is intentionally reset. Reports are saved at `audit/skincarebd/import-duplicate-audit.csv` and `audit/skincarebd/import-high-confidence-duplicates.csv`; remaining product data cleanup should continue via reviewed dry-run CSV batches.
+- Next step: Do not rerun the archived instock product importer for this batch unless the progress file is intentionally reset. Reports were moved out of the workspace with the removed legacy-import audit artifacts; remaining product data cleanup should continue via reviewed dry-run CSV batches.
 
 ## 2026-04-28 — Codex checkout incident fix
 - Did: Investigated the live checkout failure and fixed a production route redirect that was sending `/checkout` to `/` even though the storefront has a real Next checkout page.
@@ -492,8 +492,8 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Next step: continue with a narrow read-only route/content audit before making any more UI changes.
 
 ## 2026-05-02 18:08 CEST — Codex old source trace cleanup
-- Did: Removed old `skincarebd.com` / `emartwayskincare.com.bd` traces from live product/content-facing data and unused public source-logo files.
-- Completed tasks: Confirmed live Woo/WP post titles, content, excerpts, and terms had zero hits; found 1,083 old `skincarebd.com` URLs only in attachment `_wc_attachment_source` metadata; exported a rollback TSV to `/tmp/emart-seo-backups/attachment-source-skincarebd-backup-20260502.tsv`; updated those 1,083 metadata values to the current `https://e-mart.com.bd/...` attachment URLs. Removed unused tracked `apps/web/public/images/source-logos/*` files and replaced the only source comment in `brandWhitelist.ts`; local build passed; synced to VPS; VPS build passed; `emartweb` restarted; DB recheck returned zero hits across posts_content, posts_excerpt, posts_title, postmeta, and terms; live `/images/source-logos/manifest.json` now returns 404.
+- Did: Removed old legacy-import traces from live product/content-facing data and unused public source-logo files.
+- Completed tasks: Confirmed live Woo/WP post titles, content, excerpts, and terms had zero hits; found 1,083 old legacy-import URLs only in attachment source metadata; exported a rollback TSV to `/tmp/emart-seo-backups/attachment-source-backup-20260502.tsv`; updated those 1,083 metadata values to the current `https://e-mart.com.bd/...` attachment URLs. Removed unused tracked public source-logo files and replaced the only source comment in `brandWhitelist.ts`; local build passed; synced to VPS; VPS build passed; `emartweb` restarted; DB recheck returned zero hits across posts_content, posts_excerpt, posts_title, postmeta, and terms; old source-logo manifest URL returned 404.
 - Blockers hit: public HTTPS DNS from the shell was intermittently unavailable for some content grep checks, but homepage HEAD returned 200 and DB/source checks completed.
 - Next step: push the verified source cleanup commit; continue old URL redirect audit separately.
 
@@ -618,7 +618,7 @@ ps aux | grep "image-import-v2" | grep -v grep
 
 ## 2026-05-03 14:00 CEST — Codex product image correction
 - Did: Replaced the wrong image on /shop/beauty-glazed-nose-pore-strips with the correct old-site Beauty Glazed Nose Pore Strips image.
-- Completed tasks: Imported the verified old emartwayskincare CloudFront image into WordPress as attachment 93061, set product 74171 thumbnail to 93061, recorded source metadata, cleared WordPress/transient cache, rebuilt VPS, restarted emartweb, moved stale Next fetch cache to /root/.attic-2026-05-03/next-fetch-cache-product-image/.
+- Completed tasks: Imported the verified old legacy catalog CloudFront image into WordPress as attachment 93061, set product 74171 thumbnail to 93061, recorded source metadata, cleared WordPress/transient cache, rebuilt VPS, restarted emartweb, moved stale Next fetch cache to /root/.attic-2026-05-03/next-fetch-cache-product-image/.
 - Verification: WooCommerce API returns image https://e-mart.com.bd/wp-content/uploads/2026/03/beauty-glazed-nose-pore-main.webp; live product page returns 200 and uses that image for preload, visible product image, og:image, and twitter:image; image URL returns 200; PM2 emartweb online.
 - Blockers hit: REVALIDATE_SECRET is not configured in the live app, so /api/revalidate returned unauthorized; used VPS rebuild/restart plus generated fetch-cache move instead.
 - Next step: Optional infrastructure cleanup: configure REVALIDATE_SECRET for future single-product cache refreshes without restart.
@@ -897,3 +897,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 ### Next steps
 - Write 2-3 in-depth blog guides (best sunscreen Bangladesh, niacinamide guide, K-beauty routine)
 - Review product image quality for products with watermarked/imported images
+
+---
+## 2026-05-14 14:01 CEST — Codex
+- Did: Restored `The Ordinary Niacinamide 10% + Zinc 1% 30ml` as Woo product `23112` and removed old legacy-import residue from active workspace data/files.
+- Completed tasks: Product now published at `/shop/the-ordinary-niacinamide-10-zinc-1-30ml`; SKU `TO-NIACINAMIDE-ZINC-30ML`; regular/sale/current price `1300/1100/1100`; stock `instock`; clean categories/brand/origin/concern assigned; stale orphan variations trashed.
+- Blockers hit: First restore attempt hit a Facebook-for-WooCommerce hook while trashing variations; reran with scoped direct row updates after DB export `/tmp/emart-before-ordinary-niacinamide-20260514.sql`.
+- Next step: Optional Merchant Center/feed reprocess for product `23112` if it should appear in GMC/social catalogs immediately.
