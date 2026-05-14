@@ -50,7 +50,7 @@ const nextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://*.cloudflare.com https://static.cloudflareinsights.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "img-src 'self' data: blob: https://e-mart.com.bd https://*.e-mart.com.bd https://*.woocommerce.com https://www.facebook.com https://www.google.com https://*.google.com https://www.google-analytics.com https://www.googletagmanager.com https://img.youtube.com https://*.tiktokcdn.com https://*.tiktokcdn-eu.com https://*.tiktokcdn-us.com",
+              "img-src 'self' data: blob: https://e-mart.com.bd https://*.e-mart.com.bd https://*.woocommerce.com https://www.facebook.com https://www.google.com https://*.google.com https://*.google.com.bd https://www.google-analytics.com https://www.googletagmanager.com https://img.youtube.com https://*.tiktokcdn.com https://*.tiktokcdn-eu.com https://*.tiktokcdn-us.com",
               "font-src 'self' data: https://fonts.gstatic.com",
               "connect-src 'self' https://e-mart.com.bd wss://e-mart.com.bd https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://www.google.com https://*.google.com https://*.doubleclick.net https://*.facebook.com https://www.googletagmanager.com https://cloudflareinsights.com",
               "frame-src 'self' https://www.facebook.com",
