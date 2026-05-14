@@ -904,3 +904,17 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: Product now published at `/shop/the-ordinary-niacinamide-10-zinc-1-30ml`; SKU `TO-NIACINAMIDE-ZINC-30ML`; regular/sale/current price `1300/1100/1100`; stock `instock`; clean categories/brand/origin/concern assigned; stale orphan variations trashed.
 - Blockers hit: First restore attempt hit a Facebook-for-WooCommerce hook while trashing variations; reran with scoped direct row updates after DB export `/tmp/emart-before-ordinary-niacinamide-20260514.sql`.
 - Next step: Optional Merchant Center/feed reprocess for product `23112` if it should appear in GMC/social catalogs immediately.
+
+---
+## 2026-05-14 22:03 CEST — Codex
+- Did: Corrected Neko Mao brand/origin taxonomy in WooCommerce and revalidated live product/brand paths.
+- Completed tasks: Product `38190` moved from `Skincafe` to `Nekomao`; typo `Nekoma` brand term renamed to `Nekomao`; products `38190` and `38196` now have `pa_origin=South Korea`; requested PDP shows `Nekomao` + `South Korea` live.
+- Blockers hit: None.
+- Next step: Optional Merchant Center/feed reprocess if the brand/origin correction should propagate to GMC/social catalogs immediately.
+
+---
+## 2026-05-14 23:25 CEST — Codex
+- Did: Removed misleading Korea-import wording from non-South-Korea-origin Woo product copy/meta.
+- Completed tasks: Applied origin-safe copy to 908 products / 1,050 fields; Bangladesh-origin products now say `Bangladeshi product`; verification count is 0 for `korea import`, `korean import`, and `imported from korea` outside `pa_origin=South Korea`.
+- Blockers hit: None; apply was slower than dry-run because real WordPress post/meta writes triggered normal hooks/cache cleanup.
+- Next step: Optional Merchant Center/social feed reprocess so external catalogs pick up corrected copy faster.
