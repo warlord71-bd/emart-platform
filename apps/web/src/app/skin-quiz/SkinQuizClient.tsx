@@ -146,10 +146,6 @@ function classNames(...values: Array<string | false | null | undefined>) {
   return values.filter(Boolean).join(' ');
 }
 
-function optionLabel<T extends string>(options: Array<SkinQuizOption<T>>, value?: T) {
-  return value ? options.find((option) => option.value === value)?.label || '' : '';
-}
-
 function stripHtml(value?: string) {
   return (value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 }
@@ -186,8 +182,8 @@ function OptionCard<T extends string>({
       onClick={onClick}
       aria-pressed={selected}
       className={classNames(
-        'w-full rounded-lg border p-4 text-left transition-all',
-        compact ? 'min-h-[96px]' : 'min-h-[118px]',
+        'w-full rounded-lg border p-3 text-left transition-all sm:p-4',
+        compact ? 'min-h-[80px] sm:min-h-[96px]' : 'min-h-[96px] sm:min-h-[118px]',
         selected
           ? 'border-accent bg-white shadow-[0_16px_32px_rgba(212,89,110,0.16)] ring-1 ring-accent/15'
           : 'border-hairline bg-white hover:border-accent/35 hover:bg-accent-soft/35',
@@ -455,22 +451,21 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
   const activeRoutine = submittedResult ? submittedResult[routineTab] : [];
 
   return (
-    <div ref={quizTopRef} className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
-      <div className="space-y-6">
+    <div ref={quizTopRef} className="space-y-6">
         <section className="overflow-hidden rounded-lg border border-hairline bg-white shadow-card">
-          <div className="border-b border-hairline bg-card px-5 py-4 md:px-6">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <div className="text-xs font-bold uppercase tracking-[0.2em] text-accent">{activeStep.eyebrow}</div>
-                <h2 className="mt-2 text-[1.55rem] font-extrabold leading-tight text-ink sm:text-2xl md:text-3xl">{activeStep.title}</h2>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">{activeStep.helper}</p>
+          <div className="border-b border-hairline bg-card px-4 py-3 sm:px-5 sm:py-4 md:px-6">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent sm:text-xs">{activeStep.eyebrow}</div>
+                <h2 className="mt-1 text-lg font-extrabold leading-snug text-ink sm:text-xl md:text-2xl lg:text-3xl">{activeStep.title}</h2>
+                <p className="mt-1.5 text-xs leading-5 text-muted sm:text-sm sm:leading-6">{activeStep.helper}</p>
               </div>
-              <div className="flex items-center gap-3 rounded-lg border border-hairline bg-bg-alt px-4 py-3">
-                <div className="text-xs font-bold uppercase tracking-[0.18em] text-muted-2">Progress</div>
-                <div className="text-lg font-extrabold text-ink">{stepIndex + 1}/{quizSteps.length}</div>
+              <div className="shrink-0 rounded-lg border border-hairline bg-bg-alt px-3 py-2 text-center">
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-2">Step</div>
+                <div className="text-base font-extrabold text-ink">{stepIndex + 1}<span className="text-xs text-muted">/{quizSteps.length}</span></div>
               </div>
             </div>
-            <div className="mt-5 grid grid-cols-3 gap-2 sm:grid-cols-6">
+            <div className="mt-4 grid grid-cols-3 gap-1.5 sm:grid-cols-6 sm:gap-2">
               {quizSteps.map((step, index) => {
                 const Icon = step.icon;
                 const complete = isStepComplete(step.id);
@@ -484,7 +479,7 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
                     disabled={!enabled}
                     onClick={() => moveToStep(index)}
                     className={classNames(
-                      'flex h-12 min-w-0 items-center justify-center rounded-lg border text-sm font-bold transition-colors sm:gap-2 sm:px-3',
+                      'flex h-9 min-w-0 items-center justify-center rounded-lg border text-xs font-bold transition-colors sm:h-11 sm:gap-2 sm:px-3 sm:text-sm',
                       active && 'border-ink bg-ink text-white',
                       !active && complete && 'border-accent/30 bg-accent-soft text-accent',
                       !active && !complete && 'border-hairline bg-white text-muted',
@@ -500,9 +495,9 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
             </div>
           </div>
 
-          <div className="space-y-6 px-5 py-5 md:px-6 md:py-6">
+          <div className="space-y-4 px-4 py-4 sm:space-y-6 sm:px-5 sm:py-5 md:px-6 md:py-6">
             {activeStep.id === 'skinType' && (
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {SKIN_TYPE_OPTIONS.map((option) => (
                   <OptionCard
                     key={option.value}
@@ -520,7 +515,7 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
                   <div className="text-sm font-semibold text-ink">Select up to 3 concerns</div>
                   <div className="text-sm text-muted">{concernCount}/3 selected</div>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {CONCERN_OPTIONS.map((option) => {
                     const selectedIndex = selectedConcerns.indexOf(option.value);
 
@@ -539,7 +534,7 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
             )}
 
             {activeStep.id === 'environment' && (
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {ENVIRONMENT_OPTIONS.map((option) => (
                   <OptionCard
                     key={option.value}
@@ -552,7 +547,7 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
             )}
 
             {activeStep.id === 'routinePace' && (
-              <div className="grid gap-4 md:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-3">
                 {ROUTINE_PACE_OPTIONS.map((option) => (
                   <OptionCard
                     key={option.value}
@@ -566,7 +561,7 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
             )}
 
             {activeStep.id === 'budget' && (
-              <div className="grid gap-4 md:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-3">
                 {BUDGET_OPTIONS.map((option) => (
                   <OptionCard
                     key={option.value}
@@ -580,7 +575,7 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
             )}
 
             {activeStep.id === 'details' && (
-              <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_320px]">
                 <div className="space-y-5">
                   <div className="grid gap-4 md:grid-cols-2">
                     <label className="space-y-2">
@@ -828,7 +823,7 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
                       View more
                     </Link>
                   </div>
-                  <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                     {submittedResult.recommendedProducts.slice(0, 4).map((product) => (
                       <ProductMini key={product.id} product={product} />
                     ))}
@@ -864,44 +859,6 @@ export default function SkinQuizClient({ productPools }: { productPools: SkinQui
             </div>
           </section>
         )}
-      </div>
-
-      <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-        {answerSummary.length > 0 && (
-          <div className="rounded-lg border border-hairline bg-white p-5 shadow-card">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
-              <Sparkles className="h-4 w-4" />
-              Current match
-            </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {answerSummary.map((item) => (
-                <span key={item} className="rounded-md border border-hairline bg-bg-alt px-3 py-2 text-xs font-bold text-ink">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="rounded-lg border border-hairline bg-white p-5 shadow-card">
-          <div className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Routine rules</div>
-          <div className="mt-4 space-y-3 text-sm leading-6 text-muted">
-            <p>Day routine stays light enough for humidity.</p>
-            <p>Night routine carries the stronger repair work.</p>
-            <p>New actives should be added one at a time.</p>
-          </div>
-        </div>
-
-        <div className="rounded-lg border border-hairline bg-bg-alt p-5">
-          <div className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Before you start</div>
-          <div className="mt-4 space-y-3 text-sm leading-6 text-muted">
-            <p>Add only one new active at a time.</p>
-            <p>Patch test if your skin is reactive.</p>
-            <p>Sunscreen is the anchor step if dark spots are part of your goal.</p>
-          </div>
-        </div>
-
-      </aside>
     </div>
   );
 }

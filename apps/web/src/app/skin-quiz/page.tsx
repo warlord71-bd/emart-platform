@@ -128,14 +128,14 @@ export default async function SkinQuizPage() {
   return (
     <div className="bg-bg pb-10">
       <section className="border-b border-hairline bg-card">
-        <div className="mx-auto grid max-w-6xl gap-5 px-4 py-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-center">
+        <div className="mx-auto grid max-w-6xl gap-4 px-4 py-5 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-center lg:py-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Routine Quiz</p>
-            <h1 className="mt-2 text-2xl font-extrabold leading-tight text-ink sm:text-3xl md:text-4xl">
-              Build a skincare routine for Bangladesh days
+            <h1 className="mt-1.5 text-xl font-extrabold leading-tight text-ink sm:text-2xl lg:text-4xl">
+              Build your skincare routine
             </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-muted md:text-base">
-              Match skin type, main concern, daily climate, routine pace, and budget with real Emart catalog products.
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+              Match skin type, concern, climate &amp; budget — get a real AM/PM routine.
             </p>
           </div>
 
