@@ -51,45 +51,50 @@ export async function SocialChannelGrid() {
           <CardFooter handle="@emartbd.official" title={ytTitle} />
         </SocialCard>
 
-        {/* TikTok: real oEmbed thumbnail, fallback to brand gradient */}
+        {/* TikTok: lifestyle photo */}
         <SocialCard href="/social" ariaLabel="Watch TikTok content">
-          {ttThumb ? (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={ttThumb}
-                alt={ttTitle}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.08]"
-              />
-            </>
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#010101] via-[#1a0a0f] to-[#2d1321]" />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+          <Image
+            src="/images/home-categories/hair-care.jpg"
+            alt="Emart TikTok — unboxings & product demos"
+            fill
+            sizes="(max-width: 640px) 50vw, 25vw"
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.08]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <PlatformBadge color="bg-[#010101] ring-1 ring-white/20" icon={<TTIcon />} label="TikTok" />
           <CardFooter handle="@emart_bdofficial" title={ttTitle} />
         </SocialCard>
 
-        {/* Facebook: brand gradient (no public thumbnail API without token) */}
+        {/* Facebook: makeup illustration on bold pink */}
         <SocialCard href="/social" ariaLabel="Watch Facebook content">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1877F2] via-[#1468d6] to-[#0a5dc2]" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/25">
-              <FBIcon size="large" />
-            </div>
+          <div className="absolute inset-0 bg-[#FF3D7F]" />
+          <div className="absolute inset-4 flex items-center justify-center">
+            <Image
+              src="/images/home-categories/makeup-illus.png"
+              alt="Emart Facebook — makeup & product drops"
+              fill
+              sizes="(max-width: 640px) 50vw, 25vw"
+              className="object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-[1.06]"
+            />
           </div>
-          <PlatformBadge color="bg-[#1877F2] ring-1 ring-white/30" icon={<FBIcon />} label="Facebook" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <PlatformBadge color="bg-[#1877F2]" icon={<FBIcon />} label="Facebook" />
           <CardFooter handle="emartbd.official" title="Product drops & reels" />
         </SocialCard>
 
-        {/* Instagram: brand gradient (no public thumbnail API without token) */}
+        {/* Instagram: face mask illustration on bold purple */}
         <SocialCard href="/social" ariaLabel="Watch Instagram content">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#833ab4] via-[#fd1d1d] to-[#fcb045]" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/25">
-              <IGIcon className="h-8 w-8 fill-white" />
-            </div>
+          <div className="absolute inset-0 bg-[#7C3AED]" />
+          <div className="absolute inset-4 flex items-center justify-center">
+            <Image
+              src="/images/home-categories/skincare-illus.png"
+              alt="Emart Instagram — skincare looks & shelf shots"
+              fill
+              sizes="(max-width: 640px) 50vw, 25vw"
+              className="object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-[1.06]"
+            />
           </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
           <PlatformBadge color="bg-gradient-to-r from-[#833ab4] to-[#fd1d1d]" icon={<IGIcon className="h-3 w-3 fill-white" />} label="Instagram" />
           <CardFooter handle="@emartbd.official" title="Skincare looks & shelf shots" />
         </SocialCard>
@@ -153,10 +158,9 @@ function TTIcon() {
   );
 }
 
-function FBIcon({ size }: { size?: 'large' }) {
-  const cls = size === 'large' ? 'h-8 w-8 fill-white' : 'h-3 w-3 fill-white';
+function FBIcon() {
   return (
-    <svg viewBox="0 0 24 24" className={cls}>
+    <svg viewBox="0 0 24 24" className="h-3 w-3 fill-white">
       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
     </svg>
   );
