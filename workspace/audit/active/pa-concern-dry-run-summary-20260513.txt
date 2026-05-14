@@ -1,0 +1,21 @@
+pa_concern + pa_skin_type dry-run — 2026-05-12 21:27:33
+Source: legacy brand-matched concern mapping + Woo product attributes
+Total published products:    3626
+Already have pa_concern:     0
+TKM slug matches:            246
+New concern assignments:     246
+  + skin_type specific:      0
+  + skin_type all (skip):    246
+No concern found:            3380
+Concern distribution (new assignments):
+  acne-blemish-care: 118
+  anti-aging-repair: 53
+  dryness-hydration: 27
+  brightening: 24
+  pores-oil-control: 22
+  melasma: 2
+Skin type distribution (specific only):
+CSV: /var/www/emart-platform/workspace/audit/active/pa-concern-dry-run-20260513.csv
+Next step: review CSV, then run apply script with --apply flag.
+Apply will: create pa_concern + pa_skin_type WC attributes and terms if missing,
+then set terms on each product.

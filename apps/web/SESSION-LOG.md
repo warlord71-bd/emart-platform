@@ -918,3 +918,13 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: Applied origin-safe copy to 908 products / 1,050 fields; Bangladesh-origin products now say `Bangladeshi product`; verification count is 0 for `korea import`, `korean import`, and `imported from korea` outside `pa_origin=South Korea`.
 - Blockers hit: None; apply was slower than dry-run because real WordPress post/meta writes triggered normal hooks/cache cleanup.
 - Next step: Optional Merchant Center/social feed reprocess so external catalogs pick up corrected copy faster.
+
+## 2026-05-15 — Claude — Price update bulk apply (manual-review-size-matched.csv)
+- Did: Applied Emartway prices as WooCommerce sale/offer prices across 426 size-matched products.
+  - Logic 1 (emartway < emart): set sale_price = emartway offer price (331 products)
+  - Logic 2 (emartway > emart): set regular_price = emartway stroked price, sale_price = emartway offer price (54 products)
+  - 35 rows excluded per owner's manual skip list
+  - 6 rows pending (emart = emartway, no sale needed)
+  - All 426 rows now have live WC prices captured in CSV (wc_regular_price, wc_sale_price, wc_status)
+- Blockers: None
+- Next step: Review manual-review-size-notmatched.csv (155 rows), decide on 35 excluded rows, upload 16 missing product images, run wrong-image-assignment audit (duplicate + filename method) when ready.
