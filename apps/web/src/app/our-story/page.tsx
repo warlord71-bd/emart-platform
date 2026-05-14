@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import { COMPANY } from '@/lib/companyProfile';
 
@@ -64,16 +65,28 @@ export default function OurStoryPage() {
             </div>
           </div>
 
-          <aside className="rounded-2xl border border-hairline bg-card p-5 shadow-card">
-            <h3 className="mb-4 text-lg font-bold text-ink">What We Stand For</h3>
-            <ul className="space-y-3">
-              {values.map((value) => (
-                <li key={value} className="flex gap-3 text-sm text-muted">
-                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent" />
-                  <span>{value}</span>
-                </li>
-              ))}
-            </ul>
+          <aside className="flex flex-col gap-4">
+            <div className="overflow-hidden rounded-2xl shadow-card">
+              <Image
+                src="/images/store-interior.webp"
+                alt="Emart skincare store in Dhanmondi — shelves stocked with authentic global beauty products"
+                width={923}
+                height={671}
+                className="w-full object-cover"
+                priority
+              />
+            </div>
+            <div className="rounded-2xl border border-hairline bg-card p-5 shadow-card">
+              <h3 className="mb-4 text-lg font-bold text-ink">What We Stand For</h3>
+              <ul className="space-y-3">
+                {values.map((value) => (
+                  <li key={value} className="flex gap-3 text-sm text-muted">
+                    <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent" />
+                    <span>{value}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </aside>
         </div>
       </section>
