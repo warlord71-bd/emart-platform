@@ -4,20 +4,20 @@ import { getWordPressPosts } from '@/lib/wordpress-posts';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { FlashSaleBanner } from '@/components/home/FlashSaleBanner';
 import { MobileDiscovery } from '@/components/home/MobileDiscovery';
-import {
-  ConcernTilesSection,
-  IngredientTilesSection,
-  RoutineTeaserSection,
-  OfferCollectionsRail,
-  AuthenticityStorySection,
-  ProductGridSection,
-  BrandLogoGridSection,
-  CustomerVoiceSection,
-  SkinQuizCTA,
-  OriginStoryBlock,
-  BlogTeaserSection,
-} from '@/components/home/HomepageSections';
+import dynamic from 'next/dynamic';
 import ShopByCategory from '@/components/home/ShopByCategory';
+
+const OfferCollectionsRail    = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.OfferCollectionsRail })));
+const ProductGridSection      = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.ProductGridSection })));
+const ConcernTilesSection     = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.ConcernTilesSection })));
+const IngredientTilesSection  = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.IngredientTilesSection })));
+const RoutineTeaserSection    = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.RoutineTeaserSection })));
+const AuthenticityStorySection = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.AuthenticityStorySection })));
+const BrandLogoGridSection    = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.BrandLogoGridSection })));
+const CustomerVoiceSection    = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.CustomerVoiceSection })));
+const SkinQuizCTA             = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.SkinQuizCTA })));
+const OriginStoryBlock        = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.OriginStoryBlock })));
+const BlogTeaserSection       = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.BlogTeaserSection })));
 import TrustStrip from '@/components/common/TrustStrip';
 import { HOME_TOP_CATEGORY_ORDER, TOP_CATEGORY_IMAGE_OVERRIDES } from '@/lib/category-navigation';
 import brandLogoManifest from '../../public/images/brands-e-mart/manifest.json';

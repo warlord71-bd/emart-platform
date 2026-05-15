@@ -17,7 +17,7 @@ const GOOGLE_TAG_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID || 'G-WMJNX87Q2N';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '600', '700'],
   variable: '--font-display-loaded',
   display: 'swap',
 });
@@ -31,21 +31,21 @@ const dmSans = DM_Sans({
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ['bengali', 'latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '600'],
   variable: '--font-bengali-loaded',
   display: 'swap',
 });
 
 const jost = Jost({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '600'],
   variable: '--font-sans-loaded',
   display: 'swap',
 });
 
 const jetbrains = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['400', '500'],
+  weight: ['400'],
   variable: '--font-mono-loaded',
   display: 'swap',
 });
