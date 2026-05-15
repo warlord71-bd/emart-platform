@@ -35,8 +35,9 @@ if (!defined('ABSPATH')) { fwrite(STDERR, "Run with WP-CLI eval-file.\n"); exit(
 
 $TKM_FILE = '/var/www/emart-platform/workspace/audit/archive/tkm-concern-progress.json';
 $OUT_DIR  = '/var/www/emart-platform/workspace/audit/active';
-$OUT_CSV  = $OUT_DIR . '/pa-concern-skintype-dry-run-20260513.csv';
-$OUT_SUM  = $OUT_DIR . '/pa-concern-skintype-dry-run-summary-20260513.txt';
+$stamp    = gmdate('Ymd-His');
+$OUT_CSV  = "$OUT_DIR/pa-concern-skintype-dry-run-$stamp.csv";
+$OUT_SUM  = "$OUT_DIR/pa-concern-skintype-dry-run-summary-$stamp.txt";
 
 // ── Woo product_cat slug → pa_concern slug ───────────────────────────────────
 // Only categories that are reliable 1:1 mappings (owner-assigned categories)
