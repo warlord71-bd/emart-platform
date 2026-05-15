@@ -43,7 +43,7 @@ Source audit: `workspace/audit/archive/reference-audits-20260515/e-mart-master-t
 
 ## 4. Category + Taxonomy Rules
 
-`workspace/docs/category-taxonomy-status.md`
+`workspace/active/docs/category-taxonomy-status.md`
 
 Canonical reference for which categories are active, redirected, backend-only, or near-empty. Read before touching category pages, sitemap entries, or concern/ingredient filter pages.
 
@@ -51,7 +51,7 @@ Canonical reference for which categories are active, redirected, backend-only, o
 
 ## 5. UI/UX + Design System
 
-`workspace/docs/theme-contract.md` — canonical brand token rules  
+`workspace/active/docs/theme-contract.md` — canonical brand token rules  
 `workspace/audit/archive/layout-ui-ux-audit-20260515/layout-component-ui-ux-setup-audit-20260515.md` — full layout/component/token audit (2026-05-15)
 
 Key blockers from audit:
