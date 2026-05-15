@@ -18,10 +18,17 @@
     },
     "android": {
       "package": "com.emartbd.app",
-      "versionCode": 12,
+      "versionCode": 11,
+      "googleServicesFile": "./google-services.json",
       "permissions": [
+        "NOTIFICATIONS",
         "VIBRATE"
       ]
+    },
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#E8739E",
+      "androidMode": "default"
     },
     "extra": {
       "eas": {
@@ -30,6 +37,7 @@
     },
     "plugins": [
       "expo-font",
+      "expo-notifications",
       [
         "expo-build-properties",
         {
