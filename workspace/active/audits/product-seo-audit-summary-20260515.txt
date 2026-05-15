@@ -1,0 +1,24 @@
+Emart product SEO audit
+Generated: 2026-05-15T20:54:59+00:00
+Basis: Google Search Essentials, helpful people-first content/E-E-A-T concepts, Product/Merchant structured data, AI Overviews basics, Lighthouse/Core Web Vitals sampling.
+CSV: /root/emart-platform/workspace/active/audits/product-seo-audit-20260515.csv
+
+total: 3628
+missing_emart_meta: 3628
+missing_rank_math_meta: 0
+missing_both_meta: 0
+weak_meta: 287
+duplicate_meta: 6
+missing_sku: 0
+invalid_sku: 7
+missing_brand: 0
+missing_category: 0
+missing_image: 16
+missing_price: 3
+missing_stock: 0
+thin_visible_description: 19
+merchant_schema_not_ready: 19
+low_score_under_80: 2
+
+Scoring notes: live Google sees Next.js HTML; _emart_meta_description is preferred, _rank_math_description is compatibility fallback. No DB writes were made.
+Lighthouse/Core Web Vitals are template-level checks; run live mobile samples for homepage, category, shop, and PDP after deploy.

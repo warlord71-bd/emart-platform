@@ -13,14 +13,11 @@ When a new task starts → drop its files into the right subfolder here and add 
 | Script | Type | What it does | Status |
 |--------|------|-------------|--------|
 | `product-seo-audit.php` | PHP read-only | Full product SEO audit (title, desc, image, schema) | Keep active — run before any data batch |
-| `product-sku-audit-dry-run.php` | PHP read-only | Audit 119 products missing SKU | Blocked — awaiting owner SKU data |
+| `product-sku-audit-dry-run.php` | PHP read-only | Audit products missing SKU / duplicate SKU meta | Fresh 2026-05-15 audit: 0 missing, 0 duplicate SKU meta |
 | `audit-seo-index-bloat.sh` | Bash read-only | Checks for index bloat in sitemap/robots | Keep active — reusable |
 | `emart-seo-backend-smoke.sh` | Bash read-only | Smoke test sitemap, robots, canonical, redirects | Keep active — run after deploys |
 | `sync-local-to-vps.sh` | Bash deploy | Rsync local → VPS | Keep active — deploy utility |
-| `audit-wrong-korea-origin-products.php` | PHP read-only | Checks for remaining wrong Korea origin | Keep until final audit passes |
 | `pa-concern-skin-type-dry-run.php` | PHP read-only | Dry-run for concern/skin-type taxonomy | Keep as read-only check |
-| `pa-ingredient-skintype-apply.php` | PHP mutator | Applied pa_ingredient + pa_skin_type (B1 done) | Archive after WH3 cleanup |
-| `fix-wrong-korea-origin-products.php` | PHP mutator | Fixed wrong Korea origin (done) | Archive after WH3 cleanup |
 | `product-image-brand-size-audit.mjs` | Node audit | Audits product image brand/size data | Fix output path (WH6) before reuse |
 
 ---
@@ -30,6 +27,12 @@ When a new task starts → drop its files into the right subfolder here and add 
 | Folder | What it contains | Next action |
 |--------|-----------------|-------------|
 | `gsc-404-report-20260512/` | GSC 404 URL export — Chart, Metadata, Table CSVs | Cross-ref with `data/404 redirect.xlsx` → add redirects to `next.config.js` |
+| `product-seo-audit-20260515.csv` | Fresh read-only product SEO audit for 3,628 published products | Review summary/issues before any product data batch |
+| `product-seo-audit-summary-20260515.txt` | Summary for `product-seo-audit-20260515.csv` | Current gaps: 16 missing images, 7 invalid SKUs, 3 missing prices, 19 merchant-schema-not-ready |
+| `sku-audit-20260515.csv` | Read-only SKU audit command output | Fresh count: 0 published products missing SKU |
+| `product-missing-sku-dry-run-20260515.csv` | Detailed missing-SKU dry-run CSV | Empty except header; no owner SKU assignment needed from this run |
+| `product-duplicate-sku-meta-dry-run-20260515.csv` | Detailed duplicate-SKU-meta dry-run CSV | Empty except header; no apply action taken |
+| `product-sku-audit-summary-20260515.txt` | Summary for fresh SKU audit | 3,628 published products, 0 missing SKU, 0 duplicate SKU meta products |
 
 ---
 

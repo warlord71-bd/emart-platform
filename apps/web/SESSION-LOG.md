@@ -928,3 +928,11 @@ ps aux | grep "image-import-v2" | grep -v grep
   - All 426 rows now have live WC prices captured in CSV (wc_regular_price, wc_sale_price, wc_status)
 - Blockers: None
 - Next step: Review manual-review-size-notmatched.csv (155 rows), decide on 35 excluded rows, upload 16 missing product images, run wrong-image-assignment audit (duplicate + filename method) when ready.
+
+---
+## 2026-05-15 23:05 CEST — Codex
+- Did: Completed WH3 script archival, B4 product SEO audit, B2 SKU dry-run audit, and M2 mobile API bypass audit.
+- Completed tasks: Moved 3 completed scripts from `workspace/active/scripts/` to `workspace/archive/scripts/`; fresh product SEO audit saved under `workspace/active/audits/`; SKU audit found 0 missing SKUs and 0 duplicate SKU meta products; mobile grep found no Woo credentials or direct `wp-json`/Woo API calls in source.
+- Findings: Product SEO summary now shows 16 missing images, 7 invalid SKUs, 3 missing prices, 19 merchant-schema-not-ready, 287 weak meta, 6 duplicate meta. Mobile hits are legacy `services/woocommerce.js` imports plus public placeholder image URL only; actual fetches use `/api/mobile/*`, `/api/product-reviews`, and `/api/checkout`.
+- Blockers hit: Audit scripts still write detailed files to retired `workspace/audit/active/` internally; outputs were moved to `workspace/active/audits/` after each run.
+- Next step: Claude-owned web work remains SEO H1/H2; data triage can review the 16 image gaps, 7 invalid SKUs, and 3 missing prices before any mutation.

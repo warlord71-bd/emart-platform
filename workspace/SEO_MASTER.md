@@ -60,17 +60,14 @@ Source audit: `workspace/audit/archive/reference-audits-20260515/e-mart-master-t
 - **Fix:** Audit category OG images; replace stale/irrelevant ones with a relevant category image or default storefront social image.
 - **Effort:** Small (code) + data review | **Risk:** Low | **Owner:** Claude + owner provides images
 
-### M3: Fresh product SEO / image data audit
-- **Why:** Last audit was 2026-05-13 (before SKU/origin/copy fixes). 16 products still need real images. 155 size-not-matched price rows pending.
-- **Files:** `workspace/products-need-real-image.csv`, `workspace/scripts/active/product-seo-audit.php`
-- **Fix:** Run `product-seo-audit.php` fresh (read-only). Review output before any mutations.
-- **Effort:** Read-only run: small. Fixes: depends on output. | **Owner:** Claude runs audit, owner approves data fixes
+### ~~M3: Fresh product SEO / image data audit~~ ✅ DONE 2026-05-15
+- Read-only audit rerun after SKU/origin/copy fixes.
+- Output: `workspace/active/audits/product-seo-audit-20260515.csv` + `product-seo-audit-summary-20260515.txt`.
+- Current product-data gaps from fresh audit: 16 missing images, 7 invalid SKUs, 3 missing prices, 19 merchant-schema-not-ready, 287 weak meta, 6 duplicate meta.
 
-### M4: SKU gap fixes — 119 missing SKUs
-- **Why:** 119 published products have no `_sku`. Affects Merchant Center product matching.
-- **Files:** `workspace/scripts/active/product-sku-audit-dry-run.php`
-- **Fix:** Re-run audit for fresh count (prior work may have reduced this). Owner assigns SKUs before apply.
-- **Effort:** Small | **Risk:** Low | **Owner:** Awaiting owner SKU data
+### ~~M4: SKU gap fixes — fresh audit shows 0 missing SKUs~~ ✅ DONE 2026-05-15
+- Read-only audit rerun: 3,628 published products, 0 missing SKU, 0 duplicate SKU meta products.
+- No SKUs assigned in this run.
 
 ### ~~M5: pa_concern + pa_skin_type assignment~~ ✅ DONE 2026-05-15
 - pa_concern: 2,236 products | pa_ingredient: 1,088 products | pa_skin_type: 28 products — see DEV_MASTER B1
@@ -117,7 +114,7 @@ Source audit: `workspace/audit/archive/reference-audits-20260515/e-mart-master-t
 | Item | Decision required |
 |------|-----------------|
 | Return policy page | Does a stable return policy page exist? → enables MerchantReturnPolicy schema (M1) |
-| SKU data | Provide SKUs for 119 products → enables M4 |
+| SKU data | No current missing-SKU list after 2026-05-15 read-only audit; future SKU changes still require owner data |
 | pa_concern dry-run review | Approve concern/skin-type assignments → enables M5 |
 | Homepage title format | Confirm preferred `<title>` format → enables M6 |
 | Cloudflare cache rule | Set in dashboard for `/shop` and `/category/*` → L4 |

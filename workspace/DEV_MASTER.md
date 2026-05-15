@@ -92,10 +92,10 @@ Coordination model: Claude owns web frontend (`apps/web`) | Codex owns mobile (`
 - pa_concern: 2,236 products | pa_ingredient: 1,088 products | pa_skin_type: 28 products
 - Scripts: `pa-concern-skin-type-dry-run.php`, `pa-ingredient-skintype-apply.php`
 
-### B2: SKU assignment — 119 missing products
-- **Script:** `workspace/scripts/active/product-sku-audit-dry-run.php`
-- **Status:** Blocked — owner needs to provide SKUs for 119 products
-- **Owner:** Codex applies after owner provides data
+### B2: SKU assignment — fresh audit shows 0 missing products
+- **Script:** `workspace/active/scripts/product-sku-audit-dry-run.php`
+- **Status:** Read-only rerun 2026-05-15 found 0 published products missing SKU and 0 duplicate SKU meta products. No SKUs assigned.
+- **Owner:** Codex only applies future SKU changes after owner provides data
 
 ### B3: Product image upload — 16 products
 - **File:** `workspace/products-need-real-image.csv`
@@ -103,8 +103,8 @@ Coordination model: Claude owns web frontend (`apps/web`) | Codex owns mobile (`
 - **Owner:** Owner uploads images → Codex assigns in WooCommerce
 
 ### B4: Fresh product SEO / image audit
-- **Script:** `workspace/scripts/active/product-seo-audit.php`
-- **Action:** Run read-only. Last run 2026-05-13 (stale after all copy/origin/SKU work).
+- **Script:** `workspace/active/scripts/product-seo-audit.php`
+- **Action:** Read-only rerun completed 2026-05-15; outputs in `workspace/active/audits/product-seo-audit-20260515.csv` and `product-seo-audit-summary-20260515.txt`.
 - **Owner:** Codex or Claude
 
 ---
@@ -174,10 +174,9 @@ Coordination model: Claude owns web frontend (`apps/web`) | Codex owns mobile (`
 ### ~~WH2: Archive completed taxonomy CSVs~~ ✅ DONE 2026-05-15
 - Moved 6 pa-* CSVs to `workspace/audit/archive/pa-taxonomy-20260515/`
 
-### WH3: Archive completed mutator scripts
-- **Files:** `workspace/scripts/active/pa-ingredient-skintype-apply.php`, `fix-wrong-korea-origin-products.php`, `audit-wrong-korea-origin-products.php`
-- **Change:** Move to `workspace/scripts/archive/`. Keep `pa-concern-skin-type-dry-run.php` active as read-only audit.
-- **Effort:** Trivial | **Risk:** Low
+### ~~WH3: Archive completed mutator scripts~~ ✅ DONE 2026-05-15
+- Moved `pa-ingredient-skintype-apply.php`, `fix-wrong-korea-origin-products.php`, and `audit-wrong-korea-origin-products.php` from `workspace/active/scripts/` to `workspace/archive/scripts/`.
+- Kept `pa-concern-skin-type-dry-run.php` active as read-only audit.
 
 ### WH4: Mark `apps/web/MEMORY.md` as historical
 - **Why:** Instructs VPS-first workflow — contradicts current deploy law in `/root/CLAUDE.md`.
