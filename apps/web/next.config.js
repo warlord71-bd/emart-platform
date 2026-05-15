@@ -341,10 +341,6 @@ const nextConfig = {
       { source: '/brands/i\'m-from',             destination: '/brands/im-from',          permanent: true },
       { source: '/brands/i-m-from',              destination: '/brands/im-from',           permanent: true },
       { source: '/brands/dr-jart',               destination: '/brands/dr-jart-plus',      permanent: true },
-      { source: '/brands/hada-labo',             destination: '/brands/hada-labo',         permanent: true },
-      { source: '/brands/holika-holika',         destination: '/brands/holika-holika',     permanent: true },
-      { source: '/brands/tonymoly',              destination: '/brands/tony-moly',         permanent: true },
-      { source: '/brands/nature-republic',       destination: '/brands/nature-republic',   permanent: true },
 
       // Brand pages that have no products or are discontinued → /shop
       { source: '/brands/beaute-moringa-melasma', destination: '/shop',                   permanent: true },
@@ -355,11 +351,10 @@ const nextConfig = {
       { source: '/brands/absolute',               destination: '/shop',                   permanent: true },
       { source: '/brands/cellpod',                destination: '/shop',                   permanent: true },
       { source: '/brands/ruthair',                destination: '/shop',                   permanent: true },
-      { source: '/brands/barulab',                destination: '/brands/barulab',         permanent: true },
       { source: '/brands/kao',                    destination: '/shop',                   permanent: true },
       { source: '/brands/nizoral',                destination: '/shop',                   permanent: true },
       { source: '/brands/ottogi',                 destination: '/shop',                   permanent: true },
-      { source: '/brands/labelyoung',             destination: '/brands/label-young',     permanent: true },
+      { source: '/brands/labelyoung',             destination: '/shop',                   permanent: true },
       { source: '/brands/syoss',                  destination: '/shop',                   permanent: true },
       { source: '/brands/radiant',                destination: '/shop',                   permanent: true },
       { source: '/brands/tresemm',                destination: '/shop',                   permanent: true },
