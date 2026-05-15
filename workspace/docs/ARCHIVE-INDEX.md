@@ -57,6 +57,8 @@ Master catalog of archived files for Claude and Codex. When a future job needs s
 | `cat_audit_summary_20260507.json` | Category audit summary JSON from 2026-05-07 run |
 | `cleanup-pass-1-2-20260504.md` | Notes from cleanup passes 1+2 on 2026-05-04 |
 | `concern-assignments.json` | Concern tag assignment data (pa_concern applied) |
+| `seo-source-audits-referenced-by-master-20260515/` | Historical SEO source audits consolidated into the 2026-05-15 master SEO audit |
+| `seo-week2-gsc-cwv-product-source-audits-referenced-by-master-20260515/` | Week 2 GSC/CWV/product SEO source audits consolidated into the 2026-05-15 master SEO audit |
 | `tkm-concern-progress.json` | 36KB TKM concern assignment progress tracker |
 
 ---
@@ -79,7 +81,6 @@ Master catalog of archived files for Claude and Codex. When a future job needs s
 
 | File | Purpose |
 |------|---------|
-| `SEO_TODO.md` | Live SEO task list — read before any SEO work |
 | `BRAND_GUIDE.md` | Brand invariants and naming rules |
 | `CLOUDFLARE_CACHE_RULES.md` | Cloudflare cache rule specs (dashboard-only, not auto-applied) |
 
@@ -89,6 +90,12 @@ Master catalog of archived files for Claude and Codex. When a future job needs s
 
 | File | Purpose |
 |------|---------|
-| `gsc-final-indexing-action-plan.md` | GSC indexing action plan — final steps for index coverage |
 | `mobile-build-notes.md` | Mobile app build/release notes |
 | `theme-contract.md` | Frontend theme design contract / token definitions |
+| `category-taxonomy-status.md` | Current category taxonomy/source-of-truth rules for public category URLs, concern pages, and backend-only categories |
+
+## Active Master Audits
+
+| File | Purpose |
+|------|---------|
+| `workspace/audit/active/e-mart-master-technical-seo-image-crawler-audit-20260515.md` | Current master SEO/image/performance/crawler audit and source of truth |

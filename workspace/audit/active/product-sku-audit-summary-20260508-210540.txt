@@ -1,9 +1,0 @@
-published_products: 3640
-published_missing_sku: 119
-missing_sku_recovered_old_sku: 0
-missing_sku_generated_new_sku: 119
-missing_sku_rows_with_flags: 24
-duplicate_sku_meta_products: 10
-duplicate_sku_meta_extra_rows: 10
-missing_sku_csv: /root/emart-platform/workspace/audit/active/product-missing-sku-dry-run-20260508-210540.csv
-duplicate_sku_meta_csv: /root/emart-platform/workspace/audit/active/product-duplicate-sku-meta-dry-run-20260508-210540.csv
