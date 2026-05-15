@@ -171,10 +171,8 @@ Coordination model: Claude owns web frontend (`apps/web`) | Codex owns mobile (`
 - **Change:** Replace `workspace/SEO_TODO.md` → `workspace/SEO_MASTER.md` in affected sections.
 - **Effort:** Trivial | **Risk:** Low | **Interim:** See `workspace/PROJECT_BASELINE.md` section 8
 
-### WH2: Archive completed taxonomy CSVs
-- **Files:** `workspace/audit/active/pa-*.csv` (6 files from 2026-05-15 batch)
-- **Change:** Move to `workspace/audit/archive/pa-taxonomy-20260515/` with a short README.
-- **Effort:** Trivial | **Risk:** Low
+### ~~WH2: Archive completed taxonomy CSVs~~ ✅ DONE 2026-05-15
+- Moved 6 pa-* CSVs to `workspace/audit/archive/pa-taxonomy-20260515/`
 
 ### WH3: Archive completed mutator scripts
 - **Files:** `workspace/scripts/active/pa-ingredient-skintype-apply.php`, `fix-wrong-korea-origin-products.php`, `audit-wrong-korea-origin-products.php`
