@@ -673,7 +673,7 @@ export default function Header() {
             </button>
 
             <Link href="/" className="mx-auto flex min-w-0 items-center gap-2">
-              <Image src="/logo.png" alt="Emart" width={36} height={36} className="h-9 w-9 shrink-0 rounded-xl" priority />
+              <Image src="/logo.png" alt="Emart" width={36} height={36} className="h-9 w-9 shrink-0 rounded-xl" />
               <div className="min-w-0">
                 <div className="flex items-center gap-1">
                   <span className="text-[15px] font-extrabold leading-none text-ink">Emart</span>

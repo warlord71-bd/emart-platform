@@ -46,6 +46,10 @@ const REDIRECTED_CATEGORY_SLUGS = new Set([
   'skincare-essentials',
   'k-beauty-j-beauty',
   'shooting-gel',
+  // near-empty / duplicate categories — exclude from sitemap until populated
+  'general-health',
+  'shampoo',
+  'hair-essence-serum',
 ]);
 
 type SitemapProduct = {
@@ -150,7 +154,7 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const categoryEntries: MetadataRoute.Sitemap = categories
-    .filter((c) => c.slug !== 'uncategorized')
+    .filter((c) => c.slug !== 'uncategorized' && !REDIRECTED_CATEGORY_SLUGS.has(c.slug))
     .map((c) => ({
       url: absoluteUrl(`/category/${c.slug}`),
       lastModified: new Date(),

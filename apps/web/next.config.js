@@ -341,7 +341,6 @@ const nextConfig = {
       { protocol: 'https', hostname: 'e-mart.com.bd' },
       { protocol: 'https', hostname: 'www.e-mart.com.bd' },
       { protocol: 'https', hostname: '**.woocommerce.com' },
-      { protocol: 'http',  hostname: '5.189.188.229' },
       { protocol: 'https', hostname: 'img.youtube.com' },
     ],
   },
