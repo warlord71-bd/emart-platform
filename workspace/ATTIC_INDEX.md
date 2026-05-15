@@ -106,6 +106,33 @@ All idle/completed audit and backup files moved from `workspace/audit/archive/` 
 
 ---
 
+## `workspace/audit/archive/cwv-20260514-mobile/` — Core Web Vitals mobile report
+
+| File | What it contains |
+|------|-----------------|
+| `https___e-mart.com.bd_-core-web-vitals-2026-05-14 mobile.zip` | CrUX/PageSpeed Core Web Vitals export for e-mart.com.bd mobile, 2026-05-14 |
+
+---
+
+## `workspace/audit/active/gsc-404-report-20260512/` — GSC 404 export (actionable)
+
+| File | What it contains |
+|------|-----------------|
+| `Chart.csv` | GSC 404 affected pages over time (Feb–May 2026) |
+| `Metadata.csv` | Export metadata — property: all known pages, issue: not found (404) |
+| `Table.csv` | Full list of 404 URLs with last crawled date — use for redirect decisions |
+
+**Still active** — cross-reference with `workspace/404 redirect.xlsx` when implementing SEO redirect work.
+
+---
+
+## `workspace/404 redirect.xlsx` — Redirect mapping (active business file)
+
+32KB Excel file. Contains planned or implemented redirect mappings for 404 URLs.  
+Cross-reference with `workspace/audit/active/gsc-404-report-20260512/Table.csv`.
+
+---
+
 ## `/root/.attic-2026-05-15/stale-www-2026-05-15.tar.gz` — Old /var/www folders
 
 See `workspace/VPS_RESOURCE_MAP.md` for full contents breakdown.  
