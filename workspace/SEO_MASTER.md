@@ -55,11 +55,9 @@ Source audit: `workspace/audit/archive/reference-audits-20260515/e-mart-master-t
 
 ## 🟡 MEDIUM — Schedule
 
-### M1: `MerchantReturnPolicy` schema + `priceValidUntil` real dates
-- **Why:** Product schema has `priceValidUntil` as current date + 365 (artificial). No `MerchantReturnPolicy`. Merchant Center eligibility risk.
-- **Files:** `apps/web/src/app/shop/[slug]/page.tsx:98-144`
-- **Fix:** Use real Woo sale end date for `priceValidUntil` when available; omit when not. Add `MerchantReturnPolicy` only when a real return policy page exists and is stable.
-- **Effort:** Medium | **Risk:** Medium (schema changes affect rich results) | **Owner:** Claude after owner confirms return policy
+### ~~M1: `MerchantReturnPolicy` schema + `priceValidUntil`~~ ✅ DONE 2026-05-15
+- `MerchantReturnPolicy` added to all PDP Offer schema (7-day, BD, `/return-policy`)
+- `priceValidUntil` removed (artificial +365 was misleading; re-enable when real sale dates exist)
 
 ### M2: Category OG image audit
 - **Why:** `/category/sunscreen` was found with an irrelevant old media asset as OG image. Hurts social/AI preview quality.

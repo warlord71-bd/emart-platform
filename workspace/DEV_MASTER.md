@@ -43,9 +43,8 @@ Coordination model: Claude owns web frontend (`apps/web`) | Codex owns mobile (`
 - **Change:** Remove `cache: 'no-store'` refetch if server-passed data is sufficient for initial render.
 - **Effort:** Small
 
-### W5: `MerchantReturnPolicy` + `priceValidUntil` schema
-- **Files:** `apps/web/src/app/shop/[slug]/page.tsx:98-144`
-- **Blocked by:** Owner confirming return policy page URL
+### ~~W5: `MerchantReturnPolicy` + `priceValidUntil` schema~~ ✅ DONE 2026-05-15
+- MerchantReturnPolicy live in all PDP JSON-LD. priceValidUntil removed (re-enable with real dates when sales run).
 
 ### W6: Critical CSS inlining (`critters`)
 - **Files:** `apps/web/next.config.js`, build pipeline
@@ -92,10 +91,9 @@ Coordination model: Claude owns web frontend (`apps/web`) | Codex owns mobile (`
 
 > These touch live WordPress. Always dry-run first. Never mutate checkout/cart/payment/order without explicit owner approval.
 
-### B1: pa_concern + pa_skin_type assignment — apply
-- **Script:** `workspace/scripts/active/pa-concern-skin-type-dry-run.php`
-- **Status:** Dry-run done, never applied. Review output then apply with `APPLY=1`.
-- **Owner:** Codex or Claude after owner reviews
+### ~~B1: pa_concern + pa_skin_type + pa_ingredient assignment~~ ✅ DONE 2026-05-15
+- pa_concern: 2,236 products | pa_ingredient: 1,088 products | pa_skin_type: 28 products
+- Scripts: `pa-concern-skin-type-dry-run.php`, `pa-ingredient-skintype-apply.php`
 
 ### B2: SKU assignment — 119 missing products
 - **Script:** `workspace/scripts/active/product-sku-audit-dry-run.php`
