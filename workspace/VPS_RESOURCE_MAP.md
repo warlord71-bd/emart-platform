@@ -154,6 +154,38 @@ For each new project transferred from old hosting:
 
 ---
 
+## Emart Archive — `/root/.attic-2026-05-15/stale-www-2026-05-15.tar.gz`
+
+Compressed 2026-05-15. 781 MB. All contents are Emart-related. Download to PC then delete from VPS when ready.
+
+| Folder in archive | What it was | Still needed? |
+|-------------------|-------------|---------------|
+| `emart/scripts/` | Python SEO/catalog scripts (`phase2_seo.py`, `catalog_audit.py`, `catalog_fixer_v2.py`, `bulk_fixer_google2026.py`) | Already in `workspace/scripts/archive/` — no |
+| `emart/apps/mobile/` | Old React Native/Expo mobile app (pre-BFF era) | Superseded by `apps/mobile/` — no |
+| `emartweb/` | Old standalone Next.js web app (pre-platform era) | Superseded by `apps/web/` — no |
+| `emartweb/.env.local` | **Old secrets/env file** — may contain old WooCommerce keys | ⚠️ Delete after downloading. Do not restore to VPS. |
+| `emartweb/emart-web-final.tar.gz` | Nested archive inside archive (old final build) | No |
+| `emartweb/preview-*.html` | Old UI preview HTML files | No |
+| `emartappup/` | Duplicate of old mobile app + Python scripts | No |
+| `emart-platform-releases/` | Three old commit snapshots (`bc0fadc`, `251fa3e`, `d8573a9`) | Redundant — git has full history — no |
+| `emartweb_config_backup/` | Old nginx/config backup | No |
+
+**To extract a specific file if needed:**
+```bash
+tar -xzf /root/.attic-2026-05-15/stale-www-2026-05-15.tar.gz <path-inside-archive>
+# e.g.: tar -xzf ... emart/scripts/catalog_audit.py
+```
+
+**To download to PC then delete:**
+```bash
+# On your PC:
+scp root@<vps-ip>:/root/.attic-2026-05-15/stale-www-2026-05-15.tar.gz .
+# Then on VPS after confirming download:
+rm /root/.attic-2026-05-15/stale-www-2026-05-15.tar.gz
+```
+
+---
+
 ## Port Allocation Reference
 
 | Range | Owner |
