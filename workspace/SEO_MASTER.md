@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-15
 Owner: Claude (code + data fixes) | Owner decision needed where marked
-Source audit: `workspace/audit/active/e-mart-master-technical-seo-image-crawler-audit-20260515.md`
+Source audit: `workspace/audit/archive/reference-audits-20260515/e-mart-master-technical-seo-image-crawler-audit-20260515.md`
 
 ---
 
