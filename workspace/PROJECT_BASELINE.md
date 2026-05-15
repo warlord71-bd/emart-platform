@@ -96,7 +96,19 @@ Key items: archive completed taxonomy CSVs and mutator scripts, mark `apps/web/M
 
 ---
 
-## 9. VPS Resource Map
+## 9. Attic Index — Archived Files
+
+`workspace/ATTIC_INDEX.md`
+
+Full reference for everything moved to `/root/.attic-2026-05-15/`. Two locations:
+- `emart-archive/` — completed batch CSVs, backups, old docs (korea origin, derma co, sale price, FB catalog, slug cleanup, taxonomy)
+- `stale-www-2026-05-15.tar.gz` — old /var/www Emart app versions (compressed, download to PC then delete)
+
+If you need a file from the attic, check ATTIC_INDEX.md first — it tells you exactly where it is and what's in it.
+
+---
+
+## 10. VPS Resource Map
 
 `workspace/VPS_RESOURCE_MAP.md`
 
