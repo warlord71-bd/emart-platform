@@ -193,11 +193,7 @@ function AppContent() {
 }
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    ...Ionicons.font,
-  });
-
-  if (!fontsLoaded) return null;
+  useFonts({ ...Ionicons.font });
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
