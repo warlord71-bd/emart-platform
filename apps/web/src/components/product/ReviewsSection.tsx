@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import type { WooProduct, WooProductReview } from '@/lib/woocommerce';
 
@@ -58,6 +58,7 @@ function calculateAverage(reviews: WooProductReview[], fallbackAverage: string) 
 }
 
 export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initialReviews = [] }) => {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [state, setState] = useState<ReviewState>({
     ...emptyState,
     reviews: initialReviews,
@@ -69,26 +70,53 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
 
   useEffect(() => {
     let active = true;
+    let loaded = false;
 
-    fetch(`/api/product-reviews?productId=${product.id}`, { cache: 'no-store' })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!active) return;
-        setState({
-          reviews: Array.isArray(data.reviews) ? data.reviews : initialReviews,
-          authenticated: Boolean(data.authenticated),
-          verifiedPurchase: Boolean(data.verifiedPurchase),
-          alreadyReviewed: Boolean(data.alreadyReviewed),
-          canReview: Boolean(data.canReview),
+    const loadReviewEligibility = () => {
+      if (loaded) return;
+      loaded = true;
+
+      fetch(`/api/product-reviews?productId=${product.id}&includeReviews=0`, { cache: 'no-store' })
+        .then((response) => response.json())
+        .then((data) => {
+          if (!active) return;
+          setState((current) => ({
+            ...current,
+            reviews: Array.isArray(data.reviews) ? data.reviews : initialReviews,
+            authenticated: Boolean(data.authenticated),
+            verifiedPurchase: Boolean(data.verifiedPurchase),
+            alreadyReviewed: Boolean(data.alreadyReviewed),
+            canReview: Boolean(data.canReview),
+          }));
+        })
+        .catch(() => {
+          if (!active) return;
+          setState((current) => ({ ...current, reviews: initialReviews }));
         });
-      })
-      .catch(() => {
-        if (!active) return;
-        setState((current) => ({ ...current, reviews: initialReviews }));
-      });
+    };
+
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === 'undefined') {
+      loadReviewEligibility();
+      return () => {
+        active = false;
+      };
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        loadReviewEligibility();
+        observer.disconnect();
+      },
+      { rootMargin: '400px 0px' },
+    );
+
+    observer.observe(node);
 
     return () => {
       active = false;
+      observer.disconnect();
     };
   }, [product.id, initialReviews]);
 
@@ -138,7 +166,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
   };
 
   return (
-    <section className="space-y-6 py-2" id="reviews">
+    <section ref={sectionRef} className="space-y-6 py-2" id="reviews">
       <div>
         <h2 className="font-serif text-3xl font-bold text-ink">
           Rating & Reviews ({totalReviews})

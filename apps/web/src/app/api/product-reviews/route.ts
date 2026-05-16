@@ -86,15 +86,24 @@ function sanitizeReviewText(value: unknown): string {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const productId = Number(searchParams.get('productId') || searchParams.get('product_id') || 0);
+  const includeReviews = searchParams.get('includeReviews') !== '0';
 
   if (!productId) {
     return NextResponse.json({ error: 'Missing productId' }, { status: 400 });
   }
 
-  const [reviews, user] = await Promise.all([
-    getProductReviews(productId),
-    getCurrentReviewUser(),
-  ]);
+  const user = await getCurrentReviewUser();
+
+  if (!user && !includeReviews) {
+    return NextResponse.json({
+      authenticated: false,
+      verifiedPurchase: false,
+      alreadyReviewed: false,
+      canReview: false,
+    });
+  }
+
+  const reviews = await getProductReviews(productId);
 
   const verifiedPurchase = user ? await hasVerifiedPurchase(user.id, productId) : false;
   const alreadyReviewed = user
@@ -102,7 +111,7 @@ export async function GET(request: Request) {
     : false;
 
   return NextResponse.json({
-    reviews,
+    ...(includeReviews ? { reviews } : {}),
     authenticated: Boolean(user),
     verifiedPurchase,
     alreadyReviewed,

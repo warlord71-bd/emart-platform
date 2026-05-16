@@ -29,6 +29,7 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 | `/faq` visible answers now match `FAQPage` schema in raw HTML | 2026-05-16 | `faq/page.tsx`; native `<details>` keeps answers server-rendered |
 | Static sitemap `lastmod` churn stopped | 2026-05-16 | `sitemapEntries.ts`; static URLs use stable date, collection URLs omit fake timestamps |
 | `LiveTickerBar` lint warning fixed | 2026-05-16 | `LiveTickerBar.tsx`; memo dependencies no longer recreate fallback array every render |
+| PDP review eligibility fetch deferred | 2026-05-16 | `ReviewsSection.tsx`, `api/product-reviews`; server-rendered reviews stay visible, client auth check waits until near viewport |
 | Wrong Korea origin + "Korea import" copy cleaned across 3,628 products | 2026-05-15 | WP DB + scripts |
 | Product meta descriptions — all 3,564 products have `_rank_math_description` | 2026-05-04 | WP DB |
 | Brand taxonomy + pa_origin assignment for 3,641 products | 2026-05-05 | WP DB |
@@ -103,10 +104,8 @@ No open high-priority technical SEO items after the 2026-05-16 SEO cleanup batch
 - Currently allowed. Keep if intentional for LLM discoverability; block if not.
 - **Owner:** Business decision
 
-### L2: ReviewsSection client refetch
-- **Files:** `apps/web/src/components/product/ReviewsSection.tsx:70-93`
-- Non-critical `cache: 'no-store'` fetch on PDP hydration. Defer or remove if server data is sufficient.
-- **Owner:** Claude
+### ~~L2: ReviewsSection client refetch~~ ✅ DONE 2026-05-16
+- Review list stays server-rendered from `initialReviews`; client eligibility check is deferred until the reviews section nears the viewport and asks the API to skip duplicate review payload for anonymous users.
 
 ### L3: Lint during builds
 - **Files:** `apps/web/next.config.js:10` (`eslint.ignoreDuringBuilds: true`)
