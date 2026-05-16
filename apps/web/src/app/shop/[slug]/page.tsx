@@ -56,6 +56,14 @@ function getNumericPrice(product: WooProduct): string {
   return Number.isFinite(price) && price > 0 ? price.toFixed(2) : '0.00';
 }
 
+// Replace any ৳NNN price embedded in an editorial title with the live Woo price,
+// so the title stays accurate when prices change without requiring a WP edit.
+function syncTitlePrice(title: string, product: WooProduct): string {
+  const live = Math.round(Number.parseFloat(product.price || product.regular_price || '0'));
+  if (live <= 0) return title;
+  return title.replace(/৳\s*[\d,]+/g, `৳${live.toLocaleString('en-BD')}`);
+}
+
 function getGtinFields(sku: string): Record<string, string> {
   const s = sku?.trim() || '';
   if (/^\d{13}$/.test(s)) return { gtin13: s };
@@ -563,7 +571,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const seoDescription = getSeoDescription(product);
   const rankMathTitle = getProductMetaString(product, '_rank_math_title');
-  const seoTitle = rankMathTitle || `${product.name} Price in Bangladesh | Emart`;
+  const seoTitle = rankMathTitle
+    ? syncTitlePrice(rankMathTitle, product)
+    : `${product.name} Price in Bangladesh | Emart`;
   const seoCanonical = absoluteUrl(`/shop/${params.slug}`);
   const seoOgImage = product.images?.[0]?.src || '';
   const skinType = getProductAttributeValue(product, /skin type/i);
