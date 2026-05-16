@@ -1,6 +1,28 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
+const SITE_HOST = 'e-mart.com.bd';
+const INDEXNOW_KEY = process.env.INDEXNOW_KEY || 'f388fee928b456a35b6b05ea5e34dbea';
+
+async function pingIndexNow(urls: string[]): Promise<void> {
+  if (!urls.length) return;
+  try {
+    await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify({
+        host: SITE_HOST,
+        key: INDEXNOW_KEY,
+        keyLocation: `https://${SITE_HOST}/${INDEXNOW_KEY}.txt`,
+        urlList: urls,
+      }),
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch {
+    // non-blocking — IndexNow failure must never break revalidation
+  }
+}
+
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
@@ -64,11 +86,13 @@ export async function POST(req: NextRequest) {
     revalidatePath('/shop');
     revalidateTag('products');
     revalidated.push(`/shop/${slug}`, `/${slug}`, '/shop', 'tag:products');
+    void pingIndexNow([`https://${SITE_HOST}/shop/${slug}`]);
   } else if (slug && type === 'category') {
     revalidatePath(`/category/${slug}`);
     revalidatePath('/shop');
     revalidateTag('products');
     revalidated.push(`/category/${slug}`, '/shop', 'tag:products');
+    void pingIndexNow([`https://${SITE_HOST}/category/${slug}`]);
   } else {
     return NextResponse.json(
       { ok: false, error: 'provide tag, path, or slug+type' },
