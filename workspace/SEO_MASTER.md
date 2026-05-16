@@ -18,7 +18,7 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 | Near-empty categories removed from sitemap (general-health, shampoo, hair-essence-serum) | 2026-05-15 | `sitemapEntries.ts` |
 | Sitemap REST fallback now mirrors GraphQL exclusion rules | 2026-05-15 | `sitemapEntries.ts` |
 | Raw IP `5.189.188.229` removed from `remotePatterns` | 2026-05-15 | `next.config.js` |
-| Header logo `priority` mostly reduced; desktop header logo still needs cleanup | 2026-05-15 | `Header.tsx` — see H2 |
+| Header logo `priority` removed from mobile and desktop header logos | 2026-05-16 | `Header.tsx`; real route LCP images keep their own priority |
 | Font weights reduced (7 fewer font file requests) | 2026-05-15 | `layout.tsx` |
 | HomepageSections dynamic imports (deferred 1,034-line client bundle) | 2026-05-15 | `page.tsx` |
 | Homepage mobile duplicate rails use `inert` with `aria-hidden` | 2026-05-16 | `HomepageSections.tsx`; prior H1 accessibility issue already compliant |
@@ -40,14 +40,7 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 
 ## 🔴 HIGH — Do Next
 
-### H1: Desktop header logo still uses image `priority`
-- **Why:** Desktop header logo still emits a high-priority preload and competes with the real route LCP image on PDP/home/category pages.
-- **Evidence:** Live PDP HTML showed both logo and PDP image preloaded with `fetchPriority="high"`.
-- **Files:** `apps/web/src/components/layout/Header.tsx:712-719`
-- **Fix:** Remove `priority` from the desktop logo. Keep route-specific LCP priorities such as PDP main image and homepage hero image.
-- **Effort:** Small | **Risk:** Very low | **Owner:** Claude
-
-### H2: Product FAQ visible but missing PDP `FAQPage` JSON-LD
+### H1: Product FAQ visible but missing PDP `FAQPage` JSON-LD
 - **Why:** Product FAQ content is rendered on PDPs, but only Product and Breadcrumb JSON-LD are emitted.
 - **Files:** `apps/web/src/app/shop/[slug]/page.tsx:618-665`
 - **Fix:** Add conditional `FAQPage` JSON-LD from the same visible `faqItems`, only when real FAQ items exist.
@@ -151,7 +144,7 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 ### AI Overview / AI Mode readiness
 - **Status:** Generally good, with normal SEO caveats. Public commercial/informational pages are mostly crawlable, indexable, canonicalized, internally linked, and rendered with textual HTML.
 - **Evidence:** `robots.ts` allows Googlebot and Googlebot-image; `layout.tsx` sets `max-snippet:-1` and `max-image-preview:large`; product/category/brand/concern/ingredient/routine pages are server-rendered and internally linked.
-- **Main blockers:** H1 desktop logo priority/CWV issue, H2 missing PDP FAQ schema, M7 FAQ visible/schema alignment, M8 sitemap `lastmod` churn, and product data gaps from M3.
+- **Main blockers:** H1 missing PDP FAQ schema, M7 FAQ visible/schema alignment, M8 sitemap `lastmod` churn, and product data gaps from M3.
 
 ### Snippet eligibility issues
 - **Pass:** No public route uses global `nosnippet`; `layout.tsx` allows unlimited snippets with `max-snippet:-1`.

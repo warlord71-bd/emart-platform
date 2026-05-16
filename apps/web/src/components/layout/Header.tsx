@@ -715,7 +715,6 @@ export default function Header() {
                 width={48}
                 height={48}
                 className="h-12 w-12 rounded-xl"
-                priority
               />
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
