@@ -31,7 +31,7 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 | `LiveTickerBar` lint warning fixed | 2026-05-16 | `LiveTickerBar.tsx`; memo dependencies no longer recreate fallback array every render |
 | PDP review eligibility fetch deferred | 2026-05-16 | `ReviewsSection.tsx`, `api/product-reviews`; server-rendered reviews stay visible, client auth check waits until near viewport |
 | Lint is enforced during production builds again | 2026-05-16 | `next.config.js`; removed `eslint.ignoreDuringBuilds` after lint became clean |
-| Homepage title aligned to approved brand format | 2026-05-16 | `page.tsx`; title/OG title now use `Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty` |
+| Homepage/global title aligned to approved brand format | 2026-05-16 | `page.tsx`, `layout.tsx`; homepage title/OG title and global fallback now use `Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty`; WebSite schema tagline aligned |
 | Wrong Korea origin + "Korea import" copy cleaned across 3,628 products | 2026-05-15 | WP DB + scripts |
 | Product meta descriptions — all 3,564 products have `_rank_math_description` | 2026-05-04 | WP DB |
 | Brand taxonomy + pa_origin assignment for 3,641 products | 2026-05-05 | WP DB |
@@ -77,7 +77,7 @@ No open high-priority technical SEO items after the 2026-05-16 SEO cleanup batch
 - pa_concern: 2,236 products | pa_ingredient: 1,088 products | pa_skin_type: 28 products — see DEV_MASTER B1
 
 ### ~~M6: Homepage title alignment~~ ✅ DONE 2026-05-16
-- Homepage metadata title and OpenGraph title now use the owner-approved format: `Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty`.
+- Homepage metadata title, OpenGraph title, global fallback title, and WebSite schema tagline now use the owner-approved format: `Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty`.
 
 ### ~~M7: FAQ page schema/visible HTML alignment~~ ✅ DONE 2026-05-16
 - `/faq` now renders native `<details>` from the server, so answer text is present in raw HTML and matches the `FAQPage` JSON-LD.

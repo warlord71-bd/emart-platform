@@ -945,3 +945,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Product triage: 7 invalid SKUs contain whitespace; 3 missing-price products are IDs 36128, 36130, 66803; 19 merchant-schema-not-ready rows are image or price gaps only.
 - Commit: `7b027f8 chore(workspace): fix product image audit output path`.
 - Next step: Owner decides product data fixes; avoid touching `apps/web/next.config.js` while Claude owns redirects.
+
+---
+## 2026-05-16 — Codex
+- Did: Locked the approved homepage/global SEO title policy for all agents.
+- Completed tasks: Homepage title and OpenGraph title use `Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty`; global fallback metadata, WebSite JSON-LD tagline, and public brand note aligned to the same wording.
+- SEO policy: Use the full approved phrase for homepage/global/search-facing brand surfaces only; keep product/category/brand/article titles specific to page intent to avoid duplicate or overlong title stuffing.
+- Checks: Local `npm run lint` and `npm run build` passed.
