@@ -7,10 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
-
-SplashScreen.preventAutoHideAsync();
 
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { CartProvider, useCart } from './src/context/CartContext';
@@ -199,10 +196,6 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     ...Ionicons.font,
   });
-
-  useEffect(() => {
-    if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded]);
 
   if (!fontsLoaded) return null;
 
