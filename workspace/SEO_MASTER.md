@@ -24,6 +24,10 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 | Homepage mobile duplicate rails use `inert` with `aria-hidden` | 2026-05-16 | `HomepageSections.tsx`; prior H1 accessibility issue already compliant |
 | ProductCard priority narrowed to first product on first shop/category page | 2026-05-16 | `shop/page.tsx`, `category/[slug]/page.tsx`; prior H2 already compliant |
 | `/brands` exact redirect conflict fixed | 2026-05-16 | removed only `/brands` → `/shop` from `next.config.js`; live `/brands` and `/brands/cosrx` return 200 |
+| PDP visible FAQ now has matching `FAQPage` JSON-LD | 2026-05-16 | `shop/[slug]/page.tsx`; schema is conditional and uses the same visible FAQ items |
+| Category OG image selection made conservative | 2026-05-16 | `category/[slug]/page.tsx`; uses vetted storefront/category images instead of arbitrary Rank Math media |
+| `/faq` visible answers now match `FAQPage` schema in raw HTML | 2026-05-16 | `faq/page.tsx`; native `<details>` keeps answers server-rendered |
+| Static sitemap `lastmod` churn stopped | 2026-05-16 | `sitemapEntries.ts`; static URLs use stable date, collection URLs omit fake timestamps |
 | Wrong Korea origin + "Korea import" copy cleaned across 3,628 products | 2026-05-15 | WP DB + scripts |
 | Product meta descriptions — all 3,564 products have `_rank_math_description` | 2026-05-04 | WP DB |
 | Brand taxonomy + pa_origin assignment for 3,641 products | 2026-05-05 | WP DB |
@@ -40,11 +44,7 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 
 ## 🔴 HIGH — Do Next
 
-### H1: Product FAQ visible but missing PDP `FAQPage` JSON-LD
-- **Why:** Product FAQ content is rendered on PDPs, but only Product and Breadcrumb JSON-LD are emitted.
-- **Files:** `apps/web/src/app/shop/[slug]/page.tsx:618-665`
-- **Fix:** Add conditional `FAQPage` JSON-LD from the same visible `faqItems`, only when real FAQ items exist.
-- **Effort:** Small | **Risk:** Low | **Owner:** Claude
+No open high-priority technical SEO items after the 2026-05-16 SEO cleanup batch. Keep monitoring GSC/Merchant Center for fresh crawl, rich result, and product data issues.
 
 ---
 
@@ -54,11 +54,8 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 - `MerchantReturnPolicy` added to all PDP Offer schema (7-day, BD, `/return-policy`)
 - `priceValidUntil` removed (artificial +365 was misleading; re-enable when real sale dates exist)
 
-### M2: Category OG image audit
-- **Why:** `/category/sunscreen` was found with an irrelevant old media asset as OG image. Hurts social/AI preview quality.
-- **Files:** `apps/web/src/app/category/[slug]/page.tsx:94-103`
-- **Fix:** Audit category OG images; replace stale/irrelevant ones with a relevant category image or default storefront social image.
-- **Effort:** Small (code) + data review | **Risk:** Low | **Owner:** Claude + owner provides images
+### ~~M2: Category OG image audit~~ ✅ DONE 2026-05-16
+- Category pages now use vetted local storefront/category OG images. Unknown categories fall back to `/images/hero-products.png` instead of arbitrary stale Rank Math media.
 
 ### ~~M3: Fresh product SEO / image data audit~~ ✅ DONE 2026-05-15
 - Read-only audit rerun after SKU/origin/copy fixes.
@@ -78,17 +75,11 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 - **Fix:** Align page title with approved format. One line change.
 - **Effort:** Trivial | **Risk:** Low | **Owner:** Owner confirms preferred title format
 
-### M7: FAQ page schema/visible HTML alignment
-- **Why:** `/faq` outputs `FAQPage` schema, but answer bodies are only visible after client state opens each item.
-- **Files:** `apps/web/src/app/faq/page.tsx:9-25`, `apps/web/src/app/faq/page.tsx:74-89`
-- **Fix:** Render FAQ answers in native `<details>` or otherwise keep answer text present in initial HTML while preserving the current compact UI.
-- **Effort:** Small | **Risk:** Low | **Owner:** Claude
+### ~~M7: FAQ page schema/visible HTML alignment~~ ✅ DONE 2026-05-16
+- `/faq` now renders native `<details>` from the server, so answer text is present in raw HTML and matches the `FAQPage` JSON-LD.
 
-### M8: Static sitemap `lastmod` churn
-- **Why:** Static sitemap entries use `new Date()` on every sitemap generation, so unchanged pages appear freshly modified.
-- **Files:** `apps/web/src/lib/sitemapEntries.ts:68-101`
-- **Fix:** Use stable known dates for static pages, or omit `lastmod` where there is no accurate content timestamp.
-- **Effort:** Small | **Risk:** Low | **Owner:** Claude
+### ~~M8: Static sitemap `lastmod` churn~~ ✅ DONE 2026-05-16
+- Static URLs use a stable `2026-05-16` lastmod. Category/brand collection URLs no longer emit fake current timestamps when no accurate source modified date exists.
 
 ### M9: Skin-type buyer guidance gap
 - **Why:** Query fan-out coverage is good for concerns, ingredients, routine steps, brands, origins, and skin quiz, but there are no first-class indexable skin-type education/listing pages yet. `/shop?skin_type=` is a filter variant and canonicalizes away.
@@ -144,7 +135,7 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 ### AI Overview / AI Mode readiness
 - **Status:** Generally good, with normal SEO caveats. Public commercial/informational pages are mostly crawlable, indexable, canonicalized, internally linked, and rendered with textual HTML.
 - **Evidence:** `robots.ts` allows Googlebot and Googlebot-image; `layout.tsx` sets `max-snippet:-1` and `max-image-preview:large`; product/category/brand/concern/ingredient/routine pages are server-rendered and internally linked.
-- **Main blockers:** H1 missing PDP FAQ schema, M7 FAQ visible/schema alignment, M8 sitemap `lastmod` churn, and product data gaps from M3.
+- **Main blockers:** Product data gaps from M3, plus owner-approved content expansion gaps M9/M10.
 
 ### Snippet eligibility issues
 - **Pass:** No public route uses global `nosnippet`; `layout.tsx` allows unlimited snippets with `max-snippet:-1`.
@@ -163,7 +154,7 @@ Google AI Search source note: Google's AI Overviews / AI Mode guidance says norm
 
 ### Structured data/content mismatch
 - **Pass:** Product schema uses the same Woo product object as visible PDP content for price, availability, brand, image, SKU, URL, and reviews; aggregate rating appears only when Woo rating data exists.
-- **Gap:** PDP FAQ is visible but not yet represented as `FAQPage` schema. Add only from the same visible FAQ items.
+- **Pass:** PDP FAQ is visible and now represented as conditional `FAQPage` schema from the same visible FAQ items.
 - **Risk to monitor:** Shipping/return policy schema must keep matching visible policy pages and checkout reality.
 
 ### Merchant data mismatch

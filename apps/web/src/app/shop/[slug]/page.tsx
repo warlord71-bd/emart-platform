@@ -539,6 +539,24 @@ function ProductFaqSection({ items }: { items: ProductFaqItem[] }) {
   );
 }
 
+function getProductFaqJsonLd(product: WooProduct, items: ProductFaqItem[]) {
+  if (items.length === 0) return null;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${absoluteUrl(`/shop/${product.slug}`)}#faq`,
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProduct(params.slug);
 
@@ -616,6 +634,7 @@ export default async function ProductPage({ params }: Props) {
   const ingredientsHtml = getIngredientsHtml(product);
   const howToUseHtml = getHowToUseHtml(product);
   const faqItems = getProductFaqItems(product);
+  const faqJsonLd = getProductFaqJsonLd(product, faqItems);
   const productJsonLd = getProductJsonLd(product);
   const breadcrumbParent = getProductBreadcrumbParent(product);
 
@@ -642,6 +661,7 @@ export default async function ProductPage({ params }: Props) {
       <ProductViewContentEvent product={product} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(productJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />}
       <Breadcrumbs
         items={[
           { label: 'Home', href: '/' },

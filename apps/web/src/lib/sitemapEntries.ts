@@ -29,6 +29,7 @@ import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 const BASE_URL = SITE_URL;
 const PAGE_SIZE = 100;
 const WORDPRESS_URL = (process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_WOO_URL || BASE_URL).replace(/\/$/, '');
+const STATIC_LASTMOD = new Date('2026-05-16T00:00:00.000Z');
 
 // Categories that 301-redirect to /concerns/* or /shop — must not appear in sitemap.
 // Sitemap should only list canonical URLs that return 200 with index,follow.
@@ -66,35 +67,35 @@ type WordPressProductPost = {
 export type SitemapEntry = MetadataRoute.Sitemap[number];
 
 const STATIC_PAGES: MetadataRoute.Sitemap = [
-  { url: BASE_URL, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
-  { url: absoluteUrl('/shop'), lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-  { url: absoluteUrl('/categories'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-  { url: absoluteUrl('/new-arrivals'), lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-  { url: absoluteUrl('/sale'), lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-  { url: absoluteUrl('/skin-quiz'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-  { url: absoluteUrl('/brands'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-  { url: absoluteUrl('/origins'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-  { url: absoluteUrl('/concerns'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-  { url: absoluteUrl('/ingredients'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-  { url: absoluteUrl('/routine'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+  { url: BASE_URL, lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 1 },
+  { url: absoluteUrl('/shop'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.9 },
+  { url: absoluteUrl('/categories'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.8 },
+  { url: absoluteUrl('/new-arrivals'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.8 },
+  { url: absoluteUrl('/sale'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.8 },
+  { url: absoluteUrl('/skin-quiz'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/brands'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/origins'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/concerns'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/ingredients'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/routine'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
   ...CONCERN_SLUG_PAGES,
   ...INGREDIENT_SLUG_PAGES,
   ...ROUTINE_SLUG_PAGES,
-  { url: absoluteUrl('/blog'), lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
-  { url: absoluteUrl('/social'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-  { url: absoluteUrl('/our-story'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-  { url: absoluteUrl('/authenticity'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-  { url: absoluteUrl('/join-our-team'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
-  { url: absoluteUrl('/contact'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
-  { url: absoluteUrl('/faq'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
-  { url: absoluteUrl('/shipping-policy'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
-  { url: absoluteUrl('/return-policy'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
-  { url: absoluteUrl('/privacy-policy'), lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
-  { url: absoluteUrl('/terms-conditions'), lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
-  { url: absoluteUrl('/sitemap'), lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/blog'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.6 },
+  { url: absoluteUrl('/social'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/our-story'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/authenticity'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/join-our-team'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/contact'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/faq'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/shipping-policy'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.3 },
+  { url: absoluteUrl('/return-policy'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.3 },
+  { url: absoluteUrl('/privacy-policy'), lastModified: STATIC_LASTMOD, changeFrequency: 'yearly', priority: 0.2 },
+  { url: absoluteUrl('/terms-conditions'), lastModified: STATIC_LASTMOD, changeFrequency: 'yearly', priority: 0.2 },
+  { url: absoluteUrl('/sitemap'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.4 },
   ...OFFER_COLLECTIONS.map((offer) => ({
     url: absoluteUrl(offer.href),
-    lastModified: new Date(),
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   })),
@@ -119,7 +120,7 @@ async function getSitemapViaGraphQL(): Promise<MetadataRoute.Sitemap> {
 
   const productEntries: MetadataRoute.Sitemap = products.map((p) => ({
     url: absoluteUrl(`/shop/${p.slug}`),
-    lastModified: p.date_modified ? new Date(p.date_modified) : new Date(),
+    ...(p.date_modified ? { lastModified: new Date(p.date_modified) } : {}),
     changeFrequency: 'daily',
     priority: 0.8,
   }));
@@ -128,7 +129,7 @@ async function getSitemapViaGraphQL(): Promise<MetadataRoute.Sitemap> {
     .filter((c) => c.slug !== 'uncategorized' && !REDIRECTED_CATEGORY_SLUGS.has(c.slug))
     .map((c) => ({
       url: absoluteUrl(`/category/${c.slug}`),
-      lastModified: c.date_modified ? new Date(c.date_modified) : new Date(),
+      ...(c.date_modified ? { lastModified: new Date(c.date_modified) } : {}),
       changeFrequency: 'weekly',
       priority: 0.7,
     }));
@@ -148,7 +149,7 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
 
   const productEntries: MetadataRoute.Sitemap = products.map((p) => ({
     url: absoluteUrl(`/shop/${p.slug}`),
-    lastModified: p.date_modified ? new Date(p.date_modified) : new Date(),
+    ...(p.date_modified ? { lastModified: new Date(p.date_modified) } : {}),
     changeFrequency: 'daily',
     priority: 0.8,
   }));
@@ -157,7 +158,6 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
     .filter((c) => c.slug !== 'uncategorized' && !REDIRECTED_CATEGORY_SLUGS.has(c.slug))
     .map((c) => ({
       url: absoluteUrl(`/category/${c.slug}`),
-      lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,
     }));
@@ -171,7 +171,6 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
     .filter((brand) => brand.count > 0)
     .map((brand) => ({
       url: absoluteUrl(`/brands/${brand.slug}`),
-      lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,
     }));
@@ -184,7 +183,6 @@ async function getBrandSitemapEntries(): Promise<MetadataRoute.Sitemap> {
 
   return brands.filter((brand) => brand.count > 0).map((brand) => ({
     url: absoluteUrl(`/brands/${brand.slug}`),
-    lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.7,
   }));

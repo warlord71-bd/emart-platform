@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getCategorySeo } from '@/lib/seo';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 interface Props {
   params: { slug: string };
@@ -71,6 +72,23 @@ function detectContext(category: { slug: string; name: string }): 'skincare' | '
   return undefined;
 }
 
+const CATEGORY_OG_IMAGE_BY_KEY: Record<string, string> = {
+  sunscreen: '/images/home-categories/cosrx-sunscreen.jpg',
+  'korean-beauty': '/images/home-categories/viral-kbeauty.jpg',
+  'korean-skincare': '/images/home-categories/viral-kbeauty.jpg',
+  'night-cream': '/images/home-categories/cosrx-snail-92-cream.png',
+  'hair-care': '/images/home-categories/hair-care.jpg',
+  shampoo: '/images/home-categories/hair-care.jpg',
+  'makeup-cosmetics': '/images/home-categories/makeup-illus.png',
+  makeup: '/images/home-categories/makeup-illus.png',
+};
+
+function getCategoryOgImage(slug: string, name: string) {
+  const value = `${slug} ${name}`.toLowerCase();
+  const key = Object.keys(CATEGORY_OG_IMAGE_BY_KEY).find((candidate) => value.includes(candidate));
+  return absoluteUrl(key ? CATEGORY_OG_IMAGE_BY_KEY[key] : '/images/hero-products.png');
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = await getCategoryBySlug(params.slug);
   if (!cat) return { title: 'Category Not Found' };
@@ -86,6 +104,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = hasSpecificIntro
     ? introText.substring(0, 160)
     : seo.description;
+  const ogImage = getCategoryOgImage(params.slug, cat.name);
 
   return {
     title: { absolute: seo.title },
@@ -98,7 +117,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: seo.title,
       description,
       url: seo.canonical,
-      ...(seo.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
+      images: [{ url: ogImage, alt: `${cat.name} products at Emart` }],
     },
   };
 }

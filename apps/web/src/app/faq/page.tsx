@@ -1,29 +1,17 @@
-'use client';
-import { useState } from 'react';
 import { COMPANY } from '@/lib/companyProfile';
-
-// Note: In a server component this would be:
-// export const metadata: Metadata = { ... };
-// But since this uses 'use client', metadata export has moved to page wrapper
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 
 function FAQItem({ question, answer }: { question: string; answer: string }) {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
-    <div className="mb-3 overflow-hidden rounded-lg border border-hairline bg-card shadow-card">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between bg-bg-alt px-4 py-3 text-left font-semibold text-ink transition-colors hover:bg-brass-soft"
-      >
-        {question}
-        <span className={`text-accent transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
-      </button>
-      {isOpen && (
-        <div className="border-t border-hairline bg-card px-4 py-3 text-sm text-muted">
-          {answer}
-        </div>
-      )}
-    </div>
+    <details className="group mb-3 overflow-hidden rounded-lg border border-hairline bg-card shadow-card">
+      <summary className="flex cursor-pointer list-none items-center justify-between bg-bg-alt px-4 py-3 text-left font-semibold text-ink transition-colors hover:bg-brass-soft [&::-webkit-details-marker]:hidden">
+        <span>{question}</span>
+        <span className="text-accent transition-transform group-open:rotate-180">▼</span>
+      </summary>
+      <div className="border-t border-hairline bg-card px-4 py-3 text-sm text-muted">
+        {answer}
+      </div>
+    </details>
   );
 }
 
@@ -85,7 +73,7 @@ export default function FAQPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(faqSchema) }}
       />
       <h1 className="mb-2 text-2xl font-bold text-ink">Frequently Asked Questions</h1>
       <p className="mb-6 text-sm text-muted">Find answers to common questions about Emart, our products, shipping, and more.</p>
