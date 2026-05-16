@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../theme/colors';
 import { useAuth } from '../context/AuthContext';
 
 const LoginScreen = ({ navigation }) => {
-  const { signIn, signInWithGoogle, googleReady } = useAuth();
+  const { apiSignIn, signInWithGoogle, googleReady } = useAuth();
 
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     if (!emailOrPhone.trim() || !password.trim()) {
       Alert.alert('Error', 'Please enter email/phone and password');
       return;
     }
-    const fakeName = emailOrPhone.includes('@') ? emailOrPhone.split('@')[0] : 'eMart User';
-    signIn({ name: fakeName, emailOrPhone });
-    navigation.navigate('AccountMain');
+    setLoading(true);
+    try {
+      await apiSignIn(emailOrPhone.trim(), password);
+      navigation.navigate('AccountMain');
+    } catch (e) {
+      Alert.alert('Login Failed', e.message || 'Please check your credentials and try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,10 +86,12 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.forgotText}>Forgot Password?</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity activeOpacity={0.85} onPress={handleSignIn}>
+          <TouchableOpacity activeOpacity={0.85} onPress={handleSignIn} disabled={loading}>
             <LinearGradient colors={COLORS.gradientButton} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.signInBtn}>
-              <Text style={styles.signInText}>Sign In</Text>
-              <Ionicons name="arrow-forward" size={18} color="#fff" />
+              {loading
+                ? <ActivityIndicator color="#fff" />
+                : <><Text style={styles.signInText}>Sign In</Text><Ionicons name="arrow-forward" size={18} color="#fff" /></>
+              }
             </LinearGradient>
           </TouchableOpacity>
         </View>

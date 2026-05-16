@@ -7,8 +7,9 @@ import { useCart } from "../context/CartContext";
 import { useOrders } from "../context/OrderContext";
 import { createOrder, validateCoupon } from "../services/woocommerce";
 import { useLanguage } from "../context/LanguageContext";
+import { BUSINESS } from "../config/business";
 
-const MERCHANT_NUMBER = "01919797399";
+const MERCHANT_NUMBER = BUSINESS.MERCHANT_NUMBER;
 
 const CheckoutScreen = ({ navigation }) => {
   const { t } = useLanguage();

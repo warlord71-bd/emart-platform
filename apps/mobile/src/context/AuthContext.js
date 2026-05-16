@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
+import { API_CONFIG } from '../config/api';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -12,12 +13,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Google Auth setup
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: '677229186181-jq1rl5jh26ifmkfu3eo6ggu50s9g29lg.apps.googleusercontent.com',
   });
 
-  // Handle Google response
   useEffect(() => {
     if (response?.type === 'success') {
       fetchGoogleUser(response.authentication.accessToken);
@@ -30,7 +29,6 @@ export const AuthProvider = ({ children }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const googleUser = await res.json();
-
       const userData = {
         name: googleUser.name,
         email: googleUser.email,
@@ -38,7 +36,6 @@ export const AuthProvider = ({ children }) => {
         avatar: googleUser.picture,
         provider: 'google',
       };
-
       setUser(userData);
       await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(userData));
     } catch (e) {
@@ -46,7 +43,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Restore session on app launch
   useEffect(() => {
     const restore = async () => {
       try {
@@ -60,6 +56,42 @@ export const AuthProvider = ({ children }) => {
     };
     restore();
   }, []);
+
+  // Real API login — calls BFF → WordPress JWT auth
+  const apiSignIn = async (emailOrPhone, password) => {
+    const res = await fetch(`${API_CONFIG.baseUrl}/api/mobile/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ login: emailOrPhone, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+
+    const userData = {
+      id: data.user?.id,
+      name: [data.user?.first_name, data.user?.last_name].filter(Boolean).join(' ') || data.user?.username || emailOrPhone,
+      email: data.user?.email,
+      emailOrPhone,
+      token: data.token,
+      expires_at: data.expires_at,
+      provider: 'email',
+    };
+    setUser(userData);
+    await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(userData));
+    return userData;
+  };
+
+  // Real API register — calls BFF → WordPress register
+  const apiRegister = async ({ name, email, phone, password }) => {
+    const res = await fetch(`${API_CONFIG.baseUrl}/api/mobile/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Registration failed');
+    return data; // { success, pending_verification, message }
+  };
 
   const signIn = async (userData) => {
     setUser(userData);
@@ -102,9 +134,11 @@ export const AuthProvider = ({ children }) => {
       isLoggedIn: !!user,
       loading,
       signIn,
+      apiSignIn,
       signInWithGoogle,
       googleReady: !!request,
       register,
+      apiRegister,
       signOut,
     }),
     [user, loading, request]
@@ -119,8 +153,6 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 };

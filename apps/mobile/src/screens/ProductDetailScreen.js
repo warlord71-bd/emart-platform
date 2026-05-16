@@ -55,7 +55,13 @@ const ReviewCard = ({ review }) => {
 };
 
 const ProductDetailScreen = ({ navigation, route }) => {
-  const { product } = route.params;
+  const { product } = route.params || {};
+
+  if (!product) {
+    navigation.goBack();
+    return null;
+  }
+
   const { t } = useLanguage();
   const { addToCart } = useCart();
   const { user, isLoggedIn } = useAuth();

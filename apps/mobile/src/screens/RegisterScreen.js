@@ -9,6 +9,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,7 +17,7 @@ import { COLORS, FONTS } from '../theme/colors';
 import { useAuth } from '../context/AuthContext';
 
 const RegisterScreen = ({ navigation }) => {
-  const { register } = useAuth();
+  const { apiRegister } = useAuth();
 
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
@@ -24,25 +25,42 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = () => {
-    if (!fullName.trim() || !phone.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please fill required fields');
+  const handleRegister = async () => {
+    if (!fullName.trim() || !email.trim() || !password.trim()) {
+      Alert.alert('Error', 'Name, email and password are required');
       return;
     }
-
+    if (!email.includes('@')) {
+      Alert.alert('Error', 'Please enter a valid email address');
+      return;
+    }
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match');
       return;
     }
-
-    register({
-      name: fullName,
-      phone,
-      email,
-    });
-
-    navigation.navigate('AccountMain');
+    if (password.length < 6) {
+      Alert.alert('Error', 'Password must be at least 6 characters');
+      return;
+    }
+    setLoading(true);
+    try {
+      const result = await apiRegister({ name: fullName.trim(), email: email.trim(), phone: phone.trim(), password });
+      if (result.pending_verification) {
+        Alert.alert(
+          'Check Your Email',
+          'Account created! Please check your inbox and click the verification link before signing in.',
+          [{ text: 'OK', onPress: () => navigation.navigate('Login') }]
+        );
+      } else {
+        navigation.navigate('Login');
+      }
+    } catch (e) {
+      Alert.alert('Registration Failed', e.message || 'Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fields = [
@@ -130,15 +148,17 @@ const RegisterScreen = ({ navigation }) => {
           </View>
 
           {/* Register Button */}
-          <TouchableOpacity activeOpacity={0.85} onPress={handleRegister}>
+          <TouchableOpacity activeOpacity={0.85} onPress={handleRegister} disabled={loading}>
             <LinearGradient
               colors={COLORS.gradientButton}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={styles.registerBtn}
             >
-              <Text style={styles.registerText}>Create Account</Text>
-              <Ionicons name="arrow-forward" size={18} color="#fff" />
+              {loading
+                ? <ActivityIndicator color="#fff" />
+                : <><Text style={styles.registerText}>Create Account</Text><Ionicons name="arrow-forward" size={18} color="#fff" /></>
+              }
             </LinearGradient>
           </TouchableOpacity>
         </View>
