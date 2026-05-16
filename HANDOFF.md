@@ -70,7 +70,7 @@ Never push to GitHub before verifying live. Full rules: `/root/CLAUDE.md`.
 - Support WhatsApp: `8801919797399`
 - Do not merge these two numbers
 
-## Last Session — 2026-05-16 — Claude + Codex (parallel)
+## Last Session — 2026-05-16 — Claude + Codex
 
 **Did:** Woo BFF key rotation + product-data triage + WH6 + mobile smoke.
 - Created Woo REST key `Emart BFF Server 2026-05-15` (`key_id=31`) and updated `/var/www/emart-platform/apps/web/.env.local`; restarted `emartweb` after mobile items disappeared so the app loaded the new key
@@ -83,4 +83,15 @@ Never push to GitHub before verifying live. Full rules: `/root/CLAUDE.md`.
 
 **Codex also did:** Woo BFF key rotation (new key `key_id=31`), WH6 output path fix (`7b027f8`), mobile smoke tests passed. Product triage read-only: 7 whitespace SKUs, 3 missing prices, 19 merchant-schema-not-ready — awaiting owner decisions.
 
-**Next session starts at:** Owner decisions needed — product data fixes (SKUs, prices, merchant schema). Owner image uploads (16 products). Or UI/UX architecture tasks (U1 token fix is small and safe).
+**Claude also did (2026-05-16):**
+- Mobile Android v11 live in Play Store internal testing — products showing ✅
+- App.js: `useFonts(Ionicons.font)` + SplashScreen guard → fixes blank icon boxes in production builds
+- BFF categories: now matches web HOME_TOP_CATEGORY_ORDER (K-Beauty, J-Beauty, Serum, Moisturizers, Combos, Sunscreen, Cleansers, Makeup, Hair, Health)
+- BFF category: removed internal grouping slugs (skincare-essentials, shop-by-concern etc.)
+- eas.json: removed invalid `googleServicesFile` key (EAS validation error fixed)
+- Prices set: KLAIRS ৳1,900 / MAC Matte ৳4,900→৳3,500 sale / MAC Satin ৳3,500
+- MAC + KLAIRS PDPs confirmed live 200
+
+**iOS:** Needs Apple Developer Program ($99/yr) — owner will handle when ready.
+
+**Next session starts at:** Build Android v12 from repo (icon fix live in App.js). Then mobile P1 — category/brand/concern product pages. Web: W7 category OG image fallback. Owner: upload 16 missing product images.
