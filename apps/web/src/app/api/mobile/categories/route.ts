@@ -16,16 +16,41 @@ function booleanParam(value: string | null, fallback: boolean): boolean {
   return value === 'true' || value === '1';
 }
 
-// Internal grouping/backend categories not meant for shoppers
-const HIDDEN_CATEGORY_SLUGS = new Set([
-  'skincare-essentials',
-  'shop-by-concern',
-  'k-beauty-j-beauty',
-  'uncategorized',
-]);
+// Matches HOME_TOP_CATEGORY_ORDER from lib/category-navigation.ts — same order as web frontend
+const MOBILE_CATEGORY_ORDER = [
+  { slug: 'korean-beauty',          name: 'K-Beauty' },
+  { slug: 'japanese-beauty',        name: 'J-Beauty' },
+  { slug: 'serums-ampoules-essences', name: 'Serum & Ampoule' },
+  { slug: 'moisturizer',            name: 'Moisturizers', candidates: ['night-cream', 'moisturizer', 'cream-moisturizers'] },
+  { slug: 'emart-combos',           name: 'Kits & Combos' },
+  { slug: 'sunscreen',              name: 'Sunscreen' },
+  { slug: 'face-cleansers',         name: 'Cleansers' },
+  { slug: 'makeup-cosmetics',       name: 'Makeup' },
+  { slug: 'hair-personal-care',     name: 'Hair Care' },
+  { slug: 'health-wellbeing',       name: 'Health' },
+];
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
+
+  const allCategories = await getCategories({ per_page: 100, hide_empty: true });
+  const bySlug = new Map(allCategories.map(c => [c.slug, c]));
+
+  // If requesting parent categories for home screen, return curated ordered list
+  const isHomeRequest = searchParams.get('parent') === '0';
+  if (isHomeRequest) {
+    const result = [];
+    for (const item of MOBILE_CATEGORY_ORDER) {
+      const slugs = item.candidates ?? [item.slug];
+      const cat = slugs.map(s => bySlug.get(s)).find(Boolean);
+      if (cat) result.push(sanitizeMobileCategory({ ...cat, name: item.name }));
+    }
+    return NextResponse.json(result, {
+      headers: { 'Cache-Control': 's-maxage=300, stale-while-revalidate=300' },
+    });
+  }
+
+  // All other category requests (subcategories etc.) pass through normally
   const parent = searchParams.has('parent')
     ? numberParam(searchParams.get('parent'), 0, 0, 100000)
     : undefined;
@@ -36,9 +61,7 @@ export async function GET(request: NextRequest) {
     hide_empty: booleanParam(searchParams.get('hide_empty'), true),
   });
 
-  const visible = categories.filter(c => !HIDDEN_CATEGORY_SLUGS.has(c.slug));
-
-  return NextResponse.json(visible.map(sanitizeMobileCategory), {
+  return NextResponse.json(categories.map(sanitizeMobileCategory), {
     headers: { 'Cache-Control': 's-maxage=300, stale-while-revalidate=300' },
   });
 }
