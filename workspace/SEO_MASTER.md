@@ -64,6 +64,7 @@ No open high-priority technical SEO items after the 2026-05-16 SEO cleanup batch
 - Read-only audit rerun after SKU/origin/copy fixes.
 - Output: `workspace/active/audits/product-seo-audit-20260515.csv` + `product-seo-audit-summary-20260515.txt`.
 - Current product-data gaps from fresh audit: 16 missing images, 7 invalid SKUs, 3 missing prices, 19 merchant-schema-not-ready, 287 weak meta, 6 duplicate meta.
+- 2026-05-16: Fixed 2 wrong-size duplicate metas (93187 Neutrogena 80ml, 93160 COSRX 150ml). 2 Kota Cosmetics Mellow duplicates (74655/74669 — same title/price/categories, different SKUs) flagged for owner review (possible trash of 74669).
 
 ### ~~M4: SKU gap fixes — fresh audit shows 0 missing SKUs~~ ✅ DONE 2026-05-15
 - Read-only audit rerun: 3,628 published products, 0 missing SKU, 0 duplicate SKU meta products.
