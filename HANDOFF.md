@@ -10,11 +10,13 @@ Bangladesh K-beauty e-commerce. Next.js 14 frontend (`apps/web`) + WooCommerce/W
 Live at **e-mart.com.bd** — mobile-first, BDT currency, COD/bKash/Nagad payments.  
 Mobile app at `apps/mobile` (Expo). Presence WebSocket at `apps/presence-server`.
 
-## Current State — 2026-05-15
+## Current State — 2026-05-16
 
 - **Live and healthy** — PM2 `emartweb` + `emart-presence` running, site serving
-- **Git clean** — Local `/root/emart-platform` = VPS `/var/www/emart-platform` = GitHub `main` at `9a72f1a`
-- **Workspace reorganised** — two folders: `workspace/active/` (in play) + `workspace/archive/` (done)
+- **Git clean** — Local `/root/emart-platform` = VPS `/var/www/emart-platform` = GitHub `main` at `ac379ca`
+- **Workspace organised** — `workspace/active/` (in play) + `workspace/archive/` (done)
+- **Android v15+ in Play Store internal testing** — products showing, real auth wired
+- **iOS** — pending Apple Developer account ($99/yr)
 
 ## Active Tasks — Do These Next (priority order)
 
@@ -94,4 +96,18 @@ Never push to GitHub before verifying live. Full rules: `/root/CLAUDE.md`.
 
 **iOS:** Needs Apple Developer Program ($99/yr) — owner will handle when ready.
 
-**Next session starts at:** Build Android v12 from repo (icon fix live in App.js). Then mobile P1 — category/brand/concern product pages. Web: W7 category OG image fallback. Owner: upload 16 missing product images.
+**Also done 2026-05-16:**
+- C1–C4 fixed: real auth (BFF+JWT), business config, crash guard, qty already ok
+- Ionicons pre-bundled via expo-font plugin — fixes blank icon boxes permanently
+- eas.json invalid key removed — builds pass now
+- Native category routing: ProductsScreen uses category slug via BFF
+- Brands/Concerns: in-app browser opening /brands/[slug] and /concerns/[slug]
+- Quiz + Blog: chips on HomeScreen → expo-web-browser modal
+- GSC 404 redirects: all 1000 URLs covered
+- SEO H1/H2/WH1 done. Prices set on 3 products.
+
+**Next session starts at:**
+1. Build new Android version from repo + test login/register on device
+2. Web W7: category OG image fallback
+3. iOS: when Apple Developer account ready
+4. Owner: upload 16 missing product images
