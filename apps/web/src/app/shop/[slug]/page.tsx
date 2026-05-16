@@ -29,10 +29,10 @@ function getProductMetaString(product: WooProduct, key: string): string | null {
 
 function getSeoDescription(product: WooProduct): string {
   const emartMeta = getProductMetaString(product, '_emart_meta_description');
-  if (emartMeta) return emartMeta;
+  if (emartMeta) return syncLivePrice(emartMeta, product);
 
   const rankMathMeta = getProductMetaString(product, '_rank_math_description');
-  if (rankMathMeta) return rankMathMeta;
+  if (rankMathMeta) return syncLivePrice(rankMathMeta, product);
 
   const shortDesc = product.short_description?.replace(/<[^>]+>/g, '').trim();
   if (shortDesc && shortDesc.length > 20) return shortDesc.substring(0, 160);
@@ -56,12 +56,12 @@ function getNumericPrice(product: WooProduct): string {
   return Number.isFinite(price) && price > 0 ? price.toFixed(2) : '0.00';
 }
 
-// Replace any ৳NNN price embedded in an editorial title with the live Woo price,
-// so the title stays accurate when prices change without requiring a WP edit.
-function syncTitlePrice(title: string, product: WooProduct): string {
+// Replace any ৳NNN price in editorial text with the live Woo price so
+// titles and descriptions stay accurate after bulk price changes.
+function syncLivePrice(text: string, product: WooProduct): string {
   const live = Math.round(Number.parseFloat(product.price || product.regular_price || '0'));
-  if (live <= 0) return title;
-  return title.replace(/৳\s*[\d,]+/g, `৳${live.toLocaleString('en-BD')}`);
+  if (live <= 0) return text;
+  return text.replace(/৳\s*[\d,]+/g, `৳${live.toLocaleString('en-BD')}`);
 }
 
 function getGtinFields(sku: string): Record<string, string> {
@@ -572,7 +572,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const seoDescription = getSeoDescription(product);
   const rankMathTitle = getProductMetaString(product, '_rank_math_title');
   const seoTitle = rankMathTitle
-    ? syncTitlePrice(rankMathTitle, product)
+    ? syncLivePrice(rankMathTitle, product)
     : `${product.name} Price in Bangladesh | Emart`;
   const seoCanonical = absoluteUrl(`/shop/${params.slug}`);
   const seoOgImage = product.images?.[0]?.src || '';
