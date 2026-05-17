@@ -12,6 +12,7 @@ import {
   getTrendingProducts,
 } from '@/lib/categories/liveData';
 import { FlashProvider } from '@/lib/realtime/flash-context';
+import QueryProvider from '@/app/query-provider';
 import LiveTickerBar from '@/components/categories/LiveTickerBar';
 import FlashWeekHero from '@/components/categories/FlashWeekHero';
 import TrustStrip from '@/components/categories/TrustStrip';
@@ -90,28 +91,30 @@ export default async function CategoriesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <FlashProvider initialPromotion={promotion}>
-        <Suspense fallback={<SectionSkeleton />}>
-          <LiveTickerBar initialPresence={activeSessions} initialPurchases={recentPurchases} />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton tone="dark" />}>
-          <FlashWeekHero initialTrending={trendingProducts} />
-        </Suspense>
-        <TrustStrip />
-        <CategoryChips initialCategories={popularCategories} />
-        <Suspense fallback={<SectionSkeleton />}>
-          <PopularCategoriesGrid initialCategories={popularCategories} />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <FlashDealsRow initialProducts={flashProducts} />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <ConcernGrid initialConcerns={concerns} />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton tone="dark" />}>
-          <CustomerWall initialReviews={reviews} />
-        </Suspense>
-      </FlashProvider>
+      <QueryProvider>
+        <FlashProvider initialPromotion={promotion}>
+          <Suspense fallback={<SectionSkeleton />}>
+            <LiveTickerBar initialPresence={activeSessions} initialPurchases={recentPurchases} />
+          </Suspense>
+          <Suspense fallback={<SectionSkeleton tone="dark" />}>
+            <FlashWeekHero initialTrending={trendingProducts} />
+          </Suspense>
+          <TrustStrip />
+          <CategoryChips initialCategories={popularCategories} />
+          <Suspense fallback={<SectionSkeleton />}>
+            <PopularCategoriesGrid initialCategories={popularCategories} />
+          </Suspense>
+          <Suspense fallback={<SectionSkeleton />}>
+            <FlashDealsRow initialProducts={flashProducts} />
+          </Suspense>
+          <Suspense fallback={<SectionSkeleton />}>
+            <ConcernGrid initialConcerns={concerns} />
+          </Suspense>
+          <Suspense fallback={<SectionSkeleton tone="dark" />}>
+            <CustomerWall initialReviews={reviews} />
+          </Suspense>
+        </FlashProvider>
+      </QueryProvider>
     </main>
   );
 }
