@@ -35,7 +35,9 @@ const CartScreen = ({ navigation }) => {
     );
   }
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }) => {
+    if (!item || item.id == null) return null;
+    return (
     <View style={styles.card}>
       <View style={styles.itemImage}>
         {item.image ? (
@@ -83,7 +85,8 @@ const CartScreen = ({ navigation }) => {
         <Ionicons name="trash-outline" size={16} color={COLORS.error} />
       </TouchableOpacity>
     </View>
-  );
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -100,7 +103,7 @@ const CartScreen = ({ navigation }) => {
 
       <FlatList
         data={items}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => (item?.id ?? index).toString()}
         renderItem={renderItem}
         contentContainerStyle={{ padding: 16 }}
         ListFooterComponent={

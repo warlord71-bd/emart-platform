@@ -54,10 +54,20 @@ export const CartProvider = ({ children }) => {
       try {
         const saved = await AsyncStorage.getItem(CART_KEY);
         if (saved) {
-          dispatch({ type: 'RESTORE', payload: JSON.parse(saved) });
+          const parsed = JSON.parse(saved);
+          // Validate: must be array of objects with id and quantity
+          const valid = Array.isArray(parsed) &&
+            parsed.every(item => item && typeof item.id !== 'undefined' && typeof item.quantity === 'number');
+          if (valid) {
+            dispatch({ type: 'RESTORE', payload: parsed });
+          } else {
+            // Old app version (v9) cart format — discard to avoid crash
+            await AsyncStorage.removeItem(CART_KEY);
+          }
         }
       } catch (e) {
         console.log('Cart restore error:', e);
+        await AsyncStorage.removeItem(CART_KEY).catch(() => {});
       } finally {
         loaded.current = true;
       }
