@@ -4,6 +4,7 @@ import { COMPANY } from '@/lib/companyProfile';
 export const metadata: Metadata = {
   title: 'Return & Refund Policy',
   description: 'Learn about Emart\'s return and refund policy. We stand behind our products with a 7-day money-back guarantee.',
+  alternates: { canonical: 'https://e-mart.com.bd/return-policy' },
 };
 
 export default function ReturnPolicyPage() {

@@ -101,9 +101,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const introText = getCategoryIntro(cat.name, params.slug, rawDescription)
     .replace(/<[^>]+>/g, '').trim();
   const hasSpecificIntro = !introText.startsWith('Shop authentic');
-  const description = hasSpecificIntro
+  const description = (hasSpecificIntro
     ? introText.substring(0, 160)
-    : seo.description;
+    : seo.description) || introText.substring(0, 160);
   const ogImage = getCategoryOgImage(params.slug, cat.name);
 
   return {

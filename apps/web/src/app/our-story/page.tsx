@@ -6,6 +6,7 @@ import { COMPANY } from '@/lib/companyProfile';
 export const metadata: Metadata = {
   title: 'Our Story',
   description: `The story of ${COMPANY.storeName}, founded by ${COMPANY.founderName} and built in Dhanmondi under ${COMPANY.enterpriseName}.`,
+  alternates: { canonical: 'https://e-mart.com.bd/our-story' },
 };
 
 const milestones = [

@@ -4,6 +4,7 @@ import { COMPANY } from '@/lib/companyProfile';
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Emart\'s privacy policy. Learn how we collect, use, and protect your personal information.',
+  alternates: { canonical: 'https://e-mart.com.bd/privacy-policy' },
 };
 
 export default function PrivacyPolicyPage() {

@@ -4,6 +4,7 @@ import { COMPANY } from '@/lib/companyProfile';
 export const metadata: Metadata = {
   title: 'Shipping Policy',
   description: 'Learn about Emart\'s shipping policies, delivery times, and shipping rates across Bangladesh.',
+  alternates: { canonical: 'https://e-mart.com.bd/shipping-policy' },
 };
 
 export default function ShippingPolicyPage() {

@@ -4,6 +4,7 @@ import { COMPANY } from '@/lib/companyProfile';
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
   description: 'Emart Skincare Bangladesh Terms & Conditions. Read our terms of service and user agreement.',
+  alternates: { canonical: 'https://e-mart.com.bd/terms-conditions' },
 };
 
 export default function TermsConditionsPage() {

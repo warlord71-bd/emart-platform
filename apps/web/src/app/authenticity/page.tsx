@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Authenticity Promise',
   description: 'How Emart Skincare Bangladesh protects customers with genuine products, careful sourcing, and order support.',
+  alternates: { canonical: 'https://e-mart.com.bd/authenticity' },
 };
 
 const checks = [

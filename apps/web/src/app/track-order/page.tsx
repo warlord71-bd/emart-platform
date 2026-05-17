@@ -4,6 +4,7 @@ import TrackOrderClient from './TrackOrderClient';
 
 export const metadata: Metadata = {
   title: 'Track Order',
+  alternates: { canonical: 'https://e-mart.com.bd/track-order' },
   robots: { index: false, follow: false },
 };
 

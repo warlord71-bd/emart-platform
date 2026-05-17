@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     title: 'Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty',
     description: 'Shop authentic Korean, Japanese and global skincare in Bangladesh from Emart Skincare Bangladesh. Carefully curated beauty products, local support, faster delivery and trusted service.',
     url: absoluteUrl('/'),
+    images: [{ url: absoluteUrl('/wp-content/uploads/2026/03/logo.png'), width: 600, height: 600, alt: 'Emart Skincare Bangladesh' }],
   },
 };
 
@@ -155,6 +156,8 @@ export default async function HomePage() {
   return (
     <div className="bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+      {/* Stable brand H1 for SEO — visually hidden, accessible to screen readers and crawlers */}
+      <h1 className="sr-only">Authentic Korean, Japanese &amp; Global Skincare in Bangladesh — Emart</h1>
 
       <HeroCarousel />
       {/* Mobile: horizontal scroll discovery strip */}
