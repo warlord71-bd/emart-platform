@@ -973,3 +973,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: Commit `5ae9bfc perf(web): reduce mobile homepage payload` trims Woo product card serialization, removes below-fold TikTok oEmbed thumbnail/preload, and disables non-critical Playfair/Jost/JetBrains font preloads.
 - Checks: Local and VPS `npm run build` passed; `emartweb` restarted; live `/` returned 200 in 0.154s; local response length dropped from observed 643,520 bytes to about 539,464 bytes.
 - Next step: Re-run PageSpeed mobile after cache settles; PSI API was unavailable from this environment due Google quota.
+
+---
+## 2026-05-17 11:56 CEST — Codex
+- Did: Resolved the remaining homepage Lighthouse contrast failures from header/accent/category/product-card text.
+- Completed tasks: Commit `8d31d8e fix(web): resolve homepage contrast warnings` darkens global accent tokens, muted meta text, midnight-blossom category tokens, and flash-sale badge/price colors.
+- Checks: Local and VPS `npm run build` passed; `emartweb` restarted; live `/` returned 200 in 0.332s; fetched live CSS includes the new darker contrast tokens.
+- Next step: Re-run Lighthouse/PageSpeed accessibility on mobile to confirm the pasted contrast warnings clear.
