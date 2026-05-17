@@ -959,3 +959,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: Commit `512b950 perf(web): reduce homepage client bundle` built locally, deployed narrowly to VPS, built on VPS, restarted `emartweb`, smoke-tested `/` and `/categories`, then pushed `origin/main`.
 - Checks: Local and VPS `npm run build` passed; live `/` returned 200 in 0.218s and `/categories` returned 200 in 1.044s.
 - Next step: Re-run Lighthouse/PageSpeed to confirm field-audit deltas for JS execution time, long tasks, and unused JS.
+
+---
+## 2026-05-17 11:38 CEST — Codex
+- Did: Fixed homepage accessibility warnings for focusable descendants inside `aria-hidden` wrappers and improved contrast on hero/accent/muted text tokens.
+- Completed tasks: Commit `1ef92e6 fix(web): address homepage accessibility warnings` built locally, deployed narrowly to VPS, built on VPS, restarted `emartweb`, smoke-tested live/local, then pushed `origin/main`.
+- Checks: Local and VPS `npm run build` passed; live `/` returned 200 before DNS became flaky; local Nginx and Next probes returned 200.
+- Next step: Re-run Lighthouse accessibility to confirm ARIA/contrast warnings are cleared.
