@@ -189,3 +189,197 @@ Recommended actions must improve normal Google SEO and user usefulness first. Do
 | pa_concern dry-run review | Approve concern/skin-type assignments → enables M5 |
 | Cloudflare cache rule | Set in dashboard for `/shop` and `/category/*` → L4 |
 | Google-Extended | Allow or block in robots.ts → L1 |
+
+---
+
+## 🔍 Full Technical SEO Audit — 2026-05-17 — Ahrefs/Semrush Level
+
+Crawled 43 live URLs. Read-only audit — no code changed.
+
+---
+
+### Technical Health
+
+| Check | Result | Notes |
+|-------|--------|-------|
+| HTTPS | ✅ Pass | All pages served HTTPS |
+| www → non-www redirect | ✅ 301 | `https://www.e-mart.com.bd/` → `https://e-mart.com.bd/` |
+| HTTP → HTTPS redirect | ✅ 301 | `http://e-mart.com.bd/` → `https://e-mart.com.bd/` |
+| `/product/*` → `/shop/*` redirect | ✅ 301 | e.g. `/product/cosrx-acne-pimple-master-patch-24-patch` → `/shop/…` |
+| Sitemap URL count | ✅ 4,167 URLs | No `/product-category/` or `/product/` URLs in sitemap |
+| Robots.txt | ✅ Well-formed | Blocks cart, checkout, account, api, wp-admin, query params. Allows Googlebot, Bingbot, LLMs. |
+| Avg response time | ✅ 0.07–1.45s | Brands page 1.45s (large payload 785KB). All others under 1.1s. |
+| No redirect chains found | ✅ Pass | All tested redirects resolve in 1 hop |
+
+---
+
+### Page-by-Page Audit
+
+| URL (path) | Status | Title len | Desc len | Canon | H1 | og:image | Schema types | Issues |
+|-----------|--------|-----------|----------|-------|----|----------|-------------|--------|
+| / | 200 | 74 ⚠️ | 184 ⚠️ | ✅ | 1 (dynamic promo) 🔴 | ❌ 🔴 | WebSite, OnlineStore, Organization | Title long, desc long, H1 rotates, no og:image |
+| /shop | 200 | 51 ✅ | 187 ⚠️ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | Desc long, no og:image |
+| /categories | 200 | 50 ✅ | 132 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | — |
+| /brands | 200 | 42 ✅ | 144 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | No H2 |
+| /new-arrivals | 200 | 72 ⚠️ | 173 ⚠️ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | Title long, desc long, no H2 |
+| /sale | 200 | 61 ⚠️ | 180 ⚠️ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | Title borderline, desc long, no H2 |
+| /skin-quiz | 200 | 21 ✅ | 132 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | — |
+| /our-story | 200 | 17 ✅ | 110 ✅ | ❌ 🔴 | 1 ✅ | ✅ | WebSite, OnlineStore | No canonical |
+| /authenticity | 200 | 28 ✅ | 108 ✅ | ❌ 🔴 | 1 ✅ | ✅ | WebSite, OnlineStore | No canonical |
+| /faq | 200 | 60 ✅ | 156 ✅ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | No og:image |
+| /blog | 200 | 23 ✅ | 100 ✅ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | No og:image, no Article schema |
+| /shipping-policy | 200 | 23 ✅ | 97 ✅ | ❌ 🔴 | 1 ✅ | ✅ | WebSite, OnlineStore | No canonical |
+| /return-policy | 200 | 34 ✅ | 114 ✅ | ❌ 🔴 | 1 ✅ | ✅ | WebSite, OnlineStore | No canonical |
+| /privacy-policy | 200 | 22 ✅ | 94 ✅ | ❌ 🔴 | 1 ✅ | ✅ | WebSite, OnlineStore | No canonical |
+| /terms-conditions | 200 | 30 ✅ | 95 ✅ | ❌ 🔴 | 1 ✅ | ✅ | WebSite, OnlineStore | No canonical |
+| /track-order | 200 | 19 ✅ | 184 ⚠️ | ❌ 🟡 | 0 🟡 | ✅ | WebSite, OnlineStore | No H1, no canonical, desc is global fallback, noindex intentional |
+| /sitemap | 200 | 35 ✅ | 96 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | — |
+| /routine | 200 | 63 ⚠️ | 176 ⚠️ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | Title long, desc long |
+| /concerns | 200 | 51 ✅ | 56 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | — |
+| /origins | 200 | 22 ✅ | 103 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | — |
+| /ingredients | 200 | 51 ✅ | 183 ⚠️ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | Desc long |
+| /category/sunscreen | 200 | 38 ✅ | 160 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | No ItemList schema |
+| /category/face-cleansers | 200 | 43 ✅ | 160 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | No ItemList schema |
+| /category/serums-ampoules-essences | 200 | 60 ✅ | 160 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | No ItemList schema |
+| /category/korean-beauty | 200 | 42 ✅ | 160 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | No ItemList schema |
+| /category/japanese-beauty | 200 | 44 ✅ | 165 ⚠️ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | Desc long |
+| /category/makeup-cosmetics | 200 | 51 ✅ | 0 🔴 | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | **NO meta description** |
+| /category/hair-care | 200 | 38 ✅ | 124 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | Generic fallback desc |
+| /category/bath-body | 200 | 44 ✅ | 160 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | — |
+| /brands/cosrx | 200 | 51 ✅ | 160 ✅ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | No ItemList schema |
+| /brands/some-by-mi | 200 | 61 ⚠️ | 170 ⚠️ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | Title long, desc long |
+| /brands/cerave | 200 | 53 ✅ | 162 ⚠️ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | Desc borderline |
+| /brands/beauty-of-joseon | 200 | 73 ⚠️ | 182 ⚠️ | ✅ | 1 ✅ | ✅ | WebSite, OnlineStore | Title long, desc long |
+| /concerns/acne-blemish-care | 200 | 58 ✅ | 205 ⚠️ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | Desc long, no og:image |
+| /concerns/brightening | 200 | 51 ✅ | 193 ⚠️ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | Desc long, no og:image |
+| /concerns/sunscreen | 200 | 49 ✅ | 203 ⚠️ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | Desc long, no og:image |
+| /ingredients/niacinamide | 200 | 51 ✅ | 157 ✅ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | No og:image |
+| /ingredients/hyaluronic-acid | 200 | 55 ✅ | 160 ✅ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | No og:image |
+| /routine/cleanser | 200 | 54 ✅ | 146 ✅ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | No og:image |
+| /routine/sunscreen | 200 | 56 ✅ | 145 ✅ | ✅ | 1 ✅ | ❌ 🟡 | WebSite, OnlineStore | No og:image |
+| /shop/cosrx-acne-pimple-master-patch-24-patch | 200 | 42 ✅ | 132 ✅ | ✅ | 1 ✅ | ✅ | Product, BreadcrumbList, FAQPage | No aggregateRating (no reviews in Woo) |
+| /shop/cosrx-advanced-snail-92-all-in-one-cream100g | 200 | 35 ✅ | 115 ✅ | ✅ | 1 ✅ | ✅ | Product, BreadcrumbList, FAQPage | — |
+| /shop/the-ordinary-niacinamide-10-zinc-1-30ml | 200 | 54 ✅ | 129 ✅ | ✅ | 1 ✅ | ✅ | Product, BreadcrumbList, FAQPage | — |
+
+---
+
+### 🔴 CRITICAL — Fix Immediately
+
+1. **Homepage H1 is dynamic promotional text.** Current H1 = "AESTURA Atobarrier is here" — a rotating hero banner headline. Google treats H1 as the strongest on-page keyword signal. A promotional product name is not a brand/category keyword. Fix: add a stable, visually hidden or above-fold brand H1 (`Emart Skincare Bangladesh` or equivalent) that doesn't rotate. The hero banner CTA text can stay as-is.
+
+2. **7 static pages have no canonical tag** — `our-story`, `authenticity`, `shipping-policy`, `return-policy`, `privacy-policy`, `terms-conditions`, `track-order`. These use `export const metadata = { title: '...' }` with no `alternates: { canonical }`. Without a self-referencing canonical, Google may canonicalize to a different URL variant (with trailing slash, with query params, etc.). Fix: add `alternates: { canonical: absoluteUrl('/PAGE-SLUG') }` to each page's metadata export.
+
+3. **`/category/makeup-cosmetics` has NO meta description.** Rank Math has no value stored for this category, and the fallback produces an empty string. Google auto-generates a snippet — usually poor quality for a commercial page. Fix: write an editorial description in Rank Math WP admin OR add a hardcoded fallback in the category page `generateMetadata`.
+
+4. **Homepage and `/shop` have no og:image tag.** Social shares from these two high-traffic pages show no preview image on Facebook/WhatsApp/LinkedIn. The global layout sets `og:image` but page-level `openGraph` blocks override it without re-declaring `images`. Fix: add `images: [{ url: absoluteUrl('/wp-content/uploads/2026/03/logo.png'), width: 600, height: 600 }]` to the homepage and `/shop` page metadata.
+
+---
+
+### 🟡 MEDIUM — Fix This Sprint
+
+5. **Concerns, ingredients, and routine pages all missing og:image.** Affects 7+ page types: `/concerns/[slug]`, `/ingredients/[slug]`, `/routine/[step]`. The `openGraph` metadata block in each `generateMetadata` function has `title`, `description`, `url` but no `images`. Fix: add a shared fallback og:image (e.g. the hero products image) to each of these `generateMetadata` functions.
+
+6. **`/faq` and `/blog` missing og:image.** Same issue — their `openGraph` blocks in static metadata don't include `images`.
+
+7. **Title too long on 7 pages (Google truncates at ~60 chars).** Affected: `/` (74), `/new-arrivals` (72), `/routine` (63), `/brands/beauty-of-joseon` (73), `/brands/some-by-mi` (61), `/sale` (61), `/brands/some-by-mi` (61). These display as truncated in SERPs with "…". Trim titles to ≤60 chars.
+
+8. **Meta description too long on 14+ pages (Google truncates at ~160 chars).** Most affected: `/concerns/acne-blemish-care` (205), `/concerns/sunscreen` (203), `/concerns/brightening` (193), `/shop` (187), `/` (184), `/track-order` (184), `/ingredients` (183), `/beauty-of-joseon` (182), `/sale` (180), `/routine` (176), `/new-arrivals` (173). Trim all to ≤155 chars.
+
+9. **No ItemList/CollectionPage schema on category, brand, concern, ingredient, or routine listing pages.** Google uses `ItemList` schema for carousel-style rich results on collection pages. Currently all these pages only have the sitewide `WebSite`+`OnlineStore` schema from the layout. Fix: add `ItemList` with the first 10 products (id, name, url, image) to category, brand, concern, ingredient, and routine listing pages.
+
+10. **No Article/BlogPosting schema on `/blog` or individual blog posts.** Blog listing and posts only carry the sitewide schema. Fix: add `Article` or `BlogPosting` schema to blog posts in `blog/[slug]/page.tsx`.
+
+11. **`/track-order` has no H1.** The page has a form but no heading. Even a non-indexed page benefits from structure — and if this page were accidentally indexed it would look thin. Fix: add `<h1>Track Your Order</h1>` and a proper page-specific meta description.
+
+12. **`/category/hair-care` uses generic fallback description** ("Buy original Hair Care skincare in Bangladesh at Emart. Shop authentic products with COD, fast delivery, and trusted prices."). This is a template string with no editorial value. Fix: write an editorial description in Rank Math WP admin for the hair-care category.
+
+---
+
+### 🟢 LOW / Enhancements — Backlog
+
+13. **No hreflang declared.** Site serves `lang="en-BD"` but has no `<link rel="alternate" hreflang="en-BD">` tag. Low priority since there's no Bengali-language alternate version, but worth noting for future.
+
+14. **`/brands` page has no H2.** The brand grid has H1 but no section headings. Minor structure gap — adding H2s for brand alphabet or featured brands would help crawler comprehension.
+
+15. **`/sale` and `/new-arrivals` have no H2.** Product grids but no section headings. Same structural note.
+
+16. **`/brands` page is 785KB.** Largest page in the crawl. Consider lazy-loading brand images or paginating the brand list.
+
+---
+
+### Schema Coverage Map
+
+| Page type | @types present | Missing / opportunity |
+|-----------|---------------|----------------------|
+| Homepage | WebSite, OnlineStore, Organization | og:image in page metadata |
+| Product (PDP) | Product, BreadcrumbList, FAQPage, WebSite, OnlineStore | AggregateRating (needs Woo review data) |
+| Category | WebSite, OnlineStore | **ItemList** (collection carousel) |
+| Brand | WebSite, OnlineStore | **ItemList** (collection carousel) |
+| Concern | WebSite, OnlineStore | **ItemList**, og:image |
+| Ingredient | WebSite, OnlineStore | **ItemList**, og:image |
+| Routine step | WebSite, OnlineStore | **ItemList**, og:image |
+| Blog listing | WebSite, OnlineStore | og:image |
+| Blog post | WebSite, OnlineStore | **Article/BlogPosting** |
+| FAQ page | WebSite, OnlineStore | FAQPage ✅ (added 2026-05-16) |
+| Static pages | WebSite, OnlineStore | canonical ✅ needed for 7 pages |
+
+---
+
+### Duplicate / Thin Content Flags
+
+| Page | Words | Issue |
+|------|-------|-------|
+| /track-order | 475w | No H1, no canonical, desc is global fallback |
+| /skin-quiz | 562w | Acceptable (interactive tool) |
+| /concerns | 609w | OK for hub page |
+| /our-story | 711w | OK but no canonical |
+| /shipping-policy | 716w | OK but no canonical |
+
+No true thin-content pages found. All public indexable pages exceed 300 words of real content.
+
+---
+
+### Redirect Chain Map
+
+No redirect chains detected. All tested redirects resolve in exactly 1 hop:
+- `http://` → `https://` (1 hop) ✅
+- `www.` → non-www (1 hop) ✅
+- `/product/slug` → `/shop/slug` (1 hop) ✅
+
+---
+
+### Sitemap Issues
+
+- 4,167 URLs total — healthy
+- No `/product-category/` or `/product/` (WP-style) URLs present ✅
+- Sitemap uses real per-product `date_modified` from WooCommerce `lastmod` ✅
+- `/sitemap.xml` advertised in robots.txt ✅
+- Rank Math and WP sitemaps blocked in robots.txt ✅
+
+No sitemap issues found.
+
+---
+
+### Robots.txt Issues
+
+No issues found. Key rules verified:
+- `Disallow: /api/` — correct (BFF routes not for crawlers) ✅
+- `Disallow: /wp-json/` — correct ✅
+- `Disallow: /*?srsltid=` — correct (blocks tracking params) ✅
+- `Disallow: /*?orderby=`, `/*?per_page=` etc. — correct (blocks filter variants) ✅
+- `Sitemap: https://e-mart.com.bd/sitemap.xml` — present ✅
+- GPTBot, ClaudeBot, PerplexityBot, Google-Extended — all allowed ✅
+- CCBot, Bytespider — blocked ✅
+
+---
+
+### Priority Fix Order for Next Sprint
+
+1. Homepage H1 (rotating promo → stable brand keyword) — **highest SEO impact**
+2. Add canonical to 7 static pages — **5-minute code change, prevents GSC canonical issues**
+3. Add og:image to homepage, /shop, concerns, ingredients, routine, /faq, /blog — **social sharing fix**
+4. /category/makeup-cosmetics meta description — **WP admin, 2 minutes**
+5. Trim 14 over-length descriptions to ≤155 chars — **mostly WP admin edits**
+6. Trim 7 over-length titles to ≤60 chars
+7. Add ItemList schema to category/brand/concern/ingredient/routine pages
+8. Add Article schema to blog posts
