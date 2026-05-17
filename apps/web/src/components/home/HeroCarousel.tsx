@@ -19,15 +19,15 @@ export const HeroCarousel = () => {
       <div className="relative mx-auto grid max-w-6xl overflow-hidden rounded-lg bg-[linear-gradient(135deg,_#dce8ff_0%,_#8fb3ff_52%,_#6f92ea_100%)] min-[0px]:min-h-[284px] lg:min-h-[480px] lg:grid-cols-[1.02fr_0.98fr]">
         <div className="absolute inset-y-0 right-0 hidden w-[56%] bg-[linear-gradient(180deg,_rgba(255,255,255,0.24),_rgba(255,255,255,0))] lg:block" />
 
-        <div className="relative z-10 flex flex-col justify-end px-4 pb-3 pr-3 pt-3 text-white lg:px-10 lg:pb-10 lg:pr-10 lg:pt-10">
-          <div className="inline-flex w-fit rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur lg:px-3 lg:text-[11px]">
+        <div className="relative z-10 flex flex-col justify-end px-4 pb-3 pr-3 pt-3 text-ink lg:px-10 lg:pb-10 lg:pr-10 lg:pt-10">
+          <div className="inline-flex w-fit rounded-full bg-white/75 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-ink shadow-sm backdrop-blur lg:px-3 lg:text-[11px]">
             {HERO.eyebrow}
           </div>
-          <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/92 lg:mt-4 lg:text-base lg:normal-case lg:tracking-normal">{HERO.subtitle}</div>
+          <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-ink/85 lg:mt-4 lg:text-base lg:normal-case lg:tracking-normal">{HERO.subtitle}</div>
           <h1 className="mt-1.5 max-w-[8.5ch] text-[1.45rem] font-extrabold leading-[0.94] text-[#101010] lg:mt-3 lg:max-w-[10ch] lg:text-6xl">
             {HERO.title}
           </h1>
-          <p className="mt-2 max-w-[28ch] text-[11px] leading-4.5 text-white/92 lg:mt-4 lg:max-w-[46ch] lg:text-base lg:leading-7">
+          <p className="mt-2 max-w-[28ch] text-[11px] font-semibold leading-4.5 text-ink/85 lg:mt-4 lg:max-w-[46ch] lg:text-base lg:leading-7">
             <span className="lg:hidden">{HERO.mobileCopy}</span>
             <span className="hidden lg:inline">{HERO.copy}</span>
           </p>
