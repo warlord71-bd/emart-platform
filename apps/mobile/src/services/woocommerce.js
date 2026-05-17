@@ -57,9 +57,11 @@ const apiFetch = async (endpoint, params = '') => {
   }
 };
 
-const apiPost = async (endpoint, body) => {
+const apiPost = async (endpoint, body, timeoutMs = 30000) => {
 
   const url = `${BASE}${endpoint}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
 
@@ -67,6 +69,7 @@ const apiPost = async (endpoint, body) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -79,9 +82,13 @@ const apiPost = async (endpoint, body) => {
     return { data, error: null };
 
   } catch (error) {
+    const msg = error?.name === 'AbortError'
+      ? 'Request timed out. Please check your connection and try again.'
+      : error.message;
+    return { data: null, error: msg };
 
-    return { data: null, error: error.message };
-
+  } finally {
+    clearTimeout(timer);
   }
 };
 

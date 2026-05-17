@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,6 +15,8 @@ const CheckoutScreen = ({ navigation }) => {
   const { t } = useLanguage();
   const { items, cartTotal, clearCart } = useCart();
   const { addOrder } = useOrders();
+  const isMounted = useRef(true);
+  useEffect(() => () => { isMounted.current = false; }, []);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -94,14 +96,18 @@ const CheckoutScreen = ({ navigation }) => {
       };
       const res = await createOrder(orderData);
       if (res.error) throw new Error(res.error);
+      if (!isMounted.current) return;
       addOrder({ customerName: name, phone, address, paymentMethod: payment, items, itemsCount: items.reduce((sum, item) => sum + item.quantity, 0), total: `৳${Math.round(total)}`, products: items.map((item) => item.name).join(", "), image: items[0]?.image || null, coupon: couponApplied?.code || null });
       clearCart();
       navigation.navigate("OrderSuccess", { orderId: res.data?.order?.id || res.data?.orderId });
     } catch (error) {
+      if (!isMounted.current) return;
       const errorMsg = error?.message || "Failed to place order. Please try again.";
       Alert.alert("Order Error", errorMsg);
       console.error("Checkout error:", error);
-    } finally { setPlacing(false); }
+    } finally {
+      if (isMounted.current) setPlacing(false);
+    }
   };
 
   return (
