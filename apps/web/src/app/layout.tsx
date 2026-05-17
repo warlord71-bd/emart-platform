@@ -17,6 +17,7 @@ const playfair = Playfair_Display({
   weight: ['400', '600', '700'],
   variable: '--font-display-loaded',
   display: 'swap',
+  preload: false,
 });
 
 const dmSans = DM_Sans({
@@ -38,6 +39,7 @@ const jost = Jost({
   weight: ['400', '600'],
   variable: '--font-sans-loaded',
   display: 'swap',
+  preload: false,
 });
 
 const jetbrains = JetBrains_Mono({
@@ -45,6 +47,7 @@ const jetbrains = JetBrains_Mono({
   weight: ['400'],
   variable: '--font-mono-loaded',
   display: 'swap',
+  preload: false,
 });
 
 export const metadata: Metadata = {

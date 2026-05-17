@@ -2,27 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { YOUTUBE_FALLBACK_VIDEOS, TIKTOK_VIDEOS } from '@/lib/socialConfig';
 
-async function getTikTokThumb(videoId: string): Promise<string | null> {
-  try {
-    const res = await fetch(
-      `https://www.tiktok.com/oembed?url=https://www.tiktok.com/@emart_bdofficial/video/${videoId}`,
-      { next: { revalidate: 3600 } },
-    );
-    if (!res.ok) return null;
-    const data = await res.json() as { thumbnail_url?: string };
-    return data.thumbnail_url ?? null;
-  } catch {
-    return null;
-  }
-}
-
-export async function SocialChannelGrid() {
+export function SocialChannelGrid() {
   const ytId    = YOUTUBE_FALLBACK_VIDEOS[0]?.id    ?? 'j7anBWKrzYo';
   const ytTitle = YOUTUBE_FALLBACK_VIDEOS[0]?.title ?? 'Skincare tutorials & demos';
-  const ttId    = TIKTOK_VIDEOS[0]?.id;
   const ttTitle = TIKTOK_VIDEOS[0]?.title           ?? 'Unboxings & product demos';
-
-  const ttThumb = ttId ? await getTikTokThumb(ttId) : null;
 
   return (
     <div className="mt-8">
@@ -51,24 +34,15 @@ export async function SocialChannelGrid() {
           <CardFooter handle="@emartbd.official" title={ytTitle} />
         </SocialCard>
 
-        {/* TikTok: real oEmbed thumbnail, fallback to lifestyle photo */}
+        {/* TikTok: local fallback avoids a below-the-fold third-party thumbnail on homepage load */}
         <SocialCard href="/social" ariaLabel="Watch TikTok content">
-          {ttThumb ? (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              src={ttThumb}
-              alt={ttTitle}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.08]"
-            />
-          ) : (
-            <Image
-              src="/images/home-categories/hair-care.jpg"
-              alt="Emart TikTok — unboxings & product demos"
-              fill
-              sizes="(max-width: 640px) 50vw, 25vw"
-              className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.08]"
-            />
-          )}
+          <Image
+            src="/images/home-categories/hair-care.jpg"
+            alt={ttTitle}
+            fill
+            sizes="(max-width: 640px) 50vw, 25vw"
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.08]"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <PlatformBadge color="bg-[#010101] ring-1 ring-white/20" icon={<TTIcon />} label="TikTok" />
           <CardFooter handle="@emart_bdofficial" title={ttTitle} />

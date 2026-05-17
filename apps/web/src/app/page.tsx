@@ -1,5 +1,5 @@
 // src/app/page.tsx
-import { getBestSellingProducts, getCategories, getNewArrivals, getProducts, getSaleProducts } from '@/lib/woocommerce';
+import { getBestSellingProducts, getCategories, getNewArrivals, getProducts, getSaleProducts, type WooProduct } from '@/lib/woocommerce';
 import { getWordPressPosts } from '@/lib/wordpress-posts';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { FlashSaleBanner } from '@/components/home/FlashSaleBanner';
@@ -43,6 +43,50 @@ function filterProductsWithImages(products: Awaited<ReturnType<typeof getBestSel
   return products.filter((product) => product?.id && product?.name);
 }
 
+function toHomepageCardProduct(product: WooProduct): WooProduct {
+  return {
+    id: product.id,
+    name: product.name,
+    slug: product.slug,
+    permalink: product.permalink || `/shop/${product.slug}`,
+    sku: product.sku,
+    price: product.price,
+    regular_price: product.regular_price,
+    sale_price: product.sale_price,
+    on_sale: product.on_sale,
+    purchasable: product.purchasable,
+    stock_status: product.stock_status,
+    stock_quantity: product.stock_quantity,
+    description: '',
+    short_description: '',
+    images: (product.images || []).slice(0, 1).map((image) => ({
+      id: image.id,
+      src: image.src,
+      name: image.name || product.name,
+      alt: image.alt || product.name,
+    })),
+    categories: (product.categories || []).slice(0, 5).map((category) => ({
+      id: category.id,
+      name: category.name,
+      slug: category.slug,
+    })),
+    brands: (product.brands || []).slice(0, 1).map((brand) => ({
+      id: brand.id,
+      name: brand.name,
+      slug: brand.slug,
+    })),
+    attributes: (product.attributes || []).slice(0, 6).map((attribute) => ({
+      id: attribute.id,
+      name: attribute.name,
+      options: (attribute.options || []).slice(0, 2),
+    })),
+    average_rating: product.average_rating,
+    rating_count: product.rating_count,
+    featured: product.featured,
+    emart_version: product.emart_version,
+  };
+}
+
 export default async function HomePage() {
   const emptyPage = { products: [] as Awaited<ReturnType<typeof getProducts>>['products'], totalPages: 0, total: 0 };
   let [bestSelling, newArrivals, onSale, fallbackResult, blogPosts, allCategories]: [
@@ -72,8 +116,10 @@ export default async function HomePage() {
   const newArrivalProducts = filterProductsWithImages(newArrivals).slice(0, 4);
   const saleProducts = filterProductsWithImages(onSale).slice(0, 6);
 
-  const safeBestSellers = bestSellerProducts.length > 0 ? bestSellerProducts : fallbackProducts.slice(0, 4);
-  const safeNewArrivals = newArrivalProducts.length > 0 ? newArrivalProducts : fallbackProducts.slice(0, 4);
+  const safeBestSellers = (bestSellerProducts.length > 0 ? bestSellerProducts : fallbackProducts.slice(0, 4))
+    .map(toHomepageCardProduct);
+  const safeNewArrivals = (newArrivalProducts.length > 0 ? newArrivalProducts : fallbackProducts.slice(0, 4))
+    .map(toHomepageCardProduct);
   const safeSaleProducts = saleProducts;
   const brandLogos = brandLogoManifest
     .filter((b): b is typeof b & { logo: string } => !b.fallback && typeof b.logo === 'string')
