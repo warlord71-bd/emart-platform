@@ -116,7 +116,7 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
                         />
                       )}
                       {pct !== null && (
-                        <span className="absolute left-2 top-2 rounded-full bg-accent px-2 py-1 text-[11px] font-bold text-white">
+                        <span className="absolute left-2 top-2 rounded-full bg-[#83122f] px-2 py-1 text-[11px] font-bold text-white">
                           -{pct}%
                         </span>
                       )}
@@ -124,7 +124,7 @@ export const FlashSaleBanner: React.FC<FlashSaleBannerProps> = ({ products }) =>
                     <div className="p-3">
                       <p className="line-clamp-2 min-h-[2.6rem] text-sm font-bold leading-5">{p.name}</p>
                       <div className="mt-2 flex items-baseline gap-1.5">
-                        <span className="text-base font-extrabold text-accent">{formatBDT(p.sale_price || p.price)}</span>
+                        <span className="text-base font-extrabold text-[#83122f]">{formatBDT(p.sale_price || p.price)}</span>
                         {hasSalePrice && p.regular_price && (
                           <span className="text-xs text-gray-500 line-through">{formatBDT(p.regular_price)}</span>
                         )}

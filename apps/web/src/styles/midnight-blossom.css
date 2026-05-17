@@ -2,7 +2,7 @@
   --mb-navy: #1B1B2F;
   --mb-navy-2: #25253E;
   --mb-navy-3: #2F2F4A;
-  --mb-pink: #E8739E;
+  --mb-pink: #9F1239;
   --mb-pink-soft: #F5C2D5;
   --mb-pink-bg: #FBE8EF;
   --mb-gold: #D4A248;
@@ -11,7 +11,7 @@
   --mb-paper: #FFFDF8;
   --mb-ink: #1B1B2F;
   --mb-ink-2: #4A4A63;
-  --mb-ink-3: #7A7A8E;
+  --mb-ink-3: #55556A;
   --mb-line: #E6E1D6;
   --mb-success: #3FA572;
   --mb-danger: #D9534F;
@@ -40,7 +40,7 @@
 
 .mb-shell {
   background:
-    radial-gradient(circle at top left, rgba(232, 115, 158, 0.16), transparent 32rem),
+    radial-gradient(circle at top left, rgba(159, 18, 57, 0.10), transparent 32rem),
     linear-gradient(180deg, var(--mb-paper), var(--mb-cream));
 }
 
