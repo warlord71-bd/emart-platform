@@ -966,3 +966,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: Commit `1ef92e6 fix(web): address homepage accessibility warnings` built locally, deployed narrowly to VPS, built on VPS, restarted `emartweb`, smoke-tested live/local, then pushed `origin/main`.
 - Checks: Local and VPS `npm run build` passed; live `/` returned 200 before DNS became flaky; local Nginx and Next probes returned 200.
 - Next step: Re-run Lighthouse accessibility to confirm ARIA/contrast warnings are cleared.
+
+---
+## 2026-05-17 11:50 CEST — Codex
+- Did: Responded to mobile PageSpeed drop by reducing homepage transfer/parse payload.
+- Completed tasks: Commit `5ae9bfc perf(web): reduce mobile homepage payload` trims Woo product card serialization, removes below-fold TikTok oEmbed thumbnail/preload, and disables non-critical Playfair/Jost/JetBrains font preloads.
+- Checks: Local and VPS `npm run build` passed; `emartweb` restarted; live `/` returned 200 in 0.154s; local response length dropped from observed 643,520 bytes to about 539,464 bytes.
+- Next step: Re-run PageSpeed mobile after cache settles; PSI API was unavailable from this environment due Google quota.
