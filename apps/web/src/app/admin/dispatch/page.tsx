@@ -1,13 +1,5 @@
 'use client';
 
-/**
- * /admin/dispatch
- *
- * Internal courier dispatch dashboard.
- * Lists processing WooCommerce orders and lets admin dispatch to Pathao or Steadfast.
- * Protected by REVALIDATE_SECRET token (entered once and stored in sessionStorage).
- */
-
 import { useState, useEffect, useCallback } from 'react';
 
 interface WooOrderSummary {
@@ -22,11 +14,14 @@ interface WooOrderSummary {
   meta_data: { key: string; value: string }[];
 }
 
-const TOKEN_KEY = 'dispatch_token';
+const TOKEN_KEY = 'emart_dispatch_token';
 
 export default function DispatchPage() {
   const [token, setToken] = useState('');
-  const [tokenInput, setTokenInput] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
   const [orders, setOrders] = useState<WooOrderSummary[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -39,13 +34,34 @@ export default function DispatchPage() {
   const [pathaoZone, setPathaoZone] = useState('');
 
   useEffect(() => {
-    const saved = sessionStorage.getItem(TOKEN_KEY);
+    const saved = localStorage.getItem(TOKEN_KEY);
     if (saved) setToken(saved);
   }, []);
 
-  const saveToken = () => {
-    sessionStorage.setItem(TOKEN_KEY, tokenInput);
-    setToken(tokenInput);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginLoading(true);
+    setLoginError('');
+    try {
+      const res = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Login failed');
+      localStorage.setItem(TOKEN_KEY, data.token);
+      setToken(data.token);
+    } catch (err: any) {
+      setLoginError(err.message);
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    setToken('');
   };
 
   const fetchOrders = useCallback(async () => {
@@ -133,23 +149,45 @@ export default function DispatchPage() {
   if (!token) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="bg-white p-8 rounded-xl shadow max-w-sm w-full">
-          <h1 className="text-xl font-bold mb-4">Courier Dispatch</h1>
-          <input
-            type="password"
-            placeholder="Enter access token"
-            className="w-full border rounded px-3 py-2 mb-3 text-sm"
-            value={tokenInput}
-            onChange={(e) => setTokenInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && saveToken()}
-          />
+        <form onSubmit={handleLogin} className="bg-white p-8 rounded-xl shadow max-w-sm w-full">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">E</span>
+            </div>
+            <h1 className="text-xl font-bold">Emart Admin</h1>
+          </div>
+          <p className="text-sm text-gray-500 mb-4">Sign in to access Courier Dispatch</p>
+          <div className="space-y-3 mb-4">
+            <input
+              type="text"
+              placeholder="Username"
+              required
+              autoComplete="username"
+              className="w-full border rounded px-3 py-2 text-sm"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              required
+              autoComplete="current-password"
+              className="w-full border rounded px-3 py-2 text-sm"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          {loginError && (
+            <p className="text-sm text-red-600 mb-3">{loginError}</p>
+          )}
           <button
-            onClick={saveToken}
-            className="w-full bg-rose-600 text-white rounded px-4 py-2 text-sm font-medium"
+            type="submit"
+            disabled={loginLoading}
+            className="w-full bg-rose-600 text-white rounded px-4 py-2 text-sm font-medium disabled:opacity-50"
           >
-            Access Dashboard
+            {loginLoading ? 'Signing in…' : 'Sign In'}
           </button>
-        </div>
+        </form>
       </div>
     );
   }
@@ -159,13 +197,21 @@ export default function DispatchPage() {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Courier Dispatch</h1>
-          <button
-            onClick={fetchOrders}
-            disabled={loading}
-            className="bg-gray-800 text-white rounded px-4 py-2 text-sm"
-          >
-            {loading ? 'Loading…' : 'Refresh'}
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={fetchOrders}
+              disabled={loading}
+              className="bg-gray-800 text-white rounded px-4 py-2 text-sm"
+            >
+              {loading ? 'Loading…' : 'Refresh'}
+            </button>
+            <button
+              onClick={handleLogout}
+              className="border border-gray-300 text-gray-600 rounded px-4 py-2 text-sm hover:bg-gray-50"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
 
         {/* Pathao settings */}
