@@ -1040,6 +1040,20 @@ export async function getOrder(orderId: number): Promise<WooOrder | null> {
   }
 }
 
+export async function getOrders(params: {
+  status?: string;
+  per_page?: number;
+  page?: number;
+}): Promise<WooOrder[]> {
+  try {
+    const response = await wooClient.get('/orders', { params });
+    return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+    logWooError('getOrders', error, params);
+    return [];
+  }
+}
+
 export async function getOrderNotes(orderId: number): Promise<WooOrderNote[]> {
   try {
     const response = await wooClient.get(`/orders/${orderId}/notes`, {
