@@ -62,9 +62,14 @@ const CategoriesScreen = ({ navigation }) => {
 
   const loadCategories = async () => {
     setLoading(true);
-    const { data } = await getParentCategories();
-    if (data) setCategories(data);
-    setLoading(false);
+    try {
+      const { data } = await getParentCategories();
+      if (data) setCategories(data);
+    } catch (e) {
+      console.log('Categories load error:', e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearch = (query) => {

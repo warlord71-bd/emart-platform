@@ -103,7 +103,7 @@ const ProductsScreen = ({ navigation, route }) => {
           setHasMore(result.data.length >= 20);
           setPage(1);
         }
-      });
+      }).catch(e => console.log('Search error:', e));
     } else {
       loadProducts(1, true);
     }
