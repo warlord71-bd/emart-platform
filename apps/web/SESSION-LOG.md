@@ -980,3 +980,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: Commit `8d31d8e fix(web): resolve homepage contrast warnings` darkens global accent tokens, muted meta text, midnight-blossom category tokens, and flash-sale badge/price colors.
 - Checks: Local and VPS `npm run build` passed; `emartweb` restarted; live `/` returned 200 in 0.332s; fetched live CSS includes the new darker contrast tokens.
 - Next step: Re-run Lighthouse/PageSpeed accessibility on mobile to confirm the pasted contrast warnings clear.
+
+---
+## 2026-05-17 13:02 CEST — Codex
+- Did: Fixed remaining homepage contrast failures caused by Tailwind-generated utility colors still compiling to the old bright accent/muted shades.
+- Completed tasks: Commit `3cd75f6 fix(web): darken generated contrast utilities` updates Tailwind accent/muted/gray utilities, header tone color, and footer dark-background accents.
+- Checks: Local and VPS `npm run build` passed; `emartweb` restarted; live `/` returned 200 in 0.266s; fetched live CSS confirms dark accent, muted-2, gray-500, and light footer accent utilities.
+- Next step: Re-run Lighthouse/PageSpeed mobile; remaining reported `text-accent` homepage items should now resolve from the compiled CSS instead of only token files.
