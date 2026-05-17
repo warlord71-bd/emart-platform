@@ -25,6 +25,7 @@ const ProductCard = ({ product, onPress, compact = false }) => {
   // ── Compact layout (horizontal scroll cards) ──
   if (compact) {
     return (
+      <View style={styles.compactCardWrapper}>
       <TouchableOpacity style={styles.compactCard} onPress={onPress} activeOpacity={0.85}>
         {product?.on_sale && pricing.discount > 0 && (
           <View style={styles.badge}>
@@ -62,11 +63,13 @@ const ProductCard = ({ product, onPress, compact = false }) => {
           </View>
         </View>
       </TouchableOpacity>
+      </View>
     );
   }
 
   // ── Full layout (grid cards) ──
   return (
+    <View style={styles.cardWrapper}>
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
       {/* Sale / Discount Badge */}
       {product?.on_sale && pricing.discount > 0 && (
@@ -142,6 +145,7 @@ const ProductCard = ({ product, onPress, compact = false }) => {
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
+    </View>
   );
 };
 
@@ -149,11 +153,14 @@ const styles = StyleSheet.create({
   // ═══════════════════════════════
   // FULL CARD (grid layout)
   // ═══════════════════════════════
+  cardWrapper: {
+    ...COLORS.shadow,
+    borderRadius: 14,
+  },
   card: {
     backgroundColor: COLORS.card,
     borderRadius: 14,
     overflow: 'hidden',
-    ...COLORS.shadow,
     borderWidth: 1,
     borderColor: COLORS.border,
   },
@@ -268,12 +275,16 @@ const styles = StyleSheet.create({
   // ═══════════════════════════════
   // COMPACT CARD (horizontal scroll)
   // ═══════════════════════════════
+  compactCardWrapper: {
+    ...COLORS.shadow,
+    borderRadius: 14,
+    width: '100%',
+  },
   compactCard: {
     width: '100%',
     backgroundColor: COLORS.card,
     borderRadius: 14,
     overflow: 'hidden',
-    ...COLORS.shadow,
     borderWidth: 1,
     borderColor: COLORS.border,
   },

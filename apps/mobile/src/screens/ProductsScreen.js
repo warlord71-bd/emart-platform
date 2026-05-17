@@ -36,7 +36,7 @@ const SkeletonCard = () => {
 };
 
 const skStyles = StyleSheet.create({
-  card: { flex: 1, backgroundColor: '#fff', borderRadius: 14, overflow: 'hidden', ...COLORS.shadow, borderWidth: 1, borderColor: COLORS.border },
+  card: { flex: 1, backgroundColor: '#fff', borderRadius: 14, overflow: 'hidden', borderWidth: 1, borderColor: COLORS.border },
   image: { height: 170, backgroundColor: '#E8E4EC' },
   info: { padding: 10, gap: 8 },
   line: { height: 10, backgroundColor: '#E8E4EC', borderRadius: 4 },
