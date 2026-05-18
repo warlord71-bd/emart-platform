@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
@@ -6,6 +6,7 @@ import { NavigationContainer, useNavigationContainerRef } from '@react-navigatio
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
+import * as Font from 'expo-font';
 import * as Notifications from 'expo-notifications';
 
 import { AuthProvider, useAuth } from './src/context/AuthContext';
@@ -156,8 +157,25 @@ function AppLoading() {
 
 function AppContent() {
   const { loading } = useAuth();
+  const [iconsReady, setIconsReady] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+
+  useEffect(() => {
+    let mounted = true;
+
+    Font.loadAsync(Ionicons.font)
+      .catch((error) => {
+        console.log('Ionicons font load error:', error);
+      })
+      .finally(() => {
+        if (mounted) setIconsReady(true);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   // Listen for incoming notifications
   useEffect(() => {
@@ -181,7 +199,7 @@ function AppContent() {
     };
   }, []);
 
-  if (loading) return <AppLoading />;
+  if (loading || !iconsReady) return <AppLoading />;
 
   return (
     <>
