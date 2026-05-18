@@ -3,6 +3,21 @@ import { searchProducts } from '@/lib/woocommerce';
 
 export const dynamic = 'force-dynamic';
 
+// Old/redirect categories that should not appear as product labels
+const SKIP_CATEGORY_SLUGS = new Set([
+  'k-beauty-j-beauty',
+  'skincare-essentials',
+  'uncategorized',
+  'korean-beauty',
+  'concern-cats',
+  'all-products',
+]);
+
+function getBestCategory(categories: { id: number; name: string; slug: string }[]) {
+  const good = categories.find((c) => !SKIP_CATEGORY_SLUGS.has(c.slug));
+  return good ? [good] : [];
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const query = (searchParams.get('q') || '').trim();
@@ -21,7 +36,7 @@ export async function GET(request: NextRequest) {
       price: product.price,
       sale_price: product.sale_price,
       images: product.images.slice(0, 1),
-      categories: product.categories.slice(0, 1),
+      categories: getBestCategory(product.categories),
     }));
 
     return NextResponse.json(
