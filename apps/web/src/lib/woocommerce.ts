@@ -200,6 +200,17 @@ export interface WooCoupon {
   maximum_amount?: string;
 }
 
+export interface WooShippingQuote {
+  city: string;
+  zoneName: string;
+  methodId: string;
+  methodTitle: string;
+  total: number;
+  isFree: boolean;
+  freeShippingEnabled: boolean;
+  freeShippingThreshold: number | null;
+}
+
 export interface ProductsParams {
   page?: number;
   per_page?: number;
@@ -531,6 +542,106 @@ export async function getProductById(id: number): Promise<WooProduct | null> {
   } catch (error) {
     logWooError('getProductById', error, { id });
     return null;
+  }
+}
+
+export async function calculateLineItemsSubtotal(
+  lineItems: { product_id: number; quantity: number }[],
+): Promise<number> {
+  let subtotal = 0;
+
+  for (const item of lineItems) {
+    const productId = Number(item?.product_id || 0);
+    const quantity = Math.max(1, Math.floor(Number(item?.quantity || 1)));
+    if (!productId) continue;
+
+    const product = await getProductById(productId);
+    const price = Number(product?.sale_price || product?.price || product?.regular_price || 0);
+    if (Number.isFinite(price) && price > 0) {
+      subtotal += price * quantity;
+    }
+  }
+
+  return Math.round(subtotal);
+}
+
+function methodSettingValue(method: any, key: string): string {
+  const setting = method?.settings?.[key];
+  if (setting && typeof setting === 'object' && 'value' in setting) {
+    return String(setting.value || '');
+  }
+  return '';
+}
+
+function methodCost(method: any): number {
+  const value = methodSettingValue(method, 'cost') || String(method?.cost || '');
+  const numeric = Number(String(value).replace(/[^\d.]/g, ''));
+  return Number.isFinite(numeric) ? numeric : 0;
+}
+
+function methodMinAmount(method: any): number | null {
+  const value = methodSettingValue(method, 'min_amount') || String(method?.min_amount || '');
+  const numeric = Number(String(value).replace(/[^\d.]/g, ''));
+  return Number.isFinite(numeric) && numeric > 0 ? numeric : null;
+}
+
+function isShippingMethodEnabled(method: any): boolean {
+  return method?.enabled === true || method?.enabled === 'yes' || method?.enabled === '1';
+}
+
+export async function getShippingQuote(city: string, subtotal: number): Promise<WooShippingQuote> {
+  const normalizedCity = String(city || '').trim().toLowerCase();
+  const wantsDhaka = normalizedCity === 'dhaka' || normalizedCity.includes('dhaka');
+  const fallback = wantsDhaka
+    ? { zoneName: 'Dhaka City', methodId: 'flat_rate', methodTitle: 'Delivery inside Dhaka', total: 70 }
+    : { zoneName: 'All Bangladesh', methodId: 'flat_rate', methodTitle: 'Delivery outside Dhaka', total: 100 };
+
+  try {
+    const zonesResponse = await wooClient.get('/shipping/zones');
+    const zones = Array.isArray(zonesResponse.data) ? zonesResponse.data : [];
+    const zone = zones.find((item: any) => {
+      const name = String(item?.name || '').toLowerCase();
+      return wantsDhaka ? name.includes('dhaka') : name.includes('bangladesh');
+    });
+
+    if (!zone?.id) {
+      return { city, ...fallback, isFree: false, freeShippingEnabled: false, freeShippingThreshold: null };
+    }
+
+    const methodsResponse = await wooClient.get(`/shipping/zones/${zone.id}/methods`);
+    const methods = Array.isArray(methodsResponse.data) ? methodsResponse.data : [];
+    const flatRate = methods.find((method: any) => method?.id === 'flat_rate' && isShippingMethodEnabled(method));
+    const freeShipping = methods.find((method: any) => method?.id === 'free_shipping' && isShippingMethodEnabled(method));
+    const threshold = freeShipping ? methodMinAmount(freeShipping) : null;
+    const freeApplies = Boolean(freeShipping && (!threshold || subtotal >= threshold));
+
+    if (freeApplies) {
+      return {
+        city,
+        zoneName: String(zone.name || fallback.zoneName),
+        methodId: 'free_shipping',
+        methodTitle: String(freeShipping.title || 'Free Delivery'),
+        total: 0,
+        isFree: true,
+        freeShippingEnabled: true,
+        freeShippingThreshold: threshold,
+      };
+    }
+
+    const cost = flatRate ? methodCost(flatRate) : fallback.total;
+    return {
+      city,
+      zoneName: String(zone.name || fallback.zoneName),
+      methodId: flatRate ? 'flat_rate' : fallback.methodId,
+      methodTitle: String(flatRate?.title || fallback.methodTitle),
+      total: Math.round(cost),
+      isFree: false,
+      freeShippingEnabled: Boolean(freeShipping),
+      freeShippingThreshold: threshold,
+    };
+  } catch (error) {
+    logWooError('getShippingQuote', error, { city, subtotal });
+    return { city, ...fallback, isFree: false, freeShippingEnabled: false, freeShippingThreshold: null };
   }
 }
 
@@ -976,6 +1087,7 @@ export async function createOrder(orderData: {
   billing: WooBilling;
   shipping: WooShipping;
   line_items: { product_id: number; quantity: number }[];
+  shipping_lines?: { method_id: string; method_title: string; total: string }[];
   customer_id?: number;
   customer_note?: string;
   coupon_lines?: { code: string }[];

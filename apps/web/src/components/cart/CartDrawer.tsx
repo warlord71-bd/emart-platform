@@ -7,15 +7,11 @@ import Image from 'next/image';
 import { X, Plus, Minus, ShoppingBag, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/woocommerce';
-import { formatBDT } from '@/lib/formatters';
-import { FREE_DELIVERY_THRESHOLD } from '@/lib/commerce-config';
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalPrice } =
     useCartStore();
   const cartTotal = Math.max(0, Number(totalPrice()) || 0);
-  const freeDeliveryRemaining = Math.max(0, FREE_DELIVERY_THRESHOLD - cartTotal);
-  const freeDeliveryProgress = Math.min(100, Math.round((cartTotal / FREE_DELIVERY_THRESHOLD) * 100));
 
   // Close on ESC
   useEffect(() => {
@@ -140,20 +136,8 @@ export default function CartDrawer() {
         {items.length > 0 && (
           <div className="border-t border-hairline bg-bg-alt p-4">
             <div className="mb-3 rounded-lg border border-accent/10 bg-accent-soft px-3 py-3 text-xs text-muted">
-              <div className="mb-2 flex items-center justify-between gap-3">
-                <span className="font-semibold text-ink">
-                  {freeDeliveryRemaining > 0
-                    ? `${formatBDT(freeDeliveryRemaining)} away from free delivery`
-                    : 'You unlocked free delivery'}
-                </span>
-                <span className="shrink-0 font-bold text-accent">{freeDeliveryProgress}%</span>
-              </div>
-              <div className="h-2 overflow-hidden rounded-full bg-white">
-                <div
-                  className="h-full rounded-full bg-accent transition-all"
-                  style={{ width: `${freeDeliveryProgress}%` }}
-                />
-              </div>
+              <span className="font-semibold text-ink">Delivery charge is confirmed at checkout</span>
+              <p className="mt-1">Dhaka and nationwide rates follow the current WooCommerce shipping settings.</p>
             </div>
 
             <div className="flex justify-between items-center mb-4">

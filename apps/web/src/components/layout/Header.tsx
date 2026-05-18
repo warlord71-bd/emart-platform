@@ -599,7 +599,7 @@ export default function Header() {
               <div className="announcement-marquee__track h-7">
                 {[0, 1].map((item) => (
                   <div key={item} aria-hidden={item === 1 ? true : undefined} className="announcement-marquee__group h-7">
-                    <span className="font-bengali">ফ্রি ডেলিভারি ৳3,000+</span>
+                    <span className="font-bengali">দ্রুত ডেলিভারি</span>
                     <span className="text-white/35">·</span>
                     <span>COD</span>
                     <span className="text-white/35">·</span>
@@ -614,7 +614,7 @@ export default function Header() {
 
           <div className="mx-auto hidden h-8 max-w-7xl grid-cols-[minmax(0,1fr)_minmax(260px,1.15fr)_minmax(0,1fr)] items-center gap-4 px-4 lg:grid">
             <div className="truncate">
-              {isCategoriesRoute ? 'Free delivery ৳1,500+' : 'Free delivery ৳3,000+'} · <span className="font-bengali">ফ্রি ডেলিভারি</span>
+              Fast delivery across Bangladesh · <span className="font-bengali">দ্রুত ডেলিভারি</span>
             </div>
             <div className="min-w-0 overflow-hidden">
               <div className="announcement-marquee" aria-label="Store announcements">

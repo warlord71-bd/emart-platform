@@ -52,18 +52,18 @@ export default function ShippingPolicyPage() {
             <tbody>
               <tr>
                 <td className="border border-hairline px-3 py-2">Dhaka City</td>
-                <td className="border border-hairline px-3 py-2">৳60-80</td>
-                <td className="border border-hairline px-3 py-2">৳3,000+</td>
+                <td className="border border-hairline px-3 py-2">৳70</td>
+                <td className="border border-hairline px-3 py-2">When an active promotion is enabled</td>
               </tr>
               <tr className="bg-bg">
                 <td className="border border-hairline px-3 py-2">Surrounding Areas</td>
-                <td className="border border-hairline px-3 py-2">৳120-200</td>
-                <td className="border border-hairline px-3 py-2">৳3,500+</td>
+                <td className="border border-hairline px-3 py-2">৳100</td>
+                <td className="border border-hairline px-3 py-2">When an active promotion is enabled</td>
               </tr>
               <tr>
                 <td className="border border-hairline px-3 py-2">Other Districts</td>
-                <td className="border border-hairline px-3 py-2">৳150-300</td>
-                <td className="border border-hairline px-3 py-2">৳4,000+</td>
+                <td className="border border-hairline px-3 py-2">৳100</td>
+                <td className="border border-hairline px-3 py-2">When an active promotion is enabled</td>
               </tr>
             </tbody>
           </table>

@@ -136,9 +136,9 @@ function getProductJsonLd(product: WooProduct) {
         shippingRate: {
           '@type': 'MonetaryAmount',
           currency: 'BDT',
-          minValue: 0,
+          minValue: 70,
           maxValue: 100,
-          description: 'Dhaka ৳70 · Outside Dhaka ৳100 · Free delivery on orders over ৳3,000.',
+          description: 'Dhaka and nationwide delivery rates are confirmed at checkout.',
         },
         deliveryTime: {
           '@type': 'ShippingDeliveryTime',

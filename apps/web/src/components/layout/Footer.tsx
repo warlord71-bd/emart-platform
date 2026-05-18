@@ -232,7 +232,7 @@ export default async function Footer() {
               className="h-auto max-h-7 w-full max-w-[280px] object-contain sm:h-8 sm:w-auto sm:max-w-none" />
           </div>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-bg-stone/80 sm:gap-6">
-            <span>🚚 Free delivery ৳3,000+</span>
+            <span>🚚 Delivery fee shown at checkout</span>
             <span>⚡ Dhaka Next Day</span>
             <span>🌍 Nationwide</span>
           </div>

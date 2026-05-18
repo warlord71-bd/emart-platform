@@ -35,7 +35,7 @@ export default function FAQPage() {
     },
     {
       question: 'Do you ship outside Dhaka?',
-      answer: 'Yes, we ship nationwide across Bangladesh. Shipping charges vary by location and order value. Free shipping available on orders above ৳3,000.'
+      answer: 'Yes, we ship nationwide across Bangladesh. Shipping charges are confirmed at checkout based on the active delivery settings.'
     },
     {
       question: 'Is there a money-back guarantee?',

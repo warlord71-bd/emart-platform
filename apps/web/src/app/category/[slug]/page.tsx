@@ -285,7 +285,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                     <span className="ml-2 text-accent">Read more</span>
                   </summary>
                   <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
-                    Emart is Bangladesh&apos;s trusted source for authentic {category.name} products. Every product is imported directly from the brand or authorised distributors — no counterfeits, no grey market. We offer Cash on Delivery (COD) across Bangladesh, with fast delivery inside Dhaka (1–2 days) and nationwide (3–5 days). Free delivery on orders above ৳3,000.
+                    Emart is Bangladesh&apos;s trusted source for authentic {category.name} products. Every product is imported directly from the brand or authorised distributors — no counterfeits, no grey market. We offer Cash on Delivery (COD) across Bangladesh, with fast delivery inside Dhaka (1–2 days) and nationwide (3–5 days). Delivery charges are confirmed at checkout.
                   </p>
                 </details>
               </>

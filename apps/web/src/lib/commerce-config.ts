@@ -1,1 +1,0 @@
-export const FREE_DELIVERY_THRESHOLD = 3000;

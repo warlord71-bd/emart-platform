@@ -1,7 +1,7 @@
 'use client';
 // src/app/checkout/page.tsx
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
@@ -60,6 +60,41 @@ export default function CheckoutPage() {
     postcode: '',
     note: '',
   });
+  const lineItems = useMemo(() => items.map((item) => ({
+    product_id: item.id,
+    quantity: item.quantity,
+  })), [items]);
+  const cartTotal = totalPrice();
+  const [shippingQuote, setShippingQuote] = useState<{
+    total: number;
+    isFree: boolean;
+    methodTitle: string;
+    freeShippingEnabled: boolean;
+    freeShippingThreshold: number | null;
+  } | null>(null);
+  const fallbackShippingFee = form.city === 'Dhaka' ? 70 : 100;
+  const shippingFee = shippingQuote ? shippingQuote.total : fallbackShippingFee;
+
+  useEffect(() => {
+    if (items.length === 0) return;
+
+    const controller = new AbortController();
+    fetch('/api/shipping/estimate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ city: form.city, line_items: lineItems }),
+      signal: controller.signal,
+    })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => {
+        if (data?.quote) setShippingQuote(data.quote);
+      })
+      .catch((error) => {
+        if (error?.name !== 'AbortError') console.error('Shipping estimate error:', error);
+      });
+
+    return () => controller.abort();
+  }, [form.city, items.length, lineItems]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -105,10 +140,7 @@ export default function CheckoutPage() {
         payment_method: paymentMethod,
         billing,
         shipping: billing,
-        line_items: items.map((item) => ({
-          product_id: item.id,
-          quantity: item.quantity,
-        })),
+        line_items: lineItems,
         customer_note: [
           form.note,
           paymentMethod !== 'cod' ? `TxnID: ${txnId}` : '',
@@ -132,7 +164,7 @@ export default function CheckoutPage() {
         throw new Error(data?.error || 'Order creation failed');
       }
 
-      const orderTotal = parseMetaPixelValue(data?.order?.total) || parseMetaPixelValue(totalPrice());
+      const orderTotal = parseMetaPixelValue(data?.order?.total) || parseMetaPixelValue(cartTotal + shippingFee);
       if (orderTotal) {
         sessionStorage.setItem(META_PIXEL_PURCHASE_STORAGE_KEY, JSON.stringify({
           orderId: String(orderId),
@@ -349,18 +381,18 @@ export default function CheckoutPage() {
               <div className="space-y-2 border-t border-hairline pt-4">
                 <div className="flex justify-between text-sm text-muted">
                   <span>Subtotal ({totalItems()} items)</span>
-                  <span>{formatPrice(String(totalPrice()))}</span>
+                  <span>{formatPrice(String(cartTotal))}</span>
                 </div>
                 <div className="flex justify-between text-sm text-muted">
                   <span>Shipping</span>
-                  <span className={totalPrice() >= 3000 ? 'font-medium text-success' : ''}>
-                    {totalPrice() >= 3000 ? 'FREE 🚚' : '৳60–120'}
+                  <span className={shippingFee === 0 ? 'font-medium text-success' : ''}>
+                    {shippingFee === 0 ? 'FREE 🚚' : formatPrice(String(shippingFee))}
                   </span>
                 </div>
                 <div className="flex justify-between border-t border-hairline pt-2 text-base font-bold">
                   <span className="text-ink">Total</span>
                   <span className="text-lg text-accent">
-                    {formatPrice(String(totalPrice() + (totalPrice() >= 3000 ? 0 : 80)))}
+                    {formatPrice(String(cartTotal + shippingFee))}
                   </span>
                 </div>
               </div>
