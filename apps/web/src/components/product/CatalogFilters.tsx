@@ -162,7 +162,7 @@ export default function CatalogFilters({
     return (
       <div className="lg:hidden -mx-4 mb-5 bg-bg">
         {/* Sticky sort + filter bar */}
-        <div className="sticky top-0 z-20 border-y border-hairline bg-bg/95 px-4 py-3 backdrop-blur">
+        <div className="sticky top-0 z-20 border-y border-hairline bg-bg px-4 py-3">
           <div className="flex gap-3">
             <label className="relative flex-1">
               <span className="sr-only">Sort products</span>

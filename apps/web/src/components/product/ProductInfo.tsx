@@ -492,7 +492,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
       {/* Sticky ATC — mobile only, appears when buttons scroll out of view */}
       {stickyVisible && inStock && (
-        <div className="fixed inset-x-0 bottom-[72px] z-40 border-t border-hairline bg-white/95 px-4 py-3 shadow-[0_-12px_30px_rgba(17,17,17,0.08)] backdrop-blur lg:hidden">
+        <div className="fixed inset-x-0 bottom-[72px] z-40 border-t border-hairline bg-white px-4 py-3 shadow-[0_-12px_30px_rgba(17,17,17,0.08)] lg:hidden">
           <div className="mx-auto grid max-w-2xl grid-cols-[minmax(0,1fr)_minmax(150px,auto)] items-center gap-3 rounded-2xl border border-hairline bg-card px-3 py-3 shadow-card">
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-ink">{product.name}</p>

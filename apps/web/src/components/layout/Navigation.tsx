@@ -130,7 +130,7 @@ export default function Navigation() {
       </nav>
 
       {/* Mobile Navigation - Hamburger Menu Button */}
-      <nav className="sticky top-[52px] z-[90] border-b border-hairline bg-white/95 backdrop-blur md:hidden">
+      <nav className="sticky top-[52px] z-[90] border-b border-hairline bg-white md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
