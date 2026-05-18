@@ -40,12 +40,21 @@ function getSeoDescription(product: WooProduct): string {
   // Auto-generate from product data when no editorial description exists.
   // Covers newly added products with missing Rank Math meta and empty short descriptions.
   const brand = getProductBrandName(product);
+  const origin = getProductAttributeValue(product, /(origin|made in|country)/i);
   const category = getCleanBreadcrumbCategory(product)?.label;
   const price = parseFloat(product.price || product.regular_price || '0');
   const priceStr = price > 0 ? ` ৳${Math.round(price).toLocaleString('en-BD')} price.` : '';
 
   const parts: string[] = [`Buy ${product.name} in Bangladesh from Emart.`];
-  if (brand) parts.push(`Authentic ${brand}${category ? ` ${category}` : ''} product.`);
+  if (brand || origin) {
+    const authenticity = [
+      'Authentic',
+      origin,
+      brand,
+      category,
+    ].filter(Boolean).join(' ');
+    parts.push(`${authenticity} product.`);
+  }
   parts.push(`Fast delivery & COD available.${priceStr}`);
 
   return parts.join(' ').substring(0, 160);
