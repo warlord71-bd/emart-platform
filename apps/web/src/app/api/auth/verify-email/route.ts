@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 
 function getWordPressBaseUrl() {
   return (
+    process.env.WOO_INTERNAL_URL ||
+    (process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '') ||
     process.env.NEXT_PUBLIC_WOO_URL ||
     process.env.NEXT_PUBLIC_SITE_URL ||
     'https://e-mart.com.bd'

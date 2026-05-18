@@ -20,13 +20,22 @@ function getWordPressHeaders() {
   return headers;
 }
 
+function getSiteUrl() {
+  return (
+    process.env.NEXTAUTH_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    'https://e-mart.com.bd'
+  ).replace(/\/$/, '');
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    const verificationUrl = `${getSiteUrl()}/api/auth/verify-email`;
     const response = await fetch(`${getWordPressBaseUrl()}/wp-json/emart/v1/customer/register`, {
       method: 'POST',
       headers: getWordPressHeaders(),
-      body: JSON.stringify(body),
+      body: JSON.stringify({ ...body, verification_url: verificationUrl }),
       cache: 'no-store',
     });
     const data = await response.json().catch(() => ({}));
