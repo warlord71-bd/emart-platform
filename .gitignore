@@ -137,6 +137,8 @@ compile_commands.json
 # Gradle
 .gradle/
 build/
+apps/mobile/android/
+apps/mobile/ios/
 
 # Maven
 target/
