@@ -3,10 +3,19 @@ import { cookies } from 'next/headers';
 
 function getWordPressBaseUrl() {
   return (
+    process.env.WOO_INTERNAL_URL ||
+    (process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '') ||
     process.env.NEXT_PUBLIC_WOO_URL ||
-    process.env.NEXT_PUBLIC_SITE_URL ||
     'https://e-mart.com.bd'
   ).replace(/\/$/, '');
+}
+
+function getWordPressHeaders() {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (getWordPressBaseUrl().startsWith('http://127.0.0.1')) {
+    headers.Host = 'e-mart.com.bd';
+  }
+  return headers;
 }
 
 export async function POST(request: NextRequest) {
@@ -23,7 +32,7 @@ export async function POST(request: NextRequest) {
 
     const response = await fetch(`${getWordPressBaseUrl()}/wp-json/emart/v1/customer/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getWordPressHeaders(),
       body: JSON.stringify({ login: normalizedLogin, password }),
       cache: 'no-store',
     });
