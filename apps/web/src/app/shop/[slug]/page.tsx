@@ -37,6 +37,12 @@ function getSeoDescription(product: WooProduct): string {
   const shortDesc = product.short_description?.replace(/<[^>]+>/g, '').trim();
   if (shortDesc && shortDesc.length > 20) return shortDesc.substring(0, 160);
 
+  // Fall back to the main description when short_description is absent.
+  // This recovers meta descriptions for products whose content lives in
+  // description but was never copied to short_description.
+  const fullDescText = product.description?.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  if (fullDescText && fullDescText.length > 20) return fullDescText.substring(0, 160);
+
   // Auto-generate from product data when no editorial description exists.
   // Covers newly added products with missing Rank Math meta and empty short descriptions.
   const brand = getProductBrandName(product);
@@ -617,6 +623,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+function buildFallbackDescriptionHtml(product: WooProduct): string {
+  const brand = getProductBrandName(product);
+  const origin = getProductAttributeValue(product, /(origin|made in|country)/i);
+  const skinType = getProductAttributeValue(product, /skin type/i);
+  const concern = getProductAttributeValue(product, /concern/i);
+  const productType = getProductType(product);
+  const price = parseFloat(product.price || product.regular_price || '0');
+  const priceStr = price > 0 ? ` at ৳${Math.round(price).toLocaleString('en-BD')}` : '';
+
+  const intro = [
+    `<strong>${product.name}</strong> is`,
+    `${/^[aeiou]/i.test(productType) ? 'an' : 'a'}`,
+    origin ? `${origin}` : null,
+    brand ? `<strong>${brand}</strong>` : null,
+    `${productType}`,
+    skinType ? `suited for ${skinType} skin` : null,
+    concern ? `and targeting ${concern}` : null,
+  ].filter(Boolean).join(' ');
+
+  const lines = [
+    `<p>${intro}${priceStr}.</p>`,
+    `<p>Available at Emart — Bangladesh's trusted source for authentic`,
+    brand ? ` ${brand}` : ' international',
+    ` skincare. Fast delivery across Dhaka and nationwide. Cash on Delivery accepted.</p>`,
+  ];
+
+  return lines.join('');
+}
+
 export async function generateStaticParams() {
   return [];
 }
@@ -648,7 +683,7 @@ export default async function ProductPage({ params }: Props) {
   const descriptionHtml =
     removeFaqFromHtml(product.description || '') ||
     normalizeRichHtml(product.short_description || '') ||
-    '<p>No description available.</p>';
+    buildFallbackDescriptionHtml(product);
   const ingredientsHtml = getIngredientsHtml(product);
   const howToUseHtml = getHowToUseHtml(product);
   const faqItems = getProductFaqItems(product);
