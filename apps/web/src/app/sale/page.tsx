@@ -3,6 +3,7 @@ import ProductCard from '@/components/product/ProductCard';
 import ProductFilters from '@/components/product/ProductFilters';
 import type { Metadata } from 'next';
 import { canonicalPath } from '@/lib/canonicalUrl';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 export function generateMetadata({ searchParams }: { searchParams?: SalePageProps['searchParams'] }): Metadata {
   return {
@@ -38,8 +39,24 @@ export default async function SalePage({ searchParams }: SalePageProps) {
     getCategories(),
   ]);
 
+  const collectionJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Sale — Authentic Skincare Deals in Bangladesh',
+    description: 'Real discounts on authentic Korean, Japanese and global skincare at Emart Skincare Bangladesh.',
+    url: absoluteUrl('/sale'),
+    ...(products.length > 0 ? {
+      hasPart: products.slice(0, 10).map((p: any) => ({
+        '@type': 'Product',
+        name: p.name,
+        url: absoluteUrl(`/shop/${p.slug}`),
+      })),
+    } : {}),
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
       {/* Header */}
       <div className="mb-6 border-b border-hairline pb-5">
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Sale</p>

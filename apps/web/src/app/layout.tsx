@@ -70,6 +70,10 @@ export const metadata: Metadata = {
     'skin care price Bangladesh',
     'kbeauty bangladesh',
   ],
+  alternates: {
+    canonical: SITE_URL,
+    languages: { 'x-default': SITE_URL },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_BD',

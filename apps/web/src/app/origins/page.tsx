@@ -24,7 +24,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { count
   return {
     title: { absolute: `${origin.label} Skincare Products in Bangladesh | Emart` },
     description: `${origin.desc} Shop authentic ${origin.label} beauty products in Bangladesh with COD and fast delivery.`,
-    alternates: { canonical: absoluteUrl(`/origins?country=${origin.country}`) },
+    alternates: { canonical: absoluteUrl(`/origins/${origin.country}`) },
     robots: { index: true, follow: true },
   };
 }
@@ -90,7 +90,7 @@ export default async function OriginsPage({ searchParams }: OriginsPageProps) {
               return (
                 <Link
                   key={origin.country}
-                  href={`/origins?country=${origin.country}`}
+                  href={`/origins/${origin.country}`}
                   className="group flex min-h-[164px] flex-col rounded-lg border border-hairline bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-card"
                   style={{
                     ['--origin-soft' as string]: `oklch(0.94 0.06 ${origin.hue})`,
@@ -123,7 +123,7 @@ export default async function OriginsPage({ searchParams }: OriginsPageProps) {
   }
 
   /* ── Country listing page ── */
-  const canonicalUrl = absoluteUrl(`/origins?country=${selectedOrigin?.country ?? searchParams.country}`);
+  const canonicalUrl = absoluteUrl(`/origins/${selectedOrigin?.country ?? searchParams.country}`);
   const originTitle = `${selectedOrigin?.label ?? searchParams.country} Products`;
   const originDesc = selectedOrigin?.desc ?? `Authentic ${selectedOrigin?.label ?? ''} skincare products available in Bangladesh.`;
 

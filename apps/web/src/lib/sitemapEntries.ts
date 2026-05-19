@@ -6,6 +6,7 @@ import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
 import { CONCERN_DEFINITIONS } from '@/lib/concerns';
 import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
 import { ROUTINE_STEPS } from '@/lib/routine';
+import { ORIGIN_DEFINITIONS } from '@/lib/origin-navigation';
 
 const CONCERN_SLUG_PAGES: MetadataRoute.Sitemap = CONCERN_DEFINITIONS.map((c) => ({
   url: absoluteUrl(`/concerns/${c.slug}`),
@@ -21,6 +22,12 @@ const INGREDIENT_SLUG_PAGES: MetadataRoute.Sitemap = INGREDIENT_DEFINITIONS.map(
 
 const ROUTINE_SLUG_PAGES: MetadataRoute.Sitemap = ROUTINE_STEPS.map((s) => ({
   url: absoluteUrl(`/routine/${s.slug}`),
+  changeFrequency: 'weekly' as const,
+  priority: 0.75,
+}));
+
+const ORIGIN_SLUG_PAGES: MetadataRoute.Sitemap = ORIGIN_DEFINITIONS.map((o) => ({
+  url: absoluteUrl(`/origins/${o.country}`),
   changeFrequency: 'weekly' as const,
   priority: 0.75,
 }));
@@ -75,6 +82,7 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: absoluteUrl('/skin-quiz'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/brands'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/origins'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
+  ...ORIGIN_SLUG_PAGES,
   { url: absoluteUrl('/concerns'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/ingredients'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/routine'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },

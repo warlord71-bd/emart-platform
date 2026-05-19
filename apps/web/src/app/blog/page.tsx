@@ -28,8 +28,29 @@ function formatDate(value: string) {
 export default async function BlogPage() {
   const posts = await getWordPressPosts({ perPage: 12 });
 
+  const blogJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'Skincare Guides by Emart',
+    description: 'Skincare guides, ingredient explainers, and product comparisons from Emart Skincare Bangladesh.',
+    url: absoluteUrl('/blog'),
+    publisher: {
+      '@type': 'Organization',
+      name: 'Emart Skincare Bangladesh',
+      url: absoluteUrl('/'),
+    },
+    blogPost: posts.slice(0, 10).map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.title,
+      url: absoluteUrl(p.href),
+      datePublished: p.date,
+      description: p.excerpt,
+    })),
+  };
+
   return (
     <main className="bg-bg">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
       <section className="mx-auto max-w-7xl px-4 py-10">
         <div className="mb-8 max-w-3xl">
           <p className="text-xs font-bold uppercase tracking-widest text-accent">Beauty Guides</p>
