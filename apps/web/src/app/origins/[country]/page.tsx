@@ -8,6 +8,7 @@ import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
 import { getOriginByCountry } from '@/lib/origin-navigation';
 import CollectionPageHeader from '@/components/collection/CollectionPageHeader';
 import { buildCollectionSchema } from '@/lib/collectionSchema';
+import { getOriginEditorial } from '@/lib/origin-editorial';
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -23,14 +24,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const origin = getOriginByCountry(params.country);
   if (!origin) return { title: 'Origin Not Found' };
 
+  const editorial = getOriginEditorial(params.country);
   const canonical = absoluteUrl(`/origins/${origin.country}`);
+  const description = editorial
+    ? `${editorial.whySection.body.slice(0, 130)}… Authentic products with COD across Bangladesh.`
+    : `Shop authentic ${origin.label} beauty and skincare in Bangladesh from Emart. ${origin.story} COD available, fast nationwide delivery.`;
+
   return {
     title: { absolute: `${origin.label} Beauty & Skincare Products in Bangladesh | Emart` },
-    description: `Shop authentic ${origin.label} beauty and skincare in Bangladesh from Emart. ${origin.story} COD available, fast nationwide delivery.`,
+    description,
     alternates: { canonical },
     openGraph: {
       title: `${origin.label} Beauty Products in Bangladesh | Emart`,
-      description: `Authentic ${origin.label} skincare and beauty products. ${origin.story}`,
+      description,
       url: canonical,
       images: [{ url: absoluteUrl('/images/hero-products.png'), width: 1200, height: 630 }],
     },
@@ -41,6 +47,7 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
   const origin = getOriginByCountry(params.country);
   if (!origin) notFound();
 
+  const editorial = getOriginEditorial(params.country);
   const page = Math.max(1, parseInt(searchParams.page || '1'));
   const { products = [], totalPages = 1, total = 0 } = await getProductsByOriginTermSlug(
     origin.country,
@@ -136,6 +143,89 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
             <Link href="/origins" className="mt-2 block text-sm text-accent hover:underline">
               View all origins
             </Link>
+          </div>
+        )}
+
+        {/* Editorial content — only renders for countries with defined editorial */}
+        {editorial && (
+          <div className="mx-auto mt-16 max-w-3xl space-y-10 border-t border-hairline pt-12">
+            {/* Why section */}
+            <section>
+              <h2 className="mb-4 text-2xl font-bold text-ink">{editorial.whySection.heading}</h2>
+              <p className="text-sm leading-7 text-muted-2">{editorial.whySection.body}</p>
+            </section>
+
+            {/* Key trends */}
+            {editorial.keyTrends.length > 0 && (
+              <section>
+                <h2 className="mb-4 text-xl font-bold text-ink">Key Skincare Trends from {origin.label}</h2>
+                <div className="space-y-4">
+                  {editorial.keyTrends.map((trend, i) => (
+                    <div key={i} className="rounded-xl border border-hairline bg-card p-4">
+                      <p className="text-sm font-bold text-ink">{trend.title}</p>
+                      <p className="mt-1 text-sm leading-6 text-muted-2">{trend.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Popular brands */}
+            {editorial.popularBrands.length > 0 && (
+              <section>
+                <h2 className="mb-4 text-xl font-bold text-ink">Popular {origin.label} Brands at Emart</h2>
+                <div className="flex flex-wrap gap-2">
+                  {editorial.popularBrands.map((brand) => (
+                    <Link
+                      key={brand.slug}
+                      href={`/brands/${brand.slug}`}
+                      className="rounded-full border border-accent/30 bg-accent-soft px-4 py-2 text-sm font-semibold text-accent hover:bg-accent hover:text-white transition-colors"
+                    >
+                      {brand.name}
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Bangladesh context */}
+            <section className="rounded-2xl border-l-4 border-accent bg-accent-soft/30 p-6">
+              <h2 className="mb-3 text-xl font-bold text-ink">{origin.label} Skincare in Bangladesh</h2>
+              <p className="text-sm leading-7 text-muted-2">{editorial.bangladeshContext}</p>
+            </section>
+
+            {/* FAQ */}
+            {editorial.faq.length > 0 && (
+              <section>
+                <h2 className="mb-4 text-xl font-bold text-ink">Frequently Asked Questions</h2>
+                {editorial.faq.length > 0 && (
+                  <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                      __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'FAQPage',
+                        mainEntity: editorial.faq.map((item) => ({
+                          '@type': 'Question',
+                          name: item.q,
+                          acceptedAnswer: { '@type': 'Answer', text: item.a },
+                        })),
+                      }),
+                    }}
+                  />
+                )}
+                <div className="space-y-4">
+                  {editorial.faq.map((item, i) => (
+                    <details key={i} className="group rounded-xl border border-hairline bg-card p-5 shadow-sm">
+                      <summary className="cursor-pointer list-none text-sm font-semibold text-ink group-open:text-accent">
+                        {item.q}
+                      </summary>
+                      <p className="mt-3 text-sm leading-7 text-muted-2">{item.a}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
         )}
       </div>

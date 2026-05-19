@@ -7,6 +7,9 @@ import { CONCERN_DEFINITIONS } from '@/lib/concerns';
 import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
 import { ROUTINE_STEPS } from '@/lib/routine';
 import { ORIGIN_DEFINITIONS } from '@/lib/origin-navigation';
+import { SKIN_TYPE_DEFINITIONS } from '@/lib/skin-type-definitions';
+import { COMPARE_DEFINITIONS } from '@/lib/compare-definitions';
+import { BEST_DEFINITIONS } from '@/lib/best-definitions';
 
 const CONCERN_SLUG_PAGES: MetadataRoute.Sitemap = CONCERN_DEFINITIONS.map((c) => ({
   url: absoluteUrl(`/concerns/${c.slug}`),
@@ -29,6 +32,24 @@ const ROUTINE_SLUG_PAGES: MetadataRoute.Sitemap = ROUTINE_STEPS.map((s) => ({
 const ORIGIN_SLUG_PAGES: MetadataRoute.Sitemap = ORIGIN_DEFINITIONS.map((o) => ({
   url: absoluteUrl(`/origins/${o.country}`),
   changeFrequency: 'weekly' as const,
+  priority: 0.75,
+}));
+
+const SKIN_TYPE_SLUG_PAGES: MetadataRoute.Sitemap = SKIN_TYPE_DEFINITIONS.map((st) => ({
+  url: absoluteUrl(`/skin-type/${st.slug}`),
+  changeFrequency: 'weekly' as const,
+  priority: 0.75,
+}));
+
+const COMPARE_SLUG_PAGES: MetadataRoute.Sitemap = COMPARE_DEFINITIONS.map((c) => ({
+  url: absoluteUrl(`/compare/${c.pair}`),
+  changeFrequency: 'monthly' as const,
+  priority: 0.7,
+}));
+
+const BEST_SLUG_PAGES: MetadataRoute.Sitemap = BEST_DEFINITIONS.map((b) => ({
+  url: absoluteUrl(`/best/${b.slug}`),
+  changeFrequency: 'monthly' as const,
   priority: 0.75,
 }));
 import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
@@ -80,6 +101,12 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: absoluteUrl('/new-arrivals'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.8 },
   { url: absoluteUrl('/sale'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.8 },
   { url: absoluteUrl('/skin-quiz'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/skin-type'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.75 },
+  ...SKIN_TYPE_SLUG_PAGES,
+  { url: absoluteUrl('/compare'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.7 },
+  ...COMPARE_SLUG_PAGES,
+  { url: absoluteUrl('/best'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.75 },
+  ...BEST_SLUG_PAGES,
   { url: absoluteUrl('/brands'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/origins'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
   ...ORIGIN_SLUG_PAGES,

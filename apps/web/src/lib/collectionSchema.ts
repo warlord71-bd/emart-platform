@@ -64,5 +64,8 @@ export function buildCollectionSchema({
 }
 
 export function getBrandDescription(brandName: string): string {
-  return `Shop authentic ${brandName} products in Bangladesh at Emart. Original ${brandName} skincare — COD, fast delivery, 100% authenticity guaranteed.`;
+  const normalizedBrand = brandName.trim().toLowerCase();
+  const productType = normalizedBrand === 'kerasys' ? 'hair care' : 'skincare';
+
+  return `Shop authentic ${brandName} products in Bangladesh at Emart. Original ${brandName} ${productType} - COD, fast delivery, 100% authenticity guaranteed.`;
 }
