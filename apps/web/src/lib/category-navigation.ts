@@ -84,16 +84,14 @@ export const CONCERN_NAV_ITEMS: MenuCategoryItem[] = CONCERN_DEFINITIONS.map((co
   description: concern.description,
 }));
 
-// Skin type nav items point to the closest matching concern or ingredient page.
-// /shop?skin_type=X does NOT filter products (no shop-level param support) — avoid
-// those URLs to prevent duplicate-content issues.
+// Skin type nav items point to /skin-type/* guide pages (Bangladesh-specific routines, FAQ, schema).
 export const SKIN_TYPE_NAV_ITEMS: MenuCategoryItem[] = [
-  { name: 'Oily Skin',      slug: 'oily',       href: '/concerns/pores-oil-control' },
-  { name: 'Dry Skin',       slug: 'dry',        href: '/concerns/dryness-hydration' },
-  { name: 'Combination',    slug: 'combination',href: '/concerns/pores-oil-control' },
-  { name: 'Sensitive Skin', slug: 'sensitive',  href: '/concerns/sensitivity' },
-  { name: 'Acne Prone',     slug: 'acne-prone', href: '/concerns/acne-blemish-care' },
-  { name: 'Anti-Aging',     slug: 'aging',      href: '/concerns/anti-aging-repair' },
+  { name: 'Oily Skin',      slug: 'oily',       href: '/skin-type/oily',       description: "Control shine & pores in Dhaka's humidity" },
+  { name: 'Acne-Prone',     slug: 'acne-prone', href: '/skin-type/acne-prone', description: 'Science-backed acne care for Bangladesh' },
+  { name: 'Dry Skin',       slug: 'dry',        href: '/skin-type/dry',        description: 'Deep hydration for dry skin in Bangladesh' },
+  { name: 'Combination',    slug: 'combination',href: '/skin-type/combination', description: 'Balance oily T-zone and dry cheeks' },
+  { name: 'Sensitive Skin', slug: 'sensitive',  href: '/skin-type/sensitive',  description: 'Gentle, fragrance-free picks for reactive skin' },
+  { name: 'All Skin Types →', slug: 'all',      href: '/skin-type',            description: 'Full skin type guide hub' },
 ];
 
 export const INGREDIENT_NAV_ITEMS: MenuCategoryItem[] = INGREDIENT_DEFINITIONS.slice(0, 12).map((ing) => ({
@@ -258,20 +256,34 @@ export const UNIFIED_BROWSE_TREE: NavigationGroup[] = [
     ],
   },
   {
-    label: 'Routine',
+    label: 'Guides',
     href: '/routine',
     tone: 'text-success',
-    panelClassName: 'w-[480px]',
-    summary: 'Shop by skincare step.',
+    panelClassName: 'w-[min(860px,calc(100vw-2rem))]',
+    summary: 'Routine steps, best picks & comparisons.',
     ctaLabel: 'Full routine guide',
     sections: [
       {
-        title: 'Skincare Steps',
-        items: ROUTINE_NAV_ITEMS.slice(0, 5),
+        title: 'Skincare Routine',
+        items: ROUTINE_NAV_ITEMS.slice(0, 6),
       },
       {
-        title: 'More steps',
-        items: ROUTINE_NAV_ITEMS.slice(5),
+        title: 'Best of Bangladesh',
+        items: [
+          { name: 'Best Sunscreen for Oily Skin', slug: 'best-sunscreen', href: '/best/sunscreen-oily-skin-bangladesh', description: 'No white cast picks for Dhaka\'s heat' },
+          { name: 'Best Face Wash for Oily Skin',  slug: 'best-cleanser',  href: '/best/cleanser-oily-skin-bangladesh',  description: 'Low-pH gel cleansers that actually work' },
+          { name: 'Best Moisturiser for Oily Skin', slug: 'best-moisturiser', href: '/best/moisturiser-oily-skin-bangladesh', description: 'Lightweight gels for humidity' },
+          { name: 'All Best-Of Lists →', slug: 'best-all', href: '/best' },
+        ],
+      },
+      {
+        title: 'Compare Products',
+        items: [
+          { name: 'CeraVe vs COSRX Cleanser',     slug: 'compare-cerave-cosrx',  href: '/compare/cerave-vs-cosrx-cleanser',            description: 'Which cleanser wins in Bangladesh?' },
+          { name: 'BOJ vs COSRX Sunscreen',        slug: 'compare-boj-spf',       href: '/compare/cosrx-vs-beauty-of-joseon-sunscreen',  description: 'Best SPF for oily skin' },
+          { name: 'COSRX Snail vs BOJ Glow Serum', slug: 'compare-snail-glow',   href: '/compare/cosrx-snail-vs-beauty-of-joseon-serum', description: 'Repair vs brightening' },
+          { name: 'All Comparisons →', slug: 'compare-all', href: '/compare' },
+        ],
       },
     ],
   },

@@ -919,3 +919,96 @@ export function WhatsAppSupportBanner() {
     </section>
   );
 }
+
+const SKIN_GUIDE_TILES = [
+  {
+    emoji: '💧',
+    label: 'Oily Skin Guide',
+    sublabel: 'Routine for Dhaka\'s humidity',
+    href: '/skin-type/oily',
+    color: 'bg-blue-50 text-blue-700',
+  },
+  {
+    emoji: '🔬',
+    label: 'Acne-Prone Guide',
+    sublabel: 'Science-backed Bangladesh advice',
+    href: '/skin-type/acne-prone',
+    color: 'bg-rose-50 text-rose-700',
+  },
+  {
+    emoji: '☀️',
+    label: 'Best Sunscreens',
+    sublabel: 'No white cast, PA++++',
+    href: '/best/sunscreen-oily-skin-bangladesh',
+    color: 'bg-amber-50 text-amber-700',
+  },
+  {
+    emoji: '⚖️',
+    label: 'CeraVe vs COSRX',
+    sublabel: 'Which cleanser wins?',
+    href: '/compare/cerave-vs-cosrx-cleanser',
+    color: 'bg-emerald-50 text-emerald-700',
+  },
+];
+
+export function SkinGuideSection() {
+  return (
+    <section className="bg-bg px-4 py-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-5 flex items-end justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Emart Guides</p>
+            <h2 className="mt-2 text-2xl font-extrabold text-ink lg:text-3xl">Best picks & skin guides</h2>
+          </div>
+          <Link href="/best" className="hidden text-sm font-semibold text-accent hover:underline sm:block">
+            All guides →
+          </Link>
+        </div>
+
+        {/* Mobile: horizontal scroll */}
+        <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:hidden">
+          <div className="flex w-max snap-x snap-mandatory gap-3 pb-1">
+            {SKIN_GUIDE_TILES.map((tile) => (
+              <Link
+                key={tile.href}
+                href={tile.href}
+                className="flex min-h-[72px] w-[72vw] max-w-[260px] snap-start items-center gap-3 rounded-[22px] border border-hairline bg-bg-alt px-4 py-3 transition-all hover:border-accent/30 hover:bg-white hover:shadow-card"
+              >
+                <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-2xl ${tile.color}`}>
+                  {tile.emoji}
+                </span>
+                <div className="min-w-0">
+                  <div className="truncate text-sm font-bold text-ink">{tile.label}</div>
+                  <div className="truncate text-xs font-medium text-gray-500">{tile.sublabel}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: grid */}
+        <div className="hidden grid-cols-2 gap-3 sm:grid lg:grid-cols-4">
+          {SKIN_GUIDE_TILES.map((tile) => (
+            <Link
+              key={tile.href}
+              href={tile.href}
+              className="flex min-h-[64px] items-center gap-3 rounded-lg border border-hairline bg-bg-alt px-3 py-3 transition-all hover:border-accent/30 hover:bg-white hover:shadow-card"
+            >
+              <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xl ${tile.color}`}>
+                {tile.emoji}
+              </span>
+              <div className="min-w-0">
+                <div className="truncate text-sm font-bold text-ink">{tile.label}</div>
+                <div className="truncate text-xs font-medium text-gray-500">{tile.sublabel}</div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <Link href="/best" className="mt-4 block text-center text-sm font-semibold text-accent hover:underline sm:hidden">
+          All guides →
+        </Link>
+      </div>
+    </section>
+  );
+}

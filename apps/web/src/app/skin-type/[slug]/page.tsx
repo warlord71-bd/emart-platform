@@ -22,11 +22,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const canonical = absoluteUrl(`/skin-type/${st.slug}`);
   return {
-    title: { absolute: `Best Skincare for ${st.name} in Bangladesh | Emart` },
-    description: `Complete ${st.name} skincare guide for Bangladesh. Routine steps, key ingredients, products, and tips for ${st.nameBn} in Dhaka's climate. Shop authentic brands with COD.`,
+    title: { absolute: `Best Skincare for ${st.name} in Bangladesh 2026 | Emart` },
+    description: `${st.name} skincare guide for Bangladesh (2026). AM/PM routine, key ingredients, what to avoid, and product picks for Dhaka's climate. COD available.`,
     alternates: { canonical },
     openGraph: {
-      title: `Best Skincare for ${st.name} in Bangladesh | Emart`,
+      title: `Best Skincare for ${st.name} in Bangladesh 2026 | Emart`,
       description: `${st.description.slice(0, 155)}`,
       url: canonical,
       images: [{ url: absoluteUrl('/images/hero-products.png'), width: 1200, height: 630 }],

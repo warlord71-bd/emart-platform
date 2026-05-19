@@ -10,6 +10,7 @@ import ShopByCategory from '@/components/home/ShopByCategory';
 const OfferCollectionsRail    = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.OfferCollectionsRail })));
 const ProductGridSection      = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.ProductGridSection })));
 const ConcernTilesSection     = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.ConcernTilesSection })));
+const SkinGuideSection        = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.SkinGuideSection })));
 const IngredientTilesSection  = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.IngredientTilesSection })));
 const RoutineTeaserSection    = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.RoutineTeaserSection })));
 const AuthenticityStorySection = dynamic(() => import('@/components/home/HomepageSections').then(m => ({ default: m.AuthenticityStorySection })));
@@ -197,6 +198,7 @@ export default async function HomePage() {
       />
 
       <ConcernTilesSection />
+      <SkinGuideSection />
       <IngredientTilesSection />
       <RoutineTeaserSection />
 

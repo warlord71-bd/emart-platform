@@ -33,6 +33,16 @@ const SUPPORT_LINKS: FooterLink[] = [
   { label: 'Privacy Policy', href: '/privacy-policy', icon: ShieldCheck },
 ];
 
+const GUIDE_LINKS: FooterLink[] = [
+  { label: 'Oily Skin Guide', href: '/skin-type/oily', icon: Droplets },
+  { label: 'Acne-Prone Skin Guide', href: '/skin-type/acne-prone', icon: Sparkles },
+  { label: 'Dry Skin Guide', href: '/skin-type/dry', icon: HeartHandshake },
+  { label: 'Best Sunscreen Bangladesh', href: '/best/sunscreen-oily-skin-bangladesh', icon: ShieldCheck },
+  { label: 'Best Face Wash Bangladesh', href: '/best/cleanser-oily-skin-bangladesh', icon: Droplets },
+  { label: 'CeraVe vs COSRX', href: '/compare/cerave-vs-cosrx-cleanser', icon: SearchCheck },
+  { label: 'All Skin Types →', href: '/skin-type', icon: Sparkles },
+];
+
 const ABOUT_LINKS = [
   { label: 'Our Story', href: '/our-story' },
   { label: 'Authenticity', href: '/authenticity' },
@@ -154,6 +164,23 @@ export default async function Footer() {
             </h3>
             <ul className="space-y-2">
               {SUPPORT_LINKS.map((l) => {
+                const Icon = l.icon;
+                return (
+                  <li key={l.href}>
+                    <Link href={l.href} className="group flex items-center gap-2 text-sm text-bg-stone/80 transition-colors hover:text-accent-soft">
+                      <Icon size={14} strokeWidth={2.2} className="shrink-0 text-accent-soft/80 transition-colors group-hover:text-accent-soft" />
+                      <span>{l.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <h3 className="font-bold text-white text-sm uppercase tracking-widest mt-8 mb-4 pb-2 border-b border-white/10">
+              Skin Guides
+            </h3>
+            <ul className="space-y-2">
+              {GUIDE_LINKS.map((l) => {
                 const Icon = l.icon;
                 return (
                   <li key={l.href}>
