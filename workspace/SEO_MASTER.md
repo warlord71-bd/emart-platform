@@ -46,77 +46,58 @@ All items below are verified working on the live site as of 2026-05-19.
 - SKU gaps fixed (0 missing, 0 duplicate) ✅
 - pa_concern + pa_ingredient + pa_skin_type assigned ✅
 - Lint enforced in production builds ✅
+- Category/brand page descriptions no longer truncated — `line-clamp-2` removed ✅
+- Authentic badge hidden on mobile (was leaking through filter reindex) ✅
+- og:type=product on all product pages ✅
+- priceValidUntil +1yr rolling date on all Offer schema ✅
+- MPN=SKU fallback on all Product schema (Google Shopping identifier) ✅
+- `/origins/[country]` dynamic routes live — 22 country pages, all 200 ✅
+- `/origins?country=X` → `/origins/X` 301 redirect via Nginx ✅
+- 22 origin slugs added to sitemap (4,167 → 4,205 URLs) ✅
+- `/blog` listing: Blog + BlogPosting JSON-LD schema ✅
+- `/new-arrivals`: CollectionPage JSON-LD schema ✅
+- `/sale`: CollectionPage JSON-LD schema ✅
+- `/track-order`: sr-only H1 + proper metadata description ✅
+- Hreflang x-default + en-BD on homepage via alternates.languages ✅
 
 ---
 
-## 🔴 OPEN — Critical (fix immediately)
-
-### C1: `/track-order` has no H1 and no schema
-**Verified:** `curl https://e-mart.com.bd/track-order | grep h1` → empty
-**Impact:** Thin page signal; if accidentally de-indexed-protected, crawler sees no structure
-**Fix:** Add `<h1>Track Your Order</h1>` in the page component. Add page-specific metadata with a proper description (current: 184-char global fallback).
-**File:** `apps/web/src/app/track-order/page.tsx` (or equivalent)
-**Effort:** 10 min
+## 🔴 OPEN — Critical
 
 ### C2: Homepage title is 70 chars (Google truncates at ~60)
 **Verified:** Title = "Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty" → 70 chars
 **Impact:** Displays as truncated in SERPs: "Emart Skincare Bangladesh | Authentic Korean, Japa…"
-**Note:** This title format was approved by owner (2026-05-16). Trimming requires owner re-approval before changing.
+**Note:** Title format was approved by owner 2026-05-16. Trimming requires owner re-approval.
 **Fix options:** "Emart | Authentic Korean & Japanese Skincare Bangladesh" (55 chars) or "Emart Skincare Bangladesh | Korean & Global Beauty" (50 chars)
 **Owner decision required before touching.**
 
-### C3: `/origins/[country]` sub-routes all 404
-**Verified:** `/origins/south-korea`, `/origins/japan`, `/origins/france` all return 404
-**Impact:** 20 country origin pages are unindexable. `/origins` hub exists but links to nothing crawlable. Google Shopping + informational queries for "Korean beauty Bangladesh" etc. have no landing page.
-**Fix:** Create `app/origins/[country]/page.tsx` dynamic route. Fetch products by `pa_origin` term. Add 20 slugs to sitemap. 301 any old `/origins?country=X` params to `/origins/X`.
-**Effort:** Medium (half day)
-
 ---
 
-## 🟡 OPEN — Medium (this sprint)
-
-### M1: `/blog` listing page has no schema
-**Verified:** `schema=[]` on `/blog` (only sitewide WebSite/OnlineStore from layout)
-**Impact:** Minor — blog listing is not a rich-result target. Blog posts themselves have Article schema ✅
-**Fix:** Add `Blog` or `ItemList` schema to the blog listing page `generateMetadata` / page component.
-**Effort:** 15 min
-
-### M2: `/new-arrivals`, `/sale`, `/origins` have no page-specific schema
-**Verified:** All three return `schema=[]` beyond sitewide layout schema
-**Impact:** These are collection pages — `CollectionPage` + `ItemList` would match what category pages already have
-**Fix:** Add same CollectionPage + ItemList pattern used on `/category/[slug]` to these three pages.
-**Effort:** 30 min
-
-### M3: Homepage title needs owner decision (see C2)
-Tracked here for follow-up once owner approves new format.
+## 🟡 OPEN — Medium
 
 ### M4: FAQ answer quality — top products use templated answers
 **Evidence:** Multiple products return generic "Apply as directed for this product type…" answers
-**Impact:** FAQPage schema is present but thin answers reduce rich-result quality score
-**Fix:** Re-generate FAQ for top 200 SKUs using product-specific inputs (name, ingredients, skin type, concern). Verify first 10 manually before bulk run.
-**Effort:** Large — separate task, requires LLM generation plan
-**Owner:** Confirm approach before starting
-
-### M5: Hreflang x-default missing
-**Verified:** No hreflang tags on any page
-**Impact:** Low — site has no separate Bangla URL structure. x-default only would be the correct implementation.
-**Fix:** Add `alternates: { languages: { 'x-default': absoluteUrl('/') } }` to root layout metadata. Do NOT introduce /bn/ URL paths — that is a bigger architecture decision.
-**Effort:** 15 min
+**Impact:** FAQPage schema present but thin answers reduce rich-result quality score
+**Fix:** Re-generate FAQ for top 200 SKUs using product-specific inputs. Verify first 10 manually before bulk run.
+**Effort:** Large — Codex task (prompt written, ready to run)
+**Owner:** Confirm approach before Codex starts
 
 ### M6: Long-form content on ingredient + concern pages
-**Current state:** ~600–900 word product grids with intro copy
-**Gap:** No educational H2 sections (what is it, how it works, Bangladesh climate notes, FAQ)
-**Impact:** Biggest content gap after blog volume. Shajgoj wins on informational queries here.
-**Fix:** Generate 1,500–2,000 word educational blocks per page. Store as static JSON/MDX. Verify on niacinamide + hyaluronic-acid first before processing remaining 13 ingredients + 9 concerns.
-**Effort:** Large — separate sprint. Requires LLM generation setup on VPS (not via external pool).
-**Owner:** Confirm LLM approach and review process before starting.
+**Current state:** ~600–900 word product grids with short intro
+**Gap:** No educational H2 sections (what is it, how it works, Bangladesh climate, FAQ)
+**Impact:** Biggest content gap vs Shajgoj on informational queries
+**Fix:** Generate 1,500–2,000 word blocks per page. Store as static JSON. Verify niacinamide + hyaluronic-acid first.
+**Effort:** Large — Codex task (prompt written, ready to run)
+**Owner:** Confirm LLM approach and review process before starting
 
 ---
 
 ## 🔵 OPEN — Needs Owner Decision Before Starting
 
-### O1: `/origins/[country]` content (dependent on C3)
-Once C3 routes are built, each country page needs 600+ word intro. South Korea (K-Beauty) and Japan (J-Beauty) are highest priority.
+### O1: `/origins/[country]` editorial content
+C3 routes are live (200 ✅). Each country page currently shows products only.
+South Korea + Japan need 600+ word intro copy for K-Beauty / J-Beauty angle.
+**Priority:** South Korea first (largest catalog), then Japan.
 
 ### O2: Product comparison pages (`/compare/[slug1]-vs-[slug2]`)
 **What:** Programmatic comparison pages for high-intent queries ("COSRX vs The Ordinary niacinamide")
