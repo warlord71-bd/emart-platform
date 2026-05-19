@@ -810,6 +810,7 @@ ps aux | grep "image-import-v2" | grep -v grep
 ## 2026-05-07 22:58 CEST — Codex agent clutter cleanup
 - Did: Performed archive-first Emart-only agent clutter cleanup without frontend/runtime changes. Root raw CeraVe/brand spreadsheet outputs were moved to /root/.attic-2026-05-07/emart-platform/agent-clutter-cleanup/ with a manifest; standardized active/archive audit and script buckets; tightened .gitignore; made AGENTS.md the canonical tracked agent entry point.
 - Completed tasks: No apps/web/src changes, no Woo/WordPress mutations, no npm build, no PM2/nginx restart. Cleanup metadata synced to VPS by exact file paths only.
+
 - Verification: Live /, /shop, /brands, /categories, /concerns, and /origins returned 200; root-level CSV/XLSX clutter removed locally and from VPS; no frontend source diffs detected.
 - Blockers hit: VPS Git HEAD was one commit behind Local/origin before cleanup, so broad sync/reset was avoided; cleanup stayed to exact docs/metadata paths.
 - Next step: Keep future agent outputs in the new active/archive buckets; avoid root-level raw CSV/XLSX/JSON/MD scratch files.
@@ -987,3 +988,15 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: Commit `3cd75f6 fix(web): darken generated contrast utilities` updates Tailwind accent/muted/gray utilities, header tone color, and footer dark-background accents.
 - Checks: Local and VPS `npm run build` passed; `emartweb` restarted; live `/` returned 200 in 0.266s; fetched live CSS confirms dark accent, muted-2, gray-500, and light footer accent utilities.
 - Next step: Re-run Lighthouse/PageSpeed mobile; remaining reported `text-accent` homepage items should now resolve from the compiled CSS instead of only token files.
+
+## 2026-05-18 13:15 CEST — Codex Nivea product add
+- Did: Added Woo product `93277` for `Nivea Soft Rose Lip Balm 24h Moisture (UK) 4.8g` using official NIVEA product facts/image plus Bangladesh retail price reference; no frontend code, build, PM2, or nginx changes.
+- Completed tasks: Product published at `/shop/nivea-soft-rose-lip-balm-24h-moisture-uk-4-8g`; SKU `4005900983909`; price `৳450`; brand `Nivea`; origin `Germany`; version `uk`; category `Lip Balm & Care`; concern `Dryness & Hydration`; Rank Math meta, image alt, ingredients, usage, and 5 FAQs added.
+- Blockers hit: Initial create script saw the imported image attachment using the target product slug; attachment slug was moved aside and product was created with the clean PDP slug.
+- Next step: Owner can adjust price/stock in Woo if the actual store inventory differs from the market reference.
+
+## 2026-05-18 14:29 CEST — Codex
+- Did: Fixed web delivery charge logic so checkout reads current Woo shipping methods instead of hardcoded always-free thresholds; server adds shipping_lines to Woo orders.
+- Completed tasks: delivery charge free/off toggle behavior; static free-delivery copy cleanup on web surfaces.
+- Blockers hit: Existing unrelated local/VPS dirty files remain; only delivery files were synced/deployed.
+- Next step: If mobile app delivery fee must match this dynamic Woo toggle, update mobile source and release separately.
