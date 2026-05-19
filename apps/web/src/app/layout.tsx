@@ -53,7 +53,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty',
+    default: 'Emart Skincare Bangladesh | Korean & Global Beauty',
     template: '%s | Emart',
   },
   description:
