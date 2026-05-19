@@ -73,7 +73,7 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
       <span key="featured" className="badge-new type-meta font-bold">Best Seller</span>
     ) : null,
     !product.featured && inStock ? (
-      <span key="auth" className="badge-auth">Authentic</span>
+      <span key="auth" className="badge-auth hidden sm:inline-flex">Authentic</span>
     ) : null,
     !inStock ? (
       <span key="stock" className="badge type-meta border border-black/10 bg-white/95 font-bold text-ink">
