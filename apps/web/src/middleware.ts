@@ -22,6 +22,20 @@ function handleConcernRedirect(req: NextRequest): NextResponse | undefined {
   return NextResponse.redirect(url, { status: 301 });
 }
 
+// Origin query-param → clean path redirect
+// /origins?country=south-korea → /origins/south-korea
+// Preserves ?page=N when present; strips everything else including ?country.
+function handleOriginRedirect(req: NextRequest): NextResponse | undefined {
+  if (req.nextUrl.pathname !== '/origins') return undefined;
+  const country = req.nextUrl.searchParams.get('country');
+  if (!country) return undefined;
+  const url = req.nextUrl.clone();
+  url.pathname = `/origins/${country}`;
+  const page = req.nextUrl.searchParams.get('page');
+  url.search = page && page !== '1' ? `?page=${page}` : '';
+  return NextResponse.redirect(url, { status: 301 });
+}
+
 // Query parameters that pollute canonical URLs — strip and 301 to clean path
 const STRIP_PARAMS = [
   'srsltid',          // Google Search result session link ID
@@ -54,6 +68,10 @@ export function middleware(req: NextRequest): NextResponse | undefined {
   // /concerns?concern=slug → /concerns/slug (clean 301, no trailing query param)
   const concernRedirect = handleConcernRedirect(req);
   if (concernRedirect) return concernRedirect;
+
+  // /origins?country=slug → /origins/slug (clean 301, preserves ?page=N)
+  const originRedirect = handleOriginRedirect(req);
+  if (originRedirect) return originRedirect;
 
   // Strip old WordPress ?p= post ID parameter — redirect root to clean /
   if (pathname === '/' && req.nextUrl.searchParams.has('p')) {

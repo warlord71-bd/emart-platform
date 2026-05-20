@@ -65,9 +65,7 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // /origins?country=X → /origins/X (301 — old query-param URLs to clean paths)
-      { source: '/origins', has: [{ type: 'query', key: 'country', value: '(?<c>.+)' }], destination: '/origins/:c', permanent: true },
-      { source: '/category/skincare',       destination: '/category/skincare-essentials', permanent: true },
+{ source: '/category/skincare',       destination: '/category/skincare-essentials', permanent: true },
       { source: '/category/skin-care',      destination: '/category/skincare-essentials', permanent: true },
       { source: '/product-category/skincare', destination: '/category/skincare-essentials', permanent: true },
       { source: '/product-category/skin-care/:path*', destination: '/category/skincare-essentials', permanent: true },

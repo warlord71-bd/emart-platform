@@ -186,7 +186,7 @@ export default async function OriginsPage({ searchParams }: OriginsPageProps) {
               <div className="mt-10 flex items-center justify-center gap-2">
                 {page > 1 && (
                   <Link
-                    href={`/origins?country=${searchParams.country}&page=${page - 1}`}
+                    href={`/origins/${searchParams.country}?page=${page - 1}`}
                     className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
                   >
                     Previous
@@ -197,7 +197,7 @@ export default async function OriginsPage({ searchParams }: OriginsPageProps) {
                 </span>
                 {page < totalPages && (
                   <Link
-                    href={`/origins?country=${searchParams.country}&page=${page + 1}`}
+                    href={`/origins/${searchParams.country}?page=${page + 1}`}
                     className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
                   >
                     Next
