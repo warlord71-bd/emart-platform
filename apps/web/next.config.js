@@ -5,12 +5,25 @@ const privateNoStoreHeaders = [
   { key: 'Cloudflare-CDN-Cache-Control', value: 'private, no-store' },
 ];
 
+// Shop catalog and category listing pages are dynamic (searchParams forces SSR) so Next.js
+// emits Cache-Control: private by default.  The Cloudflare-CDN-Cache-Control header overrides
+// Cloudflare's caching decision independently of the browser Cache-Control, letting the edge
+// cache these pages for 5 min while browsers still get fresh responses.
+// Product pages (/shop/[slug]) use ISR (revalidate=3600) and are intentionally excluded.
+const catalogCdnHeaders = [
+  { key: 'CDN-Cache-Control',           value: 'public, max-age=300, stale-while-revalidate=600' },
+  { key: 'Cloudflare-CDN-Cache-Control', value: 'public, max-age=300, stale-while-revalidate=600' },
+];
+
 const nextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
 
   async headers() {
     return [
+      // Catalog pages — CDN cache override (nginx no longer needs location blocks for these)
+      { source: '/shop',         headers: catalogCdnHeaders },
+      { source: '/category/:slug', headers: catalogCdnHeaders },
       {
         source: '/checkout',
         headers: privateNoStoreHeaders,
