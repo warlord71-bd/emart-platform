@@ -140,7 +140,12 @@ const CATEGORY_SEO_OVERRIDES: Record<string, { title: string; description: strin
 const FACE_CLEANSERS_SEO = {
   title: 'Face Cleanser & Face Wash in Bangladesh | Emart',
   description: 'Shop authentic face cleansers and face wash in Bangladesh, including Korean low-pH gels, foam cleansers, micellar water and oil cleansers at Emart.',
-  ogAlt: 'Face cleanser and face wash products at Emart Bangladesh',
+  ogAlt: 'Face cleanser and face wash products available at Emart Bangladesh',
+  image: {
+    path: '/images/hero-products.png',
+    width: 1200,
+    height: 520,
+  },
   keywords: [
     'face cleanser Bangladesh',
     'face wash Bangladesh',
@@ -160,6 +165,24 @@ function getCategoryOgImage(slug: string, name: string) {
   return absoluteUrl(key ? CATEGORY_OG_IMAGE_BY_KEY[key] : '/images/hero-products.png');
 }
 
+function getCategoryOgImageMeta(slug: string, name: string, alt: string) {
+  if (slug === 'face-cleansers') {
+    return {
+      url: absoluteUrl(FACE_CLEANSERS_SEO.image.path),
+      width: FACE_CLEANSERS_SEO.image.width,
+      height: FACE_CLEANSERS_SEO.image.height,
+      alt,
+    };
+  }
+
+  return {
+    url: getCategoryOgImage(slug, name),
+    width: 1200,
+    height: 630,
+    alt,
+  };
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = await getCategoryBySlug(params.slug);
   if (!cat) return { title: 'Category Not Found' };
@@ -175,7 +198,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = (hasSpecificIntro
     ? introText.substring(0, 160)
     : seo.description) || introText.substring(0, 160);
-  const ogImage = getCategoryOgImage(params.slug, cat.name);
   const isFaceCleansers = params.slug === 'face-cleansers';
   const slugOverride = CATEGORY_SEO_OVERRIDES[params.slug];
   const title = isFaceCleansers
@@ -185,6 +207,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? FACE_CLEANSERS_SEO.description
     : slugOverride?.description ?? description;
   const imageAlt = isFaceCleansers ? FACE_CLEANSERS_SEO.ogAlt : `${cat.name} products at Emart`;
+  const image = getCategoryOgImageMeta(params.slug, cat.name, imageAlt);
 
   return {
     title: { absolute: title },
@@ -198,13 +221,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description: metaDescription,
       url: seo.canonical,
-      images: [{ url: ogImage, alt: imageAlt }],
+      images: [image],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description: metaDescription,
-      images: [{ url: ogImage, alt: imageAlt }],
+      images: [image],
     },
   };
 }
@@ -215,6 +238,7 @@ function getCategoryIntro(name: string, slug: string, description: string): stri
   if (description) return description.replace(/<[^>]+>/g, '').substring(0, 500);
 
   const intros: Record<string, string> = {
+    'face-cleansers': `Shop authentic face cleansers and face wash in Bangladesh at Emart. This collection includes low-pH gel cleansers, gentle foam cleansers, micellar water, oil cleansers, and daily face wash options for oily, dry, sensitive, acne-prone, and combination skin. Choose Korean cleanser favourites and trusted global derma brands with verified product images, real prices in BDT, Cash on Delivery, and fast delivery across Bangladesh.`,
     sunscreen: `Protect your skin every day with our range of authentic sunscreens, available in Bangladesh with fast delivery. From lightweight Korean SPF formulas to dermatologist-recommended options like La Roche-Posay and CeraVe, we carry the best sun protection products for Bangladesh's climate. Whether you need a matte finish for oily skin or a hydrating formula for dry skin, our sunscreen collection covers all skin types. All products are 100% original, imported directly — no fakes, no copies.`,
     'korean-skincare': `Discover authentic Korean skincare in Bangladesh at Emart — your home for original K-Beauty products. From COSRX snail mucin to Some By Mi AHA BHA toner, we carry the Korean skincare brands customers ask for most. Our collection covers cleansers, toners, serums, moisturizers, and sunscreens with fast delivery across Bangladesh and Cash on Delivery available.`,
     serum: `Targeted serums to address your biggest skin concerns — from brightening and anti-aging to acne control and deep hydration. Explore authentic serums from COSRX, The Ordinary, Laneige, and more, all available in Bangladesh with fast delivery. Whether you're dealing with dark spots, fine lines, or dehydration, our serum collection has the right solution for your skin.`,
@@ -282,7 +306,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     primaryImageOfPage: category.slug === 'face-cleansers'
       ? {
         '@type': 'ImageObject',
-        url: getCategoryOgImage(category.slug, category.name),
+        url: absoluteUrl(FACE_CLEANSERS_SEO.image.path),
+        width: FACE_CLEANSERS_SEO.image.width,
+        height: FACE_CLEANSERS_SEO.image.height,
         caption: FACE_CLEANSERS_SEO.ogAlt,
       }
       : undefined,
