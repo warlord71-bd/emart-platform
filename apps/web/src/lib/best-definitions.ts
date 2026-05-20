@@ -4,6 +4,8 @@ export interface BestProduct {
   slug: string;
   brand: string;
   price: string;
+  image?: string;
+  imageAlt?: string;
   why: string;
   bestFor: string;
   keyIngredients?: string[];
@@ -39,6 +41,8 @@ export const BEST_DEFINITIONS: BestDefinition[] = [
         slug: 'beauty-of-joseon-sunscreen-rice-probiotics-spf-50-50ml',
         brand: 'Beauty of Joseon',
         price: '৳1,390',
+        image: 'https://e-mart.com.bd/wp-content/uploads/2026/05/365.jpg',
+        imageAlt: 'Beauty of Joseon Relief Sun Rice Probiotics SPF50 sunscreen in Bangladesh',
         why: 'Our #1 best-selling sunscreen overall. Ultra-lightweight watery texture, zero white cast, and a subtle brightening effect from rice bran. Absorbs in seconds and doesn\'t look greasy in Dhaka\'s humidity. PA++++ rating gives maximum UVA protection.',
         bestFor: 'Oily, combination, and normal skin',
         keyIngredients: ['Rice Bran Water', 'Probiotics', 'Niacinamide'],
@@ -49,26 +53,32 @@ export const BEST_DEFINITIONS: BestDefinition[] = [
         slug: 'beauty-of-joseon-matte-sun-stick-mugwortcamelia18g-0-63fl-oz',
         brand: 'Beauty of Joseon',
         price: '৳1,290',
+        image: 'https://e-mart.com.bd/wp-content/uploads/2023/04/4178-5P0TqL-1.jpg',
+        imageAlt: 'Beauty of Joseon Matte Sun Stick Mugwort Camellia SPF50 sunscreen stick',
         why: 'The best reapplication sunscreen in Bangladesh. Stick format means you can top up SPF over makeup without disturbing it. Mugwort extract calms oily, acne-prone skin. Zero mess, zero white cast.',
         bestFor: 'On-the-go reapplication, oily skin, acne-prone skin',
         keyIngredients: ['Mugwort Extract', 'Camellia Oil', 'UV Filters'],
       },
       {
         rank: 3,
-        name: 'Anua Heartleaf Daily Sun Cream SPF50 PA++++',
-        slug: 'anua-heartleaf-daily-sun-cream-spf50-pa-50ml',
+        name: 'ANUA Airy Sun Cream 50ml',
+        slug: 'anua-airy-sun-cream-50ml',
         brand: 'Anua',
-        price: '৳1,490',
+        price: '৳1,700',
+        image: 'https://e-mart.com.bd/wp-content/uploads/2026/02/ANSM01-SCA.jpeg',
+        imageAlt: 'ANUA Airy Sun Cream 50ml sunscreen for oily skin in Bangladesh',
         why: 'Heartleaf (houttuynia cordata) soothes oily, acne-prone skin while the lightweight formula delivers SPF50 PA++++. Excellent for sensitive-oily combination, and the clean finish holds well in Bangladesh\'s monsoon.',
         bestFor: 'Sensitive-oily skin, acne-prone skin',
         keyIngredients: ['Heartleaf Extract (77%)', 'Centella', 'UV Filters'],
       },
       {
         rank: 4,
-        name: 'COSRX Aloe Soothing Sun Cream SPF50 PA+++',
-        slug: 'cosrx-aloe-soothing-sun-cream-spf50-pa-50ml',
+        name: 'COSRX Aloe Soothing SPF50 PA+++ Sun Cream 50ml',
+        slug: 'cosrx-aloe-soothing-spf50-pa-sun-cream-50ml',
         brand: 'COSRX',
-        price: '৳1,290',
+        price: '৳1,000',
+        image: 'https://e-mart.com.bd/wp-content/uploads/2022/04/41JGrbwwqDL._SL1000_.jpg',
+        imageAlt: 'COSRX Aloe Soothing SPF50 PA+++ Sun Cream 50ml in Bangladesh',
         why: 'High aloe vera content (73%) makes this the most soothing sunscreen for reactive oily skin. Slightly less matte than BOJ Relief Sun but more calming for skin that breaks out easily. PA+++ (triple plus) is still strong UVA protection.',
         bestFor: 'Sensitive-oily skin, acne-prone skin with redness',
         keyIngredients: ['Aloe Vera (73%)', 'Glycerin', 'UV Filters'],
@@ -79,6 +89,8 @@ export const BEST_DEFINITIONS: BestDefinition[] = [
         slug: 'purito-daily-go-to-sunscreen-spf-50-pa-60-ml',
         brand: 'Purito',
         price: '৳1,700',
+        image: 'https://e-mart.com.bd/wp-content/uploads/2026/02/emart-purito-daily-go-to-sunscreen-spf-50-pa-60-ml.jpg',
+        imageAlt: 'Purito Daily Go-To Sunscreen SPF50 PA++++ 60ml in Bangladesh',
         why: 'Clean formula with minimal ingredients — great if you\'re sensitive to fragrances or heavy actives. The "go-to" name is earned: comfortable enough for daily use, and the 60ml size gives you more product than most Korean sunscreens.',
         bestFor: 'Minimalist routines, sensitive oily skin',
         keyIngredients: ['Zinc Oxide (partial)', 'Squalane', 'UV Filters'],

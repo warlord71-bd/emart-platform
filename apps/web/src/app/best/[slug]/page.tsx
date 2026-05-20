@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { getBestBySlug, BEST_DEFINITIONS } from '@/lib/best-definitions';
@@ -68,6 +69,7 @@ export default function BestPage({ params }: Props) {
       position: p.rank,
       name: p.name,
       url: absoluteUrl(`/shop/${p.slug}`),
+      image: p.image,
     })),
   };
 
@@ -128,35 +130,54 @@ export default function BestPage({ params }: Props) {
                 <h2 className="text-sm font-bold text-ink line-clamp-2">{p.name}</h2>
               </div>
               <div className="p-5">
-                <div className="mb-3 flex items-baseline gap-3">
-                  <span className="text-xl font-extrabold text-accent">{p.price}</span>
-                  <span className="text-xs text-muted">{p.brand}</span>
-                </div>
+                <div className="grid gap-5 sm:grid-cols-[150px_minmax(0,1fr)]">
+                  {p.image && (
+                    <Link
+                      href={`/shop/${p.slug}`}
+                      className="relative mx-auto block aspect-square w-full max-w-[180px] overflow-hidden rounded-xl border border-hairline bg-white sm:mx-0"
+                    >
+                      <Image
+                        src={p.image}
+                        alt={p.imageAlt || `${p.name} price in Bangladesh at Emart`}
+                        fill
+                        sizes="(max-width: 640px) 180px, 150px"
+                        className="object-contain p-3"
+                      />
+                    </Link>
+                  )}
 
-                <p className="text-sm leading-6 text-muted-2">{p.why}</p>
+                  <div>
+                    <div className="mb-3 flex items-baseline gap-3">
+                      <span className="text-xl font-extrabold text-accent">{p.price}</span>
+                      <span className="text-xs text-muted">{p.brand}</span>
+                    </div>
 
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="rounded-full border border-hairline px-3 py-1 text-xs text-muted-2">
-                    Best for: {p.bestFor}
-                  </span>
-                </div>
+                    <p className="text-sm leading-6 text-muted-2">{p.why}</p>
 
-                {p.keyIngredients && (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {p.keyIngredients.map((ing, i) => (
-                      <span key={i} className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent">
-                        {ing}
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <span className="rounded-full border border-hairline px-3 py-1 text-xs text-muted-2">
+                        Best for: {p.bestFor}
                       </span>
-                    ))}
-                  </div>
-                )}
+                    </div>
 
-                <Link
-                  href={`/shop/${p.slug}`}
-                  className="mt-4 inline-block rounded-xl bg-accent px-5 py-2 text-sm font-bold text-white hover:bg-accent/90 transition-colors"
-                >
-                  View & Buy →
-                </Link>
+                    {p.keyIngredients && (
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {p.keyIngredients.map((ing, i) => (
+                          <span key={i} className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent">
+                            {ing}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <Link
+                      href={`/shop/${p.slug}`}
+                      className="mt-4 inline-block rounded-xl bg-accent px-5 py-2 text-sm font-bold text-white hover:bg-accent/90 transition-colors"
+                    >
+                      View & Buy →
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
