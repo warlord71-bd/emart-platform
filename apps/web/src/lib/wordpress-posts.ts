@@ -22,6 +22,10 @@ type WordPressPostResponse = {
   excerpt?: RenderedValue;
   content?: RenderedValue;
   rank_math_seo?: RankMathSeo;
+  featured_media?: number;
+  _embedded?: {
+    'wp:featuredmedia'?: { source_url?: string; alt_text?: string }[];
+  };
 };
 
 export type BlogPostSummary = {
@@ -35,6 +39,8 @@ export type BlogPostSummary = {
   modified: string;
   seoTitle: string | null;
   seoDescription: string | null;
+  imageUrl: string | null;
+  imageAlt: string;
 };
 
 export type BlogPost = BlogPostSummary & {
@@ -122,6 +128,7 @@ function toBlogPost(post: WordPressPostResponse): BlogPost {
   const title = textFromHtml(post.title?.rendered) || 'Beauty guide';
   const excerpt = textFromHtml(post.excerpt?.rendered).slice(0, 170);
   const rm = post.rank_math_seo;
+  const media = post._embedded?.['wp:featuredmedia']?.[0];
 
   return {
     id: Number(post.id),
@@ -135,6 +142,8 @@ function toBlogPost(post: WordPressPostResponse): BlogPost {
     modified: post.modified || post.date || new Date().toISOString(),
     seoTitle: rm?.title?.trim() || null,
     seoDescription: rm?.description?.trim() || null,
+    imageUrl: media?.source_url ?? null,
+    imageAlt: media?.alt_text || title,
   };
 }
 
@@ -151,7 +160,8 @@ export async function getWordPressPosts({ perPage = 6 }: { perPage?: number } = 
     per_page: perPage,
     orderby: 'date',
     order: 'desc',
-    _fields: 'id,slug,link,title,excerpt,date,modified,rank_math_seo',
+    _fields: 'id,slug,link,title,excerpt,date,modified,rank_math_seo,featured_media',
+    _embed: 'wp:featuredmedia',
   });
 
   return posts.map(toBlogPost);

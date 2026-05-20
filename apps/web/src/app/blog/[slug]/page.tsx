@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getWordPressPostBySlug, getWordPressPosts } from '@/lib/wordpress-posts';
+import { getProducts } from '@/lib/woocommerce';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { safeJsonLd, sanitizeHtml } from '@/lib/sanitizeHtml';
+import { formatBDT } from '@/lib/formatters';
 
 interface Props {
   params: { slug: string };
@@ -58,9 +61,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+// Map title keywords → WC category ID for related products
+const KEYWORD_CATEGORY: [string[], number][] = [
+  [['sunscreen', 'spf', 'sun protection'], 806],
+  [['serum', 'vitamin c', 'niacinamide', 'retinol', 'aha', 'bha', 'ceramide', 'hyaluronic'], 7996],
+  [['moisturizer', 'moisturize', 'cream', 'gel cream', 'hydration', 'hydrating'], 8941],
+  [['cleanser', 'cleansing', 'face wash', 'foam', 'cleanse'], 7984],
+  [['toner', 'essence', 'mist'], 7994],
+  [['acne', 'breakout', 'pimple', 'blemish'], 7999],
+  [['eye cream', 'eye care', 'dark circle'], 7989],
+  [['sheet mask', 'face mask', 'sleeping mask'], 957],
+  [['lip', 'lip balm', 'lip care'], 8023],
+  [['hair', 'shampoo', 'conditioner', 'scalp'], 7141],
+  [['body lotion', 'body care', 'body wash'], 7987],
+  [['k-beauty', 'korean', 'kbeauty'], 3529],
+  [['japanese', 'j-beauty'], 7976],
+  [['men', "men's"], 9677],
+];
+
+function getRelatedCategoryId(titleAndSlug: string): number {
+  const text = titleAndSlug.toLowerCase();
+  for (const [keywords, catId] of KEYWORD_CATEGORY) {
+    if (keywords.some((kw) => text.includes(kw))) return catId;
+  }
+  return 806; // sunscreen as default — reliable images
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const post = await getWordPressPostBySlug(params.slug);
   if (!post) notFound();
+
+  const relatedCatId = getRelatedCategoryId(`${post.title} ${post.slug}`);
+  const { products: relatedProducts } = await getProducts({
+    category: String(relatedCatId),
+    per_page: 4,
+    orderby: 'popularity',
+    order: 'desc',
+  });
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -131,12 +168,55 @@ export default async function BlogPostPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
         />
 
-        <div className="mt-10 rounded-2xl border border-hairline bg-card p-5 shadow-card">
-          <p className="text-sm font-semibold text-ink">Need the products from this guide?</p>
-          <Link href="/shop" className="mt-2 inline-flex text-sm font-bold text-accent">
-            Shop authentic skincare →
-          </Link>
-        </div>
+        {relatedProducts.length > 0 && (
+          <section className="mt-10">
+            <h2 className="mb-4 text-xl font-bold text-ink">Shop Related Products</h2>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {relatedProducts.map((p) => {
+                const img = p.images?.[0]?.src;
+                const price = p.sale_price || p.regular_price || p.price;
+                const inStock = p.stock_status === 'instock';
+                return (
+                  <Link
+                    key={p.id}
+                    href={`/shop/${p.slug}`}
+                    className="group flex flex-col overflow-hidden rounded-xl border border-hairline bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-card"
+                  >
+                    <div className="relative aspect-square w-full overflow-hidden bg-bg-alt">
+                      {img && (
+                        <Image
+                          src={img}
+                          alt={p.name}
+                          fill
+                          sizes="(max-width: 640px) 50vw, 25vw"
+                          className="object-cover transition-transform duration-200 group-hover:scale-105"
+                        />
+                      )}
+                      {!inStock && (
+                        <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white">
+                          Out of stock
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex flex-1 flex-col p-3">
+                      <p className="line-clamp-2 text-xs font-semibold leading-snug text-ink group-hover:text-accent">
+                        {p.name}
+                      </p>
+                      {price && (
+                        <p className="mt-1 text-xs font-bold text-accent">
+                          {formatBDT(parseFloat(price))}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+            <Link href="/shop" className="mt-4 inline-flex text-sm font-bold text-accent">
+              View all products →
+            </Link>
+          </section>
+        )}
       </article>
     </main>
   );
