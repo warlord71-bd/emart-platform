@@ -504,7 +504,7 @@ const _getProductsCached = unstable_cache(
     };
   },
   ['woo-products'],
-  { revalidate: 300, tags: ['products'] },
+  { revalidate: 3600, tags: ['products'] },
 );
 
 export async function getProducts(params: ProductsParams = {}): Promise<{
@@ -927,7 +927,7 @@ const _getOriginTermsCached = unstable_cache(
       : [];
   },
   ['woo-origin-terms'],
-  { revalidate: 300, tags: ['products'] },
+  { revalidate: 3600, tags: ['products'] },
 );
 
 export async function getOriginTermCounts(): Promise<Record<string, number>> {
