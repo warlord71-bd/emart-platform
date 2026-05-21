@@ -1084,3 +1084,39 @@ ps aux | grep "image-import-v2" | grep -v grep
   4. INFO: next.config.js has 303 redirects — build-time only, no runtime impact.
   5. INFO: WC system_status returns wc_version=null — API field only, WC is working.
 - Final git state: LOCAL = VPS = ORIGIN = 048b855
+
+---
+## 2026-05-21 Performance + SEO fixes — Claude Sonnet 4.6
+
+### Done
+- **React cache() on getProduct** — eliminates duplicate Axios call between generateMetadata() and page render. Single network request per server render pass. (`f3c3c56`)
+- **getCachedProduct unstable_cache** — 86400s ISR with tags `product-{slug}` + `products`. Both getProduct calls in shop/[slug]/page.tsx replaced. (`f3c3c56`)
+- **WooCommerce webhooks** — product.created (ID:5) + product.deleted (ID:6) created. product.updated (ID:4) was already active. All 3 active → WC product changes instantly revalidate Next.js cache.
+- **og:type=product fix** — removed duplicate og:type=website+product. Omitting openGraph.type in Next.js prevents the website default; other:{'og:type':'product'} emits single correct tag. (`069e8c6`)
+
+### Notes
+- Next.js runtime rejects 'product' as openGraph.type (not in OpenGraphType union) — only workaround is other{} + omit type from openGraph
+- Blog posts correctly use openGraph.type: 'article' (valid type, no change needed)
+- All other pages inherit og:type=website from layout.tsx (correct)
+
+---
+## 2026-05-21 Homepage SEO + UI fixes — Claude Sonnet 4.6
+
+### Done
+- **Merged 5 duplicate mobile/desktop blocks** (ConcernTiles, IngredientTiles, RoutineTeaser, SkinGuide, BlogTeaser) — each section was output twice in HTML (once for mobile, once for desktop via CSS hide/show). Now single responsive flex→grid block per section. 127 lines removed. (`9b7224b`)
+- **Read article → sr-only fix** — blog teaser CTAs now include sr-only post title for descriptive anchor text. Crawlers and screen readers get context.
+- **Flash sale stock badge** — "Only X left" now only shown when stock_quantity is a real number ≤ 10. Fake fallback (product_id % 8 + 3) removed. Products without WC stock management show no badge.
+- **og:type=product** — fixed duplicate (website + product); now single clean product tag via other{} (`069e8c6`)
+- **React cache() + unstable_cache on getProduct** — eliminates duplicate Axios call per render (`f3c3c56`)
+- **WooCommerce webhooks** — product.created + product.deleted added; all 3 active (`f3c3c56`)
+- **Footer year** — dynamic new Date().getFullYear() (`6cf97cf`)
+
+### Gemini audit findings — what was wrong vs right
+- Issue 1 (h1 hierarchy): WRONG — h1 already correct in page.tsx sr-only; Shop by category already h2
+- Issue 2 (duplicate blocks): REAL — fixed above
+- Issue 3 (ticker duplication): WRONG — intentional CSS marquee pattern, do not touch
+- Issue 4 (anchor text): PARTIALLY REAL — fixed Read article →; View All already has aria-label
+- Issue 5 (fake stock): REAL — fixed above
+
+### Current state
+- Local = VPS = origin = 9b7224b
