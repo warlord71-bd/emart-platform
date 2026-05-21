@@ -1000,3 +1000,87 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: delivery charge free/off toggle behavior; static free-delivery copy cleanup on web surfaces.
 - Blockers hit: Existing unrelated local/VPS dirty files remain; only delivery files were synced/deployed.
 - Next step: If mobile app delivery fee must match this dynamic Woo toggle, update mobile source and release separately.
+
+---
+## 2026-05-21 (continued) — Claude Sonnet 4.6
+- Did: SEO fixes for 4 reported issues + all category redirect verification.
+- Redirect fixes: /category/skincare/melasma and /category/skincare/acne now single-hop to /concerns/*; /product-category/skincare/j-beauty-skincare and /korean-skincare-routine fixed (were landing at /shop via Nginx broad catch — added exact Nginx rules before the catch).
+- SEO fixes (commit f3f7188):
+  - Removed 10 generic global keywords from layout.tsx (were cascading to all pages)
+  - concerns/[slug]: page-specific keywords + googleBot directives restored
+  - ingredients/[slug]: page-specific keywords + googleBot directives restored
+  - blog/page.tsx: title → "Skincare Guides & Tips | Emart Skincare Bangladesh"
+  - our-story/page.tsx: og:image → store-interior.webp (923×671) instead of logo
+- All changes verified live. Pushed to origin/main.
+
+---
+## 2026-05-21 FINAL SYNC — Claude Sonnet 4.6
+**Three-way state: LOCAL = VPS = ORIGIN = f3f7188 ✓  All source files clean.**
+
+### Full session summary (2026-05-20 → 2026-05-21)
+
+**CLAUDE-2/3 — LLM Pool** (commit e3a1a09)
+- Created `apps/web/src/lib/llmPool.ts`: Ollama primary → OpenRouter fallback
+- OpenRouter key: `/root/.openclaw/credentials/openrouter_default.json`
+- Active model: `deepseek/deepseek-v4-flash:free` (free, 1M context)
+
+**Blog generator cron** (script: `/root/.openclaw/workspace-emart/blog_generator.py`)
+- 3 posts/day: 07:00, 15:00, 23:00 UTC (1pm, 9pm, 5am BD)
+- WP featured media from WC product image; publishes via `emartadmin` app password
+- 28 rotating skincare topics; state: `blog_generator_state.json`
+- Fallback models: gemma-4-31b, gemma-4-26b, minimax-m2.5 (all free)
+- WP app password: `mrVDk8iqIQm81nXnew13EzzO` (emartadmin, created 2026-05-20)
+- Blog card images live; related product cards in blog posts live
+
+**CLAUDE-4 — About/E-E-A-T page** (commit e3a1a09)
+- `/about-us` live with Organization + Person JSON-LD, credentials, physical address
+- Removed Nginx + next.config.js redirect that was blocking `/about-us`
+
+**CLAUDE-5 — Category SEO** (commit e3a1a09)
+- `CATEGORY_SEO_OVERRIDES` for top-10 categories in `category/[slug]/page.tsx`
+- `getCategoryIntro` entries for eye-cream, sheet-mask, lip-care
+
+**Category taxonomy cleanup** (commit 227a650 + DB ops)
+- 5,113 DB operations: removed all products from deprecated categories
+- k-beauty-j-beauty: 0 (was 1,471) — Korean → korean-beauty, Japanese → japanese-beauty
+- skincare-essentials: 0 (was 2,166) — all had specific cats already
+- shop-by-concern: 0 (was 595) — concern chips still via specific concern cats
+- shooting-gel: 0 (was 41) → moved to new `soothing-gel` category
+- korean-beauty: 2,118 (was 1,394) ✓  japanese-beauty: 105 (was 78) ✓
+- Soothing Gel added to Skincare nav section + SEO intro
+- Rollback SQL: `workspace/audit/active/category-reassign-rollback-20260521-134017.sql`
+
+**ISR cache fix** (commit d5497cf)
+- `_getProductsCached` and `_getOriginTermsCached` raised 300→3600
+- Product pages now emit `s-maxage=3600` correctly (was capped at 300)
+
+**Codex nginx branch merge** (commit 8b01006)
+- Moved /shop and /category/:slug CDN cache headers from Nginx into next.config.js
+- Nginx exact-match /shop rule preserved; product pages unaffected
+
+**Category redirect fixes** (commit 9951571)
+- Fixed 6 broken/2-hop redirects
+- Nginx: added exact rules for /product-category/skincare/j-beauty-skincare → /category/japanese-beauty and /korean-skincare-routine → /category/korean-beauty (were wrongly landing at /shop)
+
+**SEO fixes** (commit f3f7188)
+- layout.tsx: removed 10 generic global keywords (were identical on all pages)
+- concerns/[slug] + ingredients/[slug]: page-specific keywords + googleBot directives
+- blog/page.tsx: title → "Skincare Guides & Tips | Emart Skincare Bangladesh"
+- our-story/page.tsx: og:image → store-interior.webp (923×671) replaces logo
+
+### Still open (next session priorities)
+1. `pa_concern` assignment — fresh dry-run needed (1,406 products missing; live term slugs differ from old CSV)
+2. `pa_origin` 17-gap fill — need owner call on combo/tool products
+3. Blog: auto-trigger ISR revalidate `/blog` after each cron post publishes
+4. Healthy Place brand cleanup — needs owner confirmation
+5. CODEX-5 Exonhost → Contabo migration — needs maintenance window
+
+---
+## 2026-05-21 Complexity audit — Claude Sonnet 4.6
+- Complexity scan findings and fixes:
+  1. CRITICAL fixed: Blog generator silent 429 — all 4 OpenRouter free models hit daily quota simultaneously. Added 30s wait between 429'd models + 90s pause then full retry. Commit 048b855.
+  2. MINOR fixed: getCategoryIntro false match — `lip-care` slug was matched by `lip` key first (substring match). Moved lip-care + lip-balm-care before `lip` in intros map. Commit 048b855.
+  3. LOW monitor: emart-presence 15 restarts / 18 days — 0 unstable, normal crash-recovery.
+  4. INFO: next.config.js has 303 redirects — build-time only, no runtime impact.
+  5. INFO: WC system_status returns wc_version=null — API field only, WC is working.
+- Final git state: LOCAL = VPS = ORIGIN = 048b855

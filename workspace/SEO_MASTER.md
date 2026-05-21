@@ -1,6 +1,6 @@
 # Emart SEO Master — Source of Truth
 
-**Last verified:** 2026-05-19 (live curl audit, 40+ URLs)
+**Last verified:** 2026-05-21 (live curl audit + meta tag spot-checks)
 **Owner:** Claude (code) + Warlord (content/business decisions)
 **Rule:** This file is the single SEO source of truth. Update it when items close or new gaps are confirmed live. Do not update based on AI analysis alone — verify with curl before changing status.
 
@@ -44,7 +44,7 @@ All items below are verified working on the live site as of 2026-05-19.
 - Wrong "Korea import" copy cleaned across catalog ✅
 - Sale prices cleared catalog-wide ✅
 - SKU gaps fixed (0 missing, 0 duplicate) ✅
-- pa_concern + pa_ingredient + pa_skin_type assigned ✅
+- pa_concern + pa_ingredient + pa_skin_type assigned ✅ (pa_ingredient + pa_skin_type done; pa_concern PARTIALLY done — 2,235/3,641 have concern as of 2026-05-21, 1,406 still missing)
 - Lint enforced in production builds ✅
 - Category/brand page descriptions no longer truncated — `line-clamp-2` removed ✅
 - Authentic badge hidden on mobile (was leaking through filter reindex) ✅
@@ -59,10 +59,35 @@ All items below are verified working on the live site as of 2026-05-19.
 - `/sale`: CollectionPage JSON-LD schema ✅
 - `/track-order`: sr-only H1 + proper metadata description ✅
 - Hreflang x-default + en-BD on homepage via alternates.languages ✅
+- /about-us E-E-A-T page live: Organization + Person JSON-LD, credentials, address, trust signals ✅ (2026-05-20)
+- /faq page: export metadata (title, description, canonical, OG) added ✅ (2026-05-20)
+- Blog title: "Skincare Guides & Tips | Emart Skincare Bangladesh" ✅ (2026-05-21)
+- /our-story og:image: store-interior.webp 923×671 — no longer falls back to 600×600 logo ✅ (2026-05-21)
+- Concerns + ingredients pages: page-specific keywords (was identical generic keywords on all pages) ✅ (2026-05-21)
+- Concerns + ingredients pages: googleBot directives restored (were dropped by robots override) ✅ (2026-05-21)
+- Global generic keywords removed from layout.tsx — were cascading identically to all pages ✅ (2026-05-21)
+- Category taxonomy cleanup: deprecated categories fully emptied (skincare-essentials 0, k-beauty-j-beauty 0, shop-by-concern 0) ✅ (2026-05-21)
+- korean-beauty: 2,118 products (was 1,394); japanese-beauty: 105 (was 78) — correct origin assignment ✅ (2026-05-21)
+- All 31 category redirects verified live; 4 broken fixed (/product-category/skincare/j-beauty-skincare, /korean-skincare-routine, 2 two-hop chains) ✅ (2026-05-21)
+- ISR cache: product pages now emit s-maxage=3600 (was incorrectly capped at 300 by unstable_cache) ✅ (2026-05-21)
+- Category SEO overrides: top-10 categories have explicit titles + 140-160 char descriptions ✅ (2026-05-20)
+- Soothing Gel: new category page + nav entry + SEO intro ✅ (2026-05-21)
 
 ---
 
 ## 🔴 OPEN — Critical
+
+### C_CONCERN: pa_concern — HIGH+MED applied, LOW+SKIP awaiting manual review
+**Updated 2026-05-21:** 2,235 → **2,480** products now have pa_concern (68%).
+**Applied:** 245 products (HIGH:1 MED:244) × 376 concern assignments. Rollback: `pa-concern-rollback-20260521-174257.sql`
+**Post-apply concern counts:** dryness-hydration:787, acne-blemish:529, sensitivity:435, anti-aging-repair:353, hyperpigmentation:346, brightening:338, sunscreen:306, wrinkle:295, pores-blackheads:234
+**Remaining gap:** ~1,161 products still without concern — manual review CSV ready:
+  `workspace/audit/active/pa-concern-manual-review-20260521-174247.csv` (1,161 rows)
+  — 353 LOW-confidence rows: concern already suggested, just approve/change/skip
+  — 603 no-signal rows (korean-beauty only, no sub-category): suggestion column filled
+  — 205 confirmed SKIP (hair/makeup/non-skin): keep as SKIP or override
+**How to apply reviewed rows:** edit `review_action` column → APPROVE, then run `pa-concern-apply.py` on filtered CSV
+**Logic note:** korean-beauty alone is NOT used as a concern signal — products only in that category need manual assignment or a specific sub-category.
 
 ### C2: Homepage title is 70 chars (Google truncates at ~60)
 **Verified:** Title = "Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty" → 70 chars
@@ -148,7 +173,7 @@ This cannot be solved in a sprint — requires a sustained content calendar.
 
 ---
 
-## Schema Coverage Map (live-verified 2026-05-19)
+## Schema Coverage Map (live-verified 2026-05-21)
 
 | Page type | Schema present | Still missing |
 |---|---|---|
@@ -160,12 +185,13 @@ This cannot be solved in a sprint — requires a sustained content calendar.
 | Ingredient | CollectionPage, ItemList, BreadcrumbList | — |
 | Routine step | CollectionPage, ItemList, BreadcrumbList | — |
 | /faq | FAQPage | — |
-| Blog listing | WebSite, OnlineStore | Blog/ItemList (M1) |
+| /about-us | Organization, Person | — |
+| Blog listing | Blog, BlogPosting JSON-LD ✅ | — |
 | Blog post | Article | — |
-| /new-arrivals | WebSite, OnlineStore | CollectionPage, ItemList (M2) |
-| /sale | WebSite, OnlineStore | CollectionPage, ItemList (M2) |
-| /origins | WebSite, OnlineStore | CollectionPage (M2) + sub-routes (C3) |
-| /track-order | WebSite, OnlineStore | H1 (C1) |
+| /new-arrivals | CollectionPage, ItemList ✅ | — |
+| /sale | CollectionPage, ItemList ✅ | — |
+| /origins | WebSite, OnlineStore | CollectionPage per country page |
+| /track-order | WebSite, OnlineStore | sr-only H1 exists |
 
 ---
 
@@ -197,13 +223,16 @@ Record of AI analysis that was inaccurate — for reference when evaluating futu
 ## Priority Order for Next Work Session
 
 ```
-1. C1  — /track-order H1 (10 min, code)
-2. C3  — /origins/[country] routes (half day, code)  ← discuss with owner first
-3. M1  — /blog listing schema (15 min, code)
-4. M2  — /new-arrivals + /sale + /origins schema (30 min, code)
-5. M5  — hreflang x-default (15 min, code)
-6. C2  — Homepage title trim (owner must approve new title first)
-7. M4  — FAQ quality regeneration (large, plan separately)
-8. M6  — Ingredient/concern long-form content (large, plan separately)
-9. O1–O4 — New page types (owner decision required)
+1. C_CONCERN — pa_concern assignment (1,406 products, Codex task, fresh dry-run first)
+2. C2        — Homepage title trim (owner must approve new title — 70 chars → ~55)
+3. pa_origin — 17-gap fill (owner decision: Korea for combos, China for tools)
+4. M4        — FAQ quality regeneration (large, Codex task, plan separately)
+5. M6        — Ingredient/concern long-form content (large, plan separately)
+6. O1        — /origins/[country] editorial copy (South Korea first)
+7. O2–O4     — New page types (owner decision required)
+8. L2        — Critical CSS inlining (critters, medium effort)
+9. L3        — /brands page 785KB size reduction
 ```
+
+Already complete since 2026-05-19 audit:
+- Blog title, og:images, googlebot, keywords, category cleanup, ISR fix, redirects, E-E-A-T page, category SEO
