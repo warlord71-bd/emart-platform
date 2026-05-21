@@ -184,7 +184,7 @@ export const ORIGIN_NAV_ITEMS: OriginNavItem[] = [
     slug: origin.country,
     country: origin.country,
     flag: origin.flag,
-    href: `/origins?country=${origin.country}`,
+    href: `/origins/${origin.country}`,
     description: origin.desc,
   })),
 ];

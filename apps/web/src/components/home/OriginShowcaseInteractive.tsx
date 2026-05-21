@@ -59,7 +59,7 @@ export const OriginShowcaseInteractive: React.FC<OriginShowcaseInteractiveProps>
         {selectedOrigin && selectedOrigin.products && selectedOrigin.products.length > 0 ? (
           <HomeProductRail
             products={selectedOrigin.products}
-            viewAllHref={`/origins?country=${selectedOrigin.slug}`}
+            viewAllHref={`/origins/${selectedOrigin.slug}`}
             viewAllLabel={`${selectedOrigin.name} products`}
           />
         ) : selectedOrigin ? (

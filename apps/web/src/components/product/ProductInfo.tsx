@@ -248,7 +248,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const flavorAttr = getAttributeValue('flavor') || getAttributeValue('flavour') || getAttributeValue('scent');
   const categoryName = getDisplayCategory(product);
   const brandHref = brandName ? `/brands/${encodeURIComponent(brandSlug)}` : '/brands';
-  const originHref = madeIn ? `/origins?country=${encodeURIComponent(getOriginCountrySlug(madeIn))}` : '/origins';
+  const originHref = madeIn ? `/origins/${getOriginCountrySlug(madeIn)}` : '/origins';
   const productDisplayPrice = getProductDisplayPrice(product);
   const whatsappOrderHref = getWhatsAppOrderHref(product);
   const visibleSku = getVisibleSku(product);

@@ -233,7 +233,7 @@ export default function HumanSitemapPage() {
                 { label: 'All Origins', href: '/origins' },
                 ...ORIGIN_NAV_ITEMS.map((origin) => ({
                   label: origin.name,
-                  href: origin.href || `/origins?country=${origin.country}`,
+                  href: origin.href || `/origins/${origin.country}`,
                   description: origin.description,
                 })),
               ]}

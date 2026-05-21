@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 const ORIGINS = [
-  { name: 'Korea', emoji: '🇰🇷', slug: 'korea' },
+  { name: 'Korea', emoji: '🇰🇷', slug: 'south-korea' },
   { name: 'Japan', emoji: '🇯🇵', slug: 'japan' },
   { name: 'UK', emoji: '🇬🇧', slug: 'uk' },
   { name: 'USA', emoji: '🇺🇸', slug: 'usa' },
@@ -31,7 +31,7 @@ export const OriginChips = () => {
           {ORIGINS.map((origin) => (
             <Link
               key={origin.slug}
-              href={`/origins?country=${encodeURIComponent(origin.slug)}`}
+              href={origin.slug === 'other' ? '/origins' : `/origins/${origin.slug}`}
               className="group inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-4 py-2.5 transition-all duration-200 hover:border-accent/30 hover:bg-accent-soft hover:shadow-card"
             >
               <span className="text-lg md:text-xl">{origin.emoji}</span>
