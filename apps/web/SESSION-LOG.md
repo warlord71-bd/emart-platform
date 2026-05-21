@@ -1127,3 +1127,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Completed tasks: small SEO redirect cleanup, commit `559549d`
 - Blockers hit: Cloudflare briefly served stale cached 200s for category aliases; no-cache live checks confirmed fresh 308 redirects after expiry.
 - Next step: Continue with open SEO master priorities; no further action needed for these aliases.
+
+---
+## 2026-05-21 21:20 CEST — Codex
+- Did: Applied item-specific, easy-English product FAQ cleanup to top 200 sales products via `_emart_product_faq`; saved rollback and revalidated product cache.
+- Completed tasks: top 200 product FAQ cleanup; review `workspace/audit/active/product-faq-seo-review-top200-20260521.md`; rollback `workspace/audit/active/product-faq-seo-rollback-top200-20260521.json`
+- Blockers hit: Live PDPs initially served cached FAQ; cleared with `/api/revalidate` `tag:products`.
+- Next step: Continue product data quality work; do not restore delivery/COD/site-policy questions into product FAQ.
