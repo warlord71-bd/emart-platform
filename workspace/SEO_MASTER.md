@@ -72,6 +72,7 @@ All items below are verified working on the live site as of 2026-05-19.
 - ISR cache: product pages now emit s-maxage=3600 (was incorrectly capped at 300 by unstable_cache) ✅ (2026-05-21)
 - Category SEO overrides: top-10 categories have explicit titles + 140-160 char descriptions ✅ (2026-05-20)
 - Soothing Gel: new category page + nav entry + SEO intro ✅ (2026-05-21)
+- Homepage title: "Emart Skincare Bangladesh | Korean & Global Beauty" — 50 chars ✅ (2026-05-21)
 
 ---
 
@@ -89,12 +90,8 @@ All items below are verified working on the live site as of 2026-05-19.
 **How to apply reviewed rows:** edit `review_action` column → APPROVE, then run `pa-concern-apply.py` on filtered CSV
 **Logic note:** korean-beauty alone is NOT used as a concern signal — products only in that category need manual assignment or a specific sub-category.
 
-### C2: Homepage title is 70 chars (Google truncates at ~60)
-**Verified:** Title = "Emart Skincare Bangladesh | Authentic Korean, Japanese & Global Beauty" → 70 chars
-**Impact:** Displays as truncated in SERPs: "Emart Skincare Bangladesh | Authentic Korean, Japa…"
-**Note:** Title format was approved by owner 2026-05-16. Trimming requires owner re-approval.
-**Fix options:** "Emart | Authentic Korean & Japanese Skincare Bangladesh" (55 chars) or "Emart Skincare Bangladesh | Korean & Global Beauty" (50 chars)
-**Owner decision required before touching.**
+### ~~C2: Homepage title trim~~ ✅ DONE
+Title = "Emart Skincare Bangladesh | Korean & Global Beauty" — 50 chars, verified live 2026-05-21.
 
 ---
 
