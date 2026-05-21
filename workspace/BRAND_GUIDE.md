@@ -1,5 +1,12 @@
 # Emart Brand SEO & Identity Guide
 
+## Positioning
+
+- **One-line:** "Korean-first. Global-complete. BD-delivered."
+- Not a pure K-beauty store — global beauty hub with Korean leadership.
+
+---
+
 ## Official Brand Names
 
 Short name:
