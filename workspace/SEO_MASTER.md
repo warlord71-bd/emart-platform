@@ -101,25 +101,39 @@ Title = "Emart Skincare Bangladesh | Korean & Global Beauty" — 50 chars, verif
 **Evidence:** Multiple products return generic "Apply as directed for this product type…" answers
 **Impact:** FAQPage schema present but thin answers reduce rich-result quality score
 **Fix:** Re-generate FAQ for top 200 SKUs using product-specific inputs. Verify first 10 manually before bulk run.
-**Effort:** Large — Codex task (prompt written, ready to run)
-**Owner:** Confirm approach before Codex starts
+**Storage/rendering:** Product FAQs are stored in Woo post meta `_emart_product_faq`; frontend reads that meta in `apps/web/src/app/shop/[slug]/page.tsx` and renders the same content as visible FAQ + FAQPage JSON-LD. Do **not** store product FAQs in ingredient/concern page files.
+**Generation inputs required:** product name, brand, categories, ingredients (`_emart_ingredients`, Woo ingredient meta, or product attributes), skin type tags, concern tags, how-to-use (`_emart_how_to_use` or short description), origin, size, price, and current product URL.
+**Output contract:** exactly 5 Q/A pairs, mixed English + Bangla, product-specific, no delivery/COD/site-policy answers, no unsupported medical claims, no invented benefits. Include authenticity, use-case, how-to-use, skin-type fit, and caution/who-should-avoid themes.
+**Execution notes for Claude Code:** Use OpenRouter credentials from local secure credential file if LLM generation is needed, but never commit credentials/API keys. WordPress/Woo/local DB credentials may exist on the VPS; read them from secure local config only, never copy them into scripts, logs, reports, or commits.
+**Verification gate:** Generate a review report for top 10 first, manually inspect for product specificity, then apply top 10 only. If approved, generate/apply top 200. Remaining catalog is a separate sprint.
+**Effort:** Large — Woo meta mutation task; dry-run/review/apply required.
+**Owner:** Confirm top-10 review output before any bulk apply.
 
-### M6: Long-form content on ingredient + concern pages
-**Current state:** ~600–900 word product grids with short intro
-**Gap:** No educational H2 sections (what is it, how it works, Bangladesh climate, FAQ)
-**Impact:** Biggest content gap vs Shajgoj on informational queries
-**Fix:** Generate 1,500–2,000 word blocks per page. Store as static JSON. Verify niacinamide + hyaluronic-acid first.
-**Effort:** Large — Codex task (prompt written, ready to run)
-**Owner:** Confirm LLM approach and review process before starting
+### M6: Ingredient + concern education content refinement
+**Updated 2026-05-21:** Initial long-form blocks already exist and render above product grids.
+**Current state:**
+- 15 ingredient pages have `apps/web/src/data/ingredient-content.json` entries, ~1,560 words each, 6 H2 sections + 5 FAQs.
+- 9 concern pages have `apps/web/src/data/concern-content.json` entries, ~1,500 words each, 6 H2 sections + 5 FAQs.
+- Frontend renders them through `EducationContent` in `apps/web/src/app/ingredients/[slug]/page.tsx` and `apps/web/src/app/concerns/[slug]/page.tsx`.
+**Remaining gaps:**
+- FAQ content is visible but ingredient/concern pages do **not** emit FAQPage JSON-LD for those education FAQs yet.
+- Content is too templated across pages; it needs more ingredient/concern-specific detail and safer factual nuance.
+- Ingredient pages currently have 0 internal links in the education copy.
+- Concern pages currently have only ~3 ingredient links and 0 routine links; target is at least 5 ingredient links + 3 routine-step links where natural.
+**Fix:** Refinement sprint, not a fresh build. First update `niacinamide`, `hyaluronic-acid`, `acne-blemish-care`, and `dryness-hydration`; add FAQPage JSON-LD; improve internal links and reduce templated phrasing. Review live before bulk-updating the remaining pages.
+**Effort:** Medium-large — content + small schema render patch.
+**Owner:** Warlord review required after first 4 pages before bulk.
 
 ---
 
 ## 🔵 OPEN — Needs Owner Decision Before Starting
 
 ### O1: `/origins/[country]` editorial content
-C3 routes are live (200 ✅). Each country page currently shows products only.
-South Korea + Japan need 600+ word intro copy for K-Beauty / J-Beauty angle.
-**Priority:** South Korea first (largest catalog), then Japan.
+Routes/indexing are already handled: `/origins/[country]` pages are live, sitemap includes origin URLs, and `/origins?country=X` redirects to `/origins/X` per 2026-05-21 verification.
+**Current content state:** only `south-korea`, `japan`, and `usa` have editorial content in `apps/web/src/lib/origin-editorial.ts`.
+**Remaining gap:** Other origin pages are product grids with minimal story/header copy. Add 600+ word country-specific editorial content where the country has meaningful catalog depth.
+**Priority:** South Korea/Japan/USA exist; next candidates should be chosen by product count and search value, not a blind 20-country bulk run.
+**Owner must:** Confirm final country list before generation.
 
 ### O2: Product comparison pages (`/compare/[slug1]-vs-[slug2]`)
 **What:** Programmatic comparison pages for high-intent queries ("COSRX vs The Ordinary niacinamide")
@@ -220,15 +234,14 @@ Record of AI analysis that was inaccurate — for reference when evaluating futu
 ## Priority Order for Next Work Session
 
 ```
-1. C_CONCERN — pa_concern assignment (1,406 products, Codex task, fresh dry-run first)
-2. C2        — Homepage title trim (owner must approve new title — 70 chars → ~55)
-3. pa_origin — 17-gap fill (owner decision: Korea for combos, China for tools)
-4. M4        — FAQ quality regeneration (large, Codex task, plan separately)
-5. M6        — Ingredient/concern long-form content (large, plan separately)
-6. O1        — /origins/[country] editorial copy (South Korea first)
-7. O2–O4     — New page types (owner decision required)
-8. L2        — Critical CSS inlining (critters, medium effort)
-9. L3        — /brands page 785KB size reduction
+1. C_CONCERN — pa_concern manual-review apply (~1,161 products remain; use current review CSV only)
+2. M4        — Product FAQ quality regeneration (top 10 review gate, then top 200)
+3. M6        — Ingredient/concern education refinement + FAQPage JSON-LD + internal links
+4. O1        — /origins/[country] editorial expansion for selected high-value countries
+5. O2–O4     — New page types (owner decision required)
+6. L2        — Critical CSS inlining (critters, medium effort)
+7. L3        — /brands page 785KB size reduction
+8. L4        — H2s missing on /brands, /sale, /new-arrivals
 ```
 
 Already complete since 2026-05-19 audit:
