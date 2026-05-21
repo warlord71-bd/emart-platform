@@ -613,7 +613,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: seoDescription,
       url: seoCanonical,
       images: seoOgImage ? [{ url: seoOgImage, width: 800, height: 800 }] : undefined,
-      type: 'website',
     },
     other: {
       'og:type': 'product',
