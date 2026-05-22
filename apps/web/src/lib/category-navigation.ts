@@ -122,6 +122,7 @@ export const CATEGORY_NAV_SECTIONS: MenuCategoryGroup[] = [
       { name: 'Soothing Gel', slug: 'soothing-gel' },
       { name: 'Masks', slug: 'face-masks' },
       { name: 'Kits & Combos', slug: 'emart-combos', href: '/category/emart-combos' },
+      { name: 'Beauty Devices & Tools', slug: 'beauty-devices-tools' },
     ],
   },
   {
