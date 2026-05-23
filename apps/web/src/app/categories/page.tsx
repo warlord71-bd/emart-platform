@@ -34,9 +34,9 @@ export const revalidate = 60;
 
 function SectionSkeleton({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
   return (
-    <div className={tone === 'dark' ? 'bg-[var(--mb-navy)] py-8' : 'py-8'}>
-      <div className="mb-container">
-        <div className={tone === 'dark' ? 'h-48 animate-pulse rounded-[var(--mb-radius)] bg-white/10' : 'h-48 animate-pulse rounded-[var(--mb-radius)] bg-[var(--mb-pink-bg)]'} />
+    <div className={tone === 'dark' ? 'bg-[#1B1B2F] py-8' : 'py-8'}>
+      <div className="mx-auto w-[min(calc(100%-2rem),1180px)]">
+        <div className={tone === 'dark' ? 'h-48 animate-pulse rounded-xl bg-white/10' : 'h-48 animate-pulse rounded-xl bg-accent-soft'} />
       </div>
     </div>
   );

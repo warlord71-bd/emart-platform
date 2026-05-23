@@ -70,6 +70,15 @@ export default async function SalePage({ searchParams }: SalePageProps) {
     stock_status: searchParams.in_stock === '1' ? 'instock' : undefined,
   });
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
+      { '@type': 'ListItem', position: 2, name: 'Sale', item: absoluteUrl('/sale') },
+    ],
+  };
+
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -96,6 +105,7 @@ export default async function SalePage({ searchParams }: SalePageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
 
       {/* Header */}

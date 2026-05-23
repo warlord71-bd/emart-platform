@@ -7,7 +7,7 @@ export interface Breadcrumb {
 }
 
 interface CollectionPageHeaderProps {
-  type: 'brand' | 'category' | 'origin';
+  type: 'brand' | 'category' | 'origin' | 'concern' | 'ingredient' | 'routine';
   breadcrumbs: Breadcrumb[];
   title: string;
   description?: string;

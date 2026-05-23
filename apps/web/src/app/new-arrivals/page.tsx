@@ -33,6 +33,15 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
     after: afterDate,
   });
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
+      { '@type': 'ListItem', position: 2, name: 'New Arrivals', item: absoluteUrl('/new-arrivals') },
+    ],
+  };
+
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -50,6 +59,7 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
       <div className="mb-6 border-b border-hairline pb-5">
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">New</p>
