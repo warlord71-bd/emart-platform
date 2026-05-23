@@ -141,10 +141,13 @@ export function getIngredientHref(slug: string): string {
   return `/ingredients/${slug}`;
 }
 
+type ListingExtras = { orderby?: 'date'|'price'|'popularity'|'rating'|'title'; order?: 'asc'|'desc'; min_price?: string; max_price?: string; stock_status?: 'instock'|'outofstock'|'onbackorder' };
+
 export async function getIngredientListing(
   slug: string,
   page = 1,
   perPage = 24,
+  extras?: ListingExtras,
 ): Promise<{ ingredient: IngredientDefinition | null; products: WooProduct[]; total: number; totalPages: number }> {
   const ingredient = getIngredientBySlug(slug);
   if (!ingredient) return { ingredient: null, products: [], total: 0, totalPages: 0 };
@@ -155,6 +158,7 @@ export async function getIngredientListing(
     search: ingredient.searchKeywords[0],
     orderby: 'popularity',
     order: 'desc',
+    ...extras,
   }).catch(() => ({ products: [], total: 0, totalPages: 0 }));
 
   return { ingredient, ...results };

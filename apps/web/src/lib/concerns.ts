@@ -85,7 +85,9 @@ export function getConcernHref(slug: string) {
   return `/concerns/${slug}`;
 }
 
-export async function getConcernListing(slug: string, page = 1, perPage = 24): Promise<{
+type ListingExtras = { orderby?: 'date'|'price'|'popularity'|'rating'|'title'; order?: 'asc'|'desc'; min_price?: string; max_price?: string; stock_status?: 'instock'|'outofstock'|'onbackorder' };
+
+export async function getConcernListing(slug: string, page = 1, perPage = 24, extras?: ListingExtras): Promise<{
   concern: ConcernDefinition | null;
   products: WooProduct[];
   total: number;
@@ -96,6 +98,8 @@ export async function getConcernListing(slug: string, page = 1, perPage = 24): P
     return { concern: null, products: [], total: 0, totalPages: 0 };
   }
 
+  const base = { orderby: 'popularity' as const, order: 'desc' as const, ...extras };
+
   if (concern.categorySlug) {
     const category = await getCategoryBySlug(concern.categorySlug);
     if (category?.id) {
@@ -103,8 +107,7 @@ export async function getConcernListing(slug: string, page = 1, perPage = 24): P
         page,
         per_page: perPage,
         category: String(category.id),
-        orderby: 'popularity',
-        order: 'desc',
+        ...base,
       });
 
       if (listing.products.length > 0 || !concern.searchQuery) {
@@ -118,8 +121,7 @@ export async function getConcernListing(slug: string, page = 1, perPage = 24): P
       page,
       per_page: perPage,
       search: concern.searchQuery,
-      orderby: 'popularity',
-      order: 'desc',
+      ...base,
     });
 
     return { concern, ...listing };

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getProductsByOriginTermSlug } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
+import CatalogFilters from '@/components/product/CatalogFilters';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
 import { getOriginByCountry } from '@/lib/origin-navigation';
@@ -17,8 +18,23 @@ const PRODUCTS_PER_PAGE = 24;
 
 interface Props {
   params: { country: string };
-  searchParams: { page?: string };
+  searchParams: { page?: string; sort?: string; price?: string; in_stock?: string };
 }
+
+const PRICE_MAP = {
+  under500: { min_price: undefined, max_price: '500' },
+  '500-1000': { min_price: '500', max_price: '1000' },
+  '1000-2000': { min_price: '1000', max_price: '2000' },
+  '2000plus': { min_price: '2000', max_price: undefined },
+} satisfies Record<string, { min_price?: string; max_price?: string }>;
+
+const SORT_MAP = {
+  newest: { orderby: 'date', order: 'desc' },
+  'price-asc': { orderby: 'price', order: 'asc' },
+  'price-desc': { orderby: 'price', order: 'desc' },
+  popularity: { orderby: 'popularity', order: 'desc' },
+  rating: { orderby: 'rating', order: 'desc' },
+} satisfies Record<string, { orderby: 'date' | 'price' | 'popularity' | 'rating' | 'title'; order: 'asc' | 'desc' }>;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const origin = getOriginByCountry(params.country);
@@ -49,11 +65,21 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
 
   const editorial = getOriginEditorial(params.country);
   const page = Math.max(1, parseInt(searchParams.page || '1'));
+  const extras: { orderby?: 'date'|'price'|'popularity'|'rating'|'title'; order?: 'asc'|'desc'; min_price?: string; max_price?: string; stock_status?: 'instock'|'outofstock'|'onbackorder' } = {};
+  const sortKey = searchParams.sort as keyof typeof SORT_MAP | undefined;
+  if (sortKey && sortKey in SORT_MAP) Object.assign(extras, SORT_MAP[sortKey]);
+  const priceKey = searchParams.price as keyof typeof PRICE_MAP | undefined;
+  if (priceKey && priceKey in PRICE_MAP) { const p = PRICE_MAP[priceKey]; if (p.min_price) extras.min_price = p.min_price; if (p.max_price) extras.max_price = p.max_price; }
+  if (searchParams.in_stock === '1') extras.stock_status = 'instock';
   const { products = [], totalPages = 1, total = 0 } = await getProductsByOriginTermSlug(
     origin.country,
     page,
     PRODUCTS_PER_PAGE,
+    extras,
   );
+  const searchParamsRecord: Record<string, string | undefined> = {
+    page: searchParams.page, sort: searchParams.sort, price: searchParams.price, in_stock: searchParams.in_stock,
+  };
 
   const canonical = absoluteUrl(`/origins/${origin.country}`);
   const title = `${origin.label} Beauty Products`;
@@ -105,46 +131,45 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
           productCount={total}
         />
 
-        {products.length > 0 ? (
-          <>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {products.map((product: any, i: number) => (
-                <ProductCard key={product.id} product={product} priority={i === 0 && page === 1} />
-              ))}
-            </div>
+        {/* Mobile filters */}
+        <div className="mb-4 lg:hidden">
+          <CatalogFilters basePath={`/origins/${origin.country}`} searchParams={searchParamsRecord} resultCount={products.length} totalCount={total} defaultSort="newest" variant="mobile" />
+        </div>
 
-            {totalPages > 1 && (
-              <div className="mt-10 flex items-center justify-center gap-2">
-                {page > 1 && (
-                  <Link
-                    href={`/origins/${origin.country}?page=${page - 1}`}
-                    className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
-                  >
-                    Previous
-                  </Link>
+        <div className="flex gap-6">
+          <aside className="hidden w-56 flex-shrink-0 lg:block">
+            <CatalogFilters basePath={`/origins/${origin.country}`} searchParams={searchParamsRecord} resultCount={products.length} totalCount={total} defaultSort="newest" variant="desktop" />
+          </aside>
+
+          <div className="flex-1">
+            {products.length > 0 ? (
+              <>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+                  {products.map((product: any, i: number) => (
+                    <ProductCard key={product.id} product={product} priority={i === 0 && page === 1} />
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="mt-10 flex items-center justify-center gap-2">
+                    {page > 1 && (
+                      <Link href={`/origins/${origin.country}?page=${page - 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
+                    )}
+                    <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
+                    {page < totalPages && (
+                      <Link href={`/origins/${origin.country}?page=${page + 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
+                    )}
+                  </div>
                 )}
-                <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">
-                  Page {page} of {totalPages}
-                </span>
-                {page < totalPages && (
-                  <Link
-                    href={`/origins/${origin.country}?page=${page + 1}`}
-                    className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
-                  >
-                    Next
-                  </Link>
-                )}
+              </>
+            ) : (
+              <div className="py-20 text-center">
+                <p className="text-muted">No products found for this origin.</p>
+                <Link href="/origins" className="mt-2 block text-sm text-accent hover:underline">View all origins</Link>
               </div>
             )}
-          </>
-        ) : (
-          <div className="py-20 text-center">
-            <p className="text-muted">No products found for this origin.</p>
-            <Link href="/origins" className="mt-2 block text-sm text-accent hover:underline">
-              View all origins
-            </Link>
           </div>
-        )}
+        </div>
 
         {/* Editorial content — only renders for countries with defined editorial */}
         {editorial && (

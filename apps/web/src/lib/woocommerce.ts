@@ -965,7 +965,12 @@ export async function getOriginTermBySlug(slug: string): Promise<{ id: number; n
   }
 }
 
-export async function getProductsByOriginTermSlug(slug: string, page = 1, perPage = 24): Promise<{
+export async function getProductsByOriginTermSlug(
+  slug: string,
+  page = 1,
+  perPage = 24,
+  extras?: { orderby?: 'date'|'price'|'popularity'|'rating'|'title'; order?: 'asc'|'desc'; min_price?: string; max_price?: string; stock_status?: 'instock'|'outofstock'|'onbackorder' },
+): Promise<{
   products: WooProduct[];
   total: number;
   totalPages: number;
@@ -980,6 +985,7 @@ export async function getProductsByOriginTermSlug(slug: string, page = 1, perPag
     order: 'desc',
     attribute: 'pa_origin',
     attribute_term: String(term.id),
+    ...extras,
   });
 }
 

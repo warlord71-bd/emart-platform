@@ -3,12 +3,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import ProductCard from '@/components/product/ProductCard';
 import CollectionPageHeader from '@/components/collection/CollectionPageHeader';
+import CatalogFilters from '@/components/product/CatalogFilters';
 import { CONCERN_DEFINITIONS, getConcernBySlug, getConcernListing } from '@/lib/concerns';
 import { buildCollectionSchema } from '@/lib/collectionSchema';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
 import {
-  Sparkles, Target, Droplets, CircleDot, Sun, Star,
+  ArrowRight, Sparkles, Target, Droplets, CircleDot, Sun, Star,
   Clock3, Shield, ShieldCheck, type LucideIcon,
 } from 'lucide-react';
 import EducationContent, { type EducationContentEntry } from '@/components/content/EducationContent';
@@ -29,8 +30,23 @@ const CONCERN_ICONS: Record<string, LucideIcon> = {
 
 interface Props {
   params: { slug: string };
-  searchParams?: { page?: string };
+  searchParams?: { page?: string; sort?: string; price?: string; in_stock?: string };
 }
+
+const PRICE_MAP = {
+  under500: { min_price: undefined, max_price: '500' },
+  '500-1000': { min_price: '500', max_price: '1000' },
+  '1000-2000': { min_price: '1000', max_price: '2000' },
+  '2000plus': { min_price: '2000', max_price: undefined },
+} satisfies Record<string, { min_price?: string; max_price?: string }>;
+
+const SORT_MAP = {
+  newest: { orderby: 'date', order: 'desc' },
+  'price-asc': { orderby: 'price', order: 'asc' },
+  'price-desc': { orderby: 'price', order: 'desc' },
+  popularity: { orderby: 'popularity', order: 'desc' },
+  rating: { orderby: 'rating', order: 'desc' },
+} satisfies Record<string, { orderby: 'date' | 'price' | 'popularity' | 'rating' | 'title'; order: 'asc' | 'desc' }>;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const concern = getConcernBySlug(params.slug);
@@ -76,8 +92,17 @@ export default async function ConcernDetailPage({ params, searchParams }: Props)
   if (!concern) notFound();
 
   const page = Math.max(1, parseInt(searchParams?.page || '1'));
-  const { products, total, totalPages } = await getConcernListing(concern.slug, page, 24)
+  const extras: { orderby?: 'date'|'price'|'popularity'|'rating'|'title'; order?: 'asc'|'desc'; min_price?: string; max_price?: string; stock_status?: 'instock'|'outofstock'|'onbackorder' } = {};
+  const sortKey = searchParams?.sort as keyof typeof SORT_MAP | undefined;
+  if (sortKey && sortKey in SORT_MAP) Object.assign(extras, SORT_MAP[sortKey]);
+  const priceKey = searchParams?.price as keyof typeof PRICE_MAP | undefined;
+  if (priceKey && priceKey in PRICE_MAP) { const p = PRICE_MAP[priceKey]; if (p.min_price) extras.min_price = p.min_price; if (p.max_price) extras.max_price = p.max_price; }
+  if (searchParams?.in_stock === '1') extras.stock_status = 'instock';
+  const { products, total, totalPages } = await getConcernListing(concern.slug, page, 24, extras)
     .catch(() => ({ concern, products: [], total: 0, totalPages: 0 }));
+  const searchParamsRecord: Record<string, string | undefined> = {
+    page: searchParams?.page, sort: searchParams?.sort, price: searchParams?.price, in_stock: searchParams?.in_stock,
+  };
 
   const canonicalUrl = absoluteUrl(`/concerns/${concern.slug}`);
   const description = `Shop authentic ${concern.label.toLowerCase()} skincare in Bangladesh. ${concern.description} All products original, imported directly — COD and fast delivery available.`;
@@ -129,14 +154,14 @@ export default async function ConcernDetailPage({ params, searchParams }: Props)
         />
 
         {/* Concern switcher pills */}
-        <div className="mb-6 flex flex-wrap gap-2">
+        <div className="-mx-4 mb-6 flex flex-nowrap gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
           {CONCERN_DEFINITIONS.map((c) => {
             const CIcon = CONCERN_ICONS[c.icon] || Sparkles;
             return (
               <Link
                 key={c.slug}
                 href={`/concerns/${c.slug}`}
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${
                   c.slug === concern.slug
                     ? 'bg-accent text-white'
                     : 'border border-hairline bg-bg-alt text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent'
@@ -156,54 +181,52 @@ export default async function ConcernDetailPage({ params, searchParams }: Props)
             <p className="text-sm text-muted">Browse the full <span className="font-semibold text-ink">{concern.label}</span> collection</p>
             <Link
               href={`/category/${concern.categorySlug}`}
-              className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
             >
-              Shop all →
+              Shop all <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         )}
 
-        {products.length > 0 ? (
-          <>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+        {/* Mobile filters */}
+        <div className="mb-4 lg:hidden">
+          <CatalogFilters basePath={`/concerns/${concern.slug}`} searchParams={searchParamsRecord} resultCount={products.length} totalCount={total} defaultSort="popularity" variant="mobile" />
+        </div>
 
-            {totalPages > 1 && (
-              <div className="mt-10 flex items-center justify-center gap-2">
-                {page > 1 && (
-                  <Link
-                    href={`/concerns/${concern.slug}?page=${page - 1}`}
-                    className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
-                  >
-                    Previous
-                  </Link>
+        <div className="flex gap-6">
+          <aside className="hidden w-56 flex-shrink-0 lg:block">
+            <CatalogFilters basePath={`/concerns/${concern.slug}`} searchParams={searchParamsRecord} resultCount={products.length} totalCount={total} defaultSort="popularity" variant="desktop" />
+          </aside>
+
+          <div className="flex-1">
+            {products.length > 0 ? (
+              <>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+                  {products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="mt-10 flex items-center justify-center gap-2">
+                    {page > 1 && (
+                      <Link href={`/concerns/${concern.slug}?page=${page - 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
+                    )}
+                    <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
+                    {page < totalPages && (
+                      <Link href={`/concerns/${concern.slug}?page=${page + 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
+                    )}
+                  </div>
                 )}
-                <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">
-                  Page {page} of {totalPages}
-                </span>
-                {page < totalPages && (
-                  <Link
-                    href={`/concerns/${concern.slug}?page=${page + 1}`}
-                    className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
-                  >
-                    Next
-                  </Link>
-                )}
+              </>
+            ) : (
+              <div className="py-20 text-center">
+                <p className="text-muted">No products found for this concern.</p>
+                <Link href="/concerns" className="mt-2 block text-sm text-accent hover:underline">View all concerns</Link>
               </div>
             )}
-
-          </>
-        ) : (
-          <div className="py-20 text-center">
-            <p className="text-muted">No products found for this concern.</p>
-            <Link href="/concerns" className="mt-2 block text-sm text-accent hover:underline">
-              View all concerns
-            </Link>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

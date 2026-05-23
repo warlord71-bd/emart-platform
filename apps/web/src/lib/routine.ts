@@ -119,13 +119,18 @@ export function getRoutineStepBySlug(slug?: string): RoutineStep | undefined {
   return ROUTINE_STEPS.find((s) => s.slug === slug);
 }
 
+type ListingExtras = { orderby?: 'date'|'price'|'popularity'|'rating'|'title'; order?: 'asc'|'desc'; min_price?: string; max_price?: string; stock_status?: 'instock'|'outofstock'|'onbackorder' };
+
 export async function getRoutineListing(
   slug: string,
   page = 1,
   perPage = 24,
+  extras?: ListingExtras,
 ): Promise<{ step: RoutineStep | null; products: WooProduct[]; total: number; totalPages: number }> {
   const step = getRoutineStepBySlug(slug);
   if (!step) return { step: null, products: [], total: 0, totalPages: 0 };
+
+  const base = { orderby: 'popularity' as const, order: 'desc' as const, ...extras };
 
   if (step.categorySlug) {
     const category = await getCategoryBySlug(step.categorySlug).catch(() => null);
@@ -133,7 +138,7 @@ export async function getRoutineListing(
       const result = await getProducts({
         page, per_page: perPage,
         category: String(category.id),
-        orderby: 'popularity', order: 'desc',
+        ...base,
       }).catch(() => ({ products: [], total: 0, totalPages: 0 }));
       if (result.products.length > 0) return { step, ...result };
     }
@@ -142,7 +147,7 @@ export async function getRoutineListing(
   const result = await getProducts({
     page, per_page: perPage,
     search: step.searchQuery || step.shortLabel,
-    orderby: 'popularity', order: 'desc',
+    ...base,
   }).catch(() => ({ products: [], total: 0, totalPages: 0 }));
 
   return { step, ...result };
