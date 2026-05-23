@@ -1,9 +1,10 @@
-import { getProducts, getCategories } from '@/lib/woocommerce';
+import { getProducts } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
-import ProductFilters from '@/components/product/ProductFilters';
+import CatalogFilters from '@/components/product/CatalogFilters';
 import type { Metadata } from 'next';
 import { canonicalPath } from '@/lib/canonicalUrl';
 import { absoluteUrl } from '@/lib/siteUrl';
+import { buildUrl } from '@/lib/url-utils';
 
 export function generateMetadata({ searchParams }: { searchParams?: SalePageProps['searchParams'] }): Metadata {
   return {
@@ -18,26 +19,56 @@ export const revalidate = 1800;
 interface SalePageProps {
   searchParams: {
     page?: string;
-    min_price?: string;
-    max_price?: string;
+    price?: string;
+    sort?: string;
+    in_stock?: string;
+    concern?: string;
+    skin_type?: string;
   };
 }
+
+const PRICE_MAP = {
+  under500: { min_price: undefined, max_price: '500' },
+  '500-1000': { min_price: '500', max_price: '1000' },
+  '1000-2000': { min_price: '1000', max_price: '2000' },
+  '2000plus': { min_price: '2000', max_price: undefined },
+} satisfies Record<string, { min_price?: string; max_price?: string }>;
+
+const SORT_MAP = {
+  newest: { orderby: 'date', order: 'desc' },
+  'price-asc': { orderby: 'price', order: 'asc' },
+  'price-desc': { orderby: 'price', order: 'desc' },
+  popularity: { orderby: 'popularity', order: 'desc' },
+  rating: { orderby: 'rating', order: 'desc' },
+} satisfies Record<string, {
+  orderby: 'date' | 'price' | 'popularity' | 'rating' | 'title';
+  order: 'asc' | 'desc';
+}>;
+
+type PriceValue = keyof typeof PRICE_MAP;
+type SortValue = keyof typeof SORT_MAP;
 
 export default async function SalePage({ searchParams }: SalePageProps) {
   const page = parseInt(searchParams.page || '1');
 
-  const [{ products, total, totalPages }, categories] = await Promise.all([
-    getProducts({
-      page,
-      per_page: 20,
-      on_sale: true,
-      orderby: 'popularity',
-      order: 'desc',
-      min_price: searchParams.min_price,
-      max_price: searchParams.max_price,
-    }),
-    getCategories(),
-  ]);
+  const priceParams = searchParams.price && searchParams.price in PRICE_MAP
+    ? PRICE_MAP[searchParams.price as PriceValue]
+    : undefined;
+
+  const sortParams = searchParams.sort && searchParams.sort in SORT_MAP
+    ? SORT_MAP[searchParams.sort as SortValue]
+    : SORT_MAP.popularity;
+
+  const { products, total, totalPages } = await getProducts({
+    page,
+    per_page: 20,
+    on_sale: true,
+    orderby: sortParams.orderby,
+    order: sortParams.order,
+    min_price: priceParams?.min_price,
+    max_price: priceParams?.max_price,
+    stock_status: searchParams.in_stock === '1' ? 'instock' : undefined,
+  });
 
   const collectionJsonLd = {
     '@context': 'https://schema.org',
@@ -54,23 +85,56 @@ export default async function SalePage({ searchParams }: SalePageProps) {
     } : {}),
   };
 
+  const searchParamsRecord: Record<string, string | undefined> = {
+    page: searchParams.page,
+    price: searchParams.price,
+    sort: searchParams.sort,
+    in_stock: searchParams.in_stock,
+    concern: searchParams.concern,
+    skin_type: searchParams.skin_type,
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
+
       {/* Header */}
       <div className="mb-6 border-b border-hairline pb-5">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Sale</p>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Limited Time</p>
         <h1 className="text-2xl font-bold text-ink sm:text-3xl">Sale</h1>
         <p className="mt-1 text-sm text-muted">{total} products on sale</p>
       </div>
 
+      {/* Mobile filters */}
+      <div className="mb-4 lg:hidden">
+        <CatalogFilters
+          basePath="/sale"
+          searchParams={searchParamsRecord}
+          resultCount={products.length}
+          totalCount={total}
+          showConcern
+          showSkinType
+          defaultSort="popularity"
+          variant="mobile"
+        />
+      </div>
+
       <div className="flex gap-6">
-        {/* Sidebar Filters */}
+        {/* Desktop sidebar */}
         <aside className="hidden w-56 flex-shrink-0 lg:block">
-          <ProductFilters categories={categories} searchParams={searchParams} />
+          <CatalogFilters
+            basePath="/sale"
+            searchParams={searchParamsRecord}
+            resultCount={products.length}
+            totalCount={total}
+            showConcern
+            showSkinType
+            defaultSort="popularity"
+            variant="desktop"
+          />
         </aside>
 
-        {/* Product Grid */}
+        {/* Product grid */}
         <div className="flex-1">
           {products.length > 0 ? (
             <>
@@ -80,23 +144,15 @@ export default async function SalePage({ searchParams }: SalePageProps) {
                 ))}
               </div>
 
-              {/* Pagination */}
               {totalPages > 1 && (
-                <div className="mt-10 flex justify-center gap-2">
-                  {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => i + 1).map((p) => (
-                    <a
-                      key={p}
-                      href={`/sale?page=${p}`}
-                      className={`flex h-10 w-10 items-center justify-center rounded-xl
-                                  text-sm font-semibold border transition-colors
-                                  ${p === page
-                                    ? 'border-ink bg-ink text-white'
-                                    : 'border-hairline text-muted hover:border-accent/30 hover:bg-accent-soft hover:text-accent'
-                                  }`}
-                    >
-                      {p}
-                    </a>
-                  ))}
+                <div className="mt-10 flex items-center justify-center gap-2">
+                  {page > 1 && (
+                    <a href={buildUrl('/sale', { ...searchParamsRecord, page: page - 1 })} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</a>
+                  )}
+                  <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
+                  {page < totalPages && (
+                    <a href={buildUrl('/sale', { ...searchParamsRecord, page: page + 1 })} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</a>
+                  )}
                 </div>
               )}
             </>

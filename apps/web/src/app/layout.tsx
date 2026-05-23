@@ -256,7 +256,7 @@ export default function RootLayout({
             Skip to content
           </a>
           <Header />
-          <main id="main-content" className="min-h-screen max-w-full overflow-x-hidden">{children}</main>
+          <main id="main-content" className="min-h-screen max-w-full overflow-x-hidden pb-20 lg:pb-0">{children}</main>
           <Footer />
           {/* WhatsApp Float Button */}
           <a

@@ -49,7 +49,7 @@ export default async function SearchPage({ searchParams }: Props) {
 
   if (!query) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:py-10">
         <div className="mx-auto max-w-2xl">
           <h1 className="mb-4 text-2xl font-bold text-ink">Search Products</h1>
           <p className="mt-4 text-sm leading-6 text-muted">
@@ -67,7 +67,7 @@ export default async function SearchPage({ searchParams }: Props) {
   const { products, total, totalPages } = await searchProducts(query, page);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-ink">
           Search: &ldquo;{query}&rdquo;
@@ -77,23 +77,20 @@ export default async function SearchPage({ searchParams }: Props) {
 
       {products.length > 0 ? (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
           {totalPages > 1 && (
-            <div className="flex justify-center gap-2 mt-10">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                <a
-                  key={p}
-                  href={buildUrl('/search', { q: query, page: p })}
-                  className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-semibold border
-                              ${p === page ? 'border-accent bg-accent text-white' : 'border-hairline bg-card text-ink hover:border-accent/30 hover:text-accent'}`}
-                >
-                  {p}
-                </a>
-              ))}
+            <div className="mt-10 flex items-center justify-center gap-2">
+              {page > 1 && (
+                <a href={buildUrl('/search', { q: query, page: page - 1 })} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</a>
+              )}
+              <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
+              {page < totalPages && (
+                <a href={buildUrl('/search', { q: query, page: page + 1 })} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</a>
+              )}
             </div>
           )}
         </>
@@ -127,10 +124,10 @@ export default async function SearchPage({ searchParams }: Props) {
 //   });
 //
 //   return (
-//     <div className="mx-auto max-w-6xl px-4 py-8">
+//     <div className="mx-auto max-w-7xl px-4 py-8">
 //       <h1 className="section-title mb-2">{category.name}</h1>
 //       <p className="text-gray-500 text-sm mb-6">{total} products</p>
-//       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+//       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
 //         {products.map((p) => <ProductCard key={p.id} product={p} />)}
 //       </div>
 //     </div>

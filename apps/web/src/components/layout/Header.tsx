@@ -1083,7 +1083,7 @@ export default function Header() {
               <div className="px-3">
                 <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted">Support</p>
                 <DrawerNavRow icon={Package} label="Track Order" href="/track-order" iconBg="bg-bg-alt" iconColor="text-muted" onClose={() => setMobileOpen(false)} />
-                <DrawerNavRow icon={MessageCircle} label="WhatsApp Support" href="https://wa.me/8801717082135" external iconBg="bg-[#25D366]/10" iconColor="text-[#25D366]" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={MessageCircle} label="WhatsApp Support" href="https://wa.me/8801919797399" external iconBg="bg-[#25D366]/10" iconColor="text-[#25D366]" onClose={() => setMobileOpen(false)} />
                 <DrawerNavRow icon={User} label="My Account" href="/account" iconBg="bg-bg-alt" iconColor="text-muted" onClose={() => setMobileOpen(false)} />
                 <DrawerNavRow icon={Lock} label="Privacy Policy" href="/privacy-policy" iconBg="bg-bg-alt" iconColor="text-muted" onClose={() => setMobileOpen(false)} />
               </div>
