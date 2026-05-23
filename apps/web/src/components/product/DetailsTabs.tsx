@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { rewriteInternalLinks } from '@/lib/rewriteInternalLinks';
 import { sanitizeHtml } from '@/lib/sanitizeHtml';
 
@@ -16,12 +16,20 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
   howToUse,
 }) => {
   const [activeTab, setActiveTab] = useState<'description' | 'ingredients' | 'howToUse'>('description');
+  // SSR renders hydrated=false → all panels visible in HTML for crawlers.
+  // useLayoutEffect fires before first browser paint → hides non-active panels
+  // without a visible flash.
+  const [hydrated, setHydrated] = useState(false);
+  useLayoutEffect(() => { setHydrated(true); }, []);
 
   const tabs = [
-    { id: 'description', label: 'Description', icon: '📋' },
-    { id: 'ingredients', label: 'Ingredients', icon: '🧪' },
-    { id: 'howToUse', label: 'How to use', icon: 'ℹ️' },
+    { id: 'description', label: 'Description' },
+    { id: 'ingredients', label: 'Ingredients' },
+    { id: 'howToUse', label: 'How to use' },
   ];
+
+  const panelClass = (tabId: string) =>
+    !hydrated || activeTab === tabId ? 'text-lumiere-text-secondary' : 'hidden';
 
   return (
     <div className="clear-both rounded-2xl border border-hairline bg-white p-4 shadow-sm md:p-5">
@@ -42,22 +50,22 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
         ))}
       </div>
 
-      {/* Tab Content — all panels rendered in HTML for SEO; CSS controls visibility */}
+      {/* All three panels always in SSR HTML; client switches visibility after hydration */}
       <div className="prose prose-sm max-w-none py-6">
         <div
-          className={activeTab !== 'description' ? 'hidden' : 'text-lumiere-text-secondary'}
+          className={panelClass('description')}
           dangerouslySetInnerHTML={{
             __html: sanitizeHtml(rewriteInternalLinks(description), '<p>No description available.</p>'),
           }}
         />
         <div
-          className={activeTab !== 'ingredients' ? 'hidden' : 'text-lumiere-text-secondary'}
+          className={panelClass('ingredients')}
           dangerouslySetInnerHTML={{
             __html: sanitizeHtml(rewriteInternalLinks(ingredients), '<p>No ingredients information available.</p>'),
           }}
         />
         <div
-          className={activeTab !== 'howToUse' ? 'hidden' : 'text-lumiere-text-secondary'}
+          className={panelClass('howToUse')}
           dangerouslySetInnerHTML={{
             __html: sanitizeHtml(rewriteInternalLinks(howToUse), '<p>No usage instructions available.</p>'),
           }}
