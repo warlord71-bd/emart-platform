@@ -76,7 +76,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
       if (loaded) return;
       loaded = true;
 
-      fetch(`/api/product-reviews?productId=${product.id}&includeReviews=0`, { cache: 'no-store' })
+      fetch(`/api/product-reviews?productId=${product.id}&includeReviews=0`)
         .then((response) => response.json())
         .then((data) => {
           if (!active) return;

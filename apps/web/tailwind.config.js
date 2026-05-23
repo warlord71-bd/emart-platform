@@ -51,6 +51,8 @@ module.exports = {
           DEFAULT: '#B23B3B',
           soft: '#F5E1E1',
         },
+        card: 'var(--color-card)',
+        canvas: 'var(--color-canvas, #F3F1EC)',
         hairline: 'rgba(17,17,17,0.10)',
         // Compatibility aliases
         'navy-950': '#111111',

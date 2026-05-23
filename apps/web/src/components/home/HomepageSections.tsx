@@ -456,6 +456,7 @@ export function ProductGridSection({
   metaPrefix,
   mobileLimit = 4,
   desktopLimit = 8,
+  prioritizeFirst = false,
 }: {
   title: string;
   eyebrow?: string;
@@ -466,6 +467,7 @@ export function ProductGridSection({
   metaPrefix: string;
   mobileLimit?: number;
   desktopLimit?: number;
+  prioritizeFirst?: boolean;
 }) {
   if (!products.length) return null;
   void metaPrefix;
@@ -488,13 +490,13 @@ export function ProductGridSection({
 
         <div className="-mx-4 overflow-x-auto px-4 pb-1 lg:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex w-max gap-4">
-            {mobileVisible.map((product) => (
+            {mobileVisible.map((product, i) => (
               <div key={product.id} className="w-[46vw] min-w-[172px] max-w-[220px]">
                 <ProductCard
                   product={product}
                   variant="carousel"
                   badgeLabel={badge === 'New' ? 'New' : 'Best Seller'}
-                  priority={false}
+                  priority={prioritizeFirst && i === 0}
                 />
               </div>
             ))}
@@ -523,7 +525,7 @@ export function ProductGridSection({
               <ProductCard
                 product={product}
                 badgeLabel={badge === 'New' ? 'New' : 'Best Seller'}
-                priority={false}
+                priority={prioritizeFirst && index === 0}
               />
             </div>
           ))}
