@@ -17,6 +17,7 @@ import {
   Gift,
   Globe,
   Heart,
+  Home,
   LayoutGrid,
   Lock,
   Menu,
@@ -313,6 +314,12 @@ export default function Header() {
   const showSearchPanel = searchFocused && (trimmedSearch.length < 2 || searchLoading || searchResults.length > 0);
   const cartPreviewItems = cartItems.slice(-3).reverse();
   const isCategoriesRoute = pathname === '/categories';
+  const mobileNavLinkClass = (active: boolean) =>
+    `flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 ${
+      active ? 'text-accent' : 'text-muted hover:text-accent'
+    }`;
+  const isMobileNavActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
   const toggleDrawerGroup = (label: string) => {
     setOpenDrawerGroups((current) =>
       current.includes(label)
@@ -1102,22 +1109,23 @@ export default function Header() {
           paddingRight: 'max(0.25rem, env(safe-area-inset-right))',
         }}
       >
-        <Link href="/" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
-          <span className="text-lg leading-none">⌂</span>
+        <Link href="/" className={mobileNavLinkClass(isMobileNavActive('/'))} aria-current={isMobileNavActive('/') ? 'page' : undefined}>
+          <Home size={20} />
           <span className="max-w-full truncate text-[10px] font-medium leading-4">Home</span>
         </Link>
-        <Link href="/shop" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
+        <Link href="/shop" className={mobileNavLinkClass(isMobileNavActive('/shop'))} aria-current={isMobileNavActive('/shop') ? 'page' : undefined}>
           <ShoppingBag size={20} />
           <span className="max-w-full truncate text-[10px] font-medium leading-4">Shop</span>
         </Link>
-        <Link href="/categories" className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent">
+        <Link href="/categories" className={mobileNavLinkClass(isMobileNavActive('/categories'))} aria-current={isMobileNavActive('/categories') ? 'page' : undefined}>
           <Sparkles size={20} />
           <span className="max-w-full truncate text-[10px] font-medium leading-4">Categories</span>
         </Link>
         <Link
           href="/account"
-          className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 text-muted hover:text-accent"
+          className={mobileNavLinkClass(isMobileNavActive('/account'))}
           aria-label="Account"
+          aria-current={isMobileNavActive('/account') ? 'page' : undefined}
         >
           <User size={20} />
           <span className="max-w-full truncate text-[10px] font-medium leading-4">Account</span>
