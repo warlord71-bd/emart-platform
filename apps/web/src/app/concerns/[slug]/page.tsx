@@ -151,6 +151,18 @@ export default async function ConcernDetailPage({ params, searchParams }: Props)
 
         {educationContent && <EducationContent content={educationContent} />}
 
+        {concern.categorySlug && (
+          <div className="mb-6 flex items-center justify-between rounded-2xl border border-hairline bg-bg-alt px-5 py-4">
+            <p className="text-sm text-muted">Browse the full <span className="font-semibold text-ink">{concern.label}</span> collection</p>
+            <Link
+              href={`/category/${concern.categorySlug}`}
+              className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
+            >
+              Shop all →
+            </Link>
+          </div>
+        )}
+
         {products.length > 0 ? (
           <>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
