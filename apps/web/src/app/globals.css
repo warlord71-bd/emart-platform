@@ -135,14 +135,12 @@
 @layer components {
   .announcement-marquee {
     @apply relative w-full overflow-hidden whitespace-nowrap;
-    contain: layout style;
   }
 
   .announcement-marquee__track {
     display: flex;
     width: max-content;
     animation: announcement-marquee 22s linear infinite;
-    will-change: transform;
   }
 
   .announcement-marquee__group {

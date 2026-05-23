@@ -148,7 +148,7 @@ export default async function BrandsPage({
         </section>
       )}
 
-      <div className="sticky top-[120px] z-40 border-b border-hairline bg-white/95 px-4 py-2 backdrop-blur">
+      <div className="sticky top-[120px] z-40 border-b border-hairline bg-white px-4 py-2">
         <div className="mx-auto flex max-w-7xl gap-1 overflow-x-auto pb-1">
           {letters.map((l) => (
             <a key={l} href={`#brand-${l}`}

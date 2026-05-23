@@ -37,7 +37,7 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="sticky top-[52px] z-[90] hidden border-b border-hairline bg-white/95 backdrop-blur md:block">
+      <nav className="sticky top-[52px] z-[90] hidden border-b border-hairline bg-white md:block">
         <div className="mx-auto max-w-7xl px-4 py-2">
           <div className="flex flex-wrap items-center gap-4">
             {/* SHOP ALL Button */}
