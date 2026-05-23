@@ -85,6 +85,46 @@ const CATEGORY_OG_IMAGE_BY_KEY: Record<string, string> = {
   makeup: '/images/home-categories/makeup-illus.png',
 };
 
+type QuickPick = { label: string; params: Record<string, string> };
+const CATEGORY_QUICK_PICKS: Record<string, QuickPick[]> = {
+  sunscreen: [
+    { label: 'For oily skin',      params: { skin_type: 'oily' } },
+    { label: 'For dry skin',       params: { skin_type: 'dry' } },
+    { label: 'For sensitive skin', params: { skin_type: 'sensitive' } },
+    { label: 'Under ৳500',         params: { price: 'under500' } },
+    { label: '৳500–1000',          params: { price: '500-1000' } },
+    { label: 'Newest',             params: { sort: 'newest' } },
+  ],
+  'face-cleansers': [
+    { label: 'For oily skin',      params: { skin_type: 'oily' } },
+    { label: 'For dry skin',       params: { skin_type: 'dry' } },
+    { label: 'For sensitive skin', params: { skin_type: 'sensitive' } },
+    { label: 'Under ৳500',         params: { price: 'under500' } },
+    { label: 'Newest',             params: { sort: 'newest' } },
+  ],
+  'serums-ampoules-essences': [
+    { label: 'For acne',           params: { concern: 'acne-blemish-care' } },
+    { label: 'For brightening',    params: { concern: 'brightening' } },
+    { label: 'For dry skin',       params: { skin_type: 'dry' } },
+    { label: 'Niacinamide',        params: { ingredient: 'niacinamide' } },
+    { label: 'Under ৳1000',        params: { price: '500-1000' } },
+  ],
+  'toners-mists': [
+    { label: 'For oily skin',      params: { skin_type: 'oily' } },
+    { label: 'For acne',           params: { concern: 'acne-blemish-care' } },
+    { label: 'For brightening',    params: { concern: 'brightening' } },
+    { label: 'Under ৳500',         params: { price: 'under500' } },
+    { label: 'Newest',             params: { sort: 'newest' } },
+  ],
+  'moisturizer': [
+    { label: 'For oily skin',      params: { skin_type: 'oily' } },
+    { label: 'For dry skin',       params: { skin_type: 'dry' } },
+    { label: 'For sensitive skin', params: { skin_type: 'sensitive' } },
+    { label: 'Under ৳500',         params: { price: 'under500' } },
+    { label: 'Newest',             params: { sort: 'newest' } },
+  ],
+};
+
 const CATEGORY_SEO_OVERRIDES: Record<string, { title: string; description: string }> = {
   moisturizer: {
     title: 'Moisturizer Prices in Bangladesh | Emart',
@@ -382,6 +422,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const rawDescription = 'description' in category ? (category as any).description || '' : '';
   const introText = getCategoryIntro(category.name, params.slug, rawDescription);
   const isSunscreen = params.slug === 'sunscreen';
+  const quickPicks = CATEGORY_QUICK_PICKS[params.slug] ?? [];
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -462,24 +503,20 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           productCount={total}
         />
 
-        {isSunscreen && (
-          <div className="mb-6 grid gap-4 sm:grid-cols-2 text-sm leading-relaxed text-muted">
-            <div>
-              <h2 className="mb-1 text-base font-semibold text-ink">Why You Need Sunscreen Every Day in Bangladesh</h2>
-              <p>Bangladesh sits close to the equator, meaning UV rays are strong year-round — not just in summer. Daily sun exposure without a broad-spectrum SPF 50+ sunscreen accelerates skin ageing, causes dark spots, and raises the risk of sunburn even on cloudy days. Applying sunscreen as the last step of your morning routine takes 30 seconds and is the single most effective anti-ageing step you can take.</p>
-            </div>
-            <div>
-              <h2 className="mb-1 text-base font-semibold text-ink">SPF, PA Rating &amp; Broad-Spectrum — What They Mean</h2>
-              <p>SPF measures protection against UVB rays (the ones that cause sunburn). PA++++ indicates very strong protection against UVA rays (the ones that cause ageing and penetrate clouds). Look for &quot;broad-spectrum&quot; on the label — it means both UVA and UVB are covered. For Bangladesh&apos;s high UV index, choose minimum SPF 50 PA+++ or higher outdoors.</p>
-            </div>
-            <div>
-              <h2 className="mb-1 text-base font-semibold text-ink">How to Apply Sunscreen for Full Protection</h2>
-              <p>Apply sunscreen generously 15 minutes before going outdoors — most people use too little and get only 20–40% of the stated SPF. Reapply every 2 hours when outdoors, and after swimming or sweating. Even water-resistant formulas need reapplication. For daily indoor use one morning application is usually enough, but always reapply if you spend time in direct sunlight or near windows.</p>
-            </div>
-            <div>
-              <h2 className="mb-1 text-base font-semibold text-ink">Choosing the Right Sunscreen for Your Skin Type</h2>
-              <p>Oily and acne-prone skin does best with lightweight gel or fluid formulas — Korean sunscreens like COSRX, Beauty of Joseon, and ISNTREE offer non-greasy options that don&apos;t clog pores. Dry skin benefits from hydrating cream sunscreens. Sensitive skin can rely on mineral or hybrid formulas with zinc oxide. All sunscreens at Emart are 100% authentic imports — no fakes, no expired stock.</p>
-            </div>
+        {quickPicks.length > 0 && (
+          <div className="mb-5 flex flex-wrap gap-2">
+            {quickPicks.map((pick) => {
+              const qs = new URLSearchParams(pick.params).toString();
+              return (
+                <Link
+                  key={pick.label}
+                  href={`/category/${params.slug}?${qs}`}
+                  className="rounded-full border border-hairline bg-bg-alt px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:border-accent/30 hover:bg-accent-soft hover:text-accent"
+                >
+                  {pick.label}
+                </Link>
+              );
+            })}
           </div>
         )}
 
@@ -554,9 +591,30 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                     Buying guide for {category.name}
                     <span className="ml-2 text-accent">Read more</span>
                   </summary>
-                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
-                    Emart is Bangladesh&apos;s trusted source for authentic {category.name} products. Every product is imported directly from the brand or authorised distributors — no counterfeits, no grey market. We offer Cash on Delivery (COD) across Bangladesh, with fast delivery inside Dhaka (1–2 days) and nationwide (3–5 days). Delivery charges are confirmed at checkout.
-                  </p>
+                  {isSunscreen ? (
+                    <div className="mt-4 grid gap-5 text-sm leading-relaxed text-muted sm:grid-cols-2">
+                      <div>
+                        <h2 className="mb-1 text-sm font-semibold text-ink">Why You Need Sunscreen Every Day in Bangladesh</h2>
+                        <p>Bangladesh sits close to the equator, meaning UV rays are strong year-round — not just in summer. Daily sun exposure without a broad-spectrum SPF 50+ sunscreen accelerates skin ageing, causes dark spots, and raises the risk of sunburn even on cloudy days. Applying sunscreen as the last step of your morning routine takes 30 seconds and is the single most effective anti-ageing step you can take.</p>
+                      </div>
+                      <div>
+                        <h2 className="mb-1 text-sm font-semibold text-ink">SPF, PA Rating &amp; Broad-Spectrum — What They Mean</h2>
+                        <p>SPF measures protection against UVB rays (the ones that cause sunburn). PA++++ indicates very strong protection against UVA rays (the ones that cause ageing and penetrate clouds). Look for &quot;broad-spectrum&quot; on the label — it means both UVA and UVB are covered. For Bangladesh&apos;s high UV index, choose minimum SPF 50 PA+++ or higher outdoors.</p>
+                      </div>
+                      <div>
+                        <h2 className="mb-1 text-sm font-semibold text-ink">How to Apply Sunscreen for Full Protection</h2>
+                        <p>Apply sunscreen generously 15 minutes before going outdoors — most people use too little and get only 20–40% of the stated SPF. Reapply every 2 hours when outdoors, and after swimming or sweating. Even water-resistant formulas need reapplication. For daily indoor use one morning application is usually enough, but always reapply if you spend time in direct sunlight or near windows.</p>
+                      </div>
+                      <div>
+                        <h2 className="mb-1 text-sm font-semibold text-ink">Choosing the Right Sunscreen for Your Skin Type</h2>
+                        <p>Oily and acne-prone skin does best with lightweight gel or fluid formulas — Korean sunscreens like COSRX, Beauty of Joseon, and ISNTREE offer non-greasy options that don&apos;t clog pores. Dry skin benefits from hydrating cream sunscreens. Sensitive skin can rely on mineral or hybrid formulas with zinc oxide. All sunscreens at Emart are 100% authentic imports — no fakes, no expired stock.</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
+                      Emart is Bangladesh&apos;s trusted source for authentic {category.name} products. Every product is imported directly from the brand or authorised distributors — no counterfeits, no grey market. We offer Cash on Delivery (COD) across Bangladesh, with fast delivery inside Dhaka (1–2 days) and nationwide (3–5 days). Delivery charges are confirmed at checkout.
+                    </p>
+                  )}
                 </details>
               </>
             ) : (
