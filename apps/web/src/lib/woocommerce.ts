@@ -1217,19 +1217,22 @@ export async function addOrderNote(orderId: number, note: string, customerNote =
 // PRODUCT REVIEWS API
 // ══════════════════════════════
 
+const _getProductReviewsCached = unstable_cache(
+  async (productId: number): Promise<WooProductReview[]> => {
+    const response = await wooClient.get('/products/reviews', {
+      params: { product: productId, per_page: 50, status: 'approved' },
+    });
+    return Array.isArray(response.data)
+      ? response.data.map(transformProductReview).filter((r) => r.id && r.rating > 0)
+      : [];
+  },
+  ['product-reviews'],
+  { revalidate: 3600 },
+);
+
 export async function getProductReviews(productId: number): Promise<WooProductReview[]> {
   try {
-    const response = await wooClient.get('/products/reviews', {
-      params: {
-        product: productId,
-        per_page: 50,
-        status: 'approved',
-      },
-    });
-
-    return Array.isArray(response.data)
-      ? response.data.map(transformProductReview).filter((review) => review.id && review.rating > 0)
-      : [];
+    return await _getProductReviewsCached(productId);
   } catch (error) {
     logWooError('getProductReviews', error, { productId });
     return [];

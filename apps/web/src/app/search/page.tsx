@@ -79,8 +79,8 @@ export default async function SearchPage({ searchParams }: Props) {
       {products.length > 0 ? (
         <>
           <ProductListGrid>
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {products.map((product, i) => (
+              <ProductCard key={product.id} product={product} priority={i === 0 && page === 1} />
             ))}
           </ProductListGrid>
           {totalPages > 1 && (

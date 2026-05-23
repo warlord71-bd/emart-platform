@@ -51,8 +51,8 @@ export default async function OfferCollectionPage({ params }: OfferPageProps) {
 
       {products.length > 0 ? (
         <ProductListGrid>
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {products.map((product, i) => (
+            <ProductCard key={product.id} product={product} priority={i === 0} />
           ))}
         </ProductListGrid>
       ) : (

@@ -28,13 +28,24 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
     { id: 'howToUse', label: 'How to use' },
   ];
 
-  const panelClass = (tabId: string) =>
-    !hydrated || activeTab === tabId ? 'text-lumiere-text-secondary' : 'hidden';
+  const isActive = (tabId: string) => !hydrated || activeTab === tabId;
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const ids = tabs.map((t) => t.id);
+    const cur = ids.indexOf(activeTab);
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setActiveTab(ids[(cur + 1) % ids.length] as typeof activeTab);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setActiveTab(ids[(cur - 1 + ids.length) % ids.length] as typeof activeTab);
+    }
+  };
 
   return (
     <div className="clear-both rounded-2xl border border-hairline bg-white p-4 shadow-sm md:p-5">
       {/* Tab Navigation */}
-      <div role="tablist" aria-label="Product details" className="flex gap-4 overflow-x-auto border-b border-gray-200 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div role="tablist" aria-label="Product details" className="flex gap-4 overflow-x-auto border-b border-gray-200 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" onKeyDown={handleKeyDown}>
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -42,6 +53,7 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
             aria-selected={activeTab === tab.id}
             aria-controls={`tabpanel-${tab.id}`}
             id={`tab-${tab.id}`}
+            tabIndex={activeTab === tab.id ? 0 : -1}
             onClick={() => setActiveTab(tab.id as typeof activeTab)}
             className={`shrink-0 border-b-2 px-1 py-3 text-sm font-semibold transition-colors md:text-base ${
               activeTab === tab.id
@@ -60,7 +72,9 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
           role="tabpanel"
           id="tabpanel-description"
           aria-labelledby="tab-description"
-          className={panelClass('description')}
+          aria-hidden={hydrated && activeTab !== 'description'}
+          tabIndex={isActive('description') ? 0 : -1}
+          className={isActive('description') ? 'text-lumiere-text-secondary' : 'hidden'}
           dangerouslySetInnerHTML={{
             __html: sanitizeHtml(rewriteInternalLinks(description), '<p>No description available.</p>'),
           }}
@@ -69,7 +83,9 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
           role="tabpanel"
           id="tabpanel-ingredients"
           aria-labelledby="tab-ingredients"
-          className={panelClass('ingredients')}
+          aria-hidden={hydrated && activeTab !== 'ingredients'}
+          tabIndex={isActive('ingredients') ? 0 : -1}
+          className={isActive('ingredients') ? 'text-lumiere-text-secondary' : 'hidden'}
           dangerouslySetInnerHTML={{
             __html: sanitizeHtml(rewriteInternalLinks(ingredients), '<p>No ingredients information available.</p>'),
           }}
@@ -78,7 +94,9 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
           role="tabpanel"
           id="tabpanel-howToUse"
           aria-labelledby="tab-howToUse"
-          className={panelClass('howToUse')}
+          aria-hidden={hydrated && activeTab !== 'howToUse'}
+          tabIndex={isActive('howToUse') ? 0 : -1}
+          className={isActive('howToUse') ? 'text-lumiere-text-secondary' : 'hidden'}
           dangerouslySetInnerHTML={{
             __html: sanitizeHtml(rewriteInternalLinks(howToUse), '<p>No usage instructions available.</p>'),
           }}

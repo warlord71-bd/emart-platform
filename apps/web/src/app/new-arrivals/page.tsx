@@ -70,8 +70,8 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
       {products.length > 0 ? (
         <>
           <ProductListGrid>
-            {products.map((product: any) => (
-              <ProductCard key={product.id} product={product} badgeLabel="New" />
+            {products.map((product: any, i: number) => (
+              <ProductCard key={product.id} product={product} badgeLabel="New" priority={i === 0 && page === 1} />
             ))}
           </ProductListGrid>
           {totalPages > 1 && (
