@@ -14,12 +14,12 @@ Only mark `[x]` when fully deployed + verified on live VPS.
 
 | # | Task | Owner | Status | Notes |
 |---|---|---|---|---|
-| 1 | **Security: Rotate WooCommerce API keys** | Codex | 🔴 Open | Old keys may be active in mobile builds · DEV M1 |
-| 2 | **Commit workspace doc changes** | Claude | 🔴 Open | Docs only, zero live impact · git add + commit |
-| 3 | **INCI data — fetch top 100** | Claude | 🔴 Open | `python3 /root/.openclaw/workspace-emart/inci_fetch.py 100` → review `inci_draft.json` → `inci_apply.py --apply` · scripts ready |
-| 4 | **M8: Homepage "Korean" phrase** | Claude | 🔴 Open | "korean" appears 1× on homepage vs competitor avg 2–14×; add 1 sentence with "Korean skincare" + "K-beauty products" · score 79 → lift · SEO_MASTER M8 |
-| 5 | **M7: Sunscreen category copy** | Claude | 🔴 Open | Score 68 ("Needs Work"); 1 H2 vs avg 4.3; add 3–4 H2 blocks + UV terms (rays, broad-spectrum, reapply, sunburn, outdoor) · SEO_MASTER M7 |
-| 6 | **M7: Internal links audit** | Claude | 🔴 Open | Verify /concerns/sunscreen and sunscreen blog post link to /category/sunscreen; add if missing |
+| 1 | **Security: Rotate WooCommerce API keys** | Codex | 🟡 Follow-up | Targeted exposed/stale keys revoked 2026-05-23; BFF smoke OK; review unexpected survivors key_ids 26, 2, 3 · `workspace/audit/active/wc-key-rotation-20260523.md` |
+| 2 | **Commit workspace doc changes** | Claude | ✅ Done | `07983f4` |
+| 3 | **INCI data — fetch + apply top 100** | Claude | ✅ Done | 73 products updated via INCIDecoder + WP-CLI; 3 mismatches skipped; 24 not found · `inci_apply_log.json` |
+| 4 | **M8: Homepage "Korean" phrase** | Claude | ✅ Done | Homepage already has 29× "Korean" from product data — gap was JS-render artifact in scan; no edit needed |
+| 5 | **M7: Sunscreen category copy** | Claude | ✅ Done | 4 editorial H2 blocks live · `8a62b09` · UV terms + broad-spectrum + reapply coverage |
+| 6 | **M7: Internal links audit** | Codex | 🔴 Open | Codex prompt written — check /concerns/sunscreen → /category/sunscreen; blog post; nav |
 | 7 | **pa_concern apply** | Owner → Codex | 🔴 Blocked | Owner reviews `workspace/audit/active/pa-concern-manual-review-20260521-174247.csv` → marks APPROVE/SKIP → Codex applies · 1,161 products missing concern |
 | 8 | **pa_origin 17-gap** | Owner → Codex | 🔴 Blocked | Owner decides origin for combo/tool products → Codex applies · `workspace/audit/active/pa-origin-gap-review-20260521-175120.csv` |
 | 9 | **Price normalize** | Codex | 🟡 Open | Fix 0.00 / 1.00 placeholder prices across catalog |
