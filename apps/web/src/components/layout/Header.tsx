@@ -7,15 +7,22 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   BadgeCheck,
+  BookOpen,
   Camera,
   ChevronDown,
+  ChevronRight,
+  Droplets,
   Flame,
+  FlaskConical,
   Gift,
   Globe,
   Heart,
   LayoutGrid,
+  Lock,
   Menu,
+  MessageCircle,
   Mic,
+  Package,
   Search,
   ShoppingBag,
   ShoppingCart,
@@ -199,6 +206,48 @@ const DRAWER_VISIBLE_LIMIT: Record<string, number> = {
   Origins: 8,
   Brands: 8,
 };
+
+function DrawerNavRow({
+  icon: Icon,
+  label,
+  href,
+  external = false,
+  iconBg = 'bg-bg-alt',
+  iconColor = 'text-muted',
+  onClose,
+}: {
+  icon: LucideIcon;
+  label: string;
+  href: string;
+  external?: boolean;
+  iconBg?: string;
+  iconColor?: string;
+  onClose: () => void;
+}) {
+  const inner = (
+    <>
+      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${iconBg}`}>
+        <Icon size={16} className={iconColor} />
+      </span>
+      <span className="flex-1 text-sm font-semibold text-ink">{label}</span>
+      <ChevronRight size={14} className="text-muted" />
+    </>
+  );
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" onClick={onClose}
+        className="flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-accent-soft active:scale-[0.98]">
+        {inner}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} onClick={onClose}
+      className="flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-accent-soft active:scale-[0.98]">
+      {inner}
+    </Link>
+  );
+}
 
 function getGroupItemCount(group: NavigationGroup) {
   return group.sections.reduce((sum, section) => sum + section.items.length, 0);
@@ -935,7 +984,7 @@ export default function Header() {
               </div>
               <div className="mb-3 grid grid-cols-3 divide-x divide-hairline rounded-xl border border-hairline bg-bg-alt/60 py-2 text-center">
                 <div className="px-2">
-                  <div className="text-[13px] font-extrabold text-ink">40+</div>
+                  <div className="text-[13px] font-extrabold text-ink">400+</div>
                   <div className="text-[10px] font-semibold text-muted">Brands</div>
                 </div>
                 <div className="px-2">
@@ -996,126 +1045,49 @@ export default function Header() {
               <div className="border-t border-hairline" />
             </div>
 
-            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 overscroll-contain">
-              {DRAWER_NAV_GROUPS.map((group) => {
-                const isOpen = openDrawerGroups.includes(group.label);
-                const isExpanded = expandedDrawerGroups.includes(group.label);
-                const visibleSections = getVisibleDrawerSections(group, isExpanded);
-                const visibleCount = visibleSections.reduce((sum, section) => sum + section.items.length, 0);
-                const hiddenCount = Math.max(0, getGroupItemCount(group) - visibleCount);
-                return (
-                  <div
-                    key={group.label}
-                    className={`overflow-hidden rounded-lg border shadow-sm transition-colors ${
-                      isOpen
-                        ? 'border-hairline bg-white'
-                        : 'border-hairline bg-white'
-                    }`}
-                    style={isOpen ? { borderLeftWidth: '3px', borderLeftColor: TONE_BORDER_COLOR[group.tone] || '#64748b' } : undefined}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => toggleDrawerGroup(group.label)}
-                      className="flex min-h-12 w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-extrabold text-ink"
-                      aria-expanded={isOpen}
-                    >
-                      <span className="min-w-0 flex-1">
-                        <span className="flex items-center gap-2.5">
-                          {(() => {
-                            const Icon = DRAWER_GROUP_ICONS[group.label];
-                            return Icon ? (
-                              <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${isOpen ? 'opacity-100' : 'opacity-80'} transition-opacity`} style={{ backgroundColor: `${TONE_BORDER_COLOR[group.tone]}18` }}>
-                                <Icon size={15} className={group.tone} />
-                              </span>
-                            ) : null;
-                          })()}
-                          <span className="truncate">{group.label}</span>
-                        </span>
-                        {group.summary ? <span className="ml-[2.375rem] mt-0.5 block truncate text-xs font-normal text-muted">{group.summary}</span> : null}
-                      </span>
-                      <ChevronDown size={16} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
-                    </button>
-                    {isOpen && (
-                      <div className="border-t border-hairline px-3 py-3">
-                        {visibleSections.map((section) => (
-                          <div key={`${group.label}-${section.title || section.items[0]?.slug}`} className="mb-3 last:mb-0">
-                            {section.title ? (
-                              <div className="mb-1 px-1 text-[11px] font-bold uppercase tracking-normal text-gray-400">
-                                {section.title}
-                              </div>
-                            ) : null}
-                            <div className="grid gap-1">
-                              {section.items.map((item) => (
-                                <Link
-                                  key={item.href || item.slug}
-                                  href={item.href || `/category/${item.slug}`}
-                                  onClick={() => setMobileOpen(false)}
-                                  className="flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:bg-accent-soft hover:text-accent active:bg-accent-soft/70 active:scale-[0.98]"
-                                >
-                                  {item.name}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                        <div className="mt-3 grid grid-cols-2 gap-2 border-t border-hairline pt-3">
-                          <Link
-                            href={group.href}
-                            onClick={() => setMobileOpen(false)}
-                            className="rounded-lg bg-ink px-3 py-2 text-center text-xs font-extrabold text-white"
-                          >
-                            {group.ctaLabel || 'View All →'}
-                          </Link>
-                          {hiddenCount > 0 || isExpanded ? (
-                            <button
-                              type="button"
-                              onClick={() => toggleDrawerExpanded(group.label)}
-                              className="rounded-lg border border-hairline px-3 py-2 text-xs font-extrabold text-accent"
-                            >
-                              {isExpanded ? 'Show less' : `Show more (${hiddenCount})`}
-                            </button>
-                          ) : null}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(1rem+env(safe-area-inset-bottom))]">
 
-            </div>
-
-            <div className="shrink-0 border-t border-hairline bg-white px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3">
-              <div className="grid grid-cols-2 gap-2">
-                <Link
-                  href="/account"
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-lg bg-ink px-3 py-3 text-center text-xs font-extrabold text-white"
-                >
-                  Account
-                </Link>
-                <Link
-                  href="/track-order"
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-lg bg-bg-alt px-3 py-3 text-center text-xs font-bold text-ink"
-                >
-                  Track order
-                </Link>
-                <Link
-                  href="/privacy-policy"
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-lg bg-bg-alt px-3 py-3 text-center text-xs font-bold text-ink"
-                >
-                  Privacy Policy
-                </Link>
-                <a
-                  href="https://wa.me/8801717082135"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg bg-[#25D366] px-3 py-3 text-center text-xs font-extrabold text-white"
-                >
-                  WhatsApp
-                </a>
+              {/* Browse */}
+              <div className="px-3 pt-3">
+                <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted">Browse</p>
+                <DrawerNavRow icon={LayoutGrid} label="Categories" href="/categories" iconBg="bg-accent/10" iconColor="text-accent" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={Tag} label="Brands" href="/brands" iconBg="bg-cyan-50" iconColor="text-cyan-600" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={Globe} label="Origins" href="/origins" iconBg="bg-brass-soft" iconColor="text-brass" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={ShoppingBag} label="All Products" href="/shop" iconBg="bg-ink/10" iconColor="text-ink" onClose={() => setMobileOpen(false)} />
               </div>
+
+              <div className="mx-5 my-3 border-t border-hairline" />
+
+              {/* Shop By */}
+              <div className="px-3">
+                <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted">Shop By</p>
+                <DrawerNavRow icon={Heart} label="Skin Concern" href="/concerns" iconBg="bg-pink-50" iconColor="text-pink-500" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={Droplets} label="Skin Type" href="/skin-type" iconBg="bg-sky-50" iconColor="text-sky-500" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={FlaskConical} label="Ingredients" href="/ingredients" iconBg="bg-violet-50" iconColor="text-violet-500" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={BookOpen} label="Routine Guide" href="/routine" iconBg="bg-emerald-50" iconColor="text-emerald-600" onClose={() => setMobileOpen(false)} />
+              </div>
+
+              <div className="mx-5 my-3 border-t border-hairline" />
+
+              {/* Discover */}
+              <div className="px-3">
+                <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted">Discover</p>
+                <DrawerNavRow icon={Sparkles} label="Skin Quiz" href="/skin-quiz" iconBg="bg-brass-soft" iconColor="text-brass" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={Flame} label="Sale" href="/sale" iconBg="bg-accent/10" iconColor="text-accent" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={Gift} label="Combos & Kits" href="/category/emart-combos" iconBg="bg-violet-50" iconColor="text-violet-500" onClose={() => setMobileOpen(false)} />
+              </div>
+
+              <div className="mx-5 my-3 border-t border-hairline" />
+
+              {/* Support */}
+              <div className="px-3">
+                <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted">Support</p>
+                <DrawerNavRow icon={Package} label="Track Order" href="/track-order" iconBg="bg-bg-alt" iconColor="text-muted" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={MessageCircle} label="WhatsApp Support" href="https://wa.me/8801717082135" external iconBg="bg-[#25D366]/10" iconColor="text-[#25D366]" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={User} label="My Account" href="/account" iconBg="bg-bg-alt" iconColor="text-muted" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={Lock} label="Privacy Policy" href="/privacy-policy" iconBg="bg-bg-alt" iconColor="text-muted" onClose={() => setMobileOpen(false)} />
+              </div>
+
             </div>
           </aside>
         </div>
