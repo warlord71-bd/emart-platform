@@ -16,12 +16,6 @@ interface CollectionPageHeaderProps {
   showAuthentic?: boolean;
 }
 
-const TYPE_LABEL: Record<CollectionPageHeaderProps['type'], string> = {
-  brand: 'Brand',
-  category: 'Category',
-  origin: 'Origin',
-};
-
 export default function CollectionPageHeader({
   type,
   breadcrumbs,
@@ -49,11 +43,6 @@ export default function CollectionPageHeader({
           </span>
         ))}
       </nav>
-
-      {/* Type label */}
-      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-        {TYPE_LABEL[type]}
-      </p>
 
       {/* Main header row */}
       <div className="flex items-start gap-4">
