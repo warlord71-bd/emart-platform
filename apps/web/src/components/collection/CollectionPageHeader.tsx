@@ -86,7 +86,7 @@ export default function CollectionPageHeader({
             </div>
           </div>
           {description && (
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+            <p className="mt-2 text-sm leading-6 text-muted">
               {description}
             </p>
           )}
