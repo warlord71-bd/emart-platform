@@ -273,6 +273,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFaceCleansers = params.slug === 'face-cleansers';
   const isTonersMists = params.slug === 'toners-mists';
   const isSerumsAmpoulesEssences = params.slug === 'serums-ampoules-essences';
+  const isSunscreen = params.slug === 'sunscreen';
   const slugOverride = CATEGORY_SEO_OVERRIDES[params.slug];
   const title = isFaceCleansers
       ? FACE_CLEANSERS_SEO.title
@@ -380,6 +381,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   const rawDescription = 'description' in category ? (category as any).description || '' : '';
   const introText = getCategoryIntro(category.name, params.slug, rawDescription);
+  const isSunscreen = params.slug === 'sunscreen';
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -459,6 +461,27 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           description={introText}
           productCount={total}
         />
+
+        {isSunscreen && (
+          <div className="mb-6 grid gap-4 sm:grid-cols-2 text-sm leading-relaxed text-muted">
+            <div>
+              <h2 className="mb-1 text-base font-semibold text-ink">Why You Need Sunscreen Every Day in Bangladesh</h2>
+              <p>Bangladesh sits close to the equator, meaning UV rays are strong year-round — not just in summer. Daily sun exposure without a broad-spectrum SPF 50+ sunscreen accelerates skin ageing, causes dark spots, and raises the risk of sunburn even on cloudy days. Applying sunscreen as the last step of your morning routine takes 30 seconds and is the single most effective anti-ageing step you can take.</p>
+            </div>
+            <div>
+              <h2 className="mb-1 text-base font-semibold text-ink">SPF, PA Rating &amp; Broad-Spectrum — What They Mean</h2>
+              <p>SPF measures protection against UVB rays (the ones that cause sunburn). PA++++ indicates very strong protection against UVA rays (the ones that cause ageing and penetrate clouds). Look for &quot;broad-spectrum&quot; on the label — it means both UVA and UVB are covered. For Bangladesh&apos;s high UV index, choose minimum SPF 50 PA+++ or higher outdoors.</p>
+            </div>
+            <div>
+              <h2 className="mb-1 text-base font-semibold text-ink">How to Apply Sunscreen for Full Protection</h2>
+              <p>Apply sunscreen generously 15 minutes before going outdoors — most people use too little and get only 20–40% of the stated SPF. Reapply every 2 hours when outdoors, and after swimming or sweating. Even water-resistant formulas need reapplication. For daily indoor use one morning application is usually enough, but always reapply if you spend time in direct sunlight or near windows.</p>
+            </div>
+            <div>
+              <h2 className="mb-1 text-base font-semibold text-ink">Choosing the Right Sunscreen for Your Skin Type</h2>
+              <p>Oily and acne-prone skin does best with lightweight gel or fluid formulas — Korean sunscreens like COSRX, Beauty of Joseon, and ISNTREE offer non-greasy options that don&apos;t clog pores. Dry skin benefits from hydrating cream sunscreens. Sensitive skin can rely on mineral or hybrid formulas with zinc oxide. All sunscreens at Emart are 100% authentic imports — no fakes, no expired stock.</p>
+            </div>
+          </div>
+        )}
 
         <CatalogFilters
           basePath={`/category/${params.slug}`}
