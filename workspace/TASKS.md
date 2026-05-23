@@ -25,13 +25,13 @@ Only mark `[x]` when fully deployed + verified on live VPS.
 | 9 | **Price normalize** | Codex | 🟡 Open | Fix 0.00 / 1.00 placeholder prices across catalog |
 | 10 | **Healthy Place brand correction** | Owner → Codex | 🟡 Blocked | Owner confirms correct brand → Codex applies |
 | 11 | **Product images — 16 missing** | Owner → Codex | 🟡 Blocked | Owner uploads 16 images → Codex assigns · `workspace/audit/active/products-need-real-image.csv` |
-| 12 | **M9: Image count audit** | Claude | 🟡 Open | `curl` homepage + category HTML, count `<img>` tags; if real gap (not JS-rendering artifact) → photography sprint · SEO_MASTER M9 |
-| 13 | **W3: ProductCard LCP priority** | Claude | 🟡 Open | First card only · performance · small |
-| 14 | **W4: ReviewsSection refetch** | Claude | 🟡 Open | Remove `cache: 'no-store'` · performance · small |
-| 15 | **U1: Tailwind token fix** | Claude | 🟡 Open | `bg-card` / `bg-canvas` undefined · visual bug · small |
-| 16 | **Blog auto-revalidation** | Claude | 🟡 Open | Add `/api/revalidate?path=/blog` in `blog_generator.py` |
-| 17 | **W2: aria-hidden focusability** | Claude | 🟡 Open | `HomepageSections.tsx` · accessibility · small |
-| 18 | **U6: ARIA tab semantics** | Claude | 🟡 Open | `DetailsTabs.tsx` · accessibility · small |
+| 12 | **M9: Image count audit** | Claude | ✅ Done | 60 imgs homepage / 29 sunscreen — rendering artifact confirmed, no gap |
+| 13 | **W3: ProductCard LCP priority** | Claude | ✅ Done | `prioritizeFirst` prop; Best sellers first card `priority={true}` · `a558af1` |
+| 14 | **W4: ReviewsSection refetch** | Claude | ✅ Done | `cache:'no-store'` removed · `a558af1` |
+| 15 | **U1: Tailwind token fix** | Claude | ✅ Done | `card` + `canvas` added to Tailwind colors · `a558af1` |
+| 16 | **Blog auto-revalidation** | Claude | ✅ Done | `/api/revalidate?path=/blog` added to `blog_generator.py` |
+| 17 | **W2: aria-hidden focusability** | Claude | ✅ Done | Already compliant — no duplicate aria-hidden rails in current code |
+| 18 | **U6: ARIA tab semantics** | Claude | ✅ Done | `role=tablist/tab/tabpanel` + `aria-selected` + `aria-controls` · `a558af1` |
 | 19 | **GSC — stale URL cleanup + indexing** | Owner | 🟡 Blocked | Remove stale/junk URLs, request indexing for canonical URLs |
 | 20 | **Merchant Center — reprocess gla_2611** | Owner | 🟡 Blocked | GMC dashboard action |
 | 21 | **GA4 DebugView — 404 event check** | Owner | 🟡 Blocked | Visit a 404 URL → confirm `headless_migration_404` fires |
