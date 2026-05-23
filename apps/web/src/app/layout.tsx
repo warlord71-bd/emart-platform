@@ -32,6 +32,7 @@ const hindSiliguri = Hind_Siliguri({
   weight: ['400', '600'],
   variable: '--font-bengali-loaded',
   display: 'swap',
+  preload: false,
 });
 
 const jost = Jost({
@@ -110,6 +111,7 @@ export default function RootLayout({
   return (
     <html lang="en-BD" className={`${playfair.variable} ${dmSans.variable} ${hindSiliguri.variable} ${jost.variable} ${jetbrains.variable}`}>
       <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* OnlineStore + Organization Schema */}
         <script
           type="application/ld+json"

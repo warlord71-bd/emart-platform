@@ -11,8 +11,6 @@ import { formatBDT } from '@/lib/formatters';
 import { getProductCardEyebrow } from '@/lib/product-display';
 import { getVersionBadge } from '@/lib/version-display';
 import type { WooProduct } from '@/lib/woocommerce';
-import { getMetaPixelProductParams, trackMetaEvent } from '@/lib/metaPixel';
-import toast from 'react-hot-toast';
 
 interface Props {
   product: WooProduct;
@@ -83,15 +81,17 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
     ) : null,
   ].filter(Boolean);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (!inStock) return;
     addItem(product);
+    const [{ default: toast }, { trackMetaEvent, getMetaPixelProductParams }] = await Promise.all([
+      import('react-hot-toast'),
+      import('@/lib/metaPixel'),
+    ]);
+    toast.success('Added to Cart', { duration: 2000 });
     trackMetaEvent('AddToCart', getMetaPixelProductParams(product));
-    toast.success('Added to Cart', {
-      duration: 2000,
-    });
   };
 
   const imageAlt = imageAltOverride || `${product.name} - Emart Skincare Bangladesh`;

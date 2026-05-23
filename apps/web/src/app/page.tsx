@@ -183,7 +183,6 @@ export default async function HomePage() {
         metaPrefix="Refill in"
         mobileLimit={4}
         desktopLimit={4}
-        prioritizeFirst
       />
 
       <ProductGridSection

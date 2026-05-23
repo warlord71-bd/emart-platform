@@ -421,7 +421,7 @@ const nextConfig = {
   },
 
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: ['lucide-react', '@tanstack/react-query', 'react-hot-toast'],
   },
 };
 module.exports = nextConfig;

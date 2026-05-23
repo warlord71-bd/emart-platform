@@ -250,7 +250,7 @@ export default function Header() {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openDrawerGroups, setOpenDrawerGroups] = useState<string[]>(['Categories']);
+  const [openDrawerGroups, setOpenDrawerGroups] = useState<string[]>([]);
   const [expandedDrawerGroups, setExpandedDrawerGroups] = useState<string[]>([]);
   const [isListening, setIsListening] = useState(false);
   const [language, setLanguage] = useState<'en' | 'bn'>('en');
@@ -298,12 +298,22 @@ export default function Header() {
       }
     };
 
-    readWishlist();
-    readRecentSearches();
-    const savedLanguage = window.localStorage.getItem('emart-language');
-    if (savedLanguage === 'bn' || savedLanguage === 'en') {
-      setLanguage(savedLanguage);
+    const initIdle = () => {
+      readWishlist();
+      readRecentSearches();
+      const savedLanguage = window.localStorage.getItem('emart-language');
+      if (savedLanguage === 'bn' || savedLanguage === 'en') {
+        setLanguage(savedLanguage);
+      }
+    };
+
+    // Defer non-critical localStorage reads until after first paint
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initIdle, { timeout: 500 });
+    } else {
+      setTimeout(initIdle, 200);
     }
+
     window.addEventListener('storage', readWishlist);
     return () => window.removeEventListener('storage', readWishlist);
   }, []);

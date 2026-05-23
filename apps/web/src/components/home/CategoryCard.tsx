@@ -1,12 +1,16 @@
 'use client';
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { CategoryIllustration } from '@/components/category/CategoryIllustration';
 import type { FeaturedCategory } from '@/lib/api/featured-categories';
-import { useCategoryPresence } from '@/lib/realtime/presence';
+
+const CategoryLiveBadge = dynamic(
+  () => import('./CategoryLiveBadge').then((m) => ({ default: m.CategoryLiveBadge })),
+  { ssr: false, loading: () => <span className="absolute right-2 top-2 h-5 w-16" aria-hidden="true" /> }
+);
 
 export function CategoryCard({ category, index }: { category: FeaturedCategory; index: number }) {
-  const viewers = useCategoryPresence(category.id);
 
   const badge =
     category.is_hot  ? { label: 'HOT',  cls: 'bg-[rgba(217,83,79,0.10)] text-[#D9534F]', icon: '🔥' } :
@@ -32,13 +36,8 @@ export function CategoryCard({ category, index }: { category: FeaturedCategory; 
           </span>
         )}
 
-        {/* Live viewers chip — overlays image, never shifts layout */}
-        {viewers != null && (
-          <span className="absolute right-2 top-2 flex items-center gap-1.5 rounded-full bg-black/35 px-2 py-0.5 text-[10px] text-white backdrop-blur-sm">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--mb-success)]" />
-            {viewers} viewing
-          </span>
-        )}
+        {/* Live viewers chip — deferred after idle, placeholder reserves space */}
+        <CategoryLiveBadge categoryId={category.id} />
       </div>
 
       {/* Text */}
