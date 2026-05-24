@@ -939,9 +939,9 @@ export default function Header() {
                 Combos &amp; Kits
               </Link>
 
-              <Link href="/sale" className="ml-auto flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent-soft px-3 text-sm font-extrabold text-accent hover:bg-accent-soft/80">
-                <Flame size={15} />
-                Sale
+              <Link href="/offers" className="ml-auto flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-accent-soft px-3 text-sm font-extrabold text-accent hover:bg-accent-soft/80">
+                <Percent size={15} />
+                Offers
               </Link>
               <Link href="/new-arrivals" className="flex h-8 items-center gap-1.5 whitespace-nowrap rounded-lg bg-brass-soft px-3 text-sm font-extrabold text-ink hover:bg-bg-alt">
                 <Sparkles size={15} />
@@ -1010,12 +1010,12 @@ export default function Header() {
             <div className="shrink-0 px-4 pt-2">
               <div className="grid grid-cols-3 gap-1.5 pb-2" aria-label="Quick shopping links">
                 <Link
-                  href="/sale"
+                  href="/offers"
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center justify-center gap-1.5 rounded-lg border border-hairline bg-accent-soft px-2 py-2 text-xs font-extrabold text-accent transition-colors hover:bg-accent hover:text-white active:scale-95"
                 >
-                  <Flame size={13} />
-                  Sale
+                  <Percent size={13} />
+                  Offers
                 </Link>
                 <Link
                   href="/new-arrivals"
@@ -1068,8 +1068,9 @@ export default function Header() {
 
               {/* Offers */}
               <div className="px-3">
-                <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted">Offers</p>
+                <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted">Offers & Deals</p>
                 <DrawerNavRow icon={Percent} label="All Offers" href="/offers" iconBg="bg-accent/10" iconColor="text-accent" onClose={() => setMobileOpen(false)} />
+                <DrawerNavRow icon={Flame} label="Sale Items" href="/sale" iconBg="bg-accent/10" iconColor="text-accent" onClose={() => setMobileOpen(false)} />
                 <DrawerNavRow icon={Gift} label="BoGo Deals" href="/offers/bogo" iconBg="bg-pink-50" iconColor="text-pink-500" onClose={() => setMobileOpen(false)} />
                 <DrawerNavRow icon={Tag} label="Clearance Sale" href="/offers/clearance-sale" iconBg="bg-orange-50" iconColor="text-orange-500" onClose={() => setMobileOpen(false)} />
                 <DrawerNavRow icon={Package} label="Combo Offers" href="/offers/combo" iconBg="bg-blue-50" iconColor="text-blue-500" onClose={() => setMobileOpen(false)} />
@@ -1094,7 +1095,6 @@ export default function Header() {
               <div className="px-3">
                 <p className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted">Discover</p>
                 <DrawerNavRow icon={Sparkles} label="Skin Quiz" href="/skin-quiz" iconBg="bg-brass-soft" iconColor="text-brass" onClose={() => setMobileOpen(false)} />
-                <DrawerNavRow icon={Flame} label="Sale" href="/sale" iconBg="bg-accent/10" iconColor="text-accent" onClose={() => setMobileOpen(false)} />
                 <DrawerNavRow icon={Gift} label="Combos & Kits" href="/category/emart-combos" iconBg="bg-violet-50" iconColor="text-violet-500" onClose={() => setMobileOpen(false)} />
               </div>
 

@@ -104,14 +104,14 @@ export default function Navigation() {
               🎁 COMBOS
             </Link>
 
-            {/* SALE - with badge */}
+            {/* OFFERS - with badge */}
             <Link
-              href="/sale"
+              href="/offers"
               className="flex flex-shrink-0 items-center gap-1 text-xs font-medium text-accent transition-colors hover:text-accent-deep"
             >
-              <span>🔥 SALE</span>
+              <span>🏷️ OFFERS</span>
               <span className="rounded-full bg-accent-soft px-1.5 py-0.5 text-[10px] font-semibold text-accent">
-                HOT
+                DEALS
               </span>
             </Link>
 
@@ -228,13 +228,13 @@ export default function Navigation() {
                   🎁 COMBOS & KITS
                 </Link>
 
-                {/* SALE */}
+                {/* OFFERS */}
                 <Link
-                  href="/sale"
+                  href="/offers"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block rounded-xl px-4 py-3 text-sm font-semibold text-accent transition-colors hover:bg-accent-soft hover:text-accent-deep"
                 >
-                  🔥 SALE (Hot Deals)
+                  🏷️ OFFERS & DEALS
                 </Link>
 
                 {/* NEW */}
