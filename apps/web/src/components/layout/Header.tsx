@@ -1010,12 +1010,12 @@ export default function Header() {
             <div className="shrink-0 px-4 pt-2">
               <div className="grid grid-cols-3 gap-1.5 pb-2" aria-label="Quick shopping links">
                 <Link
-                  href="/offers"
+                  href="/sale"
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center justify-center gap-1.5 rounded-lg border border-hairline bg-accent-soft px-2 py-2 text-xs font-extrabold text-accent transition-colors hover:bg-accent hover:text-white active:scale-95"
                 >
-                  <Percent size={13} />
-                  Offers
+                  <Flame size={13} />
+                  Sale
                 </Link>
                 <Link
                   href="/new-arrivals"
