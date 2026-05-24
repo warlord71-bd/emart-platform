@@ -1162,3 +1162,16 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Verified: Local `npm run lint` and `npm run build` passed; local and live Chromium mobile checks passed for `/`, `/categories`, and `/category/serums-ampoules-essences` at 360/375/390/412 CSS px; live curl smoke returned 200s after `pm2 restart emartweb`.
 - Commit: `38a5716 fix(mobile): stabilize fixed nav viewport` pushed to `origin/main` after live smoke.
 - Notes: No URL, redirect, sitemap, SEO metadata, checkout/cart/payment, WooCommerce data, or navigation structure changes.
+
+---
+## 2026-05-25 — Claude (Sonnet 4.6)
+- Did:
+  1. Collapsible Offers accordion in mobile drawer (Header.tsx) — single "Offers & Deals" row expands to show Sale Items + 6 offer collections + All Offers link with left-border guide line.
+  2. OffersHub chip-filter page — /offers now has horizontal chip bar (All, Sale, BoGo, Eid, Clearance, Combo, Coupon, Delivery Value). Clicking a chip fetches and renders that collection's products inline. API route: GET /api/offers/products?slug=<slug>. Responsive: 2-col mobile, 4-col desktop.
+  3. SEO audit + fixes: /offers added to sitemap (priority 0.75), duplicate WebSite JSON-LD removed from page.tsx (layout.tsx @graph is authoritative), GA4 strategy lazyOnload → afterInteractive.
+- Verified: All pages 200 live. Sitemap now includes /offers. API returns products. pm2 online.
+- Commits: eb24998, 534f308, 24d1db3 — all pushed to origin/main.
+- VPS note: VPS git metadata at 01f40d4 (stale — runtime tree synced via rsync, .next rebuilt fresh at 24d1db3 source).
+- Blockers: Cloudflare cache needs manual purge (Caching → Purge Everything) so updated drawer/offers page reaches all users.
+- 🔒 FREEZE REINSTATED: No changes to nav structure, URLs, sitemap routes, offer slugs, or page routing until 2026-07-03.
+- Next step: GA4 organic search growth will follow as new offer/brand/concern pages get indexed. Monitor GSC for indexing of /offers. Owner still needs to purge Cloudflare cache.
