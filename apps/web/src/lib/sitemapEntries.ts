@@ -100,6 +100,7 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: absoluteUrl('/categories'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.8 },
   { url: absoluteUrl('/new-arrivals'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.8 },
   { url: absoluteUrl('/sale'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.8 },
+  { url: absoluteUrl('/offers'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.75 },
   { url: absoluteUrl('/skin-quiz'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
   { url: absoluteUrl('/skin-type'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.75 },
   ...SKIN_TYPE_SLUG_PAGES,

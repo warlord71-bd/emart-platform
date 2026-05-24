@@ -148,21 +148,8 @@ export default async function HomePage() {
     };
   });
 
-  const websiteSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    url: SITE_URL,
-    name: 'Emart Skincare Bangladesh',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${SITE_URL}/search?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
-  };
-
   return (
     <div className="bg-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       {/* Stable brand H1 for SEO — visually hidden, accessible to screen readers and crawlers */}
       <h1 className="sr-only">Korean & Global Skincare in Bangladesh — Emart</h1>
 
