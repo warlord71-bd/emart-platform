@@ -174,13 +174,19 @@
     box-shadow: var(--shadow-pop);
   }
 
-  /* Touch devices: no transitions = no GPU layer pre-promotion = no render noise */
-  @media (hover: none) {
+  /* Touch/mobile: remove box-shadow entirely to prevent Android Chrome GPU
+     compositing artifacts (colorful glitch bands between card rows during scroll).
+     Large blur box-shadows force per-card GPU layer promotion; when many promoted
+     layers scroll together Android compositor renders noise at their seams.
+     Cards already have a border so they remain visually defined without shadow.
+     Use (pointer:coarse) because Android Chrome often reports hover:hover. */
+  @media (pointer: coarse), (hover: none) {
     .card {
       transition: none;
+      box-shadow: none;
     }
     .card:hover {
-      box-shadow: var(--shadow-card);
+      box-shadow: none;
     }
   }
 
