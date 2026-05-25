@@ -1,10 +1,67 @@
 # Emart Development Master — Task Detail
 
-Last updated: 2026-05-21
+Last updated: 2026-05-25
 Coordination model: Claude owns `apps/web` | Codex owns `apps/mobile` + PHP plugins | Shared items listed below.
 **Open task priority board** → `workspace/TASKS.md`
 
 ⚠️ Conflict rule: Before touching a shared file, check this file for active work by the other agent.
+
+---
+
+## STACK VERSION REFERENCE — Read before touching any dependency
+
+> Updated: 2026-05-25. Run `cd /root/emart-platform/apps/web && node -e "require('./node_modules/<pkg>/package.json').version"` to verify installed version at any time.
+
+### Runtime / Infrastructure
+
+| Layer | Installed | Latest (2026-05) | Action |
+|-------|-----------|-----------------|--------|
+| Node.js (VPS) | 22.22.1 LTS | 22.x LTS | ✅ Current |
+| PHP (VPS) | 8.3.6 | 8.3.x | ✅ Current — do NOT jump to 8.4 until WordPress/WooCommerce compatibility confirmed |
+| WordPress | 6.9.4 | 7.0.x | 🔴 **HOLD** — WordPress 7.0 just released; WooCommerce 10.7.0 not yet confirmed compatible. Check WooCommerce changelogs before updating WP. |
+| WooCommerce | 10.7.0 | ~10.7.x | ⚠️ Update WP + Woo together only; never WP alone |
+
+### Next.js / Frontend
+
+| Package | Installed | Latest | Action |
+|---------|-----------|--------|--------|
+| next | 14.2.35 | 15.x | 🔴 **HOLD** — Next.js 15 is React 19 only + significant App Router breaking changes. Migration requires full regression test. |
+| react / react-dom | 18.3.1 | 19.x | 🔴 **HOLD** — React 19 pairs with Next.js 15 only. Current app is stable on React 18. |
+| tailwindcss | 3.4.19 | 4.x | 🔴 **HOLD** — Tailwind v4 drops `tailwind.config.js` in favour of CSS-first config. Full config rewrite required. |
+| typescript | 5.9.3 | 5.9.x | ✅ Current |
+| zustand | 4.5.7 | 5.x | 🔴 **HOLD** — Zustand 5 has API breaking changes (store creation signature changed). Audit all `create()` calls before updating. |
+| next-auth | 4.24.14 | 5.x (beta) | 🔴 **HOLD** — NextAuth v5 is a rewrite; session/JWT handling changed. Safe on v4 for now. |
+| lucide-react | 0.263.1 | 0.x / 1.x | 🔴 **HOLD** — v1.x renamed many icons. Any jump past ~0.300 risks missing icon names at build time. Check icon renames before updating. |
+| eslint | 8.57.1 | 9.x / 10.x | 🔴 **HOLD** — Next.js 14 requires ESLint 8. ESLint 9 flat config is incompatible with `eslint-config-next` 14. |
+| @tanstack/react-query | 5.100.14 | 5.x | ✅ Current (minor/patch auto-update safe) |
+| axios | 1.16.1 | 1.x | ✅ Current |
+| sharp | 0.34.5 | 0.34.x | ✅ Current |
+| postcss | 8.5.15 | 8.x | ✅ Current |
+| autoprefixer | 10.4.21 | 10.x | ✅ Current |
+| @types/node | 22.19.19 | 22.x | ✅ Updated 2026-05-25 (was ^20) — tracks Node 22 LTS |
+| @types/react | 18.x | 18.x | ✅ Current |
+| @typescript-eslint/* | 8.59.1 | 8.x | ✅ Current |
+
+### Safe minor/patch update log
+
+| Date | Packages updated | Commit | Notes |
+|------|-----------------|--------|-------|
+| 2026-05-25 | axios, @tanstack/react-query, postcss, autoprefixer, next-auth, @typescript-eslint/{plugin,parser}, @types/react, @next/third-parties, @types/node (^20→^22) | `f2acdd7` | All within declared semver; tsc clean; 129 page build passed; VPS smoke OK |
+
+### Hard rules for LLMs touching `package.json`
+
+1. **Never `npm update` without first reading this section.** `npm update` respects semver ranges in `package.json`. The ranges here are deliberately conservative.
+2. **Never bump `next`, `react`, `tailwindcss`, `zustand`, `next-auth`, or `lucide-react` to the next major.** Each requires a migration branch + full regression. Do not do this as a "safe cleanup."
+3. **Never bump `eslint` past 8.x** while `next` is 14.x. `eslint-config-next` 14 hard-requires ESLint 8.
+4. **WordPress 7.0 freeze**: Do not update WordPress or WooCommerce via WP-CLI or WP admin until WooCommerce publishes a 7.0-compatible release and the owner explicitly approves the upgrade.
+5. **Node.js 22 is the VPS runtime**. If a package's `engines` field requires Node ≥ 18, verify it supports 22 before installing.
+6. **Safe to update at any time** (within semver range): axios, @tanstack/react-query, postcss, autoprefixer, @types/node, @types/react, @typescript-eslint/*, sharp, @next/third-parties, next-auth (patch only within 4.x).
+
+### Freeze note
+
+Navigation, URL structure, sitemap, and routing changes are frozen until **2026-07-03** per SEO crawl stability policy. Do not add/remove routes, rename slugs, or change middleware redirect rules before that date.
+
+---
 
 ---
 
