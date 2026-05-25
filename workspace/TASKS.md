@@ -30,7 +30,7 @@ Complete these then stop code changes.
 
 ### 2. Security
 - [x] **Rotate WooCommerce keys** — done by Codex 2026-05-23; stale/mobile keys revoked; BFF smoke OK · see `workspace/audit/active/wc-key-rotation-20260523.md`
-  - ⚠️ 3 survivors need owner decision: key_id 26 (Next.js Frontend read_write, never accessed), key_id 2 & 3 (2023 Integration keys, last used Mar 2023). Recommend revoke all three via WP Admin → WooCommerce → Settings → Advanced → REST API.
+  - ✅ Verified 2026-05-25: key_ids 2, 3, 26 are already gone from DB. Only key_id 33 (OpenClaw Agent) remains. BFF uses loopback auth bypass (`woo-api-fix.php` + Nginx geo whitelist) — consumer keys not required. No owner action needed.
 
 ### 3. Product data — no URL changes, safe during freeze
 - [ ] **pa_concern apply** — owner reviews `workspace/audit/active/pa-concern-manual-review-20260521-174247.csv` → Codex applies
