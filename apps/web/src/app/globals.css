@@ -194,12 +194,15 @@
        list transform in their transition even when no transform is actively running.
      — .announcement-marquee__track animation stopped: a continuously-running
        transform:translateX on a sticky header element creates a persistent GPU layer;
-       product cards scrolling past its compositor boundary produce the seam glitches. */
+       product cards scrolling past its compositor boundary produce the seam glitches.
+     — filter: CSS filter() (drop-shadow, blur-2xl) also forces GPU compositor layers;
+       stripped globally on touch — no layout-critical filter usage exists in the app. */
   @media (pointer: coarse), (hover: none) {
     * {
       box-shadow: none !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
+      filter: none !important;
       transition-property: color, background-color, border-color, opacity !important;
     }
 
