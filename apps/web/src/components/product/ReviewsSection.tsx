@@ -133,36 +133,40 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
     setSubmitting(true);
     setStatus('');
 
-    const response = await fetch('/api/product-reviews', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        productId: product.id,
-        rating,
-        review,
-      }),
-    });
+    try {
+      const response = await fetch('/api/product-reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: product.id,
+          rating,
+          review,
+        }),
+      });
 
-    const data = await response.json().catch(() => ({}));
+      const data = await response.json().catch(() => ({}));
 
-    if (!response.ok) {
-      setStatus(data.error || 'Could not submit review right now.');
+      if (!response.ok) {
+        setStatus(data.error || 'Could not submit review right now.');
+        return;
+      }
+
+      const nextReviews = data.review ? [data.review, ...reviews] : reviews;
+      setState({
+        reviews: nextReviews,
+        authenticated: true,
+        verifiedPurchase: true,
+        alreadyReviewed: true,
+        canReview: false,
+      });
+      setReview('');
+      setRating(5);
+      setStatus(data.message || 'Thanks. Your review was submitted successfully.');
+    } catch {
+      setStatus('Network error. Please check your connection and try again.');
+    } finally {
       setSubmitting(false);
-      return;
     }
-
-    const nextReviews = data.review ? [data.review, ...reviews] : reviews;
-    setState({
-      reviews: nextReviews,
-      authenticated: true,
-      verifiedPurchase: true,
-      alreadyReviewed: true,
-      canReview: false,
-    });
-    setReview('');
-    setRating(5);
-    setStatus(data.message || 'Thanks. Your review was submitted successfully.');
-    setSubmitting(false);
   };
 
   return (
