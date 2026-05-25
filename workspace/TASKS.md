@@ -25,8 +25,8 @@ These never break rankings. Do freely at any time.
 Complete these then stop code changes.
 
 ### 1. Commit workspace restructuring (today)
-- [ ] `git add` + commit all workspace doc changes — docs only, zero live impact
-- [ ] Verify `git status` clean on Local before moving on
+- [x] `git add` + commit all workspace doc changes — done, git status clean as of 2026-05-25
+- [x] Verify `git status` clean on Local before moving on
 
 ### 2. Security
 - [ ] **Rotate WooCommerce keys** — old keys bundled in mobile builds may still be active · Codex · DEV M1
