@@ -36,7 +36,7 @@ Complete these then stop code changes.
 - [ ] **pa_concern apply** — owner reviews `workspace/audit/active/pa-concern-manual-review-20260521-174247.csv` → Codex applies
 - [ ] **pa_origin 17-gap** — owner decides origin for combo/tool products → Codex applies · `workspace/audit/active/pa-origin-gap-review-20260521-175120.csv`
 - [ ] **Price normalize** — fix 0.00 / 1.00 placeholder prices · Codex
-- [ ] **Healthy Place brand** — owner confirms → Codex applies
+- [x] **Healthy Place brand** — confirmed 2026-05-25; Korean brand (헬시플레이스), pa_origin=South Korea already applied to all 3 products (62048, 62050, 62052). No action needed.
 - [ ] **Product images** — owner uploads 16 → Codex assigns · `workspace/audit/active/products-need-real-image.csv`
 
 ### 4. Small frontend fixes — invisible to Google crawl
@@ -109,7 +109,7 @@ Do not plan or estimate these now. Read GSC impression/click data first, then pr
 
 - [ ] Review pa_concern CSV → mark APPROVE/SKIP per row
 - [ ] Decide pa_origin for combo/tool products (South Korea? China?)
-- [ ] Confirm Healthy Place brand correction
+- [x] Confirm Healthy Place brand correction — done 2026-05-25
 - [ ] Upload 16 product images
 - [ ] GSC dashboard: remove stale URLs, request indexing
 - [ ] GMC dashboard: reprocess `gla_2611`
