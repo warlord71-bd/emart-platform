@@ -205,10 +205,6 @@
       filter: none !important;
       transition-property: color, background-color, border-color, opacity !important;
     }
-
-    .announcement-marquee__track {
-      animation: none !important;
-    }
   }
 
   /* Product listing grid: center the lone last card in a 2-col row on mobile */
