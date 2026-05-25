@@ -174,19 +174,23 @@
     box-shadow: var(--shadow-pop);
   }
 
-  /* Touch/mobile: remove box-shadow entirely to prevent Android Chrome GPU
-     compositing artifacts (colorful glitch bands between card rows during scroll).
-     Large blur box-shadows force per-card GPU layer promotion; when many promoted
-     layers scroll together Android compositor renders noise at their seams.
-     Cards already have a border so they remain visually defined without shadow.
-     Use (pointer:coarse) because Android Chrome often reports hover:hover. */
+  /* ── Touch / Android Chrome GPU compositing fix ──────────────────────────
+     Root cause: box-shadow with large blur values force each element onto its
+     own GPU compositor layer. When dozens of GPU-layered cards scroll together,
+     Android Chrome renders colorful noise bands at their seams (a known Chrome
+     compositor bug). This affects ANY element using box-shadow — not just .card
+     but also Tailwind inline classes like shadow-card, shadow-pop, shadow-md etc.
+
+     Fix: globally strip box-shadow on touch devices (!important overrides Tailwind
+     inline classes). Also clamp transition-property so shadow transitions become
+     no-ops. Borders provide visual card definition without GPU promotion.
+
+     Use (pointer:coarse) — more reliable than (hover:none) because Android Chrome
+     often reports hover:hover in certain configs. Both are listed as a fallback. */
   @media (pointer: coarse), (hover: none) {
-    .card {
-      transition: none;
-      box-shadow: none;
-    }
-    .card:hover {
-      box-shadow: none;
+    * {
+      box-shadow: none !important;
+      transition-property: color, background-color, border-color, opacity, transform !important;
     }
   }
 
