@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BadgePercent, BookOpen, Boxes, Clock3, Droplets, HeartHandshake, HelpCircle, Mail, MapPin, PackageCheck, Phone, RotateCcw, SearchCheck, ShieldCheck, Smartphone, Sparkles, SprayCan, Tags, Truck, WalletCards, type LucideIcon } from 'lucide-react';
 import { COMPANY } from '@/lib/companyProfile';
+import { STORE_POLICIES } from '@/config/storePolicies';
 import SignupTabs from './SignupTabs';
 
 interface FooterLink {
@@ -259,9 +260,7 @@ export default async function Footer() {
               className="h-auto max-h-7 w-full max-w-[280px] object-contain sm:h-8 sm:w-auto sm:max-w-none" />
           </div>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-bg-stone/80 sm:gap-6">
-            <span>🚚 Delivery fee shown at checkout</span>
-            <span>⚡ Dhaka Next Day</span>
-            <span>🌍 Nationwide</span>
+            <span>🚚 {STORE_POLICIES.shipping.footerTrustText}</span>
           </div>
         </div>
       </div>

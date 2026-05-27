@@ -46,6 +46,10 @@ const STRIP_IF_VALUE: Record<string, readonly string[]> = {
 export function middleware(req: NextRequest): NextResponse | undefined {
   const pathname = req.nextUrl.pathname.replace(/\/$/, '') || '/';
 
+  if (pathname === '/policy') {
+    return NextResponse.redirect(new URL('/return-policy', req.url), { status: 301 });
+  }
+
   // Return 410 Gone for permanently removed junk/test pages
   if (GONE_PATHS.has(pathname)) {
     return new NextResponse(null, { status: 410 });

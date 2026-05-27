@@ -67,7 +67,7 @@
 - [About Emart](https://e-mart.com.bd/our-story): Founded to bring authentic global beauty to Bangladesh. Verified distributor partnerships.
 - [Authenticity Guarantee](https://e-mart.com.bd/authenticity): How Emart sources and verifies product authenticity.
 - [FAQ](https://e-mart.com.bd/faq): Answers on delivery, COD, returns, payment, and product questions.
-- [Shipping Policy](https://e-mart.com.bd/shipping-policy): Delivery timelines — Dhaka next-day, nationwide 1–3 days.
+- [Shipping Policy](https://e-mart.com.bd/shipping-policy): Delivery timelines — Dhaka next-day, nationwide 3-5 days, overall 1-6 business days.
 - [Return Policy](https://e-mart.com.bd/return-policy): Return and exchange conditions.
 - [Contact](https://e-mart.com.bd/contact): WhatsApp, phone, and email support.
 - [Track Order](https://e-mart.com.bd/track-order): Real-time order tracking.
@@ -79,7 +79,7 @@
 - Location: Bangladesh (serves all 64 districts)
 - Currency: BDT (Bangladeshi Taka, ৳)
 - Payment: COD, bKash, Nagad
-- Delivery: Dhaka next-day, nationwide 1–3 business days
+- Delivery: Dhaka next-day, nationwide 3-5 business days, overall 1-6 business days
 - Products: 3,500+ SKUs across skincare, haircare, body care, cosmetics
 - Brands: 280+ brands from Korea, Japan, France, USA, UK, and more
 - Language: English and Bengali (বাংলা)

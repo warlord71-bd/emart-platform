@@ -1206,3 +1206,11 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Memory: synced 7 new/updated agent memory files to git; VPS git aligned to origin/main.
 - Blockers: None.
 - Next step: Owner still needs to review pa_concern CSV and upload 16 product images.
+
+---
+## 2026-05-27 CEST — Codex
+- Did: Aligned shipping/return policy pages, header/footer/PDP delivery copy, policy metadata, Product JSON-LD, sitemap behavior, `/policy` redirects, Woo checkout shipping detection, and Merchant feed image/shipping output with Merchant Center settings.
+- Checkout: Verified Woo zones now support free shipping over ৳3,000; fixed Next shipping estimator to read Woo REST `method_id` instead of numeric instance `id`.
+- Backend: Enabled Woo free shipping methods for Dhaka and all-Bangladesh zones; updated runtime feed mu-plugin to send main Woo image plus real deduped gallery images, max 10 additional images.
+- Verified: Local `npm run lint` and `npm run build` passed; VPS build/restart performed; live policy pages, `/policy` 301 redirects, sitemap, checkout quotes, PDP schema, and feed image helper were smoke-tested.
+- Commit: `bd9c3b8 fix(policy): align shipping returns and product schema` prepared for push after live smoke.

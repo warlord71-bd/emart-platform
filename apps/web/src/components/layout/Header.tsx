@@ -40,6 +40,7 @@ import { useCartStore } from '@/store/cartStore';
 import { DRAWER_NAV_GROUPS, UNIFIED_BROWSE_TREE, type NavigationGroup, type NavigationSection } from '@/lib/category-navigation';
 import { formatBDT } from '@/lib/formatters';
 import type { WooCategory, WooImage } from '@/lib/woocommerce';
+import { STORE_POLICIES } from '@/config/storePolicies';
 
 interface SearchSuggestion {
   id: number;
@@ -690,9 +691,9 @@ export default function Header() {
                     <div key={item} aria-hidden={item === 1 ? true : undefined} className="announcement-marquee__group">
                       <span className="font-bengali">১০০% অথেনটিক · ৪০+ গ্লোবাল ব্র্যান্ড · COD</span>
                       <span className="text-white/35">·</span>
-                      <span>Dhaka next-day delivery · 1-2 days</span>
+                      <span>{STORE_POLICIES.shipping.headerBannerText}</span>
                       <span className="text-white/35">·</span>
-                      <span>COD accepted · 64 districts</span>
+                      <span>Free shipping over ৳3,000</span>
                     </div>
                   ))}
                 </div>

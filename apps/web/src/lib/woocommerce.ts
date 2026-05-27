@@ -5,6 +5,7 @@ import axios from 'axios';
 import { cache } from 'react';
 import { unstable_cache } from 'next/cache';
 import { formatBDT } from '@/lib/formatters';
+import { STORE_POLICIES } from '@/config/storePolicies';
 
 const PUBLIC_SITE_URL = 'https://e-mart.com.bd';
 const DEFAULT_INTERNAL_WOO_URL = process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '';
@@ -283,6 +284,21 @@ function decodeHtmlEntities(value: unknown): string {
   return text;
 }
 
+function alignPolicyCopy(value: string): string {
+  if (!value) return '';
+
+  const deliveryText = STORE_POLICIES.shipping.pdpDeliveryText;
+
+  return value
+    .replace(/Dhaka\s+1[-–]\s*2\s+days?\s+delivery/gi, deliveryText)
+    .replace(/delivered\s+to\s+Dhaka\s+in\s+1[-–]\s*2\s+days/gi, `delivered with ${deliveryText}`)
+    .replace(/1[-–]\s*2\s+days?\s+nationwide/gi, STORE_POLICIES.shipping.overallDeliveryEstimate)
+    .replace(/Within\s+1[-–]\s*3\s+Days/gi, STORE_POLICIES.shipping.overallDeliveryEstimate)
+    .replace(/COD accepted\s+·\s+64 districts/gi, 'COD available')
+    .replace(/Dhaka Next Day Nationwide/gi, 'Dhaka next-day · Nationwide 3–5 days')
+    .replace(/free shipping when an active promotion is enabled/gi, `free shipping over ${formatBDT(STORE_POLICIES.shipping.freeShippingThreshold)}`);
+}
+
 function transformImage(image: any): WooImage {
   if (!image) return image;
 
@@ -340,7 +356,7 @@ const PUBLIC_PRODUCT_META_KEYS = new Set([
 ]);
 
 function transformMetaValue(value: unknown): unknown {
-  return typeof value === 'string' ? decodeHtmlEntities(value) : value;
+  return typeof value === 'string' ? alignPolicyCopy(decodeHtmlEntities(value)) : value;
 }
 
 function transformProductMetaData(metaData: any): WooMetaData[] {
@@ -372,8 +388,8 @@ function transformProduct(product: any): WooProduct {
     purchasable: product.purchasable !== false,
     stock_status: product.stock_status || 'instock',
     stock_quantity: product.stock_quantity ?? null,
-    description: decodeHtmlEntities(product.description),
-    short_description: decodeHtmlEntities(product.short_description),
+    description: alignPolicyCopy(decodeHtmlEntities(product.description)),
+    short_description: alignPolicyCopy(decodeHtmlEntities(product.short_description)),
     images: Array.isArray(product.images) ? product.images.map(transformImage) : [],
     categories: Array.isArray(product.categories) ? product.categories.map(transformCategory) : [],
     brands: Array.isArray(product.brands)
@@ -597,12 +613,16 @@ function isShippingMethodEnabled(method: any): boolean {
   return method?.enabled === true || method?.enabled === 'yes' || method?.enabled === '1';
 }
 
+function shippingMethodId(method: any): string {
+  return String(method?.method_id || method?.id || '');
+}
+
 export async function getShippingQuote(city: string, subtotal: number): Promise<WooShippingQuote> {
   const normalizedCity = String(city || '').trim().toLowerCase();
   const wantsDhaka = normalizedCity === 'dhaka' || normalizedCity.includes('dhaka');
   const fallback = wantsDhaka
-    ? { zoneName: 'Dhaka City', methodId: 'flat_rate', methodTitle: 'Delivery inside Dhaka', total: 70 }
-    : { zoneName: 'All Bangladesh', methodId: 'flat_rate', methodTitle: 'Delivery outside Dhaka', total: 100 };
+    ? { zoneName: 'Dhaka City', methodId: 'flat_rate', methodTitle: 'Delivery inside Dhaka', total: STORE_POLICIES.shipping.dhakaShippingFee }
+    : { zoneName: 'All Bangladesh', methodId: 'flat_rate', methodTitle: 'Delivery outside Dhaka', total: STORE_POLICIES.shipping.outsideDhakaShippingFee };
 
   try {
     const zonesResponse = await wooClient.get('/shipping/zones');
@@ -618,8 +638,8 @@ export async function getShippingQuote(city: string, subtotal: number): Promise<
 
     const methodsResponse = await wooClient.get(`/shipping/zones/${zone.id}/methods`);
     const methods = Array.isArray(methodsResponse.data) ? methodsResponse.data : [];
-    const flatRate = methods.find((method: any) => method?.id === 'flat_rate' && isShippingMethodEnabled(method));
-    const freeShipping = methods.find((method: any) => method?.id === 'free_shipping' && isShippingMethodEnabled(method));
+    const flatRate = methods.find((method: any) => shippingMethodId(method) === 'flat_rate' && isShippingMethodEnabled(method));
+    const freeShipping = methods.find((method: any) => shippingMethodId(method) === 'free_shipping' && isShippingMethodEnabled(method));
     const threshold = freeShipping ? methodMinAmount(freeShipping) : null;
     const freeApplies = Boolean(freeShipping && (!threshold || subtotal >= threshold));
 

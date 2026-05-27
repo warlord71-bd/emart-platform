@@ -10,6 +10,7 @@ import RuntimeWidgets from './runtime-widgets';
 import { DM_Sans, Hind_Siliguri, JetBrains_Mono, Jost, Playfair_Display } from 'next/font/google';
 import { COMPANY } from '@/lib/companyProfile';
 import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
+import { STORE_POLICIES } from '@/config/storePolicies';
 
 const GOOGLE_TAG_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID || 'G-WMJNX87Q2N';
 
@@ -197,14 +198,14 @@ export default function RootLayout({
                       'shippingRate': {
                         '@type': 'MonetaryAmount',
                         'currency': 'BDT',
-                        'maxValue': 300,
+                        'value': STORE_POLICIES.shipping.merchantCenterFlatShippingFee,
                       },
                       'transitTime': {
                         '@type': 'ServicePeriod',
                         'duration': {
                           '@type': 'QuantitativeValue',
                           'minValue': 1,
-                          'maxValue': 5,
+                          'maxValue': 6,
                           'unitCode': 'DAY',
                         },
                       },

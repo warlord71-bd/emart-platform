@@ -11,6 +11,7 @@ import type { WooProduct } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import { COMPANY } from '@/lib/companyProfile';
 import { sanitizeHtml } from '@/lib/sanitizeHtml';
+import { STORE_POLICIES } from '@/config/storePolicies';
 
 interface Props {
   product: WooProduct;
@@ -228,7 +229,7 @@ export default function ProductDetail({ product }: Props) {
         <div className="grid grid-cols-3 gap-3 pt-2 border-t border-gray-100">
           {[
             { icon: Shield, label: '100% Authentic', sub: 'Genuine products' },
-            { icon: Truck, label: 'Fast Delivery', sub: 'Nationwide COD' },
+            { icon: Truck, label: 'Fast Delivery', sub: STORE_POLICIES.shipping.compactDeliveryText },
             { icon: RotateCcw, label: 'Easy Returns', sub: '7-day policy' },
           ].map(({ icon: Icon, label, sub }) => (
             <div key={label} className="text-center p-2">

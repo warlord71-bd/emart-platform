@@ -1,0 +1,28 @@
+export const STORE_POLICIES = {
+  shipping: {
+    orderCutoff: '6:00 PM Bangladesh time',
+    dhakaDelivery: 'next-day / usually 1–2 business days',
+    outsideDhakaDelivery: 'usually 3–5 business days',
+    overallDeliveryEstimate: '1–6 business days',
+    dhakaShippingFee: 70,
+    outsideDhakaShippingFee: 100,
+    merchantCenterFlatShippingFee: 100,
+    freeShippingThreshold: 3000,
+    codAvailableAcrossBangladesh: true,
+    pdpDeliveryText: 'Dhaka 1–2 days · Outside Dhaka 3–5 days',
+    compactDeliveryText: '1–6 business days',
+    checkoutFeeText: 'Final delivery fee is shown at checkout.',
+    headerBannerText: 'Dhaka next-day · Nationwide 3–5 days · COD available',
+    footerTrustText: 'Delivery fee shown at checkout · Dhaka next-day · Nationwide 3–5 days',
+  },
+  returns: {
+    returnWindow: '7 days from delivery',
+    acceptedReturns: 'defective and non-defective products',
+    exchanges: 'accepted',
+    productCondition: 'new, unused, unopened, original seal/packaging intact',
+    returnMethod: 'by mail/courier',
+    returnCourierCost: 'customer responsibility',
+    restockingFee: 'no cost',
+    refundProcessingTime: '5 days after inspection',
+  },
+} as const;

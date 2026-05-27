@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import { COMPANY } from '@/lib/companyProfile';
+import { STORE_POLICIES } from '@/config/storePolicies';
 
 export const metadata: Metadata = {
-  title: 'Shipping Policy',
-  description: 'Learn about Emart\'s shipping policies, delivery times, and shipping rates across Bangladesh.',
+  title: { absolute: 'Shipping Policy | eMart Skincare Bangladesh' },
+  description: 'Delivery across Bangladesh. Dhaka next-day, nationwide 3–5 business days, flat ৳100 shipping, and free shipping over ৳3,000.',
   alternates: { canonical: 'https://e-mart.com.bd/shipping-policy' },
+  robots: { index: true, follow: true },
 };
 
 export default function ShippingPolicyPage() {
@@ -26,16 +28,14 @@ export default function ShippingPolicyPage() {
           <div className="space-y-3 mt-3">
             <div>
               <p className="font-semibold text-ink">🔥 Dhaka (Inside Dhaka City)</p>
-              <p>Next-day delivery available on orders placed before 6 PM</p>
-            </div>
-            <div>
-              <p className="font-semibold text-ink">📦 Greater Dhaka Area</p>
-              <p>2 business days delivery</p>
+              <p>Next-day delivery, usually 1–2 business days after confirmation.</p>
             </div>
             <div>
               <p className="font-semibold text-ink">🚚 Other Districts</p>
-              <p>3-5 business days delivery depending on location</p>
+              <p>Usually 3–5 business days depending on location.</p>
             </div>
+            <p><strong>Overall delivery estimate:</strong> {STORE_POLICIES.shipping.overallDeliveryEstimate}</p>
+            <p><strong>Order cut-off:</strong> {STORE_POLICIES.shipping.orderCutoff}</p>
           </div>
         </div>
 
@@ -53,20 +53,16 @@ export default function ShippingPolicyPage() {
               <tr>
                 <td className="border border-hairline px-3 py-2">Dhaka City</td>
                 <td className="border border-hairline px-3 py-2">৳70</td>
-                <td className="border border-hairline px-3 py-2">When an active promotion is enabled</td>
+                <td className="border border-hairline px-3 py-2">Orders over ৳3,000</td>
               </tr>
               <tr className="bg-bg">
-                <td className="border border-hairline px-3 py-2">Surrounding Areas</td>
-                <td className="border border-hairline px-3 py-2">৳100</td>
-                <td className="border border-hairline px-3 py-2">When an active promotion is enabled</td>
-              </tr>
-              <tr>
                 <td className="border border-hairline px-3 py-2">Other Districts</td>
                 <td className="border border-hairline px-3 py-2">৳100</td>
-                <td className="border border-hairline px-3 py-2">When an active promotion is enabled</td>
+                <td className="border border-hairline px-3 py-2">Orders over ৳3,000</td>
               </tr>
             </tbody>
           </table>
+          <p className="mt-3">Final delivery fee is shown at checkout.</p>
         </div>
 
         <div>

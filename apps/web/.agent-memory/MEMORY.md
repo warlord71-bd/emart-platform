@@ -40,3 +40,4 @@
 - [Stability fixes 2026-05-25](project_stability_fixes_20260525.md) — ReviewsSection try/finally, getCategories unstable_cache 1hr, deployment version check toast
 - [Mobile audit 2026-05-25](project_mobile_audit_20260525.md) — M2 clean (no direct wp-json), M4 partial (client wired, backend missing), M3 blocked on device, price normalize closed (0 issues)
 - [Revalidate after bulk data sync](feedback_revalidate_after_bulk_sync.md) — after any bulk Woo meta/taxonomy sync, call revalidateTag products via /api/revalidate (x-revalidate-secret header) or ISR serves stale for up to 1hr
+- [Shipping/return/GMC alignment 2026-05-27](project_shipping_return_gmc_alignment_20260527.md) — policy constants added; Woo free shipping over ৳3,000 enabled; `/policy` 301s to `/return-policy`; Product schema/feed image rules aligned

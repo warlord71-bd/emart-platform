@@ -12,6 +12,7 @@ import { getVersionBadge } from '@/lib/version-display';
 import { formatBDT } from '@/lib/formatters';
 import { COMPANY } from '@/lib/companyProfile';
 import { getMetaPixelProductParams, trackMetaEvent } from '@/lib/metaPixel';
+import { STORE_POLICIES } from '@/config/storePolicies';
 
 interface ProductInfoProps {
   product: WooProduct;
@@ -479,7 +480,8 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         </div>
         <div>
           <p className="text-xs text-blue-600 font-semibold">Estimate Delivery</p>
-          <p className="text-sm text-blue-900 font-medium">Within 1-3 Days</p>
+          <p className="text-sm text-blue-900 font-medium">{STORE_POLICIES.shipping.pdpDeliveryText}</p>
+          <p className="mt-1 text-xs text-blue-700">{STORE_POLICIES.shipping.checkoutFeeText}</p>
         </div>
         {categoryName && (
           <div>

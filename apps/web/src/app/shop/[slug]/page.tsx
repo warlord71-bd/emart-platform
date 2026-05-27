@@ -12,6 +12,7 @@ import ProductViewContentEvent from '@/components/analytics/ProductViewContentEv
 import { absoluteUrl } from '@/lib/siteUrl';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { getCleanBreadcrumbCategory } from '@/lib/product-display';
+import { STORE_POLICIES } from '@/config/storePolicies';
 
 interface Props {
   params: { slug: string };
@@ -51,9 +52,9 @@ function getSeoDescription(product: WooProduct): string {
   return parts.join(' ').substring(0, 160);
 }
 
-function getNumericPrice(product: WooProduct): string {
+function getNumericPrice(product: WooProduct): string | null {
   const price = Number.parseFloat(product.price || product.sale_price || product.regular_price || '0');
-  return Number.isFinite(price) && price > 0 ? price.toFixed(2) : '0.00';
+  return Number.isFinite(price) && price > 0 ? price.toFixed(2) : null;
 }
 
 // Replace any ৳NNN price in editorial text with the live Woo price so
@@ -85,6 +86,65 @@ function getProductJsonLd(product: WooProduct) {
   const gtinFields = getGtinFields(sku);
   const hasGtin = Object.keys(gtinFields).length > 0;
   const brandName = getProductBrandName(product);
+  const offer = price ? {
+    '@type': 'Offer',
+    url: absoluteUrl(`/shop/${product.slug}`),
+    priceCurrency: 'BDT',
+    price,
+    priceValidUntil: getPriceValidUntil(),
+    availability: product.stock_status === 'instock'
+      ? 'https://schema.org/InStock'
+      : 'https://schema.org/OutOfStock',
+    itemCondition: 'https://schema.org/NewCondition',
+    seller: {
+      '@type': 'OnlineStore',
+      name: 'Emart Skincare Bangladesh',
+      url: absoluteUrl('/'),
+      areaServed: { '@type': 'Country', name: 'BD' },
+    },
+    hasMerchantReturnPolicy: {
+      '@type': 'MerchantReturnPolicy',
+      applicableCountry: 'BD',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+      merchantReturnDays: 7,
+      returnMethod: 'https://schema.org/ReturnByMail',
+      returnFees: 'https://schema.org/ReturnShippingFees',
+      restockingFee: {
+        '@type': 'MonetaryAmount',
+        currency: 'BDT',
+        value: 0,
+      },
+      url: absoluteUrl('/return-policy'),
+    },
+    shippingDetails: {
+      '@type': 'OfferShippingDetails',
+      shippingDestination: {
+        '@type': 'DefinedRegion',
+        addressCountry: 'BD',
+        name: 'Bangladesh',
+      },
+      shippingRate: {
+        '@type': 'MonetaryAmount',
+        currency: 'BDT',
+        value: STORE_POLICIES.shipping.merchantCenterFlatShippingFee,
+      },
+      deliveryTime: {
+        '@type': 'ShippingDeliveryTime',
+        handlingTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 0,
+          maxValue: 1,
+          unitCode: 'DAY',
+        },
+        transitTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 1,
+          maxValue: 6,
+          unitCode: 'DAY',
+        },
+      },
+    },
+  } : null;
 
   return {
     '@context': 'https://schema.org',
@@ -115,62 +175,7 @@ function getProductJsonLd(product: WooProduct) {
         worstRating: '1',
       },
     } : {}),
-    offers: {
-      '@type': 'Offer',
-      url: absoluteUrl(`/shop/${product.slug}`),
-      priceCurrency: 'BDT',
-      price,
-      priceValidUntil: getPriceValidUntil(),
-      availability: product.stock_status === 'instock'
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
-      itemCondition: 'https://schema.org/NewCondition',
-      seller: {
-        '@type': 'OnlineStore',
-        name: 'Emart Skincare Bangladesh',
-        url: absoluteUrl('/'),
-        areaServed: { '@type': 'Country', name: 'BD' },
-      },
-      hasMerchantReturnPolicy: {
-        '@type': 'MerchantReturnPolicy',
-        applicableCountry: 'BD',
-        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
-        merchantReturnDays: 7,
-        returnMethod: 'https://schema.org/ReturnByMail',
-        returnFees: 'https://schema.org/FreeReturn',
-        url: absoluteUrl('/return-policy'),
-      },
-      shippingDetails: {
-        '@type': 'OfferShippingDetails',
-        shippingDestination: {
-          '@type': 'DefinedRegion',
-          addressCountry: 'BD',
-          name: 'Bangladesh',
-        },
-        shippingRate: {
-          '@type': 'MonetaryAmount',
-          currency: 'BDT',
-          minValue: 70,
-          maxValue: 100,
-          description: 'Dhaka and nationwide delivery rates are confirmed at checkout.',
-        },
-        deliveryTime: {
-          '@type': 'ShippingDeliveryTime',
-          handlingTime: {
-            '@type': 'QuantitativeValue',
-            minValue: 0,
-            maxValue: 1,
-            unitCode: 'DAY',
-          },
-          transitTime: {
-            '@type': 'QuantitativeValue',
-            minValue: 1,
-            maxValue: 5,
-            unitCode: 'DAY',
-          },
-        },
-      },
-    },
+    ...(offer ? { offers: offer } : {}),
   };
 }
 
