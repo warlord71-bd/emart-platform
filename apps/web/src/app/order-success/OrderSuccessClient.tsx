@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { CheckCircle, Package, ArrowRight, User } from 'lucide-react';
 import { COMPANY } from '@/lib/companyProfile';
 import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue, trackMetaEvent } from '@/lib/metaPixel';
+import { trackGA4, GA4_STICKY_VARIANT_KEY } from '@/lib/ga4';
 
 export default function OrderSuccessPage() {
   const searchParams = useSearchParams();
@@ -48,6 +49,15 @@ export default function OrderSuccessPage() {
     } finally {
       sessionStorage.removeItem(META_PIXEL_PURCHASE_STORAGE_KEY);
     }
+
+    // GA4 purchase — includes sticky bar variant for funnel attribution
+    let stickyVariant: string | undefined;
+    try { stickyVariant = sessionStorage.getItem(GA4_STICKY_VARIANT_KEY) ?? undefined; } catch { /* private mode */ }
+    trackGA4('purchase', {
+      transaction_id: orderId,
+      ...(stickyVariant ? { flag_variant: stickyVariant } : {}),
+    });
+    try { sessionStorage.removeItem(GA4_STICKY_VARIANT_KEY); } catch { /* ok */ }
   }, [orderId]);
 
   if (!mounted) return null;

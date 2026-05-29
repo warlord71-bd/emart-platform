@@ -13,6 +13,7 @@ import { formatBDT } from '@/lib/formatters';
 import { COMPANY } from '@/lib/companyProfile';
 import { getMetaPixelProductParams, trackMetaEvent } from '@/lib/metaPixel';
 import { STORE_POLICIES } from '@/config/storePolicies';
+import { trackGA4, GA4_STICKY_VARIANT_KEY } from '@/lib/ga4';
 
 interface ProductInfoProps {
   product: WooProduct;
@@ -189,6 +190,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const [isAdded, setIsAdded] = useState(false);
   const [stickyVisible, setStickyVisible] = useState(false);
   const buttonsRef = useRef<HTMLDivElement>(null);
+  const stickyViewFired = useRef(false);
   const addItem = useCartStore((s) => s.addItem);
   const clearCart = useCartStore((s) => s.clearCart);
   const openCart = useCartStore((s) => s.openCart);
@@ -201,6 +203,17 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  // Fire pdp_sticky_view once per pageview on mobile, store variant for funnel attribution
+  useEffect(() => {
+    if (!stickyVisible || stickyViewFired.current) return;
+    if (typeof window === 'undefined') return;
+    if (!window.matchMedia('(max-width: 1023px)').matches) return;
+    stickyViewFired.current = true;
+    const variant = process.env.NEXT_PUBLIC_FF_PDP_STICKY_BUYBAR === 'true' ? 'sticky_v2' : 'sticky_v1';
+    trackGA4('pdp_sticky_view', { flag_variant: variant, product_slug: product.slug });
+    try { sessionStorage.setItem(GA4_STICKY_VARIANT_KEY, variant); } catch { /* quota/private-mode */ }
+  }, [stickyVisible, product.slug]);
 
   const isOnSale = product.on_sale && product.sale_price;
   const hasVisibleRating =
@@ -534,7 +547,10 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
               </div>
               {/* Add to Cart */}
               <button
-                onClick={handleAddToCart}
+                onClick={() => {
+                  handleAddToCart();
+                  trackGA4('pdp_sticky_atc_click', { flag_variant: 'sticky_v2', product_slug: product.slug });
+                }}
                 className="flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-accent px-4 py-2.5 text-xs font-bold text-white transition-all active:translate-y-px active:brightness-90"
               >
                 <ShoppingCart size={14} />
@@ -546,6 +562,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Order on WhatsApp"
+                onClick={() => trackGA4('pdp_sticky_whatsapp_click', { flag_variant: 'sticky_v2', product_slug: product.slug })}
                 className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border border-hairline bg-[#25D366]/10 text-[#25D366] transition-all active:translate-y-px active:bg-[#25D366]/20"
               >
                 <MessageCircle size={18} />
@@ -562,14 +579,20 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <button
-                  onClick={handleAddToCart}
+                  onClick={() => {
+                    handleAddToCart();
+                    trackGA4('pdp_sticky_atc_click', { flag_variant: 'sticky_v1', product_slug: product.slug });
+                  }}
                   className="flex min-h-11 items-center justify-center gap-1 rounded-xl bg-ink px-3 py-2 text-xs font-semibold text-white transition-all active:translate-y-px active:bg-black"
                 >
                   <ShoppingCart size={15} />
                   <span>Add to Cart</span>
                 </button>
                 <button
-                  onClick={handleBuyNow}
+                  onClick={() => {
+                    handleBuyNow();
+                    trackGA4('pdp_sticky_buynow_click', { flag_variant: 'sticky_v1', product_slug: product.slug });
+                  }}
                   className="min-h-11 rounded-xl border border-hairline bg-bg-alt px-3 py-2 text-xs font-semibold text-ink transition-all active:translate-y-px active:bg-accent-soft"
                 >
                   Buy Now
