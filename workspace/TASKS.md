@@ -1,6 +1,6 @@
 # Emart Open Task Board
 
-Last updated: 2026-05-25 — **6-WEEK STABILITY FREEZE ACTIVE**
+Last updated: 2026-05-29 — **6-WEEK STABILITY FREEZE ACTIVE**
 Freeze period: 2026-05-22 → 2026-07-03. After that: reassess from GSC data.
 **Rule:** Single priority board, tracked in git. Detail → `workspace/SEO_MASTER.md` · `workspace/DEV_MASTER.md`.
 Only mark `[x]` when fully deployed + verified on live VPS.
@@ -82,6 +82,7 @@ Continuous changes reset the crawl clock and degrade ranking consistency.
 | Navigation restructuring | Consistency is a ranking signal |
 | Offers nav/URL/structure | Completed 2026-05-25 — freeze reinstated; no further changes until 2026-07-03 |
 | New page types (O2 compare, O3 listicles, O4 skin-type) | New URL patterns restart indexing cycle |
+| Atomic design upgrade from `CLAUDE-atomic-upgrade.md` | Branch-only future refactor; no `main`/production/URL/nav changes during freeze |
 | U3: Split `HomepageSections.tsx` | Medium risk, zero SEO value right now |
 | U4: Split `Header.tsx` | Medium risk, could break nav on deploy |
 | U5: Shared `ProductGrid` | Medium risk, affects revenue-critical catalog pages |

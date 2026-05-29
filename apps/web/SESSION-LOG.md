@@ -1235,3 +1235,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Applied: 115 updates; 29 rows already unchanged; 0 invalid/not found. Rollback saved to `workspace/audit/active/product-size-corrections-rollback-20260529-203929.json`; apply report saved to `workspace/audit/active/product-size-corrections-applied-20260529-203929.csv`.
 - Verified: Post-apply dry-run returned 144 unchanged / 0 would-update. Revalidated `tag:products` and `/shop`. Spot-checked live unchanged URLs for MIZON 75g, Some By Mi 120ml, and Nivea 4.8g; all returned 200 and showed corrected size signals. Final read-only audit is `workspace/audit/active/product-data-mismatch-audit-20260529-204358.md` with 113 remaining mostly slug/history rows.
 - Next: Do not rename product URLs during freeze; remaining slug-only size gaps can be revisited after 2026-07-03 if SEO data supports redirects.
+
+---
+## 2026-05-29 CEST — Codex verification notes
+- Git hygiene: Committed and pushed `5b67172 chore(workspace): preserve cleanup notes`; local `HEAD` and `origin/main` match, and the worktree was clean before these notes.
+- Pinterest: Verified `p:domain_verify=39735e3185a8389cc1a41436b6068ad5` already exists in `apps/web/src/app/layout.tsx` and live homepage `<head>`. No duplicate meta tag added; owner should use Pinterest "Add HTML tag" on exact domain `e-mart.com.bd` / `https://e-mart.com.bd`.
+- Legacy route check: `https://e-mart.com.bd/product-category/skin-care/` returns 301 to the clean frontend route chain, so the old WP category frontend is not leaking.
+- Atomic upgrade spec: Reviewed `CLAUDE-atomic-upgrade.md`. Treat it as a branch-only future refactor spec (`feat/atomic-refactor`) with strict visual parity; do not run it on `main`, deploy it, restart production, or change URLs/navigation during the freeze. Current app is Next.js 14, not the spec's Next.js 15 note.

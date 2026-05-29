@@ -43,3 +43,4 @@
 - [Shipping/return/GMC alignment 2026-05-27](project_shipping_return_gmc_alignment_20260527.md) — policy constants added; Woo free shipping over ৳3,000 enabled; `/policy` 301s to `/return-policy`; Product schema/feed image rules aligned
 - [Phase A.5 cleanup deploy 2026-05-29](project_phase_a5_cleanup_20260529.md) — shared product count, PDP empty-section hiding, duplicate product rail cleanup, canonical/noindex/copy polish deployed in `58208f5`; no Woo data or price logic changed
 - [Product size correction workflow 2026-05-29](project_product_size_corrections_20260529.md) — XLSX `correct` column applied to Woo product title/size attrs/text where safe; 115 updates, 0 slug/URL changes; rollback JSON saved
+- [Atomic upgrade spec review 2026-05-29](project_atomic_upgrade_spec_20260529.md) — `CLAUDE-atomic-upgrade.md` is future branch-only refactor guidance; no `main`/production/URL/nav changes during freeze; current app is Next.js 14, not spec's Next.js 15 note
