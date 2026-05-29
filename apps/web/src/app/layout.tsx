@@ -177,7 +177,7 @@ export default function RootLayout({
                     'latitude': COMPANY.shop.geo.latitude,
                     'longitude': COMPANY.shop.geo.longitude,
                   },
-                  'hasMap': 'https://www.google.com/maps/search/?api=1&query=Emart+Skincare+Bangladesh+Dhanmondi+Dhaka',
+                  'hasMap': `https://www.google.com/maps?q=${COMPANY.shop.geo.latitude},${COMPANY.shop.geo.longitude}`,
                   'telephone': COMPANY.phones.hotlineHref,
                   'email': COMPANY.supportEmail,
                   'openingHours': 'Sa-Th 09:00-21:00',

@@ -27,7 +27,7 @@ export const COMPANY = {
     addressRegion: 'Dhaka',
     postalCode: '1205',
     addressCountry: 'BD',
-    geo: { latitude: 23.7454, longitude: 90.3741 },
+    geo: { latitude: 23.741728292710967, longitude: 90.38798552681781 },
   },
   phones: {
     primary: '01919797399',

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { COMPANY } from '@/lib/companyProfile';
 
+const MAP_EMBED_URL = `https://maps.google.com/maps?q=${COMPANY.shop.geo.latitude},${COMPANY.shop.geo.longitude}&z=18&output=embed`;
+
 export const metadata: Metadata = {
   title: 'Contact Us',
   description: `Contact ${COMPANY.storeName} for customer support, office help, warehouse coordination, or order questions.`,
@@ -71,6 +73,41 @@ export default function ContactPage() {
               <p>{COMPANY.storeName} is an enterprise of {COMPANY.enterpriseName}, founded by <a href={COMPANY.founderUrl} className="text-accent hover:underline">{COMPANY.founderName}</a>.</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Google Maps embed */}
+      <div className="rounded-2xl border border-hairline bg-card shadow-card overflow-hidden">
+        <div className="px-6 py-4 border-b border-hairline">
+          <h2 className="text-lg font-semibold text-ink">Find Our Shop</h2>
+          <p className="text-sm text-muted mt-0.5">{COMPANY.warehouse.full}</p>
+        </div>
+        <iframe
+          title="Emart Skincare Bangladesh — Shop Location"
+          src={MAP_EMBED_URL}
+          width="100%"
+          height="400"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="w-full border-0 block"
+        />
+        <div className="px-6 py-3 flex gap-4 text-sm">
+          <a
+            href={`https://www.google.com/maps?q=${COMPANY.shop.geo.latitude},${COMPANY.shop.geo.longitude}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:underline font-medium"
+          >
+            Open in Google Maps →
+          </a>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${COMPANY.shop.geo.latitude},${COMPANY.shop.geo.longitude}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted hover:text-accent hover:underline"
+          >
+            Get Directions
+          </a>
         </div>
       </div>
     </div>
