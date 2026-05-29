@@ -501,6 +501,17 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       </div>
 
 
+      {/* FF_TRUST_BILINGUAL: Bangla microcopy under trust signals — default OFF */}
+      {process.env.NEXT_PUBLIC_FF_TRUST_BILINGUAL === 'true' && (
+        <p className="text-xs text-muted leading-relaxed">
+          <span lang="bn">আসল পণ্যের নিশ্চয়তা</span>
+          {' · '}
+          <span lang="bn">সারা দেশে দ্রুত ডেলিভারি</span>
+          {' · '}
+          <span lang="bn">হাতে পেয়ে টাকা দিন</span>
+        </p>
+      )}
+
       {/* Sticky buy bar — mobile only, appears when main ATC buttons scroll out of view */}
       {stickyVisible && inStock && (
         process.env.NEXT_PUBLIC_FF_PDP_STICKY_BUYBAR === 'true' ? (
