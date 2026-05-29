@@ -514,7 +514,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           resultCount={products.length}
           totalCount={total}
           defaultSort="popularity"
-          variant="mobile"
+          variant={process.env.NEXT_PUBLIC_FF_NAV_CONSOLIDATE === 'true' ? 'mobile-consolidated' : 'mobile'}
           showSkinType={showSkinType}
           showConcern={showConcern}
           showIngredient={showIngredient}

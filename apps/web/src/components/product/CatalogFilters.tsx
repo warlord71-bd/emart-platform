@@ -6,7 +6,7 @@ import { CONCERN_DEFINITIONS } from '@/lib/concerns';
 import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
 
 type SortValue = 'newest' | 'price-asc' | 'price-desc' | 'popularity' | 'rating';
-type Variant = 'mobile' | 'desktop';
+type Variant = 'mobile' | 'mobile-consolidated' | 'desktop';
 
 interface Props {
   basePath: string;
@@ -75,6 +75,7 @@ export default function CatalogFilters({
   const pathname = usePathname();
   useSearchParams();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [sortSheetOpen, setSortSheetOpen] = useState(false);
   const [ingredientExpanded, setIngredientExpanded] = useState(false);
   const targetPath = basePath || pathname;
 
@@ -408,6 +409,231 @@ export default function CatalogFilters({
                   onClick={() => setDrawerOpen(false)}
                   className="h-12 rounded-xl bg-ink text-sm font-bold text-white"
                 >
+                  {activeCount > 0 ? `Show results (${activeCount})` : 'Show results'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ── Mobile consolidated — FF_NAV_CONSOLIDATE=true ───────────────────────────
+  // One 48 px sticky bar: [Filter] [Sort] + count inline.
+  // Sort moves into a bottom sheet; filter sheet unchanged from mobile variant.
+  if (variant === 'mobile-consolidated') {
+    const sortIsDefault = !searchParams.sort || searchParams.sort === defaultSort;
+
+    return (
+      <div className="lg:hidden -mx-4 mb-5 bg-bg">
+        {/* Single sticky control bar */}
+        <div className="sticky top-0 z-20 border-y border-hairline bg-bg px-4 py-2.5">
+          <div className="flex items-center gap-2">
+            {/* Filter button */}
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(true)}
+              aria-label="Open filters"
+              className="relative flex h-11 items-center gap-2 rounded-lg border border-hairline bg-card px-3 text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent"
+            >
+              <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h18M6 12h12M10 20h4" />
+              </svg>
+              <span>Filter</span>
+              {activeCount > 0 && (
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-bold text-white">
+                  {activeCount}
+                </span>
+              )}
+            </button>
+
+            {/* Sort button */}
+            <button
+              type="button"
+              onClick={() => setSortSheetOpen(true)}
+              aria-label="Sort products"
+              className={`flex h-11 flex-1 items-center justify-between gap-2 rounded-lg border px-3 text-sm font-semibold transition-colors ${
+                !sortIsDefault
+                  ? 'border-accent bg-[var(--color-brand-primary-50)] text-accent'
+                  : 'border-hairline bg-card text-ink hover:border-accent hover:text-accent'
+              }`}
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
+                </svg>
+                <span className="truncate">{selectedSortLabel}</span>
+              </div>
+              <svg className="h-3.5 w-3.5 shrink-0 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {/* Product count */}
+            <span className="shrink-0 text-[11px] text-muted">
+              {totalCount}
+            </span>
+          </div>
+
+          {/* Active filter chips */}
+          {hasActiveChips && (
+            <div className="mt-2 flex items-center gap-2">
+              <div className="flex flex-1 gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {selectedConcernLabel && (
+                  <button type="button" onClick={() => toggle('concern', searchParams.concern || '')} className={chipClass(true)}>
+                    {selectedConcernLabel} ×
+                  </button>
+                )}
+                {selectedSkinTypeLabel && (
+                  <button type="button" onClick={() => toggle('skin_type', searchParams.skin_type || '')} className={chipClass(true)}>
+                    {selectedSkinTypeLabel} ×
+                  </button>
+                )}
+                {selectedIngredientLabel && (
+                  <button type="button" onClick={() => toggle('ingredient', searchParams.ingredient || '')} className={chipClass(true)}>
+                    {selectedIngredientLabel} ×
+                  </button>
+                )}
+                {selectedPriceLabel && (
+                  <button type="button" onClick={() => toggle('price', searchParams.price || '')} className={chipClass(true)}>
+                    {selectedPriceLabel} ×
+                  </button>
+                )}
+                {searchParams.in_stock === '1' && (
+                  <button type="button" onClick={() => toggle('in_stock', '1')} className={chipClass(true)}>
+                    In Stock ×
+                  </button>
+                )}
+              </div>
+              {hasAnyActive && (
+                <button type="button" onClick={clearAll} className="shrink-0 text-xs font-semibold text-accent">
+                  Clear
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Sort bottom sheet */}
+        {sortSheetOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <button
+              type="button"
+              aria-label="Close sort"
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setSortSheetOpen(false)}
+            />
+            <div className="absolute inset-x-0 bottom-0 rounded-t-2xl bg-card shadow-pop">
+              <div className="flex justify-center pt-3 pb-1">
+                <span className="h-1.5 w-11 rounded-full bg-stone" />
+              </div>
+              <div className="px-5 pb-2 pt-3">
+                <h2 className="text-base font-bold text-ink">Sort by</h2>
+              </div>
+              <div className="px-5 pb-3 space-y-1">
+                {SORT_OPTIONS.map((o) => (
+                  <button
+                    key={o.value}
+                    type="button"
+                    onClick={() => { setSort(o.value); setSortSheetOpen(false); }}
+                    className={`flex w-full items-center justify-between rounded-xl px-4 py-3.5 text-sm font-semibold transition-colors ${
+                      selectedSort === o.value
+                        ? 'bg-[var(--color-brand-primary-50)] text-accent'
+                        : 'text-ink hover:bg-bg-alt'
+                    }`}
+                  >
+                    {o.label}
+                    {selectedSort === o.value && (
+                      <svg className="h-4 w-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                ))}
+              </div>
+              <div className="px-5 pb-6 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setSortSheetOpen(false)}
+                  className="w-full h-12 rounded-xl border border-hairline text-sm font-bold text-muted"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Filter bottom sheet (unchanged from mobile variant) */}
+        {drawerOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <button
+              type="button"
+              aria-label="Close filters"
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setDrawerOpen(false)}
+            />
+            <div className="absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-2xl bg-card shadow-pop">
+              <div className="flex justify-center pt-3">
+                <span className="h-1.5 w-11 rounded-full bg-bg-stone" />
+              </div>
+              <div className="flex items-center justify-between px-5 py-4">
+                <h2 className="text-lg font-bold text-ink">Filters</h2>
+                <button type="button" onClick={() => setDrawerOpen(false)} className="text-muted" aria-label="Close">✕</button>
+              </div>
+              <div className="flex-1 overflow-y-auto px-5 pb-4 space-y-6">
+                {showConcern && (
+                  <section>
+                    <h3 className="mb-3 text-base font-bold text-ink">Skin Concern</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {CONCERN_OPTIONS.map((o) => (
+                        <button key={o.value} type="button" onClick={() => toggle('concern', o.value)} className={drawerChipClass(searchParams.concern === o.value)}>{o.label}</button>
+                      ))}
+                    </div>
+                  </section>
+                )}
+                {showSkinType && (
+                  <section>
+                    <h3 className="mb-3 text-base font-bold text-ink">Skin Type</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {SKIN_TYPE_OPTIONS.map((o) => (
+                        <button key={o.value} type="button" onClick={() => toggle('skin_type', o.value)} className={drawerChipClass(searchParams.skin_type === o.value)}>{o.label}</button>
+                      ))}
+                    </div>
+                  </section>
+                )}
+                {showIngredient && (
+                  <section>
+                    <h3 className="mb-3 text-base font-bold text-ink">Ingredient</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {visibleIngredientOptions.map((o) => (
+                        <button key={o.value} type="button" onClick={() => toggle('ingredient', o.value)} className={drawerChipClass(searchParams.ingredient === o.value)}>{o.label}</button>
+                      ))}
+                      {INGREDIENT_OPTIONS.length > INGREDIENT_VISIBLE_LIMIT && (
+                        <button type="button" onClick={() => setIngredientExpanded(!ingredientExpanded)} className="min-h-11 rounded-lg border border-hairline bg-bg-alt px-3 py-2 text-sm font-semibold text-muted">
+                          {ingredientExpanded ? 'Show less' : `+${INGREDIENT_OPTIONS.length - INGREDIENT_VISIBLE_LIMIT} more`}
+                        </button>
+                      )}
+                    </div>
+                  </section>
+                )}
+                <section>
+                  <h3 className="mb-3 text-base font-bold text-ink">Price</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {PRICE_OPTIONS.map((o) => (
+                      <button key={o.value} type="button" onClick={() => toggle('price', o.value)} className={drawerChipClass(searchParams.price === o.value)}>{o.label}</button>
+                    ))}
+                  </div>
+                </section>
+                <section>
+                  <h3 className="mb-3 text-base font-bold text-ink">Availability</h3>
+                  <button type="button" onClick={() => toggle('in_stock', '1')} className={drawerChipClass(searchParams.in_stock === '1')}>In Stock only</button>
+                </section>
+              </div>
+              <div className="grid grid-cols-2 gap-3 border-t border-hairline p-5">
+                <button type="button" onClick={clearAll} disabled={!hasAnyActive} className="h-12 rounded-xl border border-hairline text-sm font-bold text-muted disabled:cursor-not-allowed disabled:opacity-40">Clear all</button>
+                <button type="button" onClick={() => setDrawerOpen(false)} className="h-12 rounded-xl bg-ink text-sm font-bold text-white">
                   {activeCount > 0 ? `Show results (${activeCount})` : 'Show results'}
                 </button>
               </div>

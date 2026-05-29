@@ -225,7 +225,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         showSkinType
         showIngredient
         defaultSort="newest"
-        variant="mobile"
+        variant={process.env.NEXT_PUBLIC_FF_NAV_CONSOLIDATE === 'true' ? 'mobile-consolidated' : 'mobile'}
       />
 
       <div className="flex gap-6">
