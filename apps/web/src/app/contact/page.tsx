@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { COMPANY } from '@/lib/companyProfile';
 
-const MAP_EMBED_URL = `https://maps.google.com/maps?q=${COMPANY.shop.geo.latitude},${COMPANY.shop.geo.longitude}&z=18&output=embed`;
+const { latitude: LAT, longitude: LNG } = COMPANY.shop.geo;
+const BBOX = `${LNG - 0.005},${LAT - 0.003},${LNG + 0.005},${LAT + 0.003}`;
+const MAP_EMBED_URL = `https://www.openstreetmap.org/export/embed.html?bbox=${BBOX}&layer=mapnik&marker=${LAT},${LNG}`;
 
 export const metadata: Metadata = {
   title: 'Contact Us',
