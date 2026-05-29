@@ -1242,3 +1242,10 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Pinterest: Verified `p:domain_verify=39735e3185a8389cc1a41436b6068ad5` already exists in `apps/web/src/app/layout.tsx` and live homepage `<head>`. No duplicate meta tag added; owner should use Pinterest "Add HTML tag" on exact domain `e-mart.com.bd` / `https://e-mart.com.bd`.
 - Legacy route check: `https://e-mart.com.bd/product-category/skin-care/` returns 301 to the clean frontend route chain, so the old WP category frontend is not leaking.
 - Atomic upgrade spec: Reviewed `CLAUDE-atomic-upgrade.md`. Treat it as a branch-only future refactor spec (`feat/atomic-refactor`) with strict visual parity; do not run it on `main`, deploy it, restart production, or change URLs/navigation during the freeze. Current app is Next.js 14, not the spec's Next.js 15 note.
+
+---
+## 2026-05-29 CEST — Codex SEO hazard checklist audit
+- Checked owner list against live pages: no global `noindex` problem, no `Disallow: /`, customer-facing sampled pages have one title, one H1, one canonical, viewport meta, SSR HTML content, and no missing image alt attributes.
+- Sampled live pages: `/`, `/shop`, `/category/korean-beauty`, `/track-order`, `/brands`, `/categories`, and COSRX Salicylic Acid Cleanser PDP. `/track-order` is intentionally `noindex` because private/order lookup pages should not rank.
+- Redirect/sitemap checks: `/product-category/skin-care/` returns 301 then clean route handling; random broken URL returns 404; sitemap `<loc>` entries expose no `/product/`, `/product-category/`, `wp-json`, Rank Math sitemap, or query-string URLs.
+- Speed/cache spot-check: compressed live HTML downloads were ~35-74KB on key pages; Cloudflare/Next cache headers present. Remaining performance work should stay monitoring/content-weight focused during freeze, not structural refactor.
