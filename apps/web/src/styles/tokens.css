@@ -1,6 +1,8 @@
 :root {
   --color-brand-primary: #9f1239;
   --color-brand-primary-hover: #83122f;
+  --color-brand-primary-50: #F7ECEF;   /* 8% wine on white — chip hover bg */
+  --color-brand-primary-100: #F2DEE3;  /* 14% wine on white — soft section bg */
   --color-brand-dark: #1a1a2e;
   --color-brand-muted: #6b7280;
   --color-brand-gold: #d4a248;

@@ -10,10 +10,10 @@ export const LUMIERE_COLORS = {
   primaryHover: '#000000',
   primaryLight: '#F3F1EC',
 
-  // Secondary / Accent Actions
-  secondary: '#e8197a',
-  secondaryHover: '#c01264',
-  secondaryLight: '#FCE7F0',
+  // Secondary / Accent Actions — locked brand-primary #9f1239 (deep wine)
+  secondary: '#9f1239',
+  secondaryHover: '#83122f',
+  secondaryLight: '#F7ECEF',
 
   // Backgrounds & Neutrals
   background: '#FAFAF8',
@@ -46,14 +46,14 @@ export const LUMIERE_COLORS = {
   drynessBorder: '#C88A2E',
   brightening: '#111111',
   brighteningText: '#FFFFFF',
-  antiAging: '#FCE7F0',
-  antiAgingBorder: '#e8197a',
+  antiAging: '#F7ECEF',
+  antiAgingBorder: '#9f1239',
   sensitivity: '#E4F0EA',
   sensitivityBorder: '#2E7D5B',
 
   // Trust & Authenticity
   authentic: '#d4a248',
-  fastDelivery: '#e8197a',
+  fastDelivery: '#9f1239',
   cod: '#2E7D5B',
   easyReturn: '#111111',
 
@@ -87,9 +87,9 @@ export const PORCELAIN_COLORS = {
   ink2: '#2A2A2A',
   muted: '#6B6B6B',
   muted2: '#9A9A9A',
-  accent: '#e8197a',
-  accentSoft: '#FCE7F0',
-  accentDeep: '#c01264',
+  accent: '#9f1239',
+  accentSoft: '#F7ECEF',
+  accentDeep: '#83122f',
   brass: '#d4a248',
   brassSoft: '#F5ECD4',
   success: '#2E7D5B',

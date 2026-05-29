@@ -23,7 +23,7 @@
 
   /* Accent — muted rose */
   --color-accent: var(--color-brand-primary);
-  --color-accent-soft: #fce7f0;
+  --color-accent-soft: var(--color-brand-primary-50);  /* was #fce7f0 (magenta-era) */
   --color-accent-deep: var(--color-brand-primary-hover);
 
   /* Brass (premium / ratings) */
