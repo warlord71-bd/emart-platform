@@ -15,11 +15,19 @@ export const COMPANY = {
     full: '17, Central Road (Near Ideal College), Dhanmondi, Dhaka-1205, Bangladesh',
   },
   warehouse: {
-    line1: '26/2, 2nd Floor, Central Road',
+    line1: '1st Floor, 26/2, Central Road',
     line2: '(Near Ideal College)',
     area: 'Dhanmondi, Dhaka-1205',
     country: 'Bangladesh',
-    full: '26/2, 2nd Floor, Central Road (Near Ideal College), Dhanmondi, Dhaka-1205, Bangladesh',
+    full: '1st Floor, 26/2, Central Road (Near Ideal College), Dhanmondi, Dhaka-1205, Bangladesh',
+  },
+  shop: {
+    streetAddress: '1st Floor, 26/2, Central Road',
+    addressLocality: 'Dhaka',
+    addressRegion: 'Dhaka',
+    postalCode: '1205',
+    addressCountry: 'BD',
+    geo: { latitude: 23.7454, longitude: 90.3741 },
   },
   phones: {
     primary: '01919797399',
