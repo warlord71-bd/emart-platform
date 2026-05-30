@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    type: 'website',
+    locale: 'en_BD',
+    siteName: 'Emart Skincare Bangladesh',
     title: 'Emart Skincare Bangladesh | Korean & Global Beauty',
     description: HOME_DESC,
     url: absoluteUrl('/'),
