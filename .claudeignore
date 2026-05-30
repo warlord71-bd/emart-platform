@@ -1,0 +1,50 @@
+# Binary assets — not useful for Claude to read
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.ico
+*.svg
+*.woff
+*.woff2
+*.ttf
+*.eot
+*.mp4
+*.mp3
+*.pdf
+*.jfif
+
+# Data files
+*.csv
+*.xlsx
+*.gz
+*.zip
+
+# Mobile app — large assets, separate codebase
+apps/mobile/
+
+# Build artifacts
+apps/web/.next/
+apps/web/node_modules/
+packages/*/node_modules/
+node_modules/
+.pnp/
+.pnp.js
+
+# Lock files — too large, not helpful
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs and temp
+*.log
+SESSION-LOG.md
+apps/web/.agent-memory/
+
+# Audit data
+workspace/audit/
+*.tsbuildinfo
+
+# Env files
+.env*
