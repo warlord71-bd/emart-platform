@@ -108,6 +108,7 @@ Do not plan or estimate these now. Read GSC impression/click data first, then pr
 - L5: Google-Extended bot policy decision
 - U2: Theme contract token map
 - U8: Layout primitives
+- Token consolidation: remove orphaned `packages/design-system/colors.ts` (0 consumers after CategoriesGrid repoint) and collapse the 3 primary-color sources (`#9f1239` / `#F24E5E` / `#e8197a`) into `tokens.css` as the single source of truth.
 - Product FAQ quality regeneration (M4) — large effort, assess after freeze
 - Ingredient/concern education refinement (M6) — large effort, assess after freeze
 

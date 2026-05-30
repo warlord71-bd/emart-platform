@@ -4,8 +4,8 @@ This is a polish contract, not a redesign brief. Keep current pages recognizable
 
 ## Brand Tokens
 
-- Primary pink: `#e8197a`
-- Primary hover: `#c01264`
+- Brand primary (wine): `#9f1239` — defined in `src/styles/tokens.css` as `--color-brand-primary`
+- Brand primary hover: `#83122f` — `--color-brand-primary-hover`
 - Dark text: `#1a1a2e`
 - Muted text: `#6b7280`
 - Gold/accent: `#d4a248`

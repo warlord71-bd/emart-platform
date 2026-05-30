@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { LUMIERE_COLORS } from '@/lib/design-system/colors';
 
 interface Category {
   name: string;
