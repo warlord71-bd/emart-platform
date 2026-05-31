@@ -390,14 +390,21 @@ def _load_products(cur, post_id_filter=None) -> list[dict]:
     return out
 
 def _load_reviewed(post_id: int) -> dict | None:
-    try:
-        with open(JSONL) as f:
-            for line in f:
-                d = json.loads(line)
-                if int(d.get('post_id',0)) == post_id:
-                    return d
-    except FileNotFoundError:
-        pass
+    """
+    Search all face-cleansers-*.jsonl files, newest first.
+    Dry-run on day 1, apply on day 2 → still finds the reviewed row.
+    """
+    for path in sorted(AUDIT.glob("face-cleansers-*.jsonl"), reverse=True):
+        if 'rollback' in path.name:
+            continue
+        try:
+            with open(path) as f:
+                for line in f:
+                    d = json.loads(line)
+                    if int(d.get('post_id', 0)) == post_id:
+                        return d
+        except Exception:
+            continue
     return None
 
 # ── Generation ───────────────────────────────────────────────────────────────
@@ -683,18 +690,31 @@ def _flush_cache(batch_n: int, force: bool = False):
                            capture_output=True)
 
 
-SEEN_SECOND_FILE = AUDIT / "face-cleansers-seen-second-clauses.json"
-
-def _load_seen_second() -> set[str]:
-    """Persist seen_second_clauses across runs so cross-batch duplicates are caught."""
-    try:
-        return set(json.loads(SEEN_SECOND_FILE.read_text()))
-    except Exception:
-        return set()
-
-def _save_seen_second(seen: set[str]):
-    AUDIT.mkdir(parents=True, exist_ok=True)
-    SEEN_SECOND_FILE.write_text(json.dumps(sorted(seen), ensure_ascii=False, indent=2))
+def _load_seen_second(cur) -> set[str]:
+    """
+    Build seen_second_clauses from live DB meta descriptions of already-humanized
+    face cleanser products. This is the ground truth — not generated JSONL which
+    may include rejected/deleted entries that were never applied.
+    """
+    cur.execute(f"""
+        SELECT pm.meta_value
+        FROM {PREFIX}postmeta pm
+        JOIN {PREFIX}posts p ON p.ID = pm.post_id
+        JOIN {PREFIX}term_relationships tr ON tr.object_id = p.ID
+        JOIN {PREFIX}term_taxonomy tt ON tt.term_taxonomy_id = tr.term_taxonomy_id
+        JOIN {PREFIX}terms t ON t.term_id = tt.term_id
+        WHERE pm.meta_key = '_emart_meta_description'
+          AND p.post_type = 'product' AND p.post_status = 'publish'
+          AND tt.taxonomy = 'product_cat' AND t.slug = 'face-cleansers'
+          AND pm.meta_value != ''
+    """)
+    seen = set()
+    for (meta,) in cur.fetchall():
+        if meta:
+            parts = re.split(r'\.\s+|\s+[—\-]\s+', meta.strip(), maxsplit=1)
+            if len(parts) == 2:
+                seen.add(parts[1].strip().lower())
+    return seen
 
 
 # ── Main ────────────────────────────────────────────────────────────────────
@@ -716,7 +736,14 @@ def main():
     AUDIT.mkdir(parents=True, exist_ok=True)
     conn = _db(); cur = conn.cursor()
     products = _load_products(cur, args.post_id)
-    eligible = [p for p in products if not p['skip_auto'] and not p.get('already_humanized')]
+
+    if args.post_id:
+        # Explicit --post-id: allow re-applying even if already humanized
+        # (reviewer may want to fix a specific product that was already stamped)
+        eligible = [p for p in products if not p['skip_auto']]
+    else:
+        eligible = [p for p in products if not p['skip_auto'] and not p.get('already_humanized')]
+
     print(f"Face Cleansers: {len(products)} total | {len(eligible)} eligible | "
           f"{sum(p['skip_auto'] for p in products)} high-sales skip | "
           f"{sum(bool(p.get('already_humanized')) for p in products)} already done")
@@ -730,8 +757,9 @@ def main():
              if args.dry_run else None
 
     applied = failed = skipped = 0
-    # Load seen second-clauses from previous runs — catches cross-batch duplicates
-    seen_second: set[str] = _load_seen_second()
+    # Build seen_second from live DB meta descriptions of already-applied products.
+    # Ground truth: only clauses that were actually published, never rejected JSONL entries.
+    seen_second: set[str] = _load_seen_second(cur)
     score_total = score_count = 0
 
     # Capture rollback snapshot before any writes
@@ -758,12 +786,13 @@ def main():
             if errors:
                 print(f"  ✗  Validation failed: {errors}")
                 failed += 1; continue
-            # Save rollback before first write
+            # Save rollback before first write — includes all fields apply touches
             rollback.append({
-                'post_id': pid,
-                'old_post_content': product.get('post_content',''),
-                'old_meta_desc':    product.get('meta_desc',''),
-                'old_how_to_use':   product.get('how_to_use_html',''),
+                'post_id':              pid,
+                'old_post_content':     product.get('post_content',''),
+                'old_meta_desc':        product.get('meta_desc',''),
+                'old_how_to_use':       product.get('how_to_use_html',''),
+                'old_structured_desc':  product.get('structured_description',''),
             })
             rollback_path.write_text(json.dumps(rollback, ensure_ascii=False, indent=2))
             if _apply(product, reviewed['content_html'], reviewed['meta_desc']):
@@ -830,10 +859,6 @@ def main():
         time.sleep(2)
 
     cur.close(); conn.close()
-
-    # Persist seen_second_clauses for next batch run
-    if args.dry_run:
-        _save_seen_second(seen_second)
 
     if args.apply and applied > 0:
         _flush_cache(0, force=True)   # final flush + Next.js revalidation
