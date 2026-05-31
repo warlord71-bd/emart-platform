@@ -512,10 +512,10 @@ No new tabs. No frontend changes. All data goes into existing WooCommerce meta f
 | Scraped field | Written to Emart field | Notes |
 |---------------|----------------------|-------|
 | `ingredients_raw` | `_emart_ingredients` | Formatted as HTML `<ul>` — replaces existing if richer; skipped if Emart already has detailed data |
-| `description_plain` + `benefits` | Reference only for `post_content` generation | Not copied verbatim — used as research by DeepSeek |
+| `description_plain` + `benefits` | Reference only for `post_content` generation | Structure/depth reference only — no sentence, bullet, FAQ answer, or disclaimer wording may be copied or lightly paraphrased |
 | `faq_items` | `_emart_product_faq` | Copied only if Emart's current FAQ is poor — see quality check below |
 | `pairing_candidates` | Embedded inside `post_content` second paragraph | Only if passes ingredient compatibility check — see pairing logic below |
-| `disclaimer_text` | Appended as disclaimer block inside `post_content` | See format below |
+| `disclaimer_text` | Not written to Emart copy | Research only for product-specific packaging facts; final disclaimer uses Emart-owned standard text |
 
 #### Ingredients field format
 
@@ -547,19 +547,24 @@ Only write to `_emart_ingredients` if:
 
 Never overwrite a richer existing Emart ingredients list with a shorter scraped one.
 
-#### Disclaimer block format — appended at end of `post_content`
+#### Disclaimer block format — Emart-owned, appended at end of `post_content`
 
-This is a single `<div>` block added at the very end of the generated description HTML. It does not require any frontend changes — it renders inside the existing description tab.
+Do not copy Skinnora's delivery, returns, packaging, or disclaimer wording into Emart product descriptions. Competitor disclaimer text is research only. If it contains a useful packaging fact, convert it into a neutral fact first; the final customer-facing wording must be Emart-owned.
+
+Use this standard Emart cleanser disclaimer at the end of face-cleanser descriptions:
 
 ```html
-<div class="product-disclaimer">
-  <p><strong>Before Use:</strong> Patch test recommended — apply a small amount to your inner wrist or behind the ear and wait 24 hours before full use, especially if you have sensitive or reactive skin.</p>
-  <p><strong>Shelf Life &amp; Storage:</strong> {shelf_life_text}. Store in a cool, dry place away from direct sunlight. Keep out of reach of children.</p>
-  <p><strong>Packaging:</strong> {packaging_text}. Expiry date printed on {packaging_location}.</p>
-</div>
+<h3>Disclaimer</h3>
+<p>Check the product carefully when receiving your order. After delivery is accepted, returns or exchanges depend on Emart's active return policy and product condition. Packaging can vary between batches, so the tube, box, or label may look slightly different from photos while the product remains the same original item.</p>
 ```
 
-Populate `{shelf_life_text}`, `{packaging_text}`, `{packaging_location}` from the scraped `disclaimer_text`. Parse with simple keyword matching:
+Optional product-safety note before the disclaimer:
+
+```html
+<p><strong>Before Use:</strong> Patch test first if your skin is sensitive, acne-treated, or already using exfoliating acids. Stop use if irritation continues.</p>
+```
+
+If a future category needs shelf-life/package-location details, build them from Emart stock data or neutral product packaging facts, not competitor wording:
 
 ```python
 def parse_disclaimer(disclaimer_text: str, product: dict) -> dict:
@@ -605,36 +610,35 @@ def parse_disclaimer(disclaimer_text: str, product: dict) -> dict:
 def build_disclaimer_html(disclaimer_text: str, product: dict) -> str:
     """
     Build the disclaimer block appended by the apply step — NOT by DeepSeek.
-    Single owner: apply step always appends this; DeepSeek never writes it.
-    Uses <aside> (semantic) not <div class="product-disclaimer">.
+    Competitor disclaimer text is never copied. This function uses Emart-owned
+    standard wording; scraped text may only inform neutral packaging facts.
     """
     if not disclaimer_text:
         return (
-            '<aside class="product-disclaimer">\n'
-            '<p><strong>Before Use:</strong> Patch test recommended — apply a small '
-            'amount to your inner wrist and wait 24 hours before full use, especially '
-            'for sensitive skin.</p>\n'
-            '<p><strong>Storage:</strong> Store in a cool, dry place away from direct '
-            'sunlight. Keep out of reach of children. Check expiry date on packaging.</p>\n'
-            '</aside>'
+            '<p><strong>Before Use:</strong> Patch test first if your skin is sensitive, '
+            'acne-treated, or already using exfoliating acids. Stop use if irritation continues.</p>\n'
+            '<h3>Disclaimer</h3>\n'
+            '<p>Check the product carefully when receiving your order. After delivery is accepted, '
+            "returns or exchanges depend on Emart's active return policy and product condition. "
+            'Packaging can vary between batches, so the tube, box, or label may look slightly '
+            'different from photos while the product remains the same original item.</p>'
         )
 
     fields = parse_disclaimer(disclaimer_text, product)
     return (
-        '<aside class="product-disclaimer">\n'
-        '<p><strong>Before Use:</strong> Patch test recommended — apply a small amount '
-        'to your inner wrist or behind the ear and wait 24 hours before full use, '
-        'especially if you have sensitive or reactive skin.</p>\n'
+        '<p><strong>Before Use:</strong> Patch test first if your skin is sensitive, '
+        'acne-treated, or already using exfoliating acids. Stop use if irritation continues.</p>\n'
         f'<p><strong>Shelf Life &amp; Storage:</strong> {fields["shelf_life_text"]}. '
         'Store in a cool, dry place away from direct sunlight. '
         'Keep out of reach of children.</p>\n'
-        f'<p><strong>Packaging:</strong> {fields["packaging_text"]}. '
-        f'Expiry date printed on {fields["packaging_location"]}.</p>\n'
-        '</aside>'
+        '<h3>Disclaimer</h3>\n'
+        '<p>Check the product carefully when receiving your order. After delivery is accepted, '
+        "returns or exchanges depend on Emart's active return policy and product condition. "
+        f'Packaging can vary between batches. Check the expiry date on {fields["packaging_location"]}.</p>'
     )
 ```
 
-**Every product gets a disclaimer block** — matched (Path A) or unmatched (Path B). Unmatched products get the safe default version. This is consistent across the catalog and adds genuine trust signal to every PDP.
+**Every product gets an Emart-owned disclaimer block** — matched (Path A) or unmatched (Path B). Unmatched products get the safe default version. This is consistent across the catalog and avoids copying competitor policy text.
 
 #### FAQ field — copy-if-poor logic
 
@@ -871,9 +875,11 @@ DeepSeek embeds the pairing as a natural sentence in the second body paragraph �
 ### 2.5.7 What NOT to take from Skinnora
 
 - Do NOT copy any description sentence verbatim
+- Do NOT lightly paraphrase Skinnora body copy; convert it into structured facts first
 - Do NOT scrape or use their Routine Builder or Related Products tabs
 - Do NOT use their prices, sales count, or stock status
 - Do NOT use their specific batch expiry date — Emart has different stock; use general shelf life only
+- Do NOT copy their delivery, return, or disclaimer wording; use Emart-owned standard disclaimer text
 - Do NOT use Skinnora FAQ questions about delivery, shipping, payment, returns, or COD
 - Skinnora has NO Bangladesh context — Emart's output adds this entirely from scratch
 
@@ -889,7 +895,7 @@ Score each product on these criteria. Flag products scoring 2+ for enrichment.
 | Template prefix | Description starts with same 60 chars as 3+ other products |
 | No variant differentiation | Product variant keyword (e.g. "argan oil", "propolis", "vitamin C") NOT mentioned in description |
 | No ingredient mention | Description has no ingredient names from `_emart_ingredients` |
-| No Bangladesh context | Neither "Bangladesh", "Dhaka", "BD", "COD", "import" mentioned |
+| No Bangladesh context | Neither "Bangladesh", "Dhaka", "BD", "humidity", "climate", nor "import" mentioned |
 | Generic how-to-use | How-to-use section says only "Apply. Rinse." or fewer than 30 words |
 | No concern reference | No `pa_concern` term appears in description |
 
@@ -925,19 +931,62 @@ Use `<h3>` for all section headings within the description tab. The hierarchy is
   <li>{benefit_3}</li>
   [up to 6 bullets — each uses "Label — Mechanism" em-dash format]
 </ul>
-<h3>Who It's For</h3>
-<p>{2-3 sentences: suits / avoid / concern reference}</p>
+<h3>{category-specific fit section}</h3>
+<p>{short fit/avoid guidance, unless the category template uses Best For + Not Recommended For lists}</p>
 <h3>How to Use</h3>
 <ol>
   <li>{step with timing or quantity where available}</li>
 </ol>
-<p>{closing trust line — one sentence}</p>
-<aside class="product-disclaimer">
-  <p><strong>Before Use:</strong> {patch test warning}</p>
-  <p><strong>Shelf Life &amp; Storage:</strong> {shelf life text}</p>
-  <p><strong>Packaging:</strong> {packaging type and expiry location}</p>
-</aside>
+<h3>Routine Fit</h3>
+<p>{when to use in routine + practical compatibility note}</p>
+<p><strong>Before Use:</strong> {patch test warning}</p>
+<h3>Disclaimer</h3>
+<p>{Emart-owned disclaimer text}</p>
 ```
+
+#### Face cleanser section map — mandatory for cleanser category runs
+
+For foam, gel, balm, oil, clay, powder, and micellar cleansers, use this section order:
+
+```html
+<p>{intro: cleanser type + texture + key ingredient + who it helps}</p>
+<p>{routine/pairing context + Bangladesh skin/climate context if natural}</p>
+<h3>Key Benefits</h3>
+<ul>{4-6 Label — mechanism bullets}</ul>
+<h3>Key Ingredients</h3>
+<p>{ingredient-by-ingredient explanations in original Emart wording}</p>
+<h3>Best For</h3>
+<ul>{skin types / routine types}</ul>
+<h3>Targets These Concerns</h3>
+<ul>{concerns this cleanser can reasonably support}</ul>
+<h3>Not Recommended For</h3>
+<ul>{allergy, barrier, makeup-removal, or overuse cautions}</ul>
+<h3>How to Use</h3>
+<ol>{3-5 practical steps}</ol>
+<h3>Routine Fit</h3>
+<p>{morning/night/first-cleanse/second-cleanse guidance}</p>
+<p><strong>Before Use:</strong> {patch-test caution}</p>
+<h3>Disclaimer</h3>
+<p>{Emart-owned standard disclaimer}</p>
+```
+
+Do not include `Who It's For` when `Best For` and `Not Recommended For` are present. Those two list sections already cover fit and avoid guidance; adding `Who It's For` creates duplicate content.
+
+#### Competitor-reference rule — structure yes, wording no
+
+Skinnora may influence:
+- section order
+- depth of ingredient explanation
+- which factual topics are worth covering
+
+Skinnora must not supply:
+- final sentences
+- benefit bullet wording
+- FAQ answer wording
+- delivery/returns/disclaimer wording
+- "best for" and "not recommended" list wording
+
+Generation scripts must convert competitor text into structured facts first, then generate original Emart copy from those facts plus Emart product data.
 
 Note: `<aside>` replaces `<div class="product-disclaimer">` — semantically signals supplementary content to LLMs and screen readers, reducing risk of disclaimer text being parsed as a product claim.
 
@@ -1050,6 +1099,9 @@ Bad bullets (reject these patterns):
 
 ### 4.8 Who It's For section
 
+Use this section only for compact category templates. Do not use it for face
+cleanser pages that already include `Best For` and `Not Recommended For`.
+
 This paragraph MUST:
 - Name 1–2 specific skin/hair types this product suits
 - Name 1 skin/hair type that should avoid or use with caution
@@ -1059,15 +1111,24 @@ This paragraph MUST:
 Example:
 > "Best suited for oily and combination skin types that struggle with post-acne marks or slow barrier recovery. If you have very dry skin, layer this under a heavier moisturizer — the watery texture absorbs fast but won't provide enough occlusion on its own. Not recommended as a standalone treatment for active, inflamed breakouts."
 
-### 4.9 Closing trust line
+### 4.9 Ending section — routine fit + disclaimer, not a sales line
 
-One sentence. Options:
-- Authenticity: "Imported directly from [origin country] — not grey-market stock."
-- Availability: "Available now at Emart with Cash on Delivery across Bangladesh."
-- Social proof: "One of Emart's consistently top-rated [category] products." (only if total_sales > 5)
-- Pairing tip: see Section 4.10 below — pairing must pass ingredient compatibility check first.
+Do NOT end the main description with a price, COD, delivery, or generic authenticity
+sentence. Those belong in meta, schema, checkout, or site UI — not the humanized
+body copy. The main description should end like Skinnora: useful routine guidance,
+then a standard disclaimer.
 
-Do not use more than one closing trust line. Do not repeat what was already said in the description.
+Recommended ending structure:
+- `<h3>Routine Fit</h3>` — when to use it in the routine, what to pair/avoid, and one practical pro tip
+- `<h3>Disclaimer</h3>` — delivery/package disclaimer text
+
+Standard disclaimer text:
+> "Check the product carefully when receiving your order. After delivery is accepted, returns or exchanges depend on Emart's active return policy and product condition. Packaging can vary between batches, so the tube, box, or label may look slightly different from photos while the product remains the same original item."
+
+Do not use this pattern in body copy:
+- `Authentic South Korean import — price in Bangladesh at Emart, Cash on Delivery available.`
+- `Available now at Emart with Cash on Delivery across Bangladesh.`
+- `Buy now / shop now / order today` style closers.
 
 ### 4.10 "Pair with" cross-sell — compatibility rules (MANDATORY)
 
@@ -1108,14 +1169,38 @@ Include one "pairs well with" sentence in the second body paragraph (not just th
 | Peptide serum | Hyaluronic acid, ceramide moisturiser, niacinamide; avoid Vitamin C and AHA same step |
 | SPF sunscreen | Apply last — no pairing constraint, just remind to apply as final step |
 
+#### Product category pairing rules — language must match the product type
+
+**Critical:** pairing suggestions must use language appropriate to the product category.
+Never suggest face serums or face moisturisers as pairings for hair products, and
+never suggest shampoos or hair masks as pairings for face products.
+
+| Product category | Safe pairing language | Never suggest |
+|-----------------|----------------------|--------------|
+| **Shampoo** | Conditioner (same brand line preferred), deep conditioning mask, scalp serum, hair oil (ends only) | Face serums, ceramide moisturiser, hyaluronic acid serum, SPF |
+| **Conditioner** | Shampoo (same line), leave-in conditioner, hair mask | Face products |
+| **Hair mask / treatment** | Shampoo (same line), light leave-in conditioner | Face products |
+| **Foam/gel face cleanser** | Hydrating or alcohol-free toner, barrier-support serum, or moisturiser — apply after cleansing; active serums only if the incompatibility table passes | Another cleanser, active serum with conflicting ingredients, heavy cream same step |
+| **Oil/balm cleanser** | Foam or gel cleanser (double-cleanse second step), micellar water | Face serums, SPF — these come after the second cleanse |
+| **Micellar water** | Foam cleanser as follow-up after SPF/makeup, gentle toner after cleansing | Using alone after heavy SPF or makeup |
+| **Clay cleanser** | Hydrating toner (to restore moisture immediately after), light serum | Retinol same day, AHA same step |
+| **Face serum (general)** | Moisturiser, SPF (morning), patch-test note for sensitive skin | Another serum with conflicting actives (per incompatibility table) |
+| **Face moisturiser** | SPF (over moisturiser, morning), serum (under moisturiser) | Heavy oil over a light moisturiser (defeats purpose) |
+| **Eye cream** | Moisturiser, SPF — apply before moisturiser around the eye area | Retinol directly on eye area, AHA |
+| **SPF / sunscreen** | Apply as final morning step — no additional pairing needed | Layering another SPF on top |
+| **Body lotion / cream** | Body wash or shower gel (same line or complementary scent) | Face products |
+| **Lip balm / lip care** | Lip scrub (before, not same step), hydrating lip mask (night) | SPF lip product same step |
+
 #### How to write the pairing sentence
 
 - Natural placement: second body paragraph, as a practical tip, not a promotion
-- Name the specific product type or ingredient, not a vague "moisturiser"
-- If Emart sells a compatible product by name, you may name it — but only if the pairing is genuinely safe per the table above
-- If no safe named pairing exists, use the product category: "pairs well with a ceramide moisturiser"
-- Acceptable: "For extra hydration, follow with a ceramide moisturiser — the barrier-repair ingredients work well after this serum absorbs."
-- Not acceptable: "Pairs well with our Vitamin C serum for brighter results." ← if the current product contains AHA/BHA, this is a dangerous suggestion
+- Language must match the product category (see table above)
+- Name the specific product type — not a vague generic
+- If Emart sells a compatible product by name in the same line, name it specifically
+- Acceptable (shampoo): "For best results, follow with the Kerasys Propolis Conditioner or a weekly deep conditioning mask."
+- Acceptable (face cleanser): "After cleansing, apply an alcohol-free toner while skin is still slightly damp — it absorbs better that way."
+- Not acceptable: "Pairs well with a ceramide moisturiser." ← on a shampoo
+- Not acceptable: "Follow with a Kerasys conditioner." ← on a face serum
 
 ---
 
@@ -1139,7 +1224,7 @@ The highest-volume search pattern for Bangladeshi ecommerce is:
 
 **This keyword phrase must stay in the meta description.** Remove the ৳ number — not the phrase.
 
-The phrase "price in Bangladesh" or "best price in Bangladesh" or "price at Emart" hits the query. The actual number comes from Rank Math's WooCommerce Product schema (already active) which outputs:
+The phrase "price in Bangladesh", "best price in Bangladesh", "current price in Bangladesh", "check price in Bangladesh", or "price at Emart" hits the query. Use the version that reads most natural in the sentence. Do not claim "lowest price in Bangladesh" unless Emart has a verified market-price comparison for that product. The actual number comes from Rank Math's WooCommerce Product schema (already active) which outputs:
 
 ```json
 {"@type": "Offer", "price": "1370", "priceCurrency": "BDT"}
@@ -1162,9 +1247,9 @@ Pick the most compelling product-specific fact and build the second clause aroun
 | Known SPF value (sunscreens) | `SPF [X] protection — check price in Bangladesh at Emart.` |
 | Dermatologist-tested claim | `Dermatologist-tested formula — current price in Bangladesh at Emart.` |
 | Fragrance-free | `Fragrance-free, safe for daily use — see price in Bangladesh at Emart.` |
-| High sales (total_sales > 20) | `One of Emart's best-selling [category] — price in Bangladesh with COD.` |
-| Specific country of origin | `Authentic [South Korean / USA / Indian] import — price in Bangladesh at Emart.` |
-| Specific concentration (e.g. 10% Niacinamide) | `[X]% [ingredient] — check price in Bangladesh at Emart, COD available.` |
+| High sales (total_sales > 20) | `One of Emart's best-selling [category] — best price in Bangladesh at Emart.` |
+| Specific country of origin | `Authentic [South Korean / USA / Indian] import — best price in Bangladesh at Emart.` |
+| Specific concentration (e.g. 10% Niacinamide) | `[X]% [ingredient] — check current price in Bangladesh at Emart.` |
 | Sensitive skin / allergy-tested | `Suitable for sensitive skin — best price in Bangladesh at Emart.` |
 | Vegan / cruelty-free | `Vegan, cruelty-free formula — see price in Bangladesh at Emart.` |
 | Award-winning / cult product | `[Award / bestseller claim] — current price in Bangladesh at Emart.` |
@@ -1177,7 +1262,7 @@ The "price in Bangladesh" phrase stays in every meta. Everything around it chang
 The default row in the table above applies to products with no premium attribute (no SPF, no
 dermatologist claim, no fragrance-free, etc.). At scale this covers a large slice of the catalog
 (basic shampoos, basic moisturisers, etc.). A fixed default like `"Imported from South Korea —
-price in Bangladesh at Emart, COD available."` will hit the ≥82% similarity threshold against
+best price in Bangladesh at Emart."` will hit the ≥82% similarity threshold against
 every other South Korean default product and hard-error on all but the first.
 
 **Default clause must be constructed from the product's unique combination of brand + origin + concern:**
@@ -1193,11 +1278,11 @@ def build_default_second_clause(product: dict) -> str:
     concern = ((product.get('concerns') or [''])[0] or '').strip()
 
     if brand and origin:
-        return f"{brand} from {origin} — price in Bangladesh at Emart, COD available."
+        return f"{brand} from {origin} — best price in Bangladesh at Emart."
     if brand and concern:
         return f"{brand} for {concern.lower()} — current price in Bangladesh at Emart."
     if origin:
-        return f"Imported from {origin} — see price in Bangladesh at Emart, COD available."
+        return f"Imported from {origin} — check current price in Bangladesh at Emart."
     # Last resort — still includes Emart + phrase, at least has no exact repeat
     return "Authentic import — check current price in Bangladesh at Emart."
 ```
@@ -1311,9 +1396,35 @@ PRICE_PATTERNS = [
     r'\btaka\b',
     r'\b\d{3,5}\s*(tk|bdt|taka)\b',
     r'৳\s*[\d,]+',
+    # Bare price-like amounts. Avoid product sizes such as 150ml / 1000ml,
+    # SPF values, percentages, and model names attached to letters.
+    r'(?<![\w.])\d{1,2},\d{3}(?!\w)',
+    r'(?<![\w.])\d{4,5}(?!\s*(ml|g|gm|kg|oz|pcs|pc|spf|%)\b)(?!\w)',
 ]
 
 PRICE_KW_REQUIRED = ["price in bangladesh", "price at emart"]
+
+TITLE_SIGNAL_STOPWORDS = {
+    "cleanser", "cleansing", "facial", "face", "wash", "foam", "foaming",
+    "gel", "cream", "serum", "toner", "essence", "ampoule", "moisturiser",
+    "moisturizer", "lotion", "sunscreen", "shampoo", "conditioner", "mask",
+    "balm", "water", "skin", "skincare", "hair", "body", "daily", "plus",
+    "with", "without", "original", "authentic", "korean", "beauty",
+}
+
+SEO_DUPLICATE_NOISE_PATTERNS = [
+    r'\bcurrent\s+price\s+in\s+bangladesh\b',
+    r'\bbest\s+price\s+in\s+bangladesh\b',
+    r'\bcheck\s+price\s+in\s+bangladesh\b',
+    r'\bsee\s+price\s+in\s+bangladesh\b',
+    r'\bprice\s+in\s+bangladesh\b',
+    r'\bprice\s+at\s+emart\b',
+    r'\bat\s+emart\b',
+    r'\bemart\b',
+    r'\bcash\s+on\s+delivery\b',
+    r'\bcod\s+available\b',
+    r'\bcod\b',
+]
 
 # Hard-banned phrases in meta descriptions
 BANNED_PHRASES = [
@@ -1366,6 +1477,18 @@ def _safe_cats(product: dict) -> list[str]:
             if name:
                 out.append(str(name).lower())
     return out
+
+def _normalize_second_clause_for_similarity(text: str) -> str:
+    """
+    Remove mandatory SEO boilerplate before duplicate scoring.
+    Otherwise every clause containing 'price in Bangladesh at Emart'
+    looks falsely similar.
+    """
+    t = text.lower()
+    for pat in SEO_DUPLICATE_NOISE_PATTERNS:
+        t = re.sub(pat, " ", t, flags=re.I)
+    t = re.sub(r'[^a-z0-9%]+', ' ', t)
+    return re.sub(r'\s+', ' ', t).strip()
 
 
 # ── Main validator ─────────────────────────────────────────────────────────
@@ -1463,11 +1586,16 @@ def validate_meta_desc(
     # brand name, a key ingredient word, or the primary concern.
     brand    = _safe_str(product.get("brand")).lower()
     concerns = [_safe_str(c).lower() for c in product.get("concerns", []) if c]
-    # Extract ingredient keywords from title (words > 4 chars, not stop words)
+    # Extract product-specific title keywords. Exclude generic category words
+    # and size tokens so "cleanser 150ml" does not count as specificity.
     title_words = set(
         w.lower() for w in re.findall(r'\b\w{5,}\b',
             _safe_str(product.get("title") or product.get("post_title")))
-        if w.lower() not in {"about", "with", "from", "that", "this", "their", "which"}
+        if (
+            w.lower() not in TITLE_SIGNAL_STOPWORDS
+            and not re.fullmatch(r'\d+(ml|g|gm|kg|oz|pcs|pc)?', w.lower())
+            and not re.fullmatch(r'spf\d+', w.lower())
+        )
     )
     has_product_signal = (
         (brand and brand in m_lower)
@@ -1491,24 +1619,29 @@ def validate_meta_desc(
         return result
 
     second = parts[1].strip().lower()
+    second_for_similarity = _normalize_second_clause_for_similarity(second)
+    if not second_for_similarity:
+        errors.append(
+            "second clause has no product-specific signal after removing SEO boilerplate"
+        )
 
     # ── Near-duplicate detection (fix 3 extended) ─────────────────────────
     # Catches "authentic Korean skincare" vs "authentic K-beauty skincare"
     matched_prior = None
     for prior in seen_second_clauses:
-        if fuzz.ratio(second, prior) >= NEAR_DUPLICATE_THRESHOLD:
+        if second_for_similarity and fuzz.ratio(second_for_similarity, prior) >= NEAR_DUPLICATE_THRESHOLD:
             matched_prior = prior
             break
 
     if matched_prior:
         errors.append(
-            f"near-duplicate second clause ({fuzz.ratio(second, matched_prior):.0f}% similar "
-            f"to: '{matched_prior[:60]}')"
+            f"near-duplicate second clause ({fuzz.ratio(second_for_similarity, matched_prior):.0f}% similar "
+            f"after SEO phrase normalization to: '{matched_prior[:60]}')"
         )
 
     # ── Fix 2: only register when all hard errors are absent ──────────────
     if not errors:
-        seen_second_clauses.add(second)
+        seen_second_clauses.add(second_for_similarity)
 
     return result
 ```
@@ -1572,11 +1705,12 @@ print(f"\nValidation failures: {len(failures)} — see {failures_path}")
 | Too short / too long | ERROR | Google truncates or ignores |
 | Starts with "Buy" | ERROR | Programmatic signal |
 | Contains price amount | ERROR | Goes stale, misleads CTR |
-| Missing `price in Bangladesh` phrase | ERROR | Misses highest-volume BD query |
+| Missing required price keyword phrase | ERROR | Must include `price in Bangladesh` or `price at Emart` |
 | Missing 'Emart' | ERROR | No brand attribution |
 | Banned phrase (`premium quality` etc.) | ERROR | LLM tell / filler |
 | No product signal | ERROR | Could describe any product |
 | Missing second clause separator | ERROR | Structure broken |
+| Empty second clause after SEO normalization | ERROR | Second clause is only boilerplate |
 | Near-duplicate second clause (≥82%) | ERROR | Pattern signal across catalog |
 | Borderline short (130–139 chars) | WARNING | Not ideal but valid |
 | Near length limit (156–160 chars) | WARNING | Device truncation risk |
@@ -2032,7 +2166,7 @@ Each generated product produces three outputs:
 ```
 new_content_html        → wp4h_posts.post_content  (description + disclaimer block at end)
 new_ingredients_html    → wp4h_postmeta _emart_ingredients  (Path A only if richer than current)
-new_meta_desc           → wp4h_postmeta _rank_math_description
+new_meta_desc           → wp4h_postmeta _emart_meta_description + _rank_math_description
 ```
 
 Review CSV columns:
@@ -2072,6 +2206,7 @@ Before writing anything to DB, capture current state for every product to be upd
 # [{
 #   "post_id": 123,
 #   "old_post_content": "...",
+#   "old_emart_meta_description": "...",
 #   "old_rank_math_description": "...",
 #   "old_emart_ingredients": "...",    ← only if ingredients will be updated
 #   "old_emart_product_faq": "..."     ← only if FAQ will be updated
@@ -2083,46 +2218,72 @@ Before writing anything to DB, capture current state for every product to be upd
 For each approved row in the review CSV:
 
 ```python
+def upsert_unique_postmeta(cursor, post_id: int, meta_key: str, meta_value: str):
+    """
+    WordPress postmeta has no unique constraint on (post_id, meta_key).
+    Never use ON DUPLICATE KEY UPDATE here: it can insert duplicate rows.
+
+    Keep the oldest row for stable REST ordering, update it, and delete any
+    duplicate rows so Next.js reads the intended first value.
+    """
+    cursor.execute(
+        "SELECT meta_id FROM wp4h_postmeta "
+        "WHERE post_id = %s AND meta_key = %s "
+        "ORDER BY meta_id ASC",
+        (post_id, meta_key)
+    )
+    rows = cursor.fetchall()
+
+    if not rows:
+        cursor.execute(
+            "INSERT INTO wp4h_postmeta (post_id, meta_key, meta_value) "
+            "VALUES (%s, %s, %s)",
+            (post_id, meta_key, meta_value)
+        )
+        return
+
+    keep_id = rows[0][0]
+    cursor.execute(
+        "UPDATE wp4h_postmeta SET meta_value = %s WHERE meta_id = %s",
+        (meta_value, keep_id)
+    )
+
+    duplicate_ids = [r[0] for r in rows[1:]]
+    if duplicate_ids:
+        placeholders = ",".join(["%s"] * len(duplicate_ids))
+        cursor.execute(
+            f"DELETE FROM wp4h_postmeta WHERE meta_id IN ({placeholders})",
+            duplicate_ids
+        )
+
+
 # 1. Main description (always updated)
 cursor.execute(
     "UPDATE wp4h_posts SET post_content = %s WHERE ID = %s",
     (row['new_content_html'], row['post_id'])
 )
+
 # 2. Meta description (always updated)
-cursor.execute(
-    "UPDATE wp4h_postmeta SET meta_value = %s "
-    "WHERE post_id = %s AND meta_key = '_rank_math_description'",
-    (row['new_meta_desc'], row['post_id'])
+# Next.js reads _emart_meta_description first, then _rank_math_description.
+# Write both, and deduplicate both, so live <meta name="description"> is stable.
+upsert_unique_postmeta(
+    cursor, row['post_id'], '_emart_meta_description', row['new_meta_desc']
 )
+upsert_unique_postmeta(
+    cursor, row['post_id'], '_rank_math_description', row['new_meta_desc']
+)
+
 # 3. Ingredients — only if richer scraped version available
 if row.get('new_ingredients_html'):
-    cursor.execute(
-        "UPDATE wp4h_postmeta SET meta_value = %s "
-        "WHERE post_id = %s AND meta_key = '_emart_ingredients'",
-        (row['new_ingredients_html'], row['post_id'])
+    upsert_unique_postmeta(
+        cursor, row['post_id'], '_emart_ingredients', row['new_ingredients_html']
     )
+
 # 4. FAQ — only if old quality was poor/empty AND new FAQ was generated
 if row.get('new_faq_text'):
-    # Upsert: update if exists, insert if not
-    cursor.execute(
-        "SELECT meta_id FROM wp4h_postmeta "
-        "WHERE post_id = %s AND meta_key = '_emart_product_faq'",
-        (row['post_id'],)
+    upsert_unique_postmeta(
+        cursor, row['post_id'], '_emart_product_faq', row['new_faq_text']
     )
-    existing = cursor.fetchone()
-    if existing:
-        cursor.execute(
-            "UPDATE wp4h_postmeta SET meta_value = %s "
-            "WHERE post_id = %s AND meta_key = '_emart_product_faq'",
-            (row['new_faq_text'], row['post_id'])
-        )
-    else:
-        cursor.execute(
-            "INSERT INTO wp4h_postmeta (post_id, meta_key, meta_value) "
-            "VALUES (%s, '_emart_product_faq', %s)",
-            (row['post_id'], row['new_faq_text'])
-        )
-```
 
 # 5. FAQ schema — surface FAQ as FAQPage JSON-LD (agentic shopping + SERP rich results)
 # Rank Math supports FAQPage schema. After writing new_faq_text to _emart_product_faq,
@@ -2148,7 +2309,8 @@ if row.get('new_faq_text'):
         # Merge into existing _rank_math_schema_data (preserves Product schema)
         cursor.execute(
             "SELECT meta_value FROM wp4h_postmeta "
-            "WHERE post_id = %s AND meta_key = '_rank_math_schema_data'",
+            "WHERE post_id = %s AND meta_key = '_rank_math_schema_data' "
+            "ORDER BY meta_id ASC LIMIT 1",
             (row['post_id'],)
         )
         existing_schema_row = cursor.fetchone()
@@ -2157,19 +2319,19 @@ if row.get('new_faq_text'):
         except Exception:
             existing_schema = {}
         existing_schema.update(faq_schema_block)
-        cursor.execute(
-            "INSERT INTO wp4h_postmeta (post_id, meta_key, meta_value) "
-            "VALUES (%s, '_rank_math_schema_data', %s) "
-            "ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)",
-            (row['post_id'], json.dumps(existing_schema))
+        upsert_unique_postmeta(
+            cursor,
+            row['post_id'],
+            '_rank_math_schema_data',
+            json.dumps(existing_schema)
         )
 
 # 6. Stamp _emart_humanized timestamp — re-run guard
-cursor.execute(
-    "INSERT INTO wp4h_postmeta (post_id, meta_key, meta_value) "
-    "VALUES (%s, '_emart_humanized', %s) "
-    "ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)",
-    (row['post_id'], datetime.utcnow().isoformat())
+upsert_unique_postmeta(
+    cursor,
+    row['post_id'],
+    '_emart_humanized',
+    datetime.utcnow().isoformat()
 )
 ```
 
@@ -2501,12 +2663,17 @@ best-in-class, Furthermore, Moreover, In conclusion, In summary, It is worth not
 It's important to note, powerhouse, skin-loving, transform your routine, elevate your skincare,
 harness the power, unlock your potential, unleash the, experience the power
 
-OUTPUT FORMAT — return ONLY valid JSON, no markdown fences, no extra text.
-content_html MUST start with <p>, never <h2> (H1 is already on the page).
-Use <h3> for all section headings inside the description.
-Do NOT include a disclaimer block — the apply step appends it separately.
+	OUTPUT FORMAT — return ONLY valid JSON, no markdown fences, no extra text.
+	content_html MUST start with <p>, never <h2> (H1 is already on the page).
+	Use <h3> for all section headings inside the description.
+	For face cleansers, use the cleanser section map:
+	Intro paragraphs → Key Benefits → Key Ingredients → Best For → Targets These Concerns
+	→ Not Recommended For → How to Use → Routine Fit → Before Use note → Disclaimer.
+	Do NOT include both Best For and Who It's For.
+	Do NOT use price, COD, "available at Emart", buy/order/shop calls to action, or delivery claims in body copy.
+	Use only Emart-owned disclaimer wording; never copy competitor disclaimer or return-policy text.
 
-{"content_html": "<p>...</p><p>...</p><h3>Key Benefits</h3><ul>...</ul><h3>Who It's For</h3><p>...</p><h3>How to Use</h3><ol>...</ol><p>...</p>", "meta_desc": "130-160 char plain text"}"""
+	{"content_html": "<p>...</p><p>...</p><h3>Key Benefits</h3><ul>...</ul><h3>Key Ingredients</h3><p>...</p><h3>Best For</h3><ul>...</ul><h3>Targets These Concerns</h3><ul>...</ul><h3>Not Recommended For</h3><ul>...</ul><h3>How to Use</h3><ol>...</ol><h3>Routine Fit</h3><p>...</p><p><strong>Before Use:</strong>...</p><h3>Disclaimer</h3><p>...</p>", "meta_desc": "130-160 char plain text"}"""
 
 
 def build_user_prompt(
@@ -2545,17 +2712,19 @@ CURRENT HOW TO USE (accurate — reuse with minor wording improvements only):
 
     # Skinnora research reference (Path A)
     skinnora_section = ""
-    if skinnora_data:
-        benefits_text = "\n".join(f"  - {b}" for b in skinnora_data.get("benefits", [])[:6])
-        skinnora_section = f"""
-COMPETITOR RESEARCH REFERENCE (skinnora.com — inspiration only, do NOT copy text):
-Their description: {skinnora_data.get('description_plain', '')[:400]}
-Their key benefits:
-{benefits_text}
-Their ingredients note: {skinnora_data.get('ingredients_raw', '')[:300]}
-Your output must be ORIGINAL — different sentences, different structure.
-Skinnora has zero Bangladesh context. Add it entirely from scratch.
-"""
+	    if skinnora_data:
+	        benefits_text = "\n".join(f"  - {b}" for b in skinnora_data.get("benefits", [])[:6])
+	        skinnora_section = f"""
+	COMPETITOR RESEARCH REFERENCE (skinnora.com — facts/structure only, do NOT copy or paraphrase text):
+	Their description: {skinnora_data.get('description_plain', '')[:400]}
+	Their key benefits:
+	{benefits_text}
+	Their ingredients note: {skinnora_data.get('ingredients_raw', '')[:300]}
+	First convert this reference into neutral facts in your reasoning. Then write original Emart copy.
+	Do not reuse their sentence order, bullet wording, "best for" wording, FAQ wording, or disclaimer wording.
+	Your output must be ORIGINAL — same factual topic coverage is OK, copied phrasing is not.
+	Skinnora has zero Bangladesh context. Any Bangladesh context must come from Emart's own positioning.
+	"""
 
     # GSC keyword data — highest-confidence signal
     gsc_section = ""
@@ -2626,25 +2795,25 @@ How to use (from Emart data):
 {gsc_section}
 {gmc_section}
 {pairing_note}
-Mandatory output rules:
-1. Structure: NO <h2> opening — start directly with <p> opening hook (H1 already on page)
-   Use <h3> for all section headings. Disclaimer in <aside> not <div>.
-2. Key Benefits: "Benefit Label — Ingredient/mechanism explanation" (em dash, not colon)
-3. Opening paragraph: name key differentiating ingredient within first 2 sentences
-4. Sibling differentiation: explicitly state what THIS variant does differently
-5. Bangladesh context: one signal — humidity/climate, authenticity, or COD — woven in naturally
-6. Experience signal (E-E-A-T): one observational detail from use or examination —
-   texture, pump behaviour, scent, set time, layering behaviour under SPF, packaging detail
-7. Who It's For: name one skin/hair type to AVOID + the mechanism reason why
-8. Claim attribution: any sales figure, bestseller, or award claim must say
-   "According to [Brand]" or "As claimed by the manufacturer"
-9. Pronoun clarity: after 2 "It"/"This" sentences, restate the product name
+	Mandatory output rules:
+	1. Structure: NO <h2> opening — start directly with <p> opening hook (H1 already on page)
+	   Use <h3> for all section headings. For face cleansers, use the cleanser section map.
+	2. Key Benefits: "Benefit Label — Ingredient/mechanism explanation" (em dash, not colon)
+	3. Opening paragraph: name key differentiating ingredient within first 2 sentences
+	4. Sibling differentiation: explicitly state what THIS variant does differently
+	5. Bangladesh context: one signal — humidity/climate or authenticity — woven in naturally; no COD/delivery in body copy
+	6. Experience signal (E-E-A-T): one observational detail from use or examination —
+	   texture, pump behaviour, scent, set time, layering behaviour under SPF, packaging detail
+	7. Face cleansers: use Best For + Not Recommended For; do not use Who It's For
+	8. Claim attribution: any sales figure, bestseller, or award claim must say
+	   "According to [Brand]" or "As claimed by the manufacturer"
+	9. Pronoun clarity: after 2 "It"/"This" sentences, restate the product name
 10. Pairing sentence (second paragraph): safe pairings ONLY —
     NEVER Vitamin C + AHA/BHA/PHA | NEVER retinol + acids/Vitamin C |
     NEVER benzoyl peroxide + retinol/Vitamin C | NEVER copper peptides + acids
-11. Closing line: one sentence — authenticity/import claim, COD, or pairing tip
-12. meta_desc: 130-160 chars · "price in Bangladesh" or "price at Emart" required ·
-    second clause from product attribute · NOT "Buy" · NO ৳ price number"""
+	11. Body copy must not contain price, COD, "available at Emart", buy/order/shop calls to action, or competitor disclaimer wording
+	12. meta_desc: 130-160 chars · "price in Bangladesh" or "price at Emart" required ·
+	    second clause from product attribute · NOT "Buy" · NO ৳ price number"""
 
 
 def generate_product_description(
@@ -2925,6 +3094,7 @@ Before writing any generated content to DB, validate each item:
 
 ```python
 from bs4 import BeautifulSoup
+from difflib import SequenceMatcher
 
 def strip_html(html: str) -> str:
     """Strip HTML tags and collapse whitespace — previously undefined, caused NameError."""
@@ -2933,6 +3103,78 @@ def strip_html(html: str) -> str:
     return re.sub(r'\s+', ' ',
         BeautifulSoup(html, 'html.parser').get_text(separator=' ')
     ).strip()
+
+
+BODY_BANNED_ECOMMERCE_PHRASES = [
+    "price in bangladesh",
+    "cash on delivery",
+    "cod available",
+    "available at emart",
+    "buy now",
+    "shop now",
+    "order today",
+]
+
+FACE_CLEANSER_REQUIRED_SECTIONS = [
+    "Key Benefits",
+    "Key Ingredients",
+    "Best For",
+    "Targets These Concerns",
+    "Not Recommended For",
+    "How to Use",
+    "Routine Fit",
+    "Disclaimer",
+]
+
+FACE_CLEANSER_FORBIDDEN_SECTIONS = [
+    "Who It's For",
+    "Who It’s For",
+]
+
+
+def is_face_cleanser(product: dict) -> bool:
+    cats = " ".join(
+        (c.get("slug") or c.get("name") if isinstance(c, dict) else str(c))
+        for c in product.get("categories", [])
+    ).lower()
+    title = (product.get("title") or product.get("post_title") or "").lower()
+    return "face-cleansers" in cats or "face cleanser" in cats or "cleanser" in title or "facial wash" in title
+
+
+def html_sections(content_html: str) -> list[str]:
+    soup = BeautifulSoup(content_html or "", "html.parser")
+    return [h.get_text(" ", strip=True) for h in soup.find_all(["h3", "h4"])]
+
+
+def sentences(text: str) -> list[str]:
+    return [
+        s.strip()
+        for s in re.split(r'(?<=[.!?])\s+', text)
+        if len(s.strip().split()) >= 7
+    ]
+
+
+def too_close_to_reference(generated_plain: str, reference_plain: str) -> list[str]:
+    """
+    Guard against copying or close paraphrase from Skinnora.
+    Use on description/reference text only; ingredients INCI names can overlap.
+    """
+    if not reference_plain:
+        return []
+
+    ref_sentences = sentences(reference_plain)
+    errors = []
+    for gen in sentences(generated_plain):
+        gen_lower = gen.lower()
+        for ref in ref_sentences:
+            ref_lower = ref.lower()
+            if gen_lower == ref_lower:
+                errors.append(f"copied competitor sentence: '{gen[:80]}'")
+                break
+            if SequenceMatcher(None, gen_lower, ref_lower).ratio() >= 0.86:
+                errors.append(f"too close to competitor wording: '{gen[:80]}'")
+                break
+    return errors
 
 
 def validate_generated_content(product: dict, generated: dict) -> list[str]:
@@ -2944,6 +3186,7 @@ def validate_generated_content(product: dict, generated: dict) -> list[str]:
     content = generated.get('content_html') or ''
     meta    = generated.get('meta_desc') or ''
     plain   = strip_html(content)
+    sections = html_sections(content)
 
     # Content length
     if len(plain) < 300:
@@ -2958,9 +3201,28 @@ def validate_generated_content(product: dict, generated: dict) -> list[str]:
     if re.search(r'^\s*<h2', content, re.I):
         errors.append("<h2> opener found — content must start with <p>")
 
-    # Disclaimer must NOT be in content (apply step appends it)
+    # Body copy must not contain meta/UI ecommerce phrases
+    plain_lower = plain.lower()
+    for phrase in BODY_BANNED_ECOMMERCE_PHRASES:
+        if phrase in plain_lower:
+            errors.append(f"body contains ecommerce/meta phrase: '{phrase}'")
+
+    # No <aside> / classed disclaimer. Disclaimer is normal h3+p body HTML.
     if 'product-disclaimer' in content or '<aside' in content.lower():
-        errors.append("disclaimer block found in content — remove; apply step appends it")
+        errors.append("aside/product-disclaimer block found — use h3 Disclaimer + p with Emart-owned wording")
+
+    # Face cleanser expanded template enforcement
+    if is_face_cleanser(product):
+        missing = [s for s in FACE_CLEANSER_REQUIRED_SECTIONS if s not in sections]
+        if missing:
+            errors.append(f"face cleanser missing sections: {', '.join(missing)}")
+        forbidden = [s for s in FACE_CLEANSER_FORBIDDEN_SECTIONS if s in sections]
+        if forbidden:
+            errors.append(f"face cleanser has duplicate fit section: {', '.join(forbidden)}")
+
+    # Competitor reference is inspiration only, never final wording.
+    reference_plain = generated.get("skinnora_reference_plain") or product.get("skinnora_reference_plain") or ""
+    errors.extend(too_close_to_reference(plain, reference_plain))
 
     # Banned words
     BANNED = [
@@ -3068,10 +3330,14 @@ def upsert_rank_math_schema_brand(cursor, post_id: int, brand_name: str):
     Adds brand to _rank_math_schema_data so JSON-LD includes:
     "brand": {"@type": "Brand", "name": "CosRx"}
     Required for agentic shopping agents to attribute products correctly.
+
+    Requires the Step 5 upsert_unique_postmeta helper so schema writes do not
+    create duplicate _rank_math_schema_data rows.
     """
     cursor.execute(
         "SELECT meta_value FROM wp4h_postmeta "
-        "WHERE post_id = %s AND meta_key = '_rank_math_schema_data'",
+        "WHERE post_id = %s AND meta_key = '_rank_math_schema_data' "
+        "ORDER BY meta_id ASC LIMIT 1",
         (post_id,)
     )
     row = cursor.fetchone()
@@ -3089,11 +3355,11 @@ def upsert_rank_math_schema_brand(cursor, post_id: int, brand_name: str):
         "name": brand_name
     }
 
-    cursor.execute(
-        "INSERT INTO wp4h_postmeta (post_id, meta_key, meta_value) "
-        "VALUES (%s, '_rank_math_schema_data', %s) "
-        "ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)",
-        (post_id, json.dumps(schema))
+    upsert_unique_postmeta(
+        cursor,
+        post_id,
+        '_rank_math_schema_data',
+        json.dumps(schema)
     )
 ```
 
