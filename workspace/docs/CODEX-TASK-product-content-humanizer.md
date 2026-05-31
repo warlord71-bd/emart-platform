@@ -72,20 +72,37 @@ For each published product in `wp4h_posts` (post_type='product', post_status='pu
 Query to pull all data for one product:
 ```sql
 SELECT
-  p.ID, p.post_title, p.post_content,
-  MAX(CASE WHEN pm.meta_key = '_emart_ingredients' THEN pm.meta_value END) as ingredients,
-  MAX(CASE WHEN pm.meta_key = '_emart_how_to_use' THEN pm.meta_value END) as how_to_use,
-  MAX(CASE WHEN pm.meta_key = '_rank_math_description' THEN pm.meta_value END) as meta_desc,
+  p.ID,
+  p.post_title,
+  p.post_name   AS slug,          -- ← required for GSC path /shop/{slug}
+  p.post_content,
+  p.post_modified,                -- ← required for cache-busting UPDATE
+  MAX(CASE WHEN pm.meta_key = '_emart_ingredients'       THEN pm.meta_value END) as ingredients,
+  MAX(CASE WHEN pm.meta_key = '_emart_how_to_use'        THEN pm.meta_value END) as how_to_use,
+  MAX(CASE WHEN pm.meta_key = '_emart_product_faq'       THEN pm.meta_value END) as faq_raw,
+  MAX(CASE WHEN pm.meta_key = '_rank_math_description'   THEN pm.meta_value END) as meta_desc,
   MAX(CASE WHEN pm.meta_key = '_rank_math_focus_keyword' THEN pm.meta_value END) as focus_keyword,
-  MAX(CASE WHEN pm.meta_key = '_regular_price' THEN pm.meta_value END) as regular_price,
-  MAX(CASE WHEN pm.meta_key = '_price' THEN pm.meta_value END) as price,
-  MAX(CASE WHEN pm.meta_key = '_sku' THEN pm.meta_value END) as sku,
-  MAX(CASE WHEN pm.meta_key = '_stock_status' THEN pm.meta_value END) as stock_status,
-  MAX(CASE WHEN pm.meta_key = 'total_sales' THEN pm.meta_value END) as total_sales
+  MAX(CASE WHEN pm.meta_key = '_regular_price'           THEN pm.meta_value END) as regular_price,
+  MAX(CASE WHEN pm.meta_key = '_price'                   THEN pm.meta_value END) as price,
+  MAX(CASE WHEN pm.meta_key = '_sku'                     THEN pm.meta_value END) as sku,
+  MAX(CASE WHEN pm.meta_key = '_stock_status'            THEN pm.meta_value END) as stock_status,
+  MAX(CASE WHEN pm.meta_key = 'total_sales'              THEN pm.meta_value END) as total_sales
 FROM wp4h_posts p
 JOIN wp4h_postmeta pm ON pm.post_id = p.ID
 WHERE p.post_type = 'product' AND p.post_status = 'publish'
-GROUP BY p.ID, p.post_title, p.post_content;
+GROUP BY p.ID, p.post_title, p.post_name, p.post_content, p.post_modified;
+```
+
+After pulling, immediately compute the plain-text version (required by `extract_reusable_content`):
+```python
+from bs4 import BeautifulSoup
+for product in products:
+    product['slug'] = product['slug'] or ""
+    product['post_content_plain'] = BeautifulSoup(
+        product.get('post_content') or "", "html.parser"
+    ).get_text(separator=" ", strip=True)
+    # Also flag high-sales products so audit CSV is clear
+    product['skip_auto'] = int(product.get('total_sales') or 0) > 20
 ```
 
 Query to pull taxonomy terms for a product:
@@ -166,7 +183,18 @@ Four targets only. Everything else is ignored.
 | Ingredients tab | `#tab-ingredients` | Written directly to `_emart_ingredients` |
 | Disclaimer block | Patch test / shelf life / packaging text | Appended as disclaimer block at end of `post_content` |
 
-**Do NOT scrape:** Routine Builder, Related Products, FAQ tab, Reviews, pairing suggestions.
+**Scrape targets (updated — FAQ and pairing ARE scraped, table below corrected):**
+
+| Target | Source on page | Maps to Emart field |
+|--------|---------------|---------------------|
+| Product title | `<h1>` | Matching only |
+| Description tab | `#tab-description` | Research reference for `post_content` generation |
+| Ingredients tab | `#tab-ingredients` | Written to `_emart_ingredients` if richer |
+| FAQ tab | `#tab-faq` | Written to `_emart_product_faq` if quality poor/empty |
+| Pairing sentences | Description paragraph keywords | Compatibility-checked, embedded in body |
+| Disclaimer block | Patch test / shelf life / packaging text | Appended as `<aside>` at end of `post_content` |
+
+**Do NOT scrape:** Routine Builder, Related Products, Reviews, stock/price data.
 
 ```python
 from bs4 import BeautifulSoup
@@ -576,9 +604,15 @@ def rewrite_faq_for_emart(faq_items: list[dict], product: dict, client) -> str:
     """
     Takes Skinnora FAQ items, filters delivery/payment questions,
     rewrites remaining in Emart's voice with Bangladesh context.
-    Returns JSON string for _emart_product_faq.
+
+    IMPORTANT: Emart's _emart_product_faq field is plain text format:
+      Q: Question text?
+      A: Answer text.
+      Q: Next question?
+      A: Next answer.
+    NOT JSON. Match this format exactly.
+    Minimum answer length: 40 words (E-E-A-T expertise signal).
     """
-    # Filter out delivery/payment/shipping questions
     delivery_signals = [
         "delivery", "shipping", "return", "refund", "payment", "cash on delivery",
         "cod", "bkash", "order", "track", "dispatch", "courier"
@@ -589,20 +623,29 @@ def rewrite_faq_for_emart(faq_items: list[dict], product: dict, client) -> str:
     ]
 
     if not product_faqs:
-        return ""   # Nothing usable — caller keeps existing FAQ
+        return ""
 
     faq_text = "\n".join(
         f"Q: {item['q']}\nA: {item['a']}" for item in product_faqs[:5]
     )
 
     prompt = f"""Rewrite these FAQ items for {product['title']} sold at Emart Skincare Bangladesh.
+
 Rules:
-- Rewrite each question and answer in original words — do not copy verbatim
-- Keep answers product-specific (ingredients, usage, skin type suitability)
-- Add Bangladesh context to one answer where it fits naturally (humidity, skin type common in BD)
-- Do NOT include questions about delivery, payment, returns, or COD
+- Rewrite each question and answer in completely original words — do not copy verbatim
+- Each answer must be minimum 40 words — demonstrate genuine ingredient/usage expertise
+- Include one answer with Bangladesh climate context (humidity, Dhaka skin concerns)
+- One answer must include "avoid if" or "not suitable for" guidance with mechanism explanation
+- Do NOT include delivery, payment, returns, COD, shipping, or order questions
 - Maximum 5 Q&A pairs
-- Return ONLY a JSON array: [{{"q": "...", "a": "..."}}, ...]
+
+Output format — plain text only, exactly this structure:
+Q: [question]
+A: [answer — minimum 40 words]
+Q: [question]
+A: [answer — minimum 40 words]
+
+No JSON. No markdown. No numbering. Just Q: and A: pairs separated by blank lines.
 
 Source FAQ to rewrite:
 {faq_text}"""
@@ -610,21 +653,60 @@ Source FAQ to rewrite:
     response = client.chat.completions.create(
         model="deepseek-chat",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=800,
-        temperature=0.5,
-        response_format={"type": "json_object"}
+        max_tokens=1000,
+        temperature=0.5
+        # No response_format json_object — plain text output
     )
-    import json
     raw = response.choices[0].message.content.strip()
-    parsed = json.loads(raw)
-    # Handle both {"faqs": [...]} and [...] response shapes
-    if isinstance(parsed, list):
-        return json.dumps(parsed, ensure_ascii=False)
-    if isinstance(parsed, dict):
-        for key in ("faqs", "faq", "items", "questions"):
-            if key in parsed and isinstance(parsed[key], list):
-                return json.dumps(parsed[key], ensure_ascii=False)
-    return ""
+
+    # Validate: must contain at least one Q: and A: pair
+    if "Q:" not in raw or "A:" not in raw:
+        return ""
+
+    # Ensure answers meet minimum word count — flag short ones
+    pairs = re.split(r'\n(?=Q:)', raw)
+    valid_pairs = []
+    for pair in pairs:
+        a_match = re.search(r'A:\s*(.+)', pair, re.DOTALL)
+        if a_match:
+            answer_words = len(a_match.group(1).split())
+            if answer_words >= 25:   # soft minimum — flag but keep if ≥25
+                valid_pairs.append(pair.strip())
+
+    return "\n\n".join(valid_pairs) if valid_pairs else ""
+
+
+def score_emart_faq_quality(faq_raw: str) -> str:
+    """
+    Returns 'good', 'poor', or 'empty'.
+    Emart FAQ format: plain text Q:/A: pairs (NOT JSON).
+    """
+    if not faq_raw or len(faq_raw.strip()) < 50:
+        return "empty"
+
+    # Count Q/A pairs
+    questions = re.findall(r'^Q:', faq_raw, re.MULTILINE)
+    answers = re.findall(r'^A:', faq_raw, re.MULTILINE)
+    if len(questions) < 2 or len(answers) < 2:
+        return "poor"
+
+    # Check for generic delivery/payment questions
+    delivery_signals = [
+        "cash on delivery", "cod available", "delivery time", "shipping",
+        "return policy", "how to order", "payment method", "bkash", "nagad"
+    ]
+    faq_lower = faq_raw.lower()
+    generic_count = sum(1 for sig in delivery_signals if sig in faq_lower)
+
+    # Check answer depth — count answers with 40+ words
+    answer_blocks = re.findall(r'A:\s*(.+?)(?=\nQ:|\Z)', faq_raw, re.DOTALL)
+    deep_answers = sum(1 for a in answer_blocks if len(a.split()) >= 30)
+
+    if deep_answers >= 3 and generic_count == 0:
+        return "good"
+    if deep_answers >= 1:
+        return "poor"
+    return "poor"
 ```
 
 #### Pairing suggestions — compatibility-check before embedding in description
@@ -745,21 +827,35 @@ Every enriched description MUST follow all of these rules. These exist to produc
 
 ### 4.1 Structure (HTML output)
 
+**Do NOT open with `<h2>{product_title}</h2>`.** The WooCommerce product template already renders the product title as `<h1>`. Repeating it as `<h2>` creates H1/H2 keyword duplication — a negative signal for Google and LLMs. Start directly with the opening paragraph.
+
+Use `<h3>` for all section headings within the description tab. The hierarchy is: H1 (page title, WooCommerce) → H3 (description sections). No H2 inside `post_content`.
+
 ```html
-<h2>{product_title}</h2>
-<p>{opening_hook}</p>
+<p>{opening_hook — 2-4 sentences, brand + key ingredient + one concrete detail}</p>
+<p>{second paragraph — pairing sentence + Bangladesh context}</p>
 <h3>Key Benefits</h3>
 <ul>
   <li>{benefit_1}</li>
   <li>{benefit_2}</li>
   <li>{benefit_3}</li>
-  [up to 6 bullets, each must be specific to THIS product]
+  [up to 6 bullets — each uses "Label — Mechanism" em-dash format]
 </ul>
 <h3>Who It's For</h3>
-<p>{target_audience_paragraph}</p>
-{how_to_use_section_if_available}
-<p>{closing_trust_line}</p>
+<p>{2-3 sentences: suits / avoid / concern reference}</p>
+<h3>How to Use</h3>
+<ol>
+  <li>{step with timing or quantity where available}</li>
+</ol>
+<p>{closing trust line — one sentence}</p>
+<aside class="product-disclaimer">
+  <p><strong>Before Use:</strong> {patch test warning}</p>
+  <p><strong>Shelf Life &amp; Storage:</strong> {shelf life text}</p>
+  <p><strong>Packaging:</strong> {packaging type and expiry location}</p>
+</aside>
 ```
+
+Note: `<aside>` replaces `<div class="product-disclaimer">` — semantically signals supplementary content to LLMs and screen readers, reducing risk of disclaimer text being parsed as a product claim.
 
 ### 4.2 Opening hook rules
 
@@ -783,6 +879,35 @@ Bad example (reject this):
 - **Natural openers allowed:** Start up to 20% of sentences with "And", "But", "It", "This", or "That". This is how humans write.
 - **Contractions required:** Use "it's", "you'll", "doesn't", "isn't", "that's" — not their expanded forms. Expanded forms sound formal/robotic.
 - **Active voice preferred** but passive is fine occasionally: "the formula was developed to..." reads naturally.
+- **Pronoun clarity rule:** After 2 consecutive "It"/"This" sentences, restate the product name or ingredient name. LLMs lose the referent otherwise. Example: "It absorbs in seconds. It doesn't pill. The snail mucin formula..." — not three "It" sentences in a row.
+
+### 4.3a E-E-A-T signal rules (mandatory)
+
+**Experience (first E) — required in every description:**
+Include one observational detail that could only come from someone who has used or closely examined the product. Examples:
+- Texture/sensory: "the pump dispenses exactly one application — no waste"
+- Usage observation: "in Dhaka's July humidity, this sets matte within 15 minutes"
+- Packaging detail: "the airless bottle means the last 10% is as effective as the first"
+- Behaviour under conditions: "doesn't pill under SPF even on oily skin"
+
+This is the hardest E-E-A-T signal to fake and the strongest trust signal for Google's quality raters.
+
+**Trustworthiness — claim attribution required:**
+Any third-party marketing claim MUST be attributed. Do not state it as fact.
+
+| Type of claim | Required attribution |
+|--------------|---------------------|
+| Sales figures | "According to [Brand], this sells..." |
+| Bestseller status | "Listed as [Brand]'s bestseller in [year]" |
+| Award claims | "Winner of [award name] per [Brand]" |
+| Clinical claims not on product label | "As claimed by the manufacturer" |
+| "Dermatologist-tested" | Acceptable without attribution — it's on the label |
+| Ingredient concentrations from INCI | No attribution needed — verifiable |
+
+**Avoid-if mechanism rule:**
+"Who It's For" must name the avoid-if skin type AND the mechanism:
+- Wrong: "Not recommended for dry skin."
+- Right: "Not recommended for severely dry or eczema-prone skin — the salicylic acid will increase transepidermal water loss and may irritate a compromised barrier."
 
 ### 4.4 Words and phrases BANNED (LLM tells)
 
@@ -1093,6 +1218,34 @@ for product in products_to_enrich:
 ---
 
 ## 6. Execution plan — step by step
+
+### Shared config — define once, import everywhere
+
+```python
+# workspace/scripts/active/config.py
+# All scripts import from here — fixes DATE_END NameError across scripts
+
+from datetime import datetime, timedelta
+
+DATE_END   = datetime.today().strftime("%Y-%m-%d")
+DATE_START = (datetime.today() - timedelta(days=90)).strftime("%Y-%m-%d")
+
+SITE_URL    = "https://e-mart.com.bd/"
+MERCHANT_ID = "YOUR_GMC_MERCHANT_ID"   # replace with real ID from GMC dashboard URL
+KEY_FILE    = "/var/www/emart-platform/apps/web/google-service-account.json"
+
+DB_CONFIG = {
+    "host": "localhost",
+    "database": "emart_live",
+    "user": "emart_user",
+    "password": "Emart@123456",
+}
+TABLE_PREFIX = "wp4h_"
+```
+
+All scripts: `from config import DATE_END, DATE_START, SITE_URL, MERCHANT_ID, KEY_FILE, DB_CONFIG, TABLE_PREFIX`
+
+---
 
 ### Step 0A: GSC data pull — actual search queries per product URL
 
@@ -1587,25 +1740,95 @@ if row.get('new_faq_json'):
 
 Log each row with timestamp. Output apply report: `workspace/audit/active/content-humanizer-applied-YYYYMMDD.csv`
 
-### Step 6: Revalidate Next.js cache
+### Step 5b: Update `post_modified` and flush WordPress cache (P1 fix)
 
-After all DB writes:
+Direct MySQL `UPDATE wp4h_posts` bypasses WordPress hooks — `post_modified` stays
+at the old timestamp, WP object cache serves stale content to the WooCommerce REST
+API, and Next.js re-fetches old descriptions after revalidation.
+
+Add to every `post_content` UPDATE:
+
+```python
+from datetime import datetime, timezone
+
+now_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+
+cursor.execute(
+    """UPDATE wp4h_posts
+       SET post_content     = %s,
+           post_modified     = %s,
+           post_modified_gmt = %s
+       WHERE ID = %s""",
+    (row['new_content_html'], now_utc, now_utc, row['post_id'])
+)
+```
+
+After each batch of 50 products, flush WordPress object cache:
+
+```python
+import subprocess
+
+def flush_wp_cache():
+    result = subprocess.run(
+        ["wp", "cache", "flush", "--path=/var/www/wordpress", "--allow-root"],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        print(f"  WP cache flush warning: {result.stderr.strip()}")
+    else:
+        print("  WP object cache flushed.")
+
+# Call after every batch of 50 products
+if batch_count % 50 == 0:
+    flush_wp_cache()
+```
+
+### Step 6: Revalidate Next.js cache + llms.txt (P1 fix)
+
+After all DB writes, run in this order:
+
+**1. Flush WP cache one final time:**
+```bash
+wp cache flush --path=/var/www/wordpress --allow-root
+```
+
+**2. Revalidate Next.js ISR cache:**
 ```bash
 curl -s -X POST https://e-mart.com.bd/api/revalidate \
   -H "x-revalidate-secret: $REVALIDATE_SECRET" \
   -H "Content-Type: application/json" \
   -d '{"tag":"products"}'
-```
 
-Then also revalidate the homepage:
-```bash
 curl -s -X POST https://e-mart.com.bd/api/revalidate \
   -H "x-revalidate-secret: $REVALIDATE_SECRET" \
   -H "Content-Type: application/json" \
   -d '{"path":"/"}'
 ```
 
-Log revalidation response. If it fails, note it — the ISR will serve stale content for up to 1hr, but it won't break anything.
+**3. Regenerate Rank Math `llms.txt` (P1 fix — LLM indexing):**
+
+Rank Math's `llms-txt` module generates `/llms.txt` from published content. After
+bulk description updates it must be regenerated — otherwise LLMs indexing via
+`llms.txt` see stale product data:
+
+```bash
+wp eval 'do_action("rank_math/llms_txt/generate");' \
+  --path=/var/www/wordpress --allow-root
+```
+
+If that hook doesn't exist in your Rank Math version, trigger via REST:
+```bash
+curl -s -X POST https://e-mart.com.bd/wp-json/rankmath/v1/llmstxt/generate \
+  -H "Authorization: Bearer $WP_APP_PASSWORD"
+```
+
+**4. Verify `llms.txt` updated:**
+```bash
+curl -s https://e-mart.com.bd/llms.txt | head -20
+# Confirm timestamp and product content reflect new descriptions
+```
+
+Log all revalidation responses. ISR stale window is 0–60 min after revalidation — acceptable. `llms.txt` update is immediate.
 
 ---
 
@@ -1950,19 +2173,24 @@ How to use (from Emart data):
 {gmc_section}
 {pairing_note}
 Mandatory output rules:
-1. Key Benefits format: "Benefit Label — Ingredient/mechanism explanation" (em dash)
-2. Opening paragraph: name key differentiating ingredient within first 2 sentences
-3. Sibling differentiation: explicitly state what THIS variant does differently
-4. Bangladesh context: weave in one signal — humidity/climate, authenticity, or COD
-5. Who It's For: name one skin/hair type that should AVOID this product
-6. Pairing sentence in second paragraph: safe pairings ONLY —
-   NEVER Vitamin C + AHA/BHA/PHA | NEVER retinol + acids/Vitamin C |
-   NEVER benzoyl peroxide + retinol/Vitamin C | NEVER copper peptides + acids
-   Safe defaults: ceramide moisturiser, hyaluronic acid serum, SPF, niacinamide
-7. Closing line: authenticity/import claim, COD, or pairing tip
-8. meta_desc: 130-160 chars · must contain "price in Bangladesh" or "price at Emart" ·
-   second clause derived from product attribute (SPF / dermatologist / fragrance-free /
-   bestseller / concentration / origin) · NOT "Buy" · NO ৳ price number"""
+1. Structure: NO <h2> opening — start directly with <p> opening hook (H1 already on page)
+   Use <h3> for all section headings. Disclaimer in <aside> not <div>.
+2. Key Benefits: "Benefit Label — Ingredient/mechanism explanation" (em dash, not colon)
+3. Opening paragraph: name key differentiating ingredient within first 2 sentences
+4. Sibling differentiation: explicitly state what THIS variant does differently
+5. Bangladesh context: one signal — humidity/climate, authenticity, or COD — woven in naturally
+6. Experience signal (E-E-A-T): one observational detail from use or examination —
+   texture, pump behaviour, scent, set time, layering behaviour under SPF, packaging detail
+7. Who It's For: name one skin/hair type to AVOID + the mechanism reason why
+8. Claim attribution: any sales figure, bestseller, or award claim must say
+   "According to [Brand]" or "As claimed by the manufacturer"
+9. Pronoun clarity: after 2 "It"/"This" sentences, restate the product name
+10. Pairing sentence (second paragraph): safe pairings ONLY —
+    NEVER Vitamin C + AHA/BHA/PHA | NEVER retinol + acids/Vitamin C |
+    NEVER benzoyl peroxide + retinol/Vitamin C | NEVER copper peptides + acids
+11. Closing line: one sentence — authenticity/import claim, COD, or pairing tip
+12. meta_desc: 130-160 chars · "price in Bangladesh" or "price at Emart" required ·
+    second clause from product attribute · NOT "Buy" · NO ৳ price number"""
 
 
 def generate_product_description(
@@ -1972,12 +2200,14 @@ def generate_product_description(
     gsc_queries: list[dict] | None = None,
     gmc_reasons: list[str] | None = None,
     safe_pairing_ref: str | None = None,
+    extracted: dict | None = None,   # P0 fix: was missing, causing extraction to be ignored
     retries: int = 3
 ) -> dict:
     """Returns {content_html, meta_desc} or raises after retries."""
     prompt = build_user_prompt(
         product, siblings, skinnora_data,
-        gsc_queries, gmc_reasons, safe_pairing_ref
+        gsc_queries, gmc_reasons, safe_pairing_ref,
+        extracted   # P0 fix: now correctly passed to prompt builder
     )
     last_error = None
 
@@ -2119,27 +2349,96 @@ Items that fail validation are written to a `validation_failures.csv` for manual
 - checkout, cart, payment, order, customer, stock, price logic
 - WooCommerce order meta
 - Any product with `post_status != 'publish'`
-- Product slugs / URLs (post_name field)
+- Product slugs / URLs (`post_name` field) — changing slugs breaks all existing inbound links
 - Product images
 - Product categories structure
-- `_rank_math_focus_keyword` (leave as-is)
-- Products with `total_sales > 20` — these are performing products; flag them in the CSV but skip enrichment unless explicitly approved
+- `_rank_math_focus_keyword` — leave as-is; it drives Rank Math's schema keyword output
+- Products with `total_sales > 20` — flag in audit CSV as `skip_auto=True`, print count in summary, do NOT generate
 
-High-sales products (total_sales > 20) need manual review — do not auto-enrich them.
+High-sales products need manual review — do not auto-enrich them.
+
+## 10a. Gradual rollout — mandatory (E-E-A-T signal)
+
+**Do NOT apply all 3,640 products in one batch.**
+
+Google's quality systems detect abrupt site-wide content uniformity as a bulk-generation signal — the same signal the current template content is penalised for, just in a different direction. Replacing 3,640 descriptions overnight with 3,640 descriptions that all follow the same new structure is still a pattern.
+
+**Rollout cap: 300–400 products per week maximum.**
+
+Priority order (from Step 0C priority queue):
+1. Week 1: GMC disapproved products (unblocks Shopping revenue)
+2. Week 2: GSC pos 5–20 / CTR < 2% / imp > 100 (quick ranking wins)
+3. Week 3+: Remaining thin/template content, brand by brand
+
+This pacing looks like ongoing editorial work to Google's crawlers — not a bulk replacement event.
+
+## 10b. `pa_brand` → schema `brand` field (agentic shopping fix)
+
+After applying descriptions, add the product's brand to Rank Math's schema `additionalProperty` for agentic shopping compatibility. Rank Math WooCommerce module does not automatically map `pa_brand` taxonomy to `"brand": {"@type": "Brand", "name": "..."}`.
+
+Add to the apply step per product:
+
+```python
+import json
+
+def upsert_rank_math_schema_brand(cursor, post_id: int, brand_name: str):
+    """
+    Adds brand to _rank_math_schema_data so JSON-LD includes:
+    "brand": {"@type": "Brand", "name": "CosRx"}
+    Required for agentic shopping agents to attribute products correctly.
+    """
+    cursor.execute(
+        "SELECT meta_value FROM wp4h_postmeta "
+        "WHERE post_id = %s AND meta_key = '_rank_math_schema_data'",
+        (post_id,)
+    )
+    row = cursor.fetchone()
+    if row and row[0]:
+        try:
+            schema = json.loads(row[0])
+        except Exception:
+            schema = {}
+    else:
+        schema = {}
+
+    # Inject brand — Rank Math reads this during schema output
+    schema.setdefault("Product", {})["brand"] = {
+        "@type": "Brand",
+        "name": brand_name
+    }
+
+    cursor.execute(
+        "INSERT INTO wp4h_postmeta (post_id, meta_key, meta_value) "
+        "VALUES (%s, '_rank_math_schema_data', %s) "
+        "ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)",
+        (post_id, json.dumps(schema))
+    )
+```
+
+Run for every product in the apply step. Brand name comes from the `pa_brand` taxonomy pulled in Section 2.
 
 ---
 
 ## 11. Files to create
 
 ```
-workspace/scripts/active/content_humanizer_audit.py     ← Step 1 script
-workspace/scripts/active/content_humanizer_generate.py  ← Step 2 script
-workspace/scripts/active/content_humanizer_apply.py     ← Step 5 script
-workspace/audit/active/content-humanizer-scores-YYYYMMDD.csv       ← Step 1 output
-workspace/audit/active/content-humanizer-generated-YYYYMMDD.csv    ← Step 2 output (for review)
-workspace/audit/active/content-humanizer-rollback-YYYYMMDD.json    ← Step 4 output
-workspace/audit/active/content-humanizer-applied-YYYYMMDD.csv      ← Step 5 output
-workspace/audit/active/content-humanizer-validation-failures.csv   ← Validation errors
+workspace/scripts/active/config.py                      ← shared config (DATE_END, DB, API keys)
+workspace/scripts/active/skinnora_scrape.py             ← Step 0 scraper
+workspace/scripts/active/gsc_pull.py                    ← Step 0A GSC data
+workspace/scripts/active/gmc_pull.py                    ← Step 0B GMC status
+workspace/scripts/active/content_humanizer_audit.py     ← Step 1 audit + scoring
+workspace/scripts/active/content_humanizer_generate.py  ← Step 2 generation (DeepSeek)
+workspace/scripts/active/content_humanizer_apply.py     ← Step 5 DB write + cache flush
+workspace/audit/active/skinnora-scrape-raw-YYYYMMDD.json
+workspace/audit/active/skinnora-catalog-matches-YYYYMMDD.csv
+workspace/audit/active/gsc-query-map-YYYYMMDD.json
+workspace/audit/active/gmc-status-YYYYMMDD.json
+workspace/audit/active/content-humanizer-priority-queue-YYYYMMDD.csv
+workspace/audit/active/content-humanizer-scores-YYYYMMDD.csv
+workspace/audit/active/content-humanizer-generated-YYYYMMDD.csv    ← owner reviews this
+workspace/audit/active/content-humanizer-rollback-YYYYMMDD.json
+workspace/audit/active/content-humanizer-applied-YYYYMMDD.csv
+workspace/audit/active/content-humanizer-validation-failures.csv
 ```
 
 All paths relative to `/var/www/emart-platform/`.
