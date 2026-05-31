@@ -912,27 +912,127 @@ Include one "pairs well with" sentence in the second body paragraph (not just th
 
 ## 5. Meta description humanizer rules
 
-The `_rank_math_description` field (max 160 chars) currently follows a rigid template:
-> "Buy [product] for ৳[price] in Bangladesh. Original [category]. Fast delivery & COD available at Emart."
+### 5.1 Current state (what exists in DB)
 
-This pattern is flagged by Google as programmatic. Enrich it to follow this structure instead:
+All 3,640 product meta descriptions use a single programmatic template:
+> `Buy [Product Name] for ৳[price] in Bangladesh. Original [Category]. Fast delivery & COD available at Emart.`
 
-**Format:** `[Specific product claim, 50–80 chars]. [Why buy here / urgency / BD context, 40–60 chars].`
+Problems confirmed by DB audit:
+- **100%** start with "Buy" — programmatic signal
+- **100%** contain ৳ price — goes stale when price changes; misleads click-through
+- **99.5%** share identical "Fast delivery & COD" suffix — duplicate pattern at scale
+- **12.8%** exceed 160 chars — Google truncates silently
 
-Good examples:
-- `COSRX's 96% snail mucin essence visibly plumps and repairs skin in 2 weeks. Authentic Korean import, COD available across Bangladesh.`
-- `CeraVe's SPF30 mineral tint suits medium skin tones without the white cast. Dermatologist-trusted formula — fast delivery from Emart.`
-- `Kerasys Propolis Shampoo targets scalp bacteria while deeply conditioning damaged hair. South Korean import, Cash on Delivery at Emart.`
+### 5.2 The search volume reality — "price in Bangladesh"
 
-Bad (current template — do not use):
-- `Buy Kerasys Propolis Damage Repair Shampoo 1000ml for ৳890 in Bangladesh. Original Korean Beauty. Fast delivery & COD available at Emart.`
+The highest-volume search pattern for Bangladeshi ecommerce is:
+`[Product name] price in Bangladesh`
 
-Meta description rules:
-- Must be 130–160 characters
-- Must include the product's key differentiating benefit (not just the product name)
-- Must include one of: country of origin, COD mention, "Emart", or delivery mention
-- Must NOT start with "Buy"
-- Must NOT use price in the meta (prices change; stale meta misleads click-through)
+**This keyword phrase must stay in the meta description.** Remove the ৳ number — not the phrase.
+
+The phrase "price in Bangladesh" or "best price in Bangladesh" or "price at Emart" hits the query. The actual number comes from Rank Math's WooCommerce Product schema (already active) which outputs:
+
+```json
+{"@type": "Offer", "price": "1370", "priceCurrency": "BDT"}
+```
+
+Google reads this and shows the live price as a rich result in the SERP below your meta description. When you update price in WooCommerce, the schema updates instantly — no stale snippet.
+
+### 5.3 Target format
+
+**Structure:** `[Specific product claim]. [Price-in-Bangladesh phrase + trust signal].`
+
+Three approved second-clause patterns — rotate across products so endings are not identical:
+
+```
+Pattern A:  "Best price in Bangladesh at Emart — COD available."
+Pattern B:  "Check current price in Bangladesh at Emart, fast delivery."  
+Pattern C:  "See price in Bangladesh at Emart — authentic [origin] import."
+```
+
+**Good examples — all hit the keyword, none lock in a number:**
+
+```
+COSRX's 96% snail mucin essence repairs skin barrier and fades acne marks 
+in 2 weeks. Best price in Bangladesh at Emart — COD available.
+[148 chars ✓]
+
+CeraVe SPF30 mineral tint absorbs without white cast, ideal for medium 
+skin tones in Bangladesh's humid climate. Check current price at Emart, COD.
+[152 chars ✓]
+
+Kerasys Propolis Shampoo targets scalp bacteria while conditioning 
+heat-damaged hair. See price in Bangladesh at Emart — South Korean import.
+[146 chars ✓]
+
+Heimish Marine Care Eye Cream pairs algae extract with peptides to reduce 
+puffiness around the eye area. Best price in Bangladesh, COD at Emart.
+[148 chars ✓]
+```
+
+**Bad (reject these):**
+
+```
+Buy Kerasys Propolis Shampoo for ৳890 in Bangladesh. Original Korean Beauty. 
+Fast delivery & COD available at Emart.
+← starts with Buy, has price, identical suffix to 3,619 other products
+
+COSRX Advanced Snail Essence — great for all skin types. Available at Emart.
+← no "price in Bangladesh" phrase, misses the highest-volume query entirely
+```
+
+### 5.4 Hard rules for the generation prompt
+
+```
+MUST:
+✓ Be 130–160 characters (count bytes — Bengali chars are multibyte)
+✓ Contain the phrase "price in Bangladesh" or "price at Emart" or "best price in Bangladesh"
+✓ Open with a specific product claim (ingredient / key benefit / skin type suitability)
+✓ Include "Emart" in the second clause
+✓ Include one of: COD, "import", "authentic", "fast delivery", or "Bangladesh"
+
+MUST NOT:
+✗ Start with "Buy"
+✗ Contain ৳ or any price number
+✗ Say "Original [Category]" — this is filler, not a claim
+✗ End with "Fast delivery & COD available at Emart" — rotate second clause pattern
+✗ Be identical in structure to the previous product's meta description
+```
+
+### 5.5 Validation in code
+
+```python
+SECOND_CLAUSE_PATTERNS = [
+    "best price in bangladesh at emart",
+    "check current price in bangladesh at emart",
+    "see price in bangladesh at emart",
+    "price in bangladesh at emart",
+]
+
+def validate_meta_desc(meta: str, product: dict) -> list[str]:
+    errors = []
+    m = meta.strip()
+    m_lower = m.lower()
+
+    if len(m) < 130:
+        errors.append(f"too short: {len(m)} chars (min 130)")
+    if len(m) > 160:
+        errors.append(f"too long: {len(m)} chars (max 160)")
+    if m_lower.startswith("buy "):
+        errors.append("starts with 'Buy'")
+    if "৳" in m or any(c.isdigit() and "৳" in m for c in m):
+        errors.append("contains price amount")
+    if "original" in m_lower and any(
+        cat.lower() in m_lower for cat in product.get("categories", [])
+    ):
+        errors.append("contains 'Original [Category]' filler")
+    if not any(p in m_lower for p in ["price in bangladesh", "price at emart"]):
+        errors.append("missing 'price in Bangladesh' keyword phrase")
+    if "emart" not in m_lower:
+        errors.append("missing 'Emart' brand mention")
+
+    return errors
+```
 
 ---
 
