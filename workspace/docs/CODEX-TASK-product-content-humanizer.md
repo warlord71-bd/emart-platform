@@ -100,6 +100,229 @@ WHERE tr.object_id = {product_id}
 
 ---
 
+## 2.5 Skinnora scrape pipeline — competitor research source
+
+Skinnora (skinnora.com) sells many of the same Korean and international beauty products as Emart. Their product descriptions are written to a higher standard than Emart's current content — structured, ingredient-specific, with Key Benefits in the correct format.
+
+**Use Skinnora as a research reference only.** The generated output for Emart must be substantially original — not a paraphrase. Think of it as a human copywriter reading the competitor page before writing their own version. Emart's output must add things Skinnora's page doesn't have: Bangladesh climate context, variant differentiation, "who should avoid" signal, and Emart authenticity/import framing.
+
+### 2.5.1 Robots and rate limiting — check first
+
+```python
+import requests, time
+from urllib.robotparser import RobotFileParser
+
+def check_robots():
+    rp = RobotFileParser()
+    rp.set_url("https://www.skinnora.com/robots.txt")
+    rp.read()
+    return rp.can_fetch("*", "https://www.skinnora.com/product/sample/")
+
+# Only proceed if robots.txt allows crawling product pages
+# Rate limit: 1 request every 3 seconds — do not hammer their server
+CRAWL_DELAY = 3
+```
+
+If robots.txt disallows product crawling, skip the Skinnora phase entirely and fall back to Section 7 (DeepSeek with Emart product DNA only) for all products.
+
+### 2.5.2 Discover Skinnora product URLs
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+def get_skinnora_sitemap_urls() -> list[str]:
+    """Pull all product URLs from Skinnora's sitemap."""
+    sitemap_index = requests.get("https://www.skinnora.com/sitemap.xml", timeout=15).text
+    soup = BeautifulSoup(sitemap_index, "xml")
+
+    product_urls = []
+    for loc in soup.find_all("loc"):
+        url = loc.text.strip()
+        # Try product sitemap first
+        if "product" in url and url.endswith(".xml"):
+            sub = requests.get(url, timeout=15).text
+            sub_soup = BeautifulSoup(sub, "xml")
+            for sub_loc in sub_soup.find_all("loc"):
+                u = sub_loc.text.strip()
+                if "/product/" in u:
+                    product_urls.append(u)
+        elif "/product/" in url:
+            product_urls.append(url)
+
+    return list(set(product_urls))
+```
+
+Fallback if sitemap lacks product URLs: crawl `/shop/` page with pagination (`?page=1`, `?page=2`, ...) and collect all `/product/` hrefs.
+
+### 2.5.3 Scrape each product page
+
+```python
+from bs4 import BeautifulSoup
+import re
+
+def scrape_skinnora_product(url: str) -> dict | None:
+    """
+    Returns structured product data or None if page fails.
+    Extracts: title, description paragraphs, key benefits bullets,
+    ingredients text, FAQ, how-to-use, pairing suggestions.
+    """
+    try:
+        resp = requests.get(url, timeout=15, headers={
+            "User-Agent": "Mozilla/5.0 (compatible; research-bot/1.0)"
+        })
+        if resp.status_code != 200:
+            return None
+        soup = BeautifulSoup(resp.text, "html.parser")
+
+        # Product title
+        title_el = soup.find("h1", class_=re.compile(r"product.*title|entry-title", re.I))
+        title = title_el.get_text(strip=True) if title_el else ""
+
+        # Main description tab content
+        desc_tab = soup.find("div", class_=re.compile(r"woocommerce-product-details__short-description|tab-description|description", re.I))
+        description_html = str(desc_tab) if desc_tab else ""
+        description_plain = desc_tab.get_text(separator=" ", strip=True) if desc_tab else ""
+
+        # Key Benefits bullets
+        benefits = []
+        for li in soup.select(".key-benefits li, .product-benefits li, .description ul li"):
+            text = li.get_text(strip=True)
+            if text and len(text) > 10:
+                benefits.append(text)
+
+        # Ingredients tab
+        ing_tab = soup.find("div", id=re.compile(r"tab-ingredients|ingredients", re.I))
+        ingredients_plain = ing_tab.get_text(separator="\n", strip=True) if ing_tab else ""
+
+        # FAQ tab
+        faq_items = []
+        faq_tab = soup.find("div", id=re.compile(r"tab-faq|faq", re.I))
+        if faq_tab:
+            for item in faq_tab.select(".faq-item, .accordion-item, details"):
+                q = item.find(re.compile(r"h[2-4]|summary|strong"))
+                a = item.find("p")
+                if q and a:
+                    faq_items.append({"q": q.get_text(strip=True), "a": a.get_text(strip=True)})
+
+        # Pairing / routine suggestions (for reference only — must pass compatibility check)
+        pairing_text = ""
+        for p in soup.select(".description p, .tab-description p"):
+            if any(w in p.text.lower() for w in ["pair", "combine", "use with", "layer", "follow with"]):
+                pairing_text += p.get_text(strip=True) + " "
+
+        return {
+            "url": url,
+            "title": title,
+            "description_plain": description_plain,
+            "description_html": description_html,
+            "benefits": benefits,
+            "ingredients_plain": ingredients_plain,
+            "faq": faq_items,
+            "pairing_reference": pairing_text.strip(),
+        }
+    except Exception as e:
+        print(f"  Scrape failed for {url}: {e}")
+        return None
+```
+
+### 2.5.4 Match Skinnora products to Emart catalog
+
+Match by normalized product title using fuzzy string matching. A match is valid when similarity ≥ 80% on the normalized title.
+
+```python
+from rapidfuzz import fuzz, process
+
+def normalize_title(title: str) -> str:
+    """Lowercase, strip size/volume, strip brand if duplicated, strip punctuation."""
+    t = title.lower()
+    t = re.sub(r'\d+\s*(ml|g|oz|fl oz|pcs|piece|pack|count|mg|l)\b', '', t)
+    t = re.sub(r'[^\w\s]', ' ', t)
+    t = re.sub(r'\s+', ' ', t).strip()
+    return t
+
+def match_skinnora_to_emart(
+    skinnora_products: list[dict],
+    emart_products: list[dict]   # [{id, title, brand, ...}]
+) -> list[dict]:
+    """
+    Returns list of matches:
+    [{emart_id, emart_title, skinnora_url, skinnora_title, match_score, skinnora_data}]
+    """
+    emart_normalized = {p['id']: normalize_title(p['title']) for p in emart_products}
+    emart_lookup = {normalize_title(p['title']): p for p in emart_products}
+
+    matches = []
+    for s_prod in skinnora_products:
+        s_norm = normalize_title(s_prod['title'])
+        result = process.extractOne(
+            s_norm,
+            list(emart_lookup.keys()),
+            scorer=fuzz.token_sort_ratio,
+            score_cutoff=80
+        )
+        if result:
+            matched_key, score, _ = result
+            emart_prod = emart_lookup[matched_key]
+            matches.append({
+                "emart_id": emart_prod['id'],
+                "emart_title": emart_prod['title'],
+                "skinnora_url": s_prod['url'],
+                "skinnora_title": s_prod['title'],
+                "match_score": score,
+                "skinnora_data": s_prod,
+            })
+
+    return matches
+```
+
+Save match results to: `workspace/audit/active/skinnora-catalog-matches-YYYYMMDD.csv`
+
+Columns:
+```
+emart_id, emart_title, skinnora_url, skinnora_title, match_score
+```
+
+Review this CSV before proceeding — verify that high-scoring matches are genuine product matches, not different products with similar names (e.g., "COSRX Salicylic Acid Toner 150ml" vs "COSRX Salicylic Acid Toner 100ml" — same product, different size, should still match for content reference purposes).
+
+### 2.5.5 Scrape run instructions
+
+```python
+# Full scrape run
+product_urls = get_skinnora_sitemap_urls()
+print(f"Found {len(product_urls)} product URLs on Skinnora")
+
+skinnora_data = []
+for i, url in enumerate(product_urls):
+    print(f"  [{i+1}/{len(product_urls)}] {url}")
+    data = scrape_skinnora_product(url)
+    if data and data['title']:
+        skinnora_data.append(data)
+    time.sleep(CRAWL_DELAY)
+
+# Save raw scrape
+import json
+with open("workspace/audit/active/skinnora-scrape-raw-YYYYMMDD.json", "w") as f:
+    json.dump(skinnora_data, f, ensure_ascii=False, indent=2)
+
+print(f"Scraped {len(skinnora_data)} products successfully")
+```
+
+Install required libs first:
+```bash
+pip install requests beautifulsoup4 lxml rapidfuzz
+```
+
+### 2.5.6 What NOT to take from Skinnora
+
+- Do NOT copy any sentence verbatim into the generated description
+- Do NOT copy pairing suggestions without running them through the Section 4.10 compatibility check
+- Do NOT copy FAQ answers verbatim — use them as topic references only
+- Do NOT use Skinnora's prices, stock status, or any commercial claims
+- Skinnora has NO Bangladesh context — their content is written for a general audience. Emart's output must add this entirely from scratch.
+
+---
+
 ## 3. Content quality scoring — what is "thin" or "template"
 
 Score each product on these criteria. Flag products scoring 2+ for enrichment.
@@ -325,6 +548,24 @@ Meta description rules:
 
 ## 6. Execution plan — step by step
 
+### Step 0: Skinnora scrape and catalog match (run once before Step 1)
+
+```python
+# Script: workspace/scripts/active/skinnora_scrape.py
+# Outputs:
+#   workspace/audit/active/skinnora-scrape-raw-YYYYMMDD.json
+#   workspace/audit/active/skinnora-catalog-matches-YYYYMMDD.csv
+```
+
+1. Check robots.txt (Section 2.5.1) — abort Skinnora phase if disallowed
+2. Discover all Skinnora product URLs via sitemap (Section 2.5.2)
+3. Scrape each product page with 3-second delay (Section 2.5.3)
+4. Match to Emart catalog by fuzzy title (Section 2.5.4, threshold ≥ 80%)
+5. Save raw scrape JSON and matches CSV
+6. Print summary: `Scraped N products. Matched M to Emart catalog.`
+
+**This step runs once. The match data is reused for all subsequent generation runs.**
+
 ### Step 1: Audit and score all products
 
 ```python
@@ -337,24 +578,53 @@ For each published product:
 2. Pull taxonomy terms (brand, origin, concern, category)
 3. Strip HTML from post_content to get plain text length
 4. Score against 7 signals in Section 3
-5. Write to CSV
+5. Flag whether a Skinnora match exists (from Step 0 matches CSV)
+6. Write to CSV
 
-**Run this first. Do not generate any content yet.**
+Add column to scores CSV: `has_skinnora_match` (yes/no)
 
-### Step 2: Generate enriched descriptions (batch by brand group)
+**Run this before generating any content.**
 
-Process products grouped by `pa_brand` so that sibling variant differentiation is handled correctly. For each brand group:
+### Step 2: Generate enriched descriptions — two-path flow
 
-1. Pull all sibling products in the group
-2. Identify the variant-differentiating ingredient per product (parse from title or `_emart_ingredients`)
-3. For each product needing enrichment (score ≥ 2), generate:
-   - New `post_content` (HTML, using structure in Section 4.1)
-   - New `_rank_math_description` (plain text, 130–160 chars, following Section 5)
-4. Write generated content to a **review CSV** — do NOT write to DB yet
+Products split into two tracks based on Skinnora match:
+
+```
+┌─────────────────────────────────────────────────────┐
+│              Products needing enrichment             │
+└────────────────────┬────────────────────────────────┘
+                     │
+         ┌───────────┴───────────┐
+         │                       │
+   has_skinnora_match=YES   has_skinnora_match=NO
+         │                       │
+   PATH A: Research-             PATH B: Emart-DNA
+   assisted generation           only generation
+   (Section 7, Track A)          (Section 7, Track B)
+         │                       │
+         └───────────┬───────────┘
+                     │
+            Review CSV → Owner approval → Apply
+```
+
+**PATH A (Skinnora match found):**
+- Load Skinnora scraped content for the matched product
+- Pass to DeepSeek as research reference alongside Emart's own product data
+- DeepSeek writes original content INSPIRED by Skinnora's structure and depth
+- Skinnora's pairing suggestions are checked against Section 4.10 compatibility table before inclusion
+- Output is original — not a paraphrase of Skinnora
+
+**PATH B (no Skinnora match):**
+- Use only Emart's own data: title, brand, origin, concern, ingredients, how-to-use
+- DeepSeek generates from scratch using the humanizer rules
+- Same output format and quality standard as Path A
+
+Both paths produce the same review CSV format. No difference in the apply step.
 
 Review CSV columns:
 ```
-post_id, post_title, brand, origin, concern, score,
+post_id, post_title, brand, origin, concern, score, path,
+skinnora_match_url, skinnora_match_score,
 old_content_plain_text (first 200 chars),
 new_content_html,
 old_meta_desc,
@@ -476,12 +746,34 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown fences, no extra text:
 {"content_html": "<h2>...</h2><p>...</p><h3>Key Benefits</h3><ul>...</ul><h3>Who It's For</h3><p>...</p><p>...</p>", "meta_desc": "130-160 char plain text"}"""
 
 
-def build_user_prompt(product: dict, siblings: list[dict]) -> str:
+def build_user_prompt(
+    product: dict,
+    siblings: list[dict],
+    skinnora_data: dict | None = None   # Path A only; None for Path B
+) -> str:
     sibling_names = [s['title'] for s in siblings if s['id'] != product['id']]
     sibling_context = ""
     if sibling_names:
         lines = "\n".join(f"- {n}" for n in sibling_names[:5])
         sibling_context = f"\n\nSibling products in the same brand line (differentiate from these):\n{lines}"
+
+    # Path A: include Skinnora content as research reference
+    skinnora_section = ""
+    if skinnora_data:
+        benefits_text = "\n".join(f"  - {b}" for b in skinnora_data.get("benefits", [])[:6])
+        skinnora_section = f"""
+COMPETITOR RESEARCH REFERENCE (skinnora.com — inspiration only, do NOT copy text):
+Their description: {skinnora_data.get('description_plain', '')[:400]}
+Their key benefits:
+{benefits_text}
+Their ingredients note: {skinnora_data.get('ingredients_plain', '')[:300]}
+
+Use this as a quality/depth reference. Your output must be ORIGINAL — different sentences,
+different structure, written for Bangladeshi shoppers at Emart.
+Skinnora has zero Bangladesh context. You must add that entirely from scratch.
+Do NOT copy any sentence verbatim. Do NOT adopt their pairing suggestions without verifying
+they are ingredient-safe per the compatibility rules in rule 6 below.
+"""
 
     return f"""Write a product description for this Emart product.
 
@@ -493,26 +785,35 @@ Category: {', '.join(product['categories'])}
 Stock: {product['stock_status']}
 Total sales: {product['total_sales']}
 
-Ingredients (from Emart's data):
+Ingredients (from Emart data):
 {product.get('ingredients_html') or 'Not available — infer from product title and brand knowledge'}
 
-How to use (from Emart's data):
+How to use (from Emart data):
 {product.get('how_to_use_html') or 'Not available — write appropriate steps for this product type'}
 {sibling_context}
+{skinnora_section}
+Mandatory output rules:
+1. Key Benefits format: "Benefit Label — Ingredient/mechanism explanation" (em dash, not colon)
+2. Opening paragraph: name the key differentiating ingredient within the first 2 sentences
+3. Sibling differentiation: if siblings listed, state explicitly what THIS variant does differently
+4. Bangladesh context: weave in one signal — humidity/climate, import authenticity, or COD
+5. Who It's For: name one skin/hair type that should AVOID this product
+6. Pairing sentence in body (second paragraph): safe pairings ONLY —
+   NEVER pair Vitamin C with AHA/BHA/PHA | NEVER pair retinol with acids or Vitamin C |
+   NEVER pair benzoyl peroxide with retinol or Vitamin C | NEVER pair copper peptides with acids
+   Safe defaults: ceramide moisturiser, hyaluronic acid serum, SPF sunscreen, niacinamide serum
+7. Closing line: authenticity/import claim, COD availability, or safe pairing tip
+8. meta_desc: 130-160 chars, starts with specific product claim, NOT with word "Buy", no price"""
 
-Mandatory rules for this output:
-1. Opening paragraph: name the key differentiating ingredient within the first 2 sentences
-2. If sibling products listed above exist, explicitly state what makes THIS variant different
-3. Weave in one Bangladesh context signal (humidity/climate, authenticity/import, or COD availability)
-4. Each Key Benefits bullet: start with ingredient name or benefit outcome, never start with a verb
-5. Who It's For paragraph: name one skin/hair type that should AVOID or use caution with this product
-6. Closing line: one of — authenticity/import claim, availability, or product pairing tip
-7. meta_desc: 130-160 chars, must NOT start with 'Buy', must NOT include price (৳)"""
 
-
-def generate_product_description(product: dict, siblings: list[dict], retries: int = 3) -> dict:
+def generate_product_description(
+    product: dict,
+    siblings: list[dict],
+    skinnora_data: dict | None = None,
+    retries: int = 3
+) -> dict:
     """Returns {content_html, meta_desc} or raises after retries."""
-    prompt = build_user_prompt(product, siblings)
+    prompt = build_user_prompt(product, siblings, skinnora_data)
     last_error = None
 
     for attempt in range(retries):
