@@ -756,17 +756,60 @@ def _apply(product: dict, content_html: str, meta_desc: str) -> bool:
             if synced_structured_description:
                 _upsert_single_meta(cur, post_id, '_structured_description', synced_structured_description)
 
-        # Fix: use _upsert_single_meta — postmeta has no unique key on (post_id, meta_key)
-        # so INSERT ... ON DUPLICATE KEY would create duplicate _emart_humanized rows
         _upsert_single_meta(cur, post_id, '_emart_humanized', now)
 
-        # Sync _emart_how_to_use tab from the generated How to Use <ol>
+        # ── _emart_how_to_use: sync from generated How to Use <ol>
         how_to_match = re.search(
             r'<h3[^>]*>How to Use</h3>\s*(<ol[^>]*>[\s\S]*?</ol>)',
             content_html, re.I
         )
         if how_to_match:
             _upsert_single_meta(cur, post_id, '_emart_how_to_use', how_to_match.group(1))
+
+        # ── _emart_ingredients: write back enriched Key Ingredients from description
+        # Only if current field is empty or thin — preserves richer existing data
+        existing_ing = product.get('ingredients_html') or ''
+        existing_thin = not existing_ing.strip() or any(
+            s in existing_ing.lower() for s in
+            ['carefully selected','আছে','unknown brand','এর এই product']
+        )
+        if existing_thin:
+            ing_match = re.search(
+                r'<h3[^>]*>Key Ingredients</h3>([\s\S]*?)(?=<h3|<aside|$)',
+                content_html, re.I
+            )
+            if ing_match:
+                ing_html = ing_match.group(1).strip()
+                if ing_html:
+                    _upsert_single_meta(cur, post_id, '_emart_ingredients', ing_html)
+
+        # ── Brand schema: write pa_brand into _rank_math_schema_data Product JSON-LD
+        # Enables Google Shopping AI + agentic agents to attribute the product correctly
+        brand_name = product.get('brand') or ''
+        if brand_name:
+            cur.execute(
+                f"SELECT meta_value FROM {PREFIX}postmeta "
+                f"WHERE post_id=%s AND meta_key='_rank_math_schema_data' LIMIT 1",
+                (post_id,)
+            )
+            schema_row = cur.fetchone()
+            try:
+                schema = json.loads(schema_row[0]) if schema_row and schema_row[0] else {}
+            except Exception:
+                schema = {}
+            schema.setdefault('Product', {})['brand'] = {
+                '@type': 'Brand', 'name': brand_name
+            }
+            _upsert_single_meta(cur, post_id, '_rank_math_schema_data',
+                                json.dumps(schema, ensure_ascii=False))
+
+        # ── Focus keyword: set to the most-searched GSC query for this product
+        # Real user search terms → better Rank Math page scoring
+        gsc_queries = product.get('gsc_queries') or []
+        if gsc_queries:
+            best_kw = gsc_queries[0].get('query', '')   # already sorted by impressions desc
+            if best_kw:
+                _upsert_single_meta(cur, post_id, '_rank_math_focus_keyword', best_kw)
 
         conn.commit()
         return True
@@ -839,6 +882,24 @@ def _load_seen_second(cur) -> set[str]:
     return seen
 
 
+def _load_gsc_query_map() -> dict:
+    """
+    Load GSC query data from the most recent gsc-query-map-*.json file.
+    Returns {"/shop/slug": [{"query","impressions","clicks","ctr","position"}]}
+    Run workspace/docs/baseline_snapshot.py first to generate this file.
+    """
+    files = sorted(AUDIT.glob("gsc-query-map-*.json"), reverse=True)
+    if not files:
+        return {}
+    try:
+        data = json.loads(files[0].read_text())
+        print(f"GSC query map loaded: {files[0].name} ({len(data)} product paths)")
+        return data
+    except Exception as e:
+        print(f"GSC query map load failed: {e}")
+        return {}
+
+
 # ── Main ────────────────────────────────────────────────────────────────────
 
 def main():
@@ -895,6 +956,7 @@ def main():
     # Build seen_second from live DB meta descriptions of already-applied products.
     # Ground truth: only clauses that were actually published, never rejected JSONL entries.
     seen_second: set[str] = _load_seen_second(cur)
+    gsc_map: dict = _load_gsc_query_map()   # {"/shop/slug": [queries]}
     score_total = score_count = 0
 
     # Capture rollback snapshot before any writes
@@ -914,8 +976,9 @@ def main():
             if reviewed.get('status') == 'api_length_error':
                 print(f"  ⏭  Skipping — previous API length error, needs manual retry")
                 skipped += 1; continue
-            # Populate brand/origin/concerns so scoring matches the dry-run score
+            # Populate brand/origin/concerns + GSC queries for apply-step SEO writes
             _apply_taxonomy(cur, product)
+            product['gsc_queries'] = gsc_map.get(f"/shop/{product.get('slug','')}", [])
             errors, warnings, sc = _validate(product, reviewed, seen_second)
             if sw := _structured_price_warning(product):
                 warnings.append(sw)
@@ -943,6 +1006,7 @@ def main():
 
         # ── DRY-RUN: generate + score + save ──────────────────────────────
         taxonomy = _apply_taxonomy(cur, product)
+        product['gsc_queries'] = gsc_map.get(f"/shop/{product.get('slug','')}", [])
         siblings = _siblings(cur, product['brand'], pid)
         if sw := _structured_price_warning(product):
             print(f"  ⚠  {sw}")
