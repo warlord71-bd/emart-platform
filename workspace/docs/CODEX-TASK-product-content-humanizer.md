@@ -29,19 +29,20 @@ This task fixes all four problems across the full product catalog.
 ## 1. Database access
 
 ```
-Host:     localhost
-DB name:  emart_live
-User:     emart_user
-Password: Emart@123456
+Host:         localhost
+DB name:      emart_live
+User:         emart_user
+Password:     $EMART_DB_PASSWORD  ← environment variable, never hardcoded
 Table prefix: wp4h_
 ```
 
 Python connection:
 ```python
-import mysql.connector
+import os, mysql.connector
 conn = mysql.connector.connect(
     host='localhost', database='emart_live',
-    user='emart_user', password='Emart@123456'
+    user='emart_user',
+    password=os.environ['EMART_DB_PASSWORD']   # set via export before running
 )
 ```
 
@@ -93,16 +94,61 @@ WHERE p.post_type = 'product' AND p.post_status = 'publish'
 GROUP BY p.ID, p.post_title, p.post_name, p.post_content, p.post_modified;
 ```
 
-After pulling, immediately compute the plain-text version (required by `extract_reusable_content`):
+After pulling, immediately normalize every product dict (fixes field-name mismatches,
+`id`/`ID`/`post_id` inconsistency, and computes plain-text for extraction):
+
 ```python
 from bs4 import BeautifulSoup
-for product in products:
-    product['slug'] = product['slug'] or ""
-    product['post_content_plain'] = BeautifulSoup(
-        product.get('post_content') or "", "html.parser"
-    ).get_text(separator=" ", strip=True)
-    # Also flag high-sales products so audit CSV is clear
-    product['skip_auto'] = int(product.get('total_sales') or 0) > 20
+
+def normalize_product_dict(row: dict) -> dict:
+    """
+    Canonical post-fetch normalization. Call once per row, right after DB pull.
+    Fixes:
+      - id/ID/post_id inconsistency → always 'post_id'
+      - DB column aliases (ingredients, how_to_use) → prompt field names
+      - Computes post_content_plain for extract_reusable_content()
+      - Checks _emart_humanized timestamp for re-run guard
+      - Flags high-sales skip
+    """
+    d = dict(row)
+
+    # Normalize ID (SQL returns 'ID' uppercase; some dicts use 'id' or 'post_id')
+    d['post_id'] = int(d.get('ID') or d.get('id') or d.get('post_id') or 0)
+    d.pop('ID', None)
+    d.pop('id', None)
+
+    # Remap DB column aliases to field names used in build_user_prompt
+    d['ingredients_html'] = d.pop('ingredients', None) or ''
+    d['how_to_use_html']  = d.pop('how_to_use',  None) or ''
+    # faq_raw keeps its name — already correct
+
+    # Slug fallback
+    d['slug'] = (d.get('slug') or d.get('post_name') or '').strip()
+
+    # Plain-text version for extract_reusable_content and keyword gap detection
+    d['post_content_plain'] = BeautifulSoup(
+        d.get('post_content') or '', 'html.parser'
+    ).get_text(separator=' ', strip=True)
+
+    # Re-run guard: skip if _emart_humanized meta was written within last 30 days
+    from datetime import datetime, timedelta
+    humanized_ts = d.get('humanized_at')  # populated by a separate meta pull if needed
+    if humanized_ts:
+        try:
+            ts = datetime.fromisoformat(str(humanized_ts))
+            d['already_humanized'] = (datetime.utcnow() - ts) < timedelta(days=30)
+        except ValueError:
+            d['already_humanized'] = False
+    else:
+        d['already_humanized'] = False
+
+    # High-sales skip flag
+    d['skip_auto'] = int(d.get('total_sales') or 0) > 20
+
+    return d
+
+# Apply immediately after DB fetch:
+products = [normalize_product_dict(row) for row in cursor.fetchall()]
 ```
 
 Query to pull taxonomy terms for a product:
@@ -526,20 +572,35 @@ def parse_disclaimer(disclaimer_text: str, product: dict) -> dict:
 
 
 def build_disclaimer_html(disclaimer_text: str, product: dict) -> str:
-    """Build the disclaimer div to append at the end of post_content."""
-    if not disclaimer_text and not product:
-        # Minimal safe default when no scrape data available
-        return """<div class="product-disclaimer">
-<p><strong>Before Use:</strong> Patch test recommended — apply a small amount to your inner wrist and wait 24 hours before full use, especially for sensitive skin.</p>
-<p><strong>Storage:</strong> Store in a cool, dry place away from direct sunlight. Keep out of reach of children. Check expiry date printed on the packaging before use.</p>
-</div>"""
+    """
+    Build the disclaimer block appended by the apply step — NOT by DeepSeek.
+    Single owner: apply step always appends this; DeepSeek never writes it.
+    Uses <aside> (semantic) not <div class="product-disclaimer">.
+    """
+    if not disclaimer_text:
+        return (
+            '<aside class="product-disclaimer">\n'
+            '<p><strong>Before Use:</strong> Patch test recommended — apply a small '
+            'amount to your inner wrist and wait 24 hours before full use, especially '
+            'for sensitive skin.</p>\n'
+            '<p><strong>Storage:</strong> Store in a cool, dry place away from direct '
+            'sunlight. Keep out of reach of children. Check expiry date on packaging.</p>\n'
+            '</aside>'
+        )
 
     fields = parse_disclaimer(disclaimer_text, product)
-    return f"""<div class="product-disclaimer">
-<p><strong>Before Use:</strong> Patch test recommended — apply a small amount to your inner wrist or behind the ear and wait 24 hours before full use, especially if you have sensitive or reactive skin.</p>
-<p><strong>Shelf Life &amp; Storage:</strong> {fields['shelf_life_text']}. Store in a cool, dry place away from direct sunlight. Keep out of reach of children.</p>
-<p><strong>Packaging:</strong> {fields['packaging_text']}. Expiry date printed on {fields['packaging_location']}.</p>
-</div>"""
+    return (
+        '<aside class="product-disclaimer">\n'
+        '<p><strong>Before Use:</strong> Patch test recommended — apply a small amount '
+        'to your inner wrist or behind the ear and wait 24 hours before full use, '
+        'especially if you have sensitive or reactive skin.</p>\n'
+        f'<p><strong>Shelf Life &amp; Storage:</strong> {fields["shelf_life_text"]}. '
+        'Store in a cool, dry place away from direct sunlight. '
+        'Keep out of reach of children.</p>\n'
+        f'<p><strong>Packaging:</strong> {fields["packaging_text"]}. '
+        f'Expiry date printed on {fields["packaging_location"]}.</p>\n'
+        '</aside>'
+    )
 ```
 
 **Every product gets a disclaimer block** — matched (Path A) or unmatched (Path B). Unmatched products get the safe default version. This is consistent across the catalog and adds genuine trust signal to every PDP.
@@ -555,49 +616,41 @@ FAQ_GENERIC_SIGNALS = [
     "where do you deliver", "free shipping"
 ]
 
+# NOTE: score_emart_faq_quality() with JSON parsing has been removed.
+# Confirmed: _emart_product_faq is plain text Q:/A: format, not JSON.
+# The correct implementation is below (plain-text version only).
+
 def score_emart_faq_quality(faq_raw: str) -> str:
     """
     Returns 'good', 'poor', or 'empty'.
-    'good'  → keep Emart FAQ, do not overwrite
-    'poor'  → replace with Skinnora FAQ (rewritten)
-    'empty' → write Skinnora FAQ (rewritten)
+    Field format: plain text Q:/A: pairs — NOT JSON.
+    Verify with: SELECT meta_value FROM wp4h_postmeta
+                 WHERE meta_key='_emart_product_faq' LIMIT 1;
     """
     if not faq_raw or len(faq_raw.strip()) < 50:
         return "empty"
 
-    import json, re
-    try:
-        items = json.loads(faq_raw) if faq_raw.startswith("[") else []
-    except Exception:
-        items = []
-
-    if not items:
+    questions    = re.findall(r'^Q:', faq_raw, re.MULTILINE)
+    answers      = re.findall(r'^A:', faq_raw, re.MULTILINE)
+    if len(questions) < 2 or len(answers) < 2:
         return "poor"
 
-    # Count questions that are product-specific vs generic delivery/payment
-    product_specific = 0
-    generic_count = 0
-    for item in items:
-        q = (item.get("question") or item.get("q") or "").lower()
-        a = (item.get("answer") or item.get("a") or "")
-        if any(sig in q for sig in FAQ_GENERIC_SIGNALS):
-            generic_count += 1
-        elif len(a) > 60:
-            product_specific += 1
+    faq_lower    = faq_raw.lower()
+    generic_count = sum(1 for sig in FAQ_GENERIC_SIGNALS if sig in faq_lower)
+    answer_blocks = re.findall(r'A:\s*(.+?)(?=\nQ:|\Z)', faq_raw, re.DOTALL)
+    deep_answers  = sum(1 for a in answer_blocks if len(a.split()) >= 30)
 
-    if product_specific >= 3:
-        return "good"      # 3+ product-specific Q&As with real answers → keep
-    if product_specific >= 1:
-        return "poor"      # Some content but mostly generic → replace
-    return "poor"          # All generic or all short → replace
+    if deep_answers >= 3 and generic_count == 0:
+        return "good"
+    return "poor"
 ```
 
 When FAQ quality is `poor` or `empty` and Skinnora has FAQ items:
 
-1. Filter out any Skinnora FAQ questions about delivery, payment, returns, or shipping — Emart's FAQ policy (per project rules) covers only product-focused questions
-2. Rewrite remaining questions and answers in Emart's voice — do not copy verbatim
-3. Add Bangladesh context where natural (e.g., "Is this safe for use in Dhaka's humid climate?")
-4. Format output as JSON matching Emart's `_emart_product_faq` structure:
+1. Filter out any Skinnora FAQ questions about delivery, payment, returns, or shipping
+2. Rewrite remaining Q&As in Emart's voice — do not copy verbatim
+3. Add Bangladesh context where natural
+4. Output format is plain text `Q:/A:` — field is NOT JSON:
 
 ```python
 def rewrite_faq_for_emart(faq_items: list[dict], product: dict, client) -> str:
@@ -651,7 +704,7 @@ Source FAQ to rewrite:
 {faq_text}"""
 
     response = client.chat.completions.create(
-        model="deepseek-chat",
+        model="deepseek-v4-flash",   # pinned — deepseek-chat alias retires 2026-07-24
         messages=[{"role": "user", "content": prompt}],
         max_tokens=1000,
         temperature=0.5
@@ -1084,9 +1137,42 @@ Pick the most compelling product-specific fact and build the second clause aroun
 | Sensitive skin / allergy-tested | `Suitable for sensitive skin — best price in Bangladesh at Emart.` |
 | Vegan / cruelty-free | `Vegan, cruelty-free formula — see price in Bangladesh at Emart.` |
 | Award-winning / cult product | `[Award / bestseller claim] — current price in Bangladesh at Emart.` |
-| Default (none of the above apply) | `Imported from [origin] — price in Bangladesh at Emart, COD available.` |
+| Default (none of the above apply) | See below — must vary by brand/origin/concern, never a fixed string. |
 
 The "price in Bangladesh" phrase stays in every meta. Everything around it changes per product.
+
+#### Default clause — must NOT be a fixed string (near-duplicate guard)
+
+The default row in the table above applies to products with no premium attribute (no SPF, no
+dermatologist claim, no fragrance-free, etc.). At scale this covers a large slice of the catalog
+(basic shampoos, basic moisturisers, etc.). A fixed default like `"Imported from South Korea —
+price in Bangladesh at Emart, COD available."` will hit the ≥82% similarity threshold against
+every other South Korean default product and hard-error on all but the first.
+
+**Default clause must be constructed from the product's unique combination of brand + origin + concern:**
+
+```python
+def build_default_second_clause(product: dict) -> str:
+    """
+    Constructs a default second clause that varies by product attributes
+    so it clears the near-duplicate validator even without a premium signal.
+    """
+    brand   = (product.get('brand') or '').strip()
+    origin  = (product.get('origin') or '').strip()
+    concern = ((product.get('concerns') or [''])[0] or '').strip()
+
+    if brand and origin:
+        return f"{brand} from {origin} — price in Bangladesh at Emart, COD available."
+    if brand and concern:
+        return f"{brand} for {concern.lower()} — current price in Bangladesh at Emart."
+    if origin:
+        return f"Imported from {origin} — see price in Bangladesh at Emart, COD available."
+    # Last resort — still includes Emart + phrase, at least has no exact repeat
+    return "Authentic import — check current price in Bangladesh at Emart."
+```
+
+Pass this to DeepSeek as the default second-clause template when no premium attribute is detected,
+so the model uses it as a starting point rather than inventing a generic identical string.
 
 **Examples — every second clause is different because it reflects a different product truth:**
 
@@ -1486,12 +1572,19 @@ MERCHANT_ID = "YOUR_GMC_MERCHANT_ID"   # replace with real ID from GMC dashboard
 KEY_FILE    = "/var/www/emart-platform/apps/web/google-service-account.json"
 
 DB_CONFIG = {
-    "host": "localhost",
+    "host":     "localhost",
     "database": "emart_live",
-    "user": "emart_user",
-    "password": "Emart@123456",
+    "user":     "emart_user",
+    "password": os.environ["EMART_DB_PASSWORD"],   # never hardcode — export before running
 }
 TABLE_PREFIX = "wp4h_"
+```
+
+```bash
+# Set before running any script:
+export EMART_DB_PASSWORD="..."
+export DEEPSEEK_API_KEY="..."
+export GMC_MERCHANT_ID="..."
 ```
 
 All scripts: `from config import DATE_END, DATE_START, SITE_URL, MERCHANT_ID, KEY_FILE, DB_CONFIG, TABLE_PREFIX`
@@ -1546,68 +1639,79 @@ def build_gsc_service():
     )
     return build("searchconsole", "v1", credentials=creds)
 
-def pull_queries_per_page(service, emart_products: list[dict]) -> dict:
+def pull_all_shop_queries(service) -> dict:
     """
-    Returns {url_path: [{"query", "clicks", "impressions", "ctr", "position"}]}
-    Only pulls for product pages that exist in Emart catalog.
+    Single paginated pull with dimensions=["page","query"], filtered to /shop/
+    and Bangladesh. Client-side grouping replaces ~3,500 sequential API calls.
+
+    Previous approach (one call per page path) was ~3,500 API calls — slow,
+    quota-burning, and effectively serialised by Python's request overhead.
+    This approach uses a handful of paginated calls instead.
     """
-    query_map = {}
-    product_paths = {f"/shop/{p['slug']}": p['id'] for p in emart_products
-                     if p.get('slug')}
+    query_map: dict[str, list] = {}
+    start_row = 0
+    PAGE_SIZE  = 25_000   # GSC API maximum per request
 
-    # Pull in batches of 50 pages (GSC API limit per request)
-    page_list = list(product_paths.keys())
-    for i in range(0, len(page_list), 50):
-        batch_pages = page_list[i:i + 50]
-        for page_path in batch_pages:
-            try:
-                resp = service.searchanalytics().query(
-                    siteUrl=SITE_URL,
-                    body={
-                        "startDate": DATE_START,
-                        "endDate": DATE_END,
-                        "dimensions": ["query"],
-                        "dimensionFilterGroups": [{
-                            "filters": [{
-                                "dimension": "page",
-                                "operator": "equals",
-                                "expression": SITE_URL.rstrip("/") + page_path
-                            }, {
-                                "dimension": "country",
-                                "operator": "equals",
-                                "expression": "bgd"   # Bangladesh
-                            }]
-                        }],
-                        "rowLimit": 10,
-                        "orderBy": [{"fieldName": "impressions", "sortOrder": "DESCENDING"}]
-                    }
-                ).execute()
-
-                rows = resp.get("rows", [])
-                query_map[page_path] = [
+    while True:
+        body = {
+            "startDate":  DATE_START,
+            "endDate":    DATE_END,
+            "dimensions": ["page", "query"],
+            "dimensionFilterGroups": [{
+                "filters": [
                     {
-                        "query":       r["keys"][0],
-                        "clicks":      r["clicks"],
-                        "impressions": r["impressions"],
-                        "ctr":         round(r["ctr"] * 100, 2),
-                        "position":    round(r["position"], 1)
+                        "dimension":  "page",
+                        "operator":   "contains",
+                        "expression": "/shop/"      # all product pages
+                    },
+                    {
+                        "dimension":  "country",
+                        "operator":   "equals",
+                        "expression": "bgd"          # Bangladesh only
                     }
-                    for r in rows
                 ]
-            except Exception as e:
-                print(f"  GSC error for {page_path}: {e}")
-                query_map[page_path] = []
+            }],
+            "rowLimit":  PAGE_SIZE,
+            "startRow":  start_row,
+        }
+
+        resp = service.searchanalytics().query(
+            siteUrl=SITE_URL, body=body
+        ).execute()
+
+        rows = resp.get("rows", [])
+        if not rows:
+            break
+
+        for row in rows:
+            page_url, query = row["keys"]
+            # Convert absolute URL to path: https://e-mart.com.bd/shop/slug → /shop/slug
+            path = page_url.replace(SITE_URL.rstrip("/"), "")
+            query_map.setdefault(path, []).append({
+                "query":       query,
+                "clicks":      row["clicks"],
+                "impressions": row["impressions"],
+                "ctr":         round(row["ctr"] * 100, 2),
+                "position":    round(row["position"], 1),
+            })
+
+        if len(rows) < PAGE_SIZE:
+            break   # last page
+        start_row += PAGE_SIZE
+
+    # Sort each path's queries by impressions desc, keep top 10
+    for path in query_map:
+        query_map[path].sort(key=lambda x: x["impressions"], reverse=True)
+        query_map[path] = query_map[path][:10]
 
     return query_map
 
 # Run and save
-service = build_gsc_service()
-# emart_products loaded from DB (id + slug fields)
-query_map = pull_queries_per_page(service, emart_products)
+service   = build_gsc_service()
+query_map = pull_all_shop_queries(service)
 with open(f"workspace/audit/active/gsc-query-map-{DATE_END}.json", "w") as f:
     json.dump(query_map, f, ensure_ascii=False, indent=2)
-
-print(f"GSC: pulled query data for {len(query_map)} product pages")
+print(f"GSC: {len(query_map)} product paths with query data")
 
 # Priority products: ranking pos 5-20, CTR < 2% — highest opportunity
 priority_gsc = []
@@ -1911,7 +2015,7 @@ new_content_html,
 old_ingredients (first 100 chars),
 new_ingredients_html (Path A only — blank if skipped),
 old_faq_quality (good/poor/empty),
-new_faq_json (blank if old was 'good' or no Skinnora FAQ available),
+new_faq_text (blank if old was 'good' or no Skinnora FAQ available),
 old_meta_desc,
 new_meta_desc,
 pairing_used (the safe pairing sentence used, or 'default' or 'none'),
@@ -1967,7 +2071,7 @@ if row.get('new_ingredients_html'):
         (row['new_ingredients_html'], row['post_id'])
     )
 # 4. FAQ — only if old quality was poor/empty AND new FAQ was generated
-if row.get('new_faq_json'):
+if row.get('new_faq_text'):
     # Upsert: update if exists, insert if not
     cursor.execute(
         "SELECT meta_id FROM wp4h_postmeta "
@@ -1979,13 +2083,13 @@ if row.get('new_faq_json'):
         cursor.execute(
             "UPDATE wp4h_postmeta SET meta_value = %s "
             "WHERE post_id = %s AND meta_key = '_emart_product_faq'",
-            (row['new_faq_json'], row['post_id'])
+            (row['new_faq_text'], row['post_id'])
         )
     else:
         cursor.execute(
             "INSERT INTO wp4h_postmeta (post_id, meta_key, meta_value) "
             "VALUES (%s, '_emart_product_faq', %s)",
-            (row['post_id'], row['new_faq_json'])
+            (row['post_id'], row['new_faq_text'])
         )
 ```
 
@@ -2302,8 +2406,12 @@ best-in-class, Furthermore, Moreover, In conclusion, In summary, It is worth not
 It's important to note, powerhouse, skin-loving, transform your routine, elevate your skincare,
 harness the power, unlock your potential, unleash the, experience the power
 
-OUTPUT FORMAT — return ONLY valid JSON, no markdown fences, no extra text:
-{"content_html": "<h2>...</h2><p>...</p><h3>Key Benefits</h3><ul>...</ul><h3>Who It's For</h3><p>...</p><p>...</p>", "meta_desc": "130-160 char plain text"}"""
+OUTPUT FORMAT — return ONLY valid JSON, no markdown fences, no extra text.
+content_html MUST start with <p>, never <h2> (H1 is already on the page).
+Use <h3> for all section headings inside the description.
+Do NOT include a disclaimer block — the apply step appends it separately.
+
+{"content_html": "<p>...</p><p>...</p><h3>Key Benefits</h3><ul>...</ul><h3>Who It's For</h3><p>...</p><h3>How to Use</h3><ol>...</ol><p>...</p>", "meta_desc": "130-160 char plain text"}"""
 
 
 def build_user_prompt(
@@ -2315,7 +2423,7 @@ def build_user_prompt(
     safe_pairing_ref: str | None = None,
     extracted: dict | None = None,   # from extract_reusable_content()
 ) -> str:
-    sibling_names = [s['title'] for s in siblings if s['id'] != product['id']]
+    sibling_names = [s['title'] for s in siblings if s['post_id'] != product['post_id']]
     sibling_context = ""
     if sibling_names:
         lines = "\n".join(f"- {n}" for n in sibling_names[:5])
@@ -2349,7 +2457,7 @@ COMPETITOR RESEARCH REFERENCE (skinnora.com — inspiration only, do NOT copy te
 Their description: {skinnora_data.get('description_plain', '')[:400]}
 Their key benefits:
 {benefits_text}
-Their ingredients note: {skinnora_data.get('ingredients_plain', '')[:300]}
+Their ingredients note: {skinnora_data.get('ingredients_raw', '')[:300]}
 Your output must be ORIGINAL — different sentences, different structure.
 Skinnora has zero Bangladesh context. Add it entirely from scratch.
 """
@@ -2465,7 +2573,7 @@ def generate_product_description(
     for attempt in range(retries):
         try:
             response = client.chat.completions.create(
-                model="deepseek-chat",  # DeepSeek-V3/V4 alias — update to "deepseek-v4" if released
+                model="deepseek-v4-flash",  # pinned — deepseek-chat alias retires 2026-07-24
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": prompt}
@@ -2483,10 +2591,10 @@ def generate_product_description(
         except Exception as e:
             last_error = e
             wait = 5 * (attempt + 1)  # 5s, 10s, 15s back-off
-            print(f"  Attempt {attempt+1} failed for product {product['id']}: {e}. Waiting {wait}s.")
+            print(f"  Attempt {attempt+1} failed for product {product['post_id']}: {e}. Waiting {wait}s.")
             time.sleep(wait)
 
-    raise RuntimeError(f"Failed after {retries} attempts for product {product['id']}: {last_error}")
+    raise RuntimeError(f"Failed after {retries} attempts for product {product['post_id']}: {last_error}")
 ```
 
 ### 7.4 Rate limiting for free tier
@@ -2498,38 +2606,125 @@ With ~3,500 products to enrich, process in daily batches of ~400 products (safe 
 ```python
 import time
 
-BATCH_SIZE = 20          # products per batch
-SLEEP_BETWEEN_BATCHES = 3  # seconds — stays well under 60 RPM
+BATCH_SIZE = 20
+SLEEP_BETWEEN_BATCHES = 3   # seconds between batches
 
-def process_brand_group(products: list[dict], all_products_by_brand: dict):
+def process_priority_queue(
+    priority_queue:       list[dict],
+    all_products_by_brand: dict,
+    skinnora_match_map:   dict,   # {post_id_str: skinnora_data_dict}
+    gsc_query_map:        dict,   # {"/shop/slug": [query_dicts]}
+    gmc_status_map:       dict,   # {post_id_str: {status, reasons}}
+    seen_second_clauses:  set,
+) -> list[dict]:
+    """
+    Full orchestrator — passes ALL data sources to generate_product_description.
+    Previously called process_brand_group and passed only 2 args;
+    that silently discarded every Step 0/0A/0B signal.
+    """
     results = []
-    for i in range(0, len(products), BATCH_SIZE):
-        batch = products[i:i + BATCH_SIZE]
+
+    for i in range(0, len(priority_queue), BATCH_SIZE):
+        batch = priority_queue[i:i + BATCH_SIZE]
+
         for product in batch:
-            siblings = all_products_by_brand.get(product['brand'], [])
+            pid      = str(product['post_id'])
+            slug     = product.get('slug', '')
+            siblings = all_products_by_brand.get(product.get('brand', ''), [])
+
+            # Gather all signal sources for this product
+            skinnora_data  = skinnora_match_map.get(pid)
+            gsc_queries    = gsc_query_map.get(f"/shop/{slug}", [])
+            gmc_info       = gmc_status_map.get(pid, {})
+            gmc_reasons    = gmc_info.get('reasons', [])
+            safe_pairing   = get_safe_pairing_reference(
+                (skinnora_data or {}).get('pairing_candidates', []),
+                get_product_active_ingredients(product)
+            )
+            extracted      = extract_reusable_content(
+                product.get('post_content', '')
+            )
+
+            # Re-run guard: skip if already humanized within last 30 days
+            if product.get('already_humanized'):
+                results.append({**product, 'status': 'skipped:already_humanized'})
+                continue
+
             try:
-                generated = generate_product_description(product, siblings)
-                results.append({**product, **generated, 'status': 'ok'})
+                generated = generate_product_description(
+                    product       = product,
+                    siblings      = siblings,
+                    skinnora_data = skinnora_data,
+                    gsc_queries   = gsc_queries,
+                    gmc_reasons   = gmc_reasons,
+                    safe_pairing_ref = safe_pairing,
+                    extracted     = extracted,
+                )
+
+                # Validate meta
+                v_result = validate_meta_desc(
+                    generated['meta_desc'], product, seen_second_clauses
+                )
+                if not v_result.passed:
+                    # One retry with error context
+                    retry_note = (
+                        "\n\nYour previous meta failed validation:\n"
+                        + "\n".join(f"- {e}" for e in v_result.errors)
+                    )
+                    generated = generate_product_description(
+                        product, siblings, skinnora_data, gsc_queries,
+                        gmc_reasons, safe_pairing, extracted,
+                        retry_note=retry_note
+                    )
+                    v_result = validate_meta_desc(
+                        generated['meta_desc'], product, seen_second_clauses
+                    )
+
+                results.append({
+                    **product,
+                    **generated,
+                    'status':         'ok' if v_result.passed else 'meta_failed',
+                    'meta_errors':    v_result.errors,
+                    'meta_warnings':  v_result.warnings,
+                    'skinnora_match': bool(skinnora_data),
+                    'gsc_query_count': len(gsc_queries),
+                    'gmc_status':     gmc_info.get('status', 'unknown'),
+                })
             except Exception as e:
-                results.append({**product, 'content_html': '', 'meta_desc': '', 'status': f'error: {e}'})
-        print(f"  Batch {i//BATCH_SIZE + 1} done. Sleeping {SLEEP_BETWEEN_BATCHES}s.")
+                results.append({
+                    **product,
+                    'content_html': '', 'meta_desc': '',
+                    'status': f'error: {e}',
+                })
+
+        print(f"  Batch {i//BATCH_SIZE + 1}/{-(-len(priority_queue)//BATCH_SIZE)} done. "
+              f"Sleeping {SLEEP_BETWEEN_BATCHES}s.")
         time.sleep(SLEEP_BETWEEN_BATCHES)
+
     return results
 ```
 
-### 7.5 Model name note
+### 7.5 Model name and token budget
 
-- Current stable alias: `"deepseek-chat"` (maps to the latest DeepSeek-V3 or V4 automatically)
-- If DeepSeek releases an explicit `"deepseek-v4"` model ID, update the `model=` line
-- Check the current model list at: https://platform.deepseek.com/api-docs
-- Do NOT use `deepseek-reasoner` (DeepSeek-R1) — it is a reasoning model and will be slow and expensive for this batch use case; `deepseek-chat` is the right choice
+```
+Model:   deepseek-v4-flash
+         — pin the explicit version, do NOT use deepseek-chat alias.
+         — deepseek-chat and deepseek-reasoner aliases retire 2026-07-24
+           and will error with no fallback after that date.
 
-### 7.6 Token budget estimate
+Tokens:  ~3,500 products × ~800 tokens = ~2.8M tokens total
+         DeepSeek gives a one-time 5M free token grant on new accounts,
+         then pay-as-you-go. The entire catalog fits in ONE run on the
+         free grant — no daily pacing needed.
+         If the grant is already spent: ~$1 at paid tier rates.
+         The previous "spread across 6 days" note was wrong — it was
+         solving a constraint (500K/day quota) that does not exist.
+```
 
-- ~3,500 products × ~800 tokens average (prompt + completion) = ~2.8M tokens
-- DeepSeek free tier: 500K tokens/day → run across **6 days** in daily batches
-- Alternatively: upgrade to DeepSeek paid tier (~$0.14/1M tokens input, ~$0.28/1M output) for ~$1 total to do it all at once
-- Either way: **$0 on free tier** if spread across 6 days
+Update the `model=` line in `client.chat.completions.create`:
+```python
+model="deepseek-v4-flash",   # pinned — do not use "deepseek-chat" alias
+```
 
 ---
 
@@ -2538,38 +2733,83 @@ def process_brand_group(products: list[dict], all_products_by_brand: dict):
 Before writing any generated content to DB, validate each item:
 
 ```python
+from bs4 import BeautifulSoup
+
+def strip_html(html: str) -> str:
+    """Strip HTML tags and collapse whitespace — previously undefined, caused NameError."""
+    if not html:
+        return ""
+    return re.sub(r'\s+', ' ',
+        BeautifulSoup(html, 'html.parser').get_text(separator=' ')
+    ).strip()
+
+
 def validate_generated_content(product: dict, generated: dict) -> list[str]:
-    """Returns list of validation errors. Empty list = pass."""
+    """
+    Returns list of hard errors. Empty list = pass.
+    Mirrors the retry pattern of validate_meta_desc.
+    """
     errors = []
-    content = generated['content_html']
-    meta = generated['meta_desc']
-    plain = strip_html(content)
+    content = generated.get('content_html') or ''
+    meta    = generated.get('meta_desc') or ''
+    plain   = strip_html(content)
 
-    # Content checks
+    # Content length
     if len(plain) < 300:
-        errors.append("content too short (< 300 chars)")
-    if product['brand'].lower() not in plain.lower():
-        errors.append("brand name missing from content")
-    if meta.lower().startswith('buy '):
-        errors.append("meta_desc starts with 'Buy'")
-    if len(meta) < 130 or len(meta) > 160:
-        errors.append(f"meta_desc length {len(meta)} not in 130-160")
-    if '৳' in meta:
-        errors.append("price in meta_desc (must be removed)")
+        errors.append(f"content too short: {len(plain)} chars (min 300)")
 
-    # Banned word check
-    banned = ['delve','seamlessly','leverage','revolutionize','game-changer',
-              'cutting-edge','Furthermore','Moreover','In conclusion','In summary',
-              'multifaceted','meticulous','unparalleled','best-in-class',
-              'tapestry','realm of','embark','testament to']
-    for word in banned:
-        if word.lower() in plain.lower() or word.lower() in meta.lower():
-            errors.append(f"banned word found: '{word}'")
+    # Brand presence — guard None (products with no pa_brand term)
+    brand = (product.get('brand') or '').strip().lower()
+    if brand and brand not in plain.lower():
+        errors.append(f"brand name '{brand}' missing from content")
+
+    # No <h2> opener (H1 already on page — system prompt fix)
+    if re.search(r'^\s*<h2', content, re.I):
+        errors.append("<h2> opener found — content must start with <p>")
+
+    # Disclaimer must NOT be in content (apply step appends it)
+    if 'product-disclaimer' in content or '<aside' in content.lower():
+        errors.append("disclaimer block found in content — remove; apply step appends it")
+
+    # Banned words
+    BANNED = [
+        'delve', 'seamlessly', 'leverage', 'revolutionize', 'game-changer',
+        'cutting-edge', 'Furthermore', 'Moreover', 'In conclusion', 'In summary',
+        'multifaceted', 'meticulous', 'unparalleled', 'best-in-class',
+        'tapestry', 'realm of', 'embark', 'testament to',
+        'comprehensive solution', 'innovative formula', 'holistic approach',
+    ]
+    for word in BANNED:
+        if word.lower() in plain.lower():
+            errors.append(f"banned word: '{word}'")
 
     return errors
+
+
+def validate_and_retry_content(
+    product: dict,
+    generated: dict,
+    generate_fn,       # callable — generate_product_description with all args bound
+) -> tuple[dict, list[str]]:
+    """
+    Validates content; retries once with error context if it fails.
+    Returns (final_generated_dict, final_errors).
+    """
+    errors = validate_generated_content(product, generated)
+    if not errors:
+        return generated, []
+
+    retry_note = (
+        "\n\nYour previous content failed validation:\n"
+        + "\n".join(f"- {e}" for e in errors)
+        + "\nFix all listed issues in your next response."
+    )
+    generated2 = generate_fn(retry_note=retry_note)
+    errors2    = validate_generated_content(product, generated2)
+    return generated2, errors2
 ```
 
-Items that fail validation are written to a `validation_failures.csv` for manual review. Do not skip them silently.
+Items that fail both attempts are written to `validation_failures.json` for manual review. Do not skip them silently.
 
 ---
 
