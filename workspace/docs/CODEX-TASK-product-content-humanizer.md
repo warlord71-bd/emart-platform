@@ -227,23 +227,56 @@ def scrape_skinnora_product(url: str) -> dict | None:
                 lines = lines[1:]
             ingredients_raw = "\n".join(lines)
 
-        # 4. Disclaimer block — patch test warning, shelf life, packaging
-        # Skinnora places these as small text near bottom of description or in a
-        # dedicated disclaimer/notice section. Try multiple selectors.
-        disclaimer_parts = []
+        # 4. FAQ tab — Q&A pairs for quality comparison and copy-if-poor logic
+        faq_items = []
+        faq_tab = (
+            soup.find("div", id="tab-faq")
+            or soup.find("div", id=re.compile(r"faq", re.I))
+            or soup.find("div", class_=re.compile(r"woocommerce-Tabs-panel--faq", re.I))
+        )
+        if faq_tab:
+            # Try accordion/details pattern first
+            for item in faq_tab.select(".faq-item, .accordion-item, details, .elementor-toggle-item"):
+                q_el = item.find(["summary", "h3", "h4", "strong", "dt",
+                                  ".faq-question", ".accordion-title", ".elementor-tab-title"])
+                a_el = item.find(["p", "dd", ".faq-answer", ".accordion-content",
+                                  ".elementor-tab-content"])
+                if q_el and a_el:
+                    q = q_el.get_text(strip=True)
+                    a = a_el.get_text(strip=True)
+                    if q and a and len(a) > 20:
+                        faq_items.append({"q": q, "a": a})
+            # Fallback: paired dt/dd
+            if not faq_items:
+                dts = faq_tab.find_all("dt")
+                dds = faq_tab.find_all("dd")
+                for q_el, a_el in zip(dts, dds):
+                    q = q_el.get_text(strip=True)
+                    a = a_el.get_text(strip=True)
+                    if q and a and len(a) > 20:
+                        faq_items.append({"q": q, "a": a})
 
-        # Look for explicit disclaimer/notice elements
-        for sel in [
-            ".product-disclaimer", ".disclaimer", ".notice", ".patch-test",
-            "[class*='disclaimer']", "[class*='notice']", "[class*='warning']"
-        ]:
+        # 5. Pairing suggestions — scan description for safe-pairing sentences only
+        # These are passed to the compatibility check before being used in generation.
+        pairing_candidates = []
+        for p in desc_tab.find_all("p") if desc_tab else []:
+            text = p.get_text(strip=True)
+            if any(w in text.lower() for w in
+                   ["pair", "combine", "use with", "layer", "follow with",
+                    "works well with", "best with", "apply after", "apply before"]):
+                if len(text) > 20:
+                    pairing_candidates.append(text)
+
+        # 6. Disclaimer block — patch test warning, shelf life, packaging
+        disclaimer_parts = []
+        for sel in [".product-disclaimer", ".disclaimer", ".notice", ".patch-test",
+                    "[class*='disclaimer']", "[class*='notice']", "[class*='warning']"]:
             el = soup.select_one(sel)
             if el:
                 text = el.get_text(strip=True)
                 if text and len(text) > 20:
                     disclaimer_parts.append(text)
 
-        # Also scan all <p> and <small> tags for patch test / shelf life / packaging keywords
         disclaimer_keywords = [
             "patch test", "patch-test", "shelf life", "expir", "best before",
             "store in", "keep away from", "packaging", "recyclable", "airless",
@@ -256,7 +289,6 @@ def scrape_skinnora_product(url: str) -> dict | None:
                 if text not in disclaimer_parts:
                     disclaimer_parts.append(text)
 
-        # Deduplicate and join
         seen = set()
         unique_disclaimer = []
         for part in disclaimer_parts:
@@ -271,8 +303,10 @@ def scrape_skinnora_product(url: str) -> dict | None:
             "title": title,
             "description_plain": description_plain,
             "benefits": benefits,
-            "ingredients_raw": ingredients_raw,      # → written to _emart_ingredients
-            "disclaimer_text": disclaimer_text,      # → appended as disclaimer block to post_content
+            "ingredients_raw": ingredients_raw,       # → _emart_ingredients (if richer)
+            "faq_items": faq_items,                   # → _emart_product_faq (if Emart's is poor)
+            "pairing_candidates": pairing_candidates, # → compatibility-checked before use
+            "disclaimer_text": disclaimer_text,       # → disclaimer block at end of post_content
         }
     except Exception as e:
         print(f"  Scrape failed for {url}: {e}")
@@ -374,6 +408,8 @@ No new tabs. No frontend changes. All data goes into existing WooCommerce meta f
 |---------------|----------------------|-------|
 | `ingredients_raw` | `_emart_ingredients` | Formatted as HTML `<ul>` — replaces existing if richer; skipped if Emart already has detailed data |
 | `description_plain` + `benefits` | Reference only for `post_content` generation | Not copied verbatim — used as research by DeepSeek |
+| `faq_items` | `_emart_product_faq` | Copied only if Emart's current FAQ is poor — see quality check below |
+| `pairing_candidates` | Embedded inside `post_content` second paragraph | Only if passes ingredient compatibility check — see pairing logic below |
 | `disclaimer_text` | Appended as disclaimer block inside `post_content` | See format below |
 
 #### Ingredients field format
@@ -480,13 +516,199 @@ def build_disclaimer_html(disclaimer_text: str, product: dict) -> str:
 
 **Every product gets a disclaimer block** — matched (Path A) or unmatched (Path B). Unmatched products get the safe default version. This is consistent across the catalog and adds genuine trust signal to every PDP.
 
+#### FAQ field — copy-if-poor logic
+
+Check Emart's current `_emart_product_faq` quality before deciding whether to use Skinnora's FAQ.
+
+```python
+FAQ_GENERIC_SIGNALS = [
+    "cash on delivery", "cod available", "delivery time", "shipping",
+    "return policy", "how to order", "payment method", "bkash", "nagad",
+    "where do you deliver", "free shipping"
+]
+
+def score_emart_faq_quality(faq_raw: str) -> str:
+    """
+    Returns 'good', 'poor', or 'empty'.
+    'good'  → keep Emart FAQ, do not overwrite
+    'poor'  → replace with Skinnora FAQ (rewritten)
+    'empty' → write Skinnora FAQ (rewritten)
+    """
+    if not faq_raw or len(faq_raw.strip()) < 50:
+        return "empty"
+
+    import json, re
+    try:
+        items = json.loads(faq_raw) if faq_raw.startswith("[") else []
+    except Exception:
+        items = []
+
+    if not items:
+        return "poor"
+
+    # Count questions that are product-specific vs generic delivery/payment
+    product_specific = 0
+    generic_count = 0
+    for item in items:
+        q = (item.get("question") or item.get("q") or "").lower()
+        a = (item.get("answer") or item.get("a") or "")
+        if any(sig in q for sig in FAQ_GENERIC_SIGNALS):
+            generic_count += 1
+        elif len(a) > 60:
+            product_specific += 1
+
+    if product_specific >= 3:
+        return "good"      # 3+ product-specific Q&As with real answers → keep
+    if product_specific >= 1:
+        return "poor"      # Some content but mostly generic → replace
+    return "poor"          # All generic or all short → replace
+```
+
+When FAQ quality is `poor` or `empty` and Skinnora has FAQ items:
+
+1. Filter out any Skinnora FAQ questions about delivery, payment, returns, or shipping — Emart's FAQ policy (per project rules) covers only product-focused questions
+2. Rewrite remaining questions and answers in Emart's voice — do not copy verbatim
+3. Add Bangladesh context where natural (e.g., "Is this safe for use in Dhaka's humid climate?")
+4. Format output as JSON matching Emart's `_emart_product_faq` structure:
+
+```python
+def rewrite_faq_for_emart(faq_items: list[dict], product: dict, client) -> str:
+    """
+    Takes Skinnora FAQ items, filters delivery/payment questions,
+    rewrites remaining in Emart's voice with Bangladesh context.
+    Returns JSON string for _emart_product_faq.
+    """
+    # Filter out delivery/payment/shipping questions
+    delivery_signals = [
+        "delivery", "shipping", "return", "refund", "payment", "cash on delivery",
+        "cod", "bkash", "order", "track", "dispatch", "courier"
+    ]
+    product_faqs = [
+        item for item in faq_items
+        if not any(sig in (item.get("q") or "").lower() for sig in delivery_signals)
+    ]
+
+    if not product_faqs:
+        return ""   # Nothing usable — caller keeps existing FAQ
+
+    faq_text = "\n".join(
+        f"Q: {item['q']}\nA: {item['a']}" for item in product_faqs[:5]
+    )
+
+    prompt = f"""Rewrite these FAQ items for {product['title']} sold at Emart Skincare Bangladesh.
+Rules:
+- Rewrite each question and answer in original words — do not copy verbatim
+- Keep answers product-specific (ingredients, usage, skin type suitability)
+- Add Bangladesh context to one answer where it fits naturally (humidity, skin type common in BD)
+- Do NOT include questions about delivery, payment, returns, or COD
+- Maximum 5 Q&A pairs
+- Return ONLY a JSON array: [{{"q": "...", "a": "..."}}, ...]
+
+Source FAQ to rewrite:
+{faq_text}"""
+
+    response = client.chat.completions.create(
+        model="deepseek-chat",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=800,
+        temperature=0.5,
+        response_format={"type": "json_object"}
+    )
+    import json
+    raw = response.choices[0].message.content.strip()
+    parsed = json.loads(raw)
+    # Handle both {"faqs": [...]} and [...] response shapes
+    if isinstance(parsed, list):
+        return json.dumps(parsed, ensure_ascii=False)
+    if isinstance(parsed, dict):
+        for key in ("faqs", "faq", "items", "questions"):
+            if key in parsed and isinstance(parsed[key], list):
+                return json.dumps(parsed[key], ensure_ascii=False)
+    return ""
+```
+
+#### Pairing suggestions — compatibility-check before embedding in description
+
+```python
+# Full incompatibility map (mirrors Section 4.10 table)
+INCOMPATIBLE_PAIRS = [
+    ({"vitamin c", "ascorbic acid", "ascorbyl", "l-ascorbic"},
+     {"aha", "glycolic", "lactic", "mandelic", "bha", "salicylic", "pha",
+      "gluconolactone", "lactobionic"}),
+    ({"retinol", "retinaldehyde", "tretinoin", "retinoid"},
+     {"glycolic", "lactic", "mandelic", "salicylic", "aha", "bha",
+      "vitamin c", "ascorbic acid"}),
+    ({"benzoyl peroxide"},
+     {"retinol", "retinaldehyde", "tretinoin", "vitamin c", "ascorbic acid"}),
+    ({"copper peptide", "copper tripeptide"},
+     {"vitamin c", "ascorbic acid", "glycolic", "lactic", "salicylic",
+      "aha", "bha", "pha"}),
+]
+
+def get_product_active_ingredients(product: dict) -> set[str]:
+    """Extract active ingredient keywords from product title + ingredients HTML."""
+    text = (
+        (product.get("title") or "") + " " +
+        (product.get("ingredients_html") or "")
+    ).lower()
+    return set(text.split())
+
+def is_pairing_safe(pairing_text: str, product_ingredients: set[str]) -> bool:
+    """
+    Returns True if the pairing sentence doesn't suggest an incompatible ingredient
+    combination with the current product's active ingredients.
+    """
+    pairing_lower = pairing_text.lower()
+    for product_group, incompatible_group in INCOMPATIBLE_PAIRS:
+        # Check if current product contains something from product_group
+        product_has = any(
+            any(kw in ing for ing in product_ingredients)
+            for kw in product_group
+        )
+        if not product_has:
+            continue
+        # Check if the pairing sentence mentions something from incompatible_group
+        pairing_mentions_incompatible = any(kw in pairing_lower for kw in incompatible_group)
+        if pairing_mentions_incompatible:
+            return False   # Incompatible — do not use this pairing
+    return True
+
+
+def get_safe_pairing_reference(
+    pairing_candidates: list[str],
+    product_ingredients: set[str]
+) -> str | None:
+    """
+    Returns the first safe pairing sentence, or None if all are incompatible.
+    """
+    for candidate in pairing_candidates:
+        if is_pairing_safe(candidate, product_ingredients):
+            return candidate
+    return None   # All candidates failed compatibility — DeepSeek uses safe default
+```
+
+Pass the result to `build_user_prompt()`:
+
+```python
+safe_pairing_ref = get_safe_pairing_reference(
+    skinnora_data.get("pairing_candidates", []),
+    get_product_active_ingredients(product)
+)
+# safe_pairing_ref is passed into the prompt as:
+# "Safe pairing reference (from competitor research — rewrite naturally):
+#  {safe_pairing_ref}"
+# OR omitted entirely if None, letting the humanizer rules pick a safe default
+```
+
+DeepSeek embeds the pairing as a natural sentence in the second body paragraph — not a bullet, not a closing line. If `safe_pairing_ref` is `None`, DeepSeek falls back to the safe default list (ceramide moisturiser, hyaluronic acid, SPF) per Section 4.10.
+
 ### 2.5.7 What NOT to take from Skinnora
 
 - Do NOT copy any description sentence verbatim
 - Do NOT scrape or use their Routine Builder or Related Products tabs
-- Do NOT use their FAQ content
 - Do NOT use their prices, sales count, or stock status
-- Do NOT use their specific batch expiry date (February 2028 etc.) — Emart has different stock batches; use general shelf life only
+- Do NOT use their specific batch expiry date — Emart has different stock; use general shelf life only
+- Do NOT use Skinnora FAQ questions about delivery, shipping, payment, returns, or COD
 - Skinnora has NO Bangladesh context — Emart's output adds this entirely from scratch
 
 ---
@@ -805,8 +1027,11 @@ old_content_plain (first 200 chars),
 new_content_html,
 old_ingredients (first 100 chars),
 new_ingredients_html (Path A only — blank if skipped),
+old_faq_quality (good/poor/empty),
+new_faq_json (blank if old was 'good' or no Skinnora FAQ available),
 old_meta_desc,
 new_meta_desc,
+pairing_used (the safe pairing sentence used, or 'default' or 'none'),
 disclaimer_source (scraped / default),
 change_reason
 ```
@@ -830,7 +1055,8 @@ Before writing anything to DB, capture current state for every product to be upd
 #   "post_id": 123,
 #   "old_post_content": "...",
 #   "old_rank_math_description": "...",
-#   "old_emart_ingredients": "..."   ← only if ingredients will be updated
+#   "old_emart_ingredients": "...",    ← only if ingredients will be updated
+#   "old_emart_product_faq": "..."     ← only if FAQ will be updated
 # }, ...]
 ```
 
@@ -839,22 +1065,45 @@ Before writing anything to DB, capture current state for every product to be upd
 For each approved row in the review CSV:
 
 ```python
+# 1. Main description (always updated)
 cursor.execute(
     "UPDATE wp4h_posts SET post_content = %s WHERE ID = %s",
     (row['new_content_html'], row['post_id'])
 )
+# 2. Meta description (always updated)
 cursor.execute(
     "UPDATE wp4h_postmeta SET meta_value = %s "
     "WHERE post_id = %s AND meta_key = '_rank_math_description'",
     (row['new_meta_desc'], row['post_id'])
 )
-# Ingredients — only if new_ingredients_html is non-empty
+# 3. Ingredients — only if richer scraped version available
 if row.get('new_ingredients_html'):
     cursor.execute(
         "UPDATE wp4h_postmeta SET meta_value = %s "
         "WHERE post_id = %s AND meta_key = '_emart_ingredients'",
         (row['new_ingredients_html'], row['post_id'])
     )
+# 4. FAQ — only if old quality was poor/empty AND new FAQ was generated
+if row.get('new_faq_json'):
+    # Upsert: update if exists, insert if not
+    cursor.execute(
+        "SELECT meta_id FROM wp4h_postmeta "
+        "WHERE post_id = %s AND meta_key = '_emart_product_faq'",
+        (row['post_id'],)
+    )
+    existing = cursor.fetchone()
+    if existing:
+        cursor.execute(
+            "UPDATE wp4h_postmeta SET meta_value = %s "
+            "WHERE post_id = %s AND meta_key = '_emart_product_faq'",
+            (row['new_faq_json'], row['post_id'])
+        )
+    else:
+        cursor.execute(
+            "INSERT INTO wp4h_postmeta (post_id, meta_key, meta_value) "
+            "VALUES (%s, '_emart_product_faq', %s)",
+            (row['post_id'], row['new_faq_json'])
+        )
 ```
 
 Log each row with timestamp. Output apply report: `workspace/audit/active/content-humanizer-applied-YYYYMMDD.csv`
