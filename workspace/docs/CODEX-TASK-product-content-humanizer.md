@@ -1501,6 +1501,8 @@ Review CSV columns:
 post_id, post_title, brand, origin, concern, score, path,
 skinnora_match_url, skinnora_match_score,
 old_content_plain (first 200 chars),
+extraction_mode (replace_all / partial / how_to_kept / bengali_translated),
+facts_preserved (count of keep_facts extracted),
 new_content_html,
 old_ingredients (first 100 chars),
 new_ingredients_html (Path A only — blank if skipped),
@@ -1637,6 +1639,162 @@ client = OpenAI(
 
 ### 7.3 Generation function
 
+### 7.0 Current description extraction — take the good, flag the bad
+
+Before calling DeepSeek, parse the existing `post_content` to extract any
+genuinely useful content. Pass extracted facts into the prompt so DeepSeek
+builds on real product knowledge rather than guessing from scratch.
+
+```python
+import re
+from bs4 import BeautifulSoup
+
+# Phrases that mark content as replaceable (not worth preserving)
+REPLACE_SIGNALS = [
+    # LLM openers
+    r"get ready to", r"unlock the power", r"introducing", r"meet your",
+    r"experience the power", r"elevate your", r"transform your routine",
+    # Promotional closers
+    r"don't miss out", r"order now", r"shop now", r"add to cart",
+    r"upgrade your skincare", r"go-to destination",
+    r"pride ourselves", r"hassle-free",
+    # Price in body
+    r"৳\s*[\d,]+",                  # ৳1,370 or ৳1370
+    r"[\d,]+\s*taka",               # 1370 taka
+    r"মাত্র ৳", r"price.*৳",        # Bengali price mentions
+    # Generic "why buy from us" blocks
+    r"why buy from emart", r"why choose emart",
+    r"at emart, we pride", r"emart.verified",
+    # Closing spam
+    r"আজই অর্ডার করুন", r"এখনই অর্ডার",  # Bengali "order now"
+]
+
+KEEP_SIGNALS = [
+    # Specific concentrations / percentages
+    r"\d+%\s+\w+",                          # "96% snail mucin", "10% niacinamide"
+    r"\d+\s*mg\b", r"\d+\s*ml\b",
+    # Ingredient mechanisms (has both ingredient name + action)
+    r"(glycolic|salicylic|niacinamide|retinol|hyaluronic|ceramide|peptide"
+    r"|tranexamic|propolis|snail|argan|vitamin c|aha|bha|pha).{5,60}"
+    r"(repair|fade|hydrat|barrier|pore|bright|firm|calm|sooth)",
+    # Bangladesh-specific context (non-boilerplate)
+    r"dhaka.{0,30}(pollution|humid|heat|weather|climate)",
+    r"(bangladesh|bd).{0,40}(skin|hair|climate|weather)",
+    # Timing / usage specifics
+    r"\d+\s*(second|minute|hour|day|week)",  # "30 days", "2 weeks"
+    r"every\s+(third|other|alternate)\s+(day|night)",
+    # Award / sales claims
+    r"best.sell", r"#1", r"bestseller", r"award",
+    r"প্রতি \d+ সেকেন্ড",                    # Bengali "every X seconds"
+]
+
+def extract_reusable_content(post_content: str) -> dict:
+    """
+    Parse current post_content and return:
+    {
+      "keep_facts":    [str]  — specific facts worth preserving in rewrite
+      "keep_how_to":  str    — existing How to Use steps if accurate
+      "replace_all":  bool   — True if nothing is worth keeping
+      "is_bengali":   bool   — True if majority of content is Bengali
+      "has_price_in_body": bool
+    }
+    """
+    soup = BeautifulSoup(post_content or "", "html.parser")
+    plain = soup.get_text(separator=" ", strip=True)
+
+    result = {
+        "keep_facts": [],
+        "keep_how_to": "",
+        "replace_all": False,
+        "is_bengali": False,
+        "has_price_in_body": False,
+    }
+
+    # Detect Bengali content (Bengali Unicode block: ঀ-৿)
+    bengali_chars = sum(1 for c in plain if 'ঀ' <= c <= '৿')
+    result["is_bengali"] = bengali_chars > len(plain) * 0.15
+
+    # Detect price in body
+    result["has_price_in_body"] = bool(re.search(r'৳\s*[\d,]+', plain))
+
+    # Check if entire description is boilerplate (under 200 chars meaningful content)
+    meaningful = re.sub(r'\s+', ' ', re.sub(r'[^\w\s৳]', '', plain)).strip()
+    if len(meaningful) < 200:
+        result["replace_all"] = True
+        return result
+
+    # Extract keep-worthy sentences
+    sentences = re.split(r'(?<=[.!?।])\s+', plain)
+    for sentence in sentences:
+        s = sentence.strip()
+        if len(s) < 20:
+            continue
+        # Skip if contains a replace signal
+        if any(re.search(sig, s, re.I) for sig in REPLACE_SIGNALS):
+            continue
+        # Keep if contains a high-value signal
+        if any(re.search(sig, s, re.I) for sig in KEEP_SIGNALS):
+            result["keep_facts"].append(s)
+
+    # Extract How to Use section if it exists and looks accurate
+    how_to_el = soup.find(["ol"], recursive=True)
+    if how_to_el:
+        steps = [li.get_text(strip=True) for li in how_to_el.find_all("li")]
+        # Keep how-to if it has 3+ steps and any step mentions timing or amount
+        if len(steps) >= 3 and any(
+            re.search(r'\d+\s*(second|minute|drop|pump|pea)', s, re.I)
+            for s in steps
+        ):
+            result["keep_how_to"] = "\n".join(f"{i+1}. {s}" for i, s in enumerate(steps))
+
+    return result
+```
+
+Pass extracted content into the generation prompt:
+
+```python
+extracted = extract_reusable_content(product['post_content'])
+
+existing_facts_section = ""
+if extracted["keep_facts"]:
+    facts = "\n".join(f"  - {f}" for f in extracted["keep_facts"][:6])
+    existing_facts_section = f"""
+VERIFIED FACTS FROM CURRENT DESCRIPTION (preserve these in the rewrite):
+{facts}
+These are accurate product-specific details already on the page.
+Incorporate them naturally — do not copy the sentence verbatim,
+but do not lose the factual information.
+"""
+
+existing_how_to_section = ""
+if extracted["keep_how_to"] and not extracted["replace_all"]:
+    existing_how_to_section = f"""
+CURRENT HOW TO USE (accurate — reuse with minor wording improvements only):
+{extracted['keep_how_to']}
+"""
+
+bengali_note = ""
+if extracted["is_bengali"]:
+    bengali_note = """
+NOTE: Current description is in Bengali. Extract any factual content
+(climate context, ingredient explanations, usage tips) and rewrite
+everything in English. Retain the Bangladesh-specific insights.
+"""
+```
+
+**Decision logic:**
+
+| Condition | Action |
+|-----------|--------|
+| `replace_all = True` | Ignore current description entirely — generate from product data |
+| `keep_facts` empty, `replace_all = False` | Use structure only — ignore body content |
+| `keep_facts` has entries | Pass to prompt as "verified facts to preserve" |
+| `keep_how_to` exists | Reuse steps with minor wording polish |
+| `is_bengali = True` | Extract facts, translate context, rewrite in English |
+| `has_price_in_body = True` | Remove price — do not carry into new description |
+
+---
+
 ```python
 import os, json, time
 from openai import OpenAI
@@ -1681,12 +1839,32 @@ def build_user_prompt(
     gsc_queries: list[dict] | None = None,
     gmc_reasons: list[str] | None = None,
     safe_pairing_ref: str | None = None,
+    extracted: dict | None = None,   # from extract_reusable_content()
 ) -> str:
     sibling_names = [s['title'] for s in siblings if s['id'] != product['id']]
     sibling_context = ""
     if sibling_names:
         lines = "\n".join(f"- {n}" for n in sibling_names[:5])
         sibling_context = f"\n\nSibling products in same brand line (differentiate from these):\n{lines}"
+
+    # Existing description extraction
+    existing_facts_section = ""
+    existing_how_to_section = ""
+    bengali_note = ""
+    if extracted and not extracted.get("replace_all"):
+        if extracted.get("keep_facts"):
+            facts = "\n".join(f"  - {f}" for f in extracted["keep_facts"][:6])
+            existing_facts_section = f"""
+VERIFIED FACTS FROM CURRENT DESCRIPTION (preserve in rewrite — do not copy verbatim):
+{facts}
+"""
+        if extracted.get("keep_how_to"):
+            existing_how_to_section = f"""
+CURRENT HOW TO USE (accurate — reuse with minor wording improvements only):
+{extracted['keep_how_to']}
+"""
+        if extracted.get("is_bengali"):
+            bengali_note = "NOTE: Current description is Bengali. Extract factual insights, rewrite everything in English.\n"
 
     # Skinnora research reference (Path A)
     skinnora_section = ""
@@ -1763,6 +1941,9 @@ Ingredients (from Emart data):
 
 How to use (from Emart data):
 {product.get('how_to_use_html') or 'Not available — write appropriate steps for this product type'}
+{existing_facts_section}
+{existing_how_to_section}
+{bengali_note}
 {sibling_context}
 {skinnora_section}
 {gsc_section}
