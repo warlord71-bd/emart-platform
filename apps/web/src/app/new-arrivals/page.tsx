@@ -50,11 +50,16 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
     description: 'New Korean, Japanese and global skincare products added weekly at Emart Skincare Bangladesh.',
     url: absoluteUrl('/new-arrivals'),
     ...(products.length > 0 ? {
-      hasPart: products.slice(0, 10).map((p: any) => ({
-        '@type': 'Product',
-        name: p.name,
-        url: absoluteUrl(`/shop/${p.slug}`),
-      })),
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: products.length,
+        itemListElement: products.slice(0, 10).map((p: any, i: number) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.name,
+          url: absoluteUrl(`/shop/${p.slug}`),
+        })),
+      },
     } : {}),
   };
 

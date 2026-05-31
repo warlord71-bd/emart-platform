@@ -87,11 +87,16 @@ export default async function SalePage({ searchParams }: SalePageProps) {
     description: 'Real discounts on authentic Korean, Japanese and global skincare at Emart Skincare Bangladesh.',
     url: absoluteUrl('/sale'),
     ...(products.length > 0 ? {
-      hasPart: products.slice(0, 10).map((p: any) => ({
-        '@type': 'Product',
-        name: p.name,
-        url: absoluteUrl(`/shop/${p.slug}`),
-      })),
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: products.length,
+        itemListElement: products.slice(0, 10).map((p: any, i: number) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.name,
+          url: absoluteUrl(`/shop/${p.slug}`),
+        })),
+      },
     } : {}),
   };
 

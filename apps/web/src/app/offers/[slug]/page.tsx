@@ -67,11 +67,19 @@ export default async function OfferCollectionPage({ params }: OfferPageProps) {
     url: absoluteUrl(config.href),
     ...(products.length > 0
       ? {
-          hasPart: products.slice(0, 10).map((product) => ({
-            '@type': 'Product',
-            name: product.name,
-            url: absoluteUrl(`/shop/${product.slug}`),
-          })),
+          // Use ItemList/ListItem instead of Product to avoid GSC warning:
+          // "offers, review, or aggregateRating should be specified"
+          // Product @type requires price/review data which isn't available here
+          mainEntity: {
+            '@type': 'ItemList',
+            numberOfItems: products.length,
+            itemListElement: products.slice(0, 10).map((product, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: product.name,
+              url: absoluteUrl(`/shop/${product.slug}`),
+            })),
+          },
         }
       : {}),
   };
