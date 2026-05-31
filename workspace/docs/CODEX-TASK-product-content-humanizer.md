@@ -207,18 +207,24 @@ If multiple products share the same brand and product line (e.g., Kerasys shampo
 
 ### 4.7 Key Benefits bullets — rules
 
-Each bullet point MUST:
+Format: **`Benefit Label — Ingredient/mechanism explanation sentence`** (em dash separator)
+
+Each bullet MUST:
+- Use the format: short label (2–4 words) + ` — ` + one full explanation sentence
+- Label names the benefit outcome or active ingredient — never a generic adjective
+- Explanation sentence names the specific ingredient responsible and what it does
 - Be specific to THIS product (not generic to the category)
-- Mention one ingredient or mechanism where possible
-- Be 10–20 words long (not a fragment, not a paragraph)
-- NOT start with a verb (avoid the "Moisturizes", "Hydrates", "Nourishes" template pattern)
-- Start with an ingredient name OR a benefit outcome instead
+- 15–25 words total including label
 
-Good bullet:
-- `Snail mucin (96%) actively repairs the skin barrier and speeds up healing of acne marks`
+Good bullets:
+- `Brightens Uneven Tone — Tranexamic acid (5%) blocks melanin transfer at the source, fading sun spots and post-acne marks without harsh exfoliation`
+- `Scalp Bacteria Control — Propolis extract targets the microorganisms that cause itching and flaking between washes`
+- `Snail Mucin Repair — 96% secretion filtrate fills micro-cracks in the skin barrier and speeds healing of active acne marks`
 
-Bad bullet:
-- `Moisturizes and hydrates your skin for a healthy glow`
+Bad bullets (reject these patterns):
+- `Moisturizes and hydrates your skin for a healthy glow` ← starts with verb, no ingredient
+- `Snail mucin (96%) actively repairs the skin barrier` ← correct ingredient but missing the label format
+- `Hydration Boost — This product keeps your skin moisturized all day` ← label is vague, no ingredient named
 
 ### 4.8 Who It's For section
 
@@ -237,9 +243,57 @@ One sentence. Options:
 - Authenticity: "Imported directly from [origin country] — not grey-market stock."
 - Availability: "Available now at Emart with Cash on Delivery across Bangladesh."
 - Social proof: "One of Emart's consistently top-rated [category] products." (only if total_sales > 5)
-- Pairing tip: "Pairs well with [sibling product or compatible product type]."
+- Pairing tip: see Section 4.10 below — pairing must pass ingredient compatibility check first.
 
 Do not use more than one closing trust line. Do not repeat what was already said in the description.
+
+### 4.10 "Pair with" cross-sell — compatibility rules (MANDATORY)
+
+Include one "pairs well with" sentence in the second body paragraph (not just the closing line — embed it naturally in the text, as Skinnora does). This signals product expertise and creates an internal link opportunity.
+
+**The pairing must be ingredient-safe.** Before suggesting any pairing, check the product's active ingredients against the incompatibility table below. If the suggested pairing triggers a conflict, suggest a different product type or omit the pairing entirely — do not suggest an incompatible combination.
+
+#### Incompatibility table — never suggest these combinations
+
+| If the current product contains... | Do NOT pair with products containing... | Reason |
+|------------------------------------|------------------------------------------|--------|
+| Vitamin C (L-ascorbic acid, ascorbyl glucoside, ascorbyl phosphate) | AHA (glycolic, lactic, mandelic acid) | Both acidic; AHA destabilises Vitamin C, causes irritation |
+| Vitamin C (any form) | BHA (salicylic acid) | Same conflict as above — pH clash + irritation risk |
+| Vitamin C (any form) | PHA (gluconolactone, lactobionic acid) | Same conflict — all exfoliating acids destabilise Vitamin C |
+| Retinol / retinaldehyde / tretinoin | AHA (glycolic, lactic, mandelic) | Combined irritation; AHA degrades retinol stability |
+| Retinol / retinoids | BHA (salicylic acid) | Over-exfoliation; pH mismatch reduces retinol efficacy |
+| Retinol / retinoids | Vitamin C | Both active at different pH; together = irritation for most skin types |
+| Benzoyl peroxide | Retinol / retinoids | BP oxidises retinol, rendering it ineffective |
+| Benzoyl peroxide | Vitamin C | BP oxidises ascorbic acid, both become inactive |
+| AHA (any) | BHA (salicylic acid) — at high %, same routine step | Risk of over-exfoliation when used together at the same step |
+| AHA (any) | PHA — at high %, same routine step | Over-exfoliation when layered at the same application step |
+| Copper peptides | Vitamin C | Vitamin C oxidises copper ions, inactivating the peptides |
+| Copper peptides | AHA / BHA / PHA | Acidic pH inactivates copper peptide complexes |
+| Niacinamide (>10%) | Vitamin C (>10%, L-ascorbic acid specifically) | At very high concentrations both, can form niacin and cause flushing; at standard 5–10% this is generally fine — flag as "use at different times of day" if both >10% |
+
+#### Safe pairing examples by product type
+
+| Current product type | Safe to pair with |
+|---------------------|-------------------|
+| Vitamin C serum | Hyaluronic acid serum, ceramide moisturiser, SPF sunscreen, peptide moisturiser |
+| Retinol / retinoid | Ceramide moisturiser, hyaluronic acid, niacinamide (standard %), squalane |
+| AHA toner / exfoliant | Hyaluronic acid serum, ceramide cream, SPF (morning after), niacinamide serum |
+| BHA (salicylic) serum/toner | Niacinamide serum, oil-free moisturiser, SPF |
+| Niacinamide serum | Almost anything — ceramide moisturiser, hyaluronic acid, SPF |
+| Tranexamic acid serum | Niacinamide (compatible), hyaluronic acid, ceramide moisturiser, SPF |
+| Snail mucin essence | Any moisturiser, SPF, niacinamide — very compatible ingredient |
+| Benzoyl peroxide wash/spot | Oil-free moisturiser, gentle SPF; avoid actives on same step |
+| Peptide serum | Hyaluronic acid, ceramide moisturiser, niacinamide; avoid Vitamin C and AHA same step |
+| SPF sunscreen | Apply last — no pairing constraint, just remind to apply as final step |
+
+#### How to write the pairing sentence
+
+- Natural placement: second body paragraph, as a practical tip, not a promotion
+- Name the specific product type or ingredient, not a vague "moisturiser"
+- If Emart sells a compatible product by name, you may name it — but only if the pairing is genuinely safe per the table above
+- If no safe named pairing exists, use the product category: "pairs well with a ceramide moisturiser"
+- Acceptable: "For extra hydration, follow with a ceramide moisturiser — the barrier-repair ingredients work well after this serum absorbs."
+- Not acceptable: "Pairs well with our Vitamin C serum for brighter results." ← if the current product contains AHA/BHA, this is a dangerous suggestion
 
 ---
 
