@@ -276,12 +276,55 @@ def _detect_type(title: str) -> str:
             return ctype
     return 'foam'
 
-def _check_ingredients(raw: str) -> str:
+def _scrape_skinnora_ingredients(title: str) -> str:
+    """
+    Search Skinnora for a matching product and return its ingredients tab text.
+    Returns empty string if not found or scrape fails.
+    Only called when Emart has no/thin ingredient data.
+    """
+    import urllib.parse, urllib.request, time as _time
+    try:
+        query = urllib.parse.quote(title[:50])
+        url   = f"https://www.skinnora.com/?s={query}&post_type=product"
+        req   = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0'})
+        html  = urllib.request.urlopen(req, timeout=10).read().decode('utf-8', errors='ignore')
+        # Find first product link
+        m = re.search(r'href="(https://www\.skinnora\.com/product/[^"]+)"', html)
+        if not m: return ''
+        prod_url = m.group(1)
+        _time.sleep(1)
+        req2 = urllib.request.Request(prod_url, headers={'User-Agent':'Mozilla/5.0'})
+        prod_html = urllib.request.urlopen(req2, timeout=10).read().decode('utf-8', errors='ignore')
+        # Extract ingredients tab
+        soup = BeautifulSoup(prod_html, 'html.parser')
+        ing_tab = (soup.find('div', id='tab-ingredients') or
+                   soup.find('div', id=re.compile(r'ingredient', re.I)))
+        if not ing_tab: return ''
+        text = ing_tab.get_text(separator='\n', strip=True)
+        lines = [l.strip() for l in text.splitlines() if l.strip()]
+        if lines and lines[0].lower() in ('ingredients','ingredient list','full ingredient list'):
+            lines = lines[1:]
+        result = '\n'.join(lines)
+        if len(result) > 50:
+            print(f"    Skinnora ingredients fetched ({len(result)} chars)")
+            return result
+    except Exception as e:
+        pass  # network/scrape failure — silent fallback
+    return ''
+
+
+def _check_ingredients(raw: str, product_title: str = '') -> str:
     if not raw or len(raw.strip()) < 30:
+        skinnora = _scrape_skinnora_ingredients(product_title) if product_title else ''
+        if skinnora:
+            return f"Ingredient list from Skinnora (use as reference, do NOT copy verbatim):\n{skinnora[:800]}"
         return "Ingredient list not available — describe only what is stated in the product title. Do NOT invent ingredient names."
     plain = _strip(raw).lower()
     THIN = ['carefully selected','full inci','original packaging','আছে','unknown brand','এর এই product']
     if any(s in plain for s in THIN):
+        skinnora = _scrape_skinnora_ingredients(product_title) if product_title else ''
+        if skinnora:
+            return f"Ingredient list from Skinnora (use as reference only, do NOT copy verbatim):\n{skinnora[:800]}"
         return "Ingredient data is a placeholder — use only the key actives visible in the product title. Do NOT invent concentrations or ingredient names."
     return raw
 
@@ -512,8 +555,8 @@ OUTPUT: valid JSON only, no markdown:
 
 def _build_prompt(product: dict, taxonomy: dict, siblings: list[str]) -> str:
     brand   = (taxonomy['pa_brand']  or [''])[0]
-    # Truncate very long titles to avoid hitting API token limits
-    title   = product['title'][:65]
+    # Truncate very long titles to avoid hitting API input/output token limits
+    title   = product['title'][:45]
     origin  = (taxonomy['pa_origin'] or ['South Korea'])[0]
     concerns= taxonomy['pa_concern'] or ['Cleansing']
     ctype   = product['cleanser_type']
@@ -534,7 +577,7 @@ Cleanser type: {ctype}
 Stock: {product.get('stock_status','instock')}
 
 Ingredients (from Emart data):
-{_check_ingredients(product.get('ingredients_html',''))}
+{_check_ingredients(product.get('ingredients_html',''), product.get('title',''))}
 
 How to use (from Emart data):
 {product.get('how_to_use_html') or 'Not available — write appropriate cleansing steps.'}
@@ -550,7 +593,7 @@ BAD examples: "foam cleanser", "gel cleanser", "Korean cleanser" (too generic)""
 
 
 def _generate(client, product: dict, taxonomy: dict, siblings: list[str],
-              retry_note: str = "") -> dict:
+              retry_note: str = "", compressed: bool = False) -> dict:
     prompt = _build_prompt(product, taxonomy, siblings)
     if retry_note:
         prompt += retry_note
@@ -558,19 +601,29 @@ def _generate(client, product: dict, taxonomy: dict, siblings: list[str],
         model=MODEL,
         messages=[{"role":"system","content":SYSTEM_PROMPT},
                   {"role":"user","content":prompt}],
-        max_tokens=2000,
+        max_tokens=2400 if compressed else 2200,
         temperature=0.7,
         response_format={"type":"json_object"},
     )
     raw = resp.choices[0].message.content
     if not raw:
-        raise ValueError(f"API returned empty. Finish reason: {resp.choices[0].finish_reason}")
+        finish = resp.choices[0].finish_reason
+        if finish == 'length' and not compressed:
+            # Output hit token limit — retry with higher max_tokens and shorter title
+            print(f"    Token limit hit — retrying with compressed prompt (max_tokens=2400)")
+            old_title = product['title']
+            product['title'] = product['title'][:35]   # shorter title for this retry only
+            try:
+                result = _generate(client, product, taxonomy, siblings, retry_note, compressed=True)
+            finally:
+                product['title'] = old_title   # restore original title
+            return result
+        raise ValueError(f"API returned empty. Finish reason: {finish}")
     # Repair truncated/broken JSON — common when content is long
     text = raw.strip()
     try:
         return json.loads(text)
     except json.JSONDecodeError:
-        # Try to salvage by closing open structures
         if not text.endswith('}'):
             text = text.rstrip(',') + '"}'
         try:
