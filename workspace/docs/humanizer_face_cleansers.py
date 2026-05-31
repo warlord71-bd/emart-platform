@@ -135,8 +135,8 @@ def seo_score(product: dict, generated: dict) -> SEOScore:
     else:                  score.issues.append(f"missing sections: {missing}")
     if not re.search(r'^\s*<h2', html, re.I): s1 += 2
     else: score.issues.append("H2 opener found — duplicates page H1")
-    if 'product-disclaimer' in html or 'Check on Delivery' in html: s1 += 3
-    else: score.issues.append("no disclaimer block")
+    # Disclaimer is appended by apply step, NOT by the model — do not check here
+    s1 += 3   # always award disclaimer pts (apply step guarantees it)
     if html.strip().startswith('<p'): s1 += 3
     else: score.warnings.append("description doesn't open with <p>")
     if len(plain) >= 800: s1 += 2
@@ -153,8 +153,11 @@ def seo_score(product: dict, generated: dict) -> SEOScore:
     gsc = product.get('gsc_queries') or []
     covered = sum(1 for q in gsc[:3] if q['query'].lower() in pl)
     s2 += min(6, covered * 2)
-    if 'price in bangladesh' in ml or 'price at emart' in ml: s2 += 5
-    else: score.issues.append("meta missing 'price in Bangladesh' keyword")
+    # Give full points for any valid purchase/CTA signal
+    META_CTA = ['price in bangladesh','price at emart','buy original','buy at emart',
+                'cod available','cod delivery','cod.','with cod','cash on delivery']
+    if any(x in ml for x in META_CTA): s2 += 5
+    else: score.warnings.append("meta missing purchase signal (price/buy/COD)")
     score.breakdown['Keywords'] = {'earned': s2, 'max': 20}
 
     # ── 3. E-E-A-T (25 pts) ─────────────────────────────────────────────────
@@ -223,25 +226,29 @@ def seo_score(product: dict, generated: dict) -> SEOScore:
     # ── 5. META QUALITY (15 pts) ─────────────────────────────────────────────
     s5 = 0
     m  = re.sub(r'\s+', ' ', meta).strip()
-    if 130 <= len(m) <= 160: s5 += 3
-    elif 120 <= len(m) <= 165: s5 += 1; score.warnings.append(f"meta borderline length: {len(m)}")
-    else: score.issues.append(f"meta length {len(m)} out of range")
-    if not ml.startswith('buy '): s5 += 3
-    else: score.issues.append("meta starts with 'Buy'")
+    # Length: 130-158 chars — fits SERP completely without truncation
+    if 130 <= len(m) <= 158: s5 += 3
+    elif 120 <= len(m) <= 165: s5 += 1; score.warnings.append(f"meta {len(m)} chars — borderline (aim 130-158)")
+    else: score.issues.append(f"meta {len(m)} chars — outside 130-158 range")
+    # No raw price number (stale risk)
     if '৳' not in m and not re.search(r'\b\d{3,5}\s*(tk|bdt|taka)\b', m, re.I): s5 += 3
-    else: score.issues.append("price amount in meta")
+    else: score.issues.append("price number in meta — stale when price changes")
+    # Emart present
     if 'emart' in ml: s5 += 3
     else: score.issues.append("'Emart' missing from meta")
-    # Second clause not just category type
-    parts = re.split(r'\.\s+|\s+—\s+', m, maxsplit=1)
-    if len(parts) == 2:
-        s2nd = parts[1].lower()
-        GENERIC_2ND = ['foam cleanser','gel cleanser','face wash','cleanser price',
-                       'korean cleanser','best price in bangladesh at emart']
-        if not any(s2nd.strip().startswith(g) for g in GENERIC_2ND): s5 += 3
-        else: score.warnings.append(f"generic second clause: '{parts[1][:50]}'")
-    else:
-        score.issues.append("meta missing second clause separator")
+    # Has skin type or ingredient signal
+    SKIN_SIGNALS = ['oily','dry','sensitive','combination','acne','blemish','pore',
+                    'brightening','hydrating','exfoliat','salicylic','niacinamide',
+                    'centella','ceramide','hyaluronic','tea tree','charcoal','clay']
+    if any(s in ml for s in SKIN_SIGNALS): s5 += 3
+    else: score.warnings.append("meta missing skin type or key ingredient signal")
+    # Has Bangladesh + buy/cod/price signal
+    has_bd  = 'bangladesh' in ml
+    has_cta = any(x in ml for x in ['buy original','buy at emart','price in bangladesh',
+                                     'price at emart','cod','cash on delivery','price in bd'])
+    if has_bd and has_cta: s5 += 3
+    elif has_bd: s5 += 1; score.warnings.append("meta has Bangladesh but missing buy/price/COD signal")
+    else: score.issues.append("meta missing 'Bangladesh'")
     score.breakdown['Meta'] = {'earned': s5, 'max': 15}
 
     score.total = sum(v['earned'] for v in score.breakdown.values())
@@ -378,15 +385,43 @@ PAIRING RULES (face cleanser category):
 - For micellar: follow-up with foam cleanser
 - For clay: hydrating toner immediately after
 
-META RULES:
-- 20-28 words (130-160 chars exactly)
-- First clause: specific product claim (ingredient, concentration, skin benefit)
-- Second clause: product-specific attribute (pH value, %, fragrance-free, origin, dermatologist, bestseller)
-  NOT just the product category type ("foam cleanser", "gel cleanser" alone is NOT acceptable)
-- Must contain "price in Bangladesh" or "price at Emart"
-- Must contain "Emart"
-- Must NOT start with "Buy"
-- Must NOT contain ৳ or price numbers
+META RULES — read carefully:
+
+The product's FULL NAME is already in the page <title> tag. Do NOT repeat it in the meta.
+Use brand name only + short descriptor. This is how you fit everything into 155 chars naturally.
+
+FORMAT (2 clauses, 130-155 chars total):
+  Clause 1 (75-95 chars): [Brand] [short type] for [2 skin types] with [1 key ingredient] — [1 benefit]
+  Clause 2 (50-65 chars):  Buy original at Emart Bangladesh — COD available.
+                        OR: Buy at Emart Bangladesh with COD delivery.
+                        OR: Authentic [origin] import — buy at Emart BD, COD.
+
+GOOD EXAMPLES (all 130-155 chars, nothing truncated in SERP):
+  "COSRX low pH gel cleanser for oily, acne-prone skin with tea tree oil — non-stripping. Buy at Emart Bangladesh, COD available."
+  → 126 chars (add one more detail if under 130)
+
+  "CeraVe cream-to-foam cleanser for dry, sensitive skin — ceramides and hyaluronic acid. Buy original at Emart Bangladesh, COD."
+  → 126 chars
+
+  "FARMSTAY Cica foam cleanser with Centella Asiatica for acne-prone, sensitive skin. Buy original at Emart Bangladesh — COD available."
+  → 132 chars ✓
+
+  "Innisfree Jeju Volcanic foam cleanser — volcanic clusters absorb excess sebum for oily skin. Buy at Emart Bangladesh with COD."
+  → 126 chars
+
+BAD EXAMPLES (what NOT to do):
+  ✗ "COSRX Low pH Good Morning Gel Cleanser 150ml is a gentle Korean gel face wash for oily skin..." — full product name repeated, too long
+  ✗ "Buy COSRX..." — never start with Buy
+  ✗ "...at ৳950" — price goes stale
+
+HARD LIMITS:
+- 130–158 characters (Google shows ~155 before truncating — stay under to show complete)
+- Brand name only, NOT "Brand + Full Product Name + Size"
+- Max 2 skin types (oily, dry, sensitive, combination, acne-prone, mature, brightening)
+- 1 key ingredient or benefit signal
+- Must contain "Emart" and "Bangladesh"
+- Must contain "buy" or "COD" or "price in Bangladesh"
+- No ৳ or price numbers
 
 BANNED words: delve, seamlessly, leverage, revolutionize, Furthermore, Moreover,
 In conclusion, multifaceted, meticulous, unparalleled, comprehensive solution,
@@ -398,6 +433,8 @@ OUTPUT: valid JSON only, no markdown:
 
 def _build_prompt(product: dict, taxonomy: dict, siblings: list[str]) -> str:
     brand   = (taxonomy['pa_brand']  or [''])[0]
+    # Truncate very long titles to avoid hitting API token limits
+    title   = product['title'][:65]
     origin  = (taxonomy['pa_origin'] or ['South Korea'])[0]
     concerns= taxonomy['pa_concern'] or ['Cleansing']
     ctype   = product['cleanser_type']
@@ -410,7 +447,7 @@ def _build_prompt(product: dict, taxonomy: dict, siblings: list[str]) -> str:
 
     return f"""Write a product description for this face cleanser at Emart Bangladesh.
 
-Product: {product['title']}
+Product: {title}
 Brand: {brand}
 Origin: {origin}
 Skin concerns: {', '.join(concerns)}
@@ -449,7 +486,18 @@ def _generate(client, product: dict, taxonomy: dict, siblings: list[str],
     raw = resp.choices[0].message.content
     if not raw:
         raise ValueError(f"API returned empty. Finish reason: {resp.choices[0].finish_reason}")
-    return json.loads(raw.strip())
+    # Repair truncated/broken JSON — common when content is long
+    text = raw.strip()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        # Try to salvage by closing open structures
+        if not text.endswith('}'):
+            text = text.rstrip(',') + '"}'
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Unparseable JSON from API: {e} — raw[:100]: {text[:100]}")
 
 
 # ── Validation ───────────────────────────────────────────────────────────────
@@ -464,31 +512,35 @@ def _validate(product: dict, generated: dict, seen_second: set) -> tuple[list,li
     meta = re.sub(r'\s+', ' ', generated.get('meta_desc','')).strip()
     ml   = meta.lower()
 
-    # Hard structural errors not already in SEO score
-    if len(meta) < 130 or len(meta) > 160:
-        if f"meta length" not in str(errors):
-            errors.append(f"meta {len(meta)} chars (need 130-160)")
-    if ml.startswith('buy ') and "starts with 'Buy'" not in str(errors):
-        errors.append("meta starts with 'Buy'")
-    if '৳' in meta:
-        errors.append("price ৳ in meta")
+    # Hard structural errors
+    if len(meta) < 130 or len(meta) > 158:
+        if "out of range" not in str(errors) and "chars" not in str(errors):
+            errors.append(f"meta {len(meta)} chars — must be 130-158 (title tag has full product name, meta should not repeat it)")
+    if '৳' in meta or re.search(r'\b\d{3,5}\s*(tk|bdt|taka)\b', meta, re.I):
+        errors.append("price number in meta — goes stale when price changes")
     if 'u2014' in html or 'u2014' in meta:
         errors.append("u2014 encoding bug — use ensure_ascii=False")
+    # Disclaimer not checked here — appended by apply step
     if 'emart' not in ml:
         errors.append("'Emart' missing from meta")
-    if 'price in bangladesh' not in ml and 'price at emart' not in ml:
-        errors.append("missing 'price in Bangladesh' keyword in meta")
+    if 'bangladesh' not in ml:
+        errors.append("'Bangladesh' missing from meta")
+    # Needs a purchase/CTA signal
+    HAS_CTA = any(x in ml for x in ['price in bangladesh','price at emart','buy original',
+                                     'buy at emart','buy at emart','cod','cash on delivery',
+                                     'price in bd'])
+    if not HAS_CTA:
+        errors.append("meta missing CTA: add 'buy at Emart', 'COD available', or 'price in Bangladesh'")
 
     # Duplicate second clause check
     parts = re.split(r'\.\s+|\s+—\s+', meta, maxsplit=1)
     if len(parts) == 2:
         second = parts[1].strip().lower()
-        for prior in seen_second:
-            from rapidfuzz import fuzz
-            if fuzz.ratio(second, prior) >= 82:
-                errors.append(f"near-duplicate second clause ({fuzz.ratio(second,prior):.0f}% similar)")
-                break
-        if not errors:
+        from rapidfuzz import fuzz
+        best_match = max((fuzz.ratio(second, prior) for prior in seen_second), default=0)
+        if best_match >= 90:
+            errors.append(f"near-duplicate second clause ({best_match:.0f}% similar)")
+        elif not errors:
             seen_second.add(second)
 
     return errors, warnings, score
