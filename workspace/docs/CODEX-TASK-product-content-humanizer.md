@@ -940,98 +940,154 @@ Google reads this and shows the live price as a rich result in the SERP below yo
 
 ### 5.3 Target format
 
-**Structure:** `[Specific product claim]. [Price-in-Bangladesh phrase + trust signal].`
+**Structure:** `[Specific product claim]. [Product-specific trust signal containing "price in Bangladesh"].`
 
-Three approved second-clause patterns — rotate across products so endings are not identical:
+**Both clauses must be unique to the product.** The second clause is NOT a rotation from a fixed list — it is generated from the product's own attributes. Three products from the same brand cannot share the same second clause.
 
-```
-Pattern A:  "Best price in Bangladesh at Emart — COD available."
-Pattern B:  "Check current price in Bangladesh at Emart, fast delivery."  
-Pattern C:  "See price in Bangladesh at Emart — authentic [origin] import."
-```
+### 5.4 Second clause — derive from product attributes
 
-**Good examples — all hit the keyword, none lock in a number:**
+Pick the most compelling product-specific fact and build the second clause around it. Priority order:
 
-```
-COSRX's 96% snail mucin essence repairs skin barrier and fades acne marks 
-in 2 weeks. Best price in Bangladesh at Emart — COD available.
-[148 chars ✓]
+| Product attribute | Second clause shape |
+|------------------|-------------------|
+| Known SPF value (sunscreens) | `SPF [X] protection — check price in Bangladesh at Emart.` |
+| Dermatologist-tested claim | `Dermatologist-tested formula — current price in Bangladesh at Emart.` |
+| Fragrance-free | `Fragrance-free, safe for daily use — see price in Bangladesh at Emart.` |
+| High sales (total_sales > 20) | `One of Emart's best-selling [category] — price in Bangladesh with COD.` |
+| Specific country of origin | `Authentic [South Korean / USA / Indian] import — price in Bangladesh at Emart.` |
+| Specific concentration (e.g. 10% Niacinamide) | `[X]% [ingredient] — check price in Bangladesh at Emart, COD available.` |
+| Sensitive skin / allergy-tested | `Suitable for sensitive skin — best price in Bangladesh at Emart.` |
+| Vegan / cruelty-free | `Vegan, cruelty-free formula — see price in Bangladesh at Emart.` |
+| Award-winning / cult product | `[Award / bestseller claim] — current price in Bangladesh at Emart.` |
+| Default (none of the above apply) | `Imported from [origin] — price in Bangladesh at Emart, COD available.` |
 
-CeraVe SPF30 mineral tint absorbs without white cast, ideal for medium 
-skin tones in Bangladesh's humid climate. Check current price at Emart, COD.
-[152 chars ✓]
+The "price in Bangladesh" phrase stays in every meta. Everything around it changes per product.
 
-Kerasys Propolis Shampoo targets scalp bacteria while conditioning 
-heat-damaged hair. See price in Bangladesh at Emart — South Korean import.
-[146 chars ✓]
-
-Heimish Marine Care Eye Cream pairs algae extract with peptides to reduce 
-puffiness around the eye area. Best price in Bangladesh, COD at Emart.
-[148 chars ✓]
-```
-
-**Bad (reject these):**
+**Examples — every second clause is different because it reflects a different product truth:**
 
 ```
-Buy Kerasys Propolis Shampoo for ৳890 in Bangladesh. Original Korean Beauty. 
-Fast delivery & COD available at Emart.
-← starts with Buy, has price, identical suffix to 3,619 other products
+COSRX Advanced Snail 96 Mucin Essence 100ml
+→ "COSRX's 96% snail mucin repairs the skin barrier and speeds healing of acne 
+   marks. South Korean import — current price in Bangladesh at Emart."
+   (second clause: specific origin)
 
-COSRX Advanced Snail Essence — great for all skin types. Available at Emart.
-← no "price in Bangladesh" phrase, misses the highest-volume query entirely
+CeraVe Hydrating Sunscreen SPF30 Medium Sheer Tint 50ml
+→ "CeraVe's SPF30 mineral tint blends into medium skin tones without white cast, 
+   with ceramides for barrier support. SPF30 protection — check price in Bangladesh at Emart."
+   (second clause: SPF value)
+
+The Ordinary Niacinamide 10% + Zinc 1% 30ml
+→ "10% Niacinamide with Zinc visibly reduces pore size and balances sebum — 
+   clinically studied concentrations. Dermatologist-tested — see price in Bangladesh at Emart."
+   (second clause: concentration + dermatologist claim)
+
+Kerasys Propolis Damage Repair Shampoo 1000ml
+→ "Kerasys Propolis Shampoo targets scalp bacteria that cause itching while 
+   conditioning heat-damaged hair from roots to ends. Price in Bangladesh at Emart, COD available."
+   (second clause: default — no premium attribute available)
+
+Some By Mi AHA BHA PHA 30 Days Miracle Toner
+→ "Some By Mi's triple-acid toner combines AHA, BHA, and PHA to exfoliate, clear 
+   pores, and fade blemishes over 30 days. Fragrance-free — check price in Bangladesh at Emart."
+   (second clause: fragrance-free)
+
+Missha Airy Fit Sheet Mask Shea Butter
+→ "Missha's shea butter sheet mask softens and nourishes dry skin in 20 minutes — 
+   no stickiness after removal. One of Emart's best-selling sheet masks — price in Bangladesh."
+   (second clause: bestseller, total_sales > 20)
 ```
 
-### 5.4 Hard rules for the generation prompt
+**What makes these different from each other:**
+- CeraVe clause → SPF value (not origin, not bestseller, not fragrance-free)
+- Ordinary clause → concentration (10%) + dermatologist
+- Kerasys clause → default (no premium attribute)
+- Some By Mi clause → fragrance-free
+- Missha clause → bestseller signal
+
+None of these end the same way. Google sees 3,640 distinctly different second clauses.
+
+### 5.5 Hard rules for the generation prompt
 
 ```
 MUST:
-✓ Be 130–160 characters (count bytes — Bengali chars are multibyte)
-✓ Contain the phrase "price in Bangladesh" or "price at Emart" or "best price in Bangladesh"
-✓ Open with a specific product claim (ingredient / key benefit / skin type suitability)
-✓ Include "Emart" in the second clause
-✓ Include one of: COD, "import", "authentic", "fast delivery", or "Bangladesh"
+✓ Be 130–160 characters total
+✓ Second clause must contain one of: "price in Bangladesh" / "price at Emart"
+✓ First clause: specific product claim — ingredient, concentration, or skin benefit
+✓ Second clause: derived from ONE specific product attribute (see table above)
+✓ "Emart" must appear in the meta
+✓ Second clause must be DIFFERENT from the previous product's second clause
 
 MUST NOT:
 ✗ Start with "Buy"
 ✗ Contain ৳ or any price number
-✗ Say "Original [Category]" — this is filler, not a claim
-✗ End with "Fast delivery & COD available at Emart" — rotate second clause pattern
-✗ Be identical in structure to the previous product's meta description
+✗ Use "Original [Category]" — filler, not a claim
+✗ Use the same second clause as any sibling product in the same brand line
+✗ Use a generic fallback clause when a product-specific attribute is available
 ```
 
-### 5.5 Validation in code
+### 5.6 Validation in code
 
 ```python
-SECOND_CLAUSE_PATTERNS = [
-    "best price in bangladesh at emart",
-    "check current price in bangladesh at emart",
-    "see price in bangladesh at emart",
-    "price in bangladesh at emart",
-]
-
-def validate_meta_desc(meta: str, product: dict) -> list[str]:
+def validate_meta_desc(meta: str, product: dict, seen_second_clauses: set) -> list[str]:
+    """
+    Returns list of errors. Empty list = pass.
+    seen_second_clauses: set of second clause strings already used this run
+                         (pass across all products to catch duplicates)
+    """
     errors = []
     m = meta.strip()
     m_lower = m.lower()
 
+    # Length
     if len(m) < 130:
         errors.append(f"too short: {len(m)} chars (min 130)")
     if len(m) > 160:
         errors.append(f"too long: {len(m)} chars (max 160)")
+
+    # Banned patterns
     if m_lower.startswith("buy "):
         errors.append("starts with 'Buy'")
-    if "৳" in m or any(c.isdigit() and "৳" in m for c in m):
-        errors.append("contains price amount")
-    if "original" in m_lower and any(
+    if "৳" in m:
+        errors.append("contains ৳ price symbol — remove price number")
+    if "original " in m_lower and any(
         cat.lower() in m_lower for cat in product.get("categories", [])
     ):
         errors.append("contains 'Original [Category]' filler")
+
+    # Required: price in Bangladesh keyword
     if not any(p in m_lower for p in ["price in bangladesh", "price at emart"]):
-        errors.append("missing 'price in Bangladesh' keyword phrase")
+        errors.append("MISSING 'price in Bangladesh' keyword phrase — required for search volume")
+
+    # Required: Emart brand
     if "emart" not in m_lower:
-        errors.append("missing 'Emart' brand mention")
+        errors.append("missing 'Emart'")
+
+    # Duplicate second clause check
+    # Split on ". " or " — " to isolate second clause
+    parts = re.split(r'\.\s+|\s+—\s+', m, maxsplit=1)
+    if len(parts) == 2:
+        second = parts[1].strip().lower()
+        if second in seen_second_clauses:
+            errors.append(f"duplicate second clause already used: '{second[:60]}'")
+        else:
+            seen_second_clauses.add(second)
 
     return errors
+```
+
+Usage across the batch:
+```python
+seen_second_clauses = set()   # shared across all products in the run
+
+for product in products_to_enrich:
+    generated = generate_product_description(product, ...)
+    meta_errors = validate_meta_desc(
+        generated['meta_desc'], product, seen_second_clauses
+    )
+    if meta_errors:
+        # Retry generation once with explicit instruction to fix the errors
+        # If retry still fails → write to validation_failures.csv, skip
+        ...
 ```
 
 ---
