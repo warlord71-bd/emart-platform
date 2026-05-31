@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse, json, os, re, subprocess, sys, time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 from bs4 import BeautifulSoup
@@ -279,6 +280,46 @@ def _check_ingredients(raw: str) -> str:
         return "Ingredient data is a placeholder — use only the key actives visible in the product title. Do NOT invent concentrations or ingredient names."
     return raw
 
+def _format_bdt_price(value) -> str:
+    raw = str(value or '').strip()
+    if not raw:
+        return ''
+    try:
+        formatted = format(Decimal(raw), 'f')
+        if '.' in formatted:
+            formatted = formatted.rstrip('0').rstrip('.')
+        return formatted or '0'
+    except (InvalidOperation, ValueError):
+        return raw
+
+def _extract_structured_price(structured_description: str) -> str:
+    match = re.search(r'Price:BDT\s*([0-9]+(?:\.[0-9]+)?)', structured_description or '', re.I)
+    return _format_bdt_price(match.group(1)) if match else ''
+
+def _sync_structured_description_price(structured_description: str, current_price) -> str:
+    price = _format_bdt_price(current_price)
+    if not price:
+        return structured_description or ''
+
+    current = structured_description or ''
+    if re.search(r'Price:BDT\s*[0-9]+(?:\.[0-9]+)?', current, re.I):
+        return re.sub(r'Price:BDT\s*[0-9]+(?:\.[0-9]+)?', f'Price:BDT {price}', current, count=1, flags=re.I)
+
+    if current.strip():
+        return current.rstrip().rstrip('.') + f'. Price:BDT {price}.'
+
+    return f'Price:BDT {price}.'
+
+def _structured_price_warning(product: dict) -> str | None:
+    current_price = _format_bdt_price(product.get('current_price'))
+    structured_price = _extract_structured_price(product.get('structured_description') or '')
+    if current_price and structured_price and current_price != structured_price:
+        return (
+            f"_structured_description stale price {structured_price}; "
+            f"apply will sync it to current _price {current_price}"
+        )
+    return None
+
 def _taxonomy(cur, post_id: int) -> dict:
     cur.execute(f"""
         SELECT t.name, tt.taxonomy
@@ -315,6 +356,8 @@ def _load_products(cur, post_id_filter=None) -> list[dict]:
           MAX(CASE WHEN pm.meta_key='_rank_math_description'   THEN pm.meta_value END) AS meta_desc,
           MAX(CASE WHEN pm.meta_key='_rank_math_focus_keyword' THEN pm.meta_value END) AS focus_keyword,
           MAX(CASE WHEN pm.meta_key='_sku'                     THEN pm.meta_value END) AS sku,
+          MAX(CASE WHEN pm.meta_key='_price'                   THEN pm.meta_value END) AS current_price,
+          MAX(CASE WHEN pm.meta_key='_structured_description'  THEN pm.meta_value END) AS structured_description,
           MAX(CASE WHEN pm.meta_key='_stock_status'            THEN pm.meta_value END) AS stock_status,
           MAX(CASE WHEN pm.meta_key='total_sales'              THEN pm.meta_value END) AS total_sales,
           MAX(CASE WHEN pm.meta_key='_emart_humanized'         THEN pm.meta_value END) AS already_humanized
@@ -550,7 +593,26 @@ def _validate(product: dict, generated: dict, seen_second: set) -> tuple[list,li
 # Uses direct MySQL (not wp_update_post) to bypass kses filtering that strips <aside>.
 # post_modified is updated so WordPress object cache invalidates correctly.
 
-def _apply(post_id: int, content_html: str, meta_desc: str) -> bool:
+def _upsert_single_meta(cur, post_id: int, key: str, value: str):
+    cur.execute(
+        f"SELECT meta_id FROM {PREFIX}postmeta WHERE post_id=%s AND meta_key=%s ORDER BY meta_id LIMIT 1",
+        (post_id, key)
+    )
+    row = cur.fetchone()
+    if row:
+        cur.execute(f"UPDATE {PREFIX}postmeta SET meta_value=%s WHERE meta_id=%s", (value, row[0]))
+        cur.execute(
+            f"DELETE FROM {PREFIX}postmeta WHERE post_id=%s AND meta_key=%s AND meta_id!=%s",
+            (post_id, key, row[0])
+        )
+    else:
+        cur.execute(
+            f"INSERT INTO {PREFIX}postmeta (post_id, meta_key, meta_value) VALUES (%s,%s,%s)",
+            (post_id, key, value)
+        )
+
+def _apply(product: dict, content_html: str, meta_desc: str) -> bool:
+    post_id = product['post_id']
     full = content_html.rstrip() + COMBINED_DISCLAIMER
     now  = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
     conn = _db()
@@ -562,24 +624,17 @@ def _apply(post_id: int, content_html: str, meta_desc: str) -> bool:
             (full, now, now, post_id)
         )
         for key in ('_rank_math_description', '_emart_meta_description'):
-            cur.execute(
-                f"SELECT meta_id FROM {PREFIX}postmeta WHERE post_id=%s AND meta_key=%s ORDER BY meta_id LIMIT 1",
-                (post_id, key)
+            _upsert_single_meta(cur, post_id, key, meta_desc)
+
+        # Only sync _structured_description if a row already exists — never create from scratch
+        existing_structured = product.get('structured_description') or ''
+        if existing_structured.strip():
+            synced_structured_description = _sync_structured_description_price(
+                existing_structured, product.get('current_price')
             )
-            row = cur.fetchone()
-            if row:
-                cur.execute(f"UPDATE {PREFIX}postmeta SET meta_value=%s WHERE meta_id=%s",
-                            (meta_desc, row[0]))
-                # Delete any extra duplicate rows
-                cur.execute(
-                    f"DELETE FROM {PREFIX}postmeta WHERE post_id=%s AND meta_key=%s AND meta_id!=%s",
-                    (post_id, key, row[0])
-                )
-            else:
-                cur.execute(
-                    f"INSERT INTO {PREFIX}postmeta (post_id, meta_key, meta_value) VALUES (%s,%s,%s)",
-                    (post_id, key, meta_desc)
-                )
+            if synced_structured_description:
+                _upsert_single_meta(cur, post_id, '_structured_description', synced_structured_description)
+
         cur.execute(
             f"INSERT INTO {PREFIX}postmeta (post_id, meta_key, meta_value) VALUES (%s,'_emart_humanized',%s) "
             "ON DUPLICATE KEY UPDATE meta_value=VALUES(meta_value)",
@@ -648,11 +703,14 @@ def main():
                 print(f"  ⏭  Not in reviewed JSONL — run --dry-run first")
                 skipped += 1; continue
             errors, warnings, sc = _validate(product, reviewed, seen_second)
+            structured_warning = _structured_price_warning(product)
+            if structured_warning:
+                warnings.append(structured_warning)
             if warnings: print(f"  ⚠  {warnings}")
             if errors:
                 print(f"  ✗  Validation failed: {errors}")
                 failed += 1; continue
-            if _apply(pid, reviewed['content_html'], reviewed['meta_desc']):
+            if _apply(product, reviewed['content_html'], reviewed['meta_desc']):
                 print(f"  ✓  Applied  SEO:{sc.total}/{sc.max_score}({sc.grade})")
                 applied += 1
                 score_total += sc.total; score_count += 1
@@ -667,6 +725,9 @@ def main():
         product['origin']  = (taxonomy['pa_origin'] or ['South Korea'])[0]
         product['concerns']= taxonomy['pa_concern'] or []
         siblings = _siblings(cur, product['brand'], pid)
+        structured_warning = _structured_price_warning(product)
+        if structured_warning:
+            print(f"  ⚠  {structured_warning}")
 
         try:
             generated = _generate(client, product, taxonomy, siblings)
