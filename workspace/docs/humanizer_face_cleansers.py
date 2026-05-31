@@ -490,7 +490,11 @@ BAD EXAMPLES (what NOT to do):
   ✗ Any meta under 130 chars — add one more skin type or ingredient detail to reach 130-158
 
 HARD LIMITS:
-- 130–158 characters (Google shows ~155 before truncating — stay in range to show complete)
+- 130–158 characters EXACTLY. Count every character including spaces before outputting.
+  If your draft is over 158: remove the least important word (usually an adjective).
+  If your draft is under 130: add one ingredient name or skin type.
+- The word "Bangladesh" MUST appear — "buy at Emart, COD" alone is not enough.
+  Valid: "buy at Emart Bangladesh, COD" or "buy at Emart Bangladesh — COD" or "price in Bangladesh at Emart"
 - Brand name only, NOT "Brand + Full Product Name + Size"
 - Max 2 skin types (oily, dry, sensitive, combination, acne-prone, mature, brightening)
 - 1 key ingredient or benefit signal
