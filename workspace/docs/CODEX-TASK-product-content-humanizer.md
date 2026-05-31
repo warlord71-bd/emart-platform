@@ -1,28 +1,94 @@
 # CODEX TASK: Product Content Humanizer — Full Catalog Enrichment
 
 **Priority:** CRITICAL — organic traffic protection  
-**Status:** READY TO RUN — pending L1 routing fix settlement (see §0.1)  
-**Date written:** 2026-05-31  
-**Safety level:** CSV review before any DB write. Full rollback JSON generated first.
+**Status:** IN PROGRESS — Face Cleansers category active (35/218 done)  
+**Date written:** 2026-05-31 | **Last updated:** 2026-06-01  
+**Safety level:** JSONL review before any DB write. Full rollback JSON generated first.
 
-## 0.1 Sequencing gate — do not run until L1 routing is settled
+---
 
-**Do not start Step 0A/0B or any generation until the L1 routing fix has been live for at least 7 days.**
+## ✅ COMPLETED SETUP (do not repeat these steps)
 
-Reason: ~29% of impressions land on dead `/product/` URLs and www/http canonicalization variants. While crawl budget is still being burned on dead routes, you cannot isolate whether ranking movement comes from content improvements or the routing cleanup. Running both in parallel ruins attribution. Finish L1, let GSC stabilize, *then* take the pre-rollout GSC baseline snapshot (`baseline_snapshot.py`, §6.0) and proceed.
+| Item | Status | Detail |
+|------|--------|--------|
+| GSC baseline snapshot | ✅ Done | `workspace/audit/active/baseline-snapshot-2026-05-31.json` |
+| Holdout group (213 products) | ✅ Done | `_emart_holdout` meta written to DB |
+| GSC OAuth credentials | ✅ Done | `apps/web/gsc-oauth-token.json` |
+| GSC query map | ✅ Done | `workspace/audit/active/gsc-query-map-2026-05-31.json` |
+| Production script | ✅ Done | `workspace/docs/humanizer_face_cleansers.py` |
+| Cloudflare cache rules | ✅ Done | `/_next/*` 7d, `/wp-content/uploads/*` 30d |
+| Attribution tracking | ✅ Done | `AttributionTracker.tsx` — order meta writes UTM source/medium |
+| Product schema GSC warning | ✅ Fixed | CollectionPage `hasPart:Product` → `ItemList:ListItem` |
+| `@tailwindcss/typography` | ✅ Done | Description prose styling active |
+| WooCommerce API key | ✅ Fixed | key_id 36, user_id 2648 — checkout working |
 
-## 0.2 Control group — mandatory measurement
+**Step-by-step category guide for Claude/Codex:**
+→ `workspace/docs/CLAUDE-product-humanizer-guide.md`
 
-**Leave ~10% of comparable thin products untouched as a holdout. This is not optional.**
+---
 
-Without a control group you cannot tell whether ranking changes came from this content work, an algo update, or the L1 routing fix that ran in parallel. The holdout is cheap to set up (see `baseline_snapshot.py`, §6.0) and is the only defensible way to attribute the outcome.
+## 📊 CURRENT PROGRESS (as of 2026-06-01)
 
-Holdout selection rules:
-- Stratified by brand and category so treated and holdout groups are comparable
-- Holdout products are flagged in `workspace/audit/active/holdout-products-YYYYMMDD.json`
-- Holdout flag is checked by `process_priority_queue()` and skips these products
-- Holdout products are included in GSC snapshot pulls (baseline + 4-week + 8-week)
-- Do not touch holdout products until 8-week measurement is complete
+```
+Total catalog:  3,640 published products
+Humanized:         40 (1.1%)
+Holdout:          213 (do not touch — measurement control)
+High-sales skip:   11 (total_sales > 20 — owner review required)
+Remaining:      3,376
+```
+
+**By category (top priorities):**
+
+| Category | Total | Done | Remaining | Next action |
+|----------|-------|------|-----------|-------------|
+| face-cleansers | 218 | 35 | 183 | **Continue — script ready** |
+| serums-ampoules-essences | 518 | 0 | 518 | Create script next |
+| sunscreen | 315 | 0 | 315 | After serums |
+| acne-blemish-care | 461 | 0 | 461 | After sunscreen |
+| toners-mists | 199 | 0 | 199 | After acne |
+| shampoos | 126 | 1 | 125 | Different pairing rules |
+| hair-care | 221 | 0 | 221 | After shampoos |
+
+---
+
+## ⏭️ WHAT TO RUN NEXT
+
+### Continue face cleansers (183 remaining)
+
+```bash
+# Dry-run 20 products:
+EMART_DB_PASSWORD='...' \
+OPENROUTER_API_KEY='sk-or-v1-...' \
+python3 workspace/docs/humanizer_face_cleansers.py --dry-run --limit 20
+
+# Review: workspace/audit/active/face-cleansers-YYYYMMDD.jsonl
+
+# Apply reviewed JSONL:
+EMART_DB_PASSWORD='...' \
+OPENROUTER_API_KEY='sk-or-v1-...' \
+python3 workspace/docs/humanizer_face_cleansers.py --apply
+```
+
+### Measurement reminders
+- **+4 weeks (2026-06-28):** Run `baseline_snapshot.py --mode=remeasure`
+- **+8 weeks (2026-07-26):** Run again
+- **Rotate service account key** `ce8b30ba...` (was shared in chat — security risk)
+
+---
+
+## 0.1 Sequencing gate — ✅ CLEARED
+
+~~Do not start until L1 routing fix settled.~~
+
+L1 routing was fixed before 2026-05-31. GSC baseline captured. Sequencing gate is cleared — proceed with content humanization.
+
+## 0.2 Control group — ✅ DONE
+
+213 products (6% of catalog) have `_emart_holdout` meta set. `baseline_snapshot.py` ran on 2026-05-31 and captured GSC metrics for all 3,632 products. Holdout is in place.
+
+Holdout rules still apply:
+- Do NOT write to products with `_emart_holdout` meta — the script already blocks these
+- Do not remove `_emart_holdout` meta until 8-week measurement is complete (2026-07-26)
 
 ## 0.3 Owner review — tiered, not full-read
 
