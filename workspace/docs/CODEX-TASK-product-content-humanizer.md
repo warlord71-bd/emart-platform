@@ -355,29 +355,46 @@ Log revalidation response. If it fails, note it — the ISR will serve stale con
 
 ---
 
-## 7. Content generation using Claude API (recommended approach)
+## 7. Content generation using DeepSeek API (free tier)
 
-Use the Anthropic Claude API to generate descriptions. Do NOT use a local model or simple template substitution. The quality difference is critical.
+Use the DeepSeek API. It is OpenAI-API-compatible, so use the `openai` Python library pointed at DeepSeek's base URL. **Cost: $0 on the free tier.**
+
+### 7.1 Setup
+
+```bash
+pip install openai mysql-connector-python
+```
+
+Set the API key in environment before running (do NOT hardcode it):
+```bash
+export DEEPSEEK_API_KEY="your_deepseek_api_key_here"
+```
+
+Get a free API key at: https://platform.deepseek.com
+
+### 7.2 Client initialisation
 
 ```python
-import anthropic
+from openai import OpenAI
 
-client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from env
+client = OpenAI(
+    api_key=os.environ["DEEPSEEK_API_KEY"],
+    base_url="https://api.deepseek.com"
+)
+```
 
-def generate_product_description(product: dict, siblings: list[dict]) -> dict:
-    """
-    product: {id, title, brand, origin, concerns, categories,
-               ingredients_html, how_to_use_html, price, sku, stock_status, total_sales}
-    siblings: list of other products with same brand (for variant differentiation)
-    Returns: {new_content_html, new_meta_desc}
-    """
+### 7.3 Generation function
 
-    sibling_names = [s['title'] for s in siblings if s['id'] != product['id']]
-    sibling_context = ""
-    if sibling_names:
-        sibling_context = f"\n\nSibling products in the same brand line:\n" + "\n".join(f"- {n}" for n in sibling_names[:5])
+```python
+import os, json, time
+from openai import OpenAI
 
-    system_prompt = """You are a senior product copywriter for Emart Skincare Bangladesh.
+client = OpenAI(
+    api_key=os.environ["DEEPSEEK_API_KEY"],
+    base_url="https://api.deepseek.com"
+)
+
+SYSTEM_PROMPT = """You are a senior product copywriter for Emart Skincare Bangladesh.
 You write product descriptions that:
 1. Are genuinely helpful to Bangladeshi shoppers
 2. Differentiate each product from its siblings in the same brand line
@@ -393,7 +410,7 @@ Writing rules (MANDATORY — never break these):
 - Name the key differentiating ingredient in the first paragraph
 - Explain what that specific ingredient does for this specific variant
 
-BANNED words/phrases (never use):
+BANNED words/phrases — never use any of these:
 delve, dive deep, tapestry, realm, embark, testament, multifaceted, seamlessly, leverage,
 revolutionize, game-changer, cutting-edge, state-of-the-art, comprehensive solution,
 holistic approach, innovative formula, innovative blend, meticulously, unparalleled,
@@ -401,58 +418,117 @@ best-in-class, Furthermore, Moreover, In conclusion, In summary, It is worth not
 It's important to note, powerhouse, skin-loving, transform your routine, elevate your skincare,
 harness the power, unlock your potential, unleash the, experience the power
 
-OUTPUT FORMAT — return only this JSON, no other text:
-{
-  "content_html": "<h2>...</h2><p>...</p><h3>Key Benefits</h3><ul>...</ul><h3>Who It's For</h3><p>...</p><p>...</p>",
-  "meta_desc": "130-160 char plain text meta description"
-}"""
+OUTPUT FORMAT — return ONLY valid JSON, no markdown fences, no extra text:
+{"content_html": "<h2>...</h2><p>...</p><h3>Key Benefits</h3><ul>...</ul><h3>Who It's For</h3><p>...</p><p>...</p>", "meta_desc": "130-160 char plain text"}"""
 
-    user_prompt = f"""Write a product description for this Emart product.
+
+def build_user_prompt(product: dict, siblings: list[dict]) -> str:
+    sibling_names = [s['title'] for s in siblings if s['id'] != product['id']]
+    sibling_context = ""
+    if sibling_names:
+        lines = "\n".join(f"- {n}" for n in sibling_names[:5])
+        sibling_context = f"\n\nSibling products in the same brand line (differentiate from these):\n{lines}"
+
+    return f"""Write a product description for this Emart product.
 
 Product: {product['title']}
 Brand: {product['brand']}
 Country of origin: {product['origin']}
 Skin/hair concerns: {', '.join(product['concerns'])}
 Category: {', '.join(product['categories'])}
-Price: ৳{product['price']}
 Stock: {product['stock_status']}
 Total sales: {product['total_sales']}
-SKU: {product['sku']}
 
 Ingredients (from Emart's data):
-{product.get('ingredients_html') or 'Not available'}
+{product.get('ingredients_html') or 'Not available — infer from product title and brand knowledge'}
 
 How to use (from Emart's data):
-{product.get('how_to_use_html') or 'Not available'}
+{product.get('how_to_use_html') or 'Not available — write appropriate steps for this product type'}
 {sibling_context}
 
-Rules:
-1. The opening paragraph must name the key differentiating ingredient ({product['title']}) within the first 2 sentences
-2. If sibling products exist, explain what makes THIS variant different from the others
-3. Include one Bangladesh context signal (climate, authenticity, COD) naturally in the text
-4. Each Key Benefits bullet must start with an ingredient name or benefit outcome, NOT a verb
-5. The Who It's For section must name one skin/hair type to AVOID this product
-6. Closing line must be one of: authenticity/import claim, availability claim, or pairing tip
-7. meta_desc must be 130-160 chars, must NOT start with "Buy", must NOT include price"""
+Mandatory rules for this output:
+1. Opening paragraph: name the key differentiating ingredient within the first 2 sentences
+2. If sibling products listed above exist, explicitly state what makes THIS variant different
+3. Weave in one Bangladesh context signal (humidity/climate, authenticity/import, or COD availability)
+4. Each Key Benefits bullet: start with ingredient name or benefit outcome, never start with a verb
+5. Who It's For paragraph: name one skin/hair type that should AVOID or use caution with this product
+6. Closing line: one of — authenticity/import claim, availability, or product pairing tip
+7. meta_desc: 130-160 chars, must NOT start with 'Buy', must NOT include price (৳)"""
 
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1500,
-        messages=[{"role": "user", "content": user_prompt}],
-        system=system_prompt
-    )
 
-    import json
-    return json.loads(message.content[0].text)
+def generate_product_description(product: dict, siblings: list[dict], retries: int = 3) -> dict:
+    """Returns {content_html, meta_desc} or raises after retries."""
+    prompt = build_user_prompt(product, siblings)
+    last_error = None
+
+    for attempt in range(retries):
+        try:
+            response = client.chat.completions.create(
+                model="deepseek-chat",  # DeepSeek-V3/V4 alias — update to "deepseek-v4" if released
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=1500,
+                temperature=0.7,   # slight variation so sibling products don't feel identical
+                response_format={"type": "json_object"}  # enforces JSON output
+            )
+            raw = response.choices[0].message.content.strip()
+            result = json.loads(raw)
+            # Minimal sanity check before returning
+            if "content_html" not in result or "meta_desc" not in result:
+                raise ValueError(f"Missing keys in response: {list(result.keys())}")
+            return result
+        except Exception as e:
+            last_error = e
+            wait = 5 * (attempt + 1)  # 5s, 10s, 15s back-off
+            print(f"  Attempt {attempt+1} failed for product {product['id']}: {e}. Waiting {wait}s.")
+            time.sleep(wait)
+
+    raise RuntimeError(f"Failed after {retries} attempts for product {product['id']}: {last_error}")
 ```
 
-**Important:** Use `claude-sonnet-4-6` (fast, cost-effective for batch). Budget ~3,500 products × ~500 tokens = ~1.75M tokens. Approximate cost: ~$5 USD at Sonnet pricing.
+### 7.4 Rate limiting for free tier
 
-Use a rate limiter to avoid hitting API limits:
+DeepSeek free tier limits: **~60 requests per minute, ~500K tokens per day**.
+
+With ~3,500 products to enrich, process in daily batches of ~400 products (safe under token limit).
+
 ```python
 import time
-# Process in batches of 50, sleep 2 seconds between batches
+
+BATCH_SIZE = 20          # products per batch
+SLEEP_BETWEEN_BATCHES = 3  # seconds — stays well under 60 RPM
+
+def process_brand_group(products: list[dict], all_products_by_brand: dict):
+    results = []
+    for i in range(0, len(products), BATCH_SIZE):
+        batch = products[i:i + BATCH_SIZE]
+        for product in batch:
+            siblings = all_products_by_brand.get(product['brand'], [])
+            try:
+                generated = generate_product_description(product, siblings)
+                results.append({**product, **generated, 'status': 'ok'})
+            except Exception as e:
+                results.append({**product, 'content_html': '', 'meta_desc': '', 'status': f'error: {e}'})
+        print(f"  Batch {i//BATCH_SIZE + 1} done. Sleeping {SLEEP_BETWEEN_BATCHES}s.")
+        time.sleep(SLEEP_BETWEEN_BATCHES)
+    return results
 ```
+
+### 7.5 Model name note
+
+- Current stable alias: `"deepseek-chat"` (maps to the latest DeepSeek-V3 or V4 automatically)
+- If DeepSeek releases an explicit `"deepseek-v4"` model ID, update the `model=` line
+- Check the current model list at: https://platform.deepseek.com/api-docs
+- Do NOT use `deepseek-reasoner` (DeepSeek-R1) — it is a reasoning model and will be slow and expensive for this batch use case; `deepseek-chat` is the right choice
+
+### 7.6 Token budget estimate
+
+- ~3,500 products × ~800 tokens average (prompt + completion) = ~2.8M tokens
+- DeepSeek free tier: 500K tokens/day → run across **6 days** in daily batches
+- Alternatively: upgrade to DeepSeek paid tier (~$0.14/1M tokens input, ~$0.28/1M output) for ~$1 total to do it all at once
+- Either way: **$0 on free tier** if spread across 6 days
 
 ---
 
