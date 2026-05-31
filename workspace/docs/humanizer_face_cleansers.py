@@ -83,6 +83,10 @@ PAIRING_BY_TYPE = {
     'exfoliating': "a soothing toner without alcohol — avoid additional acid products on the same day",
 }
 
+# Single source of truth for splitting a meta into [clause1, clause2].
+# Used by BOTH _load_seen_second and _validate so dedup compares like-for-like.
+_CLAUSE_SPLIT = r'\.\s+|\s+[—\-]\s+'
+
 # ── SEO SCORER ─────────────────────────────────────────────────────────────
 
 @dataclass
@@ -334,6 +338,19 @@ def _taxonomy(cur, post_id: int) -> dict:
         out[tax].append(name)
     return out
 
+def _apply_taxonomy(cur, product: dict) -> dict:
+    """
+    Populate brand/origin/concerns on the product dict from live taxonomy.
+    Called in BOTH dry-run and apply paths so seo_score sees the same brand
+    in each — otherwise apply-time scores drop 5 pts and log a false
+    'brand not in first 300 chars' warning. Returns the taxonomy dict.
+    """
+    taxonomy = _taxonomy(cur, product['post_id'])
+    product['brand']    = (taxonomy['pa_brand']  or [''])[0]
+    product['origin']   = (taxonomy['pa_origin'] or ['South Korea'])[0]
+    product['concerns'] = taxonomy['pa_concern'] or []
+    return taxonomy
+
 def _siblings(cur, brand: str, post_id: int, limit=5) -> list[str]:
     if not brand: return []
     cur.execute(f"""
@@ -369,9 +386,9 @@ def _load_products(cur, post_id_filter=None) -> list[dict]:
         JOIN {PREFIX}terms t ON t.term_id=tt.term_id
         WHERE p.post_type='product' AND p.post_status='publish'
           AND tt.taxonomy='product_cat' AND t.slug='face-cleansers'
-          AND IFNULL(MAX(CASE WHEN pm.meta_key='_emart_holdout' THEN 1 END), 0) = 0
           {where}
         GROUP BY p.ID, p.post_name, p.post_title, p.post_content
+        HAVING IFNULL(MAX(CASE WHEN pm.meta_key='_emart_holdout' THEN 1 END), 0) = 0
         ORDER BY CAST(IFNULL(MAX(CASE WHEN pm.meta_key='total_sales' THEN pm.meta_value END),0) AS UNSIGNED) DESC
     """)
     cols = [d[0] for d in cur.description]
@@ -391,20 +408,25 @@ def _load_products(cur, post_id_filter=None) -> list[dict]:
 
 def _load_reviewed(post_id: int) -> dict | None:
     """
-    Search all face-cleansers-*.jsonl files, newest first.
-    Dry-run on day 1, apply on day 2 → still finds the reviewed row.
+    Search all face-cleansers-*.jsonl files, newest file first.
+    Within a file, return the LAST matching row (most recent re-run wins) —
+    so re-running dry-run the same day to fix an api_length_error supersedes
+    the stale earlier row instead of being ignored.
     """
     for path in sorted(AUDIT.glob("face-cleansers-*.jsonl"), reverse=True):
         if 'rollback' in path.name:
             continue
+        latest = None
         try:
             with open(path) as f:
                 for line in f:
                     d = json.loads(line)
                     if int(d.get('post_id', 0)) == post_id:
-                        return d
+                        latest = d   # keep overwriting → last one wins
         except Exception:
             continue
+        if latest is not None:
+            return latest
     return None
 
 # ── Generation ───────────────────────────────────────────────────────────────
@@ -442,32 +464,33 @@ META RULES — read carefully:
 The product's FULL NAME is already in the page <title> tag. Do NOT repeat it in the meta.
 Use brand name only + short descriptor. This is how you fit everything into 155 chars naturally.
 
-FORMAT (2 clauses, 130-155 chars total):
+FORMAT (2 clauses, 130-158 chars total):
   Clause 1 (75-95 chars): [Brand] [short type] for [2 skin types] with [1 key ingredient] — [1 benefit]
   Clause 2 (50-65 chars):  Buy original at Emart Bangladesh — COD available.
                         OR: Buy at Emart Bangladesh with COD delivery.
                         OR: Authentic [origin] import — buy at Emart BD, COD.
 
-GOOD EXAMPLES (all 130-155 chars, nothing truncated in SERP):
-  "COSRX low pH gel cleanser for oily, acne-prone skin with tea tree oil — non-stripping. Buy at Emart Bangladesh, COD available."
-  → 126 chars (add one more detail if under 130)
-
-  "CeraVe cream-to-foam cleanser for dry, sensitive skin — ceramides and hyaluronic acid. Buy original at Emart Bangladesh, COD."
-  → 126 chars
-
+GOOD EXAMPLES (all land 130-158 chars — nothing truncated in SERP):
   "FARMSTAY Cica foam cleanser with Centella Asiatica for acne-prone, sensitive skin. Buy original at Emart Bangladesh — COD available."
   → 132 chars ✓
 
-  "Innisfree Jeju Volcanic foam cleanser — volcanic clusters absorb excess sebum for oily skin. Buy at Emart Bangladesh with COD."
-  → 126 chars
+  "COSRX low pH gel cleanser for oily, acne-prone skin with tea tree oil — non-stripping. Buy original at Emart Bangladesh, COD available."
+  → 134 chars ✓
+
+  "CeraVe cream-to-foam cleanser for dry, sensitive skin with ceramides and hyaluronic acid. Buy original at Emart Bangladesh — COD."
+  → 130 chars ✓
+
+  "Innisfree Jeju Volcanic foam cleanser — volcanic clusters absorb excess sebum for oily skin. Buy at Emart Bangladesh with COD delivery."
+  → 135 chars ✓
 
 BAD EXAMPLES (what NOT to do):
   ✗ "COSRX Low pH Good Morning Gel Cleanser 150ml is a gentle Korean gel face wash for oily skin..." — full product name repeated, too long
   ✗ "Buy COSRX..." — never start with Buy
   ✗ "...at ৳950" — price goes stale
+  ✗ Any meta under 130 chars — add one more skin type or ingredient detail to reach 130-158
 
 HARD LIMITS:
-- 130–158 characters (Google shows ~155 before truncating — stay under to show complete)
+- 130–158 characters (Google shows ~155 before truncating — stay in range to show complete)
 - Brand name only, NOT "Brand + Full Product Name + Size"
 - Max 2 skin types (oily, dry, sensitive, combination, acne-prone, mature, brightening)
 - 1 key ingredient or benefit signal
@@ -480,7 +503,7 @@ In conclusion, multifaceted, meticulous, unparalleled, comprehensive solution,
 innovative formula, transform your routine, elevate your skincare
 
 OUTPUT: valid JSON only, no markdown:
-{"content_html":"<p>...</p>...<h3>Routine Fit</h3><p>...</p>","meta_desc":"130-160 chars"}"""
+{"content_html":"<p>...</p>...<h3>Routine Fit</h3><p>...</p>","meta_desc":"130-158 chars"}"""
 
 
 def _build_prompt(product: dict, taxonomy: dict, siblings: list[str]) -> str:
@@ -579,13 +602,12 @@ def _validate(product: dict, generated: dict, seen_second: set) -> tuple[list,li
         errors.append("'Bangladesh' missing from meta")
     # Needs a purchase/CTA signal
     HAS_CTA = any(x in ml for x in ['price in bangladesh','price at emart','buy original',
-                                     'buy at emart','buy at emart','cod','cash on delivery',
-                                     'price in bd'])
+                                     'buy at emart','cod','cash on delivery','price in bd'])
     if not HAS_CTA:
         errors.append("meta missing CTA: add 'buy at Emart', 'COD available', or 'price in Bangladesh'")
 
-    # Duplicate second clause check
-    parts = re.split(r'\.\s+|\s+—\s+', meta, maxsplit=1)
+    # Duplicate second clause check — split identically to _load_seen_second
+    parts = re.split(_CLAUSE_SPLIT, meta, maxsplit=1)
     if len(parts) == 2:
         second = parts[1].strip().lower()
         from rapidfuzz import fuzz
@@ -650,7 +672,7 @@ def _apply(product: dict, content_html: str, meta_desc: str) -> bool:
 
         # Sync _emart_how_to_use tab from the generated How to Use <ol>
         how_to_match = re.search(
-            r'<h3[^>]*>How to Use</h3>\s*(<ol>[\s\S]*?</ol>)',
+            r'<h3[^>]*>How to Use</h3>\s*(<ol[^>]*>[\s\S]*?</ol>)',
             content_html, re.I
         )
         if how_to_match:
@@ -711,7 +733,7 @@ def _load_seen_second(cur) -> set[str]:
     seen = set()
     for (meta,) in cur.fetchall():
         if meta:
-            parts = re.split(r'\.\s+|\s+[—\-]\s+', meta.strip(), maxsplit=1)
+            parts = re.split(_CLAUSE_SPLIT, meta.strip(), maxsplit=1)
             if len(parts) == 2:
                 seen.add(parts[1].strip().lower())
     return seen
@@ -779,6 +801,8 @@ def main():
             if reviewed.get('status') == 'api_length_error':
                 print(f"  ⏭  Skipping — previous API length error, needs manual retry")
                 skipped += 1; continue
+            # Populate brand/origin/concerns so scoring matches the dry-run score
+            _apply_taxonomy(cur, product)
             errors, warnings, sc = _validate(product, reviewed, seen_second)
             if sw := _structured_price_warning(product):
                 warnings.append(sw)
@@ -805,10 +829,7 @@ def main():
             continue
 
         # ── DRY-RUN: generate + score + save ──────────────────────────────
-        taxonomy = _taxonomy(cur, pid)
-        product['brand']   = (taxonomy['pa_brand']  or [''])[0]
-        product['origin']  = (taxonomy['pa_origin'] or ['South Korea'])[0]
-        product['concerns']= taxonomy['pa_concern'] or []
+        taxonomy = _apply_taxonomy(cur, product)
         siblings = _siblings(cur, product['brand'], pid)
         if sw := _structured_price_warning(product):
             print(f"  ⚠  {sw}")
