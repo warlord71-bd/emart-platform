@@ -1153,11 +1153,14 @@ MUST NOT:
 ### 5.6 Validation in code
 
 ```python
+import re  # fix 1: re was used below but never imported in this snippet
+
 def validate_meta_desc(meta: str, product: dict, seen_second_clauses: set) -> list[str]:
     """
     Returns list of errors. Empty list = pass.
-    seen_second_clauses: set of second clause strings already used this run
-                         (pass across all products to catch duplicates)
+    seen_second_clauses: set of second clause strings already used this run.
+    IMPORTANT: only add to seen_second_clauses when ALL other checks pass —
+    a bad meta must not contaminate the duplicate tracker (fix 2).
     """
     errors = []
     m = meta.strip()
@@ -1169,33 +1172,68 @@ def validate_meta_desc(meta: str, product: dict, seen_second_clauses: set) -> li
     if len(m) > 160:
         errors.append(f"too long: {len(m)} chars (max 160)")
 
-    # Banned patterns
+    # Banned openers
     if m_lower.startswith("buy "):
         errors.append("starts with 'Buy'")
-    if "৳" in m:
-        errors.append("contains ৳ price symbol — remove price number")
-    if "original " in m_lower and any(
-        cat.lower() in m_lower for cat in product.get("categories", [])
-    ):
+
+    # Fix 5: comprehensive price detection — ৳ symbol, BDT, Tk, taka, and
+    # numeric price-like patterns (digits followed by currency context)
+    PRICE_PATTERNS = [
+        r'৳',                          # taka symbol
+        r'\bBDT\b',                    # ISO code
+        r'\bTk\.?\s*\d',              # Tk 890 or Tk.890
+        r'\btaka\b',                   # "890 taka"
+        r'\b\d{3,5}\s*(tk|bdt|taka)\b',  # "1370 BDT"
+        r'৳\s*[\d,]+',                # ৳1,370
+    ]
+    if any(re.search(p, m, re.I) for p in PRICE_PATTERNS):
+        errors.append("contains price amount — remove ৳/BDT/Tk/taka and numeric price")
+
+    # Fix 4: safe category check — handle str, dict, or WooCommerce term objects
+    categories = product.get("categories", [])
+    safe_cats = []
+    for cat in categories:
+        if isinstance(cat, str):
+            safe_cats.append(cat.lower())
+        elif isinstance(cat, dict):
+            # WooCommerce term objects: {"name": "...", "slug": "..."}
+            safe_cats.append(str(cat.get("name") or cat.get("slug") or "").lower())
+        # else: skip unknown types silently
+    if "original " in m_lower and any(c and c in m_lower for c in safe_cats):
         errors.append("contains 'Original [Category]' filler")
 
-    # Required: price in Bangladesh keyword
-    if not any(p in m_lower for p in ["price in bangladesh", "price at emart"]):
-        errors.append("MISSING 'price in Bangladesh' keyword phrase — required for search volume")
+    # Fix 6 (wording): error message matches the actual requirement —
+    # BOTH "price in Bangladesh" AND "price at Emart" are accepted
+    PRICE_KW_PATTERNS = ["price in bangladesh", "price at emart"]
+    if not any(p in m_lower for p in PRICE_KW_PATTERNS):
+        errors.append(
+            "MISSING keyword phrase — meta must contain "
+            "'price in Bangladesh' or 'price at Emart'"
+        )
 
     # Required: Emart brand
     if "emart" not in m_lower:
         errors.append("missing 'Emart'")
 
-    # Duplicate second clause check
-    # Split on ". " or " — " to isolate second clause
+    # Fix 3: fail when no second clause separator exists
     parts = re.split(r'\.\s+|\s+—\s+', m, maxsplit=1)
-    if len(parts) == 2:
-        second = parts[1].strip().lower()
-        if second in seen_second_clauses:
-            errors.append(f"duplicate second clause already used: '{second[:60]}'")
-        else:
-            seen_second_clauses.add(second)
+    if len(parts) < 2:
+        errors.append(
+            "missing second clause separator — meta must have two clauses "
+            "split by '. ' or ' — '"
+        )
+        # Cannot extract second clause — return early, do not touch seen set
+        return errors
+
+    second = parts[1].strip().lower()
+
+    # Fix 2: only register in seen_second_clauses when all OTHER checks pass
+    # (duplicate check itself is still run regardless)
+    if second in seen_second_clauses:
+        errors.append(f"duplicate second clause: '{second[:60]}'")
+    elif not errors:
+        # No prior errors → safe to register this second clause as used
+        seen_second_clauses.add(second)
 
     return errors
 ```
@@ -1210,9 +1248,17 @@ for product in products_to_enrich:
         generated['meta_desc'], product, seen_second_clauses
     )
     if meta_errors:
-        # Retry generation once with explicit instruction to fix the errors
-        # If retry still fails → write to validation_failures.csv, skip
-        ...
+        # Retry once with errors listed explicitly in the prompt
+        retry_prompt_suffix = f"\n\nPrevious output failed validation: {meta_errors}\nFix all listed issues."
+        generated = generate_product_description(product, ...,
+                                                  retry_note=retry_prompt_suffix)
+        meta_errors = validate_meta_desc(
+            generated['meta_desc'], product, seen_second_clauses
+        )
+        if meta_errors:
+            # Still failing → write to validation_failures.csv, skip this product
+            log_validation_failure(product, generated, meta_errors)
+            continue
 ```
 
 ---
