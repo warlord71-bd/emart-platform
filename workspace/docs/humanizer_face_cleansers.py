@@ -42,8 +42,16 @@ import mysql.connector
 
 API_KEY  = os.environ.get("OPENROUTER_API_KEY", "")
 MODEL    = "deepseek/deepseek-v4-flash"
+
+_db_password = os.environ.get("EMART_DB_PASSWORD")
+if not _db_password:
+    # Fail fast — never fall back to a hardcoded credential in a repo file
+    print("ERROR: EMART_DB_PASSWORD environment variable is not set.")
+    print("  export EMART_DB_PASSWORD='...'")
+    sys.exit(1)
+
 DB_CFG   = dict(host="localhost", database="emart_live",
-                user="emart_user", password=os.environ.get("EMART_DB_PASSWORD","Emart@123456"))
+                user="emart_user", password=_db_password)
 PREFIX   = "wp4h_"
 WP_PATH  = "/var/www/wordpress"
 DATE     = datetime.today().strftime("%Y-%m-%d")
@@ -276,55 +284,80 @@ def _detect_type(title: str) -> str:
             return ctype
     return 'foam'
 
+# Skinnora ingredient cache — avoids repeat network calls across runs.
+# Only used when --with-skinnora flag is passed; off by default.
+_SKINNORA_CACHE_FILE = AUDIT / "skinnora-ingredient-cache.json"
+_SKINNORA_ENABLED    = False   # set True by --with-skinnora flag in main()
+
+def _skinnora_cache_load() -> dict:
+    try:
+        return json.loads(_SKINNORA_CACHE_FILE.read_text())
+    except Exception:
+        return {}
+
+def _skinnora_cache_save(cache: dict) -> None:
+    AUDIT.mkdir(parents=True, exist_ok=True)
+    _SKINNORA_CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2))
+
+_SKINNORA_CACHE: dict = {}   # loaded once in main() when --with-skinnora is set
+
 def _scrape_skinnora_ingredients(title: str) -> str:
     """
     Search Skinnora for a matching product and return its ingredients tab text.
-    Returns empty string if not found or scrape fails.
-    Only called when Emart has no/thin ingredient data.
+    Off by default — only active when --with-skinnora flag is passed.
+    Results are cached to disk so repeat runs skip the network call.
     """
+    if not _SKINNORA_ENABLED:
+        return ''
+    cache_key = title[:50].lower().strip()
+    if cache_key in _SKINNORA_CACHE:
+        cached = _SKINNORA_CACHE[cache_key]
+        return cached if cached else ''
+
     import urllib.parse, urllib.request, time as _time
+    result = ''
     try:
         query = urllib.parse.quote(title[:50])
         url   = f"https://www.skinnora.com/?s={query}&post_type=product"
         req   = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0'})
         html  = urllib.request.urlopen(req, timeout=10).read().decode('utf-8', errors='ignore')
-        # Find first product link
         m = re.search(r'href="(https://www\.skinnora\.com/product/[^"]+)"', html)
-        if not m: return ''
-        prod_url = m.group(1)
-        _time.sleep(1)
-        req2 = urllib.request.Request(prod_url, headers={'User-Agent':'Mozilla/5.0'})
-        prod_html = urllib.request.urlopen(req2, timeout=10).read().decode('utf-8', errors='ignore')
-        # Extract ingredients tab
-        soup = BeautifulSoup(prod_html, 'html.parser')
-        ing_tab = (soup.find('div', id='tab-ingredients') or
-                   soup.find('div', id=re.compile(r'ingredient', re.I)))
-        if not ing_tab: return ''
-        text = ing_tab.get_text(separator='\n', strip=True)
-        lines = [l.strip() for l in text.splitlines() if l.strip()]
-        if lines and lines[0].lower() in ('ingredients','ingredient list','full ingredient list'):
-            lines = lines[1:]
-        result = '\n'.join(lines)
-        if len(result) > 50:
-            print(f"    Skinnora ingredients fetched ({len(result)} chars)")
-            return result
-    except Exception as e:
-        pass  # network/scrape failure — silent fallback
-    return ''
+        if m:
+            _time.sleep(1)
+            req2     = urllib.request.Request(m.group(1), headers={'User-Agent':'Mozilla/5.0'})
+            prod_html= urllib.request.urlopen(req2, timeout=10).read().decode('utf-8', errors='ignore')
+            soup     = BeautifulSoup(prod_html, 'html.parser')
+            ing_tab  = (soup.find('div', id='tab-ingredients') or
+                        soup.find('div', id=re.compile(r'ingredient', re.I)))
+            if ing_tab:
+                lines = [l.strip() for l in ing_tab.get_text('\n', strip=True).splitlines() if l.strip()]
+                if lines and lines[0].lower() in ('ingredients','ingredient list','full ingredient list'):
+                    lines = lines[1:]
+                result = '\n'.join(lines)
+                if len(result) > 50:
+                    print(f"    Skinnora ingredients fetched ({len(result)} chars)")
+    except Exception:
+        pass
+
+    # Cache result (including empty string = "not found") to avoid repeat calls
+    _SKINNORA_CACHE[cache_key] = result
+    _skinnora_cache_save(_SKINNORA_CACHE)
+    return result
 
 
 def _check_ingredients(raw: str, product_title: str = '') -> str:
+    """Return ingredient prompt text; scrapes Skinnora only if --with-skinnora was passed."""
     if not raw or len(raw.strip()) < 30:
-        skinnora = _scrape_skinnora_ingredients(product_title) if product_title else ''
+        skinnora = _scrape_skinnora_ingredients(product_title)
         if skinnora:
-            return f"Ingredient list from Skinnora (use as reference, do NOT copy verbatim):\n{skinnora[:800]}"
+            return f"Ingredient list from Skinnora.com (reference only — do NOT copy verbatim):\n{skinnora[:800]}"
         return "Ingredient list not available — describe only what is stated in the product title. Do NOT invent ingredient names."
     plain = _strip(raw).lower()
-    THIN = ['carefully selected','full inci','original packaging','আছে','unknown brand','এর এই product']
+    THIN  = ['carefully selected','full inci','original packaging','আছে','unknown brand','এর এই product']
     if any(s in plain for s in THIN):
-        skinnora = _scrape_skinnora_ingredients(product_title) if product_title else ''
+        skinnora = _scrape_skinnora_ingredients(product_title)
         if skinnora:
-            return f"Ingredient list from Skinnora (use as reference only, do NOT copy verbatim):\n{skinnora[:800]}"
+            return f"Ingredient list from Skinnora.com (reference only — do NOT copy verbatim):\n{skinnora[:800]}"
         return "Ingredient data is a placeholder — use only the key actives visible in the product title. Do NOT invent concentrations or ingredient names."
     return raw
 
@@ -762,11 +795,21 @@ def _flush_cache(batch_n: int, force: bool = False):
                        capture_output=True)
         secret = _get_revalidate_secret()
         if secret:
-            subprocess.run(['curl','-s','-X','POST','https://e-mart.com.bd/api/revalidate',
-                            '-H',f'x-revalidate-secret: {secret}',
-                            '-H','Content-Type: application/json',
-                            '-d','{"tag":"products"}'],
-                           capture_output=True)
+            # Use urllib instead of curl so the secret is never in process/args list
+            import urllib.request as _ur
+            try:
+                req = _ur.Request(
+                    'https://e-mart.com.bd/api/revalidate',
+                    data=b'{"tag":"products"}',
+                    headers={
+                        'Content-Type':       'application/json',
+                        'x-revalidate-secret': secret,
+                    },
+                    method='POST',
+                )
+                _ur.urlopen(req, timeout=10)
+            except Exception:
+                pass   # revalidation failure is non-fatal; ISR will expire naturally
 
 
 def _load_seen_second(cur) -> set[str]:
@@ -800,10 +843,13 @@ def _load_seen_second(cur) -> set[str]:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dry-run', action='store_true')
-    parser.add_argument('--apply',   action='store_true')
-    parser.add_argument('--limit',   type=int, default=9999)
-    parser.add_argument('--post-id', type=int)
+    parser.add_argument('--dry-run',       action='store_true')
+    parser.add_argument('--apply',         action='store_true')
+    parser.add_argument('--limit',         type=int, default=9999)
+    parser.add_argument('--post-id',       type=int)
+    parser.add_argument('--with-skinnora', action='store_true',
+                        help='Enable Skinnora ingredient scraping (off by default). '
+                             'Results are cached to avoid repeat network calls.')
     args = parser.parse_args()
 
     if not args.dry_run and not args.apply:
@@ -811,6 +857,16 @@ def main():
 
     if args.dry_run and not API_KEY:
         print("ERROR: set OPENROUTER_API_KEY"); sys.exit(1)
+
+    # Wire --with-skinnora flag into the module-level toggle + load cache
+    if getattr(args, 'with_skinnora', False):
+        global _SKINNORA_ENABLED, _SKINNORA_CACHE
+        _SKINNORA_ENABLED = True
+        _SKINNORA_CACHE   = _skinnora_cache_load()
+        print(f"Skinnora ingredient scraping: ON "
+              f"(cache has {len(_SKINNORA_CACHE)} entries)")
+    else:
+        print("Skinnora ingredient scraping: OFF (use --with-skinnora to enable)")
 
     AUDIT.mkdir(parents=True, exist_ok=True)
     conn = _db(); cur = conn.cursor()
