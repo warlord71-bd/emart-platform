@@ -4,19 +4,33 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Script from 'next/script';
 import { CheckCircle, Package, ArrowRight, User } from 'lucide-react';
 import { COMPANY } from '@/lib/companyProfile';
 import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue, trackMetaEvent } from '@/lib/metaPixel';
 import { trackGA4, GA4_STICKY_VARIANT_KEY } from '@/lib/ga4';
 
+const GCR_MERCHANT_ID = 436245109;
+
 export default function OrderSuccessPage() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('id');
   const [mounted, setMounted] = useState(false);
+  const [gcrData, setGcrData] = useState<{ email: string; deliveryDate: string } | null>(null);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    try {
+      const raw = sessionStorage.getItem('emart-gcr-order');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.orderId === orderId && parsed.email && parsed.deliveryDate) {
+          setGcrData({ email: parsed.email, deliveryDate: parsed.deliveryDate });
+        }
+        sessionStorage.removeItem('emart-gcr-order');
+      }
+    } catch { /* storage unavailable */ }
+  }, [orderId]);
 
   useEffect(() => {
     if (!orderId) return;
@@ -64,6 +78,27 @@ export default function OrderSuccessPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-16 text-center">
+      {/* Google Customer Reviews survey opt-in */}
+      {gcrData && (
+        <>
+          <Script
+            src="https://apis.google.com/js/platform.js?onload=renderGCROptIn"
+            strategy="afterInteractive"
+          />
+          <Script id="gcr-optin" strategy="afterInteractive">{`
+            window.renderGCROptIn = function() {
+              window.gapi && window.gapi.load('surveyoptin', function() {
+                window.gapi.surveyoptin.render({
+                  merchant_id: ${GCR_MERCHANT_ID},
+                  order_id: ${JSON.stringify(orderId)},
+                  email: ${JSON.stringify(gcrData.email)},
+                  delivery_date: ${JSON.stringify(gcrData.deliveryDate)}
+                });
+              });
+            };
+          `}</Script>
+        </>
+      )}
       {/* Success Icon */}
       <div className="mb-8">
         <CheckCircle size={80} className="mx-auto text-green-500" />

@@ -188,6 +188,17 @@ export default function CheckoutPage() {
         }));
       }
 
+      // Store email for Google Customer Reviews survey on the order success page
+      const deliveryDate = new Date();
+      deliveryDate.setDate(deliveryDate.getDate() + 7);
+      try {
+        sessionStorage.setItem('emart-gcr-order', JSON.stringify({
+          orderId: String(orderId),
+          email: normalizedEmail,
+          deliveryDate: deliveryDate.toISOString().split('T')[0],
+        }));
+      } catch { /* storage unavailable */ }
+
       clearCart();
       toast.success('Order placed successfully! 🎉');
       router.push(`/order-success?id=${orderId}`);

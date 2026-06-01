@@ -39,6 +39,24 @@ function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
   );
 }
 
+function GoogleRatingBadge() {
+  return (
+    <>
+      <Script
+        src="https://apis.google.com/js/platform.js"
+        strategy="lazyOnload"
+        id="gcr-badge-platform"
+      />
+      {/* Google Customer Reviews badge — renders bottom-right corner */}
+      <div
+        dangerouslySetInnerHTML={{
+          __html: `<g:ratingbadge merchant_id="436245109"></g:ratingbadge>`,
+        }}
+      />
+    </>
+  );
+}
+
 export default function RuntimeWidgets({ googleTagId }: { googleTagId?: string }) {
   useDeploymentCheck();
   return (
@@ -46,6 +64,7 @@ export default function RuntimeWidgets({ googleTagId }: { googleTagId?: string }
       <CartDrawer />
       <MetaPixel />
       {googleTagId ? <LazyGoogleAnalytics gaId={googleTagId} /> : null}
+      <GoogleRatingBadge />
       <Toaster
         position="top-center"
         containerStyle={{
