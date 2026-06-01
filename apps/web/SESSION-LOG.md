@@ -1364,3 +1364,10 @@ Rule added to agent memory: every fix needs live end-to-end verification before 
 4. Owner action needed: rotate Google service account key `ce8b30ba` (shared in chat)
 5. GSC: click "Validate Fix" on Product snippets warning
 6. Remeasure GSC: 2026-06-28
+
+---
+## 2026-06-01 — RSS feed redirect fix
+
+Added 8 Nginx redirects for WordPress-style RSS URLs → /feed.xml:
+  /feed, /feed/, /blog/feed, /blog/feed/, /rss, /rss/, /rss.xml, /atom.xml
+All now return application/rss+xml with correct content — verified.
