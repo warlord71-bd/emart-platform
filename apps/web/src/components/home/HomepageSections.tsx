@@ -504,7 +504,7 @@ export function ProductGridSection({
             ))}
             <Link
               href={viewAllHref}
-              aria-label={viewAllLabel}
+              aria-label={`View more ${title.toLowerCase()}: ${viewAllLabel}`}
               className="flex w-[46vw] min-w-[172px] max-w-[220px] flex-col justify-between rounded-lg border border-dashed border-accent/30 bg-white p-5 text-ink shadow-card lg:hidden"
             >
               <div>

@@ -20,7 +20,7 @@ export function SocialChannelGrid() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
 
         {/* YouTube: real thumbnail */}
-        <SocialCard href="/social" ariaLabel="Watch YouTube content">
+        <SocialCard href="/social">
           <Image
             src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
             alt={ytTitle}
@@ -35,7 +35,7 @@ export function SocialChannelGrid() {
         </SocialCard>
 
         {/* TikTok: local fallback avoids a below-the-fold third-party thumbnail on homepage load */}
-        <SocialCard href="/social" ariaLabel="Watch TikTok content">
+        <SocialCard href="/social">
           <Image
             src="/images/home-categories/hair-care.jpg"
             alt={ttTitle}
@@ -49,7 +49,7 @@ export function SocialChannelGrid() {
         </SocialCard>
 
         {/* Facebook: real product photo */}
-        <SocialCard href="/social" ariaLabel="Watch Facebook content">
+        <SocialCard href="/social">
           <Image
             src="/images/home-categories/fb-hero.webp"
             alt="Emart Facebook — product drops & reels"
@@ -63,7 +63,7 @@ export function SocialChannelGrid() {
         </SocialCard>
 
         {/* Instagram: real product photo */}
-        <SocialCard href="/social" ariaLabel="Watch Instagram content">
+        <SocialCard href="/social">
           <Image
             src="/images/home-categories/insta-hero.webp"
             alt="Emart Instagram — skincare looks & shelf shots"
@@ -81,12 +81,11 @@ export function SocialChannelGrid() {
   );
 }
 
-function SocialCard({ href, children, ariaLabel }: { href: string; children: React.ReactNode; ariaLabel: string }) {
+function SocialCard({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Link
       href={href}
       className="group relative block overflow-hidden rounded-2xl shadow-card"
-      aria-label={ariaLabel}
     >
       <div className="relative aspect-[3/4] w-full overflow-hidden">
         {children}
