@@ -8,11 +8,11 @@ export const COMPANY = {
   teamSize: 7,
   officeHours: 'Saturday-Thursday, 9:00 AM - 9:00 PM',
   office: {
-    line1: '17, Central Road',
+    line1: '1st Floor, 26/2, Central Road',
     line2: '(Near Ideal College)',
     area: 'Dhanmondi, Dhaka-1205',
     country: 'Bangladesh',
-    full: '17, Central Road (Near Ideal College), Dhanmondi, Dhaka-1205, Bangladesh',
+    full: '1st Floor, 26/2, Central Road (Near Ideal College), Dhanmondi, Dhaka-1205, Bangladesh',
   },
   warehouse: {
     line1: '1st Floor, 26/2, Central Road',

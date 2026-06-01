@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
 import { COMPANY } from '@/lib/companyProfile';
 
+const CONTACT_ADDRESS = COMPANY.warehouse.full;
+const ENCODED_CONTACT_ADDRESS = encodeURIComponent(CONTACT_ADDRESS);
 const { latitude: LAT, longitude: LNG } = COMPANY.shop.geo;
 const BBOX = `${LNG - 0.005},${LAT - 0.003},${LNG + 0.005},${LAT + 0.003}`;
 const MAP_EMBED_URL = `https://www.openstreetmap.org/export/embed.html?bbox=${BBOX}&layer=mapnik&marker=${LAT},${LNG}`;
+const GOOGLE_MAP_URL = `https://www.google.com/maps/search/?api=1&query=${ENCODED_CONTACT_ADDRESS}`;
+const GOOGLE_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${ENCODED_CONTACT_ADDRESS}`;
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -43,11 +47,11 @@ export default function ContactPage() {
           <h2 className="mb-4 text-lg font-semibold text-ink">Get in Touch</h2>
           <div className="space-y-4 text-sm text-muted">
             <div>
-              <p className="mb-1 font-semibold text-ink">📍 Office</p>
+              <p className="mb-1 font-semibold text-ink">📍 Shop &amp; Office</p>
               <p>{COMPANY.office.line1}<br />{COMPANY.office.line2}<br />{COMPANY.office.area}<br />{COMPANY.office.country}</p>
             </div>
             <div>
-              <p className="mb-1 font-semibold text-ink">📦 Warehouse</p>
+              <p className="mb-1 font-semibold text-ink">📦 Warehouse &amp; Pickup</p>
               <p>{COMPANY.warehouse.line1}<br />{COMPANY.warehouse.line2}<br />{COMPANY.warehouse.area}<br />{COMPANY.warehouse.country}</p>
             </div>
             <div>
@@ -82,7 +86,7 @@ export default function ContactPage() {
       <div className="rounded-2xl border border-hairline bg-card shadow-card overflow-hidden">
         <div className="px-6 py-4 border-b border-hairline">
           <h2 className="text-lg font-semibold text-ink">Find Our Shop</h2>
-          <p className="text-sm text-muted mt-0.5">{COMPANY.warehouse.full}</p>
+          <p className="text-sm text-muted mt-0.5">{CONTACT_ADDRESS}</p>
         </div>
         <iframe
           title="Emart Skincare Bangladesh — Shop Location"
@@ -95,7 +99,7 @@ export default function ContactPage() {
         />
         <div className="px-6 py-3 flex gap-4 text-sm">
           <a
-            href={`https://www.google.com/maps?q=${COMPANY.shop.geo.latitude},${COMPANY.shop.geo.longitude}`}
+            href={GOOGLE_MAP_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent hover:underline font-medium"
@@ -103,7 +107,7 @@ export default function ContactPage() {
             Open in Google Maps →
           </a>
           <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${COMPANY.shop.geo.latitude},${COMPANY.shop.geo.longitude}`}
+            href={GOOGLE_DIRECTIONS_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted hover:text-accent hover:underline"
