@@ -147,6 +147,11 @@ export function getProductJsonLd(product: WooProduct) {
       },
     } : {}),
     ...(offer ? { offers: offer } : {}),
+    // speakable: marks title + first description paragraph as voice/AI readable
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      xpath: ['/html/head/title', '//h1', '//meta[@name="description"]/@content'],
+    },
   };
 }
 
@@ -156,13 +161,34 @@ export interface ProductFaqItem {
 }
 
 export function getProductFaqJsonLd(product: WooProduct, items: ProductFaqItem[]) {
-  if (items.length === 0) return null;
+  const price = getNumericPrice(product);
+  const priceFormatted = price
+    ? `৳${Math.round(parseFloat(price)).toLocaleString('en-BD')}`
+    : null;
+  const brandName = getProductBrandName(product);
+  const inStock = product.stock_status === 'instock';
+
+  // Schema-only FAQ entries — injected for AI Overview / agentic search extraction.
+  // Not shown visually on the page (only in JSON-LD). Targets "price in bangladesh" queries.
+  const schemaOnlyFaqs: ProductFaqItem[] = priceFormatted ? [
+    {
+      question: `What is the price of ${product.name} in Bangladesh?`,
+      answer: `${product.name} price in Bangladesh is ${priceFormatted} at Emart Skincare Bangladesh. Cash on Delivery (COD) is available nationwide across Bangladesh.${inStock ? ' Currently in stock.' : ' Currently out of stock.'}`,
+    },
+    {
+      question: `${product.name} এর দাম কত বাংলাদেশে?`,
+      answer: `বাংলাদেশে ${product.name} এর দাম ${priceFormatted}। Emart Skincare Bangladesh-এ সারাদেশে Cash on Delivery (COD)-সহ অর্ডার করা যায়।${brandName ? ` এটি ${brandName}-এর অথেনটিক পণ্য।` : ''}`,
+    },
+  ] : [];
+
+  const allItems = [...schemaOnlyFaqs, ...items];
+  if (allItems.length === 0) return null;
 
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     '@id': `${absoluteUrl(`/shop/${product.slug}`)}#faq`,
-    mainEntity: items.map((item) => ({
+    mainEntity: allItems.map((item) => ({
       '@type': 'Question',
       name: item.question,
       acceptedAnswer: { '@type': 'Answer', text: item.answer },

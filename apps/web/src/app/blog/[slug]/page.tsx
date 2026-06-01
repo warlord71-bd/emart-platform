@@ -133,13 +133,28 @@ export default async function BlogPostPage({ params }: Props) {
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
     dateModified: post.modified,
     mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
-    author: { '@type': 'Person', name: 'Hasan Tarafder', url: 'https://x.com/hasan_tarafder', jobTitle: 'Founder, Emart Skincare Bangladesh' },
+    author: {
+      '@type': 'Person',
+      name: 'Hasan Tarafder',
+      url: 'https://x.com/hasan_tarafder',
+      jobTitle: 'Founder, Emart Skincare Bangladesh',
+      knowsAbout: [
+        'Skincare', 'K-beauty', 'J-beauty', 'Korean Beauty Products',
+        'Bangladesh Skincare Market', 'Authentic Beauty Imports',
+        'Skincare Ingredients', 'Skin Types Bangladesh',
+      ],
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Emart Skincare Bangladesh',
+        url: 'https://e-mart.com.bd',
+      },
+    },
     publisher: {
       '@type': 'Organization',
       name: 'Emart Skincare Bangladesh',
