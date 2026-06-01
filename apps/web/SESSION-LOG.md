@@ -1371,3 +1371,14 @@ Rule added to agent memory: every fix needs live end-to-end verification before 
 Added 8 Nginx redirects for WordPress-style RSS URLs → /feed.xml:
   /feed, /feed/, /blog/feed, /blog/feed/, /rss, /rss/, /rss.xml, /atom.xml
 All now return application/rss+xml with correct content — verified.
+
+---
+## 2026-06-01 — Face Cleanser Humanizer Codex Smoke Batch
+
+- Prompt logic tightened in `workspace/docs/CODEX-PROMPT-face-cleanser-next-batch.md`: no secret-reading hint, JSONL duplicate handling aligned with script, stale counts marked advisory, data-only session-end flow clarified.
+- Generated and reviewed one dry-run row: product `92856` (`Some By Mi Propolis B5 Glow Barrier Calming Oil to Foam 120ml`), SEO score 94/100.
+- Applied: 1 product; Failed: 0; Skipped: 0.
+- Rollback: `workspace/audit/active/face-cleansers-rollback-2026-06-01.json`.
+- Verification: DB violation checks returned no rows; section/disclaimer marker check passed; live PDP returned 200 and showed the new meta description.
+- Face cleanser progress after apply: 36/205 non-holdout done, 168 auto-eligible remaining, 13 holdout untouched, 1 high-sales skip.
+- Next: continue face cleansers in reviewed batches; do not touch holdout or high-sales products without owner approval.

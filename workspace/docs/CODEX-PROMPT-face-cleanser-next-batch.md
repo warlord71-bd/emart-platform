@@ -29,7 +29,7 @@ WHERE p.post_type='product' AND p.post_status='publish'
   AND tt.taxonomy='product_cat' AND t.slug='face-cleansers';" 2>/dev/null
 ```
 
-As of 2026-06-01: total=218, done=39, holdout=13, high_sales=2 → **166 auto-eligible remaining**.
+Example state after the 2026-06-01 Codex smoke batch: full category total=218, non-holdout total=205, non-holdout done=36, holdout=13, high_sales=1 → **168 auto-eligible remaining**. Treat this line as advisory; the DB query above is the source of truth.
 
 Also list any JSONL files with unread entries from previous sessions:
 
@@ -37,7 +37,7 @@ Also list any JSONL files with unread entries from previous sessions:
 ls -la workspace/audit/active/face-cleansers-*.jsonl 2>/dev/null | grep -v rollback
 ```
 
-If a JSONL file exists with unreviewed content, review and apply it before running a new dry-run.
+If a JSONL file exists with unreviewed content, review it before running a new dry-run. Do not apply until the review command below reports zero issues.
 
 ---
 
@@ -46,7 +46,7 @@ If a JSONL file exists with unreviewed content, review and apply it before runni
 **Do not hardcode credentials.** Set before running:
 
 ```bash
-export EMART_DB_PASSWORD="..."          # ask owner or read from VPS .env.local
+export EMART_DB_PASSWORD="..."          # ask owner if not already exported
 export OPENROUTER_API_KEY="sk-or-v1-..." # emartseoblog key from openrouter.ai
 ```
 
@@ -70,7 +70,7 @@ Output saved to: `workspace/audit/active/face-cleansers-YYYY-MM-DD.jsonl`
 
 ## Step 2 — Review JSONL before applying
 
-The script's `--apply` command reads **all** `face-cleansers-*.jsonl` files (not just today's) and applies any product ID found in them. This is intentional — it allows dry-run one day, apply the next. Before applying, verify exactly which rows exist:
+The script's `--apply` command can read **all** `face-cleansers-*.jsonl` files (not just today's). In practice, it only loops over the current auto-eligible products from the DB, then searches JSONL files for each product. This is intentional — it allows dry-run one day, apply the next. Before applying, verify exactly which JSONL rows exist:
 
 ```bash
 python3 - << 'PYEOF'
@@ -82,13 +82,18 @@ print(f"JSONL files that --apply will read: {files}\n")
 
 seen = {}
 for fpath in files:
+    rows_by_pid = {}
     for line in open(fpath):
         d = json.loads(line)
         pid = d.get('post_id', 0)
-        if pid and pid not in seen:   # first match wins (newest file first)
+        if pid:
+            rows_by_pid[pid] = d   # match script behavior: last row wins within the same file
+    for pid, d in rows_by_pid.items():
+        if pid not in seen:         # newest file wins across files
             seen[pid] = (fpath, d)
 
-print(f"Total unique product IDs eligible for apply: {len(seen)}")
+print(f"Unique product IDs found in JSONL: {len(seen)}")
+print("Note: --apply will still skip products that are already humanized, holdout, high-sales, or no longer eligible.\n")
 
 def strip_html(h):
     return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', h or '')).strip()
@@ -110,9 +115,12 @@ for pid, (fpath, d) in sorted(seen.items()):
     if '৳' in meta:                        errs.append("meta has ৳")
     if 'emart' not in meta.lower():        errs.append("meta no Emart")
     if 'bangladesh' not in meta.lower():   errs.append("meta no Bangladesh")
-    # Product name repeated verbatim in meta (too long pattern)
-    title_words = d.get('title','').lower().split()[:4]
-    if len(title_words) >= 4 and ' '.join(title_words) in meta.lower():
+    # Product name repeated verbatim in meta (too long pattern).
+    # Use a longer phrase so multi-word brands like "Some By Mi" do not false-positive.
+    title_clean = re.sub(r'\b\d+\s*(ml|g|gm|oz)\b', '', d.get('title','').lower())
+    title_words = re.findall(r'[a-z0-9%]+', title_clean)
+    repeated_phrase = ' '.join(title_words[:7])
+    if len(title_words) >= 7 and repeated_phrase in re.sub(r'[^a-z0-9%]+', ' ', meta.lower()):
         errs.append("meta repeats full product name")
     # No price numbers in meta
     if re.search(r'\b\d{3,5}\b', meta): errs.append("meta has number (price?)")
@@ -120,9 +128,10 @@ for pid, (fpath, d) in sorted(seen.items()):
     REQUIRED = ['Key Benefits','Key Ingredients','Best For','Not Recommended For','How to Use','Routine Fit']
     missing  = [s for s in REQUIRED if s not in content]
     if missing: errs.append(f"missing sections: {missing}")
-    # Two opening paragraphs
-    paras = re.findall(r'^<p>', content, re.MULTILINE)
-    if len(paras) < 2: errs.append("fewer than 2 opening <p> blocks")
+    # Two opening paragraphs before the first <h3>
+    before_first_h3 = re.split(r'<h3\b', content, maxsplit=1, flags=re.I)[0]
+    paras = re.findall(r'<p\b[^>]*>', before_first_h3, re.I)
+    if len(paras) < 2: errs.append("fewer than 2 opening paragraph blocks before first h3")
     # Bengali
     if sum(1 for c in plain if 'ঀ' <= c <= '৿') > 5: errs.append("Bengali present")
     # Hallucinations
@@ -151,7 +160,7 @@ python3 workspace/docs/humanizer_face_cleansers.py --apply
 ```
 
 The script:
-- Reads all `face-cleansers-*.jsonl` files, applies each product ID found (newest file wins on duplicates)
+- Reads matching rows from `face-cleansers-*.jsonl`; newest file wins across files, and the last row wins within the same file
 - Skips: `_emart_holdout` products, `total_sales > 20` products, already-humanized products
 - Writes per product: post_content, _rank_math_description, _emart_meta_description, _emart_how_to_use, _emart_ingredients (if thin), _rank_math_schema_data (brand), _rank_math_focus_keyword (from GSC), _structured_description (price sync), _emart_humanized (timestamp)
 - Appends `<aside class="product-disclaimer">` block
@@ -234,6 +243,8 @@ For each slug, open `https://e-mart.com.bd/shop/{slug}/` and confirm:
 
 ## Session end
 
+This is a data-only task: DB writes happen on the live WooCommerce database, while Git only records the reviewed JSONL/rollback/session-log artifacts. No app build, rsync, PM2 restart, or frontend deploy is needed unless code was changed separately. Before pushing, verify the live site and at least 3 affected product URLs.
+
 ```bash
 # 1. Write session log to LOCAL working tree (not VPS runtime path)
 cat >> /root/emart-platform/apps/web/SESSION-LOG.md << EOF
@@ -246,12 +257,12 @@ cat >> /root/emart-platform/apps/web/SESSION-LOG.md << EOF
 - Next: [continue face cleansers / move to serums-ampoules-essences]
 EOF
 
-# 2. Commit from LOCAL (follow verify-then-publish — do NOT push until smoke test passes)
+# 2. Commit artifact/log updates from LOCAL
 cd /root/emart-platform
 git add workspace/ apps/web/SESSION-LOG.md
 git commit -m "chore(log): face cleanser batch $(date +%Y-%m-%d) — [N] applied"
 
-# 3. Smoke test the live site before pushing
+# 3. Smoke test live before pushing
 curl -s -o /dev/null -w "%{http_code}" https://e-mart.com.bd/ | grep -q "200" && \
   echo "Smoke PASS — safe to push" || echo "Smoke FAIL — do NOT push"
 
