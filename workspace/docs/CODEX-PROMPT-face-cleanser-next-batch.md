@@ -256,5 +256,5 @@ curl -s -o /dev/null -w "%{http_code}" https://e-mart.com.bd/ | grep -q "200" &&
   echo "Smoke PASS — safe to push" || echo "Smoke FAIL — do NOT push"
 
 # 4. Only push after smoke test passes
-# git push origin main
+# git push origin main   # only after smoke test passes (see line above)
 ```

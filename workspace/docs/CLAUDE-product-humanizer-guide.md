@@ -276,7 +276,7 @@ WHERE meta_key='_rank_math_schema_data'
 
 ```bash
 # 1. Append to session log
-cat >> /var/www/emart-platform/apps/web/SESSION-LOG.md << EOF
+cat >> /root/emart-platform/apps/web/SESSION-LOG.md << EOF
 
 ## $(date '+%Y-%m-%d') — Product Humanizer Session
 - Categories processed: [list]
