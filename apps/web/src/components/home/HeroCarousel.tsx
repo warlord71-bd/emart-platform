@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 const HERO = {
@@ -9,7 +8,10 @@ const HERO = {
   copy:
     'Sensitive-skin hydration, barrier repair, and everyday comfort from the Atobarrier line.',
   cta: { text: 'Shop AESTURA', href: '/brands/aestura' },
-  image: '/images/hero/aestura-atobarrier-desktop.avif',
+  imageMobileAvif: '/images/hero/aestura-atobarrier-mobile.avif',
+  imageMobileWebp: '/images/hero/aestura-atobarrier-mobile.webp',
+  imageDesktopAvif: '/images/hero/aestura-atobarrier-desktop.avif',
+  imageDesktopWebp: '/images/hero/aestura-atobarrier-desktop.webp',
   imageAlt: 'AESTURA Atobarrier spotlight',
 };
 
@@ -43,16 +45,22 @@ export const HeroCarousel = () => {
           <div className="relative -translate-y-2 h-[136px] w-full max-w-[118px] rounded-[18px] bg-white/90 p-2 shadow-[0_14px_24px_rgba(0,0,0,0.12)] backdrop-blur lg:h-[392px] lg:max-w-[420px] lg:translate-y-0 lg:rounded-[28px] lg:p-6">
             <div className="absolute inset-x-5 top-4 h-px bg-gradient-to-r from-transparent via-[#d9d9d9] to-transparent lg:inset-x-6 lg:top-5" />
             <div className="relative h-full w-full">
-              <Image
-                src={HERO.image}
-                alt={HERO.imageAlt}
-                fill
-                priority
-                fetchPriority="high"
-                quality={72}
-                sizes="(max-width: 640px) 118px, (max-width: 1024px) 148px, 420px"
-                className="object-contain"
-              />
+              <picture>
+                <source media="(max-width: 640px)" srcSet={HERO.imageMobileAvif} type="image/avif" />
+                <source media="(max-width: 640px)" srcSet={HERO.imageMobileWebp} type="image/webp" />
+                <source srcSet={HERO.imageDesktopAvif} type="image/avif" />
+                <source srcSet={HERO.imageDesktopWebp} type="image/webp" />
+                <img
+                  src={HERO.imageDesktopWebp}
+                  alt={HERO.imageAlt}
+                  width={840}
+                  height={840}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="h-full w-full object-contain"
+                />
+              </picture>
             </div>
           </div>
         </div>
