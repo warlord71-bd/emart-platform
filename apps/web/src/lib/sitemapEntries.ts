@@ -59,6 +59,16 @@ const PAGE_SIZE = 100;
 const WORDPRESS_URL = (process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_WOO_URL || BASE_URL).replace(/\/$/, '');
 const STATIC_LASTMOD = new Date('2026-05-16T00:00:00.000Z');
 
+// Brand slugs that permanently redirect to /shop — must not appear in sitemap.
+// These are discontinued/empty brands redirected in next.config.js.
+const REDIRECTED_BRAND_SLUGS = new Set([
+  'beaute-moringa-melasma', 'japanese', 'green', 'valencia', 'sensitive',
+  'absolute', 'cellpod', 'ruthair', 'kao', 'nizoral', 'ottogi', 'labelyoung',
+  'syoss', 'radiant', 'tresemm', 'karite', 'healthy-place', 'the', 'daily',
+  'bath', 'house', 'innsaei', 'lucido', 'laxzin', 'beauty', 'sadoer',
+  'dr-jart', 'a-pieu', 'wskin', 'purito', 'aztec', 'paula-s',
+]);
+
 // Categories that 301-redirect to /concerns/* or /shop — must not appear in sitemap.
 // Sitemap should only list canonical URLs that return 200 with index,follow.
 // Full reference: workspace/docs/category-taxonomy-status.md
@@ -204,7 +214,7 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
   }
 
   const brandEntries: MetadataRoute.Sitemap = brands
-    .filter((brand) => brand.count > 0)
+    .filter((brand) => brand.count > 0 && !REDIRECTED_BRAND_SLUGS.has(brand.slug))
     .map((brand) => ({
       url: absoluteUrl(`/brands/${brand.slug}`),
       changeFrequency: 'weekly',
@@ -217,11 +227,13 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
 async function getBrandSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const brands = await getBrands({ orderby: 'name', order: 'asc' }).catch(() => []);
 
-  return brands.filter((brand) => brand.count > 0).map((brand) => ({
-    url: absoluteUrl(`/brands/${brand.slug}`),
-    changeFrequency: 'weekly',
-    priority: 0.7,
-  }));
+  return brands
+    .filter((brand) => brand.count > 0 && !REDIRECTED_BRAND_SLUGS.has(brand.slug))
+    .map((brand) => ({
+      url: absoluteUrl(`/brands/${brand.slug}`),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    }));
 }
 
 async function getAllPublishedProductPosts(): Promise<SitemapProduct[]> {
