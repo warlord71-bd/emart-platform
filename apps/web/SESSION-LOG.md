@@ -1416,3 +1416,11 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Fixed the map iframe issue by allowing `https://www.openstreetmap.org` in the site CSP `frame-src`.
 - Deployed commit `438b798 fix(contact): update address and unblock map`.
 - Verification: local build passed, VPS build passed, `emartweb` restarted, live homepage smoke returned 200, live `/contact` returned 200 and CSP header includes OpenStreetMap.
+
+---
+## 2026-06-01 — Accessible Link Name Fix
+
+- Fixed homepage mobile product rail “View more” card accessible names so they include the prominent visible text, e.g. `View more best sellers: View All`.
+- Removed overriding aria-labels from homepage social cards so screen readers use the visible platform/handle/title text instead of shorter labels like `Watch YouTube content`.
+- Deployed commit `c69e4b6 fix(a11y): align visible link text with accessible names`.
+- Verification: targeted source search found no remaining `aria-label="View All"` or `Watch YouTube/TikTok/Facebook/Instagram content` patterns; local build passed; VPS build passed; `emartweb` restarted; live homepage smoke returned 200.
