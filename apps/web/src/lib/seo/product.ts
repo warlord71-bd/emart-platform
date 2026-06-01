@@ -93,7 +93,7 @@ export function getProductJsonLd(product: WooProduct) {
       merchantReturnDays: 7,
       returnMethod: 'https://schema.org/ReturnByMail',
       returnFees: 'https://schema.org/ReturnShippingFees',
-      restockingFee: { '@type': 'MonetaryAmount', currency: 'BDT', value: 0 },
+      restockingFee: { '@type': 'MonetaryAmount', currency: 'BDT', value: STORE_POLICIES.returns.restockingFeeAmount },
       url: absoluteUrl('/return-policy'),
     },
     shippingDetails: {

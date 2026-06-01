@@ -22,7 +22,8 @@ export const STORE_POLICIES = {
     productCondition: 'new, unused, unopened, original seal/packaging intact',
     returnMethod: 'by mail/courier',
     returnCourierCost: 'customer responsibility',
-    restockingFee: 'no cost',
+    restockingFee: '৳100 fixed cost',
+    restockingFeeAmount: 100,
     refundProcessingTime: '5 days after inspection',
   },
 } as const;
