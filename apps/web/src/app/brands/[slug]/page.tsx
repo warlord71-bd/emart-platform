@@ -28,7 +28,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const brand = await getBrandBySlug(params.slug);
-  if (!brand) return { title: 'Brand Not Found' };
+  if (!brand) notFound();
 
   const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
   const desc = getBrandDescription(brand.name);

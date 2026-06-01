@@ -343,7 +343,7 @@ function getProductFaqItems(product: WooProduct): ProductFaqItem[] {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getCachedProduct(params.slug);
 
-  if (!product) return { title: 'Product Not Found' };
+  if (!product) notFound();
 
   const seoDescription = getSeoDescription(product);
   const seoTitle = buildProductSeoTitle(product);

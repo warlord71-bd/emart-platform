@@ -383,12 +383,20 @@ const nextConfig = {
       { source: '/brands/bath',                   destination: '/shop',                   permanent: true },
       { source: '/brands/house',                  destination: '/shop',                   permanent: true },
       { source: '/brands/innsaei',                destination: '/shop',                   permanent: true },
-      { source: '/brands/skino',                  destination: '/shop',                   permanent: true },
+      // skino + wishcare removed: WP brands have live products — brand pages now served normally
       { source: '/brands/lucido',                 destination: '/shop',                   permanent: true },
       { source: '/brands/laxzin',                 destination: '/shop',                   permanent: true },
       { source: '/brands/beauty',                 destination: '/shop',                   permanent: true },
-      { source: '/brands/wishcare',               destination: '/shop',                   permanent: true },
       { source: '/brands/sadoer',                 destination: '/shop',                   permanent: true },
+      // Trashed products with GSC impressions — 301 to nearest live equivalent
+      { source: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml',  destination: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant', permanent: true },
+      { source: '/product/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml', destination: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant', permanent: true },
+      { source: '/shop/jumiso-all-day-pure-c-5-5-serum-30ml',   destination: '/brands/jumiso',  permanent: true },
+      { source: '/product/jumiso-all-day-pure-c-5-5-serum-30ml', destination: '/brands/jumiso', permanent: true },
+      { source: '/shop/medi-peel-melanon-x-cream-30ml',          destination: '/brands/medi-peel', permanent: true },
+      { source: '/product/medi-peel-melanon-x-cream-30ml',       destination: '/brands/medi-peel', permanent: true },
+      { source: '/shop/dr-althea-147-barrier-cream-50g',         destination: '/brands/dr-althea', permanent: true },
+      { source: '/product/dr-althea-147-barrier-cream-50g',      destination: '/brands/dr-althea', permanent: true },
 
       // Category aliases not yet covered
       { source: '/category/skincare/melasma',         destination: '/concerns/melasma',         permanent: true },
