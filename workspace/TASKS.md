@@ -1,6 +1,6 @@
 # Emart Open Task Board
 
-Last updated: 2026-05-29 — **6-WEEK STABILITY FREEZE ACTIVE**
+Last updated: 2026-06-01 — **6-WEEK STABILITY FREEZE ACTIVE**
 Freeze period: 2026-05-22 → 2026-07-03. After that: reassess from GSC data.
 **Rule:** Single priority board, tracked in git. Detail → `workspace/SEO_MASTER.md` · `workspace/DEV_MASTER.md`.
 Only mark `[x]` when fully deployed + verified on live VPS.
@@ -31,6 +31,8 @@ Complete these then stop code changes.
 ### 2. Security
 - [x] **Rotate WooCommerce keys** — done by Codex 2026-05-23; stale/mobile keys revoked; BFF smoke OK · see `workspace/audit/active/wc-key-rotation-20260523.md`
   - ✅ Verified 2026-05-25: key_ids 2, 3, 26 are already gone from DB. Only key_id 33 (OpenClaw Agent) remains. BFF uses loopback auth bypass (`woo-api-fix.php` + Nginx geo whitelist) — consumer keys not required. No owner action needed.
+- [x] **WooCommerce BFF key repair** — done 2026-06-01; stale key in .env.local replaced with key_id 36 (user_id=2648); woo-api-fix.php updated with VPS IP 5.189.188.229; checkout working
+- [ ] **Rotate Google service account key `ce8b30ba`** — key was shared in chat session; owner must delete in Google Cloud Console → IAM → Service Accounts → emart-seo → Keys and create new one · **SECURITY — DO PROMPTLY**
 
 ### 3. Product data — no URL changes, safe during freeze
 - [ ] **pa_concern apply** — owner reviews `workspace/audit/active/pa-concern-manual-review-20260521-174247.csv` → Codex applies
@@ -52,6 +54,12 @@ Complete these then stop code changes.
 - [ ] **GA4 DebugView** — visit a 404 URL → confirm `headless_migration_404` event fires · owner
 - [x] **Merchant Center** — reprocess `gla_2611` · done 2026-05-24
 - [x] **GSC** — remove stale/junk URLs, request indexing · done 2026-05-24
+- [x] **GSC baseline snapshot** — captured 2026-06-01; 3,420 treatment + 212 holdout; `workspace/audit/active/baseline-snapshot-2026-05-31.json`
+- [x] **GSC OAuth credentials** — `apps/web/gsc-oauth-token.json` active; humanizer reads query map for focus keywords
+- [x] **Product schema CollectionPage fix** — 49 GSC warnings resolved; CollectionPage hasPart:Product → ItemList:ListItem in /offers/[slug], /new-arrivals, /sale · deployed 2026-06-01
+  - Owner action: click **"Validate Fix"** in GSC → Shopping → Product snippets
+- [x] **Cloudflare cache rules** — `/_next/*` (7d Edge TTL) + `/wp-content/uploads/*` (30d) · deployed 2026-06-01; cf-cache-status: HIT confirmed
+- [x] **Order attribution tracking** — `AttributionTracker.tsx` captures UTM/referrer; order meta writes first-touch + last-touch source/medium/campaign · deployed 2026-06-01
 
 ### 6. Mobile — internal, no public URL changes
 - [x] **M2: Audit mobile API calls** — verified 2026-05-25; active mobile source has zero direct `wp-json`, `/wc/v3`, Woo credential env, or backend IP references · `workspace/audit/active/mobile-m2-m3-m4-audit-20260525.md`
@@ -63,6 +71,25 @@ Complete these then stop code changes.
   - Wired: `expo-notifications`, app handler/listeners, Android channel, Expo push-token request, local AsyncStorage preferences
   - Missing: token registration endpoint, backend/WP token storage, push sender triggers for order/promos, completed tap navigation
   - Build missing pieces only as a separate owner-approved task
+
+### 7. SEO Content Humanizer — IN PROGRESS
+- Script: `workspace/docs/humanizer_face_cleansers.py` (production-ready)
+- Guide: `workspace/docs/CLAUDE-product-humanizer-guide.md` (category-by-category)
+- Spec: `workspace/docs/CODEX-TASK-product-content-humanizer.md` (updated 2026-06-01)
+
+| Category | Total | Done | Status |
+|----------|-------|------|--------|
+| face-cleansers | 218 | 35 | 🔄 IN PROGRESS — run next batch |
+| serums-ampoules-essences | 518 | 0 | 📋 Next after face cleansers |
+| sunscreen | 315 | 0 | 📋 Queued |
+| acne-blemish-care | 461 | 0 | 📋 Queued |
+| toners-mists | 199 | 0 | 📋 Queued |
+| shampoos + hair-care | 347 | 1 | 📋 Queued (different pairing rules) |
+| **Total** | **3,640** | **40** | 1.1% done |
+
+- Holdout: 213 products with `_emart_holdout` — **do not touch**
+- High-sales skip: 11 products (total_sales > 20) — owner review required
+- Remeasure: **2026-06-28** (+4w) and **2026-07-26** (+8w) via `baseline_snapshot.py --mode=remeasure`
 
 ---
 

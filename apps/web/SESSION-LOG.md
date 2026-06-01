@@ -1272,3 +1272,56 @@ ps aux | grep "image-import-v2" | grep -v grep
 - Confirmed Local and origin/main at `a65fa26`; VPS runtime files already contained the deployed fix but VPS git metadata was still at `5b3339b` with live changes layered on top.
 - Ran `git -C /var/www/emart-platform reset --mixed origin/main` to align VPS git metadata without changing live working files. Verified VPS `main...origin/main`, `HEAD=a65fa26`, and `git diff --stat` empty.
 - Smoke: live homepage returned 200; `/api/analytics/active-sessions` returned JSON with 200. No code redeploy or extra restart performed.
+
+---
+## 2026-06-01 — SEO Content Humanizer, Performance, Schema, Attribution, Checkout
+
+### Content Humanizer — Face Cleansers
+- Production script finalised: `workspace/docs/humanizer_face_cleansers.py`
+- 35 face cleanser products applied (35/218 done; 183 remaining; 213 holdout untouched)
+- Script writes: post_content, _rank_math_description, _emart_meta_description, _emart_how_to_use, _emart_ingredients, _rank_math_schema_data (brand), _rank_math_focus_keyword (GSC), _structured_description (price sync), _emart_humanized
+- WooCommerce API key rotated (key_id 36, user_id 2648 emartadmin) — checkout now working
+- woo-api-fix.php: added 5.189.188.229 to allowed IPs (VPS kernel routing quirk)
+- Typography plugin (@tailwindcss/typography) confirmed active — prose class now styles descriptions
+- Order attribution tracking added: AttributionTracker.tsx captures first-touch + last-touch UTM → written to order meta_data on checkout
+
+### GSC & Measurement
+- Google OAuth token obtained: `apps/web/gsc-oauth-token.json` (emart-seo@emart-2923b)
+- GSC baseline snapshot captured: `workspace/audit/active/baseline-snapshot-2026-05-31.json`
+  - 3,640 total products | 3,420 treatment | 212 holdout | 213 _emart_holdout flags written to DB
+- GSC query map saved: `workspace/audit/active/gsc-query-map-2026-05-31.json` (237 paths)
+- Humanizer now writes GSC top query to `_rank_math_focus_keyword` on every apply
+- Remeasure schedule: +4w → 2026-06-28, +8w → 2026-07-26
+
+### Schema Fixes
+- Fixed GSC Product snippets warning (49 affected pages): CollectionPage hasPart:{@type:Product} → mainEntity:{@type:ItemList} in /offers/[slug], /new-arrivals, /sale pages
+- Brand schema now written to _rank_math_schema_data on every humanizer apply
+- Product pages confirmed: correct offers/price/availability/itemCondition/priceValidUntil/brand in JSON-LD
+
+### Performance
+- Cloudflare cache rules added: /_next/* (7d Edge TTL) + /wp-content/uploads/* (30d)
+- _next/image cf-cache-status: HIT confirmed after rules activated
+- Preconnect added for GTM/GA4 + dns-prefetch for YouTube, Google Analytics
+- All JS chunks: async | Brotli HTML: 45KB | TTFB: 110ms | TBT: 120ms | CLS: 0
+- LCP 5.6s → should improve to ~2.5-3.5s repeat visitors after Cloudflare cache warms
+
+### Documentation
+- CODEX-TASK-product-content-humanizer.md: status updated to IN PROGRESS, 6 structural inconsistencies fixed
+- CLAUDE-product-humanizer-guide.md: new — category-by-category guide for Claude/Codex
+- baseline_snapshot.py: updated to use OAuth user credentials (service account had GSC access issues)
+
+### Commits this session (key)
+- 07fc713 fix(docs): resolve 6 structural inconsistencies
+- 586f7e5 docs(seo): update humanizer spec current state
+- aea7a95 fix(seo): CollectionPage Product schema → ItemList
+- fe040c4 feat(analytics): order attribution tracking
+- 4ff5387 feat(seo): GSC baseline OAuth + baseline captured
+- be1ac7e feat(seo): brand schema + focus keyword + ingredients in apply step
+- 9611322 fix(ui): tailwindcss/typography plugin
+
+### Next session
+1. Continue face cleansers: `--dry-run --limit 20` → review JSONL → `--apply`
+2. After face cleansers complete: start serums-ampoules-essences (518 products)
+3. Remeasure GSC 2026-06-28
+4. Rotate service account key ce8b30ba... (shared in chat — security)
+5. GSC Product snippets fix: click "Validate Fix" in Search Console
