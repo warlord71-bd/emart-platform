@@ -1,0 +1,7 @@
+
+# Credential files that must never be committed
+*.pem
+google-service-account.json
+gsc-oauth-token.json
+*-oauth-token.json
+*-service-account.json
