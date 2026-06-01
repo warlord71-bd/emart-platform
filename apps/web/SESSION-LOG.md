@@ -1325,3 +1325,42 @@ ps aux | grep "image-import-v2" | grep -v grep
 3. Remeasure GSC 2026-06-28
 4. Rotate service account key ce8b30ba... (shared in chat — security)
 5. GSC Product snippets fix: click "Validate Fix" in Search Console
+
+---
+## 2026-06-01 ADDENDUM — Verification pass + meta fixes
+
+### Full session verification results
+- Checkout: ✓ PASS — order created via live API
+- Face cleansers humanized: 38/218
+- GSC baseline: ✓ PASS
+- Schema CollectionPage fix: ✓ PASS
+- Attribution tracking: ✓ PASS (client component, browser-side)
+- Cloudflare cache: ✓ HIT confirmed
+- Preconnect GTM: ✓ PASS
+- Meta quality: fixed 8 too-long metas (162–215 chars → 137–153 chars)
+
+### Meta quality fixes applied (8 products)
+IDs: 35456, 26371, 58148, 59857, 3187, 27055, 26973, 26156
+All now 130–158 chars with Bangladesh + Emart + buy/COD signal
+
+### New files created this session
+- `workspace/docs/CODEX-PROMPT-face-cleanser-next-batch.md` — Codex prompt for continuing face cleansers
+- `workspace/docs/CLAUDE-product-humanizer-guide.md` — category-by-category guide
+- `workspace/docs/CODEX-TASK-product-content-humanizer.md` — updated with current state + 6 inconsistencies fixed
+- `workspace/audit/active/baseline-snapshot-2026-05-31.json` — GSC pre-humanization baseline
+- `workspace/audit/active/gsc-query-map-2026-05-31.json` — GSC query data (237 paths)
+- `apps/web/gsc-oauth-token.json` — Google OAuth token for GSC API
+- `apps/web/src/components/AttributionTracker.tsx` — UTM attribution tracking
+
+### Key lesson
+Checkout fix was incomplete last session — .env.local sed failed silently, no rebuild.
+Fixed this session: Python write to .env.local + npm run build + pm2 restart + live order test.
+Rule added to agent memory: every fix needs live end-to-end verification before declaring done.
+
+### Next session
+1. Give Codex `workspace/docs/CODEX-PROMPT-face-cleanser-next-batch.md`
+2. Continue: 183 face cleansers remaining
+3. After face cleansers: serums-ampoules-essences (518 products)
+4. Owner action needed: rotate Google service account key `ce8b30ba` (shared in chat)
+5. GSC: click "Validate Fix" on Product snippets warning
+6. Remeasure GSC: 2026-06-28
