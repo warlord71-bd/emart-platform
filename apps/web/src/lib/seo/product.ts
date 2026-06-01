@@ -70,12 +70,20 @@ export function getProductJsonLd(product: WooProduct) {
   const hasGtin = Object.keys(gtinFields).length > 0;
   const brandName = getProductBrandName(product);
 
+  // Human-readable price string for schema description — targets "price in Bangladesh" queries
+  const priceFormatted = price
+    ? `৳${Math.round(parseFloat(price)).toLocaleString('en-BD')}`
+    : null;
+
   const offer = price ? {
     '@type': 'Offer',
     url: absoluteUrl(`/shop/${product.slug}`),
     priceCurrency: 'BDT',
     price,
     priceValidUntil: getPriceValidUntil(),
+    description: priceFormatted
+      ? `${product.name} price in Bangladesh: ${priceFormatted} — buy at Emart Skincare Bangladesh with Cash on Delivery (COD) nationwide.`
+      : undefined,
     availability: product.stock_status === 'instock'
       ? 'https://schema.org/InStock'
       : 'https://schema.org/OutOfStock',
@@ -123,6 +131,14 @@ export function getProductJsonLd(product: WooProduct) {
     name: product.name,
     description: getSeoDescription(product),
     image: imageUrls,
+    // keywords signals "price in Bangladesh" + brand for every product
+    keywords: [
+      priceFormatted ? `${product.name} price in Bangladesh` : null,
+      priceFormatted ? `${product.name} price in BD` : null,
+      brandName ? `${brandName} price in Bangladesh` : null,
+      `buy ${product.name} Bangladesh`,
+      'Emart Skincare Bangladesh',
+    ].filter(Boolean).join(', '),
     ...(sku ? { sku } : {}),
     ...gtinFields,
     ...(sku && !hasGtin ? { mpn: sku } : {}),
