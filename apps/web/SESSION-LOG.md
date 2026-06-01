@@ -1424,3 +1424,12 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Removed overriding aria-labels from homepage social cards so screen readers use the visible platform/handle/title text instead of shorter labels like `Watch YouTube content`.
 - Deployed commit `c69e4b6 fix(a11y): align visible link text with accessible names`.
 - Verification: targeted source search found no remaining `aria-label="View All"` or `Watch YouTube/TikTok/Facebook/Instagram content` patterns; local build passed; VPS build passed; `emartweb` restarted; live homepage smoke returned 200.
+
+---
+## 2026-06-01 — Mobile Third-Party Analytics Deferral
+
+- Changed GA4 `next/script` loading from `afterInteractive` to `lazyOnload` in `RuntimeWidgets` so Google analytics waits until after page load.
+- Confirmed Meta/Facebook Pixel was already using `strategy="lazyOnload"`.
+- Removed eager Google Tag Manager / Google Analytics preconnect and dns-prefetch hints from the document head to keep mobile initial loading focused on first-party UI.
+- Deployed commit `f387775 fix(perf): defer third-party analytics for mobile`.
+- Verification: local build passed, VPS build passed, `emartweb` restarted, live homepage smoke returned 200.
