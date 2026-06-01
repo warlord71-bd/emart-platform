@@ -20,12 +20,12 @@ function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
     <>
       <Script
         id="ga-loader"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`}
       />
       <Script
         id="ga-config"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];

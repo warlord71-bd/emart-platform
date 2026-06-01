@@ -132,10 +132,6 @@ export default function RootLayout({
     <html lang="en-BD" className={`${playfair.variable} ${dmSans.variable} ${hindSiliguri.variable} ${jost.variable} ${jetbrains.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Preconnect for GA4 — avoids DNS+TCP latency on first GTM request */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         {/* Product images and YouTube thumbnails used in homepage */}
         <link rel="preconnect" href="https://e-mart.com.bd" />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
