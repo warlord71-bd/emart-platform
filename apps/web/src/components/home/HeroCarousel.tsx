@@ -9,7 +9,7 @@ const HERO = {
   copy:
     'Sensitive-skin hydration, barrier repair, and everyday comfort from the Atobarrier line.',
   cta: { text: 'Shop AESTURA', href: '/brands/aestura' },
-  image: 'https://e-mart.com.bd/wp-content/uploads/2026/02/image.jpeg',
+  image: '/images/hero/aestura-atobarrier-desktop.avif',
   imageAlt: 'AESTURA Atobarrier spotlight',
 };
 
@@ -48,6 +48,7 @@ export const HeroCarousel = () => {
                 alt={HERO.imageAlt}
                 fill
                 priority
+                fetchPriority="high"
                 quality={72}
                 sizes="(max-width: 640px) 118px, (max-width: 1024px) 148px, 420px"
                 className="object-contain"
