@@ -503,6 +503,11 @@ function logWooError(context: string, error: unknown, details?: Record<string, u
   });
 }
 
+function getWooSafeMessage(context: string, error: unknown): string {
+  const safe = getSafeWooError(error);
+  return `${context} failed: ${String(safe.message || 'Unknown error')}`;
+}
+
 function isWooNetworkError(error: any): boolean {
   return (
     error?.cause?.code === 'ECONNRESET' ||
@@ -522,6 +527,8 @@ const _getProductsCached = unstable_cache(
   async (params: ProductsParams): Promise<{ products: WooProduct[]; total: number; totalPages: number }> => {
     const response = await wooClient.get('/products', {
       params: { per_page: 20, status: 'publish', ...params },
+    }).catch((error) => {
+      throw new Error(getWooSafeMessage('getProducts', error));
     });
     return {
       products: transformImageUrls(response.data || []),

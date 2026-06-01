@@ -1442,3 +1442,43 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Kept the LCP image eager/high priority with `loading="eager"` and `fetchPriority="high"`.
 - Deployed commit `869cf44 fix(perf): serve mobile hero image directly`.
 - Verification: local build passed; VPS build passed; `emartweb` restarted; live homepage smoke returned 200; live HTML includes mobile AVIF/WebP hero sources plus high fetch priority; live mobile AVIF returned 200 as `image/avif` with `content-length: 2010`.
+
+---
+## 2026-06-01 — Face Cleanser Humanizer Reviewed Batch
+
+- Answered owner prompt: Codex last worked on the `face-cleansers` humanizer category.
+- Reviewed existing `workspace/audit/active/face-cleansers-*.jsonl`: 19 unique product IDs, 0 validation issues; product `3961` remained skipped due to prior API length error.
+- Applied reviewed JSONL via `workspace/docs/humanizer_face_cleansers.py --apply`: 4 applied, 156 skipped, 0 failed; rollback remains `workspace/audit/active/face-cleansers-rollback-2026-06-01.json`.
+- Verification: face-cleansers live DB count is 218 total / 52 done / 13 holdout / 2 high-sales; content safety check returned no rows; meta violation count was 0.
+- Live smoke: checked 3 applied PDPs; titles, meta descriptions, key sections, and `product-disclaimer` markers were present.
+- Next: run the next face-cleanser `--dry-run --limit 20`, review JSONL, then apply. Do not touch holdout or high-sales products.
+
+---
+## 2026-06-01 — Face Cleanser Dry-Run Blocked By OpenRouter Key
+
+- Ran the next safe face-cleanser dry-run as Codex from the VPS shell, not via OpenClaw.
+- Command attempted: `workspace/docs/humanizer_face_cleansers.py --dry-run --limit 20`.
+- Result: 20/20 model calls failed with OpenRouter `401 User not found` because the key sourced from `/root/.openclaw/openclaw.env` is stale/invalid.
+- Checked OpenRouter key health without exposing values: `/root/.openclaw/openclaw.env` key returned 401; `/root/.openclaw/credentials/openrouter_default.json` key returned 200.
+- Retried a one-product dry-run with the valid credentials-file key for product `4319`; it succeeded with SEO score 94/100 and appended one reviewed JSONL row.
+- JSONL validation after retry: 20 unique product IDs, 0 issues, product `3961` still skipped due to prior API length error.
+- No WooCommerce DB writes were performed.
+- Next: update OpenClaw/env key or ensure background jobs source `/root/.openclaw/credentials/openrouter_default.json`; run small probes if full 20-product batch stalls.
+
+---
+## 2026-06-01 — OpenClaw Small-Batch Humanizer Handoff
+
+- Added safe OpenClaw helper: `workspace/scripts/active/openclaw_face_cleanser_dryrun_batch.sh`.
+- Helper behavior: dry-run only, default batch size 3, 180s timeout per product, uses valid `/root/.openclaw/credentials/openrouter_default.json` key, skips known problem IDs `3961 2782`, writes report to `workspace/audit/active/openclaw-face-cleansers-dryrun-YYYY-MM-DD.log`, validates JSONL, never runs `--apply`.
+- First OpenClaw one-shot job `e22e34e8-cf8d-4559-a242-f3669b7d41ae` ran but the small local model misunderstood the script path as a Telegram target and did not execute the helper.
+- Requeued stricter exec-only job `1f33eee1-bb10-45d0-89dc-9b4ee423cdd4` with light context and `toolsAllow=["exec"]`; status observed as running.
+- No WooCommerce writes were performed by these background jobs.
+
+---
+## 2026-06-01 — OpenClaw Small-Batch Output Applied
+
+- Checked OpenClaw job state: no active OpenClaw/humanizer process remained.
+- Reviewed output from `workspace/audit/active/openclaw-face-cleansers-dryrun-2026-06-01.log`.
+- Applied only clean reviewed rows `26867` and `36186` with `workspace/docs/humanizer_face_cleansers.py --apply --post-id`; skipped `4319` because generated content included a bad "Dhaka" ingredient placeholder.
+- Verification: `_emart_humanized` stamps exist for `26867` and `36186`; `4319` has no `_emart_humanized` stamp. Face-cleansers live count is now 53/218 humanized.
+- Rollback note: single-product apply reused `workspace/audit/active/face-cleansers-rollback-2026-06-01.json`, so only the latest pre-apply snapshot (`36186`) remained there; copied it to `workspace/audit/active/face-cleansers-rollback-2026-06-01-post-36186.json` and patched the script so future `--post-id` applies use product-specific rollback filenames.

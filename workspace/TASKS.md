@@ -79,13 +79,13 @@ Complete these then stop code changes.
 
 | Category | Total | Done | Status |
 |----------|-------|------|--------|
-| face-cleansers | 218 | 36 | 🔄 IN PROGRESS — one-product Codex smoke batch applied; continue next batch |
+| face-cleansers | 218 | 53 | 🔄 IN PROGRESS — Codex reviewed/applied latest OpenClaw clean rows; continue next dry-run/review batch |
 | serums-ampoules-essences | 518 | 0 | 📋 Next after face cleansers |
 | sunscreen | 315 | 0 | 📋 Queued |
 | acne-blemish-care | 461 | 0 | 📋 Queued |
 | toners-mists | 199 | 0 | 📋 Queued |
 | shampoos + hair-care | 347 | 1 | 📋 Queued (different pairing rules) |
-| **Total** | **3,640** | **41** | 1.1% done |
+| **Total** | **3,640** | **52** | 1.4% done |
 
 - Holdout: 213 products with `_emart_holdout` — **do not touch**
 - High-sales skip: 11 products (total_sales > 20) — owner review required

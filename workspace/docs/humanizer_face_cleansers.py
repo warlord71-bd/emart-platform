@@ -960,7 +960,8 @@ def main():
     score_total = score_count = 0
 
     # Capture rollback snapshot before any writes
-    rollback_path = AUDIT / f"face-cleansers-rollback-{DATE}.json"
+    rollback_suffix = f"-post-{args.post_id}" if args.post_id else ""
+    rollback_path = AUDIT / f"face-cleansers-rollback-{DATE}{rollback_suffix}.json"
     rollback: list[dict] = []
 
     for i, product in enumerate(to_do, 1):

@@ -49,12 +49,21 @@ const SORT_MAP = {
   rating: { orderby: 'rating', order: 'desc' },
 } satisfies Record<string, { orderby: 'date' | 'price' | 'popularity' | 'rating' | 'title'; order: 'asc' | 'desc' }>;
 
+function truncateMetaDescription(text: string, maxLength = 155): string {
+  if (text.length <= maxLength) return text;
+  const trimmed = text.slice(0, maxLength + 1);
+  const lastSpace = trimmed.lastIndexOf(' ');
+  return `${trimmed.slice(0, lastSpace > 120 ? lastSpace : maxLength).trimEnd()}.`;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const concern = getConcernBySlug(params.slug);
   if (!concern) return { title: 'Concern Not Found' };
 
   const title = `${concern.label} Skincare Products in Bangladesh | Emart`;
-  const description = `Shop authentic ${concern.label.toLowerCase()} skincare in Bangladesh at Emart. ${concern.description} Original products, COD and fast delivery available.`.substring(0, 155);
+  const description = truncateMetaDescription(
+    `Shop authentic ${concern.label.toLowerCase()} skincare in Bangladesh at Emart. ${concern.description} Original products and COD available.`
+  );
 
   return {
     title: { absolute: title },
