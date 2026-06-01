@@ -131,14 +131,6 @@ export function getProductJsonLd(product: WooProduct) {
     name: product.name,
     description: getSeoDescription(product),
     image: imageUrls,
-    // keywords signals "price in Bangladesh" + brand for every product
-    keywords: [
-      priceFormatted ? `${product.name} price in Bangladesh` : null,
-      priceFormatted ? `${product.name} price in BD` : null,
-      brandName ? `${brandName} price in Bangladesh` : null,
-      `buy ${product.name} Bangladesh`,
-      'Emart Skincare Bangladesh',
-    ].filter(Boolean).join(', '),
     ...(sku ? { sku } : {}),
     ...gtinFields,
     ...(sku && !hasGtin ? { mpn: sku } : {}),
