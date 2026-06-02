@@ -73,7 +73,13 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 }
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET || process.env.REVALIDATE_SECRET,
+  secret: (() => {
+    const s = process.env.NEXTAUTH_SECRET;
+    if (!s && process.env.NODE_ENV === 'production') {
+      throw new Error('NEXTAUTH_SECRET env var is not set — cannot start auth');
+    }
+    return s || process.env.REVALIDATE_SECRET;
+  })(),
   providers,
   session: {
     strategy: 'jwt',

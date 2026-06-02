@@ -7,6 +7,10 @@ export async function POST(req: NextRequest) {
   if (!email || typeof email !== 'string') {
     return Response.json({ success: false, error: 'email required' }, { status: 400 });
   }
+  // RFC 5322 simplified — rejects obviously invalid addresses
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()) || email.length > 254) {
+    return Response.json({ success: false, error: 'invalid email' }, { status: 400 });
+  }
 
   const res = await fetch(`${WP_URL}/wp-json/emart/v1/subscribe`, {
     method: 'POST',

@@ -80,6 +80,15 @@ export async function POST(request: NextRequest) {
     if (!billing || !shipping || !Array.isArray(line_items) || line_items.length === 0) {
       return NextResponse.json({ error: 'Incomplete checkout payload' }, { status: 400 });
     }
+    if (line_items.length > 50) {
+      return NextResponse.json({ error: 'Too many items in cart' }, { status: 400 });
+    }
+    for (const item of line_items) {
+      const qty = Number(item?.quantity);
+      if (!Number.isInteger(qty) || qty < 1 || qty > 99) {
+        return NextResponse.json({ error: 'Invalid item quantity' }, { status: 400 });
+      }
+    }
 
     if (!isNonEmptyString(billing.first_name) || !isNonEmptyString(billing.phone) || !isNonEmptyString(billing.address_1)) {
       return NextResponse.json({ error: 'Missing required billing information' }, { status: 400 });
