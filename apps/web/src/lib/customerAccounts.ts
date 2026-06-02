@@ -21,15 +21,20 @@ function makeBaseUsername(email: string, name?: string | null) {
   return base || 'emartuser';
 }
 
+export interface EnsureCustomerResult {
+  customer: WooCustomer;
+  isNew: boolean;
+}
+
 export async function ensureCustomerByEmail(params: {
   email: string;
   firstName?: string;
   lastName?: string;
-}): Promise<WooCustomer> {
+}): Promise<EnsureCustomerResult> {
   const normalizedEmail = params.email.trim().toLowerCase();
   const existingCustomer = await getCustomerByEmail(normalizedEmail);
   if (existingCustomer) {
-    return existingCustomer;
+    return { customer: existingCustomer, isNew: false };
   }
 
   const fullName = [params.firstName, params.lastName].filter(Boolean).join(' ').trim();
@@ -49,12 +54,13 @@ export async function ensureCustomerByEmail(params: {
     });
 
     if (createdCustomer) {
-      return createdCustomer;
+      return { customer: createdCustomer, isNew: true };
     }
 
     const retriedCustomer = await getCustomerByEmail(normalizedEmail);
     if (retriedCustomer) {
-      return retriedCustomer;
+      // Found on retry = race condition, another request created it
+      return { customer: retriedCustomer, isNew: false };
     }
   }
 

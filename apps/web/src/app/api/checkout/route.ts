@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'A valid email address is required' }, { status: 400 });
     }
 
-    const customer = await ensureCustomerByEmail({
+    const { customer, isNew: isNewCustomer } = await ensureCustomerByEmail({
       email: billing.email,
       firstName: billing.first_name,
       lastName: billing.last_name,
@@ -174,6 +174,18 @@ export async function POST(request: NextRequest) {
       console.error('Meta CAPI Purchase exception', {
         orderId: order.id,
         message: error?.message || 'Unknown Meta CAPI error',
+      });
+    }
+
+    // New customer from guest checkout — send password reset so they can access order history
+    if (isNewCustomer) {
+      const WP_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://e-mart.com.bd';
+      fetch(`${WP_URL}/wp-json/emart/v1/customer/lost-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ login: billing.email.trim().toLowerCase() }),
+      }).catch(() => {
+        // Fire-and-forget — don't block order response if email fails
       });
     }
 
