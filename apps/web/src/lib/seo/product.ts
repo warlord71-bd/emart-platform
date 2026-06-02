@@ -124,6 +124,14 @@ export function getProductJsonLd(product: WooProduct) {
     },
   } : null;
 
+  // ISO 8601 dates for schema freshness signals (Google + AI crawlers)
+  const datePublished = product.date_created
+    ? new Date(product.date_created).toISOString()
+    : undefined;
+  const dateModified = product.date_modified
+    ? new Date(product.date_modified).toISOString()
+    : datePublished;
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -131,6 +139,8 @@ export function getProductJsonLd(product: WooProduct) {
     name: product.name,
     description: getSeoDescription(product),
     image: imageUrls,
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
     ...(sku ? { sku } : {}),
     ...gtinFields,
     ...(sku && !hasGtin ? { mpn: sku } : {}),

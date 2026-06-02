@@ -59,6 +59,7 @@ export interface WooProduct {
   name: string;
   slug: string;
   permalink: string;
+  date_created?: string;
   date_modified?: string;
   sku?: string;
   price: string;
@@ -380,6 +381,7 @@ function transformProduct(product: any): WooProduct {
     name: decodeHtmlEntities(product.name),
     slug: String(product.slug || ''),
     permalink: product.permalink ? normalizePublicAssetUrl(String(product.permalink)) : '',
+    date_created: product.date_created,
     date_modified: product.date_modified,
     sku: product.sku ? decodeHtmlEntities(product.sku) : '',
     price: String(product.price || ''),
