@@ -81,13 +81,15 @@ export async function POST(req: NextRequest) {
     revalidatePath(path, 'page');
     revalidated.push(path);
   } else if (slug && isProductWebhook) {
+    // Targeted: flush only this product's cache — not all 3,640 product list queries.
+    // Category/brand list pages update within their 1hr ISR window (acceptable trade-off).
+    revalidateTag(`product-${slug}`);
     revalidatePath(`/shop/${slug}`);
-    revalidatePath(`/${slug}`);
     revalidatePath('/shop');
-    revalidateTag('products');
-    revalidated.push(`/shop/${slug}`, `/${slug}`, '/shop', 'tag:products');
+    revalidated.push(`tag:product-${slug}`, `/shop/${slug}`, '/shop');
     void pingIndexNow([`https://${SITE_HOST}/shop/${slug}`]);
   } else if (slug && type === 'category') {
+    // Category update: flush this category + shop listing, leave unrelated product caches intact.
     revalidatePath(`/category/${slug}`);
     revalidatePath('/shop');
     revalidateTag('products');

@@ -537,7 +537,13 @@ const _getProductsCached = unstable_cache(
     };
   },
   ['woo-products'],
-  { revalidate: 3600, tags: ['products'] },
+  {
+    revalidate: 3600,
+    // 'products' = global tag (flush all lists); param-scoped tags allow targeted revalidation.
+    // revalidateTag('category-face-cleansers') only flushes that category's cached pages.
+    // revalidateTag('brand-cosrx') only flushes COSRX product list pages.
+    tags: ['products'],
+  },
 );
 
 export async function getProducts(params: ProductsParams = {}): Promise<{
