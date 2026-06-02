@@ -67,9 +67,7 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
     types: {
       'application/rss+xml': [
-        { url: `${SITE_URL}/feed.xml`,          title: 'Emart Blog' },
-        { url: `${SITE_URL}/new-arrivals.xml`,  title: 'Emart New Arrivals' },
-        { url: `${SITE_URL}/deals.xml`,         title: 'Emart Deals' },
+        { url: `${SITE_URL}/feed.xml`, title: 'Emart Skincare Bangladesh — Blog' },
       ],
     },
   },

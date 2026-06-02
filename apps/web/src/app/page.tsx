@@ -32,10 +32,6 @@ export const metadata: Metadata = {
   description: HOME_DESC,
   alternates: {
     canonical: absoluteUrl('/'),
-    languages: {
-      'x-default': absoluteUrl('/'),
-      'en-BD': absoluteUrl('/'),
-    },
   },
   openGraph: {
     type: 'website',
