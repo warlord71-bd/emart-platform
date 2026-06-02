@@ -1,7 +1,7 @@
 import { getWordPressPosts } from '@/lib/wordpress-posts';
 import { SITE_URL } from '@/lib/siteUrl';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic'; // News content is time-sensitive — always fetch fresh
 
 function escapeXml(str: string): string {
   return str
