@@ -29,6 +29,7 @@ const dmSans = DM_Sans({
   weight: ['400', '500', '600', '700'],
   variable: '--font-body-loaded',
   display: 'swap',
+  preload: false,
 });
 
 const hindSiliguri = Hind_Siliguri({
