@@ -133,12 +133,20 @@ export default async function BlogPostPage({ params }: Props) {
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': ['BlogPosting', 'NewsArticle'],
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
     dateModified: post.modified,
     mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    image: post.imageUrl ? [{
+      '@type': 'ImageObject',
+      url: post.imageUrl,
+      width: 1200,
+      height: 630,
+    }] : undefined,
+    articleSection: 'Skincare',
+    inLanguage: 'en',
     author: {
       '@type': 'Person',
       name: 'Hasan Tarafder',
