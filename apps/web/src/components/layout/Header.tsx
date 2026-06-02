@@ -902,27 +902,27 @@ export default function Header() {
                               {section.title}
                             </div>
                           ) : null}
-                          <div className="space-y-1">
+                          <ul className="space-y-1 list-none p-0 m-0">
                             {section.items.map((item) => (
-                              item.slug === 'all-ingredients' ? (
-                                <Link
-                                  key={item.href || item.slug}
-                                  href={item.href!}
-                                  className="mt-2 flex items-center gap-1 rounded-lg border border-hairline bg-accent-soft px-3 py-2 text-[13px] font-bold text-accent transition-colors hover:bg-accent hover:text-white"
-                                >
-                                  {item.name}
-                                </Link>
-                              ) : (
-                                <Link
-                                  key={item.href || item.slug}
-                                  href={item.href || `/category/${item.slug}`}
-                                  className="block rounded-lg px-3 py-2 text-[13px] font-semibold leading-snug text-muted transition-colors hover:bg-accent-soft hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30"
-                                >
-                                  {item.name}
-                                </Link>
-                              )
+                              <li key={item.href || item.slug}>
+                                {item.slug === 'all-ingredients' ? (
+                                  <Link
+                                    href={item.href!}
+                                    className="mt-2 flex items-center gap-1 rounded-lg border border-hairline bg-accent-soft px-3 py-2 text-[13px] font-bold text-accent transition-colors hover:bg-accent hover:text-white"
+                                  >
+                                    {item.name}
+                                  </Link>
+                                ) : (
+                                  <Link
+                                    href={item.href || `/category/${item.slug}`}
+                                    className="block rounded-lg px-3 py-2 text-[13px] font-semibold leading-snug text-muted transition-colors hover:bg-accent-soft hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30"
+                                  >
+                                    {item.name}
+                                  </Link>
+                                )}
+                              </li>
                             ))}
-                          </div>
+                          </ul>
                         </div>
                       ))}
                     </div>
