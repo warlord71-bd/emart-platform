@@ -696,6 +696,32 @@ def _validate(product: dict, generated: dict, seen_second: set) -> tuple[list,li
     if not HAS_CTA:
         errors.append("meta missing CTA: add 'buy at Emart', 'COD available', or 'price in Bangladesh'")
 
+    # AI prompt-leak detection — phrases that must never appear in live content
+    AI_LEAK_PATTERNS = [
+        'ingredient data is thin',
+        'this sample only uses',
+        'claims supported by the product name',
+        'because the current ingredient',
+        'based on the product name and category',
+        'i cannot fabricate',
+        'as an ai',
+        'i don\'t have',
+        'i do not have',
+        'anti-fabrication',
+        'note: ',
+        'todo: ',
+        '[placeholder]',
+        'insert here',
+        'do not fabricate',
+        'only uses claims',
+        'thin ingredient data',
+    ]
+    html_lower = html.lower()
+    for pattern in AI_LEAK_PATTERNS:
+        if pattern.lower() in html_lower:
+            errors.append(f"AI prompt leak detected: '{pattern}' found in content_html — reject and regenerate")
+            break  # One error is enough to block
+
     # Duplicate second clause check — split identically to _load_seen_second
     parts = re.split(_CLAUSE_SPLIT, meta, maxsplit=1)
     if len(parts) == 2:
