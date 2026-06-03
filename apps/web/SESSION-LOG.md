@@ -1538,3 +1538,23 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Registered PM2 cron job `emart-seo-autoscan` (daily 00:00 UTC = 06:00 BD) via `workspace/scripts/active/seo_auto_scan.sh`.
 - Verified end-to-end: authenticated write to post 93548 returned `success: true`; restored correct title after test.
 - Note: mu-plugin change lives at `/var/www/wordpress/wp-content/mu-plugins/emart-rankmath-rest.php` (not in git repo).
+
+---
+## 2026-06-03 — Face Cleanser Rest Retry + Apply
+
+- Reviewed PM2 dry-run output from `emart-humanizer-cleansers-rest`.
+- Applied 9 clean generated rows first: `60772`, `61389`, `62767`, `74050`, `75369`, `92830`, `92844`, `92860`, `93034`.
+- Ran another retry pass for remaining actionable rows. It produced 3 more rows; applied clean rows `93117` and `93120`.
+- Held back generated rows `92848`, `63929`, and `62869` because generated copy did not match actual product type (`cleansing oil`, `toner`, `body wash` respectively).
+- Current face-cleanser progress: `180/218` humanized; `13` holdout; `2` high-sales protected; `28` live eligible rows still unhumanized.
+- Verification: applied rows have `_emart_humanized`, valid meta lengths, 6 `<h3>` sections, `product-disclaimer`, and no bad phrase hits. Product-specific revalidation and `tag:products` revalidation succeeded.
+
+---
+## 2026-06-03 — Face Cleanser Humanized Consistency Audit
+
+- Audited distinct published face-cleanser products with `_emart_humanized`: `179` rows. The earlier quick progress count of `180` was not a distinct audited count.
+- Final low-noise audit report: `workspace/audit/active/face-cleansers-humanized-consistency-audit-final-20260603-215749.md`.
+- CSV: `workspace/audit/active/face-cleansers-humanized-consistency-audit-final-20260603-215749.csv`.
+- Result: `157` OK, `4` HIGH, `15` MED, `3` LOW, `0` CRITICAL.
+- Main issues: 4 treatment/prevention medical claims, 8 strong acne-clearing wording rows, 6 rows with 7 `<h3>` sections, 2 meta descriptions at 159 chars, 3 missing focus keywords.
+- No DB writes were performed during the audit.

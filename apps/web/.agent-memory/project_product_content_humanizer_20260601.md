@@ -20,6 +20,8 @@ Next safe workflow:
 Latest Codex work:
 - 2026-06-01: reviewed existing face-cleanser JSONL files, found zero validation issues, applied 4 reviewed products, 0 failures. Live face-cleanser DB count after apply: 52/218 done, 13 holdout, 2 high-sales.
 - 2026-06-03: after verified batch, face-cleansers reached 169/218 done. A PM2 dry-run-only job `emart-humanizer-cleansers-rest` was started for the remaining eligible face-cleansers using `workspace/scripts/active/run_face_cleanser_rest_dryrun_20260603.sh`; it selected 38 IDs and writes to `workspace/audit/active/openclaw-face-cleansers-dryrun-2026-06-03.log`. Do not apply DB writes until the generated JSONL is reviewed.
+- 2026-06-03 later: PM2 dry-run pass produced 11 generated rows from the 38 selected. Codex reviewed and applied 9 clean rows (`60772`, `61389`, `62767`, `74050`, `75369`, `92830`, `92844`, `92860`, `93034`); held back `92848` and `63929` for product-type mismatch. Live count after apply: 178/218 done, 13 holdout, 2 high-sales, 25 auto-eligible remaining. Product-specific revalidation and `tag:products` revalidation succeeded.
+- 2026-06-03 final retry: another PM2 dry-run pass on the remaining set produced 3 rows; Codex applied clean rows `93117` and `93120`, held `62869` because it is a body wash with face-cleanser copy. Live count after apply: 180/218 done, 13 holdout, 2 high-sales. Remaining eligible list is 28 products; most repeatedly fail generator validation, and `62869`, `63929`, `92848` need manual/type-safe handling.
 
 Do not start new category scripts until face cleansers are complete, unless the owner explicitly reprioritizes.
 
