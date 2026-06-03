@@ -1501,3 +1501,23 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Added `google.de` to CSP `img-src` because GA audience pings can use `https://www.google.de/ads/ga-audiences...`.
 - Deployed to VPS, rebuilt, restarted `emartweb`, and live smoke returned 200.
 - Verification: live CSP includes `google.de`; fresh cache-busted Lighthouse mobile run had 0 console errors, performance 74, TBT 460ms, bootup 1898ms, main-thread 5186ms. Baseline before this pass was performance 57, TBT 2683ms, bootup 3554ms, main-thread 10423ms.
+
+---
+## 2026-06-03 — Face Cleanser Rest Dry-Run Background Job
+
+- Started PM2 one-off job `emart-humanizer-cleansers-rest` for the remaining face-cleanser dry-runs.
+- PM2 PID at start: `2458506`; wrapper script: `workspace/scripts/active/run_face_cleanser_rest_dryrun_20260603.sh`.
+- Job selected 38 remaining eligible IDs: `59403`, `60188`, `60228`, `60562`, `60679`, `60772`, `60874`, `61030`, `61389`, `61497`, `61767`, `61882`, `61988`, `61994`, `62432`, `62570`, `62590`, `62767`, `62869`, `62887`, `63013`, `63469`, `63481`, `63531`, `63747`, `63769`, `63929`, `74050`, `75369`, `92830`, `92844`, `92846`, `92848`, `92860`, `92878`, `92932`, `93034`, `93117`.
+- Logs: `/root/.pm2/logs/emart-humanizer-cleansers-rest-out.log` and `workspace/audit/active/openclaw-face-cleansers-dryrun-2026-06-03.log`.
+- This job is dry-run/generation only. No WooCommerce DB writes should be applied until generated JSONL rows are reviewed.
+
+---
+## 2026-06-03 — Git Divergence Reconciliation
+
+- Diagnosed VPS/origin divergence: VPS was at `b8cdb2f`, origin/main at `edfeea8` (7 commits ahead).
+- Confirmed all VPS code files (`next.config.js`, `runtime-widgets.tsx`, `MetaPixel.tsx`) matched origin/main exactly — only session-tracking files (MEMORY.md, SESSION-LOG.md) had diverged content.
+- Moved stale VPS-only memory files (`project_git_divergence_20260603.md`, `project_current_state_20260603.md`) to `/root/.attic-2026-06-03/`.
+- Reset VPS to `origin/main` (`git fetch origin && git reset --hard origin/main`); VPS now clean at `edfeea8`.
+- Updated humanizer memory header from stale 52/218 to current 169/218.
+- PM2 job `emart-humanizer-cleansers-rest` verified online (38 dry-run IDs, no restarts); left running for Codex to review.
+- Next: review dry-run JSONL once job completes; pa_concern CSV review pending owner.
