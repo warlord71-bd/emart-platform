@@ -290,6 +290,10 @@ resolved
 # === session screenshots (audit/active PNGs) ===
 workspace/audit/active/*.png
 
+# === local MCP / Playwright MCP artifacts ===
+.playwright-mcp/
+*mcp-test.png
+
 # === price comparison outputs ===
 workspace/price-comparison-*.csv
 workspace/reprice-dryrun-*.csv
