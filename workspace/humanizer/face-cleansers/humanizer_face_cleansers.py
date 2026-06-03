@@ -14,7 +14,7 @@ Usage:
   # Generate for next batch of 20 (saves to JSONL):
   OPENROUTER_API_KEY=sk-... python3 humanizer_face_cleansers.py --dry-run --limit 20
 
-  # Review: open workspace/audit/active/face-cleansers-YYYYMMDD.jsonl
+  # Review: open workspace/humanizer/face-cleansers/active/face-cleansers-YYYYMMDD.jsonl
   # Fix any issues in the file manually
 
   # Apply reviewed JSONL to DB:
@@ -55,7 +55,7 @@ DB_CFG   = dict(host="localhost", database="emart_live",
 PREFIX   = "wp4h_"
 WP_PATH  = "/var/www/wordpress"
 DATE     = datetime.today().strftime("%Y-%m-%d")
-AUDIT    = Path("workspace/audit/active")
+AUDIT    = Path("workspace/humanizer/face-cleansers/active")
 JSONL    = AUDIT / f"face-cleansers-{DATE}.jsonl"
 
 MINI_PARENT_TITLES = {
