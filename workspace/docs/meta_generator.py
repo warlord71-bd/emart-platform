@@ -16,7 +16,7 @@ Run:
 """
 
 import argparse, json, os, re, sys, time
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 try:
@@ -44,7 +44,8 @@ FALLBACK_MODELS = [
     "google/gemma-4-26b-a4b-it:free",
 ]
 AUDIT = Path("workspace/audit/active")
-DATE  = date.today().isoformat()
+TIMESTAMP = datetime.now().strftime("%Y-%m-%d-%H%M%S")
+DATE      = datetime.now().strftime("%Y-%m-%d")
 
 _db_password = os.environ.get("EMART_DB_PASSWORD")
 API_KEY      = os.environ.get("OPENROUTER_API_KEY", "")
@@ -420,12 +421,32 @@ def _upsert_meta(cur, post_id, key, value):
                     VALUES (%s,%s,%s)""", (post_id, key, value))
 
 
-def apply_meta(cur, conn, post_id, meta):
+def _revalidate(slug: str):
+    """Ping Next.js ISR revalidate so stale meta doesn't serve for up to 1hr."""
+    import urllib.request, urllib.error
+    secret = os.environ.get('REVALIDATE_SECRET', '')
+    if not secret or not slug:
+        return
+    try:
+        body = json.dumps({'slug': slug, 'type': 'product'}).encode()
+        req  = urllib.request.Request(
+            'https://e-mart.com.bd/api/revalidate',
+            data=body,
+            headers={'Content-Type': 'application/json', 'x-revalidate-secret': secret},
+            method='POST',
+        )
+        urllib.request.urlopen(req, timeout=5)
+    except Exception:
+        pass  # revalidation failure is non-fatal
+
+
+def apply_meta(cur, conn, post_id, meta, slug=''):
     # Frontend reads _emart_meta_description FIRST (product.ts:42), then _rank_math_description.
     # Must write both — writing only _rank_math_description leaves old _emart_meta_description active.
     _upsert_meta(cur, post_id, '_emart_meta_description', meta)
     _upsert_meta(cur, post_id, '_rank_math_description',  meta)
     conn.commit()
+    _revalidate(slug)
 
 # ── Apply-reviewed (safe path) ────────────────────────────────────────────────
 
@@ -453,7 +474,7 @@ def apply_reviewed(jsonl_path: str):
             print(f"  ✗ Skip {pid}: length {len(meta)}c out of range"); skipped += 1; continue
 
         try:
-            apply_meta(cur, conn, pid, meta)
+            apply_meta(cur, conn, pid, meta, r.get("slug",""))
             print(f"  ✓ {pid} ({len(meta)}c) {slug[:45]}")
             applied += 1
         except Exception as e:
@@ -533,7 +554,7 @@ Safe workflow:
     )
 
     applied = failed = already_ok = 0
-    jsonl_path = AUDIT / f"meta-generator-{DATE}.jsonl"
+    jsonl_path = AUDIT / f"meta-generator-{TIMESTAMP}.jsonl"
     AUDIT.mkdir(parents=True, exist_ok=True)
 
     for i, product in enumerate(products, 1):
@@ -578,7 +599,7 @@ Safe workflow:
                 f.write('\n')
 
             if args.apply:
-                apply_meta(cur, conn, pid, meta)
+                apply_meta(cur, conn, pid, meta, r.get("slug",""))
                 applied += 1
 
         except Exception as e:
