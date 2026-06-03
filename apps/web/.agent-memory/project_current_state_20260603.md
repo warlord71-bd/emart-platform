@@ -7,9 +7,10 @@ type: project
 Verified on 2026-06-03 after Codex work.
 
 Git/source state:
-- Local `/root/emart-platform`: `bc3ab0c` on `main`, clean at check time after memory update.
-- Origin `main`: `bc3ab0c9e0109fde14cdfba60f094c37ad6092c5` (`bc3ab0c docs(memory): update live server state`).
-- Recent commits:
+- Local `/root/emart-platform`: on `main`, clean at the post-update check. Run `git rev-parse --short HEAD` for the exact current SHA because this memory file may itself be updated by a later commit.
+- Origin `main`: pushed through the memory update commits. Run `git ls-remote origin refs/heads/main` for the exact current SHA.
+- Important recent commits:
+  - `f5c0b54 docs(memory): correct current git head`
   - `bc3ab0c docs(memory): update live server state`
   - `e4a1bc7 chore(mcp): add Playwright MCP config`
   - `283772d docs(humanizer): update face cleanser batch status`
