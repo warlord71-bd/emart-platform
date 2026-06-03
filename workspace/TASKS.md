@@ -127,3 +127,29 @@ Critical checks before build:
 - Git state reconciled (VPS/Local/origin all at same commit)
 - WP Application Password `openclaw-seo-gen` for Rank Math writes
 - `emart-rankmath-rest.php` v1.1 (write endpoint for blog SEO)
+
+---
+
+## 📊 SITE ROUTE MAP (2026-06-04 baseline)
+
+Total sitemap URLs: **4,224** across 26 route types.
+
+| Route | Count | Meta | Notes |
+|---|---|---|---|
+| `/shop` | 3,640 | 🟡 meta-gen running | ~2,642 still need 130-158c metas |
+| `/brands` | 387 | ✅ | Hardcoded in lib/ingredients.ts |
+| `/blog` | 51 | ✅ | Rank Math fields — some missing focus_keyword |
+| `/category` | 50 | ✅ | generateMetadata dynamic |
+| `/origins` | 23 | ✅ | Dynamic |
+| `/ingredients` | 16 | ✅ | Hardcoded metas |
+| `/routine` | 11 | ✅ | All 200, proper metas confirmed |
+| `/concerns` | 10 | ✅ | All 200, slugs correct (e.g. acne-blemish-care not acne) |
+| `/skin-type` | 6 | Need verify | |
+| Static pages | 16 | Need verify | /faq, /contact, /our-story etc |
+| `/offers /best /compare` | 15 | Need verify | |
+
+**Key SEO gaps by priority:**
+1. 🔴 `/shop` metas — `emart-meta-gen` running, ~2,642 remaining
+2. 🟡 `/skin-type` + static pages — not checked, likely missing metas
+3. 🟡 `/blog` focus keywords — 32 posts missing `_rank_math_focus_keyword`
+4. 🔵 Request indexing on top pages after meta-gen completes
