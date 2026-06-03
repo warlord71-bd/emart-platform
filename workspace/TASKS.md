@@ -99,7 +99,7 @@ Only mark `[x]` when fully deployed + verified on live VPS.
 *All Phase 3 tasks can run simultaneously. Claude and Codex work in parallel.*
 
 ### P3.1 — Face cleanser humanizer completion `[C]` 🔄
-- [ ] 91/218 done. 3-pass loop running (PID 2184866). Apply on completion.
+- [ ] 169/218 done. No humanizer background process running; PID 2184866 was stale/dead. Next batch must handle 28 validation-failed IDs plus remaining eligible products.
 - After complete: move to toner/mist
 - Holdout: 13 products — do NOT touch
 - Remeasure: 2026-06-28 (+4w) and 2026-07-26 (+8w)

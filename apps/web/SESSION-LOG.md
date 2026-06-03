@@ -1482,3 +1482,13 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Applied only clean reviewed rows `26867` and `36186` with `workspace/docs/humanizer_face_cleansers.py --apply --post-id`; skipped `4319` because generated content included a bad "Dhaka" ingredient placeholder.
 - Verification: `_emart_humanized` stamps exist for `26867` and `36186`; `4319` has no `_emart_humanized` stamp. Face-cleansers live count is now 53/218 humanized.
 - Rollback note: single-product apply reused `workspace/audit/active/face-cleansers-rollback-2026-06-01.json`, so only the latest pre-apply snapshot (`36186`) remained there; copied it to `workspace/audit/active/face-cleansers-rollback-2026-06-01-post-36186.json` and patched the script so future `--post-id` applies use product-specific rollback filenames.
+
+---
+## 2026-06-03 — Face Cleanser Humanizer Restart + Verified Batch
+
+- Checked stale task-board PID `2184866`: no active humanizer process was running.
+- Ran `workspace/docs/humanizer_face_cleansers.py` dry-runs using the valid OpenRouter credentials-file key, then applied 15 clean reviewed products: `61117`, `75247`, `75383`, `75062`, `75060`, `74790`, `62975`, `62973`, `62971`, `92824`, `92904`, `92918`, `92986`, `93004`, `93110`.
+- Current face-cleanser progress after apply: `169/218`; holdout remains 13 and high-sales remains protected.
+- Many remaining products failed generation validation, mostly `near-duplicate second clause` and overlong meta descriptions; they were not written/applied.
+- Fixed one verification blocker: removed the bad Next redirect from `/shop/maryampmay-white-collagen-cleansing-foam-150ml` to stale `/shop/marymay-blackberry-complex-glow-washoff-pack-125g`, deployed commit `1cbdc3d`, smoke test returned 200, and pushed to `origin/main`.
+- Verification: product-specific revalidation returned 200 for all 15 applied slugs; final live check returned HTTP 200, meta 130-158 chars, all 6 required `<h3>` sections, and `product-disclaimer` present for all 15.
