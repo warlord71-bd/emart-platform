@@ -1521,3 +1521,20 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Updated humanizer memory header from stale 52/218 to current 169/218.
 - PM2 job `emart-humanizer-cleansers-rest` verified online (38 dry-run IDs, no restarts); left running for Codex to review.
 - Next: review dry-run JSONL once job completes; pa_concern CSV review pending owner.
+
+---
+## 2026-06-03 — emart-seo-generator Skill v2 Update
+
+- Rewrote `/root/.openclaw/skills/emart-seo-generator/SKILL.md` from v1.0 to v2.0.
+- Added **Mode A** (blog posts via WordPress REST API) alongside existing Mode B (WooCommerce products).
+- Added **Mode C** (auto-scan: polls for posts/products missing Rank Math SEO fields).
+- Fixed all Rank Math meta keys: products use `_rank_math_description` / `_rank_math_focus_keyword`; posts use `rank_math_title` / `rank_math_description` / `rank_math_focus_keyword`.
+- Removed Yoast field writes (`_yoast_wpseo_*`) — project is Rank Math only.
+- Removed product title/name mutation — slug safety enforced.
+- Added canonical URL generation: `https://e-mart.com.bd/blog/{slug}` for posts.
+- Updated `emart-rankmath-rest.php` mu-plugin to v1.1.0: added `POST /wp-json/emart/v1/post-seo/{id}` write endpoint authenticated via WP Application Passwords.
+- Created new WP Application Password `openclaw-seo-gen` for `emartadmin`; updated `WP_USERNAME` + `WP_APP_PASSWORD` in `/root/.openclaw/openclaw.env`.
+- Added `robots` field exposure to the read endpoint.
+- Registered PM2 cron job `emart-seo-autoscan` (daily 00:00 UTC = 06:00 BD) via `workspace/scripts/active/seo_auto_scan.sh`.
+- Verified end-to-end: authenticated write to post 93548 returned `success: true`; restored correct title after test.
+- Note: mu-plugin change lives at `/var/www/wordpress/wp-content/mu-plugins/emart-rankmath-rest.php` (not in git repo).
