@@ -18,6 +18,30 @@
 | Lighthouse/perf reports | `audit/archive/lighthouse-*` |
 | Currently active files | Bottom of this file — "Active Quick Ref" |
 
+## Current Workspace Consistency Baseline — 2026-06-04
+
+Before starting any new job, verify these five layers and do not recreate stale
+paths:
+
+1. Live site: homepage, product page, sitemap, robots.txt, WP post-SEO API,
+   newsletter, and checkout were confirmed HTTP 200.
+2. PM2 jobs: `emartweb`, `emart-presence`, `emart-meta-gen`,
+   `emart-serp-checker`, `emart-seo-autoscan`, `emart-checkout-monitor`,
+   and `emart-competitor-prices` are the expected active jobs. Old
+   `emart-humanizer-rest` and `emart-humanizer-regular` jobs were removed and
+   their scripts archived.
+3. Active script/doc layout: face-cleanser humanizer source of truth is
+   `workspace/humanizer/face-cleansers/`; do not use the old
+   `workspace/docs/humanizer_face_cleansers.py` path.
+4. Active face-cleanser run files live under
+   `workspace/humanizer/face-cleansers/active/`; do not use old
+   `workspace/audit/active/face-cleansers-*` paths for new work.
+5. Memory/state: face-cleansers progress is `185/218`; holdout remains 13 and
+   should not be touched.
+
+For new files or scripts: check this archive index, project rules, and existing
+scripts first; reuse or move an existing tool before creating a new one.
+
 ---
 
 ## GSC Exports (`audit/archive/gsc-exports/`)
@@ -56,9 +80,9 @@
 | `face-cleansers-humanized-consistency-audit-20260603-*.csv` | Earlier audit (superseded by final) |
 
 **Active (NOT archived):**
-- `audit/active/face-cleansers-2026-06-03.jsonl` — current batch
-- `audit/active/face-cleansers-rollback-2026-06-03.json` — current rollback
-- `audit/active/face-cleansers-humanized-consistency-audit-final-*.csv` — current audit
+- `humanizer/face-cleansers/active/face-cleansers-2026-06-03.jsonl` — current batch
+- `humanizer/face-cleansers/active/face-cleansers-rollback-2026-06-03.json` — current rollback
+- `humanizer/face-cleansers/active/face-cleansers-humanized-consistency-audit-final-*.csv` — current audit
 
 ---
 
@@ -140,17 +164,21 @@ workspace/
   audit/active/
     baseline-snapshot-2026-05-31.json   ← GSC baseline for humanizer
     gsc-query-map-2026-05-31.json       ← per-product top queries
-    face-cleansers-2026-06-03.jsonl     ← CURRENT humanizer batch
-    face-cleansers-rollback-*.json      ← ACTIVE rollbacks — do not delete
-    face-cleansers-*-final-*.csv/md     ← CURRENT consistency audit
     404-redirect.xlsx                   ← redirect fix tracker
     products-need-real-image.csv        ← image gaps
     manual-review-size-notmatched.csv   ← pending manual size review
     onpage-pdp-targets.txt              ← PDP optimization list
     openclaw-face-cleansers-dryrun-*.log ← latest openclaw log
 
-  docs/
+  humanizer/face-cleansers/
+    README.md                           ← humanizer operating note
     humanizer_face_cleansers.py         ← face cleanser humanizer (ACTIVE)
+    active/
+      face-cleansers-2026-06-03.jsonl   ← CURRENT humanizer batch
+      face-cleansers-rollback-*.json    ← ACTIVE rollbacks — do not delete
+      face-cleansers-*-final-*.csv/md   ← CURRENT consistency audit
+
+  docs/
     meta_generator.py                   ← catalog meta generation (ACTIVE)
     meta_validator.py                   ← meta validator (ACTIVE)
     baseline_snapshot.py                ← GSC snapshot tool
