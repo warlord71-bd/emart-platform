@@ -30,6 +30,9 @@ paths:
    and `emart-competitor-prices` are the expected active jobs. Old
    `emart-humanizer-rest` and `emart-humanizer-regular` jobs were removed and
    their scripts archived.
+   Note: as of this audit, `emart-meta-gen` is running from a deleted/stale
+   VPS path (`/var/www/emart-platform/workspace/scripts/active/meta_gen_batch.sh`).
+   Restore or replace that script before restarting PM2.
 3. Active script/doc layout: face-cleanser humanizer source of truth is
    `workspace/humanizer/face-cleansers/`; do not use the old
    `workspace/docs/humanizer_face_cleansers.py` path.
@@ -80,9 +83,9 @@ scripts first; reuse or move an existing tool before creating a new one.
 | `face-cleansers-humanized-consistency-audit-20260603-*.csv` | Earlier audit (superseded by final) |
 
 **Active (NOT archived):**
-- `humanizer/face-cleansers/active/face-cleansers-2026-06-03.jsonl` — current batch
-- `humanizer/face-cleansers/active/face-cleansers-rollback-2026-06-03.json` — current rollback
-- `humanizer/face-cleansers/active/face-cleansers-humanized-consistency-audit-final-*.csv` — current audit
+- `humanizer/face-cleansers/active/current-batch.jsonl` — current batch
+- `humanizer/face-cleansers/active/rollback-current.json` — current rollback
+- `humanizer/face-cleansers/active/consistency-audit-final.csv/md` — current audit
 
 ---
 
@@ -174,9 +177,9 @@ workspace/
     README.md                           ← humanizer operating note
     humanizer_face_cleansers.py         ← face cleanser humanizer (ACTIVE)
     active/
-      face-cleansers-2026-06-03.jsonl   ← CURRENT humanizer batch
-      face-cleansers-rollback-*.json    ← ACTIVE rollbacks — do not delete
-      face-cleansers-*-final-*.csv/md   ← CURRENT consistency audit
+      current-batch.jsonl               ← CURRENT humanizer batch
+      rollback-current.json             ← ACTIVE rollback — do not delete
+      consistency-audit-final.csv/md    ← CURRENT consistency audit
 
   docs/
     meta_generator.py                   ← catalog meta generation (ACTIVE)
@@ -192,6 +195,6 @@ workspace/
     checkout_monitor.js                 ← PM2: 15-min checkout test
     competitor_price_checker.js         ← PM2: daily competitor prices
     seo_auto_scan.sh                    ← PM2: daily blog SEO fill
-    meta_gen_batch.sh                   ← PM2: continuous meta generator
+    meta_gen_batch.sh                   ← MISSING locally/VPS file removed; PM2 process is stale-running from old path
     google_sheets_setup.js              ← Sheets webhook reference
 ```
