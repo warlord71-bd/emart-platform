@@ -1492,3 +1492,12 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Many remaining products failed generation validation, mostly `near-duplicate second clause` and overlong meta descriptions; they were not written/applied.
 - Fixed one verification blocker: removed the bad Next redirect from `/shop/maryampmay-white-collagen-cleansing-foam-150ml` to stale `/shop/marymay-blackberry-complex-glow-washoff-pack-125g`, deployed commit `1cbdc3d`, smoke test returned 200, and pushed to `origin/main`.
 - Verification: product-specific revalidation returned 200 for all 15 applied slugs; final live check returned HTTP 200, meta 130-158 chars, all 6 required `<h3>` sections, and `product-disclaimer` present for all 15.
+
+---
+## 2026-06-03 — Third-Party JS / Main-Thread Perf Pass
+
+- Delayed homepage GA4, Meta Pixel, and Google Merchant rating badge until after load/idle so they no longer compete with first render.
+- Added GA4 config flags to disable Google signals and ad personalization signals.
+- Added `google.de` to CSP `img-src` because GA audience pings can use `https://www.google.de/ads/ga-audiences...`.
+- Deployed to VPS, rebuilt, restarted `emartweb`, and live smoke returned 200.
+- Verification: live CSP includes `google.de`; fresh cache-busted Lighthouse mobile run had 0 console errors, performance 74, TBT 460ms, bootup 1898ms, main-thread 5186ms. Baseline before this pass was performance 57, TBT 2683ms, bootup 3554ms, main-thread 10423ms.

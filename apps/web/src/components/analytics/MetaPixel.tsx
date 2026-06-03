@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { trackMetaEvent } from '@/lib/metaPixel';
@@ -10,6 +11,39 @@ const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '763041131179021'
 export default function MetaPixel() {
   const pathname = usePathname();
   const firstPathname = useRef<string | null>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    let idleId: number | undefined;
+    let timerId: number | undefined;
+
+    const markReady = () => {
+      if (!cancelled) setReady(true);
+    };
+
+    const schedule = () => {
+      timerId = window.setTimeout(markReady, 4000);
+      if ('requestIdleCallback' in window) {
+        idleId = window.requestIdleCallback(markReady, { timeout: 4000 });
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      schedule();
+    } else {
+      window.addEventListener('load', schedule, { once: true });
+    }
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', schedule);
+      if (timerId) window.clearTimeout(timerId);
+      if (idleId && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!pathname) return;
@@ -22,7 +56,7 @@ export default function MetaPixel() {
     trackMetaEvent('PageView');
   }, [pathname]);
 
-  if (!META_PIXEL_ID) return null;
+  if (!META_PIXEL_ID || !ready) return null;
 
   return (
     <>
@@ -48,4 +82,3 @@ export default function MetaPixel() {
     </>
   );
 }
-

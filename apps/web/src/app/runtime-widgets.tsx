@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import Script from 'next/script';
+import { useEffect, useState } from 'react';
 import MetaPixel from '@/components/analytics/MetaPixel';
 import { useDeploymentCheck } from '@/hooks/useDeploymentCheck';
 
@@ -13,8 +14,47 @@ const Toaster = dynamic(() => import('react-hot-toast').then((mod) => mod.Toaste
   ssr: false,
 });
 
+function useDeferredThirdParty(delayMs = 4000) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    let idleId: number | undefined;
+    let timerId: number | undefined;
+
+    const markReady = () => {
+      if (!cancelled) setReady(true);
+    };
+
+    const schedule = () => {
+      timerId = window.setTimeout(markReady, delayMs);
+      if ('requestIdleCallback' in window) {
+        idleId = window.requestIdleCallback(markReady, { timeout: delayMs });
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      schedule();
+    } else {
+      window.addEventListener('load', schedule, { once: true });
+    }
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', schedule);
+      if (timerId) window.clearTimeout(timerId);
+      if (idleId && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId);
+      }
+    };
+  }, [delayMs]);
+
+  return ready;
+}
+
 function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
-  if (!gaId) return null;
+  const ready = useDeferredThirdParty(3500);
+  if (!gaId || !ready) return null;
 
   return (
     <>
@@ -31,7 +71,10 @@ function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${gaId}');
+            gtag('config', '${gaId}', {
+              allow_google_signals: false,
+              allow_ad_personalization_signals: false
+            });
           `,
         }}
       />
@@ -40,6 +83,9 @@ function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
 }
 
 function GoogleRatingBadge() {
+  const ready = useDeferredThirdParty(5000);
+  if (!ready) return null;
+
   return (
     <>
       {/* Google Customer Reviews merchant widget badge (bottom-right) */}
