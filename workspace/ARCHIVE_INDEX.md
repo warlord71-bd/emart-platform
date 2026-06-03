@@ -1,101 +1,169 @@
 # Emart Archive Index
-
-Master catalog of archived files for Claude and Codex. When a future job needs something from an old script or audit, check here first.
-
----
-
-## Stale Workspace Docs → `/root/.attic-2026-05-07/emart-platform/workspace-stale-docs/`
-
-| File | What it was |
-|------|-------------|
-| `DEPLOY-FIX-INSTRUCTIONS.md` | Apr-26 nginx static serving fix steps (deploy issue resolved) |
-| `DEPLOY-PLAN-2026-05-02.md` | May-02 deploy plan for that sprint (completed) |
-| `FIX-SUMMARY.md` | Summary of Apr-26 nginx/deploy fixes applied to VPS |
-| `SETUP.md` | Initial VPS + Next.js setup notes (one-time, done) |
-| `UI-UX-SEO-AUDIT.md` | 27KB Apr-26 UI/UX/SEO audit snapshot (superseded by SEO_TODO.md) |
-| `VS_CODE_SSH.md` | VS Code Remote-SSH connection setup guide |
-| `emart-phase1-foundation-seo.md` | 38KB Apr-30 Phase 1 SEO foundation plan (implemented) |
-| `nginx-emart.conf` | Nginx config reference copy (live copy in /etc/nginx) |
-| `nginx-skbd-gone-products.conf` | 220KB nginx redirect map for gone SkincaresBD products (applied) |
-| `nginx/emart-vps.conf` | Old nginx VPS config (superseded) |
+> **For any LLM/agent:** Read this before doing any audit, fix, or research task.
+> Nothing is deleted — only filed. Search here to find what is in store.
+> Last updated: 2026-06-04
 
 ---
 
-## Completed Scripts → `workspace/scripts/archive/`
+## Quick lookup
 
-| File | What it did |
-|------|-------------|
-| `apply-brand-origin.php` | Assigned `pa_origin` by brand; run 2026-05-05 (3,641 products) |
-| `apply-clean-brand-matches.php` | Applied clean brand name matches to WooCommerce meta |
-| `apply-product-brand-exact-map.mjs` | Exact brand→product mapping apply pass |
-| `apply-user-manual-brand-mappings.php` | Applied user-corrected manual brand mappings |
-| `apply-xlsx-brand-corrections.php` | Applied brand corrections from user-reviewed XLSX |
-| `brand-origin-dry-run.mjs` | Dry-run for brand→origin assignment (pre-apply preview) |
-| `brand-source-unification-dry-run.mjs` | Dry-run for unifying brand sources across products |
-| `bulk_fixer_google2026.py` | Python bulk fixer for Google/GMC product feed data |
-| `catalog_audit.py` | Python catalog audit (price/image/brand completeness) |
-| `catalog_fixer_v2.py` | Python catalog fixer v2 |
-| `comprehensive-fix.sh` | Apr-24 one-shot comprehensive VPS fix script |
-| `diagnose-issues.sh` | Apr-24 diagnostic script for VPS/deploy issues |
-| `emart-safe-audit.sh` | Apr-25 safe read-only audit of live VPS state |
-| `fix-image-urls.sh` | One-off script to fix image URL paths in WooCommerce |
-| `fix-images.sh` | One-off image fix script |
-| `fix-static-serving.sh` | Apr-26 nginx static file serving fix |
-| `fix-vps-deployment.py` | Python script for VPS deployment fix |
-| `link-images-to-products.sql` | SQL to link orphaned images to products |
-| `phase2_seo.py` | Python Phase 2 SEO tasks script |
-| `setup-vps-config.sh` | One-time VPS config setup (nginx/pm2/env) |
-| `sync-product-images.php` | PHP script to sync product images into WooCommerce |
-| `cerave-update-from-xlsx.js` | CeraVe product data update from user XLSX (run 2026-05-07) |
+| What you need | Where to look |
+|---|---|
+| GSC keyword/traffic data | `audit/archive/gsc-exports/` |
+| Product size/brand/SKU fixes | `audit/archive/product-audits/` |
+| Face cleanser humanizer history | `audit/archive/face-cleansers-*` |
+| SEO origin/concern taxonomy | `audit/archive/pa-origin-*, pa-concern-*` |
+| Old Codex job specs | `scripts/archive/2026-06/CODEX_*` |
+| Applied PHP scripts | `scripts/archive/2026-06/*.php` |
+| Lighthouse/perf reports | `audit/archive/lighthouse-*` |
+| Currently active files | Bottom of this file — "Active Quick Ref" |
 
 ---
 
-## Completed Audit Data → `workspace/audit/archive/`
+## GSC Exports (`audit/archive/gsc-exports/`)
 
-| File | What it was |
-|------|-------------|
-| `cat_audit_summary_20260507.json` | Category audit summary JSON from 2026-05-07 run |
-| `cleanup-pass-1-2-20260504.md` | Notes from cleanup passes 1+2 on 2026-05-04 |
-| `concern-assignments.json` | Concern tag assignment data (pa_concern applied) |
-| `seo-source-audits-referenced-by-master-20260515/` | Historical SEO source audits consolidated into the 2026-05-15 master SEO audit |
-| `seo-week2-gsc-cwv-product-source-audits-referenced-by-master-20260515/` | Week 2 GSC/CWV/product SEO source audits consolidated into the 2026-05-15 master SEO audit |
-| `tkm-concern-progress.json` | 36KB TKM concern assignment progress tracker |
+| File | Date | Contents | Use for |
+|---|---|---|---|
+| `organic-traffic-non-product-2026-06-02.csv` | Jun 2 | Clicks/impressions for non-product pages | Blog SEO gap analysis |
+| `gsc-search-queries-summary-2026-06-02.csv` | Jun 2 | Top queries — summary view | Quick keyword check |
+| `gsc-search-queries-full-2026-06-02.csv` | Jun 2 | Top queries — full export | Keyword research, content gaps |
+| `gsc-product-description-opportunities-2026-05-28.csv.gz` | May 28 | Products Google flagged for thin descriptions | Humanizer prioritization |
 
 ---
 
-## Active Scripts → `workspace/scripts/active/`
+## Product Audits (`audit/archive/product-audits/`)
 
-| File | Purpose |
-|------|---------|
-| `sync-local-to-vps.sh` | Sync Local→VPS deploy utility |
-| `verify-deployment.sh` | Verify deployment health (http checks) |
-| `emart-seo-backend-smoke.sh` | SEO backend smoke test (Woo/Next.js routes) |
-| `product-image-brand-size-audit.mjs` | Audit product images by brand/size (image work ongoing) |
-| `build-open-image-review-audit.mjs` | Build open image review audit report |
-| `targeted-product-image-ocr.mjs` | OCR-based image text extraction for audit |
-| `audit-seo-index-bloat.sh` | Audit SEO index bloat (orphan/thin pages) |
+| File | Date | Contents | Status |
+|---|---|---|---|
+| `product-data-mismatch-20260529.xlsx` | May 29 | Title/size/brand mismatches | Reference for future corrections |
+| `product-size-corrections-*.csv` | May 29 | 115 size corrections dry-run + applied | Applied |
+| `product-data-mismatch-audit-*.csv/md` | May 29 | 3-pass mismatch audit reports | Done |
 
 ---
 
-## Active Docs (workspace root — always up to date)
+## Face Cleanser Humanizer History (`audit/archive/`)
 
-| File | Purpose |
-|------|---------|
-| `BRAND_GUIDE.md` | Brand invariants and naming rules |
-| `CLOUDFLARE_CACHE_RULES.md` | Cloudflare cache rule specs (dashboard-only, not auto-applied) |
+185/218 done as of 2026-06-04. Holdout: 13 products (measure 2026-07-26).
+
+| File | Contents |
+|---|---|
+| `face-cleansers-rollback-2026-06-01*.json` | Jun 1 batch rollbacks |
+| `face-cleansers-2026-06-01.jsonl` | Jun 1 reviewed JSONL |
+| `face-cleansers-2026-05-31.jsonl` | May 31 first generation |
+| `cosrx-low-ph-humanizer-rollback-*.json` | Individual COSRX rollbacks May 31 |
+| `cleanser-humanizer-5-*.jsonl/md` | 5-product test runs May 31 |
+| `cleanser-ingredient-fixes-rollback-*.json` | Ingredient tab cleanup rollback |
+| `face-cleansers-humanized-consistency-audit-20260603-*.csv` | Earlier audit (superseded by final) |
+
+**Active (NOT archived):**
+- `audit/active/face-cleansers-2026-06-03.jsonl` — current batch
+- `audit/active/face-cleansers-rollback-2026-06-03.json` — current rollback
+- `audit/active/face-cleansers-humanized-consistency-audit-final-*.csv` — current audit
 
 ---
 
-## Active Reference Docs (workspace/docs/)
+## SEO Taxonomy Work (`audit/archive/`)
 
-| File | Purpose |
-|------|---------|
-| `mobile-build-notes.md` | Mobile app build/release notes |
-| `theme-contract.md` | Frontend theme design contract / token definitions |
-| `category-taxonomy-status.md` | Current category taxonomy/source-of-truth rules for public category URLs, concern pages, and backend-only categories |
+| File | Contents | Status |
+|---|---|---|
+| `pa-origin-custom-origin-sync-*.csv` | Brand→origin assignment, 3641 products | **Applied** 2026-05-25 |
+| `pa-concern-dry-run-*.csv` | Concern taxonomy candidates | **NOT applied** — owner sign-off needed |
+| `pa-concern-highmed-approved.csv` | High/med confidence rows ready to apply | Pending owner |
+| `seo-origin-text-sync-*.csv` | Origin-safe copy replacement | **Applied** 2026-05-25 |
+| `price-normalize-*.csv` | Price normalization dry-run | Not applied |
+| `product-sku-audit-dry-run-*.csv` | 119 products missing SKU | Not applied — needs owner |
+| `wc-key-rotation-20260523.md` | Key rotation log: key_ids 2/3/26/32 revoked | Reference |
 
-## Active Master Audits
+---
 
-| File | Purpose |
-|------|---------|
-| `workspace/audit/active/e-mart-master-technical-seo-image-crawler-audit-20260515.md` | Current master SEO/image/performance/crawler audit and source of truth |
+## Performance / Lighthouse (`audit/archive/`)
+
+| File | Contents |
+|---|---|
+| `lighthouse-home-20260603-*.json/html` | 4 Lighthouse runs before/after analytics deferral |
+| `emart-homepage-mcp-test.png` | Homepage screenshot via Playwright MCP |
+
+---
+
+## Archived Scripts (`scripts/archive/2026-06/`)
+
+**Applied one-time scripts** (DB changes already live):
+
+| Script | What it did |
+|---|---|
+| `pa-origin-custom-origin-sync.php` | Assigned pa_origin by brand (3641 products) |
+| `apply-cleanser-*.php` | Applied humanizer content to face-cleanser products |
+| `apply-cosrx-low-ph-humanized.php` | First humanizer apply |
+| `sync-cleanser-woodmart-ingredient-tabs.php` | Synced ingredient tabs |
+| `emart-structured-description-price-sync.php` | Synced structured description prices |
+| `seo-origin-text-sync.php` | Replaced Korea-import copy with origin-safe text |
+| `product-size-corrections-from-review.php` | Applied 115 size corrections |
+| `generate-cleanser-5-samples.py` | Early test run (5 products) |
+| `generate-product-faq-*.mjs` | FAQ generation scripts |
+| `blog_generator.py / blog_refiner.py` | Blog post generation (superseded by emart-auto-publisher skill) |
+| `blog_image_featured_upload.py` | Blog image upload automation |
+| `sync-local-to-vps.sh` | Replaced by root `deploy.sh` |
+| `pa-concern-*.py` | pa_concern dry-run scripts |
+| `run_face_cleanser_rest_dryrun_20260603.sh` | PM2 dry-run wrapper |
+| `openclaw_face_cleanser_dryrun_batch.sh` | OpenClaw dry-run helper |
+
+**Codex job definitions** (completed):
+
+| File | What it defined |
+|---|---|
+| `CODEX_JOB_BLOG_IMAGES.json` | Blog image pipeline job |
+| `CODEX_JOB_INGREDIENT_CONTENT.json` | Ingredient content generation |
+| `CODEX_JOB_PA_CONCERN_LOW.json` | pa_concern low-confidence batch |
+| `CODEX_TASK_*.md` | Human-readable task briefs |
+
+---
+
+## Archived Docs (`docs/archive/`)
+
+| File | Contents |
+|---|---|
+| `CODEX-PROMPT-face-cleanser-next-batch.md` | Old prompt template (superseded — now in humanizer_face_cleansers.py) |
+| `CODEX-TASK-product-content-humanizer.md` | Original humanizer task spec (superseded by CLAUDE-product-humanizer-guide.md) |
+
+---
+
+## Active Files Quick Reference
+
+```
+workspace/
+  TASKS.md                              ← unified task board (read first)
+  ARCHIVE_INDEX.md                      ← this file
+  SEO_MASTER.md                         ← SEO strategy
+  BRAND_GUIDE.md                        ← brand invariants
+  DEV_MASTER.md                         ← stack version locks
+
+  audit/active/
+    baseline-snapshot-2026-05-31.json   ← GSC baseline for humanizer
+    gsc-query-map-2026-05-31.json       ← per-product top queries
+    face-cleansers-2026-06-03.jsonl     ← CURRENT humanizer batch
+    face-cleansers-rollback-*.json      ← ACTIVE rollbacks — do not delete
+    face-cleansers-*-final-*.csv/md     ← CURRENT consistency audit
+    404-redirect.xlsx                   ← redirect fix tracker
+    products-need-real-image.csv        ← image gaps
+    manual-review-size-notmatched.csv   ← pending manual size review
+    onpage-pdp-targets.txt              ← PDP optimization list
+    openclaw-face-cleansers-dryrun-*.log ← latest openclaw log
+
+  docs/
+    humanizer_face_cleansers.py         ← face cleanser humanizer (ACTIVE)
+    meta_generator.py                   ← catalog meta generation (ACTIVE)
+    meta_validator.py                   ← meta validator (ACTIVE)
+    baseline_snapshot.py                ← GSC snapshot tool
+    catalog-lighthouse-fast-audit.mjs   ← read-only PDP audit
+    mobile-build-notes.md               ← mobile app build config
+    CLAUDE-product-humanizer-guide.md   ← humanizer operating guide
+    category-taxonomy-status.md         ← category decisions
+    theme-contract.md                   ← UI contract
+
+  scripts/active/
+    checkout_monitor.js                 ← PM2: 15-min checkout test
+    competitor_price_checker.js         ← PM2: daily competitor prices
+    seo_auto_scan.sh                    ← PM2: daily blog SEO fill
+    meta_gen_batch.sh                   ← PM2: continuous meta generator
+    google_sheets_setup.js              ← Sheets webhook reference
+```
