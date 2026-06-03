@@ -67,7 +67,7 @@ const nextConfig = {
               "img-src 'self' data: blob: https://e-mart.com.bd https://*.e-mart.com.bd https://*.woocommerce.com https://www.facebook.com https://connect.facebook.net https://www.google.com https://*.google.com https://*.google.com.bd https://www.google-analytics.com https://www.googletagmanager.com https://img.youtube.com https://*.tiktokcdn.com https://*.tiktokcdn-eu.com https://*.tiktokcdn-us.com",
               "font-src 'self' data: https://fonts.gstatic.com",
               "connect-src 'self' https://e-mart.com.bd wss://e-mart.com.bd https://www.tiktok.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://www.google.com https://*.google.com https://*.google.com.bd https://*.doubleclick.net https://*.facebook.com https://connect.facebook.net https://www.googletagmanager.com https://cloudflareinsights.com",
-              "frame-src 'self' https://www.facebook.com https://www.openstreetmap.org",
+              "frame-src 'self' https://www.facebook.com https://www.openstreetmap.org https://www.google.com https://www.youtube.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self' https://www.facebook.com",
