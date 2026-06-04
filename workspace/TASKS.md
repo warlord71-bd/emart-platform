@@ -153,3 +153,8 @@ Total sitemap URLs: **4,224** across 26 route types.
 2. 🟡 `/skin-type` + static pages — not checked, likely missing metas
 3. 🟡 `/blog` focus keywords — 32 posts missing `_rank_math_focus_keyword`
 4. 🔵 Request indexing on top pages after meta-gen completes
+
+### S7 — WooCommerce API Key Rule `[always]`
+**Never delete a WC API key without updating .env.local first.**
+Current live key: key_id `39` ("Emart BFF Live 2026-06-04")
+Test after any change: `curl internal_url/wp-json/wc/v3/orders -X POST ...` must return order ID, not 403.
