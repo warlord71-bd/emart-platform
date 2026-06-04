@@ -1662,3 +1662,12 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 ### Next
 - Codex: CODEX-GMC-FIX-20260605.md (48 LLM rewrites) + impression-priority humanizer after face cleansers done
 - Post-freeze (Jul 3): LCP bundle analysis, blog content, UCP/MCP
+
+---
+## 2026-06-05 — Codex GMC Step 2 LLM Dry-Run
+
+- Built humanizer-style dry-run script `workspace/scripts/active/gmc_step2_llm_rewrite.py`; apply is intentionally not implemented in that script.
+- Generated Step 2 artifacts with no Woo writes: `workspace/audit/active/gmc-step2-llm-rewrite-dryrun-2026-06-05.csv`, `workspace/audit/active/gmc-step2-llm-rewrite-proposals-2026-06-05.jsonl`, and owner sample `workspace/audit/active/gmc-step2-owner-sample-10-20260605.csv`.
+- Final clean output: `44` unique products, `28` ready for owner sample, `16` manual-review rows for length shift, `0` rows with remaining validator risk terms.
+- Raw duplicate output from interrupted/resumed generation preserved separately as `workspace/audit/active/gmc-step2-llm-rewrite-dryrun-2026-06-05.raw-duplicates.csv` and `.jsonl`.
+- Next gate: owner reviews the 10-row sample and/or full CSV before any Step 2 apply batches of 10. No GMC sync yet.
