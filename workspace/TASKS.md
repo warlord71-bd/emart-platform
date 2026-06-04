@@ -23,15 +23,21 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 ## 🔴 URGENT — Codex (read CODEX-BRIEF-20260605.md)
 
 ### X1 — GMC Policy Violations `[X]` ← START HERE
-- 127 products disapproved in Google Shopping (our best discovery channel)
-- Root causes: prescription drug language, personal hardship copy, misleading claims, missing prices
-- Fix: rewrite product descriptions using ingredient-focused neutral language
+- [x] Live GMC API pull mapped current disapprovals to Woo: `127` rows
+- [x] Dry-run artifacts created:
+  - `workspace/audit/active/gmc-policy-control-dryrun-2026-06-05.csv`
+  - `workspace/audit/active/gmc-policy-copy-proposals-2026-06-05.jsonl`
+- Classification: `23` copy-ready rows, `11` copy/title-risk review rows, `33` copy-policy rows needing manual sample because no rule-based change was found, `42` document/owner-decision rows, `5` data/asset rows.
+- Gate: owner review required before any Woo copy apply, GMC sync, title edit, price edit, URL action, or image action.
+- Fix standard: rewrite product descriptions using ingredient-focused neutral language only.
 - Full brief: `workspace/docs/CODEX-BRIEF-20260605.md` Task 1
 
 ### X2 — Humanizer: Redirect to Impression-Priority Brands `[X]`
-- STOP: do not start toner/mist after face cleansers
-- START: humanize CeraVe, Skin1004, Medicube, Innisfree, COSRX products
-- These are the brands getting actual Google impressions (GSC data confirmed)
+- [x] Target CSV created: `workspace/audit/active/humanizer-impression-priority-targets-2026-06-05.csv`
+- STOP: do not start toner/mist after face cleansers.
+- START: humanize CeraVe, Skin1004, Medicube, Innisfree, COSRX products with GSC impressions first.
+- Current list: `341` brand products; `30` ready after cleanser batch; `26` already humanized; `285` backlog/no GSC impressions.
+- Gate: keep 13-product holdout and dry-run → validate → owner review → apply workflow.
 - Reference: `workspace/audit/active/gsc-query-map-2026-05-31.json`
 - Full brief: `workspace/docs/CODEX-BRIEF-20260605.md` Task 2
 

@@ -1640,3 +1640,14 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 
 ### Next step (Claude)
 - ReviewsSection W4 cleanup, sunscreen category copy (SEO_MASTER M7)
+
+---
+## 2026-06-05 — Codex GMC + Humanizer Control Dry-Runs
+
+- Scope: executed CODEX-BRIEF-20260605 Task 1 and Task 2 only; no WooCommerce writes, product title edits, URL changes, price edits, image changes, GMC sync, frontend build, PM2 restart, or deploy.
+- Task 1 GMC: created read-only script `workspace/scripts/active/gmc_policy_control_dryrun.py`; live GMC API pull mapped `127` current disapproved products to Woo rows.
+- Task 1 artifacts: `workspace/audit/active/gmc-policy-control-dryrun-2026-06-05.csv` and `workspace/audit/active/gmc-policy-copy-proposals-2026-06-05.jsonl`.
+- Task 1 gate counts: `23` copy-ready rows, `11` copy/title-risk owner-review rows, `33` copy-policy rows needing manual sample because no rule-based content change was found, `42` document/owner-decision rows, `5` data/asset rows.
+- Task 2: created read-only script `workspace/scripts/active/humanizer_impression_priority_targets.py` and target CSV `workspace/audit/active/humanizer-impression-priority-targets-2026-06-05.csv`.
+- Task 2 queue: `341` target-brand products found; `30` not-yet-humanized products have GSC impressions and should run after face-cleanser completion; `26` already humanized; `285` backlog/no GSC impressions.
+- Next gate: owner reviews GMC CSV/JSONL sample before any apply; humanizer keeps face-cleanser current batch first, then uses impression-priority CSV with 13-product holdout and dry-run → validate → owner review → apply.
