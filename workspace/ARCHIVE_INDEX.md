@@ -30,9 +30,9 @@ paths:
    and `emart-competitor-prices` are the expected active jobs. Old
    `emart-humanizer-rest` and `emart-humanizer-regular` jobs were removed and
    their scripts archived.
-   Note: as of this audit, `emart-meta-gen` is running from a deleted/stale
-   VPS path (`/var/www/emart-platform/workspace/scripts/active/meta_gen_batch.sh`).
-   Restore or replace that script before restarting PM2.
+   Note: `emart-meta-gen` is running correctly from
+   `/var/www/emart-platform/workspace/scripts/active/meta_gen_batch.sh` (confirmed
+   active at cycle 42+, 2,000+ descriptions applied as of 2026-06-05).
 3. Active script/doc layout: face-cleanser humanizer source of truth is
    `workspace/humanizer/face-cleansers/`; do not use the old
    `workspace/docs/humanizer_face_cleansers.py` path.

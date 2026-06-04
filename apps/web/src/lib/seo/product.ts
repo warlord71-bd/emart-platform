@@ -137,7 +137,13 @@ export function getProductJsonLd(product: WooProduct) {
     '@type': 'Product',
     '@id': `${absoluteUrl(`/shop/${product.slug}`)}#product`,
     name: product.name,
-    description: getSeoDescription(product),
+    description: (() => {
+      const full = (product.description || '')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      return full.length >= 200 ? full.substring(0, 500) : getSeoDescription(product);
+    })(),
     image: imageUrls,
     ...(datePublished ? { datePublished } : {}),
     ...(dateModified ? { dateModified } : {}),
