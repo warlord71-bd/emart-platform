@@ -403,6 +403,13 @@ const nextConfig = {
       { source: '/category/top-cosmetics-ingredients', destination: '/ingredients',              permanent: true },
       { source: '/category/life-style',               destination: '/',                          permanent: true },
 
+      // Ingredient short-form aliases → canonical slugs (fixes GSC bha/salicylic drop)
+      { source: '/ingredients/bha',            destination: '/ingredients/bha-salicylic-acid', permanent: true },
+      { source: '/ingredients/salicylic-acid', destination: '/ingredients/bha-salicylic-acid', permanent: true },
+      { source: '/ingredients/salicylic',      destination: '/ingredients/bha-salicylic-acid', permanent: true },
+      { source: '/ingredients/ha',             destination: '/ingredients/hyaluronic-acid',    permanent: true },
+      { source: '/ingredients/vit-c',          destination: '/ingredients/vitamin-c',          permanent: true },
+
       // Specific broken shop slugs (underscore/encoding variants)
       { source: '/shop/b_lab-matcha-hydrating-real-sun-stick-21g',   destination: '/shop/b-lab-matcha-hydrating-real-sun-stick-21g',  permanent: true },
       { source: '/shop/round-lab-eng-1025-dokdo-ampule_45g',         destination: '/shop/round-lab-1025-dokdo-ampule',               permanent: true },
