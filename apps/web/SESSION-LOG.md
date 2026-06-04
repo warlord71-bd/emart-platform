@@ -1651,3 +1651,13 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Task 2: created read-only script `workspace/scripts/active/humanizer_impression_priority_targets.py` and target CSV `workspace/audit/active/humanizer-impression-priority-targets-2026-06-05.csv`.
 - Task 2 queue: `341` target-brand products found; `30` not-yet-humanized products have GSC impressions and should run after face-cleanser completion; `26` already humanized; `285` backlog/no GSC impressions.
 - Next gate: owner reviews GMC CSV/JSONL sample before any apply; humanizer keeps face-cleanser current batch first, then uses impression-priority CSV with 13-product holdout and dry-run → validate → owner review → apply.
+
+---
+## 2026-06-05 — Codex GMC Step 1 Apply
+
+- Applied CODEX-GMC-FIX-20260605 Step 1 after owner approval: `9` substantive rule-based proposals, `0` skipped.
+- Mutated only Woo `post_content` for IDs `59769`, `51496`, `26366`, `3185`, `51898`, `63287`, `58027`, `61998`, `60687`; no title, slug, price, image, taxonomy, meta, GMC sync, build, deploy, or PM2 restart.
+- Backup: `workspace/audit/active/gmc-step1-apply-9-backup-20260605.jsonl`; apply log: `workspace/audit/active/gmc-step1-apply-9-log-20260605.csv`.
+- Verification: WordPress `get_post()` hashes matched the dry-run `after_hash` for all 9 products. ID `58027` remains flagged for post-sync re-check because `restore` remains in the approved proposal.
+- Cache: public Cloudflare route returned 403 and port `3010` rejected the current secret, but local Next revalidation succeeded on active app ports `3000`, `3012`, and `3018` for `tag:products`.
+- Next gate: Step 2 LLM rewrite dry-run for 44 products; do not run GMC sync until all approved description fixes are complete.

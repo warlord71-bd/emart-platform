@@ -28,7 +28,8 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
   - `workspace/audit/active/gmc-policy-control-dryrun-2026-06-05.csv`
   - `workspace/audit/active/gmc-policy-copy-proposals-2026-06-05.jsonl`
 - Classification: `23` copy-ready rows, `11` copy/title-risk review rows, `33` copy-policy rows needing manual sample because no rule-based change was found, `42` document/owner-decision rows, `5` data/asset rows.
-- Gate: owner review required before any Woo copy apply, GMC sync, title edit, price edit, URL action, or image action.
+- [x] Step 1 applied after owner approval: 9 substantive rule-based proposals wrote `post_content` only; backup/log saved in `workspace/audit/active/`.
+- Next gate: Step 2 LLM rewrite dry-run for 44 products; no GMC sync, title edit, price edit, URL action, or image action yet.
 - Fix standard: rewrite product descriptions using ingredient-focused neutral language only.
 - Full brief: `workspace/docs/CODEX-BRIEF-20260605.md` Task 1
 
