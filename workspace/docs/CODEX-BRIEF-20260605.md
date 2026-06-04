@@ -130,6 +130,7 @@ Add in-app review prompt after successful order delivery confirmation. This is t
 **YouTube:**
 - YouTube content drives top-of-funnel brand awareness and product discovery
 - Blog posts + ingredient/concern pages are natural companion content for YouTube videos
+- **YouTube channel:** https://www.youtube.com/@emartbd.official
 - **Action (content strategy):** When Emart publishes YouTube videos about products/ingredients, publish a matching blog post linking to the relevant product and category pages
 - This creates a signal loop: YouTube → website → purchase
 - **Action (schema):** Add VideoObject JSON-LD to blog posts that embed YouTube videos

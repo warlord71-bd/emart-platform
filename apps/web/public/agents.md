@@ -100,7 +100,7 @@ The following endpoints are used by the Emart mobile app and are rate-limited. D
 ## Social Channels
 
 - **Facebook:** https://www.facebook.com/emartbd.official (product launches, promotions, K-beauty updates)
-- **YouTube:** Emart Skincare Bangladesh (ingredient guides, routines, product reviews for BD climate)
+- **YouTube:** https://www.youtube.com/@emartbd.official (ingredient guides, skincare routines, product reviews for BD climate)
 - **WhatsApp (Sales):** +8801717082135
 - **WhatsApp (Support):** +8801919797399
 
