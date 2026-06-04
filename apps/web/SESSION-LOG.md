@@ -9,6 +9,14 @@ Format:
 
 ---
 
+## 2026-06-04 21:21 CEST — Codex
+- Did: Hardened Meta CAPI Purchase value handling so ROAS events recover a positive numeric value from Woo order totals or line/shipping totals.
+- Completed tasks: Meta Purchase value/currency fix
+- Blockers hit: Initial build caught a strict reducer type; fixed and reran successfully.
+- Next step: Deploy, restart `emartweb`, and verify Meta Test Events on the next purchase/test order.
+
+---
+
 ## 2026-04-18 — Claude (chat)
 - Did: Built memory kit, automation scripts, ROI model
 - Completed: Week 1 SEO bugs identified + fix scripts
