@@ -1641,23 +1641,24 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 ### Next step (Claude)
 - ReviewsSection W4 cleanup, sunscreen category copy (SEO_MASTER M7)
 
----
-## 2026-06-05 — Codex GMC + Humanizer Control Dry-Runs
+## 2026-06-05 (continued) — SEO, Analytics, Workspace cleanup
 
-- Scope: executed CODEX-BRIEF-20260605 Task 1 and Task 2 only; no WooCommerce writes, product title edits, URL changes, price edits, image changes, GMC sync, frontend build, PM2 restart, or deploy.
-- Task 1 GMC: created read-only script `workspace/scripts/active/gmc_policy_control_dryrun.py`; live GMC API pull mapped `127` current disapproved products to Woo rows.
-- Task 1 artifacts: `workspace/audit/active/gmc-policy-control-dryrun-2026-06-05.csv` and `workspace/audit/active/gmc-policy-copy-proposals-2026-06-05.jsonl`.
-- Task 1 gate counts: `23` copy-ready rows, `11` copy/title-risk owner-review rows, `33` copy-policy rows needing manual sample because no rule-based content change was found, `42` document/owner-decision rows, `5` data/asset rows.
-- Task 2: created read-only script `workspace/scripts/active/humanizer_impression_priority_targets.py` and target CSV `workspace/audit/active/humanizer-impression-priority-targets-2026-06-05.csv`.
-- Task 2 queue: `341` target-brand products found; `30` not-yet-humanized products have GSC impressions and should run after face-cleanser completion; `26` already humanized; `285` backlog/no GSC impressions.
-- Next gate: owner reviews GMC CSV/JSONL sample before any apply; humanizer keeps face-cleanser current batch first, then uses impression-priority CSV with 13-product holdout and dry-run → validate → owner review → apply.
+### Did
+- feat(reviews): removed verifiedPurchase gate — all logged-in users can submit reviews. WC verification setting disabled. aggregateRating now unblocked. (a90776d)
+- fix(seo): BHA/salicylic ingredient redirects (fixes GSC drop bha pos 7→55) + H2 on /sale /new-arrivals /brands (19587a9, 9456069)
+- SEO_MASTER M7 closed (sunscreen copy done) + M8 closed (false gap) (ccf4a3c)
+- feat(analytics): InitiateCheckout Meta Pixel event added — checkout had zero tracking, full event set now complete (70f777c)
+- docs: OWNER-ACTIONS-20260605.md — exact dashboard steps for MailPoet review email, Meta CAPI test, GSC URL indexing, Cloudflare cache rule (3299341)
+- WH7 workspace hygiene: archived seo-p1-preview.mjs, ocr-image-audit.mjs, image-logic-fixer.mjs
+- Confirmed: WH1, WH4, U1, W7 already resolved in prior sessions
+- Confirmed: Meta Pixel events now complete: PageView ✅ ViewContent ✅ AddToCart ✅ InitiateCheckout ✅ Purchase ✅
+- Sitemap: user submitted manually today ✅
 
----
-## 2026-06-05 — Codex GMC Step 1 Apply
+### Blockers
+- Owner: 4 dashboard actions in OWNER-ACTIONS-20260605.md (MailPoet, Meta CAPI, GSC indexing, Cloudflare)
+- Face cleansers: 184/216 — Codex batch still running
+- Meta-gen: ~2,193 applied, ~2,642 remaining (query snapshot)
 
-- Applied CODEX-GMC-FIX-20260605 Step 1 after owner approval: `9` substantive rule-based proposals, `0` skipped.
-- Mutated only Woo `post_content` for IDs `59769`, `51496`, `26366`, `3185`, `51898`, `63287`, `58027`, `61998`, `60687`; no title, slug, price, image, taxonomy, meta, GMC sync, build, deploy, or PM2 restart.
-- Backup: `workspace/audit/active/gmc-step1-apply-9-backup-20260605.jsonl`; apply log: `workspace/audit/active/gmc-step1-apply-9-log-20260605.csv`.
-- Verification: WordPress `get_post()` hashes matched the dry-run `after_hash` for all 9 products. ID `58027` remains flagged for post-sync re-check because `restore` remains in the approved proposal.
-- Cache: public Cloudflare route returned 403 and port `3010` rejected the current secret, but local Next revalidation succeeded on active app ports `3000`, `3012`, and `3018` for `tag:products`.
-- Next gate: Step 2 LLM rewrite dry-run for 44 products; do not run GMC sync until all approved description fixes are complete.
+### Next
+- Codex: CODEX-GMC-FIX-20260605.md (48 LLM rewrites) + impression-priority humanizer after face cleansers done
+- Post-freeze (Jul 3): LCP bundle analysis, blog content, UCP/MCP
