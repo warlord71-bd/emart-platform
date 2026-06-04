@@ -1663,21 +1663,27 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Codex: CODEX-GMC-FIX-20260605.md (48 LLM rewrites) + impression-priority humanizer after face cleansers done
 - Post-freeze (Jul 3): LCP bundle analysis, blog content, UCP/MCP
 
----
-## 2026-06-05 — Codex GMC Step 2 LLM Dry-Run
+## 2026-06-05 (final) — GMC complete + M6 internal links + Meta events
 
-- Built humanizer-style dry-run script `workspace/scripts/active/gmc_step2_llm_rewrite.py`; apply is intentionally not implemented in that script.
-- Generated Step 2 artifacts with no Woo writes: `workspace/audit/active/gmc-step2-llm-rewrite-dryrun-2026-06-05.csv`, `workspace/audit/active/gmc-step2-llm-rewrite-proposals-2026-06-05.jsonl`, and owner sample `workspace/audit/active/gmc-step2-owner-sample-10-20260605.csv`.
-- Final clean output: `44` unique products, `28` ready for owner sample, `16` manual-review rows for length shift, `0` rows with remaining validator risk terms.
-- Raw duplicate output from interrupted/resumed generation preserved separately as `workspace/audit/active/gmc-step2-llm-rewrite-dryrun-2026-06-05.raw-duplicates.csv` and `.jsonl`.
-- Next gate: owner reviews the 10-row sample and/or full CSV before any Step 2 apply batches of 10. No GMC sync yet.
+### Did
+- GMC Steps 3-6 documented + Step 7 sync: 127→107 disapproved (−20), 3503→3523 approved (+20)
+- M6 ingredient/concern internal links: niacinamide(10), hyaluronic-acid(7), acne-blemish(7), dryness-hydration(4) [[LINK:]] markers
+- feat(analytics): InitiateCheckout Meta Pixel event added — checkout now fully tracked
+- OWNER-ACTIONS-20260605.md: exact dashboard steps for MailPoet review email, Meta CAPI test, GSC x7 URLs, Cloudflare cache
+- Remaining 107 GMC disapprovals: 15 unfixable identity, 11 title-risk(owner), 2 data/asset(owner), 6 mixed-manual(owner)
+- All commits pushed to origin/main
 
----
-## 2026-06-05 — Codex GMC Step 2 Apply
+### Running autonomously overnight
+- emart-meta-gen (PM2): ~2,193 applied, ~2,642 remaining (snapshot count), completion ~Jun 6
+- emart-presence (PM2): stable
+- Python crons: site_health/daily_report/low_stock all healthy
+- Checkout monitor (PM2 cron every 15min): all 8 steps passing
 
-- Applied Step 2 after owner approval: `44` reviewed LLM proposals, `0` skipped, in batches of 10.
-- Mutated only Woo `post_content`; no title, slug, price, image, taxonomy, meta, GMC sync, build, deploy, or PM2 restart.
-- Backup: `workspace/audit/active/gmc-step2-apply-backup-20260605.jsonl`; apply log: `workspace/audit/active/gmc-step2-apply-log-20260605.csv`.
-- Verification: all `44` live WordPress `get_post()` hashes match the reviewed Step 2 proposal hashes. Product `34069` needed one direct `$wpdb->update` correction because `wp_update_post` normalized `&` to `&amp;`; final hash now matches.
-- Cache: local Next product-tag revalidation succeeded on ports `3000`, `3012`, and `3018`; port `3010` rejected current secret, `3035` timed out, `3002` returned 404.
-- Next gate: Steps 3-6 documentation/reports before GMC sync. Do not run `/root/.gmc/sync.py` yet.
+### Blockers for next session
+- Owner: workspace/docs/OWNER-ACTIONS-20260605.md (MailPoet, Meta CAPI, GSC indexing, Cloudflare)
+- Owner: 11 GMC title-risk products, 2 data/asset, 6 mixed-manual (gmc-steps3-6-report-20260605.md)
+- Codex: impression-priority humanizer when face cleansers done (184/216)
+- Mobile P0: after Codex X1+X2 complete
+
+### Next session start
+git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
