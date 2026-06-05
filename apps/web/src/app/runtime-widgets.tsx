@@ -14,7 +14,7 @@ const Toaster = dynamic(() => import('react-hot-toast').then((mod) => mod.Toaste
   ssr: false,
 });
 
-function useDeferredThirdParty(delayMs = 12000) {
+function useDeferredThirdParty(delayMs = 30000) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ function useDeferredThirdParty(delayMs = 12000) {
 }
 
 function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
-  const ready = useDeferredThirdParty(12000);
+  const ready = useDeferredThirdParty(30000);
   if (!gaId || !ready) return null;
 
   return (
@@ -78,7 +78,7 @@ function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
 }
 
 function GoogleRatingBadge() {
-  const ready = useDeferredThirdParty(15000);
+  const ready = useDeferredThirdParty(30000);
   if (!ready) return null;
 
   return (
