@@ -1727,3 +1727,26 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 ### Next
 - Run device checkout smoke for COD, bKash, and Nagad.
 - Build signed production AAB with EAS and upload to Play Store internal testing after device smoke passes.
+
+## 2026-06-05 — Codex mobile ADB + logic pass
+
+### Did
+- Installed `android-tools-adb` on the VPS and started ADB successfully.
+- Checked `adb devices -l` and `lsusb`; no Android phone is visible to the VPS, only the root USB hub. Phone connected to user's laptop is not automatically exposed to this remote server.
+- Fixed mobile product-detail hook-order edge case when route params are missing.
+- Removed mobile Card payment copy until SSLCommerz exists.
+- Wired mobile review calls to send stored JWT Bearer token.
+- Updated Next `/api/product-reviews` to accept mobile JWT Bearer auth by validating via WordPress `/wp-json/emart/v1/customer/me`.
+- Deployed the web BFF review-token fix to live, restarted `emartweb`, and pushed commits to `origin/main`.
+
+### Verification
+- `npx expo-doctor` passed 18/18.
+- `npx expo export --platform android --output-dir /tmp/emart-mobile-export` passed.
+- Local and VPS `apps/web` builds passed.
+- Live smoke: homepage 200, `/api/mobile/products?per_page=1` 200, review GET 200, guest review POST 401.
+
+### Blockers
+- No real-device ADB test possible from the VPS until the phone is connected to the VPS/USB-forwarded or ADB-over-network is configured from the laptop.
+
+### Next
+- For a real phone pass, expose the phone to this environment via ADB-over-network or run the ADB/Expo test commands directly on the laptop where the phone is plugged in.

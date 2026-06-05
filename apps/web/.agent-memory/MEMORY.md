@@ -50,3 +50,4 @@
 - [Third-party JS perf pass 2026-06-03](project_third_party_perf_20260603.md) — GA4, Meta Pixel, and Merchant rating badge are delayed after load/idle; GA audience CSP fixed; Lighthouse mobile TBT/main-thread materially improved
 - [Impression-priority humanizer 2026-06-05](project_impression_priority_humanizer_20260605.md) — first 10 non-holdout GSC-impression-priority products reviewed/applied; raw and reviewed JSONL preserved; script print/resume guard fixed
 - [Mobile M0 release readiness 2026-06-05](project_mobile_m0_20260605.md) — mobile BFF credential check clean, shipping policy aligned, checkout success response fixed, Expo export + expo-doctor pass; device checkout/EAS/Play upload still open
+- [Mobile ADB + logic pass 2026-06-05](project_mobile_adb_logic_20260605.md) — adb installed but no phone visible to VPS; fixed product-detail hook guard, truthful payment copy, and mobile JWT review auth; web BFF deployed and smoke-tested
