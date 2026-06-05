@@ -14,38 +14,33 @@ const Toaster = dynamic(() => import('react-hot-toast').then((mod) => mod.Toaste
   ssr: false,
 });
 
-function useDeferredThirdParty(delayMs = 4000) {
+function useDeferredThirdParty(delayMs = 12000) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    let idleId: number | undefined;
     let timerId: number | undefined;
+    const interactionEvents = ['pointerdown', 'keydown', 'touchstart', 'scroll'] as const;
 
     const markReady = () => {
       if (!cancelled) setReady(true);
     };
 
-    const schedule = () => {
-      timerId = window.setTimeout(markReady, delayMs);
-      if ('requestIdleCallback' in window) {
-        idleId = window.requestIdleCallback(markReady, { timeout: delayMs });
-      }
+    const cleanupInteractionListeners = () => {
+      interactionEvents.forEach((eventName) => {
+        window.removeEventListener(eventName, markReady);
+      });
     };
 
-    if (document.readyState === 'complete') {
-      schedule();
-    } else {
-      window.addEventListener('load', schedule, { once: true });
-    }
+    interactionEvents.forEach((eventName) => {
+      window.addEventListener(eventName, markReady, { once: true, passive: true });
+    });
+    timerId = window.setTimeout(markReady, delayMs);
 
     return () => {
       cancelled = true;
-      window.removeEventListener('load', schedule);
+      cleanupInteractionListeners();
       if (timerId) window.clearTimeout(timerId);
-      if (idleId && 'cancelIdleCallback' in window) {
-        window.cancelIdleCallback(idleId);
-      }
     };
   }, [delayMs]);
 
@@ -53,7 +48,7 @@ function useDeferredThirdParty(delayMs = 4000) {
 }
 
 function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
-  const ready = useDeferredThirdParty(3500);
+  const ready = useDeferredThirdParty(12000);
   if (!gaId || !ready) return null;
 
   return (
@@ -83,7 +78,7 @@ function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
 }
 
 function GoogleRatingBadge() {
-  const ready = useDeferredThirdParty(5000);
+  const ready = useDeferredThirdParty(15000);
   if (!ready) return null;
 
   return (

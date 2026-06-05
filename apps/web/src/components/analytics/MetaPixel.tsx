@@ -15,33 +15,28 @@ export default function MetaPixel() {
 
   useEffect(() => {
     let cancelled = false;
-    let idleId: number | undefined;
     let timerId: number | undefined;
+    const interactionEvents = ['pointerdown', 'keydown', 'touchstart', 'scroll'] as const;
 
     const markReady = () => {
       if (!cancelled) setReady(true);
     };
 
-    const schedule = () => {
-      timerId = window.setTimeout(markReady, 4000);
-      if ('requestIdleCallback' in window) {
-        idleId = window.requestIdleCallback(markReady, { timeout: 4000 });
-      }
+    const cleanupInteractionListeners = () => {
+      interactionEvents.forEach((eventName) => {
+        window.removeEventListener(eventName, markReady);
+      });
     };
 
-    if (document.readyState === 'complete') {
-      schedule();
-    } else {
-      window.addEventListener('load', schedule, { once: true });
-    }
+    interactionEvents.forEach((eventName) => {
+      window.addEventListener(eventName, markReady, { once: true, passive: true });
+    });
+    timerId = window.setTimeout(markReady, 12000);
 
     return () => {
       cancelled = true;
-      window.removeEventListener('load', schedule);
+      cleanupInteractionListeners();
       if (timerId) window.clearTimeout(timerId);
-      if (idleId && 'cancelIdleCallback' in window) {
-        window.cancelIdleCallback(idleId);
-      }
     };
   }, []);
 
