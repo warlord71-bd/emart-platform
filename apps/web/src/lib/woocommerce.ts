@@ -86,10 +86,13 @@ wooWriteClient.interceptors.response.use(undefined, async (error) => {
     const newCs = csMatch[1].trim();
 
     // Persist to .env.local so the next restart uses the correct key
-    execSync(
-      `sed -i "s|^WOO_CONSUMER_KEY=.*|WOO_CONSUMER_KEY=${newCk}|" /var/www/emart-platform/apps/web/.env.local && ` +
-      `sed -i "s|^WOO_CONSUMER_SECRET=.*|WOO_CONSUMER_SECRET=${newCs}|" /var/www/emart-platform/apps/web/.env.local`,
-      { timeout: 5000 }
+    const fs = await import(/* webpackIgnore: true */ 'fs' as string);
+    const envPath = '/var/www/emart-platform/apps/web/.env.local';
+    const envContent = fs.readFileSync(envPath, 'utf8');
+    fs.writeFileSync(envPath,
+      envContent
+        .replace(/^WOO_CONSUMER_KEY=.*/m, `WOO_CONSUMER_KEY=${newCk}`)
+        .replace(/^WOO_CONSUMER_SECRET=.*/m, `WOO_CONSUMER_SECRET=${newCs}`)
     );
 
     // Update the live axios instance params so current and future requests use new key
@@ -1282,7 +1285,7 @@ export async function getCategoryBySlug(slug: string): Promise<WooCategory | nul
 // ORDERS API
 // ══════════════════════════════
 
-export async function createOrder(orderData: {
+export type WooOrderCreatePayload = {
   payment_method: string;
   payment_method_title?: string;
   billing: WooBilling;
@@ -1293,7 +1296,39 @@ export async function createOrder(orderData: {
   customer_note?: string;
   coupon_lines?: { code: string }[];
   meta_data?: { key: string; value: string }[];
-}): Promise<WooOrder | null> {
+};
+
+export async function createOrderViaPlugin(payload: WooOrderCreatePayload): Promise<WooOrder> {
+  const secret = process.env.EMART_ORDER_SECRET;
+  if (!secret) {
+    throw new Error('EMART_ORDER_SECRET not set');
+  }
+
+  const internalUrl = process.env.WOO_INTERNAL_URL || DEFAULT_INTERNAL_WOO_URL || 'http://127.0.0.1';
+  const orderStatus = payload.payment_method === 'cod' ? 'processing' : 'pending';
+  const response = await fetch(`${internalUrl}/wp-json/emart/v1/create-order`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Host': 'e-mart.com.bd',
+      'X-Emart-Secret': secret,
+    },
+    body: JSON.stringify({
+      ...payload,
+      currency: 'BDT',
+      status: orderStatus,
+    }),
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(`Order creation failed: ${data?.error || data?.message || response.status}`);
+  }
+
+  return data as WooOrder;
+}
+
+export async function createOrder(orderData: WooOrderCreatePayload): Promise<WooOrder | null> {
   try {
     // Validate credentials are configured
     if (!CONSUMER_KEY || !CONSUMER_SECRET) {

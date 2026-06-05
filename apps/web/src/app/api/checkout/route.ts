@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { calculateLineItemsSubtotal, createOrder, getShippingQuote } from '@/lib/woocommerce';
+import { calculateLineItemsSubtotal, createOrderViaPlugin, getShippingQuote } from '@/lib/woocommerce';
 import { ensureCustomerByEmail } from '@/lib/customerAccounts';
 import { sendMetaPurchaseEvent } from '@/lib/metaCapi';
 
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
     const subtotal = await calculateLineItemsSubtotal(line_items);
     const shippingQuote = await getShippingQuote(shipping?.city || billing?.city || 'Dhaka', subtotal);
 
-    const order = await createOrder({
+    const order = await createOrderViaPlugin({
       payment_method,
       payment_method_title: isNonEmptyString(payment_method_title) ? payment_method_title.trim() : undefined,
       billing: {

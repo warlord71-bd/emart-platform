@@ -1795,3 +1795,27 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 ### Next
 - Do not add visible homepage SEO/design/layout sections during the freeze without explicit owner approval.
 - If another SEO/performance refinement is needed, prefer non-visible metadata/schema/internal architecture or owner-approved placement after reviewing design impact first.
+
+## 2026-06-06 — Codex checkout order endpoint hardening
+
+### Did
+- Replaced fragile WC key recovery `.env.local` persistence shell `sed` with Node `fs` writes in `apps/web/src/lib/woocommerce.ts`.
+- Added `createOrderViaPlugin()` and switched `/api/checkout` to create orders through WordPress `/wp-json/emart/v1/create-order` using `EMART_ORDER_SECRET`.
+- Installed runtime mu-plugin `/var/www/wordpress/wp-content/mu-plugins/emart-order-endpoint.php`; source copy is in ignored `workspace/scripts/active/emart-order-endpoint.php`.
+- Added matching `EMART_ORDER_SECRET` values to Next `.env.local` and WordPress `wp-config.php`.
+- Preserved checkout behavior: COD `processing`, non-COD `pending`, shipping lines, coupon lines, customer note, customer_id, attribution meta, BDT currency, and response fields needed by Meta CAPI.
+- Restarted `emartweb` after a clean production build.
+
+### Verification
+- `php -l /var/www/wordpress/wp-content/mu-plugins/emart-order-endpoint.php` passed.
+- `php -l /var/www/wordpress/wp-config.php` passed.
+- `npm run build` passed in `apps/web`.
+- Direct plugin smoke: internal `/wp-json/emart/v1/create-order` returned `201`; test order `93714` deleted.
+- Live BFF smoke: `POST https://e-mart.com.bd/api/checkout` returned `success:true`; test order `93715` and temporary user `2753` deleted.
+- Live smokes: homepage `200`, `/api/mobile/products?per_page=1` `200`, wrong plugin secret `403`.
+
+### Blockers
+- None.
+
+### Next
+- Commit only the checkout code/session docs; leave pre-existing dirty UI and humanizer files untouched.

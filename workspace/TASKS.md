@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-06 (homepage link-hub removed; freeze approval rule clarified)
+Last updated: 2026-06-06 (homepage link-hub removed; checkout order endpoint hardened)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -62,6 +62,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 
 ## ✅ COMPLETED THIS SESSION (2026-06-05)
 
+- Checkout order creation hardened: Next `/api/checkout` now uses secret-protected WP mu-plugin `/wp-json/emart/v1/create-order`; WC REST key order-create dependency removed from live checkout path; direct plugin smoke + full BFF checkout smoke passed; test order/user cleaned up
 - FAQPage JSON-LD on 9 concern pages
 - Product schema description decoupled (400-500c when humanized)
 - agents.md live at /agents.md (FB: emartbd.official, YT: @emartbd.official)
