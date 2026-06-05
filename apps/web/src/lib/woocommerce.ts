@@ -1322,7 +1322,13 @@ export async function createOrderViaPlugin(payload: WooOrderCreatePayload): Prom
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(`Order creation failed: ${data?.error || data?.message || response.status}`);
+    const error = new Error(`Order creation failed: ${data?.error || data?.message || response.status}`) as Error & {
+      response?: { status: number; data: unknown };
+      status?: number;
+    };
+    error.status = response.status;
+    error.response = { status: response.status, data };
+    throw error;
   }
 
   return data as WooOrder;

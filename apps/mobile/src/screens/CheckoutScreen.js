@@ -22,16 +22,21 @@ const CheckoutScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [city, setCity] = useState("Dhaka");
   const [payment, setPayment] = useState("cod");
   const [trxId, setTrxId] = useState("");
   const [placing, setPlacing] = useState(false);
+  const idempotencyKeyRef = useRef(`mobile-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`);
 
   const [couponCode, setCouponCode] = useState("");
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState(null);
   const [couponLoading, setCouponLoading] = useState(false);
 
-  const deliveryFee = cartTotal >= BUSINESS.SHIPPING.FREE_THRESHOLD ? 0 : BUSINESS.SHIPPING.DHAKA_FEE;
+  const isDhaka = city.trim().toLowerCase().includes("dhaka");
+  const deliveryFee = cartTotal >= BUSINESS.SHIPPING.FREE_THRESHOLD
+    ? 0
+    : (isDhaka ? BUSINESS.SHIPPING.DHAKA_FEE : BUSINESS.SHIPPING.OUTSIDE_DHAKA_FEE);
   const total = Math.max(0, cartTotal - couponDiscount + deliveryFee);
 
   const paymentMethods = [
@@ -77,7 +82,7 @@ const CheckoutScreen = ({ navigation }) => {
   const removeCoupon = () => { setCouponCode(""); setCouponDiscount(0); setCouponApplied(null); };
 
   const placeOrder = async () => {
-    if (!name.trim() || !email.trim() || !phone.trim() || !address.trim()) { Alert.alert("Missing Info", "Please fill all fields"); return; }
+    if (!name.trim() || !email.trim() || !phone.trim() || !address.trim() || !city.trim()) { Alert.alert("Missing Info", "Please fill all fields"); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { Alert.alert("Invalid Email", "Please enter a valid email address"); return; }
     if ((payment === "bkash" || payment === "nagad") && !trxId.trim()) { Alert.alert("Transaction ID Required", `Please enter your ${payment === "bkash" ? "bKash" : "Nagad"} transaction ID`); return; }
     if (items.length === 0) { Alert.alert("Cart Empty", "Please add items before placing order"); return; }
@@ -88,11 +93,12 @@ const CheckoutScreen = ({ navigation }) => {
       const orderData = {
         payment_method: payment,
         payment_method_title: selectedMethod.title,
-        billing: { first_name: name, email: email.trim().toLowerCase(), phone, address_1: address, country: "BD" },
-        shipping: { first_name: name, phone, address_1: address, country: "BD" },
+        billing: { first_name: name, email: email.trim().toLowerCase(), phone, address_1: address, city: city.trim(), country: "BD" },
+        shipping: { first_name: name, phone, address_1: address, city: city.trim(), country: "BD" },
         customer_note: payment === "cod" ? "Cash on Delivery" : `${selectedMethod.title} Transaction ID: ${trxId}`,
         line_items: items.map((item) => ({ product_id: item.id, quantity: item.quantity })),
         coupon_lines: couponApplied ? [{ code: couponApplied.code }] : [],
+        idempotency_key: idempotencyKeyRef.current,
       };
       const res = await createOrder(orderData);
       if (res.error) throw new Error(res.error);
@@ -144,6 +150,10 @@ const CheckoutScreen = ({ navigation }) => {
           <View style={[styles.inputWrap, { height: 80, alignItems: "flex-start", paddingTop: 12 }]}>
             <Ionicons name="location-outline" size={16} color={COLORS.textLight} style={{ marginTop: 2 }} />
             <TextInput style={[styles.input, { height: 60 }]} placeholder="Delivery Address" placeholderTextColor={COLORS.textLight} value={address} onChangeText={setAddress} multiline />
+          </View>
+          <View style={styles.inputWrap}>
+            <Ionicons name="business-outline" size={16} color={COLORS.textLight} />
+            <TextInput style={styles.input} placeholder="City / District" placeholderTextColor={COLORS.textLight} value={city} onChangeText={setCity} />
           </View>
         </View>
 

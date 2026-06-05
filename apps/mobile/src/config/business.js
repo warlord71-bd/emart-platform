@@ -5,6 +5,7 @@ export const BUSINESS = {
   SITE_URL: 'https://e-mart.com.bd',
   SHIPPING: {
     DHAKA_FEE: 70,
+    OUTSIDE_DHAKA_FEE: 100,
     FREE_THRESHOLD: 3000,
   },
 };
