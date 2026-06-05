@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { COMPANY } from '@/lib/companyProfile';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 export const metadata: Metadata = {
   title: 'About Emart Skincare Bangladesh | Authentic Beauty Since 2018',
@@ -72,43 +73,68 @@ const trustPoints = [
   'All product URLs verified in Google Merchant Center for accurate Shopping feed data',
 ];
 
+const brandFaqs = [
+  {
+    question: 'Is Emart authentic?',
+    answer: `${COMPANY.storeName} focuses on authentic skincare and beauty products sourced through verified supply chains, with support handled by our local team in ${COMPANY.office.area}.`,
+  },
+  {
+    question: 'Where is Emart located in Dhaka?',
+    answer: `${COMPANY.storeName} is located at ${COMPANY.office.full}.`,
+  },
+  {
+    question: 'How do I contact Emart?',
+    answer: `You can contact ${COMPANY.storeName} on WhatsApp at ${COMPANY.phones.sales}, call ${COMPANY.phones.primary}, or email ${COMPANY.supportEmail}.`,
+  },
+];
+
 const organizationSchema = {
-  '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': `${absoluteUrl('/about-us')}#organization`,
   name: COMPANY.storeName,
   alternateName: COMPANY.brandName,
-  url: 'https://e-mart.com.bd',
-  logo: 'https://e-mart.com.bd/logo.png',
+  url: absoluteUrl('/'),
+  logo: absoluteUrl('/images/logo.png'),
   foundingDate: '2018',
-  description:
-    'Emart is a Bangladesh-based retailer of authentic Korean, Japanese, and global skincare products, operated by HG Corporation in Dhanmondi, Dhaka.',
+  description: `${COMPANY.storeName} is a Bangladesh-based retailer of authentic Korean, Japanese, and global skincare products, operated by ${COMPANY.enterpriseName} in ${COMPANY.office.area}.`,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: COMPANY.warehouse.line1,
-    addressLocality: 'Dhanmondi',
-    addressRegion: 'Dhaka',
-    postalCode: '1205',
-    addressCountry: 'BD',
+    streetAddress: COMPANY.shop.streetAddress,
+    addressLocality: COMPANY.shop.addressLocality,
+    addressRegion: COMPANY.shop.addressRegion,
+    postalCode: COMPANY.shop.postalCode,
+    addressCountry: COMPANY.shop.addressCountry,
   },
   contactPoint: [
     {
       '@type': 'ContactPoint',
       telephone: COMPANY.phones.primaryHref,
-      contactType: 'customer service',
-      availableLanguage: ['Bengali', 'English'],
+      contactType: 'customer support',
+      email: COMPANY.supportEmail,
+      areaServed: COMPANY.shop.addressCountry,
+      availableLanguage: ['en', 'bn'],
     },
     {
       '@type': 'ContactPoint',
-      email: COMPANY.supportEmail,
-      contactType: 'customer support',
+      telephone: COMPANY.phones.salesHref,
+      contactType: 'sales',
+      areaServed: COMPANY.shop.addressCountry,
+      availableLanguage: ['en', 'bn'],
     },
   ],
-  sameAs: [
-    COMPANY.social.facebook,
-    COMPANY.social.instagram,
-    COMPANY.social.x,
-    COMPANY.social.youtube,
-  ],
+  sameAs: Object.values(COMPANY.social),
+};
+
+const aboutPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': `${absoluteUrl('/about-us')}#about-page`,
+  url: absoluteUrl('/about-us'),
+  name: `About ${COMPANY.storeName}`,
+  mainEntity: {
+    '@id': `${absoluteUrl('/about-us')}#organization`,
+  },
+  about: organizationSchema,
 };
 
 const personSchema = {
@@ -120,15 +146,29 @@ const personSchema = {
   worksFor: {
     '@type': 'Organization',
     name: COMPANY.storeName,
-    url: 'https://e-mart.com.bd',
+    url: absoluteUrl('/'),
   },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: brandFaqs.map(({ question, answer }) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: answer,
+    },
+  })),
 };
 
 export default function AboutUsPage() {
   return (
     <main className="bg-bg">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(aboutPageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(personSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqSchema) }} />
 
       {/* Hero */}
       <section className="border-b border-hairline bg-card">
@@ -167,6 +207,9 @@ export default function AboutUsPage() {
                 quality checks, customer support, packing, and dispatch — from our office at{' '}
                 <strong>{COMPANY.office.line1}, {COMPANY.office.area}</strong> and warehouse at{' '}
                 <strong>{COMPANY.warehouse.line1}, {COMPANY.warehouse.area}</strong>.
+              </p>
+              <p>
+                Emart has been operating from Dhanmondi, Dhaka since 2018 with a team of {COMPANY.teamSize}.
               </p>
               <p>
                 We carry products from brands like COSRX, The Ordinary, La Roche-Posay, Laneige, Beauty of Joseon,
@@ -260,6 +303,24 @@ export default function AboutUsPage() {
           Office hours: <strong className="text-ink">{COMPANY.officeHours}</strong>. Walk-ins are welcome for
           collection or product queries.
         </p>
+      </section>
+
+      {/* Brand FAQ */}
+      <section className="mx-auto max-w-6xl px-4 py-10">
+        <h2 className="mb-6 text-2xl font-bold text-ink">Emart FAQ</h2>
+        <div className="space-y-3">
+          {brandFaqs.map((faq) => (
+            <details key={faq.question} className="group overflow-hidden rounded-2xl border border-hairline bg-card shadow-card">
+              <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-left font-semibold text-ink transition-colors hover:bg-bg-alt [&::-webkit-details-marker]:hidden">
+                <span>{faq.question}</span>
+                <span className="text-accent transition-transform group-open:rotate-180">▼</span>
+              </summary>
+              <div className="border-t border-hairline px-5 py-4 text-sm leading-6 text-muted">
+                {faq.answer}
+              </div>
+            </details>
+          ))}
+        </div>
       </section>
 
       {/* CTA */}

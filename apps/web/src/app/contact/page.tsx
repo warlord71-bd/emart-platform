@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { COMPANY } from '@/lib/companyProfile';
+import { absoluteUrl } from '@/lib/siteUrl';
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 
 const CONTACT_ADDRESS = COMPANY.warehouse.full;
 const ENCODED_CONTACT_ADDRESS = encodeURIComponent(CONTACT_ADDRESS);
@@ -10,34 +12,116 @@ const GOOGLE_MAP_URL = `https://www.google.com/maps/search/?api=1&query=${ENCODE
 const GOOGLE_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${ENCODED_CONTACT_ADDRESS}`;
 
 export const metadata: Metadata = {
-  title: 'Contact Us',
-  description: `Contact ${COMPANY.storeName} for customer support, office help, warehouse coordination, or order questions.`,
+  title: 'Contact Emart Skincare Bangladesh | Dhanmondi, Dhaka',
+  description: 'Contact Emart — authentic skincare delivered across Bangladesh. Visit our Dhanmondi shop, WhatsApp us, or email support@e-mart.com.bd. Open Sat–Thu 9am–9pm.',
+  alternates: { canonical: 'https://e-mart.com.bd/contact' },
+};
+
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['OnlineStore', 'LocalBusiness'],
+  '@id': `${absoluteUrl('/contact')}#contact-business`,
+  name: COMPANY.storeName,
+  alternateName: COMPANY.brandName,
+  url: absoluteUrl('/contact'),
+  image: absoluteUrl('/images/logo.png'),
+  logo: absoluteUrl('/images/logo.png'),
+  email: COMPANY.supportEmail,
+  telephone: COMPANY.phones.primaryHref,
+  priceRange: 'BDT',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: COMPANY.shop.streetAddress,
+    addressLocality: COMPANY.shop.addressLocality,
+    addressRegion: COMPANY.shop.addressRegion,
+    postalCode: COMPANY.shop.postalCode,
+    addressCountry: COMPANY.shop.addressCountry,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: COMPANY.shop.geo.latitude,
+    longitude: COMPANY.shop.geo.longitude,
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: COMPANY.office.country,
+  },
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      telephone: COMPANY.phones.primaryHref,
+      contactType: 'customer support',
+      email: COMPANY.supportEmail,
+      areaServed: COMPANY.shop.addressCountry,
+      availableLanguage: ['en', 'bn'],
+    },
+    {
+      '@type': 'ContactPoint',
+      telephone: COMPANY.phones.salesHref,
+      contactType: 'sales',
+      areaServed: COMPANY.shop.addressCountry,
+      availableLanguage: ['en', 'bn'],
+    },
+  ],
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: [
+        'https://schema.org/Saturday',
+        'https://schema.org/Sunday',
+        'https://schema.org/Monday',
+        'https://schema.org/Tuesday',
+        'https://schema.org/Wednesday',
+        'https://schema.org/Thursday',
+      ],
+      opens: '09:00',
+      closes: '21:00',
+      description: COMPANY.officeHours,
+    },
+  ],
+  sameAs: [
+    COMPANY.social.facebook,
+    COMPANY.social.youtube,
+    COMPANY.social.instagram,
+  ],
 };
 
 export default function ContactPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(contactSchema) }} />
       <h1 className="mb-6 text-2xl font-bold text-ink">Contact Us</h1>
 
       <div className="mb-10 grid grid-cols-1 gap-8 md:grid-cols-2">
         {/* Contact Form */}
         <div className="rounded-2xl border border-hairline bg-card p-6 shadow-card">
           <h2 className="mb-4 text-lg font-semibold text-ink">Send us a Message</h2>
-          <form className="space-y-4">
+          <a
+            href={COMPANY.whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mb-4 block w-full rounded-xl bg-[#25D366] px-4 py-3 text-center font-semibold text-white transition-colors hover:bg-[#1fb957]"
+          >
+            Message us on WhatsApp for instant reply
+          </a>
+          <p className="mb-4 rounded-lg border border-brass/30 bg-brass-soft px-3 py-2 text-sm text-ink-2">
+            The form opens your email app and sends to {COMPANY.supportEmail}. For the fastest reply, use WhatsApp.
+          </p>
+          <form action={`mailto:${COMPANY.supportEmail}`} method="post" encType="text/plain" className="space-y-4">
             <div>
               <label className="mb-1 block text-sm font-medium text-muted">Name</label>
-              <input type="text" className="w-full rounded-lg border border-hairline bg-card px-3 py-2 text-ink focus:border-accent" required />
+              <input type="text" name="name" className="w-full rounded-lg border border-hairline bg-card px-3 py-2 text-ink focus:border-accent" required />
             </div>
             <div>
               <label className="mb-1 block text-sm font-medium text-muted">Email</label>
-              <input type="email" className="w-full rounded-lg border border-hairline bg-card px-3 py-2 text-ink focus:border-accent" required />
+              <input type="email" name="email" className="w-full rounded-lg border border-hairline bg-card px-3 py-2 text-ink focus:border-accent" required />
             </div>
             <div>
               <label className="mb-1 block text-sm font-medium text-muted">Message</label>
-              <textarea rows={4} className="w-full rounded-lg border border-hairline bg-card px-3 py-2 text-ink focus:border-accent" required></textarea>
+              <textarea name="message" rows={4} className="w-full rounded-lg border border-hairline bg-card px-3 py-2 text-ink focus:border-accent" required></textarea>
             </div>
             <button type="submit" className="w-full rounded-xl bg-ink py-2.5 font-semibold text-white transition-colors hover:bg-black">
-              Send Message
+              Email Support
             </button>
           </form>
         </div>
