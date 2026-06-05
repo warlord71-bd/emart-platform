@@ -229,7 +229,7 @@ def cmd_dry_run(args):
         results.append(row)
         with open(JSONL, "a") as f:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
-        print(f"  ✓ saved ({len(_strip(gen['content_html']))} chars)")
+        print(f"  ✓ saved ({len(_strip(gen['content_html']))} chars, meta {len(gen['meta_desc'])}c)")
         time.sleep(2)
 
     print(f"\nDone. {len(results)} products → {JSONL}")

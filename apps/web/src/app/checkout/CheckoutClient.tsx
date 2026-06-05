@@ -8,7 +8,7 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import { COMPANY } from '@/lib/companyProfile';
-import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue } from '@/lib/metaPixel';
+import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue, trackMetaEvent } from '@/lib/metaPixel';
 import { readAttribution } from '@/components/AttributionTracker';
 
 const DISTRICTS = [
@@ -79,6 +79,18 @@ export default function CheckoutPage() {
   } | null>(null);
   const fallbackShippingFee = form.city === 'Dhaka' ? 70 : 100;
   const shippingFee = shippingQuote ? shippingQuote.total : fallbackShippingFee;
+
+  useEffect(() => {
+    if (items.length === 0) return;
+    const total = items.reduce((sum, i) => sum + parseFloat(i.price || '0') * i.quantity, 0);
+    trackMetaEvent('InitiateCheckout', {
+      content_ids: items.map((i) => String(i.id)),
+      contents: items.map((i) => ({ id: String(i.id), quantity: i.quantity })),
+      num_items: items.reduce((s, i) => s + i.quantity, 0),
+      currency: 'BDT',
+      value: total,
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (items.length === 0) return;

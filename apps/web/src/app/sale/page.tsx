@@ -118,7 +118,7 @@ export default async function SalePage({ searchParams }: SalePageProps) {
       <div className="mb-6 border-b border-hairline pb-5">
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Limited Time</p>
         <h1 className="text-2xl font-bold text-ink sm:text-3xl">Sale</h1>
-        <p className="mt-1 text-sm text-muted">{total} products on sale</p>
+        <h2 className="mt-1 text-sm font-normal text-muted">{total} authentic skincare products at discounted prices — COD available</h2>
       </div>
 
       {/* Mobile filters */}

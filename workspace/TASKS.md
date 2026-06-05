@@ -1,160 +1,83 @@
 # Emart Task Board
-Last updated: 2026-06-04
+Last updated: 2026-06-05 (end of session)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
 ---
 
-## 🤖 RUNNING AUTONOMOUSLY (no action needed)
+## 🤖 RUNNING AUTONOMOUSLY
 
-| PM2 Job | Schedule | What |
+| Job | Status | Notes |
 |---|---|---|
-| `emart-meta-gen` | Continuous | dry-run → validate → apply-reviewed → revalidate → repeat |
-| `emart-seo-autoscan` | Daily 07:00 BD | Blog SEO auto-fill via `emart-seo-generator` OpenClaw skill |
-| `emart-checkout-monitor` | Every 15 min | 8-step checkout test, instant Telegram on failure |
-| `emart-competitor-prices` | Daily 08:00 BD | Yahoo search → competitor price → Google Sheets + Telegram |
-| `emart-serp-checker` | Daily 07:00 BD | GSC position tracker, Telegram report |
-| `emart-presence` | Persistent | WebSocket presence server |
+| `emart-meta-gen` (PM2) | ✅ running | ~2,600 remaining, completion ~Jun 6 |
+| `emart-presence` (PM2) | ✅ running | WebSocket, 33d uptime |
+| `emart-checkout-monitor` (PM2 cron) | ✅ all 8 steps pass | Every 15 min |
+| Python crons | ✅ running | site_health, daily_report, low_stock |
+| GMC sync | ✅ last run Jun 5 | 3,523/3,630 approved |
 
 ---
 
-## 🔴 URGENT — Mobile App (starts 2026-06-05)
+## 🔴 OWNER — Do these (workspace/docs/OWNER-ACTIONS-20260605.md)
 
-### M0 — Mobile App: Internal Testing → Play Store `[O+C]`
-- [ ] Internal testing audit: document all known bugs before build
-- [ ] Verify all direct WooCommerce calls removed (M2 done — confirm no regressions)
-- [ ] Rotate any WC API keys that were ever in mobile bundle
-- [ ] Fix cart/checkout mobile flow (M4 — client wired, backend endpoint `/api/checkout` verify)
-- [ ] Build signed APK/AAB for Play Store internal testing track
-- [ ] Play Store listing: title, screenshots (phone + tablet), short/long description, content rating, privacy policy
-- [ ] Submit to internal testing track → QA sign-off → promote to closed testing → open testing → production
-- [ ] See `workspace/docs/mobile-build-notes.md` for build config details
-
----
-
-## 🟡 ACTIVE — SEO / Content
-
-### S1 — Meta Description Catalog `[A]` 🔄
-- Auto-running: `emart-meta-gen` PM2 continuous loop
-- ~2,642 products remaining when started → runs until 0
-- Standard: 130-158c, 2-clause, no price, Bangladesh + Emart + COD
-- Writes both `_emart_meta_description` + `_rank_math_description`
-- Validator: `python3 workspace/docs/meta_validator.py --catalog`
-
-### S2 — Face Cleanser Humanizer `[X]` 🔄
-- **185/218 humanized** (180 regular + 5 mini)
-- 21 regular remaining — Codex batch running
-- 2 products removed from category (62869 body wash, 63929 toner)
-- 1 bundle (63747) — skip flagged
-- Holdout: 13 products → GSC measure 2026-07-26
-
-### S3 — Next Humanizer Category: Toner/Mist `[X next]`
-After face-cleansers complete:
-1. `baseline_snapshot.py` for toner/mist
-2. Copy `humanizer_face_cleansers.py` → `humanizer_toners.py`, update category/type maps
-3. Maintain 13-product holdout group
-4. Or use OpenClaw `emart-auto-publisher` if < 100 products
-
-### S4 — Playwright MCP Active Scope `[C+A]`
-Running:
-- Checkout monitor (15-min) ✅
-- Competitor price checker (daily) ✅
-Next to build:
-- Product page visual audit (top 50 PDPs)
-- New-product SEO trigger (on publish → auto `emart-seo-generator`)
-- Blog CTR loop (7-day post-publish → GSC check → rewrite if low)
-
-### S5 — GSC / Cloudflare `[O]`
-- [x] Googlebot unblocked (Bot Fight Mode OFF + WAF rule: `cf.client.bot` → skip all)
-- [ ] Re-submit sitemap in GSC → Sitemaps → remove + re-add `https://e-mart.com.bd/sitemap.xml`
-- [ ] Request indexing on top 20 products via GSC URL Inspection tool
-
-### S6 — pa_concern taxonomy `[O pending]`
-- Owner CSV review required before apply
-- Dry-run CSVs in `workspace/audit/archive/`
+1. **MailPoet review email** — WooCommerce trigger → Order Completed → 3-day delay → review email
+2. **Meta CAPI test** — COD test order → Events Manager: verify Purchase value > 0 + BDT + InitiateCheckout
+3. **GSC URL indexing** — 7 URLs listed in OWNER-ACTIONS doc
+4. **Cloudflare cache rule** — /shop + /category, 1hr edge TTL
+5. **GMC title-risk products** — 11 products in gmc-steps3-6-report-20260605.md, approve/reject title changes
+6. **GMC data/asset** — 2 products missing price/image: IDs 63749, 62576
+7. **GMC mixed manual** — 6 products: IDs 36262, 3274, 56108, 3753, 38292, 26194
+8. **16 product images** — workspace/audit/active/products-need-real-image.csv
+9. **pa_concern 1,161 rows** — workspace/audit/active/pa-concern-manual-review-20260521-174247.csv
 
 ---
 
-## 🔵 BACKLOG (after mobile launch)
+## 🟡 CODEX — Next tasks
 
-- `aggregateRating` in Product schema — enable when site gets more reviews
-- Missing product images — `workspace/audit/active/products-need-real-image.csv`
-- Korean Beauty taxonomy decision — `workspace/docs/category-taxonomy-status.md`
-- GCP service account key rotation (fingerprint `ce8b30ba` — security)
-- Cloudflare cache rules API setup (currently dashboard-only)
+### X2 — Impression-priority humanizer (starts when face cleansers done)
+- Face cleansers: 184/216 — ~32 remaining, complete soon
+- Queue ready: workspace/audit/active/humanizer-impression-priority-targets-2026-06-05.csv
+- Top 5: CeraVe night cream(945 imp) → Skin1004 centella(422) → Medicube vita C(355) → Innisfree clay mask(138) → COSRX snail(121)
+- Same dry-run → validate → owner sample → apply workflow as face cleansers
 
----
-
-## 📱 MOBILE EMERGENCY NOTE — 2026-06-05
-
-**Starting tomorrow: Mobile App Live Procedure**
-
-Internal flow:
-```
-Fix known bugs → Build signed AAB → Upload to Play Store internal track
-→ Internal QA (owner + 2-3 testers) → Fix bugs → Closed testing
-→ 2 weeks → Open testing → 2 weeks → Production release
-```
-
-Key files:
-- Build config: `workspace/docs/mobile-build-notes.md`
-- API: all calls go through `https://e-mart.com.bd/api/mobile/*` (BFF layer)
-- Auth: NextAuth sessions, no direct WC credentials in app bundle
-- WC keys: confirm `key_id 34` (live BFF) is the only active key
-
-Critical checks before build:
-1. No `WOOCOMMERCE_KEY` / `WOOCOMMERCE_SECRET` in mobile code
-2. `/api/mobile/products`, `/api/mobile/cart`, `/api/checkout` all respond 200
-3. bKash + Nagad payment flows tested on staging device
-4. COD order placement end-to-end tested
+### X3 — Mobile M0 (after X2 or in parallel)
+- workspace/docs/CODEX-BRIEF-20260605.md Tasks 3-5
+- App launch + Play Store + SSL Commerz
 
 ---
 
-## ✅ COMPLETED (log)
+## 🔵 BACKLOG (post-freeze Jul 3+)
 
-- Face cleanser mini products (5) humanized with parent context
-- Face cleanser consistency audit fixes (medical claims, h3 count, meta length)
-- Meta generator + validator pipeline (`meta_generator.py`, `meta_validator.py`)
-- Safe workflow: dry-run → validate → apply-reviewed → revalidate
-- Checkout monitor (PM2 15-min cron) live
-- Competitor price checker (Yahoo search + Google Sheets) live
-- SERP/GSC position tracker live
-- `emart-seo-generator` skill v2 (blog + product mode + auto-scan)
-- `emart-auto-publisher` skill (LLM → WordPress → SEO → Playwright verify)
-- Third-party analytics deferral (GA4, Meta Pixel → load/idle)
-- WooCommerce BFF security (M1 + M2 done, keys rotated)
-- Cloudflare Googlebot unblock (WAF rule + Bot Fight Mode off)
-- Git state reconciled (VPS/Local/origin all at same commit)
-- WP Application Password `openclaw-seo-gen` for Rank Math writes
-- `emart-rankmath-rest.php` v1.1 (write endpoint for blog SEO)
+- LCP fix: 58 scripts/1,494ms evaluation — bundle analysis needed
+- Blog content at scale: 51 posts vs Shajgoj 5,904
+- UCP/MCP commerce endpoint: build when reviews > 200 (currently 5)
+- Critical CSS (critters): DEV_MASTER W6
+- Origin editorial: UK, France, Bangladesh, others — owner confirms list
+- FAQ quality improvement: top 200 products have templated answers (M4)
+- GCP service account key rotation: fingerprint ce8b30ba
 
 ---
 
-## 📊 SITE ROUTE MAP (2026-06-04 baseline)
+## ✅ COMPLETED THIS SESSION (2026-06-05)
 
-Total sitemap URLs: **4,224** across 26 route types.
+- FAQPage JSON-LD on 9 concern pages
+- Product schema description decoupled (400-500c when humanized)
+- agents.md live at /agents.md (FB: emartbd.official, YT: @emartbd.official)
+- Sunscreen category copy (M7) — all missing terms added
+- Review form: all logged-in users can submit (aggregateRating unblocked)
+- InitiateCheckout Meta Pixel event added — full event set complete
+- BHA/salicylic ingredient redirects — fixes GSC position drop
+- H2 on /sale, /new-arrivals, /brands (DEV_MASTER L4)
+- M6 internal links: niacinamide, hyaluronic-acid, acne-blemish-care, dryness-hydration
+- SEO_MASTER M7+M8 closed, W7 scripts archived
+- GMC: 53 product descriptions fixed (9 rule-based + 44 LLM) → 127→107 disapproved
+- OWNER-ACTIONS-20260605.md + CODEX-GMC-FIX-20260605.md + gmc-steps3-6-report-20260605.md
 
-| Route | Count | Meta | Notes |
-|---|---|---|---|
-| `/shop` | 3,640 | 🟡 meta-gen running | ~2,642 still need 130-158c metas |
-| `/brands` | 387 | ✅ | Hardcoded in lib/ingredients.ts |
-| `/blog` | 51 | ✅ | Rank Math fields — some missing focus_keyword |
-| `/category` | 50 | ✅ | generateMetadata dynamic |
-| `/origins` | 23 | ✅ | Dynamic |
-| `/ingredients` | 16 | ✅ | Hardcoded metas |
-| `/routine` | 11 | ✅ | All 200, proper metas confirmed |
-| `/concerns` | 10 | ✅ | All 200, slugs correct (e.g. acne-blemish-care not acne) |
-| `/skin-type` | 6 | Need verify | |
-| Static pages | 16 | Need verify | /faq, /contact, /our-story etc |
-| `/offers /best /compare` | 15 | Need verify | |
+---
 
-**Key SEO gaps by priority:**
-1. 🔴 `/shop` metas — `emart-meta-gen` running, ~2,642 remaining
-2. 🟡 `/skin-type` + static pages — not checked, likely missing metas
-3. 🟡 `/blog` focus keywords — 32 posts missing `_rank_math_focus_keyword`
-4. 🔵 Request indexing on top pages after meta-gen completes
+## 🔑 Key Rules
 
-### S7 — WooCommerce API Key Rule `[always]`
-**Never delete a WC API key without updating .env.local first.**
-Current live key: key_id `39` ("Emart BFF Live 2026-06-04")
-Test after any change: `curl internal_url/wp-json/wc/v3/orders -X POST ...` must return order ID, not 403.
+**WC API Key:** key_id `39` ("Emart BFF Live") in `.env.local`. Never delete without updating .env.local first.
+**Freeze:** Structural/nav frozen until 2026-07-03. Content, data, new features, automation: OK.
+**Deploy order:** Local build → commit → rsync → VPS build → pm2 restart → smoke test → push.
+**Humanizer priority:** Always by GSC impression count, not category order.
+**GMC sync:** Always last — after all description fixes verified.

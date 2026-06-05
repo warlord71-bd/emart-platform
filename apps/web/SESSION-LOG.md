@@ -9,6 +9,14 @@ Format:
 
 ---
 
+## 2026-06-04 21:21 CEST — Codex
+- Did: Hardened Meta CAPI Purchase value handling so ROAS events recover a positive numeric value from Woo order totals or line/shipping totals.
+- Completed tasks: Meta Purchase value/currency fix
+- Blockers hit: Initial build caught a strict reducer type; fixed and reran successfully.
+- Next step: Deploy, restart `emartweb`, and verify Meta Test Events on the next purchase/test order.
+
+---
+
 ## 2026-04-18 — Claude (chat)
 - Did: Built memory kit, automation scripts, ROI model
 - Completed: Week 1 SEO bugs identified + fix scripts
@@ -1596,3 +1604,86 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 - Memory files updated: 185/218 humanizer, correct paths, 3 new entries for new systems
 - Claude vs Codex workflow pattern noted in memory
 - Site stable. Meta-gen continuous. Mobile app starts tomorrow.
+
+## 2026-06-05 — Full Ecosystem Audit + SEO/Schema/AI Sprint
+
+### Did
+- Fixed OpenClaw gateway (doctor --fix), skincare-trends cron (Ollama→openrouter/auto), OpenRouter key
+- Rewrote competitor_prices.py: full 3,639-product catalog vs EmartwayBD API + SkincareBD scrape
+- Wired Google Sheets webhook for competitor monitoring
+- Fixed false-alarm alert emails: added /wp-json/emart/v1/health endpoint to emart-newsletter.php
+- Full ecosystem audit: tasks, SEO_MASTER, DEV_MASTER, ARCHIVE_INDEX, Codex plan, GSC data, Lighthouse
+- Identified GMC root cause: 127 disapproved (216 prescription drug claims, 108 personal hardship copy, 36 misleading claims), delegated fix to Codex in CODEX-BRIEF-20260605.md
+- Confirmed checkout monitor works (all 8 steps pass), agents.md is misleading — is a cron PM2 job
+- Added FAQPage JSON-LD to 9 concern pages (was missing, ingredient pages already had it)
+- Decoupled Product schema description from meta: now uses full product.description (400-500c) when available, improving LLM citation depth
+- Created agents.md at /agents.md — AI agent discoverability with catalog browse, BFF endpoints, verified social channels (FB + YouTube @emartbd.official)
+- Fixed ARCHIVE_INDEX stale meta_gen_batch.sh entry
+- Written CODEX-BRIEF-20260605.md: GMC fix, humanizer redirect to impression-priority brands (CeraVe/Skin1004/Medicube/Innisfree/COSRX), mobile M0, Facebook/YouTube revenue alignment, SSL Commerz
+
+### Key findings
+- GMC Shopping is our BEST discovery channel (bypasses AI Overview zero-click), 15% blocked by policy violations
+- Humanizer was working on wrong products (face cleansers) — top impression brands not humanized
+- Review form already built in ReviewsSection.tsx — gap is post-purchase email + customer awareness
+- LCP 5.8s: W3 priority fix already done; real bottleneck is 58 scripts/1,494ms evaluation (post-freeze)
+- Checkout: all 8 steps pass, COD+bKash+Nagad all confirmed
+- FAQPage deprecated by Google May 7, 2026 for rich results — kept for LLM crawlers only
+
+### Blockers
+- Owner: GSC sitemap resubmit + URL indexing for CeraVe/Skin1004/Medicube top pages
+- Owner: MailPoet post-purchase review email (fastest path to aggregateRating)
+- Owner: 16 product real images, pa_concern 1,161 rows CSV review, Cloudflare cache rule
+
+### Next step (Codex)
+- Start CODEX-BRIEF-20260605.md Task 1 (GMC fix) immediately
+- Mobile M0 starts today
+
+### Next step (Claude)
+- ReviewsSection W4 cleanup, sunscreen category copy (SEO_MASTER M7)
+
+## 2026-06-05 (continued) — SEO, Analytics, Workspace cleanup
+
+### Did
+- feat(reviews): removed verifiedPurchase gate — all logged-in users can submit reviews. WC verification setting disabled. aggregateRating now unblocked. (a90776d)
+- fix(seo): BHA/salicylic ingredient redirects (fixes GSC drop bha pos 7→55) + H2 on /sale /new-arrivals /brands (19587a9, 9456069)
+- SEO_MASTER M7 closed (sunscreen copy done) + M8 closed (false gap) (ccf4a3c)
+- feat(analytics): InitiateCheckout Meta Pixel event added — checkout had zero tracking, full event set now complete (70f777c)
+- docs: OWNER-ACTIONS-20260605.md — exact dashboard steps for MailPoet review email, Meta CAPI test, GSC URL indexing, Cloudflare cache rule (3299341)
+- WH7 workspace hygiene: archived seo-p1-preview.mjs, ocr-image-audit.mjs, image-logic-fixer.mjs
+- Confirmed: WH1, WH4, U1, W7 already resolved in prior sessions
+- Confirmed: Meta Pixel events now complete: PageView ✅ ViewContent ✅ AddToCart ✅ InitiateCheckout ✅ Purchase ✅
+- Sitemap: user submitted manually today ✅
+
+### Blockers
+- Owner: 4 dashboard actions in OWNER-ACTIONS-20260605.md (MailPoet, Meta CAPI, GSC indexing, Cloudflare)
+- Face cleansers: 184/216 — Codex batch still running
+- Meta-gen: ~2,193 applied, ~2,642 remaining (query snapshot)
+
+### Next
+- Codex: CODEX-GMC-FIX-20260605.md (48 LLM rewrites) + impression-priority humanizer after face cleansers done
+- Post-freeze (Jul 3): LCP bundle analysis, blog content, UCP/MCP
+
+## 2026-06-05 (final) — GMC complete + M6 internal links + Meta events
+
+### Did
+- GMC Steps 3-6 documented + Step 7 sync: 127→107 disapproved (−20), 3503→3523 approved (+20)
+- M6 ingredient/concern internal links: niacinamide(10), hyaluronic-acid(7), acne-blemish(7), dryness-hydration(4) [[LINK:]] markers
+- feat(analytics): InitiateCheckout Meta Pixel event added — checkout now fully tracked
+- OWNER-ACTIONS-20260605.md: exact dashboard steps for MailPoet review email, Meta CAPI test, GSC x7 URLs, Cloudflare cache
+- Remaining 107 GMC disapprovals: 15 unfixable identity, 11 title-risk(owner), 2 data/asset(owner), 6 mixed-manual(owner)
+- All commits pushed to origin/main
+
+### Running autonomously overnight
+- emart-meta-gen (PM2): ~2,193 applied, ~2,642 remaining (snapshot count), completion ~Jun 6
+- emart-presence (PM2): stable
+- Python crons: site_health/daily_report/low_stock all healthy
+- Checkout monitor (PM2 cron every 15min): all 8 steps passing
+
+### Blockers for next session
+- Owner: workspace/docs/OWNER-ACTIONS-20260605.md (MailPoet, Meta CAPI, GSC indexing, Cloudflare)
+- Owner: 11 GMC title-risk products, 2 data/asset, 6 mixed-manual (gmc-steps3-6-report-20260605.md)
+- Codex: impression-priority humanizer when face cleansers done (184/216)
+- Mobile P0: after Codex X1+X2 complete
+
+### Next session start
+git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status

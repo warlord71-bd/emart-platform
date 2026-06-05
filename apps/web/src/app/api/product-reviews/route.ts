@@ -115,7 +115,7 @@ export async function GET(request: Request) {
     authenticated: Boolean(user),
     verifiedPurchase,
     alreadyReviewed,
-    canReview: Boolean(user && verifiedPurchase && !alreadyReviewed),
+    canReview: Boolean(user && !alreadyReviewed),
   });
 }
 
@@ -147,13 +147,6 @@ export async function POST(request: Request) {
     hasVerifiedPurchase(user.id, productId),
     getProductReviews(productId),
   ]);
-
-  if (!verifiedPurchase) {
-    return NextResponse.json(
-      { error: 'Only verified customers who bought this product can leave a review.' },
-      { status: 403 },
-    );
-  }
 
   const alreadyReviewed = existingReviews.some(
     (review) => review.reviewer_email?.toLowerCase() === user.email.toLowerCase(),

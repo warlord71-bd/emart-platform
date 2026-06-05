@@ -117,6 +117,17 @@ export default async function ConcernDetailPage({ params, searchParams }: Props)
   const canonicalUrl = absoluteUrl(`/concerns/${concern.slug}`);
   const description = `Shop authentic ${concern.label.toLowerCase()} skincare in Bangladesh. ${concern.description} All products original, imported directly — COD and fast delivery available.`;
   const educationContent = (concernContent as EducationContentEntry[]).find((item) => item.slug === concern.slug);
+  const faqJsonLd = educationContent?.faq?.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: educationContent.faq.map((item: { q: string; a: string }) => ({
+          '@type': 'Question',
+          name: item.q,
+          acceptedAnswer: { '@type': 'Answer', text: item.a },
+        })),
+      }
+    : null;
 
   const { breadcrumbJsonLd, collectionPageJsonLd, itemListJsonLd } = buildCollectionSchema({
     type: 'category',
@@ -145,6 +156,9 @@ export default async function ConcernDetailPage({ params, searchParams }: Props)
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
       {itemListJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
+      )}
+      {faqJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       )}
 
       <BrowseHubNav active="concerns" />

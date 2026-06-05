@@ -22,6 +22,12 @@ type MetaCapiUserData = {
   fbc?: string;
 };
 
+type MetaCapiContent = Partial<{
+  id: string;
+  quantity: number;
+  item_price: number;
+}>;
+
 function sha256(value?: unknown): string | undefined {
   const normalized = String(value || '').trim().toLowerCase();
   if (!normalized) return undefined;
@@ -42,6 +48,11 @@ function cleanPrice(value?: unknown): number | undefined {
     ? value
     : Number.parseFloat(String(value || '').replace(/[^\d.-]/g, ''));
   return Number.isFinite(parsed) && parsed > 0 ? Number(parsed.toFixed(2)) : undefined;
+}
+
+function sumPrices(values: unknown[]): number | undefined {
+  const total = values.reduce<number>((sum, value) => sum + (cleanPrice(value) || 0), 0);
+  return total > 0 ? Number(total.toFixed(2)) : undefined;
 }
 
 function getClientIp(request: NextRequest): string | undefined {
@@ -93,10 +104,6 @@ export async function sendMetaPurchaseEvent({
   }
 
   const value = cleanPrice(order.total);
-  if (!value) {
-    return { skipped: true, reason: 'missing_purchase_value' };
-  }
-
   const origin = request.headers.get('origin') || 'https://e-mart.com.bd';
   const eventSourceUrl = `${origin.replace(/\/$/, '')}/order-success?id=${order.id}`;
   const contents = (order.line_items || []).map((item) => {
@@ -110,6 +117,14 @@ export async function sendMetaPurchaseEvent({
       item_price: itemPrice,
     });
   });
+  const recoveredValue = value || sumPrices([
+    ...(order.line_items || []).map((item) => item.total),
+    ...((order as WooOrder & { shipping_lines?: Array<{ total?: unknown }> }).shipping_lines || []).map((item) => item.total),
+  ]);
+
+  if (!recoveredValue) {
+    return { skipped: true, reason: 'missing_purchase_value' };
+  }
 
   const payload = {
     data: [
@@ -122,12 +137,12 @@ export async function sendMetaPurchaseEvent({
         user_data: compactObject(buildUserData(request, order.billing, order)),
         custom_data: compactObject({
           currency: order.currency || 'BDT',
-          value,
+          value: recoveredValue,
           order_id: String(order.id),
           content_type: 'product',
-          content_ids: contents.map((item) => item.id),
+          content_ids: contents.map((item: MetaCapiContent) => item.id).filter(Boolean),
           contents,
-          num_items: contents.reduce((sum, item) => sum + Number(item.quantity || 0), 0),
+          num_items: contents.reduce((sum, item: MetaCapiContent) => sum + Number(item.quantity || 0), 0),
         }),
       },
     ],

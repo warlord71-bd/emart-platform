@@ -251,9 +251,9 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
           </p>
         )}
 
-        {state.authenticated && !state.verifiedPurchase && (
-          <p className="mt-2 text-sm text-muted">
-            Only customers with a completed or processing order for this product can leave a review.
+        {state.authenticated && !state.verifiedPurchase && !state.alreadyReviewed && (
+          <p className="mt-2 text-xs text-muted">
+            Reviews from verified buyers are marked <span className="font-semibold text-green-700">Verified Purchase</span>.
           </p>
         )}
 

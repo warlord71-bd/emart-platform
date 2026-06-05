@@ -106,9 +106,9 @@ export default async function BrandsPage({
               Brand directory
             </div>
             <h1 className="text-3xl font-black text-ink sm:text-4xl">Shop by Brand</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-              {brands.length} active brands and {totalProducts.toLocaleString('en-BD')} catalog products, arranged for fast scanning.
-            </p>
+            <h2 className="mt-2 max-w-2xl text-sm font-normal leading-6 text-muted">
+              {brands.length} authentic Korean, Japanese &amp; global beauty brands — {totalProducts.toLocaleString('en-BD')} products with COD delivery across Bangladesh.
+            </h2>
           </div>
           <div className="grid grid-cols-3 gap-2 text-center sm:min-w-[360px]">
             <div className="rounded-lg border border-hairline bg-bg px-3 py-3">
