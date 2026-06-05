@@ -18,7 +18,7 @@ const SupportScreen = ({ navigation }) => {
   ];
 
   const faqItems = [
-    { q: 'How long does delivery take?', a: '2-5 business days inside Dhaka' },
+    { q: 'How long does delivery take?', a: 'Dhaka usually takes 1-2 business days; outside Dhaka usually takes 3-5 business days.' },
     { q: 'Can I return a product?', a: '7-day return policy on all items' },
     { q: 'Are all products authentic?', a: '100% original Korean & Japanese products' },
     { q: 'How does Cash on Delivery work?', a: 'Pay in cash when your order arrives' },

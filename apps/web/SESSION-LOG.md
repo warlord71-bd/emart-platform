@@ -1703,3 +1703,27 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 ### Next
 - Monitor GSC movement for the impression-priority batch.
 - Continue humanizer work only through reviewed JSONL batches; preserve holdout IDs `2611`, `2591`, `4064`.
+
+## 2026-06-05 — Codex Mobile M0 partial
+
+### Did
+- Continued `apps/mobile` release-readiness from the existing dirty version/icon changes (`1.1.1`, Android versionCode `21`).
+- Removed stale direct WooCommerce credential/IP URL guidance from `apps/mobile/.env.example`; confirmed mobile code has no Woo consumer keys, secrets, direct `/wp-json/wc/v3`, or IP Woo URLs.
+- Aligned mobile shipping display/copy with live Woo policy: Dhaka `৳70`, free shipping over `৳3,000`.
+- Fixed checkout success handling for live `/api/checkout` response shape so Woo order ID reaches local order history and success navigation.
+- Added explicit Expo Metro config and verified `npx expo-doctor` passes 18/18.
+
+### Verification
+- `npm ls --depth=0` passed in `apps/mobile`.
+- `npx expo config --type public` passed.
+- Live checks: `/api/mobile/products?per_page=1` 200, `/api/mobile/categories?per_page=1` 200, `/api/checkout` OPTIONS 204.
+- `npx expo export --platform android --output-dir /tmp/emart-mobile-export` passed.
+- `npx expo-doctor` passed 18/18 after the Metro config fix.
+
+### Blockers
+- `/api/mobile/cart` and `/api/mobile/payment` return 404 live; current app does not use those routes and instead uses local cart + manual bKash/Nagad transaction ID through `/api/checkout`.
+- No real device checkout smoke, EAS production AAB, or Play Store upload was run in this session.
+
+### Next
+- Run device checkout smoke for COD, bKash, and Nagad.
+- Build signed production AAB with EAS and upload to Play Store internal testing after device smoke passes.

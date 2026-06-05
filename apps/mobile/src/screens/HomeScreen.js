@@ -515,7 +515,7 @@ const HomeScreen = ({ navigation }) => {
         {/* ── Promo Strip ── */}
         <View style={styles.promoStrip}>
           {[
-            { icon: 'car-outline', label: 'Free Delivery', sub: 'On orders ৳2,000+' },
+            { icon: 'car-outline', label: 'Free Delivery', sub: `On orders ৳${BUSINESS.SHIPPING.FREE_THRESHOLD.toLocaleString()}+` },
             { icon: 'shield-checkmark-outline', label: '100% Authentic', sub: 'Verified products' },
             { icon: 'refresh-outline', label: 'Easy Returns', sub: '7 day policy' },
           ].map((item, i) => (

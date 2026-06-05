@@ -25,7 +25,7 @@ export default {
   bannerNewTitle: 'Japanese Skincare',
   bannerNewSub: 'New arrivals from Japan',
   bannerDeliveryTitle: 'Free Delivery',
-  bannerDeliverySub: 'Orders over ৳2,000 in Dhaka',
+  bannerDeliverySub: 'Orders over ৳3,000 in Dhaka',
 
   // Categories
   categoriesTitle: 'Categories',

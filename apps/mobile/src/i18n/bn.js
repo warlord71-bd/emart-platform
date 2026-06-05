@@ -25,7 +25,7 @@ export default {
   bannerNewTitle: 'জাপানি স্কিনকেয়ার',
   bannerNewSub: 'জাপান থেকে নতুন পণ্য',
   bannerDeliveryTitle: 'ফ্রি ডেলিভারি',
-  bannerDeliverySub: 'ঢাকায় ৳২,০০০ এর বেশি অর্ডারে',
+  bannerDeliverySub: 'ঢাকায় ৳৩,০০০ এর বেশি অর্ডারে',
 
   // Categories
   categoriesTitle: 'ক্যাটাগরি',

@@ -9,20 +9,20 @@
 
 ## Android native folder
 
-- `apps/mobile/android` is the native prebuild output and is **kept in the repo**.
-- Do not delete it. EAS can build from the native folder directly.
-- If Expo SDK is upgraded, run `npx expo prebuild --platform android --clean` to regenerate, then re-apply any manual native patches.
+- Current local tree has no `apps/mobile/android` native folder.
+- Use EAS managed builds from the Expo project unless a future task explicitly regenerates native files.
+- If Expo SDK is upgraded or native Android changes become required, run `npx expo prebuild --platform android --clean`, review the generated native diff carefully, and then keep the regenerated `android/` folder only if the release workflow needs it.
 
 ## Version sync rule
 
 `android/app/build.gradle` `versionCode` and `versionName` **must stay in sync** with `app.json` `android.versionCode` and `version` before any production build.
 
-Current state (2026-05-06):
+Current state (2026-06-05):
 
 | File | versionName / version | versionCode |
 |---|---|---|
-| `app.json` | `1.1.0` | `9` |
-| `android/app/build.gradle` | `1.1.0` | `9` |
+| `app.json` | `1.1.1` | `21` |
+| `android/app/build.gradle` | n/a — no native folder | n/a |
 
 > **Note:** `eas.json` production profile uses `autoIncrement: true` and `appVersionSource: remote`. EAS will manage the version code for cloud builds. The values in `build.gradle` and `app.json` serve as the local baseline and are used for local Gradle builds.
 

@@ -31,7 +31,7 @@ const CheckoutScreen = ({ navigation }) => {
   const [couponApplied, setCouponApplied] = useState(null);
   const [couponLoading, setCouponLoading] = useState(false);
 
-  const deliveryFee = cartTotal >= 2000 ? 0 : 80;
+  const deliveryFee = cartTotal >= BUSINESS.SHIPPING.FREE_THRESHOLD ? 0 : BUSINESS.SHIPPING.DHAKA_FEE;
   const total = Math.max(0, cartTotal - couponDiscount + deliveryFee);
 
   const paymentMethods = [
@@ -97,10 +97,11 @@ const CheckoutScreen = ({ navigation }) => {
       const res = await createOrder(orderData);
       if (res.error) throw new Error(res.error);
       if (!isMounted.current) return;
-      const wooOrderId = res.data?.order?.id;
+      const order = res.data?.order || res.data;
+      const wooOrderId = order?.id || res.data?.orderId;
       addOrder({ wcOrderId: wooOrderId, customerName: name, phone, address, paymentMethod: payment, items, itemsCount: items.reduce((sum, item) => sum + item.quantity, 0), total: `৳${Math.round(total)}`, products: items.map((item) => item.name).join(", "), image: items[0]?.image || null, coupon: couponApplied?.code || null });
       clearCart();
-      navigation.navigate("OrderSuccess", { orderId: res.data?.order?.id || res.data?.orderId });
+      navigation.navigate("OrderSuccess", { orderId: wooOrderId });
     } catch (error) {
       if (!isMounted.current) return;
       const errorMsg = error?.message || "Failed to place order. Please try again.";

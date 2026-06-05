@@ -3,4 +3,8 @@ export const BUSINESS = {
   SALES_WHATSAPP: '8801717082135',
   SUPPORT_WHATSAPP: '8801919797399',
   SITE_URL: 'https://e-mart.com.bd',
+  SHIPPING: {
+    DHAKA_FEE: 70,
+    FREE_THRESHOLD: 3000,
+  },
 };

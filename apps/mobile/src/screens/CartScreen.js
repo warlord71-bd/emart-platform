@@ -6,12 +6,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../theme/colors';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
+import { BUSINESS } from '../config/business';
 
 const CartScreen = ({ navigation }) => {
   const { t } = useLanguage();
   const { items, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount } = useCart();
 
-  const deliveryFee = cartTotal >= 2000 ? 0 : 80;
+  const deliveryFee = cartTotal >= BUSINESS.SHIPPING.FREE_THRESHOLD ? 0 : BUSINESS.SHIPPING.DHAKA_FEE;
   const total = cartTotal + deliveryFee;
 
   if (items.length === 0) {

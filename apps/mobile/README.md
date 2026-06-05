@@ -119,7 +119,7 @@ EmartBD/
 - BDT (৳) currency throughout
 - bKash and Nagad merchant payment with TrxID
 - Cash on Delivery option
-- Free delivery over ৳2,000
+- Free delivery over ৳3,000
 - Dhaka delivery indicator
 - WhatsApp customer support integration
 

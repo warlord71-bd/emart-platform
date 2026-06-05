@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-05 (end of session)
+Last updated: 2026-06-05 (mobile M0 partial)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -40,8 +40,10 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 - Next: monitor GSC movement; continue only with reviewed JSONL batches
 
 ### X3 — Mobile M0
-- workspace/docs/CODEX-BRIEF-20260605.md Tasks 3-5
-- App launch + Play Store + SSL Commerz
+- ✅ Local release-readiness pass: BFF credential audit clean, stale Woo `.env.example` removed, shipping policy aligned, checkout success response fixed
+- ✅ Validation: `npm ls --depth=0`, `npx expo config --type public`, `npx expo export --platform android`, `npx expo-doctor` 18/18
+- ⚠️ Live BFF gap: `/api/mobile/cart` and `/api/mobile/payment` 404; current app uses local cart + manual bKash/Nagad TrxID via `/api/checkout`
+- Next: real device COD/bKash/Nagad checkout smoke, then EAS production AAB + Play Store internal testing upload
 
 ---
 
