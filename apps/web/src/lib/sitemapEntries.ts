@@ -144,6 +144,7 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   ...ROUTINE_SLUG_PAGES,
   { url: absoluteUrl('/blog'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.6 },
   { url: absoluteUrl('/social'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/about-us'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/our-story'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/authenticity'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
   { url: absoluteUrl('/join-our-team'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.4 },

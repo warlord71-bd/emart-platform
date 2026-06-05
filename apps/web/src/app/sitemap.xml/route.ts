@@ -4,7 +4,7 @@ import { getSitemapEntries, type SitemapEntry } from '@/lib/sitemapEntries';
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
 
-const getCachedSitemapXml = unstable_cache(createSitemapXml, ['emart-styled-sitemap-xml-v1'], {
+const getCachedSitemapXml = unstable_cache(createSitemapXml, ['emart-styled-sitemap-xml-v2'], {
   revalidate: 3600,
 });
 
