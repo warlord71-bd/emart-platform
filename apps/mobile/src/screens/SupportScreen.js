@@ -8,7 +8,7 @@ const WHATSAPP_NUMBER = '8801919797399';
 
 const SupportScreen = ({ navigation }) => {
   const openWhatsApp = () => {
-    Linking.openURL(`https://wa.me/${WHATSAPP_NUMBER}?text=Hi, I need help with my eMart BD order.`);
+    Linking.openURL(`https://wa.me/${WHATSAPP_NUMBER}?text=Hi, I need help with my Emart order.`);
   };
 
   const supportOptions = [
@@ -18,10 +18,11 @@ const SupportScreen = ({ navigation }) => {
   ];
 
   const faqItems = [
-    { q: 'How long does delivery take?', a: 'Dhaka usually takes 1-2 business days; outside Dhaka usually takes 3-5 business days.' },
-    { q: 'Can I return a product?', a: '7-day return policy on all items' },
-    { q: 'Are all products authentic?', a: '100% original Korean & Japanese products' },
-    { q: 'How does Cash on Delivery work?', a: 'Pay in cash when your order arrives' },
+    { q: 'How long does delivery take?', a: 'Dhaka: 1–2 business days. Outside Dhaka: 3–5 business days. Free shipping on orders over ৳3,000.' },
+    { q: 'Can I return a product?', a: '7-day return window from delivery. Product must be new, unused, and unopened with original packaging intact. ৳100 restocking fee applies.' },
+    { q: 'Are all products authentic?', a: '100% authentic Korean, Japanese, and global beauty products sourced directly from authorized distributors.' },
+    { q: 'How does Cash on Delivery work?', a: 'Pay in cash when your order arrives at your door. Available across Bangladesh.' },
+    { q: 'What payment methods are accepted?', a: 'Cash on Delivery (COD), bKash, and Nagad. All payments are processed securely.' },
   ];
 
   return (

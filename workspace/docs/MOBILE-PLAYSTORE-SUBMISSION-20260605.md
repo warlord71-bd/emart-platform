@@ -2,31 +2,70 @@
 
 Last updated: 2026-06-05
 
-## Current Build Target
+## Current Build Status
 
-- App: `eMart BD`
-- Package: `com.emartbd.app`
+- App: `Emart Skincare Bangladesh` (slug: `emart-bd`, package: `com.emartbd.app`)
 - Expo SDK: `52.0.0`
-- App version: `1.1.1`
-- EAS/Play version code: remote `23` is OK
+- App version: `1.1.1` (versionCode `24` — EAS remote auto-incremented)
 - Android target SDK: `35`
-- Build source: GitHub `main`, base directory `apps/mobile`
 - EAS account: `warlord71`
+- **Latest build:** `5334f731-8d74-4b46-ab76-d034095d3127` — finished 2026-06-05 14:53 UTC
+- **Submitted to:** Play Store internal track (draft) — submission `d7f519d6-f099-49c3-bcb8-89bad79c75b4`
+- **Service account:** `emart-play-service-account@emart-2923b.iam.gserviceaccount.com` (granted Play Console access)
+
+## Policy URLs
+
+All live and indexed:
+
+| Policy | URL |
+|--------|-----|
+| Privacy Policy | `https://e-mart.com.bd/privacy-policy` |
+| Terms & Conditions | `https://e-mart.com.bd/terms-conditions` |
+| Return & Refund Policy | `https://e-mart.com.bd/return-policy` |
+| Shipping Policy | `https://e-mart.com.bd/shipping-policy` |
+
+All four are in the web sitemap and linked from the web footer.  
+All four are accessible from the mobile app Settings screen (Policies section).
+
+## Key Policies Summary
+
+### Shipping
+- Dhaka: ৳70, 1–2 business days
+- Outside Dhaka: ৳100, 3–5 business days
+- Free shipping on orders over ৳3,000
+- COD available nationwide
+
+### Returns
+- 7-day return window from delivery date
+- Product must be new, unused, unopened, original seal/packaging intact
+- ৳100 restocking fee
+- Return courier cost: customer responsibility
+- Refund processed within 5 days of inspection
+
+### Payments
+- Cash on Delivery (COD)
+- bKash
+- Nagad
+- No card/SSLCommerz (do not claim in listing)
 
 ## Policy Audit
 
 ### Pass
 
-- Target SDK is API 35, matching Google Play's current Android 15 submission requirement for new apps and updates.
-- No direct WooCommerce keys, consumer secrets, or direct `/wp-json/wc/v3` calls are shipped in `apps/mobile`.
+- Target SDK is API 35, matching Google Play's current Android 15 submission requirement.
+- No direct WooCommerce keys, consumer secrets, or direct `/wp-json/wc/v3` calls shipped in the app.
 - Permissions are minimal: `NOTIFICATIONS` and `VIBRATE` only.
-- No camera, microphone, contacts, precise location, SMS, call log, files/photos, or background location permissions.
-- Privacy Policy URL exists: `https://e-mart.com.bd/privacy-policy`.
-- Terms URL exists: `https://e-mart.com.bd/terms-conditions`.
-- In-app Settings now links to Privacy Policy and Terms.
+- No camera, microphone, contacts, location, SMS, call log, files/photos, or background permissions.
+- Privacy Policy URL live: `https://e-mart.com.bd/privacy-policy`
+- Terms & Conditions URL live: `https://e-mart.com.bd/terms-conditions`
+- Return Policy URL live: `https://e-mart.com.bd/return-policy`
+- Shipping Policy URL live: `https://e-mart.com.bd/shipping-policy`
+- In-app Settings has a dedicated **Policies** section linking all four policies.
+- In-app Support FAQ updated with accurate delivery, return, payment, and authenticity info.
 - No ads SDK detected.
 - No in-app purchases detected.
 - No health/medical claims or regulated healthcare functionality in the app UI.
+- Brand name in app footer corrected to "Emart Skincare Bangladesh".
 
 ### Needs Owner/Console Action
 
@@ -168,67 +207,65 @@ Privacy Policy: https://e-mart.com.bd/privacy-policy
   - Account/support
 - Optional 7-inch/10-inch tablet screenshots: only if targeting tablets. Current iOS tablet off; Android no tablet exclusion. Phone screenshots are enough for mobile-first release.
 
-## Play Console Step-by-Step
+## Play Console — Current Status & Next Steps
 
-1. Open Play Console under `warlord71`.
-2. Select the Emart app or create app:
-   - App name: `Emart Skincare Bangladesh`
-   - Default language: English (United States) or English
-   - App type: App
-   - Free/Paid: Free
-   - Declarations: confirm Developer Program Policies and US export laws.
-3. Go to **Setup > App integrity**:
-   - Enable/confirm Play App Signing.
-   - Use EAS managed signing unless Play Console already owns signing.
-4. Go to **Policy and programs > App content**:
-   - Privacy Policy: `https://e-mart.com.bd/privacy-policy`
-   - Ads: No
-   - App access: provide test instructions if login/checkout review is needed.
-   - Data safety: use the answers above.
-   - Content rating: complete questionnaire as shopping/e-commerce/beauty, no gambling, no violence, no adult content.
-   - Target audience: choose adults/general audience, not children-directed.
-   - News apps: No
-   - COVID/contact tracing/health declarations: No
-   - Financial features: No lending/credit/financial product. Mobile payment methods are order payment support only.
-5. Go to **Store presence > Main store listing**:
-   - Add app name, short description, long description.
-   - Upload app icon and feature graphic.
-   - Upload phone screenshots.
-   - Add contact email: `support@e-mart.com.bd`.
-   - Add website: `https://e-mart.com.bd`.
-   - Add phone if requested: `+8801919797399`.
-6. Build from Expo:
-   - Account: `warlord71`
-   - Source: GitHub `main`
-   - Base directory: `apps/mobile`
-   - Profile: `production`
-   - Platform: Android
-7. After EAS build completes:
-   - Download the `.aab` or use EAS Submit if configured.
-   - Play Console > **Testing > Internal testing** > Create new release.
-   - Upload AAB.
-   - Add release notes:
-     `Initial Emart mobile shopping release with product browsing, cart, checkout, account, reviews, and support.`
-   - Save and review release.
-   - Roll out to internal testing.
-8. Add testers:
-   - Create email list or Google Group.
-   - Copy opt-in link and test install from Play Store.
-9. Internal test checklist:
-   - Install from Play Store internal testing link.
-   - Open app fresh.
-   - Browse home/product list.
-   - Open product detail.
-   - Add to cart.
-   - Checkout COD with test customer info if owner approves test order.
-   - Try bKash/Nagad transaction ID validation.
-   - Login/register flow.
-   - Review form prompts sign-in.
-   - Privacy Policy and Terms open from Settings.
-10. Production:
-   - Fix any Play pre-launch report crashes/warnings.
-   - Create production release from the tested AAB or promote the internal release.
-   - Roll out gradually if available.
+### Already Done
+- [x] Service account `emart-play-service-account@emart-2923b.iam.gserviceaccount.com` linked and granted Play Console access
+- [x] Build `5334f731` (v1.1.1 versionCode 24) submitted to internal track as draft
+- [x] EAS managed signing (Keystore `T2SEJYQ7h4`) confirmed
+
+### Owner Must Complete in Play Console
+
+**1. App content declarations** (Policy and programs > App content):
+- Privacy Policy URL: `https://e-mart.com.bd/privacy-policy`
+- Ads: No
+- App access: if Google reviewer needs to test login/checkout, add test credentials or note "guest browsing available; checkout requires account registration"
+- Data safety: fill using the answers in the Data Safety Answers section below
+- Content rating: Shopping / ecommerce / beauty — no gambling, no violence, no adult content
+- Target audience: Adults / general audience — NOT children-directed
+- COVID/health: No
+- Financial features: No (COD/bKash/Nagad are order payment methods, not financial products)
+
+**2. Store listing** (Store presence > Main store listing):
+- App name: `Emart Skincare Bangladesh`
+- Short description: `Authentic Korean & global beauty. COD available.`
+- Long description: use the copy in the "Play Store Listing Copy" section below
+- Contact email: `support@e-mart.com.bd`
+- Website: `https://e-mart.com.bd`
+- Upload: feature graphic (1024×500), phone screenshots (6–8 recommended)
+
+**3. Promote to production when ready**:
+- Play Console > Internal testing > find the v1.1.1 draft release
+- Roll out to internal testers first (add tester emails or Google Group)
+- After internal QA passes, create a new production release (or promote)
+
+### Future Builds (Next Version)
+
+When the current settings fixes (Policy section in Settings, corrected FAQ, brand name fix) are ready to submit, bump to v1.1.2:
+
+```bash
+# In /root/emart-platform/apps/mobile
+# EAS auto-increments versionCode; just update version string:
+# app.json: "version": "1.1.2"
+# Then:
+cd /root/emart-platform/apps/mobile
+eas build --platform android --profile production --non-interactive
+# After build finishes:
+eas submit --platform android --id <new-build-id> --non-interactive
+```
+
+### Internal Test Checklist
+
+- [ ] Install from Play Store internal testing link
+- [ ] Browse home, categories, product list
+- [ ] Open product detail, add to cart
+- [ ] Checkout COD (test order with owner approval)
+- [ ] bKash/Nagad transaction ID entry
+- [ ] Login, register, order history
+- [ ] Review form requires sign-in
+- [ ] Settings > Policies > all 4 links open correct pages
+- [ ] Support screen WhatsApp, call, email all work
+- [ ] Language toggle EN/BN works
 
 ## Fast Pre-Submission Commands
 

@@ -20,8 +20,15 @@ const SettingsScreen = ({ navigation }) => {
       items: [
         { icon: 'globe-outline', label: 'Visit Website', onPress: () => Linking.openURL('https://e-mart.com.bd') },
         { icon: 'logo-facebook', label: 'Follow on Facebook', onPress: () => Linking.openURL('https://www.facebook.com/emartbd.official') },
-        { icon: 'document-text-outline', label: 'Privacy Policy', onPress: () => Linking.openURL('https://e-mart.com.bd/privacy-policy') },
-        { icon: 'document-outline', label: 'Terms of Service', onPress: () => Linking.openURL('https://e-mart.com.bd/terms-conditions') },
+      ],
+    },
+    {
+      title: 'Policies',
+      items: [
+        { icon: 'car-outline', label: 'Shipping Policy', onPress: () => Linking.openURL('https://e-mart.com.bd/shipping-policy') },
+        { icon: 'return-down-back-outline', label: 'Return & Refund Policy', onPress: () => Linking.openURL('https://e-mart.com.bd/return-policy') },
+        { icon: 'shield-checkmark-outline', label: 'Privacy Policy', onPress: () => Linking.openURL('https://e-mart.com.bd/privacy-policy') },
+        { icon: 'document-text-outline', label: 'Terms & Conditions', onPress: () => Linking.openURL('https://e-mart.com.bd/terms-conditions') },
       ],
     },
   ];
@@ -76,7 +83,7 @@ const SettingsScreen = ({ navigation }) => {
         ))}
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>eMart BD v1.1.1</Text>
+          <Text style={styles.footerText}>Emart Skincare Bangladesh v1.1.1</Text>
           <Text style={styles.footerText}>e-mart.com.bd</Text>
         </View>
       </View>

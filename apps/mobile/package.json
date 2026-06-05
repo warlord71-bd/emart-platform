@@ -34,7 +34,8 @@
     "react-native-screens": "~4.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0"
+    "@babel/core": "^7.24.0",
+    "expo-mcp": "^0.2.4"
   },
   "private": true
 }

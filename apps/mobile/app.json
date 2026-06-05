@@ -36,7 +36,11 @@
     "extra": {
       "eas": {
         "projectId": "8b0a3cc9-2926-4fe5-8504-6c549b5dedcd"
-      }
+      },
+      "privacyPolicyUrl": "https://e-mart.com.bd/privacy-policy",
+      "termsUrl": "https://e-mart.com.bd/terms-conditions",
+      "returnPolicyUrl": "https://e-mart.com.bd/return-policy",
+      "shippingPolicyUrl": "https://e-mart.com.bd/shipping-policy"
     },
     "plugins": [
       [
