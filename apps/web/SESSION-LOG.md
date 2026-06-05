@@ -1819,3 +1819,25 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 
 ### Next
 - Commit only the checkout code/session docs; leave pre-existing dirty UI and humanizer files untouched.
+
+## 2026-06-06 — Codex contact/about SEO schema pass
+
+### Did
+- Updated `/contact` metadata, canonical, OnlineStore/LocalBusiness JSON-LD, and contact form behavior.
+- Added a prominent WhatsApp CTA on `/contact` and changed the form to a visible email-app flow instead of silently failing.
+- Updated `/about-us` with AboutPage-wrapped Organization JSON-LD, brand FAQPage JSON-LD, visible brand FAQ content, and the requested Dhanmondi/team sentence.
+- Did not touch layout/nav, company constants, checkout, cart, payment, order, customer, or Woo logic.
+
+### Verification
+- Commit: `e6edd10 fix(seo): enrich contact and about pages`.
+- `npm run build` passed in `apps/web`.
+- Verified `.next/BUILD_ID` existed before restarting `emartweb`.
+- Live smoke passed: `/contact` `200`, `/about-us` `200`, homepage `200`, `/api/mobile/products?per_page=1` `200`.
+- Live HTML contains the new contact metadata/schema and about FAQ/AboutPage content.
+- Pushed `e6edd10` to `origin/main`.
+
+### Blockers
+- None.
+
+### Next
+- No follow-up needed for this page-only SEO task.
