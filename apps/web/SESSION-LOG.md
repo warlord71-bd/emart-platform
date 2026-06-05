@@ -1750,3 +1750,25 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 
 ### Next
 - For a real phone pass, expose the phone to this environment via ADB-over-network or run the ADB/Expo test commands directly on the laptop where the phone is plugged in.
+
+## 2026-06-05 — Codex homepage LCP/TBT performance pass
+
+### Did
+- Ran fresh live Lighthouse mobile baseline: score 63, LCP 4.0s, TBT 1,000ms; LCP element was the `Shop by category` H2.
+- Built locally with bundle output: homepage First Load JS was 157 kB.
+- Split `OfferCollectionsRail` into its own static component and moved below-fold homepage sections into `HomepageDeferredSections` using near-viewport/idle dynamic loading.
+- Kept HeroCarousel, MobileDiscovery, ShopByCategory, and OfferCollectionsRail static; verified GA4, Meta Pixel, and Google rating badge already use lazy/idle gates.
+- Deployed `d8fb0ac perf(home): defer below-fold homepage sections` through local build, VPS build, PM2 restart, smoke test, and pushed to origin/main.
+
+### Verification
+- Local and VPS `npm run build` passed.
+- Homepage First Load JS dropped from 157 kB to 108 kB.
+- Live smoke: homepage 200; `/api/mobile/products?per_page=1` 200.
+- Post-deploy Lighthouse mobile: score 97, LCP 2.1s, TBT 120ms, CLS 0.027, TTI 3.8s, total bytes 592 KiB.
+- Reports saved at `workspace/audit/active/lighthouse-home-mobile-20260605-fresh.report.*` and `workspace/audit/active/lighthouse-home-mobile-20260605-post-defer.report.*`.
+
+### Blockers
+- None.
+
+### Next
+- Watch CrUX/GSC mobile CWV over the next 28-day window; no further homepage perf work needed during freeze unless field data regresses.

@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-05 (mobile M0 partial)
+Last updated: 2026-06-05 (homepage LCP/TBT fixed)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -51,7 +51,6 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 
 ## 🔵 BACKLOG (post-freeze Jul 3+)
 
-- LCP fix: 58 scripts/1,494ms evaluation — bundle analysis needed
 - Blog content at scale: 51 posts vs Shajgoj 5,904
 - UCP/MCP commerce endpoint: build when reviews > 200 (currently 5)
 - Critical CSS (critters): DEV_MASTER W6
@@ -75,6 +74,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 - SEO_MASTER M7+M8 closed, W7 scripts archived
 - GMC: 53 product descriptions fixed (9 rule-based + 44 LLM) → 127→107 disapproved
 - X2 impression-priority humanizer: 10 reviewed products applied; DB verified; ISR revalidated
+- Homepage LCP/TBT pass: First Load JS 157→108 kB; Lighthouse mobile score 63→97, LCP 4.0s→2.1s, TBT 1000ms→120ms
 - OWNER-ACTIONS-20260605.md + CODEX-GMC-FIX-20260605.md + gmc-steps3-6-report-20260605.md
 
 ---

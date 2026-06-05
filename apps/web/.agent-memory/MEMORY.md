@@ -51,3 +51,4 @@
 - [Impression-priority humanizer 2026-06-05](project_impression_priority_humanizer_20260605.md) — first 10 non-holdout GSC-impression-priority products reviewed/applied; raw and reviewed JSONL preserved; script print/resume guard fixed
 - [Mobile M0 release readiness 2026-06-05](project_mobile_m0_20260605.md) — mobile BFF credential check clean, shipping policy aligned, checkout success response fixed, Expo export + expo-doctor pass; device checkout/EAS/Play upload still open
 - [Mobile ADB + logic pass 2026-06-05](project_mobile_adb_logic_20260605.md) — adb installed but no phone visible to VPS; fixed product-detail hook guard, truthful payment copy, and mobile JWT review auth; web BFF deployed and smoke-tested
+- [Homepage LCP/TBT perf pass 2026-06-05](project_homepage_lcp_tbt_20260605.md) — `d8fb0ac` deferred below-fold homepage JS; Lighthouse mobile improved score 63→97, LCP 4.0s→2.1s, TBT 1000ms→120ms
