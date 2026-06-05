@@ -73,26 +73,28 @@ const ProductDetailScreen = ({ navigation, route }) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewText, setReviewText] = useState('');
-  const [reviewName, setReviewName] = useState(user?.name || '');
-  const [reviewEmail, setReviewEmail] = useState(user?.emailOrPhone || user?.email || '');
   const [submitting, setSubmitting] = useState(false);
 
-  if (!product) {
-    navigation.goBack();
-    return null;
-  }
+  const safeProduct = product || {};
+  const pricing = getProductPrice(safeProduct);
+  const images = getProductImages(safeProduct);
+  const brand = Array.isArray(safeProduct.brands)
+    ? safeProduct.brands[0]?.name || ''
+    : safeProduct.brands || safeProduct.attributes?.find(a => a.name === 'Brand')?.options?.[0] || '';
+  const inStock = safeProduct.stock_status === 'instock';
 
-  const pricing = getProductPrice(product);
-  const images = getProductImages(product);
-  const brand = Array.isArray(product.brands)
-    ? product.brands[0]?.name || ''
-    : product.brands || product.attributes?.find(a => a.name === 'Brand')?.options?.[0] || '';
-  const inStock = product.stock_status === 'instock';
+  useEffect(() => {
+    if (!product) navigation.goBack();
+  }, [navigation, product]);
 
   // Load reviews
   useEffect(() => {
-    loadReviews();
-  }, []);
+    if (product?.id) loadReviews();
+  }, [product?.id]);
+
+  if (!product) {
+    return null;
+  }
 
   const loadReviews = async () => {
     setReviewsLoading(true);
@@ -103,8 +105,12 @@ const ProductDetailScreen = ({ navigation, route }) => {
   };
 
   const handleSubmitReview = async () => {
-    if (!reviewName.trim() || !reviewEmail.trim()) {
-      Alert.alert('Missing Info', 'Please enter your name and email');
+    if (!isLoggedIn) {
+      Alert.alert(
+        'Sign In Required',
+        'Please sign in before writing a product review.',
+        [{ text: 'Sign In', onPress: () => navigation.navigate('AccountTab', { screen: 'Login' }) }, { text: 'Cancel', style: 'cancel' }]
+      );
       return;
     }
     if (!reviewText.trim()) {
@@ -114,8 +120,6 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
     setSubmitting(true);
     const res = await submitProductReview(product.id, {
-      name: reviewName.trim(),
-      email: reviewEmail.trim(),
       review: reviewText.trim(),
       rating: reviewRating,
     });
@@ -273,24 +277,9 @@ const ProductDetailScreen = ({ navigation, route }) => {
                 <StarInput rating={reviewRating} onRate={setReviewRating} />
 
                 {!isLoggedIn && (
-                  <>
-                    <TextInput
-                      style={styles.reviewInput}
-                      placeholder="Your Name"
-                      placeholderTextColor={COLORS.textLight}
-                      value={reviewName}
-                      onChangeText={setReviewName}
-                    />
-                    <TextInput
-                      style={styles.reviewInput}
-                      placeholder="Your Email"
-                      placeholderTextColor={COLORS.textLight}
-                      value={reviewEmail}
-                      onChangeText={setReviewEmail}
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                    />
-                  </>
+                  <Text style={styles.reviewLoginHint}>
+                    Sign in to your Emart account to write a review.
+                  </Text>
                 )}
 
                 <TextInput
@@ -418,6 +407,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.bg, borderRadius: 14, padding: 14, marginBottom: 14, gap: 10,
   },
   reviewFormTitle: { fontSize: 13, ...FONTS.bold, color: COLORS.text },
+  reviewLoginHint: { fontSize: 12, color: COLORS.textSecondary, lineHeight: 18 },
   reviewInput: {
     backgroundColor: '#fff', borderWidth: 1, borderColor: COLORS.border,
     borderRadius: 10, padding: 10, fontSize: 13, color: COLORS.text,

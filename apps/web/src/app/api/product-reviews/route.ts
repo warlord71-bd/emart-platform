@@ -11,6 +11,23 @@ import {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+function getWordPressBaseUrl() {
+  return (
+    process.env.WOO_INTERNAL_URL ||
+    (process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '') ||
+    process.env.NEXT_PUBLIC_WOO_URL ||
+    'https://e-mart.com.bd'
+  ).replace(/\/$/, '');
+}
+
+function getWordPressHeaders(extraHeaders: Record<string, string> = {}) {
+  const headers: Record<string, string> = { ...extraHeaders };
+  if (getWordPressBaseUrl().startsWith('http://127.0.0.1')) {
+    headers.Host = 'e-mart.com.bd';
+  }
+  return headers;
+}
+
 interface ReviewUser {
   id: number;
   email: string;
@@ -64,6 +81,33 @@ async function getCurrentReviewUser(): Promise<ReviewUser | null> {
   }
 }
 
+async function getMobileReviewUser(request: Request): Promise<ReviewUser | null> {
+  const authorization = request.headers.get('authorization') || '';
+  if (!/^Bearer\s+\S+/i.test(authorization)) return null;
+
+  try {
+    const response = await fetch(`${getWordPressBaseUrl()}/wp-json/emart/v1/customer/me`, {
+      headers: getWordPressHeaders({ Authorization: authorization }),
+      cache: 'no-store',
+    });
+
+    const data = await response.json().catch(() => ({}));
+    const user = data?.user;
+
+    if (!response.ok || !user?.id || !user?.email) return null;
+
+    const name =
+      [user.first_name, user.last_name].filter(Boolean).join(' ').trim() ||
+      user.name ||
+      user.username ||
+      user.email.split('@')[0];
+
+    return { id: Number(user.id), email: user.email, name };
+  } catch {
+    return null;
+  }
+}
+
 async function hasVerifiedPurchase(customerId: number, productId: number): Promise<boolean> {
   const validStatuses = new Set(['processing', 'completed']);
   const orders = await getCustomerOrders(customerId);
@@ -92,7 +136,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Missing productId' }, { status: 400 });
   }
 
-  const user = await getCurrentReviewUser();
+  const user = await getCurrentReviewUser() || await getMobileReviewUser(request);
 
   if (!user && !includeReviews) {
     return NextResponse.json({
@@ -120,7 +164,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const user = await getCurrentReviewUser();
+  const user = await getCurrentReviewUser() || await getMobileReviewUser(request);
 
   if (!user) {
     return NextResponse.json({ error: 'Please log in to leave a review.' }, { status: 401 });

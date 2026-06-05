@@ -1,6 +1,8 @@
 import { API_CONFIG } from '../config/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BASE = API_CONFIG.baseUrl;
+const AUTH_KEY = '@emart_user';
 
 
 // ================================
@@ -34,12 +36,26 @@ const buildUrl = (endpoint, params = '') => {
   return `${BASE}${endpoint}${queryString ? `?${queryString}` : ''}`;
 };
 
-const apiFetch = async (endpoint, params = '') => {
+const getAuthHeaders = async () => {
+  try {
+    const saved = await AsyncStorage.getItem(AUTH_KEY);
+    if (!saved) return {};
+
+    const user = JSON.parse(saved);
+    return user?.token ? { Authorization: `Bearer ${user.token}` } : {};
+  } catch {
+    return {};
+  }
+};
+
+const apiFetch = async (endpoint, params = '', includeAuth = false) => {
   const url = buildUrl(endpoint, params);
 
   try {
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: includeAuth ? await getAuthHeaders() : undefined,
+    });
 
     if (!response.ok) {
       const errData = await response.json().catch(() => ({}));
@@ -57,7 +73,7 @@ const apiFetch = async (endpoint, params = '') => {
   }
 };
 
-const apiPost = async (endpoint, body, timeoutMs = 30000) => {
+const apiPost = async (endpoint, body, timeoutMs = 30000, includeAuth = false) => {
 
   const url = `${BASE}${endpoint}`;
   const controller = new AbortController();
@@ -67,7 +83,7 @@ const apiPost = async (endpoint, body, timeoutMs = 30000) => {
 
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...(includeAuth ? await getAuthHeaders() : {}) },
       body: JSON.stringify(body),
       signal: controller.signal,
     });
@@ -240,7 +256,7 @@ export const getSubCategories = async (parentId) => {
 
 export const getProductReviews = async (productId) => {
 
-  const res = await apiFetch('/api/product-reviews', { productId });
+  const res = await apiFetch('/api/product-reviews', { productId }, true);
   if (res.error) return res;
 
   return { data: res.data?.reviews || [], error: null };
@@ -254,7 +270,7 @@ export const submitProductReview = async (productId, reviewData) => {
     productId,
     review: reviewData.review,
     rating: reviewData.rating,
-  });
+  }, 30000, true);
 
   if (res.error) return res;
 
