@@ -130,6 +130,10 @@ export default function RootLayout({
   return (
     <html lang="en-BD" className={`${playfair.variable} ${dmSans.variable} ${hindSiliguri.variable} ${jost.variable} ${jetbrains.variable}`}>
       <head>
+        {/* LCP hero image — preload fires before HTML body is parsed */}
+        <link rel="preload" as="image" href="/images/hero/aestura-atobarrier-mobile.avif" type="image/avif" fetchPriority="high" media="(max-width: 640px)" />
+        <link rel="preload" as="image" href="/images/hero/aestura-atobarrier-mobile.webp" type="image/webp" fetchPriority="high" media="(max-width: 640px)" />
+        <link rel="preload" as="image" href="/images/hero/aestura-atobarrier-desktop.avif" type="image/avif" fetchPriority="high" media="(min-width: 641px)" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* Product images and YouTube thumbnails used in homepage */}
         <link rel="preconnect" href="https://e-mart.com.bd" />

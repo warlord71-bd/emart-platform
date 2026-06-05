@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import { getBestSellingProducts, getCategories, getNewArrivals, getProducts, getSaleProducts, type WooProduct } from '@/lib/woocommerce';
 import { getWordPressPosts } from '@/lib/wordpress-posts';
-import { HeroCarousel, HeroPreload } from '@/components/home/HeroCarousel';
+import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { FlashSaleBanner } from '@/components/home/FlashSaleBanner';
 import { MobileDiscovery } from '@/components/home/MobileDiscovery';
 import dynamic from 'next/dynamic';
@@ -149,7 +149,6 @@ export default async function HomePage() {
 
   return (
     <div className="bg-white">
-      <HeroPreload />
       {/* Stable brand H1 for SEO — visually hidden, accessible to screen readers and crawlers */}
       <h1 className="sr-only">Korean & Global Skincare in Bangladesh — Emart</h1>
 

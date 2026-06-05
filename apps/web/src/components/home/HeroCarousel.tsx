@@ -1,13 +1,5 @@
 import Link from 'next/link';
 
-/* LCP preload hints — browser fetches before parsing the component tree */
-export const HeroPreload = () => (
-  <>
-    <link rel="preload" as="image" href="/images/hero/aestura-atobarrier-mobile.avif" type="image/avif" fetchPriority="high" media="(max-width: 640px)" />
-    <link rel="preload" as="image" href="/images/hero/aestura-atobarrier-mobile.webp" type="image/webp" fetchPriority="high" media="(max-width: 640px)" />
-    <link rel="preload" as="image" href="/images/hero/aestura-atobarrier-desktop.avif" type="image/avif" fetchPriority="high" media="(min-width: 641px)" />
-  </>
-);
 
 const HERO = {
   eyebrow: 'New brand',
