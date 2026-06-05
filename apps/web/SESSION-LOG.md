@@ -1687,3 +1687,19 @@ GSC Page Indexing analysis (sc-domain:e-mart.com.bd):
 
 ### Next session start
 git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
+
+## 2026-06-05 — Codex impression-priority humanizer apply
+
+### Did
+- Ran `workspace/humanizer/impression-priority/humanizer_impression_priority.py --dry-run` from `/var/www/emart-platform`.
+- Fixed humanizer script mismatch: VPS copy expected `gen["meta_desc"]`; Local/VPS script now prints content length only and skips IDs already present in the day's JSONL on resume.
+- Reviewed JSONL, backed up raw output, removed duplicate `50630`, regenerated malformed short `43841`, and sanitized risky verification/prescription wording.
+- Applied 10 reviewed product descriptions: `50630`, `56975`, `58506`, `56117`, `53315`, `58264`, `24437`, `50540`, `57109`, `43841`.
+- DB verification confirmed all 10 have populated `post_content` and `_emart_humanized=1`; ISR `tag=products` revalidation ran.
+
+### Blockers
+- None for this batch.
+
+### Next
+- Monitor GSC movement for the impression-priority batch.
+- Continue humanizer work only through reviewed JSONL batches; preserve holdout IDs `2611`, `2591`, `4064`.

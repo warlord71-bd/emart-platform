@@ -197,12 +197,21 @@ def cmd_dry_run(args):
 
     ids = PRIORITY_IDS if not args.post_id else [args.post_id]
     ids = [i for i in ids if i not in HOLDOUT]
+    existing_ids = set()
+    if JSONL.exists():
+        for line in open(JSONL):
+            if not line.strip():
+                continue
+            try:
+                existing_ids.add(json.loads(line).get("post_id"))
+            except json.JSONDecodeError:
+                pass
 
     products = fetch_products(ids)
     products.sort(key=lambda p: PRIORITY_IDS.index(p["post_id"]) if p["post_id"] in PRIORITY_IDS else 999)
 
     # Skip already humanized
-    todo = [p for p in products if not p.get("humanized")]
+    todo = [p for p in products if not p.get("humanized") and p["post_id"] not in existing_ids]
     if args.limit:
         todo = todo[:args.limit]
 
@@ -229,7 +238,7 @@ def cmd_dry_run(args):
         results.append(row)
         with open(JSONL, "a") as f:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
-        print(f"  ✓ saved ({len(_strip(gen['content_html']))} chars, meta {len(gen['meta_desc'])}c)")
+        print(f"  ✓ saved ({len(_strip(gen['content_html']))} chars)")
         time.sleep(2)
 
     print(f"\nDone. {len(results)} products → {JSONL}")

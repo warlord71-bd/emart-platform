@@ -33,13 +33,13 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 
 ## 🟡 CODEX — Next tasks
 
-### X2 — Impression-priority humanizer (starts when face cleansers done)
-- Face cleansers: 184/216 — ~32 remaining, complete soon
-- Queue ready: workspace/audit/active/humanizer-impression-priority-targets-2026-06-05.csv
-- Top 5: CeraVe night cream(945 imp) → Skin1004 centella(422) → Medicube vita C(355) → Innisfree clay mask(138) → COSRX snail(121)
-- Same dry-run → validate → owner sample → apply workflow as face cleansers
+### X2 — Impression-priority humanizer
+- ✅ First 10 non-holdout impression-priority products applied Jun 5
+- Reviewed JSONL: workspace/humanizer/impression-priority/active/impression-priority-2026-06-05.jsonl
+- Holdout preserved: 2611, 2591, 4064
+- Next: monitor GSC movement; continue only with reviewed JSONL batches
 
-### X3 — Mobile M0 (after X2 or in parallel)
+### X3 — Mobile M0
 - workspace/docs/CODEX-BRIEF-20260605.md Tasks 3-5
 - App launch + Play Store + SSL Commerz
 
@@ -70,6 +70,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 - M6 internal links: niacinamide, hyaluronic-acid, acne-blemish-care, dryness-hydration
 - SEO_MASTER M7+M8 closed, W7 scripts archived
 - GMC: 53 product descriptions fixed (9 rule-based + 44 LLM) → 127→107 disapproved
+- X2 impression-priority humanizer: 10 reviewed products applied; DB verified; ISR revalidated
 - OWNER-ACTIONS-20260605.md + CODEX-GMC-FIX-20260605.md + gmc-steps3-6-report-20260605.md
 
 ---
