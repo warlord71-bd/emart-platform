@@ -1841,3 +1841,27 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 
 ### Next
 - No follow-up needed for this page-only SEO task.
+
+## 2026-06-06 — Codex commerce SEO citation hardening
+
+### Did
+- Added homepage entity/citation support with visible Emart Skincare Bangladesh copy and featured shopping-path ItemList JSON-LD.
+- Added shop CollectionPage, BreadcrumbList, visible Bangladesh skincare H1/description, and product ItemList JSON-LD.
+- Hardened origin pages with country-specific H1s and popular brand ItemList JSON-LD where editorial brand data exists.
+- Added brand entity JSON-LD to brand pages and visible origin text only when curated brand-origin data supports it.
+- Confirmed category and concern pages already had intro/header content, CollectionPage, BreadcrumbList, ItemList, and concern FAQPage coverage; then switched category/concern/origin/brand schema output to `safeJsonLd`.
+- Did not touch checkout, cart, payment, customer account, mail, navigation, URL structure, redirects, sitemap structure, or product data.
+
+### Verification
+- Commits: `a7e0b8f fix(seo): harden commerce citation schema`, `8b240ac fix(seo): sanitize collection schema output`.
+- `npm run lint` passed in `apps/web`.
+- `npm run build` passed in `apps/web`.
+- Verified `.next/BUILD_ID` existed before restarting `emartweb`.
+- Live smoke passed: `/` `200`, `/shop` `200`, `/category/sunscreen` `200`, `/origins/south-korea` `200`, `/concerns/acne-blemish-care` `200`, `/brands/cosrx` `200`, `/api/mobile/products?per_page=1` `200`.
+- Live HTML markers verified for homepage featured paths/citation copy, shop CollectionPage/ItemList/H1, category CollectionPage/ItemList/intro, origin Korean H1/popular brand ItemList, concern FAQPage/CollectionPage, and brand Brand JSON-LD/origin text.
+
+### Blockers
+- None.
+
+### Next
+- Monitor GSC enhancements/indexing after Google recrawls; no freeze-breaking layout or URL work needed for this pass.
