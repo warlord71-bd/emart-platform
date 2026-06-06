@@ -5,6 +5,8 @@ import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { canonicalPath } from '@/lib/canonicalUrl';
+import { absoluteUrl } from '@/lib/siteUrl';
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { getOriginByCountry } from '@/lib/origin-navigation';
 import { getConcernBySlug } from '@/lib/concerns';
 import { getIngredientBySlug } from '@/lib/ingredients';
@@ -196,15 +198,59 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     : activeIngredient ? activeIngredient.label
     : activeOrigin ? `${activeOrigin.label} Products`
     : activeSearch ? `Search: ${activeSearch}`
-    : 'All Products';
+    : 'Shop Skincare Online in Bangladesh';
   const hasPrimaryFilter = Boolean(activeBrand || activeConcern || activeIngredient || activeOrigin || activeSearch);
+  const shopDescription = hasPrimaryFilter
+    ? `Browse ${title.toLowerCase()} at Emart Skincare Bangladesh with authentic products, COD, bKash, Nagad and delivery across Bangladesh.`
+    : 'Shop authentic Korean, Japanese and global skincare online in Bangladesh at Emart. Find original cleansers, toners, serums, moisturizers, sunscreens, hair care and cosmetics with COD, bKash, Nagad and nationwide delivery.';
+  const canonicalUrl = absoluteUrl('/shop');
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    '@id': `${canonicalUrl}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
+      { '@type': 'ListItem', position: 2, name: 'Shop', item: canonicalUrl },
+    ],
+  };
+  const collectionPageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${canonicalUrl}#collection`,
+    name: title,
+    description: shopDescription,
+    url: canonicalUrl,
+    breadcrumb: { '@id': `${canonicalUrl}#breadcrumb` },
+    isPartOf: { '@id': `${absoluteUrl('/')}#website` },
+  };
+  const itemListJsonLd = products.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    '@id': `${canonicalUrl}#products`,
+    name: `${title} product list`,
+    url: canonicalUrl,
+    numberOfItems: products.length,
+    itemListElement: products.slice(0, 20).map((product: any, index: number) => ({
+      '@type': 'ListItem',
+      position: (page - 1) * 24 + index + 1,
+      name: product.name,
+      url: absoluteUrl(`/shop/${product.slug}`),
+      image: product.images?.[0]?.src || undefined,
+    })),
+  } : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(collectionPageJsonLd) }} />
+      {itemListJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListJsonLd) }} />
+      )}
       <div className="mb-6 flex flex-col gap-3 border-b border-hairline pb-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-ink sm:text-3xl">{title}</h1>
           <p className="mt-1 text-sm text-muted">{total} products found</p>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted">{shopDescription}</p>
         </div>
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <Link href="/categories" className="font-semibold text-ink transition-colors hover:text-accent">

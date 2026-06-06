@@ -11,6 +11,7 @@ import { getOriginByCountry } from '@/lib/origin-navigation';
 import CollectionPageHeader from '@/components/collection/CollectionPageHeader';
 import { buildCollectionSchema } from '@/lib/collectionSchema';
 import { getOriginEditorial } from '@/lib/origin-editorial';
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -36,6 +37,13 @@ const SORT_MAP = {
   popularity: { orderby: 'popularity', order: 'desc' },
   rating: { orderby: 'rating', order: 'desc' },
 } satisfies Record<string, { orderby: 'date' | 'price' | 'popularity' | 'rating' | 'title'; order: 'asc' | 'desc' }>;
+
+function getOriginPageTitle(origin: { country: string; label: string }) {
+  if (origin.country === 'south-korea') return 'Korean Skincare in Bangladesh';
+  if (origin.country === 'japan') return 'Japanese Skincare in Bangladesh';
+  if (origin.country === 'usa') return 'American Skincare in Bangladesh';
+  return `${origin.label} Beauty Products`;
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const origin = getOriginByCountry(params.country);
@@ -83,7 +91,7 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
   };
 
   const canonical = absoluteUrl(`/origins/${origin.country}`);
-  const title = `${origin.label} Beauty Products`;
+  const title = getOriginPageTitle(origin);
 
   const { breadcrumbJsonLd, collectionPageJsonLd, itemListJsonLd } = buildCollectionSchema({
     type: 'origin',
@@ -98,6 +106,25 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
     products: products as Array<{ name: string; slug: string }>,
     page,
   });
+  const popularBrandItemListJsonLd = editorial?.popularBrands.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        '@id': `${canonical}#popular-brands`,
+        name: `Popular ${origin.label} brands at Emart`,
+        url: canonical,
+        numberOfItems: editorial.popularBrands.length,
+        itemListElement: editorial.popularBrands.map((brand, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          item: {
+            '@type': 'Brand',
+            name: brand.name,
+            url: absoluteUrl(`/brands/${brand.slug}`),
+          },
+        })),
+      }
+    : null;
 
   const flagIcon = (
     <span
@@ -114,6 +141,9 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
       {itemListJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
+      )}
+      {popularBrandItemListJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(popularBrandItemListJsonLd) }} />
       )}
 
       <BrowseHubNav active="origins" />

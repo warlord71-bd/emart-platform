@@ -10,7 +10,9 @@ import { ProductListGrid } from '@/components/product/ProductListGrid';
 import { getBrandBySlug, getProductsByProductBrand } from '@/lib/woocommerce';
 import { buildCollectionSchema, getBrandDescription } from '@/lib/collectionSchema';
 import { absoluteUrl } from '@/lib/siteUrl';
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { STORE_POLICIES } from '@/config/storePolicies';
+import { findCanonicalBrand } from '@/lib/brandWhitelist';
 import brandLogoManifest from '../../../../public/images/brands-e-mart/manifest.json';
 
 export const revalidate = 1800;
@@ -24,6 +26,12 @@ for (const entry of brandLogoManifest as Array<{ slug: string; logo: string | nu
 interface Props {
   params: { slug: string };
   searchParams?: { page?: string; sort?: string; price?: string };
+}
+
+function getBrandOriginLabel(slug: string, name: string): string | undefined {
+  const canonical = findCanonicalBrand(slug) || findCanonicalBrand(name);
+  if (canonical?.region === 'korean') return 'South Korea';
+  return undefined;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -60,7 +68,10 @@ export default async function BrandPage({ params, searchParams }: Props) {
   if (total === 0 && page === 1) notFound();
 
   const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
-  const description = getBrandDescription(brand.name);
+  const originLabel = getBrandOriginLabel(brand.slug, brand.name);
+  const description = originLabel
+    ? `${getBrandDescription(brand.name)} ${brand.name} is represented here as a ${originLabel}-origin beauty brand.`
+    : getBrandDescription(brand.name);
   const canonicalUrl = absoluteUrl(`/brands/${brand.slug}`);
 
   const { breadcrumbJsonLd, collectionPageJsonLd, itemListJsonLd } = buildCollectionSchema({
@@ -76,6 +87,17 @@ export default async function BrandPage({ params, searchParams }: Props) {
     products,
     page,
   });
+  const brandJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Brand',
+    '@id': `${canonicalUrl}#brand`,
+    name: brand.name,
+    url: canonicalUrl,
+    ...(logo ? { logo: absoluteUrl(logo), image: absoluteUrl(logo) } : {}),
+    description,
+    ...(originLabel ? { disambiguatingDescription: `${brand.name} products at Emart are listed as ${originLabel}-origin beauty products.` } : {}),
+    mainEntityOfPage: canonicalUrl,
+  };
 
   const logoIcon = logo ? (
     <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-hairline bg-white p-1.5 shadow-sm">
@@ -90,6 +112,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
       {itemListJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       )}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(brandJsonLd) }} />
 
       <div className="mx-auto max-w-7xl px-4 py-8">
         <CollectionPageHeader
@@ -180,6 +203,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
                     directly from the brand or authorised distributors — no counterfeits, no grey market. We offer Cash
                     on Delivery (COD) across Bangladesh. {STORE_POLICIES.shipping.pdpDeliveryText}.
                     {' '}{STORE_POLICIES.shipping.checkoutFeeText}
+                    {originLabel ? ` Origin: ${originLabel}.` : ''}
                   </p>
                 </details>
               </>

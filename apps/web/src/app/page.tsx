@@ -10,6 +10,7 @@ import { HOME_TOP_CATEGORY_ORDER, TOP_CATEGORY_IMAGE_OVERRIDES } from '@/lib/cat
 import brandLogoManifest from '../../public/images/brands-e-mart/manifest.json';
 import type { Metadata } from 'next';
 import { absoluteUrl, SITE_URL } from '@/lib/siteUrl';
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 
 const HOME_DESC = 'Shop authentic Korean, Japanese & global skincare in Bangladesh. Carefully curated beauty products, local support, fast delivery and trusted service.';
 
@@ -132,13 +133,52 @@ export default async function HomePage() {
       image: TOP_CATEGORY_IMAGE_OVERRIDES[resolvedSlug] || category?.image?.src,
     };
   });
+  const homepageItemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    '@id': `${SITE_URL}/#featured-shopping-paths`,
+    name: 'Featured skincare shopping paths at Emart',
+    url: SITE_URL,
+    numberOfItems: 6,
+    itemListElement: [
+      ...mobileDiscoveryCategories.slice(0, 3).map((category, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: category.name,
+        url: absoluteUrl(category.href),
+      })),
+      ...brandLogos.slice(0, 3).map((brand, index) => ({
+        '@type': 'ListItem',
+        position: index + 4,
+        name: brand.name,
+        url: absoluteUrl(`/brands/${brand.slug}`),
+      })),
+    ],
+  };
 
   return (
     <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(homepageItemListJsonLd) }}
+      />
       {/* Stable brand H1 for SEO — visually hidden, accessible to screen readers and crawlers */}
       <h1 className="sr-only">Korean & Global Skincare in Bangladesh — Emart</h1>
 
       <HeroCarousel />
+      <section className="mx-auto max-w-7xl px-4 py-5 sm:py-6">
+        <div className="max-w-3xl">
+          <h2 className="text-xl font-bold text-ink sm:text-2xl">
+            Emart Skincare Bangladesh — authentic Korean, Japanese and global beauty products delivered to your door.
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-muted sm:text-base sm:leading-7">
+            Emart helps Bangladesh shoppers buy original skincare, sunscreen, cleanser, toner, serum, moisturizer,
+            hair care and cosmetics from trusted Korean, Japanese and global beauty brands. Our Dhanmondi-based team
+            checks product sourcing, supports customers before and after purchase, and delivers nationwide with COD,
+            bKash and Nagad payment options.
+          </p>
+        </div>
+      </section>
       {/* Mobile: horizontal scroll discovery strip */}
       <MobileDiscovery categories={mobileDiscoveryCategories} showChips={false} showCategories={false} />
       <ShopByCategory />
