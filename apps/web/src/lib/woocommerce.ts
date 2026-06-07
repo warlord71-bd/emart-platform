@@ -1558,12 +1558,17 @@ export async function createCustomer(data: {
   password: string;
   first_name: string;
   last_name: string;
-}): Promise<WooCustomer | null> {
+}, options?: { quietExistingEmail?: boolean }): Promise<WooCustomer | null> {
   try {
     const response = await wooWriteClient.post('/customers', data);
     return response.data;
   } catch (error) {
-    logWooError('createCustomer', error);
+    const status = (error as { response?: { status?: number; data?: { message?: string } } })?.response?.status;
+    const message = String((error as { response?: { data?: { message?: string } } })?.response?.data?.message ?? '');
+    const isExistingEmail = status === 400 && message.toLowerCase().includes('already registered');
+    if (!options?.quietExistingEmail || !isExistingEmail) {
+      logWooError('createCustomer', error);
+    }
     return null;
   }
 }

@@ -41,28 +41,37 @@ export async function ensureCustomerByEmail(params: {
   const { firstName, lastName } = splitName(fullName);
   const baseUsername = makeBaseUsername(normalizedEmail, fullName);
 
-  for (let attempt = 0; attempt < 5; attempt += 1) {
-    const suffix = attempt === 0 ? '' : randomBytes(2).toString('hex');
-    const username = `${baseUsername}${suffix}`.slice(0, 28);
-    const password = randomBytes(24).toString('hex');
-    const createdCustomer = await createCustomer({
-      email: normalizedEmail,
-      username,
-      password,
-      first_name: firstName,
-      last_name: lastName,
-    });
+  const password = randomBytes(24).toString('hex');
+  const createdCustomer = await createCustomer({
+    email: normalizedEmail,
+    username: baseUsername.slice(0, 28),
+    password,
+    first_name: firstName,
+    last_name: lastName,
+  }, { quietExistingEmail: true });
 
-    if (createdCustomer) {
-      return { customer: createdCustomer, isNew: true };
-    }
-
-    const retriedCustomer = await getCustomerByEmail(normalizedEmail);
-    if (retriedCustomer) {
-      // Found on retry = race condition, another request created it
-      return { customer: retriedCustomer, isNew: false };
-    }
+  if (createdCustomer) {
+    return { customer: createdCustomer, isNew: true };
   }
 
-  throw new Error('Could not create or load checkout customer');
+  const retriedCustomer = await getCustomerByEmail(normalizedEmail);
+  if (retriedCustomer) {
+    // Found on retry = race condition, another request created it
+    return { customer: retriedCustomer, isNew: false };
+  }
+
+  // Do not block checkout only because the email belongs to an existing
+  // WordPress account that Woo REST cannot expose as a customer. The secure
+  // order endpoint resolves billing email to a WP user before order creation.
+  return {
+    customer: {
+      id: 0,
+      email: normalizedEmail,
+      first_name: firstName,
+      last_name: lastName,
+      username: baseUsername,
+      avatar_url: '',
+    },
+    isNew: false,
+  };
 }

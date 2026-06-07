@@ -145,9 +145,17 @@ function emart_handle_create_order( WP_REST_Request $request ) {
 		return new WP_REST_Response( emart_order_endpoint_format_order( $existing_order ), 200 );
 	}
 
+	$customer_id = isset( $data['customer_id'] ) ? absint( $data['customer_id'] ) : 0;
+	if ( $customer_id <= 0 && ! empty( $data['billing']['email'] ) ) {
+		$user = get_user_by( 'email', sanitize_email( wp_unslash( $data['billing']['email'] ) ) );
+		if ( $user instanceof WP_User ) {
+			$customer_id = (int) $user->ID;
+		}
+	}
+
 	$order = wc_create_order( array(
 		'status'      => 'pending',
-		'customer_id' => isset( $data['customer_id'] ) ? absint( $data['customer_id'] ) : 0,
+		'customer_id' => $customer_id,
 		'created_via' => 'emart-bff',
 	) );
 
