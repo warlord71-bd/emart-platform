@@ -27,7 +27,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 6. **GMC data/asset** — 2 products missing price/image: IDs 63749, 62576
 7. **GMC mixed manual** — 6 products: IDs 36262, 3274, 56108, 3753, 38292, 26194
 8. **16 product images** — workspace/audit/active/products-need-real-image.csv
-9. **pa_concern 1,161 rows** — workspace/audit/active/pa-concern-manual-review-20260521-174247.csv
+9. **pa_concern 1,161 rows** — 13 conservative assignments applied Jun 6 and `tag:products` revalidated; remaining 1,147 left blank due no reliable signal
 
 ---
 
@@ -35,9 +35,10 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 
 ### X2 — Impression-priority humanizer
 - ✅ First 10 non-holdout impression-priority products applied Jun 5
+- ✅ Jun 6 follow-up: current reviewed JSONL exhausted; 10/10 eligible rows applied, `58506` markdown fence cleanup applied, product cache revalidated
 - Reviewed JSONL: workspace/humanizer/impression-priority/active/impression-priority-2026-06-05.jsonl
 - Holdout preserved: 2611, 2591, 4064
-- Next: monitor GSC movement; continue only with reviewed JSONL batches
+- Next: monitor GSC movement; generate/review a new impression-priority JSONL before applying more products
 
 ### X3 — Mobile M0
 - ✅ Local release-readiness pass: BFF credential audit clean, stale Woo `.env.example` removed, shipping policy aligned, checkout success response fixed

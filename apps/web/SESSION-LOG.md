@@ -1865,3 +1865,67 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 
 ### Next
 - Monitor GSC enhancements/indexing after Google recrawls; no freeze-breaking layout or URL work needed for this pass.
+
+## 2026-06-06 12:40 CEST — Codex impression-priority humanizer follow-up
+
+### Did
+- Continued X2 from `workspace/humanizer/impression-priority/active/impression-priority-2026-06-05.jsonl`.
+- Confirmed the reviewed JSONL contains the full 10 eligible non-holdout products from the current priority list, and all 10 are already applied in Woo.
+- Preserved holdout IDs `2611`, `2591`, and `4064` untouched with `_emart_humanized=0`.
+- Removed stray markdown code fences from reviewed artifact row/product `58506` and from live Woo `post_content`.
+- Revalidated Next cache via `POST /api/revalidate` with `{ "tag": "products" }`.
+
+### Verification
+- Woo check: 10 eligible products `_emart_humanized=1`; all checked content clean of markdown fences.
+- Holdout check: `2611`, `2591`, `4064` remain `_emart_humanized=0`.
+- Revalidate response: `{"ok":true,"revalidated":["tag:products"],"at":"2026-06-06T10:39:42.112Z"}`.
+
+### Blockers
+- No new reviewed products exist in the current impression-priority JSONL beyond the already-applied 10.
+
+### Next
+- Generate/review a new impression-priority batch before applying more X2 products; never apply raw LLM output directly to Woo.
+
+## 2026-06-06 13:48 CEST — Codex pa_concern auto-assign dry-run
+
+### Did
+- Added a WP-CLI dry-run/apply helper at `workspace/scripts/active/pa-concern-auto-assign.php`.
+- Generated dry-run CSV `workspace/audit/active/pa-concern-auto-assign-20260606.csv` and summary `workspace/audit/active/pa-concern-auto-assign-20260606-summary.txt`.
+- Verified live `pa_concern` slugs before output; prompt aliases normalize to live slugs: `sun-protection=>sunscreen`, `brightness=>brightening`, `pore-care=>pores-blackheads`, `anti-aging=>anti-aging-repair`.
+- Revised the highmed guard to protect only high/medium rows with actual approved concern terms plus all products that already have live `pa_concern`; this keeps unresolved manual rows eligible while preserving the no-overwrite rule.
+- Added non-skincare/hair/makeup/baby guards to prevent bad PDP “Best for” chips.
+
+### Verification
+- `php -l workspace/scripts/active/pa-concern-auto-assign.php` passed.
+- `wp --path=/var/www/wordpress --allow-root eval-file workspace/scripts/active/pa-concern-auto-assign.php` passed.
+- Final dry-run result: 1,161 manual rows; 13 assigned; 1,147 left blank; 1 not published/product; 0 DB writes.
+- Concern breakdown: `dryness-hydration` 7, `sunscreen` 3, `acne-blemish` 2, `anti-aging-repair` 1.
+- Apply approved and completed: `APPLY=1 wp --path=/var/www/wordpress --allow-root eval-file workspace/scripts/active/pa-concern-auto-assign.php`.
+- Apply result: 13 products updated; 1,147 blank rows skipped; product cache revalidated via `tag:products`.
+- Post-apply verification: all 13 product IDs now have the expected `pa_concern` slug.
+
+### Blockers
+- None.
+
+### Next
+- Leave remaining 1,147 rows blank unless a stronger signal or manual review exists.
+
+## 2026-06-07 00:55 CEST — Codex homepage console/perf cleanup
+
+### Did
+- Removed global AESTURA hero image preloads from root layout so checkout/shop/category no longer receive homepage-only preload hints.
+- Removed `CategoryLiveBadge` from homepage category cards; category cards still link to their category URLs.
+- Deployed the previously local-only removal of the visible homepage SEO intro block to `/var/www`.
+- Removed matching stale AESTURA preload `add_header Link` lines from active Nginx config after backing up the file to `sites-available`, then ran `nginx -t` and reloaded Nginx.
+- Built locally and on VPS, restarted only `emartweb`, smoke-tested live, and pushed verified-live commits to origin.
+
+### Verification
+- Local and VPS `npm run build` passed.
+- `curl -I` for homepage and checkout returned 200; checkout remained `private, no-store`.
+- Live Chromium/CDP verifier passed: no image preload links, no per-category active-session polling, no preload warnings, old visible SEO block absent, checkout page OK.
+
+### Blockers
+- Playwright MCP was not exposed in this Codex tool session; Chromium/CDP verifier was used instead.
+
+### Next
+- YouTube homepage thumbnail replacement remains intentionally deferred.

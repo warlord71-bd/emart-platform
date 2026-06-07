@@ -14,8 +14,8 @@ const STRIP_PARAMS = new Set([
   'filter_brand', 'filter_color', 'filter_size', 'min_price', 'max_price',
   // WC display params ignored by Next.js shop
   'per_row',
-  // Emart shop UI filters — sorted/filtered views are not canonical pages
-  'sort', 'category', 'brand', 'origin', 'in_stock', 'price',
+  // Emart shop UI filters — sorted/filtered/price views are not canonical pages
+  'sort', 'filter', 'category', 'brand', 'origin', 'in_stock', 'price', 'price_min', 'price_max',
   // Emart concern/skin-type/ingredient filter params — dedicated SEO pages exist at
   // /concerns/[slug], so /shop?concern=slug is a filter UI variant, not a canonical page
   'concern', 'skin_type', 'ingredient',

@@ -26,3 +26,8 @@ Notes:
 - Review cleanup removed one duplicate `50630` row, regenerated malformed short row `43841`, and sanitized risky `prescription` / verification phrasing before apply.
 - Apply result: 10 applied, 0 failed. DB verification confirmed all 10 have `_emart_humanized=1` and populated `post_content`. ISR `tag=products` revalidation ran.
 - Holdout IDs `2611`, `2591`, and `4064` were preserved.
+
+2026-06-06 Codex follow-up:
+
+- Verified the reviewed JSONL still contains exactly the 10 eligible non-holdout products; all 10 are already applied in Woo and the 3 holdout products remain `_emart_humanized=0`.
+- Removed stray markdown code fences from reviewed artifact row/product `58506` and from live Woo `post_content`; revalidated `tag=products` successfully at `2026-06-06T10:39:42.112Z`.

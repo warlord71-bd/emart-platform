@@ -316,7 +316,7 @@ function getCategoryOgImageMeta(slug: string, name: string, alt: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = await getCategoryBySlug(params.slug);
-  if (!cat) return { title: 'Category Not Found' };
+  if (!cat) notFound();
 
   const seo = await getCategorySeo(params.slug, cat.name);
   const rawDescription = 'description' in cat ? ((cat as any).description as string || '') : '';
@@ -382,6 +382,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 export const revalidate = 3600;
 
 function getCategoryIntro(name: string, slug: string, description: string): string {
