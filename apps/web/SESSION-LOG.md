@@ -1817,6 +1817,19 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 ### Blockers
 - None.
 
+## 2026-06-08 22:40 CEST — Codex Google tracking redirect localhost fix
+
+### Did
+- Reproduced the mobile Google click issue with a product URL containing `?srsltid=...`: live middleware stripped the tracking parameter but redirected to internal `http://localhost:3000/...`.
+- Updated middleware cleanup redirects to build `Location` headers from `https://e-mart.com.bd` explicitly.
+
+### Verification
+- Local `npm run build` passed.
+- Local production smoke for `/shop/welcos-aloe-vera-moisture-real-soothing-gel?srsltid=AfmBOoq-test` now returns `301 Location: https://e-mart.com.bd/shop/welcos-aloe-vera-moisture-real-soothing-gel`.
+
+### Blockers
+- None.
+
 ### Next
 - Commit only the checkout code/session docs; leave pre-existing dirty UI and humanizer files untouched.
 

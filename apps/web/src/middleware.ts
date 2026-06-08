@@ -3,6 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 const PUBLIC_SITE_URL = 'https://e-mart.com.bd';
 const LOCAL_FRONTEND_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1', '[::1]']);
 
+function publicUrl(pathname: string, search = ''): URL {
+  const url = new URL(pathname, PUBLIC_SITE_URL);
+  url.search = search;
+  return url;
+}
+
 // Junk/test WordPress pages that were indexed and should be permanently removed.
 // 410 Gone signals to Google that these URLs are dead and should be dropped from index.
 const GONE_PATHS = new Set([
@@ -19,10 +25,7 @@ function handleConcernRedirect(req: NextRequest): NextResponse | undefined {
   if (req.nextUrl.pathname !== '/concerns') return undefined;
   const concern = req.nextUrl.searchParams.get('concern');
   if (!concern) return undefined;
-  const url = req.nextUrl.clone();
-  url.pathname = `/concerns/${concern}`;
-  url.search = '';
-  return NextResponse.redirect(url, { status: 301 });
+  return NextResponse.redirect(publicUrl(`/concerns/${concern}`), { status: 301 });
 }
 
 // Query parameters that pollute canonical URLs — strip and 301 to clean path
@@ -63,7 +66,7 @@ export function middleware(req: NextRequest): NextResponse | undefined {
   const pathname = req.nextUrl.pathname.replace(/\/$/, '') || '/';
 
   if (pathname === '/policy') {
-    return NextResponse.redirect(new URL('/return-policy', req.url), { status: 301 });
+    return NextResponse.redirect(publicUrl('/return-policy'), { status: 301 });
   }
 
   // Return 410 Gone for permanently removed junk/test pages
@@ -77,7 +80,7 @@ export function middleware(req: NextRequest): NextResponse | undefined {
 
   // Strip old WordPress ?p= post ID parameter — redirect root to clean /
   if (pathname === '/' && req.nextUrl.searchParams.has('p')) {
-    return NextResponse.redirect(new URL('/', req.url), { status: 301 });
+    return NextResponse.redirect(publicUrl('/'), { status: 301 });
   }
 
   const url = req.nextUrl.clone();
@@ -100,7 +103,7 @@ export function middleware(req: NextRequest): NextResponse | undefined {
   }
 
   if (stripped) {
-    return NextResponse.redirect(url, { status: 301 });
+    return NextResponse.redirect(publicUrl(url.pathname, url.search), { status: 301 });
   }
 
   return undefined;

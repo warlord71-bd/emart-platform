@@ -7,3 +7,5 @@ If `NEXT_PUBLIC_SITE_URL` is accidentally set to `http://localhost:3000`, `http:
 This protects SEO-facing canonical, Open Graph, sitemap/feed, and schema URL helpers from leaking localhost into rendered metadata during local or misconfigured builds.
 
 Deployed in `1167bf4 fix(seo): prevent localhost public URLs`.
+
+Follow-up on 2026-06-08: middleware cleanup redirects must also build destinations from the public domain. Google click URLs with `?srsltid=...` previously stripped the param using an internal cloned URL and could emit `Location: http://localhost:3000/...`. Use explicit public URL construction for middleware redirects.
