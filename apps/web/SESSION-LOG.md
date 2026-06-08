@@ -1822,10 +1822,12 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 ### Did
 - Reproduced the mobile Google click issue with a product URL containing `?srsltid=...`: live middleware stripped the tracking parameter but redirected to internal `http://localhost:3000/...`.
 - Updated middleware cleanup redirects to build `Location` headers from `https://e-mart.com.bd` explicitly.
+- Added `Cache-Control: no-store, max-age=0` to middleware cleanup redirects so Cloudflare does not cache future tracking-param redirects.
 
 ### Verification
 - Local `npm run build` passed.
 - Local production smoke for `/shop/welcos-aloe-vera-moisture-real-soothing-gel?srsltid=AfmBOoq-test` now returns `301 Location: https://e-mart.com.bd/shop/welcos-aloe-vera-moisture-real-soothing-gel`.
+- Fresh live `?srsltid=...` variants returned the public HTTPS location; one old exact test URL remained briefly as a Cloudflare HIT from the pre-fix redirect.
 
 ### Blockers
 - None.

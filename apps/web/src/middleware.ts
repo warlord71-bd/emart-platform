@@ -9,6 +9,12 @@ function publicUrl(pathname: string, search = ''): URL {
   return url;
 }
 
+function publicRedirect(pathname: string, search = ''): NextResponse {
+  const response = NextResponse.redirect(publicUrl(pathname, search), { status: 301 });
+  response.headers.set('Cache-Control', 'no-store, max-age=0');
+  return response;
+}
+
 // Junk/test WordPress pages that were indexed and should be permanently removed.
 // 410 Gone signals to Google that these URLs are dead and should be dropped from index.
 const GONE_PATHS = new Set([
@@ -25,7 +31,7 @@ function handleConcernRedirect(req: NextRequest): NextResponse | undefined {
   if (req.nextUrl.pathname !== '/concerns') return undefined;
   const concern = req.nextUrl.searchParams.get('concern');
   if (!concern) return undefined;
-  return NextResponse.redirect(publicUrl(`/concerns/${concern}`), { status: 301 });
+  return publicRedirect(`/concerns/${concern}`);
 }
 
 // Query parameters that pollute canonical URLs — strip and 301 to clean path
@@ -66,7 +72,7 @@ export function middleware(req: NextRequest): NextResponse | undefined {
   const pathname = req.nextUrl.pathname.replace(/\/$/, '') || '/';
 
   if (pathname === '/policy') {
-    return NextResponse.redirect(publicUrl('/return-policy'), { status: 301 });
+    return publicRedirect('/return-policy');
   }
 
   // Return 410 Gone for permanently removed junk/test pages
@@ -80,7 +86,7 @@ export function middleware(req: NextRequest): NextResponse | undefined {
 
   // Strip old WordPress ?p= post ID parameter — redirect root to clean /
   if (pathname === '/' && req.nextUrl.searchParams.has('p')) {
-    return NextResponse.redirect(publicUrl('/'), { status: 301 });
+    return publicRedirect('/');
   }
 
   const url = req.nextUrl.clone();
@@ -103,7 +109,7 @@ export function middleware(req: NextRequest): NextResponse | undefined {
   }
 
   if (stripped) {
-    return NextResponse.redirect(publicUrl(url.pathname, url.search), { status: 301 });
+    return publicRedirect(url.pathname, url.search);
   }
 
   return undefined;
