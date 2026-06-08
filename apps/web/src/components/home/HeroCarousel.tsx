@@ -9,10 +9,10 @@ const HERO = {
   copy:
     'Sensitive-skin hydration, barrier repair, and everyday comfort from the Atobarrier line.',
   cta: { text: 'Shop AESTURA', href: '/brands/aestura' },
-  imageMobileAvif: '/images/hero/aestura-atobarrier-mobile.avif',
-  imageMobileWebp: '/images/hero/aestura-atobarrier-mobile.webp',
-  imageDesktopAvif: '/images/hero/aestura-atobarrier-desktop.avif',
-  imageDesktopWebp: '/images/hero/aestura-atobarrier-desktop.webp',
+  imageMobileAvif: '/images/hero/aestura-atobarrier-mobile.avif?v=20260608',
+  imageMobileWebp: '/images/hero/aestura-atobarrier-mobile.webp?v=20260608',
+  imageDesktopAvif: '/images/hero/aestura-atobarrier-desktop.avif?v=20260608',
+  imageDesktopWebp: '/images/hero/aestura-atobarrier-desktop.webp?v=20260608',
   imageAlt: 'AESTURA Atobarrier spotlight',
 };
 
