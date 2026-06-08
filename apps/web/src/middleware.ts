@@ -48,7 +48,15 @@ const STRIP_IF_VALUE: Record<string, readonly string[]> = {
 
 export function middleware(req: NextRequest): NextResponse | undefined {
   const hostname = req.nextUrl.hostname.toLowerCase();
-  if (process.env.NODE_ENV === 'production' && LOCAL_FRONTEND_HOSTS.has(hostname)) {
+  const hostHeader = (req.headers.get('host') || '').split(':')[0].toLowerCase();
+  const forwardedHost = (req.headers.get('x-forwarded-host') || '').split(',')[0].split(':')[0].trim().toLowerCase();
+  const isForwardedPublicRequest = forwardedHost && !LOCAL_FRONTEND_HOSTS.has(forwardedHost);
+
+  if (
+    process.env.NODE_ENV === 'production' &&
+    !isForwardedPublicRequest &&
+    (LOCAL_FRONTEND_HOSTS.has(hostname) || LOCAL_FRONTEND_HOSTS.has(hostHeader))
+  ) {
     return NextResponse.redirect(new URL(`${req.nextUrl.pathname}${req.nextUrl.search}`, PUBLIC_SITE_URL), { status: 301 });
   }
 
@@ -100,5 +108,5 @@ export function middleware(req: NextRequest): NextResponse | undefined {
 
 export const config = {
   // Run on all routes except Next.js internals and static files
-  matcher: ['/((?!_next|api|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js|woff2?)).*)'],
+  matcher: ['/((?!_next|api|favicon\\.ico|.*\\.(?:avif|png|jpg|jpeg|gif|svg|webp|ico|css|js|woff2?)).*)'],
 };
