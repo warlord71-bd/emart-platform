@@ -1929,3 +1929,25 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 
 ### Next
 - YouTube homepage thumbnail replacement remains intentionally deferred.
+
+## 2026-06-08 17:30 CEST — Codex localhost public URL guard
+
+### Did
+- Investigated report that a Google result appeared to open `localhost:3000`.
+- Confirmed live Google/public product URL and live HTML metadata for Welcos product use `https://e-mart.com.bd`, not localhost.
+- Hardened `apps/web/src/lib/siteUrl.ts` so localhost/loopback `NEXT_PUBLIC_SITE_URL` values fall back to `https://e-mart.com.bd`.
+- Committed and deployed only that helper change as `1167bf4 fix(seo): prevent localhost public URLs`; preserved unrelated local dirty files.
+
+### Verification
+- Local `npm run build` passed.
+- Local forced-env build passed with `NEXT_PUBLIC_SITE_URL=http://localhost:3000`.
+- Rendered metadata under forced-localhost build showed canonical/OG URLs using `https://e-mart.com.bd`.
+- VPS `npm run build` passed, `pm2 restart emartweb` completed, homepage smoke returned `200`.
+- Live Welcos product canonical and `og:url` verified as `https://e-mart.com.bd/shop/welcos-aloe-vera-moisture-real-soothing-gel`.
+- Pushed `1167bf4` to `origin/main`; VPS git metadata aligned and clean.
+
+### Blockers
+- None.
+
+### Next
+- The user still needs to clear/avoid Chrome autocomplete/history for local `localhost:3000` URLs on their Windows browser if Chrome keeps opening the local dev address.

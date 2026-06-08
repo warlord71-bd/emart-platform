@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const PUBLIC_SITE_URL = 'https://e-mart.com.bd';
+const LOCAL_FRONTEND_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1', '[::1]']);
+
 // Junk/test WordPress pages that were indexed and should be permanently removed.
 // 410 Gone signals to Google that these URLs are dead and should be dropped from index.
 const GONE_PATHS = new Set([
@@ -44,6 +47,11 @@ const STRIP_IF_VALUE: Record<string, readonly string[]> = {
 };
 
 export function middleware(req: NextRequest): NextResponse | undefined {
+  const hostname = req.nextUrl.hostname.toLowerCase();
+  if (process.env.NODE_ENV === 'production' && LOCAL_FRONTEND_HOSTS.has(hostname)) {
+    return NextResponse.redirect(new URL(`${req.nextUrl.pathname}${req.nextUrl.search}`, PUBLIC_SITE_URL), { status: 301 });
+  }
+
   const pathname = req.nextUrl.pathname.replace(/\/$/, '') || '/';
 
   if (pathname === '/policy') {
