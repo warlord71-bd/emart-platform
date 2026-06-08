@@ -1832,6 +1832,26 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 ### Blockers
 - None.
 
+## 2026-06-08 23:18 CEST — Codex Nginx origin HTTP hardening
+
+### Did
+- Checked Gemini's three-layer proposal against the live stack.
+- Confirmed public Cloudflare HTTP redirects were already clean, but direct origin `http://e-mart.com.bd` returned `200 OK`.
+- Backed up active Nginx config to `/etc/nginx/sites-available/emart-nextjs.backup-20260608-origin-http-hardening`.
+- Added Cloudflare-safe origin HTTP hardening in `/etc/nginx/sites-enabled/emart-nextjs`: direct plain HTTP without `X-Forwarded-Proto: https` now 301s to `https://e-mart.com.bd$request_uri`, while Cloudflare HTTP-to-origin traffic still reaches the app.
+
+### Verification
+- `nginx -t` passed.
+- `systemctl reload nginx` completed.
+- Direct origin HTTP without Cloudflare header returns `301 Location: https://e-mart.com.bd/...`.
+- Direct origin HTTP with `X-Forwarded-Proto: https` returns `200 OK`.
+- Public `http://e-mart.com.bd/category/sunscreen` returns `301` then `200`.
+- Public checkout returns `200`.
+- Googlebot-style `?srsltid=...` product URL redirects to the clean public HTTPS product URL and resolves `200`.
+
+### Blockers
+- Full split `listen 80`/`listen 443` blocks caused a Cloudflare origin redirect loop because Cloudflare currently reaches origin over HTTP. Kept the safe conditional version instead.
+
 ### Next
 - Commit only the checkout code/session docs; leave pre-existing dirty UI and humanizer files untouched.
 
