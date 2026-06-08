@@ -11,6 +11,12 @@ import { absoluteUrl } from '@/lib/siteUrl';
 import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
 import EducationContent, { type EducationContentEntry } from '@/components/content/EducationContent';
 import ingredientContent from '@/data/ingredient-content.json';
+import {
+  getPaginatedCanonical,
+  getPaginatedTitle,
+  getPaginationHref,
+  getValidPage,
+} from '@/lib/paginationSeo';
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -39,12 +45,16 @@ const SORT_MAP = {
   rating: { orderby: 'rating', order: 'desc' },
 } satisfies Record<string, { orderby: 'date' | 'price' | 'popularity' | 'rating' | 'title'; order: 'asc' | 'desc' }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const ingredient = getIngredientBySlug(params.slug);
   if (!ingredient) return { title: 'Ingredient Not Found' };
 
+  const page = getValidPage(searchParams?.page);
+  const canonical = getPaginatedCanonical(`/ingredients/${ingredient.slug}`, page);
+  const title = getPaginatedTitle(`${ingredient.label} Skincare Products in Bangladesh | Emart`, page);
+
   return {
-    title: { absolute: `${ingredient.label} Skincare Products in Bangladesh | Emart` },
+    title: { absolute: title },
     description: ingredient.metaDescription,
     keywords: [
       `${ingredient.label} skincare Bangladesh`,
@@ -54,11 +64,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'authentic skincare Bangladesh',
       'Emart skincare Bangladesh',
     ],
-    alternates: { canonical: absoluteUrl(`/ingredients/${ingredient.slug}`) },
+    alternates: { canonical },
     openGraph: {
-      title: `${ingredient.label} Skincare | Emart Bangladesh`,
+      title,
       description: ingredient.metaDescription,
-      url: absoluteUrl(`/ingredients/${ingredient.slug}`),
+      url: canonical,
       images: [{ url: absoluteUrl('/images/hero-products.png'), width: 1200, height: 630, alt: `${ingredient.label} skincare products at Emart Bangladesh` }],
     },
     robots: {
@@ -79,7 +89,7 @@ export default async function IngredientDetailPage({ params, searchParams }: Pro
   const ingredient = getIngredientBySlug(params.slug);
   if (!ingredient) notFound();
 
-  const page = Math.max(1, parseInt(searchParams?.page || '1'));
+  const page = getValidPage(searchParams?.page);
   const extras: { orderby?: 'date'|'price'|'popularity'|'rating'|'title'; order?: 'asc'|'desc'; min_price?: string; max_price?: string; stock_status?: 'instock'|'outofstock'|'onbackorder' } = {};
   const sortKey = searchParams?.sort as keyof typeof SORT_MAP | undefined;
   if (sortKey && sortKey in SORT_MAP) Object.assign(extras, SORT_MAP[sortKey]);
@@ -92,7 +102,7 @@ export default async function IngredientDetailPage({ params, searchParams }: Pro
     page: searchParams?.page, sort: searchParams?.sort, price: searchParams?.price, in_stock: searchParams?.in_stock,
   };
 
-  const canonicalUrl = absoluteUrl(`/ingredients/${ingredient.slug}`);
+  const canonicalUrl = getPaginatedCanonical(`/ingredients/${ingredient.slug}`, page);
   const educationContent = (ingredientContent as EducationContentEntry[]).find((item) => item.slug === ingredient.slug);
 
   const { breadcrumbJsonLd, collectionPageJsonLd, itemListJsonLd } = buildCollectionSchema({
@@ -196,11 +206,11 @@ export default async function IngredientDetailPage({ params, searchParams }: Pro
                 {totalPages > 1 && (
                   <div className="mt-10 flex items-center justify-center gap-2">
                     {page > 1 && (
-                      <Link href={`/ingredients/${ingredient.slug}?page=${page - 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
+                      <Link href={getPaginationHref(`/ingredients/${ingredient.slug}`, searchParamsRecord, page - 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
                     )}
                     <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
                     {page < totalPages && (
-                      <Link href={`/ingredients/${ingredient.slug}?page=${page + 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
+                      <Link href={getPaginationHref(`/ingredients/${ingredient.slug}`, searchParamsRecord, page + 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
                     )}
                   </div>
                 )}

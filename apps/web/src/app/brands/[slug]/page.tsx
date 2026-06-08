@@ -13,6 +13,12 @@ import { absoluteUrl } from '@/lib/siteUrl';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { findCanonicalBrand } from '@/lib/brandWhitelist';
+import {
+  getPaginatedCanonical,
+  getPaginatedTitle,
+  getPaginationHref,
+  getValidPage,
+} from '@/lib/paginationSeo';
 import brandLogoManifest from '../../../../public/images/brands-e-mart/manifest.json';
 
 export const revalidate = 1800;
@@ -34,22 +40,25 @@ function getBrandOriginLabel(slug: string, name: string): string | undefined {
   return undefined;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const brand = await getBrandBySlug(params.slug);
   if (!brand) notFound();
 
   const logo = brandLogoBySlug.get(brand.slug.toLowerCase());
   const desc = getBrandDescription(brand.name);
-  const title = `${brand.name} Bangladesh | Authentic Products | Emart`;
+  const baseTitle = `${brand.name} Bangladesh | Authentic Products | Emart`;
+  const page = getValidPage(searchParams?.page);
+  const canonical = getPaginatedCanonical(`/brands/${brand.slug}`, page);
+  const title = getPaginatedTitle(baseTitle, page);
 
   return {
     title: { absolute: title },
     description: desc,
-    alternates: { canonical: absoluteUrl(`/brands/${brand.slug}`) },
+    alternates: { canonical },
     openGraph: {
       title,
       description: desc,
-      url: absoluteUrl(`/brands/${brand.slug}`),
+      url: canonical,
       images: logo ? [{ url: logo }] : undefined,
     },
   };
@@ -59,7 +68,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
   const brand = await getBrandBySlug(params.slug).catch(() => null);
   if (!brand) notFound();
 
-  const page = Math.max(1, parseInt(searchParams?.page || '1'));
+  const page = getValidPage(searchParams?.page);
 
   const { products, total, totalPages } = await getProductsByProductBrand(brand.id, page, 24)
     .catch(() => ({ products: [], total: 0, totalPages: 0 }));
@@ -72,7 +81,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
   const description = originLabel
     ? `${getBrandDescription(brand.name)} ${brand.name} is represented here as a ${originLabel}-origin beauty brand.`
     : getBrandDescription(brand.name);
-  const canonicalUrl = absoluteUrl(`/brands/${brand.slug}`);
+  const canonicalUrl = getPaginatedCanonical(`/brands/${brand.slug}`, page);
 
   const { breadcrumbJsonLd, collectionPageJsonLd, itemListJsonLd } = buildCollectionSchema({
     type: 'brand',
@@ -173,7 +182,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
                   <div className="mt-10 flex items-center justify-center gap-2">
                     {page > 1 && (
                       <Link
-                        href={`/brands/${params.slug}?page=${page - 1}`}
+                        href={getPaginationHref(`/brands/${params.slug}`, searchParams, page - 1)}
                         className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
                       >
                         Previous
@@ -184,7 +193,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
                     </span>
                     {page < totalPages && (
                       <Link
-                        href={`/brands/${params.slug}?page=${page + 1}`}
+                        href={getPaginationHref(`/brands/${params.slug}`, searchParams, page + 1)}
                         className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
                       >
                         Next

@@ -4,29 +4,41 @@ import { ProductListGrid } from '@/components/product/ProductListGrid';
 import ProductCard from '@/components/product/ProductCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { canonicalPath } from '@/lib/canonicalUrl';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { getOriginByCountry } from '@/lib/origin-navigation';
 import { getConcernBySlug } from '@/lib/concerns';
 import { getIngredientBySlug } from '@/lib/ingredients';
+import {
+  getPaginatedCanonical,
+  getPaginatedTitle,
+  getPaginationHref,
+  getValidPage,
+} from '@/lib/paginationSeo';
 
-// All filter/sort params are stripped — only /shop is the canonical page for this route.
+const SHOP_BASE_TITLE = 'Emart Skincare Shop Bangladesh | Korean & Global Beauty';
+
+// Filter/sort params are stripped from canonical URLs. Only true catalog pagination
+// (/shop?page=N) is self-canonical so product-list pages stay crawlable without
+// opening duplicate indexable filter combinations.
 export async function generateMetadata({ searchParams }: { searchParams?: ShopPageProps['searchParams'] }): Promise<Metadata> {
-  const canonical = canonicalPath('/shop', searchParams);
+  const page = getValidPage(searchParams?.page);
+  const canonical = getPaginatedCanonical('/shop', page);
+  const title = getPaginatedTitle(SHOP_BASE_TITLE, page);
   const count = await getCatalogProductCount().catch(() => 0);
   const countLabel = formatCatalogProductCount(count);
   const countPrefix = countLabel ? `${countLabel} ` : '';
   const description = `Emart Skincare Bangladesh — shop ${countPrefix}authentic Korean, Japanese & global beauty products. Serums, sunscreens, moisturizers, toners & more. Original products, COD, fast delivery nationwide.`;
 
   return {
-    title: { absolute: 'Emart Skincare Shop Bangladesh | Korean & Global Beauty' },
+    title: { absolute: title },
     description,
     alternates: { canonical },
+    robots: { index: true, follow: true },
     openGraph: {
       type: 'website',
       siteName: 'Emart Skincare Bangladesh',
-      title: 'Emart Skincare Shop Bangladesh | Korean & Global Beauty',
+      title,
       description,
       url: canonical,
       images: [{ url: 'https://e-mart.com.bd/images/hero-products.png', width: 1200, height: 630, alt: 'Emart Skincare Shop Bangladesh' }],
@@ -93,19 +105,8 @@ function getSortParams(value?: string) {
   return value && value in SORT_MAP ? SORT_MAP[value as SortValue] : SORT_MAP.newest;
 }
 
-function getPageHref(basePath: string, searchParams: ShopPageProps['searchParams'], targetPage: number) {
-  const params = new URLSearchParams();
-
-  Object.entries(searchParams).forEach(([key, value]) => {
-    if (value) params.set(key, value);
-  });
-
-  params.set('page', String(targetPage));
-  return `${basePath}?${params.toString()}`;
-}
-
 export default async function ShopPage({ searchParams }: ShopPageProps) {
-  const page = parseInt(searchParams.page || '1');
+  const page = getValidPage(searchParams.page);
   const activeBrand = searchParams.brand ? await getBrandBySlug(searchParams.brand) : null;
   const activeBrandProductIds = activeBrand ? await getAllProductIdsByBrand(activeBrand.id) : [];
   const activeOrigin = getOriginByCountry(searchParams.origin);
@@ -203,14 +204,15 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const shopDescription = hasPrimaryFilter
     ? `Browse ${title.toLowerCase()} at Emart Skincare Bangladesh with authentic products, COD, bKash, Nagad and delivery across Bangladesh.`
     : 'Shop authentic Korean, Japanese and global skincare online in Bangladesh at Emart. Find original cleansers, toners, serums, moisturizers, sunscreens, hair care and cosmetics with COD, bKash, Nagad and nationwide delivery.';
-  const canonicalUrl = absoluteUrl('/shop');
+  const canonicalUrl = getPaginatedCanonical('/shop', page);
+  const shopBreadcrumbUrl = absoluteUrl('/shop');
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    '@id': `${canonicalUrl}#breadcrumb`,
+    '@id': `${shopBreadcrumbUrl}#breadcrumb`,
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
-      { '@type': 'ListItem', position: 2, name: 'Shop', item: canonicalUrl },
+      { '@type': 'ListItem', position: 2, name: 'Shop', item: shopBreadcrumbUrl },
     ],
   };
   const collectionPageJsonLd = {
@@ -220,7 +222,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     name: title,
     description: shopDescription,
     url: canonicalUrl,
-    breadcrumb: { '@id': `${canonicalUrl}#breadcrumb` },
+    breadcrumb: { '@id': `${shopBreadcrumbUrl}#breadcrumb` },
     isPartOf: { '@id': `${absoluteUrl('/')}#website` },
   };
   const itemListJsonLd = products.length > 0 ? {
@@ -302,14 +304,14 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
               {totalPages > 1 && (
                 <div className="mt-10 flex items-center justify-center gap-2">
                   {page > 1 && (
-                    <Link href={getPageHref('/shop', searchParams, page - 1)}
+                    <Link href={getPaginationHref('/shop', searchParams, page - 1)}
                       className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">
                       Previous
                     </Link>
                   )}
                   <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
                   {page < totalPages && (
-                    <Link href={getPageHref('/shop', searchParams, page + 1)}
+                    <Link href={getPaginationHref('/shop', searchParams, page + 1)}
                       className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">
                       Next
                     </Link>

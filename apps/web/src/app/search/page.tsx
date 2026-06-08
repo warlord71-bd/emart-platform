@@ -3,11 +3,11 @@
 // ═══════════════════════════════════════════
 import { searchProducts } from '@/lib/woocommerce';
 import { canonicalPath } from '@/lib/canonicalUrl';
-import { buildUrl } from '@/lib/url-utils';
 import ProductCard from '@/components/product/ProductCard';
 import { ProductListGrid } from '@/components/product/ProductListGrid';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
+import { getPaginationHref, getValidPage } from '@/lib/paginationSeo';
 
 interface Props {
   searchParams: { q?: string; page?: string };
@@ -46,7 +46,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
 export default async function SearchPage({ searchParams }: Props) {
   const query = searchParams.q || '';
-  const page = parseInt(searchParams.page || '1');
+  const page = getValidPage(searchParams.page);
 
   if (!query) {
     return (
@@ -86,11 +86,11 @@ export default async function SearchPage({ searchParams }: Props) {
           {totalPages > 1 && (
             <div className="mt-10 flex items-center justify-center gap-2">
               {page > 1 && (
-                <a href={buildUrl('/search', { q: query, page: page - 1 })} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</a>
+                <a href={getPaginationHref('/search', { q: query }, page - 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</a>
               )}
               <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
               {page < totalPages && (
-                <a href={buildUrl('/search', { q: query, page: page + 1 })} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</a>
+                <a href={getPaginationHref('/search', { q: query }, page + 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</a>
               )}
             </div>
           )}

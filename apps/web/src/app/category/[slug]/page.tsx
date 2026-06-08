@@ -13,6 +13,12 @@ import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { getConcernBySlug } from '@/lib/concerns';
 import { getIngredientBySlug } from '@/lib/ingredients';
 import { getOriginByCountry } from '@/lib/origin-navigation';
+import {
+  getPaginatedCanonical,
+  getPaginatedTitle,
+  getPaginationHref,
+  getValidPage,
+} from '@/lib/paginationSeo';
 
 interface Props {
   params: { slug: string };
@@ -68,17 +74,6 @@ function getPriceParams(value?: string) {
 
 function getSortParams(value?: string) {
   return value && value in SORT_MAP ? SORT_MAP[value as SortValue] : SORT_MAP.popularity;
-}
-
-function getPageHref(basePath: string, searchParams: Props['searchParams'], targetPage: number) {
-  const params = new URLSearchParams();
-
-  Object.entries(searchParams).forEach(([key, value]) => {
-    if (value) params.set(key, value);
-  });
-
-  params.set('page', String(targetPage));
-  return `${basePath}?${params.toString()}`;
 }
 
 function detectContext(category: { slug: string; name: string }): 'skincare' | 'hair' | 'makeup' | undefined {
@@ -314,7 +309,7 @@ function getCategoryOgImageMeta(slug: string, name: string, alt: string) {
   };
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const cat = await getCategoryBySlug(params.slug);
   if (!cat) notFound();
 
@@ -356,9 +351,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? SERUMS_AMPOULES_ESSENCES_SEO.ogAlt
       : `${cat.name} products at Emart`;
   const image = getCategoryOgImageMeta(params.slug, cat.name, imageAlt);
+  const page = getValidPage(searchParams.page);
+  const canonical = getPaginatedCanonical(`/category/${params.slug}`, page);
+  const seoTitle = getPaginatedTitle(title, page);
 
   return {
-    title: { absolute: title },
+    title: { absolute: seoTitle },
     description: metaDescription,
     ...(isFaceCleansers ? { keywords: FACE_CLEANSERS_SEO.keywords } : {}),
     ...(isTonersMists ? { keywords: TONERS_MISTS_SEO.keywords } : {}),
@@ -366,11 +364,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: Number(cat.count || 0) <= 0
       ? { index: false, follow: true }
       : { index: true, follow: true },
-    alternates: { canonical: seo.canonical },
+    alternates: { canonical },
     openGraph: {
-      title,
+      title: seoTitle,
       description: metaDescription,
-      url: seo.canonical,
+      url: canonical,
       images: [image],
     },
     twitter: {
@@ -428,7 +426,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const category = await getCategoryBySlug(params.slug);
   if (!category) notFound();
 
-  const page = parseInt(searchParams.page || '1');
+  const page = getValidPage(searchParams.page);
   const priceParams = getPriceParams(searchParams.price);
   const sortParams = getSortParams(searchParams.sort);
   const categoryIds = [String(category.id)];
@@ -497,16 +495,18 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://e-mart.com.bd' },
       { '@type': 'ListItem', position: 2, name: 'Shop', item: 'https://e-mart.com.bd/shop' },
-      { '@type': 'ListItem', position: 3, name: category.name, item: `https://e-mart.com.bd/category/${category.slug}` },
+      { '@type': 'ListItem', position: 3, name: category.name, item: absoluteUrl(`/category/${category.slug}`) },
     ],
   };
+
+  const canonicalUrl = getPaginatedCanonical(`/category/${category.slug}`, page);
 
   const collectionPageJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: `${category.name} — Emart`,
     description: introText.substring(0, 200),
-    url: `https://e-mart.com.bd/category/${category.slug}`,
+    url: canonicalUrl,
     primaryImageOfPage: category.slug === 'face-cleansers'
       ? {
         '@type': 'ImageObject',
@@ -539,7 +539,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: category.name,
-    url: `https://e-mart.com.bd/category/${category.slug}`,
+    url: canonicalUrl,
     numberOfItems: products.length,
     itemListElement: products.slice(0, 20).map((p, i) => ({
       '@type': 'ListItem',
@@ -623,7 +623,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                   <div className="mt-10 flex items-center justify-center gap-2">
                     {page > 1 && (
                       <Link
-                        href={getPageHref(`/category/${params.slug}`, searchParams, page - 1)}
+                        href={getPaginationHref(`/category/${params.slug}`, searchParams, page - 1)}
                         className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
                       >
                         Previous
@@ -632,7 +632,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                     <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
                     {page < totalPages && (
                       <Link
-                        href={getPageHref(`/category/${params.slug}`, searchParams, page + 1)}
+                        href={getPaginationHref(`/category/${params.slug}`, searchParams, page + 1)}
                         className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
                       >
                         Next

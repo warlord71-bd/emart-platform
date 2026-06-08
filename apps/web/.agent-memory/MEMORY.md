@@ -56,3 +56,4 @@
 - [pa_concern auto-assign applied 2026-06-06](project_pa_concern_auto_assign_20260606.md) — 13 conservative pa_concern assignments applied and `tag:products` revalidated; 1,147 rows intentionally left blank due no reliable signal
 - [Homepage console/perf cleanup 2026-06-07](project_homepage_console_perf_20260607.md) — removed global hero preload hints, per-category live badge polling, stale visible homepage SEO block, and matching Nginx preload headers; live Chromium/CDP check clean
 - [Public site URL guard 2026-06-08](project_public_site_url_guard_20260608.md) — `siteUrl.ts` rejects localhost/loopback `NEXT_PUBLIC_SITE_URL` and falls back to `https://e-mart.com.bd`; deployed in `1167bf4`
+- [Collection pagination SEO 2026-06-08](project_collection_pagination_seo_20260608.md) — curated product-list `?page=N` pages self-canonicalize and titles include `- Page N`; page-1 links stay clean; filter/search variants remain non-canonical/noindex as appropriate

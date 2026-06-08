@@ -3,14 +3,25 @@ import ProductCard from '@/components/product/ProductCard';
 import { ProductListGrid } from '@/components/product/ProductListGrid';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { canonicalPath } from '@/lib/canonicalUrl';
 import { absoluteUrl } from '@/lib/siteUrl';
+import {
+  getPaginatedCanonical,
+  getPaginatedTitle,
+  getPaginationHref,
+  getValidPage,
+} from '@/lib/paginationSeo';
+
+const NEW_ARRIVALS_BASE_TITLE = 'New Arrivals — Latest Skincare in Bangladesh | Emart';
 
 export function generateMetadata({ searchParams }: { searchParams?: NewArrivalsPageProps['searchParams'] }): Metadata {
+  const page = getValidPage(searchParams?.page);
+  const title = getPaginatedTitle(NEW_ARRIVALS_BASE_TITLE, page);
+
   return {
-    title: { absolute: 'New Arrivals — Latest Skincare in Bangladesh | Emart' },
+    title: { absolute: title },
     description: 'Discover the latest skincare arrivals in Bangladesh. New Korean, Japanese & global beauty products added weekly — serums, sunscreens and more. COD.',
-    alternates: { canonical: canonicalPath('/new-arrivals', searchParams) },
+    alternates: { canonical: getPaginatedCanonical('/new-arrivals', page) },
+    robots: { index: true, follow: true },
   };
 }
 
@@ -21,7 +32,7 @@ interface NewArrivalsPageProps {
 }
 
 export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageProps) {
-  const page = parseInt(searchParams.page || '1');
+  const page = getValidPage(searchParams.page);
   const sixtyDaysAgo = new Date();
   sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
   const afterDate = sixtyDaysAgo.toISOString();
@@ -48,7 +59,7 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
     '@type': 'CollectionPage',
     name: 'New Arrivals — Latest Skincare in Bangladesh',
     description: 'New Korean, Japanese and global skincare products added weekly at Emart Skincare Bangladesh.',
-    url: absoluteUrl('/new-arrivals'),
+    url: getPaginatedCanonical('/new-arrivals', page),
     ...(products.length > 0 ? {
       mainEntity: {
         '@type': 'ItemList',
@@ -82,14 +93,14 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
           {totalPages > 1 && (
             <div className="mt-10 flex items-center justify-center gap-2">
               {page > 1 && (
-                <Link href={`/new-arrivals?page=${page - 1}`}
+                <Link href={getPaginationHref('/new-arrivals', searchParams, page - 1)}
                   className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-black">
                   Previous
                 </Link>
               )}
               <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
               {page < totalPages && (
-                <Link href={`/new-arrivals?page=${page + 1}`}
+                <Link href={getPaginationHref('/new-arrivals', searchParams, page + 1)}
                   className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-black">
                   Next
                 </Link>

@@ -12,6 +12,12 @@ import CollectionPageHeader from '@/components/collection/CollectionPageHeader';
 import { buildCollectionSchema } from '@/lib/collectionSchema';
 import { getOriginEditorial } from '@/lib/origin-editorial';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
+import {
+  getPaginatedCanonical,
+  getPaginatedTitle,
+  getPaginationHref,
+  getValidPage,
+} from '@/lib/paginationSeo';
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -45,22 +51,24 @@ function getOriginPageTitle(origin: { country: string; label: string }) {
   return `${origin.label} Beauty Products`;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const origin = getOriginByCountry(params.country);
   if (!origin) return { title: 'Origin Not Found' };
 
   const editorial = getOriginEditorial(params.country);
-  const canonical = absoluteUrl(`/origins/${origin.country}`);
+  const page = getValidPage(searchParams.page);
+  const canonical = getPaginatedCanonical(`/origins/${origin.country}`, page);
+  const title = getPaginatedTitle(`${origin.label} Beauty & Skincare Products in Bangladesh | Emart`, page);
   const description = editorial
     ? `${editorial.whySection.body.slice(0, 130)}… Authentic products with COD across Bangladesh.`
     : `Shop authentic ${origin.label} beauty and skincare in Bangladesh from Emart. ${origin.story} COD available, fast nationwide delivery.`;
 
   return {
-    title: { absolute: `${origin.label} Beauty & Skincare Products in Bangladesh | Emart` },
+    title: { absolute: title },
     description,
     alternates: { canonical },
     openGraph: {
-      title: `${origin.label} Beauty Products in Bangladesh | Emart`,
+      title,
       description,
       url: canonical,
       images: [{ url: absoluteUrl('/images/hero-products.png'), width: 1200, height: 630 }],
@@ -73,7 +81,7 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
   if (!origin) notFound();
 
   const editorial = getOriginEditorial(params.country);
-  const page = Math.max(1, parseInt(searchParams.page || '1'));
+  const page = getValidPage(searchParams.page);
   const extras: { orderby?: 'date'|'price'|'popularity'|'rating'|'title'; order?: 'asc'|'desc'; min_price?: string; max_price?: string; stock_status?: 'instock'|'outofstock'|'onbackorder' } = {};
   const sortKey = searchParams.sort as keyof typeof SORT_MAP | undefined;
   if (sortKey && sortKey in SORT_MAP) Object.assign(extras, SORT_MAP[sortKey]);
@@ -90,7 +98,7 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
     page: searchParams.page, sort: searchParams.sort, price: searchParams.price, in_stock: searchParams.in_stock,
   };
 
-  const canonical = absoluteUrl(`/origins/${origin.country}`);
+  const canonical = getPaginatedCanonical(`/origins/${origin.country}`, page);
   const title = getOriginPageTitle(origin);
 
   const { breadcrumbJsonLd, collectionPageJsonLd, itemListJsonLd } = buildCollectionSchema({
@@ -184,11 +192,11 @@ export default async function OriginCountryPage({ params, searchParams }: Props)
                 {totalPages > 1 && (
                   <div className="mt-10 flex items-center justify-center gap-2">
                     {page > 1 && (
-                      <Link href={`/origins/${origin.country}?page=${page - 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
+                      <Link href={getPaginationHref(`/origins/${origin.country}`, searchParamsRecord, page - 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
                     )}
                     <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
                     {page < totalPages && (
-                      <Link href={`/origins/${origin.country}?page=${page + 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
+                      <Link href={getPaginationHref(`/origins/${origin.country}`, searchParamsRecord, page + 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
                     )}
                   </div>
                 )}

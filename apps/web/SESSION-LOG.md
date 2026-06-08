@@ -1951,3 +1951,17 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 
 ### Next
 - The user still needs to clear/avoid Chrome autocomplete/history for local `localhost:3000` URLs on their Windows browser if Chrome keeps opening the local dev address.
+
+## 2026-06-08 22:25 CEST — Codex collection pagination SEO
+
+### Did
+- Added shared pagination SEO helpers for curated collection pages.
+- Updated shop, category, sale, new-arrivals, brand, concern, ingredient, routine, and origin detail pages so `?page=N` where `N > 1` self-canonicalizes, titles include `- Page N`, and Previous links to page 1 use the clean root path.
+- Left filter/sort/search variants protected: filters still canonicalize to parent collections, and search remains `noindex, follow`.
+
+### Verification
+- Local `npm run build` passed.
+- Temporary production server HTML checks passed for `/shop?page=2`, `/category/sunscreen?page=2`, `/sale?page=2`, `/brands/cosrx?page=2`, `/concerns/dryness-hydration?page=2`, and `/search?q=cosrx&page=2`.
+
+### Blockers
+- None.

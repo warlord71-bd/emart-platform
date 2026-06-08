@@ -8,6 +8,12 @@ import { ProductListGrid } from '@/components/product/ProductListGrid';
 import { ROUTINE_STEPS, getRoutineStepBySlug, getRoutineListing } from '@/lib/routine';
 import { buildCollectionSchema } from '@/lib/collectionSchema';
 import { absoluteUrl } from '@/lib/siteUrl';
+import {
+  getPaginatedCanonical,
+  getPaginatedTitle,
+  getPaginationHref,
+  getValidPage,
+} from '@/lib/paginationSeo';
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -36,18 +42,22 @@ const SORT_MAP = {
   rating: { orderby: 'rating', order: 'desc' },
 } satisfies Record<string, { orderby: 'date' | 'price' | 'popularity' | 'rating' | 'title'; order: 'asc' | 'desc' }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const step = getRoutineStepBySlug(params.step);
   if (!step) return { title: 'Routine Step Not Found' };
 
+  const page = getValidPage(searchParams?.page);
+  const canonical = getPaginatedCanonical(`/routine/${step.slug}`, page);
+  const title = getPaginatedTitle(`${step.label} | Korean Skincare Routine Step ${step.step} | Emart`, page);
+
   return {
-    title: { absolute: `${step.label} | Korean Skincare Routine Step ${step.step} | Emart` },
+    title: { absolute: title },
     description: step.metaDescription,
-    alternates: { canonical: absoluteUrl(`/routine/${step.slug}`) },
+    alternates: { canonical },
     openGraph: {
-      title: `${step.label} — Skincare Routine Step ${step.step} | Emart Bangladesh`,
+      title,
       description: step.metaDescription,
-      url: absoluteUrl(`/routine/${step.slug}`),
+      url: canonical,
       images: [{ url: absoluteUrl('/images/hero-products.png'), width: 1200, height: 630, alt: `${step.label} skincare products at Emart Bangladesh` }],
     },
     robots: { index: true, follow: true },
@@ -58,7 +68,7 @@ export default async function RoutineStepPage({ params, searchParams }: Props) {
   const step = getRoutineStepBySlug(params.step);
   if (!step) notFound();
 
-  const page = Math.max(1, parseInt(searchParams?.page || '1'));
+  const page = getValidPage(searchParams?.page);
   const extras: { orderby?: 'date'|'price'|'popularity'|'rating'|'title'; order?: 'asc'|'desc'; min_price?: string; max_price?: string; stock_status?: 'instock'|'outofstock'|'onbackorder' } = {};
   const sortKey = searchParams?.sort as keyof typeof SORT_MAP | undefined;
   if (sortKey && sortKey in SORT_MAP) Object.assign(extras, SORT_MAP[sortKey]);
@@ -71,7 +81,7 @@ export default async function RoutineStepPage({ params, searchParams }: Props) {
     page: searchParams?.page, sort: searchParams?.sort, price: searchParams?.price, in_stock: searchParams?.in_stock,
   };
 
-  const canonicalUrl = absoluteUrl(`/routine/${step.slug}`);
+  const canonicalUrl = getPaginatedCanonical(`/routine/${step.slug}`, page);
 
   const { breadcrumbJsonLd, collectionPageJsonLd, itemListJsonLd } = buildCollectionSchema({
     type: 'category',
@@ -155,11 +165,11 @@ export default async function RoutineStepPage({ params, searchParams }: Props) {
                 {totalPages > 1 && (
                   <div className="mt-10 flex items-center justify-center gap-2">
                     {page > 1 && (
-                      <Link href={`/routine/${step.slug}?page=${page - 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
+                      <Link href={getPaginationHref(`/routine/${step.slug}`, searchParamsRecord, page - 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
                     )}
                     <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
                     {page < totalPages && (
-                      <Link href={`/routine/${step.slug}?page=${page + 1}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
+                      <Link href={getPaginationHref(`/routine/${step.slug}`, searchParamsRecord, page + 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
                     )}
                   </div>
                 )}

@@ -3,15 +3,25 @@ import ProductCard from '@/components/product/ProductCard';
 import CatalogFilters from '@/components/product/CatalogFilters';
 import { ProductListGrid } from '@/components/product/ProductListGrid';
 import type { Metadata } from 'next';
-import { canonicalPath } from '@/lib/canonicalUrl';
 import { absoluteUrl } from '@/lib/siteUrl';
-import { buildUrl } from '@/lib/url-utils';
+import {
+  getPaginatedCanonical,
+  getPaginatedTitle,
+  getPaginationHref,
+  getValidPage,
+} from '@/lib/paginationSeo';
+
+const SALE_BASE_TITLE = 'Sale — Authentic Skincare Deals in Bangladesh | Emart';
 
 export function generateMetadata({ searchParams }: { searchParams?: SalePageProps['searchParams'] }): Metadata {
+  const page = getValidPage(searchParams?.page);
+  const title = getPaginatedTitle(SALE_BASE_TITLE, page);
+
   return {
-    title: { absolute: 'Sale — Authentic Skincare Deals in Bangladesh | Emart' },
+    title: { absolute: title },
     description: 'Save on authentic Korean, Japanese & global skincare in Bangladesh. Real discounts on original serums, sunscreens and more. COD, fast delivery.',
-    alternates: { canonical: canonicalPath('/sale', searchParams) },
+    alternates: { canonical: getPaginatedCanonical('/sale', page) },
+    robots: { index: true, follow: true },
   };
 }
 
@@ -50,7 +60,7 @@ type PriceValue = keyof typeof PRICE_MAP;
 type SortValue = keyof typeof SORT_MAP;
 
 export default async function SalePage({ searchParams }: SalePageProps) {
-  const page = parseInt(searchParams.page || '1');
+  const page = getValidPage(searchParams.page);
 
   const priceParams = searchParams.price && searchParams.price in PRICE_MAP
     ? PRICE_MAP[searchParams.price as PriceValue]
@@ -85,7 +95,7 @@ export default async function SalePage({ searchParams }: SalePageProps) {
     '@type': 'CollectionPage',
     name: 'Sale — Authentic Skincare Deals in Bangladesh',
     description: 'Real discounts on authentic Korean, Japanese and global skincare at Emart Skincare Bangladesh.',
-    url: absoluteUrl('/sale'),
+    url: getPaginatedCanonical('/sale', page),
     ...(products.length > 0 ? {
       mainEntity: {
         '@type': 'ItemList',
@@ -163,11 +173,11 @@ export default async function SalePage({ searchParams }: SalePageProps) {
               {totalPages > 1 && (
                 <div className="mt-10 flex items-center justify-center gap-2">
                   {page > 1 && (
-                    <a href={buildUrl('/sale', { ...searchParamsRecord, page: page - 1 })} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</a>
+                    <a href={getPaginationHref('/sale', searchParamsRecord, page - 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</a>
                   )}
                   <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
                   {page < totalPages && (
-                    <a href={buildUrl('/sale', { ...searchParamsRecord, page: page + 1 })} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</a>
+                    <a href={getPaginationHref('/sale', searchParamsRecord, page + 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</a>
                   )}
                 </div>
               )}
