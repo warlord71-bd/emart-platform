@@ -2052,3 +2052,26 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 ### Next
 - Commit/push the verified hotfix after final review.
 - SEO/OpenClaw audit can start after the checkout hotfix is committed and the repo is aligned.
+
+## 2026-06-08 23:09 CEST — Codex add-to-cart and checkout funnel audit
+
+### Did
+- Audited web, mobile web, and native mobile add-to-cart through checkout logic after the stock hotfix.
+- Fixed mobile app source so product cards/PDP do not add explicit out-of-stock products to cart, and mobile checkout preserves `product_id` plus `variation_id` when present.
+- Exposed `type`, `parent_id`, `manage_stock`, and `backorders` through the mobile product BFF so the native app can reason about Woo stock correctly.
+- Fixed web PDP purchase buttons so unavailable products show disabled `Out of Stock` actions instead of silently doing nothing.
+- Fixed web cart persistence so only cart items are stored, old/new persisted cart shapes both hydrate, and the cart drawer never persists open over checkout.
+- Fixed internal Woo/WP REST reads by adding the Cloudflare-safe origin header required after origin HTTP hardening; this restored `/api/mobile/products`.
+
+### Verification
+- Local `npm run lint`, `npm run build`, `tsc --noEmit`, stock normalizer tests, and Babel parse of changed native mobile files passed.
+- VPS `npm run build` passed without the earlier Woo REST 403 flood after the internal header fix, then `emartweb` was restarted.
+- `/api/mobile/products?per_page=1` returned a product again; `/api/mobile/products/23112` returned `instock`, `manage_stock=false`, `stock_quantity=null`.
+- Mobile web 390px smoke passed: PDP add-to-cart persisted item `23112`, checkout rendered with the cart intact, drawer stayed closed, mocked COD submit reached `/order-success?id=999998`, and there was no horizontal overflow.
+- Live checkout API smoke passed: `23112` returned `201` and test order `93914` was deleted; out-of-stock `93315` returned `409` with the product-name stock message.
+
+### Blockers
+- Native mobile UI changes require the next app release/OTA path before customers see the new disabled out-of-stock buttons. Existing app users are still protected by the live checkout API/order endpoint.
+
+### Next
+- Push the verified commit and align `/var/www` Git metadata to the pushed commit.

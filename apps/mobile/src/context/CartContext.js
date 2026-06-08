@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getCartProductIds, isProductAvailableForCart } from '../utils/stock';
 
 const CART_KEY = '@emart_cart';
 const CartContext = createContext();
@@ -79,21 +80,29 @@ export const CartProvider = ({ children }) => {
   }, [state.items]);
 
   const addToCart = (product) => {
+    if (!isProductAvailableForCart(product)) return false;
+
     const price = parseFloat(product.sale_price) || parseFloat(product.price) || 0;
     const regularPrice = parseFloat(product.regular_price) || price;
+    const ids = getCartProductIds(product);
 
     dispatch({
       type: 'ADD_ITEM',
       payload: {
         id: product.id,
+        product_id: ids.product_id,
+        variation_id: ids.variation_id,
         name: product.name,
         price,
         regularPrice,
         onSale: price < regularPrice,
         image: product.images?.[0]?.src?.replace(/^http:/, 'https:') || '',
         brand: product.brands || product.attributes?.find(a => a.name === 'Brand')?.options?.[0] || '',
+        stock_status: product.stock_status,
+        purchasable: product.purchasable,
       },
     });
+    return true;
   };
 
   const removeFromCart = (productId) => {

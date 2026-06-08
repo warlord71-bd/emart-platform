@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../theme/colors';
 import { useCart } from '../context/CartContext';
 import { getProductPrice as calcProductPrice, getProductImage, decodeHTML } from '../services/woocommerce';
+import { isProductAvailableForCart } from '../utils/stock';
 
 const ProductCard = ({ product, onPress, compact = false }) => {
   const { addToCart } = useCart();
@@ -14,6 +15,7 @@ const ProductCard = ({ product, onPress, compact = false }) => {
 
   const pricing = calcProductPrice(product);
   const imageUrl = getProductImage(product);
+  const inStock = isProductAvailableForCart(product);
 
   const brand =
     product?.brands ||
@@ -126,18 +128,20 @@ const ProductCard = ({ product, onPress, compact = false }) => {
         <TouchableOpacity
           onPress={(e) => {
             e.stopPropagation?.();
+            if (!inStock) return;
             addToCart(product);
           }}
+          disabled={!inStock}
           activeOpacity={0.85}
         >
           <LinearGradient
-            colors={COLORS.gradientButton}
+            colors={inStock ? COLORS.gradientButton : [COLORS.textLight, COLORS.textLight]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.addBtn}
           >
             <Ionicons name="cart-outline" size={13} color="#fff" />
-            <Text style={styles.addBtnText}>ADD TO CART</Text>
+            <Text style={styles.addBtnText}>{inStock ? 'ADD TO CART' : 'OUT OF STOCK'}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>

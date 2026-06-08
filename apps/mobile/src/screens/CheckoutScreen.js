@@ -96,7 +96,11 @@ const CheckoutScreen = ({ navigation }) => {
         billing: { first_name: name, email: email.trim().toLowerCase(), phone, address_1: address, city: city.trim(), country: "BD" },
         shipping: { first_name: name, phone, address_1: address, city: city.trim(), country: "BD" },
         customer_note: payment === "cod" ? "Cash on Delivery" : `${selectedMethod.title} Transaction ID: ${trxId}`,
-        line_items: items.map((item) => ({ product_id: item.id, quantity: item.quantity })),
+        line_items: items.map((item) => ({
+          product_id: item.product_id || item.id,
+          ...(item.variation_id ? { variation_id: item.variation_id } : {}),
+          quantity: item.quantity,
+        })),
         coupon_lines: couponApplied ? [{ code: couponApplied.code }] : [],
         idempotency_key: idempotencyKeyRef.current,
       };

@@ -7,6 +7,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { getProductPrice, getProductImages, getProductReviews, submitProductReview, stripHTML } from '../services/woocommerce';
+import { isProductAvailableForCart } from '../utils/stock';
 
 const { width } = Dimensions.get('window');
 
@@ -81,7 +82,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
   const brand = Array.isArray(safeProduct.brands)
     ? safeProduct.brands[0]?.name || ''
     : safeProduct.brands || safeProduct.attributes?.find(a => a.name === 'Brand')?.options?.[0] || '';
-  const inStock = safeProduct.stock_status === 'instock';
+  const inStock = isProductAvailableForCart(safeProduct);
 
   useEffect(() => {
     if (!product) navigation.goBack();
@@ -137,9 +138,14 @@ const ProductDetailScreen = ({ navigation, route }) => {
   };
 
   const handleAddToCart = () => {
+    if (!inStock) {
+      Alert.alert('Out of Stock', `${product.name} is currently out of stock.`);
+      return false;
+    }
     for (let i = 0; i < qty; i++) addToCart(product);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
+    return true;
   };
 
   const cleanDescription = (html) => {
@@ -332,17 +338,25 @@ const ProductDetailScreen = ({ navigation, route }) => {
       {/* Bottom Action Bar */}
       <View style={styles.bottomBar}>
         <TouchableOpacity
-          style={[styles.cartBtn, added && styles.cartBtnAdded]}
+          style={[styles.cartBtn, added && styles.cartBtnAdded, !inStock && styles.cartBtnDisabled]}
           onPress={handleAddToCart}
+          disabled={!inStock}
           activeOpacity={0.8}
         >
-          <Text style={[styles.cartBtnText, added && { color: '#fff' }]}>
-            {added ? `✓ ${t('addedToCart')}` : t('addToCart')}
+          <Text style={[styles.cartBtnText, added && { color: '#fff' }, !inStock && styles.cartBtnTextDisabled]}>
+            {!inStock ? t('outOfStock') : added ? `✓ ${t('addedToCart')}` : t('addToCart')}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ flex: 1.5 }} activeOpacity={0.8} onPress={() => { handleAddToCart(); navigation.navigate('CartTab'); }}>
-          <LinearGradient colors={COLORS.gradientButton} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.buyBtn}>
-            <Text style={styles.buyBtnText}>{t('buyNow')} — ৳{Math.round(pricing.current * qty)}</Text>
+        <TouchableOpacity
+          style={{ flex: 1.5 }}
+          activeOpacity={0.8}
+          disabled={!inStock}
+          onPress={() => {
+            if (handleAddToCart()) navigation.navigate('CartTab');
+          }}
+        >
+          <LinearGradient colors={inStock ? COLORS.gradientButton : [COLORS.textLight, COLORS.textLight]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.buyBtn}>
+            <Text style={styles.buyBtnText}>{inStock ? `${t('buyNow')} — ৳${Math.round(pricing.current * qty)}` : t('outOfStock')}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -442,7 +456,9 @@ const styles = StyleSheet.create({
   },
   cartBtn: { flex: 1, paddingVertical: 13, borderRadius: 12, borderWidth: 2, borderColor: COLORS.accent, alignItems: 'center', justifyContent: 'center' },
   cartBtnAdded: { backgroundColor: COLORS.success, borderColor: COLORS.success },
+  cartBtnDisabled: { borderColor: COLORS.textLight, backgroundColor: COLORS.bg },
   cartBtnText: { fontSize: 12, ...FONTS.bold, color: COLORS.accent },
+  cartBtnTextDisabled: { color: COLORS.textLight },
   buyBtn: { paddingVertical: 13, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   buyBtnText: { fontSize: 13, ...FONTS.bold, color: '#fff' },
 });

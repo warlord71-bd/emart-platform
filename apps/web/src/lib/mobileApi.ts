@@ -24,6 +24,8 @@ export function sanitizeMobileCategory(category: WooCategory) {
 export function sanitizeMobileProduct(product: WooProduct) {
   return {
     id: product.id,
+    type: product.type,
+    parent_id: product.parent_id,
     name: product.name,
     slug: product.slug,
     permalink: product.permalink,
@@ -35,7 +37,9 @@ export function sanitizeMobileProduct(product: WooProduct) {
     on_sale: product.on_sale,
     purchasable: product.purchasable,
     stock_status: product.stock_status,
+    manage_stock: product.manage_stock,
     stock_quantity: product.stock_quantity,
+    backorders: product.backorders,
     description: product.description,
     short_description: product.short_description,
     images: product.images.map(sanitizeImage).filter(Boolean),

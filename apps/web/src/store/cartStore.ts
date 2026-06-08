@@ -112,6 +112,24 @@ export const useCartStore = create<CartStore>()(
     {
       name: 'emart-cart',
       skipHydration: true,
+      partialize: (state) => ({ items: state.items }),
+      merge: (persisted, current) => {
+        const saved = persisted as
+          | Partial<CartStore>
+          | { state?: Partial<CartStore> }
+          | undefined;
+        const items = Array.isArray((saved as Partial<CartStore> | undefined)?.items)
+          ? (saved as Partial<CartStore>).items || []
+          : Array.isArray((saved as { state?: Partial<CartStore> } | undefined)?.state?.items)
+            ? (saved as { state?: Partial<CartStore> }).state?.items || []
+            : [];
+
+        return {
+          ...current,
+          items,
+          isOpen: false,
+        };
+      },
     }
   )
 );

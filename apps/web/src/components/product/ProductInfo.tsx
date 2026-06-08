@@ -466,15 +466,17 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       <div ref={buttonsRef} className="grid grid-cols-2 gap-3">
         <button
           onClick={handleAddToCart}
-          className="rounded-xl bg-ink px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-black md:text-base"
+          disabled={!inStock}
+          className="rounded-xl bg-ink px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-black disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 disabled:hover:translate-y-0 md:text-base"
         >
-          {isAdded ? '✓ Added' : 'Add to Cart'}
+          {!inStock ? 'Out of Stock' : isAdded ? '✓ Added' : 'Add to Cart'}
         </button>
         <button
           onClick={handleBuyNow}
-          className="rounded-xl border border-hairline bg-bg-alt px-4 py-3 text-sm font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:bg-accent-soft hover:text-accent md:text-base"
+          disabled={!inStock}
+          className="rounded-xl border border-hairline bg-bg-alt px-4 py-3 text-sm font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:bg-accent-soft hover:text-accent disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-500 disabled:hover:translate-y-0 disabled:hover:bg-gray-100 md:text-base"
         >
-          Buy Now
+          {!inStock ? 'Out of Stock' : 'Buy Now'}
         </button>
       </div>
       <a
