@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-06 (homepage link-hub removed; checkout order endpoint hardened)
+Last updated: 2026-06-08 (SEO/OpenClaw/mobile audit reports created; meta-gen pause/continue needs owner decision)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -28,6 +28,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 7. **GMC mixed manual** — 6 products: IDs 36262, 3274, 56108, 3753, 38292, 26194
 8. **16 product images** — workspace/audit/active/products-need-real-image.csv
 9. **pa_concern 1,161 rows** — 13 conservative assignments applied Jun 6 and `tag:products` revalidated; remaining 1,147 left blank due no reliable signal
+10. **OpenClaw meta generator** — `emart-meta-gen` was actively applying descriptions during Jun 8 audit; approve pause/continue before more content QA
 
 ---
 

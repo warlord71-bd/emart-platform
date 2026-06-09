@@ -3,7 +3,7 @@ import { COMPANY } from '@/lib/companyProfile';
 import { STORE_POLICIES } from '@/config/storePolicies';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Shipping Policy | eMart Skincare Bangladesh' },
+  title: { absolute: 'Shipping Policy | Emart Skincare Bangladesh' },
   description: 'Delivery across Bangladesh. Dhaka next-day, nationwide 3–5 business days, flat ৳100 shipping, and free shipping over ৳3,000.',
   alternates: { canonical: 'https://e-mart.com.bd/shipping-policy' },
   robots: { index: true, follow: true },

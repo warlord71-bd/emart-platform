@@ -46,5 +46,11 @@ apps/web/.agent-memory/
 workspace/audit/
 *.tsbuildinfo
 
+# Large automation scripts in workspace/docs — readable on demand, not auto-context
+# (reference markdown docs in workspace/docs/ remain accessible)
+workspace/docs/*.py
+workspace/docs/*.mjs
+workspace/scripts/active/*.py
+
 # Env files
 .env*

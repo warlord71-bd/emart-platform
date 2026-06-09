@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { COMPANY } from '@/lib/companyProfile';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Return Policy | eMart Skincare Bangladesh' },
+  title: { absolute: 'Return Policy | Emart Skincare Bangladesh' },
   description: '7-day return and exchange policy for new, unused and unopened skincare products. Customer is responsible for return courier cost. ৳100 restocking fee applies.',
   alternates: { canonical: 'https://e-mart.com.bd/return-policy' },
   robots: { index: true, follow: true },

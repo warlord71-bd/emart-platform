@@ -3,104 +3,81 @@
 Bangladesh K-beauty e-commerce. Next.js 14 frontend + WooCommerce/WordPress backend.
 Live at **e-mart.com.bd** · BDT · COD / bKash / Nagad · mobile-first.
 
----
-
-## Read This First (in order)
-
-1. `/root/CLAUDE.md` — universal VPS deploy law for every project
-2. `/root/emart-platform/CLAUDE.md` — Emart safety rules, brand invariants, SEO architecture
-3. `apps/web/.agent-memory/MEMORY.md` — shared durable agent memory (Claude + Codex)
-4. `workspace/TASKS.md` — open task board, priority-ordered
+This file is the self-contained instruction set for Codex, GPT-style agents, and human developers.
+Claude additionally reads `CLAUDE.md` for the same content plus Claude-specific memory paths.
 
 ---
 
-## Current Site State — 2026-05-21
+## Stack & Commands
+- **Next.js 14, React 18, Tailwind 3, TypeScript** — frozen until 2026-07-03
+- App root: `apps/web` | Build: `cd apps/web && npm run build`
+- PM2 process: `emartweb` | Live: `https://e-mart.com.bd`
+- Local: `/root/emart-platform` | VPS runtime: `/var/www/emart-platform`
+- Repo: `origin/main` — push ONLY after live smoke test passes
+- WC API key: key_id `39` ("Emart BFF Live") in `.env.local`
+- Currency: ৳ BDT | Payments: COD, bKash, Nagad | Market: mobile-first Bangladesh
 
-| Item | State |
-|---|---|
-| Live site | ✅ `https://e-mart.com.bd` — serving |
-| PM2 `emartweb` | ✅ online |
-| PM2 `emart-presence` | ✅ online (WebSocket) |
-| Local git | `3cead05` — workspace restructuring uncommitted (see below) |
-| VPS git | matches Local source; dirty workspace files from restructuring session |
-| Android app | v1.1.0 in Play Store internal testing |
-| iOS | pending Apple Developer account |
+## Brand (never change without owner approval)
+- Short: **Emart** | Full: **Emart Skincare Bangladesh** | Tagline: **Global Beauty. Local Trust.**
+- Invalid variants: E-Mart, EMart BD, Emart BD, eMart
 
-**Uncommitted workspace changes (2026-05-21 restructuring):**
-- `workspace/active/` and `workspace/archive/` removed — contents moved to `workspace/audit/`, `workspace/scripts/`, `workspace/docs/`
-- `workspace/DEV_MASTER.md`, `SEO_MASTER.md`, `PROJECT_BASELINE.md` updated
-- Commit these before starting new work
+## Live Site Protection — check before any deploy
+- Never damage `https://e-mart.com.bd` — site first, code second
+- No `git reset --hard` on VPS without verifying live source state first
+- No `git add -A` on a dirty VPS tree without reviewing the staged list first
+- Before any SEO / metadata / sitemap / schema / route change: read `workspace/SEO_MASTER.md`
 
----
+## Headless SEO Architecture (mandatory)
+- Public SEO surface: **Next.js frontend only** (`apps/web`)
+- Backend (WooCommerce + WordPress): private data source — never SEO-facing
+- Never canonical a frontend page to a backend URL
+- All canonical / sitemap / OG / JSON-LD URLs must be absolute: `NEXT_PUBLIC_SITE_URL=https://e-mart.com.bd`
+- Missing product → `notFound()` | Out-of-stock → `schema.org/OutOfStock` | In-stock → `schema.org/InStock`
+- `generateMetadata` for all dynamic product / category / brand pages
 
-## File Map
+## Data Safety — NEVER touch without explicit user request
+`checkout` · `cart` · `payment` · `order` · `customer data` · `stock` · `price` · `WooCommerce DB`
 
-| File / Folder | What it is |
-|---|---|
-| `AGENTS.md` | **This file** — entry point, current state, last session |
-| `CLAUDE.md` | Full project policy — safety rules, brand invariants, SEO architecture, deploy order |
-| `workspace/PROJECT_BASELINE.md` | Project map — read if lost |
-| `workspace/SEO_MASTER.md` | SEO task list, confirmed-done items, schema map |
-| `workspace/DEV_MASTER.md` | Dev task detail — web/mobile/backend ownership, shared zone |
-| `workspace/BRAND_GUIDE.md` | Brand name, tagline, tone invariants |
-| `workspace/VPS_RESOURCE_MAP.md` | VPS processes, ports, RAM, disk |
-| `workspace/ARCHIVE_INDEX.md` | Master catalog of all archived scripts and audits |
-| `workspace/ATTIC_INDEX.md` | Files moved to `/root/.attic-*/` outside project |
-| `workspace/docs/` | Reference docs — category taxonomy, theme contract, mobile build notes |
-| `workspace/audit/active/` | Active audit files — pa_concern CSV, origin gaps, image review, 404 redirects |
-| `workspace/audit/archive/` | Completed audit runs (historical) |
-| `workspace/scripts/active/` | Active scripts — maintained, reusable |
-| `workspace/scripts/archive/` | Completed one-off scripts (reference only) |
-| `workspace/TASKS.md` | Open task board — single priority list for all agents |
-| `apps/web/.agent-memory/MEMORY.md` | Shared durable agent memory |
-| `apps/web/SESSION-LOG.md` | Per-session log — append a block each session |
+## SEO Routing Rules
+- Legacy `/product-category/*`, `/tag/*` → 301 redirect to clean Next.js routes
+- Strip/handle: `add-to-cart`, `orderby`, `per_page`, `shop_view`, `srsltid`
+- Frontend HTML must not expose WordPress / backend technology headers
 
----
+## Deploy Order
+Follow `/root/CLAUDE.md` sequence: Local edit → build → commit → rsync → VPS build → `pm2 restart emartweb` → smoke test → push.
+**Never push `origin/main` before smoke test passes.**
+Hotfix on VPS: reverse-sync VPS → Local before committing. Never commit from VPS directly.
+Quick reference: `workspace/docs/claude-reference/deploy-reference.md`
 
-## Agent Ownership
+## Session Protocol (all agents)
+- **Start:** `cat apps/web/.agent-memory/MEMORY.md` + `tail -50 apps/web/SESSION-LOG.md` + `cat workspace/TASKS.md` + `git log --oneline -10`
+- **End:** append one block to `SESSION-LOG.md` (date · did · blockers · next step) + update `workspace/TASKS.md`
 
-| Area | Owner |
-|---|---|
-| `apps/web` — Next.js, TypeScript, SEO, content | Claude Code |
-| `apps/mobile` — Expo app, Android/iOS | Codex |
-| PHP mu-plugins, WordPress DB mutations | Codex |
-| WooCommerce REST data mutations | Codex (dry-run first, always) |
-| Shared: `api/mobile/*`, `api/checkout`, `lib/woocommerce.ts` | Coordinate — see `DEV_MASTER.md` |
+## Live Business Rules
+- WhatsApp signup: `8801717082135` | support/payment: `8801919797399` — do NOT merge
+- Newsletter: `/api/newsletter/subscribe` → `/wp-json/emart/v1/subscribe` → MailPoet
+- Do not restart `emartweb` from unknown source state
+- Do not enable a second polling service on the same Telegram bot token while OpenClaw is polling
+- Cleanup: move files to `/root/.attic-YYYY-MM-DD/` — never delete unless user explicitly asks
+- Never commit secrets; keep `.env.local` on VPS/runtime only
 
----
+## General Safety
+- Never force-push without user approval; use `--force-with-lease` if authorized
+- Never skip hooks (`--no-verify`) without user approval
+- Old files to ignore: `AGENTS.coding.md`, `AGENTS.design.md`, `AGENTS.seo.md` — retired
 
-## Key Rules (detail in `CLAUDE.md`)
+## SEO Work Execution Order
+1. Read `workspace/SEO_MASTER.md` → 2. Audit code paths → 3. Technical integrity → 4. SEO Core → 5. Data Quality → 6. Build/test → 7. Deploy
 
-- **Deploy order:** Local edit → build → commit → rsync VPS → VPS build → pm2 restart → smoke test → push GitHub last
-- **Never push to `origin/main` before smoke test passes**
-- **Dry-run rule:** never bulk-mutate WooCommerce data without a dry-run CSV reviewed by owner
-- **Brand names:** `Emart` (short) · `Emart Skincare Bangladesh` (full) · `e-mart.com.bd` (domain)
-- **Two WhatsApp numbers are intentional:** sales `8801717082135` · support `8801919797399` — do not merge
+## Token Efficiency
+Search before reading. Read only files needed for this task. Report only changes made and risks found.
+Key SEO search targets: `canonical` · `generateMetadata` · `sitemap` · `robots` · `notFound` · `NEXT_PUBLIC_SITE_URL` · `middleware`
 
----
-
-## 🧊 6-Week Stability Freeze — 2026-05-22 → 2026-07-03
-
-No URL changes, no redirects, no sitemap structure changes, no navigation restructuring.
-Only: product data, images, blog posts, small bug fixes, mobile internals.
-**Exception:** serious bugs (site down, checkout broken, security, 500 on revenue pages) override the freeze — fix immediately, minimal scope, then stop.
-See `workspace/TASKS.md` for the full freeze list.
-
----
-
-## Last Session — 2026-05-22
-
-**Did:** Workspace restructuring — unified all `workspace/active/` and `workspace/archive/` split-pattern into type-first layout. Unified TASKS.md, DEV_MASTER.md, SEO_MASTER.md into single priority board. Updated docs/category-taxonomy-status.md with post-cleanup product counts.
-
-**Changes not yet committed:**
-- Workspace folder moves (active/ archive/ removed, audit/ scripts/ docs/ unified)
-- TASKS.md rewritten as single priority board
-- DEV_MASTER.md and SEO_MASTER.md trimmed and de-duped
-- PROJECT_BASELINE.md and docs/category-taxonomy-status.md stale paths fixed
-- AGENTS.md + HANDOFF.md merged into this file
-
-**Next session starts at:**
-1. Commit workspace restructuring (docs only, zero live impact)
-2. Owner reviews pa_concern CSV → Codex applies
-3. Remaining DO NOW items in `workspace/TASKS.md`
-4. Then freeze — no structural changes until 2026-07-03
+## Reference (load only when the task needs it)
+- [SEO Master](workspace/SEO_MASTER.md) — full SEO gap tracker, canonical/sitemap/schema rules
+- [OpenClaw](workspace/docs/claude-reference/openclaw.md) — VPS inspection, Telegram, safety rules
+- [Deploy function](workspace/docs/claude-reference/deploy-reference.md) — full rsync/pm2 reference script
+- [Brand guide](workspace/BRAND_GUIDE.md) — copy tone, product naming, brand story
+- [Category taxonomy](workspace/docs/category-taxonomy-status.md) — active/redirected/backend-only categories
+- [Task board](workspace/TASKS.md) — open work, priority order, freeze scope
+- [Agent memory](apps/web/.agent-memory/MEMORY.md) — durable facts, preferences, project state
