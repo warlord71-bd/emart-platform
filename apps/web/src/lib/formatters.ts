@@ -1,7 +1,10 @@
 export function formatCommerceNumber(value: unknown): string {
   const amount = parseCommerceNumber(value);
   if (amount === null) return '0';
-  return Math.round(amount).toLocaleString('en-BD');
+  // Avoid toLocaleString('en-BD'): on Bangladeshi Android devices the browser
+  // locale resolves to Bengali numerals (৩৬০), while Node.js outputs ASCII
+  // digits (360), causing React hydration mismatches on every price element.
+  return Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export function formatBDT(value: unknown): string {

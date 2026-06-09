@@ -275,7 +275,7 @@ export default async function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-white/10 py-4 px-4">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-bg-stone/80">
-          <span>© {new Date().getFullYear()} <Link href="/" className="hover:text-accent-soft">{COMPANY.storeName}</Link>. An enterprise of {COMPANY.enterpriseName}.</span>
+          <span suppressHydrationWarning>© {new Date().getFullYear()} <Link href="/" className="hover:text-accent-soft">{COMPANY.storeName}</Link>. An enterprise of {COMPANY.enterpriseName}.</span>
           <div className="flex gap-4">
             <Link href="/authenticity" className="hover:text-accent-soft">Authenticity</Link>
             <Link href="/terms-conditions" className="hover:text-accent-soft">Terms</Link>
