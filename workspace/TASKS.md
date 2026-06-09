@@ -44,10 +44,9 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 - ✅ Live test passed: published post 93922 "Innisfree Skincare Guide for Bangladesh" (https://e-mart.com.bd/blog/innisfree-skincare-guide-for-bangladesh-volcanic-clay-mask-face-wash-sunscreen) via `openai/gpt-oss-120b:free` fallback. State file updated (`gsc_used_indices: [0]`, `persona_index: 1`).
 - **Per owner instruction "meta first, blog next" — do NOT run again or add cron until item #14 (meta regen) has progressed/completed** (shared OpenRouter free-tier quota). Suggested cron once cleared: `0 2,10,18 * * *` (3x/day).
 
-### C2 — Schema/social sameAs (partial, undeployed)
-- Added `COMPANY.social.tiktok` to Organization `sameAs` in `layout.tsx` (both Local `/root/emart-platform` and VPS `/var/www/emart-platform`, identical edits) — **NOT yet built/deployed/committed**.
-- Reddit/LinkedIn `sameAs`: no profile URLs exist in `companyProfile.ts` — need owner to provide real URLs before adding (cannot fabricate URLs).
-- Next: build → rsync → VPS build → pm2 restart → smoke test → commit/push (bundle with other small fixes if convenient).
+### C2 — Schema/social sameAs — ✅ DONE 2026-06-10
+- Added `COMPANY.social.tiktok` to Organization `sameAs` in `layout.tsx`. Built on Local + VPS, `pm2 restart emartweb` done, live smoke HTTP 200, live JSON-LD confirmed includes `https://www.tiktok.com/@emart_bdofficial`. Committed `806938f`, pushed to `origin/main`, VPS git aligned to `806938f`.
+- Reddit/LinkedIn `sameAs`: still blocked — no profile URLs exist in `companyProfile.ts`; need owner to provide real URLs before adding (cannot fabricate URLs).
 
 ### C3 — Strategic SEO note (owed, not yet written up)
 - Owner asked for a synthesis on: Android default search engine (Google) dominance in Bangladesh + mobile-first SEO implications, how AI/LLM search surfaces (AI Overviews, ChatGPT/Perplexity/Gemini) consume schema/FAQ content for citations, and factoring TikTok/Facebook/YouTube trending topics into blog topic selection. Not yet delivered — schema audit groundwork done (homepage/category schema confirmed mostly correct).
