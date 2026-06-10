@@ -5,6 +5,7 @@ import type { WooMetaData, WooProduct } from '@/lib/woocommerce';
 import { ProductImage } from '@/components/product/ProductImage';
 import { ProductInfo } from '@/components/product/ProductInfo';
 import { DetailsTabs } from '@/components/product/DetailsTabs';
+import { ProductEducationLinks } from '@/components/product/ProductEducationLinks';
 import { ReviewsSection } from '@/components/product/ReviewsSection';
 import { ProductFaqSection } from '@/components/product/ProductFaqSection';
 import ProductCard from '@/components/product/ProductCard';
@@ -463,6 +464,7 @@ export default async function ProductPage({ params }: Props) {
           ingredients={ingredientsHtml}
           howToUse={howToUseHtml}
         />
+        <ProductEducationLinks product={product} ingredientsHtml={ingredientsHtml} />
         <ReviewsSection product={product} initialReviews={reviews} />
         <ProductFaqSection items={faqItems} />
       </section>
