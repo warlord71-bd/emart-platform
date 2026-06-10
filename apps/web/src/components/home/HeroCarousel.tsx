@@ -31,7 +31,7 @@ export const HeroCarousel = () => {
             {HERO.title}
           </p>
           <p className="mt-2 max-w-[28ch] text-[11px] font-semibold leading-4.5 text-ink/85 lg:mt-4 lg:max-w-[46ch] lg:text-base lg:leading-7">
-            <span className="lg:hidden">{HERO.mobileCopy}</span>
+            <span data-nosnippet className="lg:hidden">{HERO.mobileCopy}</span>
             <span className="hidden lg:inline">{HERO.copy}</span>
           </p>
           <Link
