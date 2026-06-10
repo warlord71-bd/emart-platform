@@ -12,6 +12,7 @@ import { getVersionBadge } from '@/lib/version-display';
 import { formatBDT } from '@/lib/formatters';
 import { COMPANY } from '@/lib/companyProfile';
 import { getMetaPixelProductParams, trackMetaEvent } from '@/lib/metaPixel';
+import { getRedditPixelProductParams, trackRedditEvent } from '@/lib/redditPixel';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { trackGA4, GA4_STICKY_VARIANT_KEY } from '@/lib/ga4';
 
@@ -223,6 +224,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     if (!inStock) return;
     for (let i = 0; i < quantity; i++) { addItem(product); }
     trackMetaEvent('AddToCart', getMetaPixelProductParams(product, quantity));
+    trackRedditEvent('AddToCart', getRedditPixelProductParams(product, quantity));
     setIsAdded(true);
     openCart();
     toast.success('Added to Cart');
@@ -234,6 +236,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     clearCart();
     addItem(product, quantity);
     trackMetaEvent('AddToCart', getMetaPixelProductParams(product, quantity));
+    trackRedditEvent('AddToCart', getRedditPixelProductParams(product, quantity));
     window.location.href = '/checkout';
   };
 

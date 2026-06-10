@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import MetaPixel from '@/components/analytics/MetaPixel';
+import RedditPixel from '@/components/analytics/RedditPixel';
 import { useDeploymentCheck } from '@/hooks/useDeploymentCheck';
 
 const CartDrawer = dynamic(() => import('@/components/cart/CartDrawer'), {
@@ -102,6 +103,7 @@ export default function RuntimeWidgets({ googleTagId }: { googleTagId?: string }
     <>
       <CartDrawer />
       <MetaPixel />
+      <RedditPixel />
       {googleTagId ? <LazyGoogleAnalytics gaId={googleTagId} /> : null}
       <GoogleRatingBadge />
       <Toaster

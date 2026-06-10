@@ -8,6 +8,7 @@ import Script from 'next/script';
 import { CheckCircle, Package, ArrowRight, User } from 'lucide-react';
 import { COMPANY } from '@/lib/companyProfile';
 import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue, trackMetaEvent } from '@/lib/metaPixel';
+import { trackRedditEvent } from '@/lib/redditPixel';
 import { trackGA4, GA4_STICKY_VARIANT_KEY } from '@/lib/ga4';
 
 const GCR_MERCHANT_ID = 436245109;
@@ -57,6 +58,16 @@ export default function OrderSuccessPage() {
             : undefined,
           num_items: Number(payload.num_items) > 0 ? Number(payload.num_items) : undefined,
         }, payload?.eventID ? { eventID: String(payload.eventID) } : undefined);
+
+        trackRedditEvent('Purchase', {
+          currency: 'BDT',
+          value,
+          itemCount: Number(payload.num_items) > 0 ? Number(payload.num_items) : undefined,
+          products: Array.isArray(payload.contents)
+            ? payload.contents.map((item: any) => ({ id: String(item.id) }))
+            : undefined,
+          conversionId: payload?.eventID ? String(payload.eventID) : undefined,
+        });
       }
     } catch {
       // Ignore malformed stored tracking payloads; checkout success must never fail because of analytics.
