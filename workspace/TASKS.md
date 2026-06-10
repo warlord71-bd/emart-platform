@@ -27,7 +27,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 5. **GMC title-risk products** — 11 products in gmc-steps3-6-report-20260605.md, approve/reject title changes
 6. **GMC data/asset** — 2 products missing price/image: IDs 63749, 62576
 7. **GMC mixed manual** — 6 products: IDs 36262, 3274, 56108, 3753, 38292, 26194
-8. **16 product images** — workspace/audit/active/products-need-real-image.csv
+8. **13 product images** — workspace/audit/active/products-need-real-image.csv (was 16; 2026-06-10: removed 3 Beauty Glazed lipstick IDs 74189/74187/74185 — owner confirmed/verified these now have valid images)
 9. **pa_concern 1,161 rows** — 13 conservative assignments applied Jun 6 and `tag:products` revalidated; remaining 1,147 left blank due no reliable signal
 10. ~~**OpenClaw meta generator**~~ — ✅ resolved Jun 9: process stopped, job complete, 41/42 bad metas fixed
 11. **6 "original original" metas** — find `pa_brand`/`pa_origin` Woo taxonomy terms with value "original" and correct them; regenerate those 6 metas after fix
