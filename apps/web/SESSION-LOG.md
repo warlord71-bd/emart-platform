@@ -2185,3 +2185,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Completed tasks: All 3 built/typecheck/lint clean on Local, each committed separately (`592b1eb`, `3c909d1`, `f61a3f5`), rsynced to VPS, VPS build clean, `pm2 restart emartweb`, live-verified (PDP shows single correct `<meta property="og:type" content="product"/>`, homepage hero has `data-nosnippet="true"` on mobile copy, blog JSON-LD `datePublished`/`dateModified` now show `+06:00`). Pushed `9536ed9..f61a3f5` to `origin/main`, VPS git realigned via `git reset --mixed origin/main`.
 - Blockers hit: none.
 - Next step: C10 remainder (marquee + cart-preview `data-nosnippet` in `Header.tsx`), D13 (ingredient/concern internal links on PDP), D14 (numbered pagination on /shop, /category) still await owner GO (see TASKS.md C5). B4 (hero <img>→next/image) remains a separate deferred task.
+
+## [2026-06-10 (cont. 4)] Claude
+- Did: Found Codex had already completed the remaining 14-item audit work (C10 remainder, D13, D14) via commits `fc47ea6`, `20adebf`, `d850d4a` — pushed to `origin/main` (Local already at these commits) but not yet reflected on VPS git (working tree had the new code, untracked/uncommitted, build+pm2 restart already done).
+- Completed tasks: Realigned VPS git via `git reset --mixed origin/main` to `edb6927` (clean, only pre-existing untracked meta-regen docs left). Live-verified all 3: C10 (`data-nosnippet` x5 in header marquee/cart-preview), D13 (`ProductEducationLinks` renders Ingredients/Skin concerns links to `/ingredients/*`/`/concerns/*` on COSRX snail essence PDP), D14 (`NumberedPagination` on `/shop?page=2` shows 152 pages with prev/next + numbered links). Updated TASKS.md C5 to mark the full 14-item audit (A1, B2-B6, C7-C11, D12-D14) as closed.
+- Blockers hit: none.
+- Next step: 14-item SEO/frontend audit fully closed. B4 (hero <img>->next/image) remains the only deferred item, separate LCP-sensitive task, not currently assigned.
