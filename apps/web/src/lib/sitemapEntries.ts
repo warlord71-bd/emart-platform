@@ -72,7 +72,6 @@ import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 const BASE_URL = SITE_URL;
 const PAGE_SIZE = 100;
 const WORDPRESS_URL = (process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_WOO_URL || BASE_URL).replace(/\/$/, '');
-const STATIC_LASTMOD = new Date('2026-05-16T00:00:00.000Z');
 
 // Brand slugs that permanently redirect to /shop — must not appear in sitemap.
 // These are discontinued/empty brands redirected in next.config.js.
@@ -119,49 +118,65 @@ type WordPressProductPost = {
 
 export type SitemapEntry = MetadataRoute.Sitemap[number];
 
-const STATIC_PAGES: MetadataRoute.Sitemap = [
-  { url: BASE_URL, lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 1 },
-  { url: absoluteUrl('/shop'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.9 },
-  { url: absoluteUrl('/categories'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.8 },
-  { url: absoluteUrl('/new-arrivals'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.8 },
-  { url: absoluteUrl('/sale'), lastModified: STATIC_LASTMOD, changeFrequency: 'daily', priority: 0.8 },
-  { url: absoluteUrl('/offers'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.75 },
-  { url: absoluteUrl('/skin-quiz'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
-  { url: absoluteUrl('/skin-type'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.75 },
-  ...SKIN_TYPE_SLUG_PAGES,
-  { url: absoluteUrl('/compare'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.7 },
-  ...COMPARE_SLUG_PAGES,
-  { url: absoluteUrl('/best'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.75 },
-  ...BEST_SLUG_PAGES,
-  { url: absoluteUrl('/brands'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
-  { url: absoluteUrl('/origins'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
-  ...ORIGIN_SLUG_PAGES,
-  { url: absoluteUrl('/concerns'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
-  { url: absoluteUrl('/ingredients'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
-  { url: absoluteUrl('/routine'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.7 },
-  ...CONCERN_SLUG_PAGES,
-  ...INGREDIENT_SLUG_PAGES,
-  ...ROUTINE_SLUG_PAGES,
-  { url: absoluteUrl('/blog'), lastModified: STATIC_LASTMOD, changeFrequency: 'weekly', priority: 0.6 },
-  { url: absoluteUrl('/social'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
-  { url: absoluteUrl('/about-us'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
-  { url: absoluteUrl('/our-story'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
-  { url: absoluteUrl('/authenticity'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.5 },
-  { url: absoluteUrl('/join-our-team'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.4 },
-  { url: absoluteUrl('/contact'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.4 },
-  { url: absoluteUrl('/faq'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.4 },
-  { url: absoluteUrl('/shipping-policy'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.3 },
-  { url: absoluteUrl('/return-policy'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.3 },
-  { url: absoluteUrl('/privacy-policy'), lastModified: STATIC_LASTMOD, changeFrequency: 'yearly', priority: 0.2 },
-  { url: absoluteUrl('/terms-conditions'), lastModified: STATIC_LASTMOD, changeFrequency: 'yearly', priority: 0.2 },
-  { url: absoluteUrl('/sitemap'), lastModified: STATIC_LASTMOD, changeFrequency: 'monthly', priority: 0.4 },
-  ...OFFER_COLLECTIONS.map((offer) => ({
-    url: absoluteUrl(offer.href),
-    lastModified: STATIC_LASTMOD,
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  })),
+// Informational/policy pages — content rarely changes and there is no
+// reliable per-page "last modified" signal, so omit lastModified rather than
+// publish a frozen/stale date.
+const STATIC_PAGES_NO_DATE: MetadataRoute.Sitemap = [
+  { url: absoluteUrl('/skin-quiz'), changeFrequency: 'weekly', priority: 0.7 },
+  { url: absoluteUrl('/blog'), changeFrequency: 'weekly', priority: 0.6 },
+  { url: absoluteUrl('/social'), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/about-us'), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/our-story'), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/authenticity'), changeFrequency: 'monthly', priority: 0.5 },
+  { url: absoluteUrl('/join-our-team'), changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/contact'), changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/faq'), changeFrequency: 'monthly', priority: 0.4 },
+  { url: absoluteUrl('/shipping-policy'), changeFrequency: 'monthly', priority: 0.3 },
+  { url: absoluteUrl('/return-policy'), changeFrequency: 'monthly', priority: 0.3 },
+  { url: absoluteUrl('/privacy-policy'), changeFrequency: 'yearly', priority: 0.2 },
+  { url: absoluteUrl('/terms-conditions'), changeFrequency: 'yearly', priority: 0.2 },
+  { url: absoluteUrl('/sitemap'), changeFrequency: 'monthly', priority: 0.4 },
 ];
+
+// Catalog-reflecting hub/listing pages — their content (product and category
+// listings) changes as the catalog changes, so lastModified is set to the
+// sitemap's generation time (refreshed hourly via the route's revalidate cache)
+// instead of a frozen date.
+function getCatalogStaticPages(now: Date): MetadataRoute.Sitemap {
+  return [
+    { url: BASE_URL, lastModified: now, changeFrequency: 'daily', priority: 1 },
+    { url: absoluteUrl('/shop'), lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+    { url: absoluteUrl('/categories'), lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+    { url: absoluteUrl('/new-arrivals'), lastModified: now, changeFrequency: 'daily', priority: 0.8 },
+    { url: absoluteUrl('/sale'), lastModified: now, changeFrequency: 'daily', priority: 0.8 },
+    { url: absoluteUrl('/offers'), lastModified: now, changeFrequency: 'weekly', priority: 0.75 },
+    { url: absoluteUrl('/skin-type'), lastModified: now, changeFrequency: 'weekly', priority: 0.75 },
+    ...SKIN_TYPE_SLUG_PAGES.map((p) => ({ ...p, lastModified: now })),
+    { url: absoluteUrl('/compare'), lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    ...COMPARE_SLUG_PAGES.map((p) => ({ ...p, lastModified: now })),
+    { url: absoluteUrl('/best'), lastModified: now, changeFrequency: 'monthly', priority: 0.75 },
+    ...BEST_SLUG_PAGES.map((p) => ({ ...p, lastModified: now })),
+    { url: absoluteUrl('/brands'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+    { url: absoluteUrl('/origins'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+    ...ORIGIN_SLUG_PAGES.map((p) => ({ ...p, lastModified: now })),
+    { url: absoluteUrl('/concerns'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+    { url: absoluteUrl('/ingredients'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+    { url: absoluteUrl('/routine'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+    ...CONCERN_SLUG_PAGES.map((p) => ({ ...p, lastModified: now })),
+    ...INGREDIENT_SLUG_PAGES.map((p) => ({ ...p, lastModified: now })),
+    ...ROUTINE_SLUG_PAGES.map((p) => ({ ...p, lastModified: now })),
+    ...OFFER_COLLECTIONS.map((offer) => ({
+      url: absoluteUrl(offer.href),
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    })),
+  ];
+}
+
+function getStaticPages(): MetadataRoute.Sitemap {
+  return [...getCatalogStaticPages(new Date()), ...STATIC_PAGES_NO_DATE];
+}
 
 async function getBlogSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const posts = await getWordPressPosts({ perPage: 50 });
@@ -199,7 +214,7 @@ async function getSitemapViaGraphQL(): Promise<MetadataRoute.Sitemap> {
   const blogEntries = await getBlogSitemapEntries();
   const brandEntries = await getBrandSitemapEntries();
 
-  return [...STATIC_PAGES, ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
+  return [...getStaticPages(), ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
 }
 
 async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
@@ -237,7 +252,7 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-  return [...STATIC_PAGES, ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
+  return [...getStaticPages(), ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
 }
 
 async function getBrandSitemapEntries(): Promise<MetadataRoute.Sitemap> {
@@ -363,6 +378,6 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   try {
     return deduplicateSitemap(await getSitemapViaREST());
   } catch {
-    return deduplicateSitemap(STATIC_PAGES);
+    return deduplicateSitemap(getStaticPages());
   }
 }
