@@ -53,8 +53,10 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'PerplexityBot', allow: '/' },
       { userAgent: 'Google-Extended', allow: '/' },
       { userAgent: 'Applebot', allow: '/' },
+      // CCBot (Common Crawl) feeds many AI/answer-engine training and
+      // retrieval pipelines — allow for AI search discovery.
+      { userAgent: 'CCBot', allow: '/' },
       // Bulk scrapers — not search engines, no SEO benefit
-      { userAgent: 'CCBot', disallow: '/' },
       { userAgent: 'Bytespider', disallow: '/' },
       { userAgent: 'cohere-ai', disallow: '/' },
     ],
