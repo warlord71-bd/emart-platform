@@ -2,6 +2,7 @@ import { formatCatalogProductCount, getAllProductIdsByBrand, getBrandBySlug, get
 import CatalogFilters from '@/components/product/CatalogFilters';
 import { ProductListGrid } from '@/components/product/ProductListGrid';
 import ProductCard from '@/components/product/ProductCard';
+import { NumberedPagination } from '@/components/common/NumberedPagination';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { absoluteUrl } from '@/lib/siteUrl';
@@ -12,7 +13,6 @@ import { getIngredientBySlug } from '@/lib/ingredients';
 import {
   getPaginatedCanonical,
   getPaginatedTitle,
-  getPaginationHref,
   getValidPage,
 } from '@/lib/paginationSeo';
 
@@ -301,23 +301,12 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                   <ProductCard key={product.id} product={product} priority={i === 0 && page === 1} />
                 ))}
               </ProductListGrid>
-              {totalPages > 1 && (
-                <div className="mt-10 flex items-center justify-center gap-2">
-                  {page > 1 && (
-                    <Link href={getPaginationHref('/shop', searchParams, page - 1)}
-                      className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">
-                      Previous
-                    </Link>
-                  )}
-                  <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
-                  {page < totalPages && (
-                    <Link href={getPaginationHref('/shop', searchParams, page + 1)}
-                      className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">
-                      Next
-                    </Link>
-                  )}
-                </div>
-              )}
+              <NumberedPagination
+                basePath="/shop"
+                currentPage={page}
+                totalPages={totalPages}
+                searchParams={searchParams}
+              />
             </>
           ) : (
             <div className="py-20 text-center text-muted-2">

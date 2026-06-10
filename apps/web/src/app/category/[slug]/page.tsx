@@ -3,6 +3,7 @@ import CatalogFilters from '@/components/product/CatalogFilters';
 import ProductCard from '@/components/product/ProductCard';
 import { ProductListGrid } from '@/components/product/ProductListGrid';
 import CollectionPageHeader from '@/components/collection/CollectionPageHeader';
+import { NumberedPagination } from '@/components/common/NumberedPagination';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
@@ -16,7 +17,6 @@ import { getOriginByCountry } from '@/lib/origin-navigation';
 import {
   getPaginatedCanonical,
   getPaginatedTitle,
-  getPaginationHref,
   getValidPage,
 } from '@/lib/paginationSeo';
 
@@ -618,28 +618,12 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                   ))}
                 </ProductListGrid>
 
-                {/* PAGINATION */}
-                {totalPages > 1 && (
-                  <div className="mt-10 flex items-center justify-center gap-2">
-                    {page > 1 && (
-                      <Link
-                        href={getPaginationHref(`/category/${params.slug}`, searchParams, page - 1)}
-                        className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
-                      >
-                        Previous
-                      </Link>
-                    )}
-                    <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
-                    {page < totalPages && (
-                      <Link
-                        href={getPaginationHref(`/category/${params.slug}`, searchParams, page + 1)}
-                        className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black"
-                      >
-                        Next
-                      </Link>
-                    )}
-                  </div>
-                )}
+                <NumberedPagination
+                  basePath={`/category/${params.slug}`}
+                  currentPage={page}
+                  totalPages={totalPages}
+                  searchParams={searchParams}
+                />
 
                 {/* CATEGORY BUYING GUIDE */}
                 <details className="mt-14 rounded-2xl border border-hairline bg-card p-5 shadow-card">
