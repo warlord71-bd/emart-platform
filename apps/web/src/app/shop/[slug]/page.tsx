@@ -374,7 +374,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: seoOgImage ? [{ url: seoOgImage, width: 800, height: 800 }] : undefined,
     },
     other: {
-      'og:type': 'product',
       ...(skinType ? { 'product:skin_type': skinType } : {}),
       ...(skinConcern ? { 'product:skin_concern': skinConcern } : {}),
     },
@@ -441,6 +440,7 @@ export default async function ProductPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <ProductViewContentEvent product={product} />
+      <meta property="og:type" content="product" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(productJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />}
