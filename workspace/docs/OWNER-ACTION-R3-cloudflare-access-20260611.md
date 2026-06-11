@@ -71,3 +71,36 @@ Second attempt note: a broad/single-hostname Access setup protected `/wp-login.p
 `/wp-admin/`, but also protected `/`, `/shop`, and PDPs, blocking the public storefront.
 Owner deleted it and storefront recovered. Do not leave any Access application enabled
 if it challenges the public storefront.
+
+## Third attempt — corrected procedure (2026-06-11)
+
+**Likely root cause of the second attempt**: an Access application for domain
+`e-mart.com.bd` was created with the **Path field left blank or set to `/`**. Cloudflare
+Access treats a blank/`/` path as "match everything under this hostname" — so it gated
+the entire storefront, not just the two intended paths.
+
+**Do this, in order:**
+
+1. **Audit first**: Zero Trust → Access → Applications. List every app for
+   `e-mart.com.bd`. Delete/disable any app whose Path is blank, `/`, or `/*` — there
+   may be an orphaned app left over from the second attempt even though the owner
+   "deleted it" (check for a duplicate). Confirm zero apps remain for this domain
+   before proceeding.
+2. **Create App A** — Self-hosted, name `Emart WP Login`:
+   - Application Domain: `e-mart.com.bd`
+   - **Path** (separate field from Domain — do not type the path into the Domain box):
+     `/wp-login.php*`
+3. **Create App B** — Self-hosted, name `Emart WP Admin`:
+   - Application Domain: `e-mart.com.bd`
+   - **Path**: `/wp-admin/*`
+4. Both apps: policy `Owner only`, Action Allow, Include Emails → `hgc.bd71@gmail.com`.
+   Do **not** create a third app or an app with no path.
+5. **Verify in this exact order** (incognito):
+   1. `https://e-mart.com.bd/` → 200, no Access challenge
+   2. `https://e-mart.com.bd/shop` → 200, no Access challenge
+   3. any PDP → 200, no Access challenge
+   4. `https://e-mart.com.bd/wp-login.php` → Cloudflare Access email challenge
+   5. `https://e-mart.com.bd/wp-admin/` → Cloudflare Access email challenge
+
+If steps 1-3 show a challenge, there is still a stray catch-all app for `e-mart.com.bd`
+with a blank/`/` path — find and fix/delete it before re-testing.
