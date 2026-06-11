@@ -2,20 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 function getWordPressBaseUrl() {
-  return (
-    process.env.WOO_INTERNAL_URL ||
-    (process.env.NODE_ENV === 'production' ? 'http://127.0.0.1' : '') ||
-    process.env.NEXT_PUBLIC_WOO_URL ||
-    'https://e-mart.com.bd'
-  ).replace(/\/$/, '');
+  return (process.env.NEXT_PUBLIC_SITE_URL || 'https://e-mart.com.bd').replace(/\/$/, '');
 }
 
 function getWordPressHeaders() {
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-  if (getWordPressBaseUrl().startsWith('http://127.0.0.1')) {
-    headers.Host = 'e-mart.com.bd';
-  }
-  return headers;
+  return { 'Content-Type': 'application/json' };
 }
 
 function accountRedirect(request: NextRequest, params: Record<string, string>) {

@@ -11,20 +11,21 @@ function getWordPressHeaders() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { login, password } = await request.json();
-    const normalizedLogin = String(login || '').trim();
+    const { email, phone } = await request.json();
+    const normalizedEmail = String(email || '').trim();
+    const normalizedPhone = String(phone || '').trim();
 
-    if (!normalizedLogin || !password) {
+    if (!normalizedEmail || !normalizedPhone) {
       return NextResponse.json(
-        { error: 'Email/username and password are required' },
+        { error: 'Email and phone number are required' },
         { status: 400 },
       );
     }
 
-    const response = await fetch(`${getWordPressBaseUrl()}/wp-json/emart/v1/customer/login`, {
+    const response = await fetch(`${getWordPressBaseUrl()}/wp-json/emart/v1/customer/login-by-phone`, {
       method: 'POST',
       headers: getWordPressHeaders(),
-      body: JSON.stringify({ login: normalizedLogin, password }),
+      body: JSON.stringify({ email: normalizedEmail, phone: normalizedPhone }),
       cache: 'no-store',
     });
 
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok || !data?.user?.id) {
       return NextResponse.json(
-        { error: data?.message || data?.error || 'Invalid email/username or password' },
+        { error: data?.message || data?.error || 'No account found with that email and phone' },
         { status: response.status || 401 },
       );
     }
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
       expires_at: data.expires_at,
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Login by phone error:', error);
     return NextResponse.json(
       { error: 'Login failed' },
       { status: 500 },
