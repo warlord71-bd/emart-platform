@@ -5,6 +5,7 @@ import { Heart, LogOut, Mail, Package, Truck, User } from 'lucide-react';
 import Link from 'next/link';
 import { getProviders, signIn, signOut } from 'next-auth/react';
 import toast from 'react-hot-toast';
+import { normalizePhoneDigits } from '@/lib/formatters';
 
 interface SessionUser {
   id: number;
@@ -232,7 +233,8 @@ export default function AccountPage() {
   };
 
   const handlePhoneLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneLoginForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setPhoneLoginForm((prev) => ({ ...prev, [name]: name === 'phone' ? normalizePhoneDigits(value) : value }));
   };
 
   const handlePhoneLogin = async (e: React.FormEvent) => {

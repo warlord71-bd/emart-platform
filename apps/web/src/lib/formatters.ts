@@ -17,6 +17,14 @@ export function formatDiscountPercent(value: unknown): number {
   return Math.round(amount);
 }
 
+const BENGALI_DIGITS = '০১২৩৪৫৬৭৮৯';
+
+// Bangladeshi mobile keyboards often default to Bengali numerals (০-৯);
+// phone fields expect ASCII digits, so normalize as the user types.
+export function normalizePhoneDigits(value: string): string {
+  return value.replace(/[০-৯]/g, (digit) => String(BENGALI_DIGITS.indexOf(digit)));
+}
+
 export function stripHtml(value: unknown): string {
   if (value === null || value === undefined) return '';
 

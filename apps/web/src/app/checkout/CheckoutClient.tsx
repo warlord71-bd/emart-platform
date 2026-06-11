@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
-import { formatBDT } from '@/lib/formatters';
+import { formatBDT, normalizePhoneDigits } from '@/lib/formatters';
 import toast from 'react-hot-toast';
 import { COMPANY } from '@/lib/companyProfile';
 import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue, trackMetaEvent } from '@/lib/metaPixel';
@@ -126,7 +126,8 @@ export default function CheckoutPage() {
   }, [form.city, items.length, lineItems]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: name === 'phone' ? normalizePhoneDigits(value) : value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
