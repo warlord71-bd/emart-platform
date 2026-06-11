@@ -2208,3 +2208,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Blockers hit: none. Item #14 progress: 94/1266 IDs done (88 original dry-run batch + 11 XYZ-fix minus overlap + 3 retries — see `meta-regen-batch2-ids.txt`/`meta-regen-deepseek-batch1-ids.txt`). ~1172 IDs remain.
 - Next step: Continue item #14 in batches of ~50 with DeepSeek model + validator + apply-reviewed cycle (cost is trivial, ~$0.0002/product). C1 (blog generator) remains blocked until #14 substantially progresses/completes per "meta first, blog next". C3 (strategic SEO note) still owed.
 - Next step: Reddit Conversions Pixel is live with real ID `a2_j5ni2gcn8o6b`. No action needed on `reddit-for-woocommerce`/`google-listings-and-ads` Jetpack error toast (cosmetic, left as-is).
+
+## 2026-06-10 (Claude — platform audit + remediation plan)
+- Did: full read-only platform audit (12 phases) → /var/www/audit/EMART_AUDIT_20260610.md, copied to workspace/docs/audits/. Grade B+. 1 Critical (admin auth returns REVALIDATE_SECRET as token), 6 High (PDP private-cache/force-dynamic, homepage rails ssr:false, schema availability divergence, no aggregateRating, no rate limiting, wp-login.php public), 10 Medium, 7 Low.
+- Created workspace/docs/AUDIT_REMEDIATION_PLAN_20260610.md (R1–R20, per-task specs + verify lines + Sonnet/Codex prompt template) and new 🛠️ section in TASKS.md. Docs synced Local↔VPS. Nothing committed/pushed — docs only, owner to review.
+- Blockers: owner decisions needed on R3 (wp-login exposure) and R17 (30s pixel deferral); Cloudflare cache rule (owner item #4) gates R11.
+- Next: execute R1 (admin auth hardening) first — freeze-safe.

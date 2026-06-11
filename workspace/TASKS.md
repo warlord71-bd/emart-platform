@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-09 (meta gap audit: 781 products have weak rank_math-only meta desc)
+Last updated: 2026-06-10 (full platform audit B+ → A+ remediation plan added; see 🛠️ section)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -87,7 +87,44 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 
 ---
 
+## 🛠️ AUDIT REMEDIATION — B+ → A+ (added 2026-06-10)
+
+Full platform audit done 2026-06-10 (read-only): `workspace/docs/audits/EMART_AUDIT_20260610.md`.
+Step-by-step plan with per-task specs, verify lines, and agent prompt template: **`workspace/docs/AUDIT_REMEDIATION_PLAN_20260610.md`** — execute one R-task per session, in this order:
+
+| # | Task | Audit ID | Agent | Status |
+|---|---|---|---|---|
+| R1 | Admin auth: stop returning REVALIDATE_SECRET as admin token; new `ADMIN_API_TOKEN`; drop `?token=`; timing-safe compare | C-01 | [S] | ⬜ |
+| R5 | Attic `.env.local.backup-20260502-google-restore` (Local+VPS) | L-06 | any | ⬜ |
+| R4 | Checkout error-message mapping + AbortSignal timeouts in 4 lib fetchers | M-10, M-09 | [S] | ⬜ |
+| R6 | Product schema availability from `normalizeStockAvailability` (+BackOrder) | H-03 | [S] | ⬜ |
+| R8 | Drop fabricated `mpn` from Product schema | M-01 | [S] | ⬜ |
+| R7 | `aggregateRating` in Product JSON-LD when `rating_count > 0` | H-04 | [S] | ⬜ |
+| R9 | Remove root-layout canonical inheritance (404 canonicals to home today) | M-04 | [S] | ⬜ |
+| R10 | Trivia batch: safeJsonLd categories page, search alt fallback, best-definitions dates | L-02/04/05/07 | [S] | ⬜ |
+| R2 | Nginx rate limiting: /api/checkout, /api/admin/auth, /api/newsletter, /api/search | H-05 | [X] prep + [C] apply | ⬜ |
+| R11 | PDP `s-maxage` via existing Nginx override pattern (stage 1, reversible) | H-01 | [C] | ⬜ |
+| R13 | Single price formatter (`formatBDT`); delete 3 duplicates | M-05 | [X] | ⬜ |
+| R16 | GA4 ecommerce events: view_item / add_to_cart / begin_checkout | M-02 | [S] | ⬜ |
+| R14 | Split 1,558-line `woocommerce.ts` into `lib/woo/*` + type the 29 `any`s (barrel re-export, zero behavior change) | M-08 | [X] | ⬜ |
+| R15 | Attic atomic-design scaffolding; make pixel IDs env-required (set VPS env FIRST, verify pixels live, then remove fallbacks) | L-01, L-03 | [X] | ⬜ |
+
+Schema tasks (R6–R9): content-level = freeze-OK, but read `workspace/SEO_MASTER.md` first, validate live JSON-LD + Rich Results after deploy.
+Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3 (R12/R18/R19 are parked in BACKLOG).
+
+**Owner decisions needed (audit):**
+- **R3 / H-06** — `wp-login.php` returns 200 publicly: Cloudflare Access / IP allowlist / accept risk?
+- **R17 / M-03** — pixels deferred 30s → sub-30s bouncers never tracked: keep, or shorten to ~8s?
+- Cloudflare cache rule (existing owner item #4) is now also the unlock for R11 PDP edge caching.
+
+---
+
 ## 🔵 BACKLOG (post-freeze Jul 3+)
+
+- **R12 (audit H-01 stage 2)** — PDP ISR: remove `force-dynamic` from `shop/[slug]` + `category/[slug]`, rely on `revalidate`+tags; own session + 24h monitoring
+- **R18 (audit H-02)** — server-render first homepage product rail (crawlable product links); OWNER approval required; guardrail Lighthouse ≥90 / LCP ≤2.5s
+- **R19 (audit M-06/M-07)** — design-token sweep (33× `#9f1239`, 26× `#D4A248`, legacy `#1a1a2e`) + consolidate porcelain/lumiere/midnight-blossom themes (20 files)
+- **R20** — re-audit for A+ grade after R-tasks close
 
 - Blog content at scale: 51 posts vs Shajgoj 5,904
 - UCP/MCP commerce endpoint: build when reviews > 200 (currently 5)
