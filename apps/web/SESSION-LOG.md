@@ -2285,3 +2285,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Typed the moved raw Woo REST response handling with local `WooRaw*` shapes; `rg` confirms no `any` usage remains in `src/lib/woo` or the barrel.
 - Verified: `npm run build` clean locally.
 - Blockers: none for R14. Pre-freeze remaining is now R3 owner Cloudflare Access apply/recheck and R2 rate-limit prep+apply.
+
+## 2026-06-11 (Codex — R2 rate limiting)
+- Did R2 (H-05): applied runtime Nginx rate limiting with Cloudflare real-IP restoration. Added `/etc/nginx/conf.d/cloudflare-real-ip.conf` (repo reference `workspace/docs/R2-cloudflare-real-ip-nginx.conf`); changed rate zones to use a real-client-IP key with localhost/VPS exemption for `emart-checkout-monitor`; split exact API locations for `/api/admin/auth`, `/api/newsletter/subscribe`, and `/api/search`, keeping `/api/checkout` separate and general APIs on the existing bucket.
+- Safety: backups exist at `/etc/nginx/nginx.conf.backup-20260611-r2-rate-limit` and `/root/.attic-2026-06-11/nginx/sites-enabled/emart-nextjs.backup-20260611-r2-rate-limit`; moved the site backup out of `sites-enabled` after `nginx -t` correctly flagged it as an accidentally loaded duplicate config.
+- Verified: `nginx -t` passed; `systemctl reload nginx`; live home 200, `/api/search?q=cerave` 200, `/api/admin/auth`, `/api/newsletter/subscribe`, and `/api/checkout` GETs return normal 405. Direct 429 burst from VPS was not meaningful because the VPS public IP is intentionally exempt.
+- Blockers: R3 remains owner-side Cloudflare Access apply/recheck; live `/wp-login.php` still returns HTTP 200.

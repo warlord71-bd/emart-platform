@@ -93,7 +93,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 Full platform audit done 2026-06-10 (read-only): `workspace/docs/audits/EMART_AUDIT_20260610.md`.
 Step-by-step plan with per-task specs, verify lines, and agent prompt template: **`workspace/docs/AUDIT_REMEDIATION_PLAN_20260610.md`**.
 
-Current execution order check (2026-06-11): R13/R14/R15 are done; R17 decision landed and is live; R3 owner doc is ready but live `wp-login.php` still returns HTTP 200, so Cloudflare Access is not closed yet. Remaining pre-freeze audit work is R3 owner apply/recheck and R2 prep+apply. After those land, the A+ re-audit waits only on post-freeze R12 -> R18 (owner approval) -> R19 -> R20.
+Current execution order check (2026-06-11): R2/R13/R14/R15 are done; R17 decision landed and is live; R3 owner doc is ready but live `wp-login.php` still returns HTTP 200, so Cloudflare Access is not closed yet. Remaining pre-freeze audit work is only R3 owner apply/recheck. After R3 lands, the A+ re-audit waits only on post-freeze R12 -> R18 (owner approval) -> R19 -> R20.
 
 | # | Task | Audit ID | Agent | Status |
 |---|---|---|---|---|
@@ -106,7 +106,7 @@ Current execution order check (2026-06-11): R13/R14/R15 are done; R17 decision l
 | R9 | Remove root-layout canonical inheritance (404 canonicals to home today) | M-04 | [S] | ✅ |
 | R10 | Trivia batch: safeJsonLd categories page, search alt fallback, best-definitions dates | L-02/04/05/07 | [S] | ✅ |
 | R3 | Cloudflare Access for `wp-login.php` | H-06 | [O] + recheck | 🟡 doc ready; owner dashboard action pending |
-| R2 | Nginx rate limiting: /api/checkout, /api/admin/auth, /api/newsletter, /api/search | H-05 | [X] prep + [C] apply | ⬜ |
+| R2 | Nginx rate limiting: /api/checkout, /api/admin/auth, /api/newsletter, /api/search | H-05 | [X] prep + [C] apply | ✅ |
 | R11 | PDP `s-maxage` via existing Nginx override pattern (stage 1, reversible) | H-01 | [C] | ✅ CLOSED 2026-06-11 (Nginx + Cloudflare respect-origin + purge, live-verified) |
 | R13 | Single price formatter (`formatBDT`); delete 3 duplicates | M-05 | [X] | ✅ |
 | R16 | GA4 ecommerce events: view_item / add_to_cart / begin_checkout | M-02 | [S] | ✅ |
@@ -147,16 +147,16 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 
 **R14 — DONE 2026-06-11**: `src/lib/woocommerce.ts` is now a stable public barrel (`export * from './woo'`). Woo logic was split into `src/lib/woo/{client,types,transformers,products,brands,origins,categories,shipping,orders,reviews,coupons,customers,helpers,index}.ts`; existing app imports stayed on `@/lib/woocommerce`. Added loose raw Woo REST response types and removed remaining `any` usage from `src/lib/woo`; local production build passed.
 
-**Current order / closure check — 2026-06-11**: Today parallel Codex work (R13 then R15) is done. Today's R17 decision is done/live. R14 is done. R3 is doc-ready only: live recheck still returns `HTTP 200` for `/wp-login.php`, so owner must apply Cloudflare Access and then request recheck. Next Claude session should handle R2 prep+apply in one focused session. Jul 3+ order stays R12 -> R18 (owner approval required) -> R19 -> R20 re-audit.
+**Current order / closure check — 2026-06-11**: Today parallel Codex work (R13 then R15) is done. Today's R17 decision is done/live. R14 is done. R2 is done/live at Nginx. R3 is doc-ready only: live recheck still returns `HTTP 200` for `/wp-login.php`, so owner must apply Cloudflare Access and then request recheck. Jul 3+ order stays R12 -> R18 (owner approval required) -> R19 -> R20 re-audit.
 
 **Owner decisions needed (audit):**
 - ~~**R3 / H-06**~~ — DECIDED 2026-06-11: Cloudflare Access (email gate). Owner action item #15 above (`OWNER-ACTION-R3-cloudflare-access-20260611.md`); needs owner to apply in Cloudflare dashboard, then "R3 done" reply to close.
 - ~~**R17 / M-03**~~ — DONE 2026-06-11: shortened analytics pixels to ~8s in `5f4a9f4`; merchant badge still waits 30s.
 - ~~Cloudflare cache rule (existing owner item #4)~~ — DONE 2026-06-11 by owner. ~~Follow-up: R11 PDP TTL scope~~ — ✅ RESOLVED same day, see R11 block above (rule now respects origin headers; purged; live-verified).
 
-**R2 — DEFERRED 2026-06-11**: owner chose to stick to suggested order (R5, R4, R6+R8, R7, R9+R10 first); R2 (rate limiting + Cloudflare real-IP prereq) remains queued at position 7, own focused session.
+**R2 — DONE 2026-06-11**: applied runtime Nginx rate limiting with Cloudflare real-client-IP restoration. Added `/etc/nginx/conf.d/cloudflare-real-ip.conf` from `workspace/docs/R2-cloudflare-real-ip-nginx.conf`; updated `/etc/nginx/nginx.conf` rate zones to key on real client IP with VPS/localhost exemption for `emart-checkout-monitor`; split `/api/admin/auth`, `/api/newsletter/subscribe`, and `/api/search` into exact Nginx locations with their own buckets, keeping `/api/checkout` separately limited and general APIs on the existing general bucket. Backups: `/etc/nginx/nginx.conf.backup-20260611-r2-rate-limit` and `/root/.attic-2026-06-11/nginx/sites-enabled/emart-nextjs.backup-20260611-r2-rate-limit` (moved out of `sites-enabled` so Nginx does not load it). `nginx -t` passed; `systemctl reload nginx` done; live smoke: home 200, search 200, admin/newsletter/checkout GETs return normal 405, not accidental 429. Direct 429 burst could not be meaningfully tested from the VPS because the VPS public IP is intentionally exempt.
 
-**Pre-freeze remaining after R13/R14/R15/R17**: R3 owner Cloudflare Access apply/recheck and R2 rate-limit prep+apply. Once those are closed, every pre-freeze audit item is closed and A+ re-audit waits on post-freeze R12/R18/R19/R20.
+**Pre-freeze remaining after R2/R13/R14/R15/R17**: R3 owner Cloudflare Access apply/recheck. Once R3 is closed, every pre-freeze audit item is closed and A+ re-audit waits on post-freeze R12/R18/R19/R20.
 
 ---
 
