@@ -2272,4 +2272,5 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did R15 (L-01/L-03): moved empty `components/{atoms,molecules,organisms,templates}` scaffold dirs to `/root/.attic-2026-06-11/emart-platform/apps/web/src/components/`; added `NEXT_PUBLIC_GOOGLE_TAG_ID=G-WMJNX87Q2N` to Local+VPS `.env.local`; removed hardcoded GA4/Meta pixel ID fallbacks from source. Reddit already used env-only.
 - Verified: Local build clean; source search clean for `formatPrice`, atomic imports, and literal analytics IDs; Local+VPS env contain GA4/Meta/Reddit public IDs.
 - Blockers: none.
-- Next step: R14 (Woo split/type cleanup) or R2 focused rate-limit prep/apply session; owner still has R3 Cloudflare Access and R17 pixel-delay decision.
+- Note: deploy also included existing parent commit `5f4a9f4` (R17/M-03), which shortens GA4/Meta/Reddit analytics deferral from 30s to 8s while keeping the cosmetic merchant badge at 30s.
+- Next step: R14 (Woo split/type cleanup) or R2 focused rate-limit prep/apply session; owner still has R3 Cloudflare Access.

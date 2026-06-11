@@ -139,9 +139,11 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 
 **R15 — DONE 2026-06-11**: moved empty atomic-design scaffold dirs (`components/atoms`, `molecules`, `organisms`, `templates`) to `/root/.attic-2026-06-11/emart-platform/apps/web/src/components/`. Added `NEXT_PUBLIC_GOOGLE_TAG_ID=G-WMJNX87Q2N` to Local and VPS `.env.local` before removing hardcoded GA4/Meta pixel fallbacks from source; Reddit already had no fallback. Verified Local+VPS env contain GA4/Meta/Reddit public IDs; source tree no longer contains the literal pixel IDs. Local build clean.
 
+**R17 — DONE 2026-06-11**: owner/parallel-agent decision landed before the R13/R15 deploy in `5f4a9f4`: analytics pixel deferral shortened from 30s to 8s for GA4 loader, Meta Pixel, and Reddit Pixel; the cosmetic Google Merchant rating badge stays at 30s. R13/R15 deploy included this commit and live smoke stayed HTTP 200.
+
 **Owner decisions needed (audit):**
 - ~~**R3 / H-06**~~ — DECIDED 2026-06-11: Cloudflare Access (email gate). Owner action item #15 above (`OWNER-ACTION-R3-cloudflare-access-20260611.md`); needs owner to apply in Cloudflare dashboard, then "R3 done" reply to close.
-- **R17 / M-03** — pixels deferred 30s → sub-30s bouncers never tracked: keep, or shorten to ~8s?
+- ~~**R17 / M-03**~~ — DONE 2026-06-11: shortened analytics pixels to ~8s in `5f4a9f4`; merchant badge still waits 30s.
 - ~~Cloudflare cache rule (existing owner item #4)~~ — DONE 2026-06-11 by owner. ~~Follow-up: R11 PDP TTL scope~~ — ✅ RESOLVED same day, see R11 block above (rule now respects origin headers; purged; live-verified).
 
 **R2 — DEFERRED 2026-06-11**: owner chose to stick to suggested order (R5, R4, R6+R8, R7, R9+R10 first); R2 (rate limiting + Cloudflare real-IP prereq) remains queued at position 7, own focused session.
