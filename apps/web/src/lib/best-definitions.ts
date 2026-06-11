@@ -1,3 +1,7 @@
+// Single source of truth for the "Updated <Month Year>" / dateModified shown
+// on /best guides. Bump this when guide content (picks, prices, copy) is reviewed.
+export const BEST_GUIDES_LAST_REVIEWED = '2026-05-19';
+
 export interface BestProduct {
   rank: number;
   name: string;
@@ -33,7 +37,7 @@ export const BEST_DEFINITIONS: BestDefinition[] = [
       'The best sunscreens for oily skin in Bangladesh: lightweight, no white cast, and tested in Dhaka\'s humid climate. SPF50 PA++++ picks with BDT prices and Cash on Delivery.',
     intro:
       'Finding a good sunscreen for oily skin in Bangladesh is a challenge. Dhaka\'s heat and 70–85% humidity means any heavy, greasy sunscreen will break down your skin within hours. After reviewing dozens of products and filtering by what Bangladeshi customers actually repurchase, here are the top picks that stay matte, feel lightweight, and protect against Bangladesh\'s intense UV index (regularly above 8).',
-    updatedDate: '2026-05-19',
+    updatedDate: BEST_GUIDES_LAST_REVIEWED,
     products: [
       {
         rank: 1,
@@ -127,7 +131,7 @@ export const BEST_DEFINITIONS: BestDefinition[] = [
       'The best face washes for oily skin in Bangladesh — low-pH gel cleansers that control shine without stripping. Picks tested for Dhaka\'s humidity with BDT prices and COD.',
     intro:
       'Over-cleansing and harsh face washes are the #1 mistake oily skin types in Bangladesh make. Stripping the skin of oil causes rebound oiliness, breakouts, and a damaged barrier. The best face washes for oily skin are gentle enough to use twice daily — balancing oil without drying out your skin in Bangladesh\'s variable climate.',
-    updatedDate: '2026-05-19',
+    updatedDate: BEST_GUIDES_LAST_REVIEWED,
     products: [
       {
         rank: 1,
@@ -211,7 +215,7 @@ export const BEST_DEFINITIONS: BestDefinition[] = [
       'Best moisturisers for oily skin in Bangladesh — lightweight gel formulas that hydrate without greasiness. Tested in Dhaka\'s humidity with BDT prices and Cash on Delivery.',
     intro:
       'Skipping moisturiser when you have oily skin is the biggest skincare mistake. Without hydration, your skin overproduces oil to compensate — making you shinier and more breakout-prone. The best moisturisers for oily skin in Bangladesh are lightweight gel or gel-cream formulas that add water without adding oil, absorb quickly in humidity, and don\'t break up under sunscreen.',
-    updatedDate: '2026-05-19',
+    updatedDate: BEST_GUIDES_LAST_REVIEWED,
     products: [
       {
         rank: 1,

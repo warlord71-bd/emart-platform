@@ -35,7 +35,10 @@ export async function GET(request: NextRequest) {
       slug: product.slug,
       price: product.price,
       sale_price: product.sale_price,
-      images: product.images.slice(0, 1),
+      images: product.images.slice(0, 1).map((image) => ({
+        ...image,
+        alt: image.alt?.trim() || product.name,
+      })),
       categories: getBestCategory(product.categories),
     }));
 

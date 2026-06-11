@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { canonicalPath } from '@/lib/canonicalUrl';
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 import {
   getActiveFlashPromotion,
   getActiveSessions,
@@ -89,7 +90,7 @@ export default async function CategoriesPage() {
     <main data-theme="midnight-blossom" className="mb-shell min-h-screen pb-16 sm:pb-0">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }}
       />
       <QueryProvider>
         <FlashProvider initialPromotion={promotion}>

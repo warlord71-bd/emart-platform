@@ -65,7 +65,6 @@ export const metadata: Metadata = {
   description:
     'Shop authentic Korean, Japanese and global skincare in Bangladesh from Emart Skincare Bangladesh. Carefully curated beauty products, local support, faster delivery and trusted service.',
   alternates: {
-    canonical: SITE_URL,
     types: {
       'application/rss+xml': [
         { url: `${SITE_URL}/feed.xml`, title: 'Emart Skincare Bangladesh — Blog' },
