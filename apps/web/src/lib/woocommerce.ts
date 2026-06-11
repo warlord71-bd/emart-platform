@@ -1542,10 +1542,6 @@ export async function updateCustomer(id: number, data: Record<string, unknown>):
 // HELPER FUNCTIONS
 // ══════════════════════════════
 
-export function formatPrice(price: string | number | null | undefined): string {
-  return formatBDT(price);
-}
-
 export function getDiscountPercent(regular: string, sale: string): number {
   const reg = parseFloat(regular);
   const sal = parseFloat(sale);

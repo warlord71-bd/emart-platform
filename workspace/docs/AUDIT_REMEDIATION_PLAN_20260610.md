@@ -85,6 +85,7 @@ All Critical + High findings closed and live-verified; Mediums closed or explici
 
 ### R13 [X] — M-05: One price formatter
 - Consolidate on `formatBDT` (`src/lib/formatters.ts`); delete/redirect `formatPrice` in `woocommerce.ts:1545`, local copies in `SkinQuizClient.tsx:157` and `Header.tsx:83`. Output must be byte-identical (write a quick comparison script for sample values before deleting).
+- DONE 2026-06-11: storefront callers now use `formatBDT`; `woocommerce.ts` `formatPrice` export removed; skin quiz keeps `View price` empty-state while delegating currency output to `formatBDT`. Sample comparison passed and build clean.
 - Verify: build + grep shows single implementation; PDP/cart/header prices render identically.
 
 ### R14 [X] — M-08: Split `woocommerce.ts` (multi-session, mechanical)
@@ -92,6 +93,7 @@ All Critical + High findings closed and live-verified; Mediums closed or explici
 - Verify: `npm run build` + type-check clean; live smoke after deploy.
 
 ### R15 [X] — L-01: Attic the empty `components/{atoms,molecules,organisms,templates}` dirs. L-03: make GA4/Meta/Reddit IDs env-required — FIRST set `NEXT_PUBLIC_GOOGLE_TAG_ID` + `NEXT_PUBLIC_META_PIXEL_ID` in Local AND VPS `.env.local`, deploy, verify pixels still fire live (Playwright network check, pattern from Reddit pixel task C6), THEN remove the hardcoded fallbacks.
+- DONE 2026-06-11: scaffold dirs moved to `/root/.attic-2026-06-11/emart-platform/apps/web/src/components/`; GA4/Meta/Reddit public IDs verified in Local and VPS env; source hardcoded analytics ID fallbacks removed. Build clean; live pixel verification completed during deploy smoke.
 
 ---
 

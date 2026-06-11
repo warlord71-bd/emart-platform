@@ -7,7 +7,6 @@ import { useCartStore } from '@/store/cartStore';
 import { isInStock } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import type { WooProduct } from '@/lib/woocommerce';
-import { formatPrice } from '@/lib/woocommerce';
 import { getVersionBadge } from '@/lib/version-display';
 import { formatBDT } from '@/lib/formatters';
 import { COMPANY } from '@/lib/companyProfile';
@@ -432,10 +431,10 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           <>
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-bold text-lumiere-primary">
-                {formatPrice(product.sale_price)}
+                {formatBDT(product.sale_price)}
               </span>
               <span className="text-lg text-lumiere-text-secondary line-through">
-                {formatPrice(product.regular_price)}
+                {formatBDT(product.regular_price)}
               </span>
             </div>
             <div className="inline-block bg-lumiere-primary text-white text-xs font-semibold px-2 py-1 rounded">
@@ -444,7 +443,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           </>
         ) : (
           <span className="text-3xl font-bold text-lumiere-primary">
-            {formatPrice(product.price)}
+            {formatBDT(product.price)}
           </span>
         )}
       </div>

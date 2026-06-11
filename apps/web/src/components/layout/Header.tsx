@@ -80,10 +80,6 @@ const POPULAR_SEARCHES = [
   'Cerave cleanser',
 ];
 
-const formatPrice = (value: string | number) => {
-  return formatBDT(value);
-};
-
 const getScopedSearchTerm = (query: string, scope: SearchScope) => {
   if (!scope.queryPrefix) return query;
   return `${scope.queryPrefix} ${query}`;
@@ -627,7 +623,7 @@ export default function Header() {
                       </div>
                       <div className="mt-1 flex items-center gap-2 text-xs">
                         <span className="font-bold text-accent">
-                          {formatPrice(product.sale_price || product.price)}
+                          {formatBDT(product.sale_price || product.price)}
                         </span>
                         {product.categories[0] && (
                           <span className="min-w-0 truncate text-gray-400">
@@ -832,7 +828,7 @@ export default function Header() {
                             <div className="min-w-0 flex-1">
                               <div className="line-clamp-2 text-xs font-bold leading-snug text-ink">{item.name}</div>
                               <div className="mt-1 text-xs text-gray-500">
-                                {item.quantity} × {formatPrice(item.price)}
+                                {item.quantity} × {formatBDT(item.price)}
                               </div>
                             </div>
                           </Link>
@@ -840,7 +836,7 @@ export default function Header() {
                       </div>
                       <div className="mt-4 flex items-center justify-between border-t border-hairline pt-3 text-sm">
                         <span className="font-semibold text-gray-500">Subtotal</span>
-                        <span className="font-extrabold text-accent">{formatPrice(cartSubtotal)}</span>
+                        <span className="font-extrabold text-accent">{formatBDT(cartSubtotal)}</span>
                       </div>
                       <div className="mt-3 grid grid-cols-2 gap-2">
                         <button

@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice } from '@/lib/woocommerce';
+import { formatBDT } from '@/lib/formatters';
 import toast from 'react-hot-toast';
 import { COMPANY } from '@/lib/companyProfile';
 import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue, trackMetaEvent } from '@/lib/metaPixel';
@@ -419,7 +419,7 @@ export default function CheckoutPage() {
                       <p className="text-xs text-muted-2">Qty: {item.quantity}</p>
                     </div>
                     <span className="flex-shrink-0 text-sm font-bold text-accent">
-                      {formatPrice(String(parseFloat(item.price) * item.quantity))}
+                      {formatBDT(parseFloat(item.price) * item.quantity)}
                     </span>
                   </div>
                 ))}
@@ -428,18 +428,18 @@ export default function CheckoutPage() {
               <div className="space-y-2 border-t border-hairline pt-4">
                 <div className="flex justify-between text-sm text-muted">
                   <span>Subtotal ({totalItems()} items)</span>
-                  <span>{formatPrice(String(cartTotal))}</span>
+                  <span>{formatBDT(cartTotal)}</span>
                 </div>
                 <div className="flex justify-between text-sm text-muted">
                   <span>Shipping</span>
                   <span className={shippingFee === 0 ? 'font-medium text-success' : ''}>
-                    {shippingFee === 0 ? 'FREE 🚚' : formatPrice(String(shippingFee))}
+                    {shippingFee === 0 ? 'FREE 🚚' : formatBDT(shippingFee)}
                   </span>
                 </div>
                 <div className="flex justify-between border-t border-hairline pt-2 text-base font-bold">
                   <span className="text-ink">Total</span>
                   <span className="text-lg text-accent">
-                    {formatPrice(String(cartTotal + shippingFee))}
+                    {formatBDT(cartTotal + shippingFee)}
                   </span>
                 </div>
               </div>

@@ -105,10 +105,10 @@ Step-by-step plan with per-task specs, verify lines, and agent prompt template: 
 | R10 | Trivia batch: safeJsonLd categories page, search alt fallback, best-definitions dates | L-02/04/05/07 | [S] | ✅ |
 | R2 | Nginx rate limiting: /api/checkout, /api/admin/auth, /api/newsletter, /api/search | H-05 | [X] prep + [C] apply | ⬜ |
 | R11 | PDP `s-maxage` via existing Nginx override pattern (stage 1, reversible) | H-01 | [C] | ✅ CLOSED 2026-06-11 (Nginx + Cloudflare respect-origin + purge, live-verified) |
-| R13 | Single price formatter (`formatBDT`); delete 3 duplicates | M-05 | [X] | ⬜ |
+| R13 | Single price formatter (`formatBDT`); delete 3 duplicates | M-05 | [X] | ✅ |
 | R16 | GA4 ecommerce events: view_item / add_to_cart / begin_checkout | M-02 | [S] | ✅ |
 | R14 | Split 1,558-line `woocommerce.ts` into `lib/woo/*` + type the 29 `any`s (barrel re-export, zero behavior change) | M-08 | [X] | ⬜ |
-| R15 | Attic atomic-design scaffolding; make pixel IDs env-required (set VPS env FIRST, verify pixels live, then remove fallbacks) | L-01, L-03 | [X] | ⬜ |
+| R15 | Attic atomic-design scaffolding; make pixel IDs env-required (set VPS env FIRST, verify pixels live, then remove fallbacks) | L-01, L-03 | [X] | ✅ |
 
 Schema tasks (R6–R9): content-level = freeze-OK, but read `workspace/SEO_MASTER.md` first, validate live JSON-LD + Rich Results after deploy.
 Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3 (R12/R18/R19 are parked in BACKLOG).
@@ -134,6 +134,10 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 - Live-verified via fresh Playwright session (no prior interaction): `view_item` queues immediately on PDP load with correct `items[]`/`value`; `add_to_cart` queues on Add-to-Cart click with correct `items[]`/`value`.
 - **New finding (not fixed, out of scope)**: `begin_checkout` (and the pre-existing `InitiateCheckout` Meta event it mirrors, per audit instruction) did not fire on `/checkout` in the live test despite a non-empty cart — the effect has `[]` deps and likely runs before the Zustand cart-persist rehydration completes, reading `items.length === 0` and returning early. This affects the EXISTING Meta `InitiateCheckout` too, not just the new GA4 mirror. Cart/checkout code is flagged "never touch without explicit request" — flagging for owner/separate session rather than fixing inline.
 - Committed `75c54d7` (GA4 events) + `845f482` + `ba8b1f4` (gtag stub timing fix), deployed via `deploy.sh`, pushed, VPS aligned.
+
+**R13 — DONE 2026-06-11**: consolidated storefront price rendering on `formatBDT` from `src/lib/formatters.ts`; removed the `formatPrice` compatibility export from `woocommerce.ts`, deleted local wrapper usage in `Header.tsx`, and moved cart, checkout, wishlist, PDP, and skin quiz price displays to the shared formatter. Skin quiz still preserves the old `View price` empty-state label. Sample comparison against old Woo/Header/SkinQuiz formatting was byte-identical for representative values. Local build clean.
+
+**R15 — DONE 2026-06-11**: moved empty atomic-design scaffold dirs (`components/atoms`, `molecules`, `organisms`, `templates`) to `/root/.attic-2026-06-11/emart-platform/apps/web/src/components/`. Added `NEXT_PUBLIC_GOOGLE_TAG_ID=G-WMJNX87Q2N` to Local and VPS `.env.local` before removing hardcoded GA4/Meta pixel fallbacks from source; Reddit already had no fallback. Verified Local+VPS env contain GA4/Meta/Reddit public IDs; source tree no longer contains the literal pixel IDs. Local build clean.
 
 **Owner decisions needed (audit):**
 - ~~**R3 / H-06**~~ — DECIDED 2026-06-11: Cloudflare Access (email gate). Owner action item #15 above (`OWNER-ACTION-R3-cloudflare-access-20260611.md`); needs owner to apply in Cloudflare dashboard, then "R3 done" reply to close.

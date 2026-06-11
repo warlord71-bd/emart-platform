@@ -14,7 +14,7 @@ import { COMPANY } from '@/lib/companyProfile';
 import { SITE_URL, absoluteUrl } from '@/lib/siteUrl';
 import { STORE_POLICIES } from '@/config/storePolicies';
 
-const GOOGLE_TAG_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID || 'G-WMJNX87Q2N';
+const GOOGLE_TAG_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID;
 
 const playfair = Playfair_Display({
   subsets: ['latin'],

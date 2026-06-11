@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { X, Plus, Minus, ShoppingBag, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice } from '@/lib/woocommerce';
+import { formatBDT } from '@/lib/formatters';
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalPrice } =
@@ -97,7 +97,7 @@ export default function CartDrawer() {
                       {item.name}
                     </Link>
                     <div className="mt-1 text-sm font-bold text-accent">
-                      {formatPrice(item.price)}
+                      {formatBDT(item.price)}
                     </div>
 
                     {/* Quantity */}
@@ -143,7 +143,7 @@ export default function CartDrawer() {
             <div className="flex justify-between items-center mb-4">
               <span className="font-semibold text-gray-700">Subtotal</span>
               <span className="text-lg font-bold text-accent">
-                {formatPrice(String(cartTotal))}
+                {formatBDT(cartTotal)}
               </span>
             </div>
 

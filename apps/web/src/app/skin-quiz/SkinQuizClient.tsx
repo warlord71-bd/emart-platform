@@ -50,6 +50,7 @@ import {
   type SkinQuizRoutineStep,
   type SkinType,
 } from '@/lib/skinQuiz';
+import { formatBDT } from '@/lib/formatters';
 
 type QuizStep = 'skinType' | 'concerns' | 'environment' | 'routinePace' | 'budget' | 'details';
 type RoutineTab = 'morning' | 'night' | 'weekly';
@@ -154,11 +155,11 @@ function productHref(product: SkinQuizProduct) {
   return `/shop/${product.slug}`;
 }
 
-function formatPrice(product: SkinQuizProduct) {
+function getPriceLabel(product: SkinQuizProduct) {
   const raw = product.sale_price || product.price || product.regular_price;
   const price = Number.parseFloat(String(raw || '').replace(/[^0-9.]/g, ''));
   if (!Number.isFinite(price) || price <= 0) return 'View price';
-  return `৳${price.toLocaleString('en-BD', { maximumFractionDigits: 0 })}`;
+  return formatBDT(price);
 }
 
 function OptionCard<T extends string>({
@@ -245,7 +246,7 @@ function ProductMini({ product }: { product: SkinQuizProduct }) {
       <span className="min-w-0">
         <span className="line-clamp-2 text-sm font-bold leading-5 text-ink group-hover:text-accent">{stripHtml(product.name)}</span>
         <span className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-          <span className="font-extrabold text-accent">{formatPrice(product)}</span>
+          <span className="font-extrabold text-accent">{getPriceLabel(product)}</span>
           {product.on_sale && <span className="rounded-md bg-success-soft px-2 py-1 font-bold text-success">Sale</span>}
         </span>
       </span>

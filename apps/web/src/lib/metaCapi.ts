@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import type { NextRequest } from 'next/server';
 import type { WooBilling, WooOrder } from './woocommerce';
 
-const META_PIXEL_ID = process.env.META_PIXEL_ID || process.env.NEXT_PUBLIC_META_PIXEL_ID || '763041131179021';
+const META_PIXEL_ID = process.env.META_PIXEL_ID || process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const META_CAPI_ACCESS_TOKEN = process.env.META_CAPI_ACCESS_TOKEN || '';
 const META_CAPI_TEST_EVENT_CODE = process.env.META_CAPI_TEST_EVENT_CODE || '';
 const META_CAPI_API_VERSION = process.env.META_CAPI_API_VERSION || 'v21.0';

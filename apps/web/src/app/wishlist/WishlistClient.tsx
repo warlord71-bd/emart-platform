@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Heart, ShoppingCart, Trash2, Eye, Share2 } from 'lucide-react';
-import { formatPrice } from '@/lib/woocommerce';
+import { formatBDT } from '@/lib/formatters';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -158,9 +158,9 @@ export default function WishlistPage() {
                   </Link>
                   
                   <div className="flex items-baseline mb-3">
-                    <span className="text-lg font-bold text-gray-900">{formatPrice(item.price)}</span>
+                    <span className="text-lg font-bold text-gray-900">{formatBDT(item.price)}</span>
                     {item.on_sale && (
-                      <span className="ml-2 text-sm text-gray-500 line-through">{formatPrice(item.regular_price)}</span>
+                      <span className="ml-2 text-sm text-gray-500 line-through">{formatBDT(item.regular_price)}</span>
                     )}
                   </div>
 

@@ -2266,3 +2266,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - New finding (not fixed, flagged): `begin_checkout` + the pre-existing `InitiateCheckout` it mirrors did not fire on `/checkout` with a non-empty cart in the live test — likely `[]`-deps effect runs before Zustand cart-persist rehydration completes. Affects existing Meta event too, not just the new GA4 one. Cart/checkout is "never touch without explicit request" — left for owner/separate session.
 - Build clean, committed `75c54d7` + `845f482` + `ba8b1f4`, deployed via `deploy.sh`, pushed, VPS aligned.
 - Blockers: none. R13 (price formatter, Codex-tagged) and R14/R15 remain. Owner: R3 Cloudflare Access steps + R17 pixel-delay decision; new begin_checkout/InitiateCheckout cart-hydration finding for a future session.
+
+## 2026-06-11 (Codex — R13 + R15)
+- Did R13 (M-05): moved remaining cart/checkout/wishlist/PDP/header/skin-quiz price displays to shared `formatBDT`; removed `woocommerce.ts` `formatPrice`; kept skin quiz `View price` empty-state. Quick sample comparison against old Woo/Header/SkinQuiz output was byte-identical.
+- Did R15 (L-01/L-03): moved empty `components/{atoms,molecules,organisms,templates}` scaffold dirs to `/root/.attic-2026-06-11/emart-platform/apps/web/src/components/`; added `NEXT_PUBLIC_GOOGLE_TAG_ID=G-WMJNX87Q2N` to Local+VPS `.env.local`; removed hardcoded GA4/Meta pixel ID fallbacks from source. Reddit already used env-only.
+- Verified: Local build clean; source search clean for `formatPrice`, atomic imports, and literal analytics IDs; Local+VPS env contain GA4/Meta/Reddit public IDs.
+- Blockers: none.
+- Next step: R14 (Woo split/type cleanup) or R2 focused rate-limit prep/apply session; owner still has R3 Cloudflare Access and R17 pixel-delay decision.
