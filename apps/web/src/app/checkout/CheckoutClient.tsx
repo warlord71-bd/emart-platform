@@ -261,9 +261,9 @@ export default function CheckoutPage() {
               <h2 className="mb-4 text-lg font-bold text-ink">📦 Delivery Information</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { name: 'first_name', label: 'First Name', required: true },
-                  { name: 'last_name', label: 'Last Name', required: true },
-                ].map(({ name, label, required }) => (
+                  { name: 'first_name', label: 'First Name', required: true, autoComplete: 'given-name' },
+                  { name: 'last_name', label: 'Last Name', required: true, autoComplete: 'family-name' },
+                ].map(({ name, label, required, autoComplete }) => (
                   <div key={name}>
                     <label className="mb-1 block text-sm font-medium text-muted">
                       {label} {required && <span className="text-red-500">*</span>}
@@ -273,6 +273,7 @@ export default function CheckoutPage() {
                       value={(form as any)[name]}
                       onChange={handleChange}
                       required={required}
+                      autoComplete={autoComplete}
                       className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"
                     />
                   </div>
@@ -288,6 +289,8 @@ export default function CheckoutPage() {
                     value={form.phone}
                     onChange={handleChange}
                     required
+                    autoComplete="tel"
+                    inputMode="tel"
                     placeholder="01XXXXXXXXX"
                     className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"
                   />
@@ -302,6 +305,7 @@ export default function CheckoutPage() {
                     value={form.address_1}
                     onChange={handleChange}
                     required
+                    autoComplete="street-address"
                     placeholder="House, Road, Area"
                     className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"
                   />
@@ -316,6 +320,7 @@ export default function CheckoutPage() {
                     value={form.city}
                     onChange={handleChange}
                     required
+                    autoComplete="address-level2"
                     className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm text-ink-2 focus:border-accent focus:outline-none"
                   >
                     {DISTRICTS.map((district) => (
