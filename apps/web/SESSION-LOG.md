@@ -2214,3 +2214,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Created workspace/docs/AUDIT_REMEDIATION_PLAN_20260610.md (R1–R20, per-task specs + verify lines + Sonnet/Codex prompt template) and new 🛠️ section in TASKS.md. Docs synced Local↔VPS. Nothing committed/pushed — docs only, owner to review.
 - Blockers: owner decisions needed on R3 (wp-login exposure) and R17 (30s pixel deferral); Cloudflare cache rule (owner item #4) gates R11.
 - Next: execute R1 (admin auth hardening) first — freeze-safe.
+
+## 2026-06-11 (Claude — R1 admin auth hardening)
+- Did: committed pending audit docs (`41c0489`). Then R1 (C-01): added `ADMIN_API_TOKEN` env var (Local+VPS `.env.local`, new random 32-byte hex), new `src/lib/adminAuth.ts` (`isAdminAuthorized` header-only `x-admin-token`, `timingSafeEqualStr`). `/api/admin/auth` now returns `ADMIN_API_TOKEN` (not `REVALIDATE_SECRET`) with timing-safe username/password compare. `/api/admin/orders`, `/api/pathao/order`, `/api/packzy/order` switched to `isAdminAuthorized`, dropped `?token=` query support. Dispatch page (`src/app/admin/dispatch/page.tsx`) moved token storage `localStorage`→`sessionStorage`, sends `x-admin-token` header for all 3 calls. `/api/revalidate` untouched.
+- Verified live: new token login → 200 on `/api/admin/orders`; old `REVALIDATE_SECRET` as `x-admin-token` → 401; `?token=` → 401; no auth → 401; `/api/revalidate` with `REVALIDATE_SECRET` still → 200. Build clean Local+VPS, `pm2 restart emartweb`, smoke 200, committed `13ad3c1`, pushed to `origin/main`, VPS git aligned.
+- Blockers: none. R1 closed in TASKS.md.
+- Next step: R5 (attic `.env.local.backup-20260502-google-restore`, trivial) then R4 (checkout error hygiene + fetch timeouts), per remediation plan suggested order.

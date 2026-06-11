@@ -94,7 +94,7 @@ Step-by-step plan with per-task specs, verify lines, and agent prompt template: 
 
 | # | Task | Audit ID | Agent | Status |
 |---|---|---|---|---|
-| R1 | Admin auth: stop returning REVALIDATE_SECRET as admin token; new `ADMIN_API_TOKEN`; drop `?token=`; timing-safe compare | C-01 | [S] | ⬜ |
+| R1 | Admin auth: stop returning REVALIDATE_SECRET as admin token; new `ADMIN_API_TOKEN`; drop `?token=`; timing-safe compare | C-01 | [S] | ✅ |
 | R5 | Attic `.env.local.backup-20260502-google-restore` (Local+VPS) | L-06 | any | ⬜ |
 | R4 | Checkout error-message mapping + AbortSignal timeouts in 4 lib fetchers | M-10, M-09 | [S] | ⬜ |
 | R6 | Product schema availability from `normalizeStockAvailability` (+BackOrder) | H-03 | [S] | ⬜ |
@@ -111,6 +111,8 @@ Step-by-step plan with per-task specs, verify lines, and agent prompt template: 
 
 Schema tasks (R6–R9): content-level = freeze-OK, but read `workspace/SEO_MASTER.md` first, validate live JSON-LD + Rich Results after deploy.
 Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3 (R12/R18/R19 are parked in BACKLOG).
+
+**R1 — DONE 2026-06-11**: New `ADMIN_API_TOKEN` (Local+VPS `.env.local`) replaces `REVALIDATE_SECRET` as the dispatch dashboard token. New `src/lib/adminAuth.ts` (`isAdminAuthorized`, `timingSafeEqualStr`) used by `/api/admin/orders`, `/api/pathao/order`, `/api/packzy/order` — header-only (`x-admin-token`), `?token=` dropped. `/api/admin/auth` does timing-safe username/password compare and returns `ADMIN_API_TOKEN`. Dispatch page (`src/app/admin/dispatch/page.tsx`) moved token storage from `localStorage`→`sessionStorage` and sends `x-admin-token` header. `/api/revalidate` unchanged (still `REVALIDATE_SECRET`). Live-verified: new token → 200, old `REVALIDATE_SECRET` → 401, `?token=` → 401, no-auth → 401, `/api/revalidate` still 200. Committed `13ad3c1`, deployed via `deploy.sh`, pushed to `origin/main`, VPS aligned.
 
 **Owner decisions needed (audit):**
 - **R3 / H-06** — `wp-login.php` returns 200 publicly: Cloudflare Access / IP allowlist / accept risk?
