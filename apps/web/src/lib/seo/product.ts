@@ -3,6 +3,7 @@ import { absoluteUrl } from '@/lib/siteUrl';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { getCleanBreadcrumbCategory } from '@/lib/product-display';
 import { getProductBrandName, getProductType } from '@/lib/product-utils';
+import { normalizeStockAvailability } from '@/lib/stock';
 
 // ── Primitive helpers ─────────────────────────────────────────────────────────
 
@@ -34,6 +35,17 @@ function getPriceValidUntil(): string {
   const d = new Date();
   d.setFullYear(d.getFullYear() + 1);
   return d.toISOString().slice(0, 10);
+}
+
+// Maps real purchasability (same authority used by checkout) to schema.org
+// availability — backorder-eligible items get BackOrder rather than InStock/OutOfStock.
+function getSchemaAvailability(product: WooProduct): string {
+  const availability = normalizeStockAvailability(product);
+  if (!availability.available) return 'https://schema.org/OutOfStock';
+  if (availability.stock_status === 'onbackorder' || availability.reason === 'managed_backorders_allowed') {
+    return 'https://schema.org/BackOrder';
+  }
+  return 'https://schema.org/InStock';
 }
 
 // ── SEO description ───────────────────────────────────────────────────────────
@@ -84,9 +96,7 @@ export function getProductJsonLd(product: WooProduct) {
     description: priceFormatted
       ? `${product.name} price in Bangladesh: ${priceFormatted} — buy at Emart Skincare Bangladesh with Cash on Delivery (COD) nationwide.`
       : undefined,
-    availability: product.stock_status === 'instock'
-      ? 'https://schema.org/InStock'
-      : 'https://schema.org/OutOfStock',
+    availability: getSchemaAvailability(product),
     itemCondition: 'https://schema.org/NewCondition',
     seller: {
       '@type': 'OnlineStore',
@@ -149,7 +159,6 @@ export function getProductJsonLd(product: WooProduct) {
     ...(dateModified ? { dateModified } : {}),
     ...(sku ? { sku } : {}),
     ...gtinFields,
-    ...(sku && !hasGtin ? { mpn: sku } : {}),
     ...(!sku && !hasGtin && !brandName ? { identifier_exists: 'false' } : {}),
     category: getCleanBreadcrumbCategory(product)?.label ?? getProductType(product),
     ...(brandName ? { brand: { '@type': 'Brand', name: brandName } } : {}),
