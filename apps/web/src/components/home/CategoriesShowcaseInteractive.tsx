@@ -57,7 +57,7 @@ export const CategoriesShowcaseInteractive: React.FC<CategoriesShowcaseInteracti
       <div className="max-w-6xl mx-auto">
         <div className="mb-5 flex items-center gap-4 md:mb-6">
           <CategoryMark />
-          <h2 className="type-section-title text-lumiere-text-primary">
+          <h2 className="type-section-title text-ink">
             {title}
           </h2>
         </div>

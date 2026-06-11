@@ -19,7 +19,7 @@ export default function TrustStrip() {
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-brand-primary)]/10 text-[var(--color-brand-primary)]">
               <Icon size={18} strokeWidth={2.25} />
             </span>
-            <span className="text-[13px] font-bold leading-snug text-[var(--color-brand-dark)] sm:text-sm">
+            <span className="text-[13px] font-bold leading-snug text-ink sm:text-sm">
               {label}
             </span>
           </div>

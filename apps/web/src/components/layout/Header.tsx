@@ -41,6 +41,7 @@ import { DRAWER_NAV_GROUPS, UNIFIED_BROWSE_TREE, type NavigationGroup, type Navi
 import { formatBDT } from '@/lib/formatters';
 import type { WooCategory, WooImage } from '@/lib/woocommerce';
 import { STORE_POLICIES } from '@/config/storePolicies';
+import { PORCELAIN_COLORS } from '@/lib/design-system/colors';
 
 interface SearchSuggestion {
   id: number;
@@ -272,7 +273,7 @@ function isGroupActive(pathname: string, group: NavigationGroup) {
 }
 
 const TONE_BORDER_COLOR: Record<string, string> = {
-  'text-accent': '#9f1239',
+  'text-accent': PORCELAIN_COLORS.accent,
   'text-warning': '#d97706',
   'text-brass': '#b8860b',
   'text-cyan-600': '#0891b2',

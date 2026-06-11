@@ -60,8 +60,8 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
             onClick={() => setActiveTab(tab.id as typeof activeTab)}
             className={`shrink-0 border-b-2 px-1 py-3 text-sm font-semibold transition-colors md:text-base ${
               activePanel === tab.id
-                ? 'border-lumiere-text-primary text-lumiere-text-primary'
-                : 'border-transparent text-lumiere-text-secondary hover:text-lumiere-text-primary'
+                ? 'border-ink text-ink'
+                : 'border-transparent text-muted hover:text-ink'
             }`}
           >
             {tab.label}
@@ -79,7 +79,7 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
             aria-labelledby={`tab-${tab.id}`}
             aria-hidden={hydrated && activePanel !== tab.id}
             tabIndex={isActive(tab.id) ? 0 : -1}
-            className={isActive(tab.id) ? 'text-lumiere-text-secondary' : 'hidden'}
+            className={isActive(tab.id) ? 'text-muted' : 'hidden'}
             dangerouslySetInnerHTML={{
               __html: sanitizeHtml(rewriteInternalLinks(tab.html), ''),
             }}

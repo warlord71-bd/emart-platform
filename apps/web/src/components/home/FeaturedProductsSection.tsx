@@ -24,15 +24,15 @@ export const FeaturedProductsSection: React.FC<FeaturedProductsSectionProps> = (
   const variantStyles = {
     featured: {
       bg: 'bg-white',
-      headerColor: 'text-lumiere-text-primary',
+      headerColor: 'text-ink',
     },
     bestsellers: {
-      bg: 'bg-lumiere-background',
-      headerColor: 'text-lumiere-text-primary',
+      bg: 'bg-bg',
+      headerColor: 'text-ink',
     },
     sale: {
-      bg: 'bg-lumiere-primary/5',
-      headerColor: 'text-lumiere-primary',
+      bg: 'bg-ink/5',
+      headerColor: 'text-ink',
     },
   };
 
@@ -57,7 +57,7 @@ export const FeaturedProductsSection: React.FC<FeaturedProductsSectionProps> = (
                 {title}
               </h2>
               {subtitle && (
-                <p className="type-section-subtitle text-lumiere-text-secondary mt-1">
+                <p className="type-section-subtitle text-muted mt-1">
                   {subtitle}
                 </p>
               )}
@@ -73,7 +73,7 @@ export const FeaturedProductsSection: React.FC<FeaturedProductsSectionProps> = (
           />
         ) : (
           <div className="text-center py-12">
-            <p className="text-lumiere-text-secondary">No products available</p>
+            <p className="text-muted">No products available</p>
           </div>
         )}
       </div>

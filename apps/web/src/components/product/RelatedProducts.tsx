@@ -18,7 +18,7 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
 
   return (
     <section className="py-12 border-t border-gray-200">
-      <h2 className="text-2xl font-serif font-bold text-lumiere-text-primary mb-8">
+      <h2 className="text-2xl font-serif font-bold text-ink mb-8">
         {title}
       </h2>
 
@@ -42,7 +42,7 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
               className="flex flex-col items-center gap-2 px-4 py-6 hover:opacity-80 transition-opacity"
             >
               <ArrowRight size={24} />
-              <span className="text-xs font-semibold text-lumiere-text-secondary whitespace-nowrap">
+              <span className="text-xs font-semibold text-muted whitespace-nowrap">
                 Load More
               </span>
             </Link>

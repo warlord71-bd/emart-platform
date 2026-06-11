@@ -48,7 +48,7 @@ export const MoreProductsFromBrand: React.FC<MoreProductsFromBrandProps> = ({
               className="flex flex-col items-center gap-2 px-4 py-6 hover:opacity-80 transition-opacity"
             >
               <ArrowRight size={24} />
-              <span className="text-xs font-semibold text-lumiere-text-secondary whitespace-nowrap">
+              <span className="text-xs font-semibold text-muted whitespace-nowrap">
                 Load More
               </span>
             </Link>

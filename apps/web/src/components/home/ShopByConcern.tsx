@@ -32,7 +32,7 @@ export const ShopByConcern: React.FC<ShopByConcernProps> = ({
           <div className="hidden md:flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-ink shadow-sm">
             <Target size={24} className="text-white" strokeWidth={1.5} />
           </div>
-          <h2 className="type-section-title text-lumiere-text-primary">
+          <h2 className="type-section-title text-ink">
             {title}
           </h2>
         </div>

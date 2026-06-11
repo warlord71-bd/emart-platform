@@ -65,7 +65,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
               aria-current={selectedImageIndex === index ? 'true' : undefined}
               className={`h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 bg-white transition-all ${
                 selectedImageIndex === index
-                  ? 'border-lumiere-primary'
+                  ? 'border-ink'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >

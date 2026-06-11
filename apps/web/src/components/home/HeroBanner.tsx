@@ -22,19 +22,19 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
   trustBadges,
 }) => {
   return (
-    <section className="bg-gradient-to-br from-lumiere-text-primary via-purple-900 to-lumiere-text-primary text-white py-12 md:py-20 px-4">
+    <section className="bg-gradient-to-br from-ink via-purple-900 to-ink text-white py-12 md:py-20 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Content */}
         <div className="text-center">
         {/* Subtitle Badge */}
-        <div className="inline-flex items-center gap-2 bg-lumiere-primary/20 border border-lumiere-primary/40 px-4 py-2 rounded-full text-sm font-medium text-lumiere-primary mb-4">
+        <div className="inline-flex items-center gap-2 bg-ink/20 border border-ink/40 px-4 py-2 rounded-full text-sm font-medium text-ink mb-4">
           <span>🇰🇷</span> {subtitle}
         </div>
 
         {/* Main Heading */}
         <h1 className="text-4xl md:text-5xl font-serif font-extrabold leading-tight mb-4">
           {title}
-          <span className="text-lumiere-primary block md:inline"> The Best</span>
+          <span className="text-ink block md:inline"> The Best</span>
         </h1>
 
         {/* Description */}
@@ -46,14 +46,14 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
           <Link
             href={primaryCTA.href}
-            className="bg-lumiere-primary hover:bg-lumiere-primary-hover text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 text-center"
+            className="bg-ink hover:bg-black text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 text-center"
           >
             {primaryCTA.text} →
           </Link>
           {secondaryCTA && (
             <Link
               href={secondaryCTA.href}
-              className="border-2 border-white text-white hover:bg-white hover:text-lumiere-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-200 text-center"
+              className="border-2 border-white text-white hover:bg-white hover:text-ink font-semibold py-3 px-6 rounded-lg transition-all duration-200 text-center"
             >
               {secondaryCTA.text}
             </Link>
@@ -67,7 +67,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               key={badge}
               className="flex items-center gap-1.5 text-xs font-medium bg-white/10 px-3 py-1.5 rounded-full text-gray-200 border border-white/10"
             >
-              <span className="w-1.5 h-1.5 bg-lumiere-primary rounded-full" />
+              <span className="w-1.5 h-1.5 bg-ink rounded-full" />
               {badge}
             </span>
           ))}

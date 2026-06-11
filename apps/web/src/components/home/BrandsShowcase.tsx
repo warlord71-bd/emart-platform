@@ -29,16 +29,16 @@ export const BrandsShowcase: React.FC<BrandsShowcaseProps> = ({
   title = 'Explore Top Brands',
 }) => {
   return (
-    <section className="bg-lumiere-background py-12 md:py-16 px-4">
+    <section className="bg-bg py-12 md:py-16 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-lumiere-text-primary">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-ink">
             {title}
           </h2>
           <Link
             href="/brands"
-            className="text-lumiere-primary hover:text-lumiere-primary-hover font-semibold text-sm md:text-base transition-colors"
+            className="text-ink hover:text-black font-semibold text-sm md:text-base transition-colors"
           >
             See More Brands →
           </Link>
@@ -51,7 +51,7 @@ export const BrandsShowcase: React.FC<BrandsShowcaseProps> = ({
             {brands.slice(0, 5).map((brand) => (
               <div key={brand.id}>
                 {/* Brand Name */}
-                <h3 className="text-lg md:text-xl font-bold text-lumiere-text-primary mb-4">
+                <h3 className="text-lg md:text-xl font-bold text-ink mb-4">
                   {brand.name}
                 </h3>
 
@@ -63,7 +63,7 @@ export const BrandsShowcase: React.FC<BrandsShowcaseProps> = ({
                     ))}
                   </div>
                 ) : (
-                  <p className="text-lumiere-text-secondary text-center py-4">
+                  <p className="text-muted text-center py-4">
                     No products available
                   </p>
                 )}
@@ -74,7 +74,7 @@ export const BrandsShowcase: React.FC<BrandsShowcaseProps> = ({
             <div className="text-center pt-4 border-t border-gray-100">
               <Link
                 href="/brands"
-                className="inline-block text-lumiere-primary hover:text-lumiere-primary-hover font-semibold transition-colors"
+                className="inline-block text-ink hover:text-black font-semibold transition-colors"
               >
                 See More Brands →
               </Link>

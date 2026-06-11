@@ -1,4 +1,9 @@
 import type { ReactElement } from 'react';
+import { PORCELAIN_COLORS } from '@/lib/design-system/colors';
+
+// Brand wine/gold accents — single source of truth for this illustration set
+const ACCENT = PORCELAIN_COLORS.accent; // #9f1239
+const BRASS = PORCELAIN_COLORS.brass; // #d4a248
 
 type Props = {
   slug: string;
@@ -14,9 +19,9 @@ function Shell({ slug, children }: { slug: string; children: ReactElement }) {
   return (
     <svg viewBox="0 0 180 240" width="100%" height="100%" aria-hidden="true" focusable="false" role="img">
       <rect width="180" height="240" fill={dark ? '#1B1B2F' : '#FAF6EE'} />
-      <circle cx="34" cy="48" r="4" fill={dark ? '#EAC986' : '#D4A248'} opacity=".45" />
-      <circle cx="150" cy="74" r="3" fill="#9f1239" opacity=".35" />
-      <circle cx="142" cy="200" r="4" fill={dark ? '#EAC986' : '#D4A248'} opacity=".28" />
+      <circle cx="34" cy="48" r="4" fill={dark ? '#EAC986' : BRASS} opacity=".45" />
+      <circle cx="150" cy="74" r="3" fill={ACCENT} opacity=".35" />
+      <circle cx="142" cy="200" r="4" fill={dark ? '#EAC986' : BRASS} opacity=".28" />
       {children}
     </svg>
   );
@@ -30,21 +35,21 @@ function KBeauty() {
         <path d="M28 226 C58 172 92 118 146 54" fill="none" stroke="#1B1B2F" strokeWidth="2.4" strokeLinecap="round" opacity=".45" />
         <g transform="translate(92 118)">
           {petals.map((angle, index) => (
-            <ellipse key={angle} cx="0" cy="-17" rx="10" ry="18" fill={index % 2 ? '#F2DEE3' : '#9f1239'} transform={`rotate(${angle})`} />
+            <ellipse key={angle} cx="0" cy="-17" rx="10" ry="18" fill={index % 2 ? '#F2DEE3' : ACCENT} transform={`rotate(${angle})`} />
           ))}
-          <circle r="7" fill="#D4A248" />
+          <circle r="7" fill={BRASS} />
         </g>
         <g transform="translate(56 166) scale(.72)">
           {petals.map((angle, index) => (
-            <ellipse key={angle} cx="0" cy="-17" rx="10" ry="18" fill={index % 2 ? '#F2DEE3' : '#9f1239'} transform={`rotate(${angle})`} opacity=".9" />
+            <ellipse key={angle} cx="0" cy="-17" rx="10" ry="18" fill={index % 2 ? '#F2DEE3' : ACCENT} transform={`rotate(${angle})`} opacity=".9" />
           ))}
-          <circle r="7" fill="#D4A248" />
+          <circle r="7" fill={BRASS} />
         </g>
         <g transform="translate(132 82) scale(.62)">
           {petals.map((angle, index) => (
-            <ellipse key={angle} cx="0" cy="-17" rx="10" ry="18" fill={index % 2 ? '#F2DEE3' : '#9f1239'} transform={`rotate(${angle})`} opacity=".85" />
+            <ellipse key={angle} cx="0" cy="-17" rx="10" ry="18" fill={index % 2 ? '#F2DEE3' : ACCENT} transform={`rotate(${angle})`} opacity=".85" />
           ))}
-          <circle r="7" fill="#D4A248" />
+          <circle r="7" fill={BRASS} />
         </g>
       </g>
     </Shell>
@@ -55,11 +60,11 @@ function JBeauty() {
   return (
     <Shell slug="j-beauty">
       <g>
-        <circle cx="90" cy="112" r="44" fill="#FFFDF8" stroke="#D4A248" strokeWidth="2" opacity=".95" />
-        <path d="M90 64 C110 90 128 118 90 174 C52 118 70 90 90 64Z" fill="#9f1239" opacity=".2" />
-        <path d="M90 78 C104 104 114 124 90 158 C66 124 76 104 90 78Z" fill="#9f1239" opacity=".7" />
+        <circle cx="90" cy="112" r="44" fill="#FFFDF8" stroke={BRASS} strokeWidth="2" opacity=".95" />
+        <path d="M90 64 C110 90 128 118 90 174 C52 118 70 90 90 64Z" fill={ACCENT} opacity=".2" />
+        <path d="M90 78 C104 104 114 124 90 158 C66 124 76 104 90 78Z" fill={ACCENT} opacity=".7" />
         <path d="M54 184 C76 168 104 168 126 184" fill="none" stroke="#1B1B2F" strokeWidth="2.2" strokeLinecap="round" opacity=".45" />
-        <path d="M51 70 C62 55 77 52 90 64 C103 52 118 55 129 70" fill="none" stroke="#D4A248" strokeWidth="2" strokeLinecap="round" opacity=".72" />
+        <path d="M51 70 C62 55 77 52 90 64 C103 52 118 55 129 70" fill="none" stroke={BRASS} strokeWidth="2" strokeLinecap="round" opacity=".72" />
       </g>
     </Shell>
   );
@@ -75,13 +80,13 @@ function Toner({ id }: { id: string }) {
             <stop offset="100%" stopColor="#1B1B2F" />
           </linearGradient>
         </defs>
-        <ellipse cx="90" cy="208" rx="48" ry="10" fill="none" stroke="#9f1239" opacity=".18" />
+        <ellipse cx="90" cy="208" rx="48" ry="10" fill="none" stroke={ACCENT} opacity=".18" />
         <rect x="72" y="82" width="36" height="122" rx="9" fill={`url(#${id}Bottle)`} />
-        <rect x="68" y="72" width="44" height="14" rx="6" fill="#D4A248" />
+        <rect x="68" y="72" width="44" height="14" rx="6" fill={BRASS} />
         <rect x="86" y="28" width="8" height="46" rx="4" fill="#1B1B2F" />
         <ellipse cx="90" cy="24" rx="17" ry="10" fill="#25253E" />
-        <ellipse cx="84" cy="178" rx="4" ry="6" fill="#9f1239" opacity=".85" />
-        <ellipse cx="96" cy="193" rx="3" ry="5" fill="#9f1239" opacity=".62" />
+        <ellipse cx="84" cy="178" rx="4" ry="6" fill={ACCENT} opacity=".85" />
+        <ellipse cx="96" cy="193" rx="3" ry="5" fill={ACCENT} opacity=".62" />
       </g>
     </Shell>
   );
@@ -93,8 +98,8 @@ function Moisturizer({ id }: { id: string }) {
       <g>
         <defs>
           <radialGradient id={`${id}Glow`} cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#9f1239" stopOpacity=".22" />
-            <stop offset="100%" stopColor="#9f1239" stopOpacity="0" />
+            <stop offset="0%" stopColor={ACCENT} stopOpacity=".22" />
+            <stop offset="100%" stopColor={ACCENT} stopOpacity="0" />
           </radialGradient>
         </defs>
         <ellipse cx="90" cy="132" rx="68" ry="68" fill={`url(#${id}Glow)`} />
@@ -103,7 +108,7 @@ function Moisturizer({ id }: { id: string }) {
         <rect x="46" y="114" width="88" height="34" rx="11" fill="#FAF6EE" />
         <ellipse cx="90" cy="114" rx="44" ry="11" fill="#FFFDF8" />
         <path d="M70 114 Q77 98 84 108 Q89 96 94 109 Q101 98 110 114" fill="#FFFDF8" stroke="#E6E1D6" strokeWidth=".7" />
-        <path d="M38 82h13M44 75v14M142 94h13M148 87v14" stroke="#D4A248" strokeWidth="2" strokeLinecap="round" opacity=".72" />
+        <path d="M38 82h13M44 75v14M142 94h13M148 87v14" stroke={BRASS} strokeWidth="2" strokeLinecap="round" opacity=".72" />
       </g>
     </Shell>
   );
@@ -116,12 +121,12 @@ function Hydration({ id }: { id: string }) {
         <defs>
           <linearGradient id={`${id}Drop`} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#8FB3FF" />
-            <stop offset="100%" stopColor="#9f1239" />
+            <stop offset="100%" stopColor={ACCENT} />
           </linearGradient>
         </defs>
         <path d="M90 48 C124 91 136 120 136 148 C136 178 115 199 90 199 C65 199 44 178 44 148 C44 120 56 91 90 48Z" fill={`url(#${id}Drop)`} opacity=".9" />
         <path d="M71 150 C73 171 88 182 108 176" fill="none" stroke="white" strokeWidth="5" strokeLinecap="round" opacity=".55" />
-        <circle cx="126" cy="82" r="9" fill="#D4A248" opacity=".55" />
+        <circle cx="126" cy="82" r="9" fill={BRASS} opacity=".55" />
         <circle cx="55" cy="84" r="6" fill="#EAC986" opacity=".55" />
       </g>
     </Shell>
@@ -133,7 +138,7 @@ function Sunscreen() {
   return (
     <Shell slug="sunscreen">
       <g>
-        <path d="M34 150 Q34 84 90 72 Q146 84 146 150" fill="none" stroke="#9f1239" strokeWidth="4" strokeLinecap="round" opacity=".18" />
+        <path d="M34 150 Q34 84 90 72 Q146 84 146 150" fill="none" stroke={ACCENT} strokeWidth="4" strokeLinecap="round" opacity=".18" />
         {rays.map((angle, index) => {
           const rad = (angle * Math.PI) / 180;
           const length = index % 2 ? 42 : 54;
@@ -144,14 +149,14 @@ function Sunscreen() {
               y1="110"
               x2={90 + length * Math.sin(rad)}
               y2={110 - length * Math.cos(rad)}
-              stroke="#D4A248"
+              stroke={BRASS}
               strokeWidth={index % 2 ? 2 : 3}
               strokeLinecap="round"
               opacity=".78"
             />
           );
         })}
-        <circle cx="90" cy="110" r="31" fill="#D4A248" />
+        <circle cx="90" cy="110" r="31" fill={BRASS} />
         <circle cx="90" cy="110" r="23" fill="#EAC986" />
       </g>
     </Shell>
@@ -163,10 +168,10 @@ function EyeCare() {
     <Shell slug="eye-care">
       <g>
         <path d="M34 122 C56 92 124 92 146 122 C124 152 56 152 34 122Z" fill="#FFFDF8" stroke="#1B1B2F" strokeWidth="2.4" opacity=".9" />
-        <circle cx="90" cy="122" r="24" fill="#9f1239" opacity=".72" />
+        <circle cx="90" cy="122" r="24" fill={ACCENT} opacity=".72" />
         <circle cx="90" cy="122" r="11" fill="#1B1B2F" />
-        <path d="M52 82 C68 70 82 68 98 74" fill="none" stroke="#D4A248" strokeWidth="2.2" strokeLinecap="round" opacity=".72" />
-        <path d="M82 174 C102 182 120 178 136 164" fill="none" stroke="#D4A248" strokeWidth="2.2" strokeLinecap="round" opacity=".5" />
+        <path d="M52 82 C68 70 82 68 98 74" fill="none" stroke={BRASS} strokeWidth="2.2" strokeLinecap="round" opacity=".72" />
+        <path d="M82 174 C102 182 120 178 136 164" fill="none" stroke={BRASS} strokeWidth="2.2" strokeLinecap="round" opacity=".5" />
       </g>
     </Shell>
   );
@@ -176,12 +181,12 @@ function MaskCare() {
   return (
     <Shell slug="mask">
       <g>
-        <rect x="50" y="62" width="80" height="126" rx="28" fill="#FFFDF8" stroke="#9f1239" strokeWidth="2" />
+        <rect x="50" y="62" width="80" height="126" rx="28" fill="#FFFDF8" stroke={ACCENT} strokeWidth="2" />
         <circle cx="74" cy="112" r="7" fill="#1B1B2F" opacity=".45" />
         <circle cx="106" cy="112" r="7" fill="#1B1B2F" opacity=".45" />
         <path d="M74 145 C84 154 99 154 108 145" fill="none" stroke="#1B1B2F" strokeWidth="2" strokeLinecap="round" opacity=".38" />
-        <path d="M56 92 C42 84 38 70 50 60" fill="none" stroke="#D4A248" strokeWidth="2" strokeLinecap="round" opacity=".58" />
-        <path d="M124 92 C138 84 142 70 130 60" fill="none" stroke="#D4A248" strokeWidth="2" strokeLinecap="round" opacity=".58" />
+        <path d="M56 92 C42 84 38 70 50 60" fill="none" stroke={BRASS} strokeWidth="2" strokeLinecap="round" opacity=".58" />
+        <path d="M124 92 C138 84 142 70 130 60" fill="none" stroke={BRASS} strokeWidth="2" strokeLinecap="round" opacity=".58" />
       </g>
     </Shell>
   );
@@ -200,9 +205,9 @@ function Cleanser() {
     <Shell slug="cleanser">
       <g>
         {bubbles.map(([cx, cy, r]) => (
-          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={r} fill="white" stroke="#9f1239" strokeWidth="1.4" opacity=".9" />
+          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={r} fill="white" stroke={ACCENT} strokeWidth="1.4" opacity=".9" />
         ))}
-        <path d="M90 38 Q80 52 80 61 Q80 71 90 71 Q100 71 100 61 Q100 52 90 38" fill="#9f1239" opacity=".72" />
+        <path d="M90 38 Q80 52 80 61 Q80 71 90 71 Q100 71 100 61 Q100 52 90 38" fill={ACCENT} opacity=".72" />
       </g>
     </Shell>
   );
@@ -213,11 +218,11 @@ function BodyCare() {
     <Shell slug="body-care">
       <g>
         <rect x="62" y="70" width="56" height="132" rx="18" fill="#FFFDF8" stroke="#1B1B2F" strokeWidth="2" opacity=".96" />
-        <rect x="72" y="50" width="36" height="26" rx="9" fill="#D4A248" />
+        <rect x="72" y="50" width="36" height="26" rx="9" fill={BRASS} />
         <rect x="79" y="36" width="22" height="18" rx="5" fill="#1B1B2F" />
-        <path d="M77 124 C86 112 96 112 104 124 C96 137 86 137 77 124Z" fill="#9f1239" opacity=".72" />
-        <path d="M46 170 C58 158 68 158 80 170" fill="none" stroke="#9f1239" strokeWidth="2" strokeLinecap="round" opacity=".45" />
-        <path d="M100 170 C112 158 122 158 134 170" fill="none" stroke="#9f1239" strokeWidth="2" strokeLinecap="round" opacity=".45" />
+        <path d="M77 124 C86 112 96 112 104 124 C96 137 86 137 77 124Z" fill={ACCENT} opacity=".72" />
+        <path d="M46 170 C58 158 68 158 80 170" fill="none" stroke={ACCENT} strokeWidth="2" strokeLinecap="round" opacity=".45" />
+        <path d="M100 170 C112 158 122 158 134 170" fill="none" stroke={ACCENT} strokeWidth="2" strokeLinecap="round" opacity=".45" />
       </g>
     </Shell>
   );
@@ -228,11 +233,11 @@ function Makeup() {
     <Shell slug="makeup">
       <g>
         <rect x="70" y="70" width="38" height="110" rx="12" fill="#1B1B2F" />
-        <rect x="76" y="44" width="26" height="34" rx="8" fill="#9f1239" />
-        <rect x="78" y="174" width="22" height="26" rx="6" fill="#D4A248" />
-        <circle cx="126" cy="142" r="28" fill="#FFFDF8" stroke="#D4A248" strokeWidth="2" />
-        <circle cx="126" cy="142" r="14" fill="#9f1239" opacity=".4" />
-        <path d="M40 82 C50 62 68 58 76 70" fill="none" stroke="#9f1239" strokeWidth="3" strokeLinecap="round" opacity=".55" />
+        <rect x="76" y="44" width="26" height="34" rx="8" fill={ACCENT} />
+        <rect x="78" y="174" width="22" height="26" rx="6" fill={BRASS} />
+        <circle cx="126" cy="142" r="28" fill="#FFFDF8" stroke={BRASS} strokeWidth="2" />
+        <circle cx="126" cy="142" r="14" fill={ACCENT} opacity=".4" />
+        <path d="M40 82 C50 62 68 58 76 70" fill="none" stroke={ACCENT} strokeWidth="3" strokeLinecap="round" opacity=".55" />
       </g>
     </Shell>
   );
@@ -242,11 +247,11 @@ function HairCare() {
   return (
     <Shell slug="hair-care">
       <g>
-        <path d="M22 28 C44 62 32 102 64 132 C94 162 82 198 102 222" stroke="#D4A248" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".88" />
+        <path d="M22 28 C44 62 32 102 64 132 C94 162 82 198 102 222" stroke={BRASS} strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".88" />
         <path d="M58 18 C78 56 68 96 92 122 C116 148 106 188 128 216" stroke="#EAC986" strokeWidth="2" fill="none" strokeLinecap="round" opacity=".78" />
-        <path d="M104 24 C118 56 104 90 128 116 C152 142 142 182 156 216" stroke="#D4A248" strokeWidth="1.6" fill="none" strokeLinecap="round" opacity=".58" />
-        <path d="M122 78 C138 62 154 68 150 84 C147 96 130 96 122 78" fill="#9f1239" opacity=".58" />
-        <path d="M36 152 C22 136 18 152 24 162 C30 170 42 167 36 152" fill="#9f1239" opacity=".48" />
+        <path d="M104 24 C118 56 104 90 128 116 C152 142 142 182 156 216" stroke={BRASS} strokeWidth="1.6" fill="none" strokeLinecap="round" opacity=".58" />
+        <path d="M122 78 C138 62 154 68 150 84 C147 96 130 96 122 78" fill={ACCENT} opacity=".58" />
+        <path d="M36 152 C22 136 18 152 24 162 C30 170 42 167 36 152" fill={ACCENT} opacity=".48" />
       </g>
     </Shell>
   );
@@ -256,11 +261,11 @@ function FamilyCare() {
   return (
     <Shell slug="family-care">
       <g>
-        <circle cx="72" cy="94" r="26" fill="#FFFDF8" stroke="#9f1239" strokeWidth="2" />
-        <circle cx="112" cy="86" r="18" fill="#FFFDF8" stroke="#D4A248" strokeWidth="2" />
-        <path d="M44 196 C48 154 64 132 90 132 C116 132 132 154 136 196" fill="#9f1239" opacity=".22" />
+        <circle cx="72" cy="94" r="26" fill="#FFFDF8" stroke={ACCENT} strokeWidth="2" />
+        <circle cx="112" cy="86" r="18" fill="#FFFDF8" stroke={BRASS} strokeWidth="2" />
+        <path d="M44 196 C48 154 64 132 90 132 C116 132 132 154 136 196" fill={ACCENT} opacity=".22" />
         <path d="M64 112 C76 124 94 124 106 112" fill="none" stroke="#1B1B2F" strokeWidth="2" strokeLinecap="round" opacity=".45" />
-        <path d="M92 83 C96 72 104 68 113 70" fill="none" stroke="#D4A248" strokeWidth="2.2" strokeLinecap="round" />
+        <path d="M92 83 C96 72 104 68 113 70" fill="none" stroke={BRASS} strokeWidth="2.2" strokeLinecap="round" />
       </g>
     </Shell>
   );
@@ -270,14 +275,14 @@ function AllCategories() {
   return (
     <Shell slug="all-categories">
       <g>
-        <rect x="40" y="58" width="44" height="58" rx="14" fill="#FFFDF8" stroke="#9f1239" strokeWidth="2" />
-        <rect x="96" y="58" width="44" height="58" rx="14" fill="#FFFDF8" stroke="#D4A248" strokeWidth="2" />
-        <rect x="40" y="128" width="44" height="58" rx="14" fill="#FFFDF8" stroke="#D4A248" strokeWidth="2" />
-        <rect x="96" y="128" width="44" height="58" rx="14" fill="#FFFDF8" stroke="#9f1239" strokeWidth="2" />
-        <circle cx="62" cy="87" r="10" fill="#9f1239" opacity=".55" />
+        <rect x="40" y="58" width="44" height="58" rx="14" fill="#FFFDF8" stroke={ACCENT} strokeWidth="2" />
+        <rect x="96" y="58" width="44" height="58" rx="14" fill="#FFFDF8" stroke={BRASS} strokeWidth="2" />
+        <rect x="40" y="128" width="44" height="58" rx="14" fill="#FFFDF8" stroke={BRASS} strokeWidth="2" />
+        <rect x="96" y="128" width="44" height="58" rx="14" fill="#FFFDF8" stroke={ACCENT} strokeWidth="2" />
+        <circle cx="62" cy="87" r="10" fill={ACCENT} opacity=".55" />
         <path d="M107 88 H130" stroke="#1B1B2F" strokeWidth="3" strokeLinecap="round" opacity=".55" />
-        <path d="M62 146 C74 160 74 174 62 181 C50 174 50 160 62 146Z" fill="#D4A248" opacity=".72" />
-        <path d="M108 160 C118 150 130 150 138 160 C130 171 118 171 108 160Z" fill="#9f1239" opacity=".58" />
+        <path d="M62 146 C74 160 74 174 62 181 C50 174 50 160 62 146Z" fill={BRASS} opacity=".72" />
+        <path d="M108 160 C118 150 130 150 138 160 C130 171 118 171 108 160Z" fill={ACCENT} opacity=".58" />
       </g>
     </Shell>
   );
@@ -287,7 +292,7 @@ function Fallback({ slug }: { slug: string }) {
   const letter = (slug.charAt(0) || '?').toUpperCase();
   return (
     <Shell slug={slug}>
-      <text x="90" y="126" textAnchor="middle" dominantBaseline="middle" fontSize="58" fontFamily="Georgia, serif" fill="#9f1239" opacity=".42">
+      <text x="90" y="126" textAnchor="middle" dominantBaseline="middle" fontSize="58" fontFamily="Georgia, serif" fill={ACCENT} opacity=".42">
         {letter}
       </text>
     </Shell>

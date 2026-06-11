@@ -32,7 +32,7 @@ export const OriginShowcaseInteractive: React.FC<OriginShowcaseInteractiveProps>
           <div className="hidden md:flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-ink shadow-sm">
             <Globe size={24} className="text-white fill-white" />
           </div>
-          <h2 className="type-section-title text-lumiere-text-primary">
+          <h2 className="type-section-title text-ink">
             {title}
           </h2>
         </div>

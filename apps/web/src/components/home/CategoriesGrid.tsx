@@ -21,16 +21,16 @@ export const CategoriesGrid: React.FC<CategoriesGridProps> = ({
   title = 'Shop by Category',
 }) => {
   return (
-    <section className="bg-lumiere-background py-12 md:py-16 px-4">
+    <section className="bg-bg py-12 md:py-16 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-8 md:mb-10">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-lumiere-text-primary">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-ink">
             {title}
           </h2>
           <Link
             href="/shop"
-            className="text-lumiere-primary hover:text-lumiere-primary-hover font-semibold text-sm md:text-base transition-colors"
+            className="text-ink hover:text-black font-semibold text-sm md:text-base transition-colors"
           >
             View All →
           </Link>
@@ -42,7 +42,7 @@ export const CategoriesGrid: React.FC<CategoriesGridProps> = ({
             <Link
               key={category.slug}
               href={`/category/${category.slug}`}
-              className="group flex flex-col items-center justify-center gap-3 p-4 md:p-6 rounded-xl bg-white border-2 border-transparent hover:border-lumiere-primary hover:shadow-lg transition-all duration-300 text-center"
+              className="group flex flex-col items-center justify-center gap-3 p-4 md:p-6 rounded-xl bg-white border-2 border-transparent hover:border-ink hover:shadow-lg transition-all duration-300 text-center"
             >
               {/* Emoji Icon */}
               <span className="text-4xl md:text-5xl group-hover:scale-110 transition-transform duration-300">
@@ -50,13 +50,13 @@ export const CategoriesGrid: React.FC<CategoriesGridProps> = ({
               </span>
 
               {/* Category Name */}
-              <span className="font-semibold text-lumiere-text-primary text-sm md:text-base group-hover:text-lumiere-primary transition-colors">
+              <span className="font-semibold text-ink text-sm md:text-base group-hover:text-ink transition-colors">
                 {category.name}
               </span>
 
               {/* Description (optional) */}
               {category.description && (
-                <span className="text-xs text-lumiere-text-secondary group-hover:text-lumiere-text-primary">
+                <span className="text-xs text-muted group-hover:text-ink">
                   {category.description}
                 </span>
               )}

@@ -320,7 +320,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       </div>
 
       {/* Product Title - H1 */}
-      <h1 className="w-full max-w-[20ch] whitespace-normal break-words text-2xl font-serif font-bold leading-tight text-lumiere-text-primary [overflow-wrap:anywhere] sm:max-w-none md:text-3xl">
+      <h1 className="w-full max-w-[20ch] whitespace-normal break-words text-2xl font-serif font-bold leading-tight text-ink [overflow-wrap:anywhere] sm:max-w-none md:text-3xl">
         {product.name}
       </h1>
 
@@ -350,7 +350,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         if (!concerns.length) return null;
         return (
           <div className="space-y-1">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-lumiere-text-secondary">Best for</p>
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">Best for</p>
             <div className="flex flex-wrap gap-1.5">
               {concerns.map((c) => (
                 <Link
@@ -384,7 +384,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             <span className="text-base">
               {'⭐'.repeat(Math.round(parseFloat(product.average_rating)))}
             </span>
-            <span className="text-sm text-lumiere-text-secondary">
+            <span className="text-sm text-muted">
               {product.average_rating} ({product.rating_count} Reviews)
             </span>
           </div>
@@ -415,7 +415,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
               <ul className="space-y-2">
                 {lines.map((line, idx) => (
                   <li key={idx} className="flex gap-2 items-start">
-                    <span className="text-lumiere-primary font-bold mt-0.5">•</span>
+                    <span className="text-ink font-bold mt-0.5">•</span>
                     <span className="line-clamp-3">{line}</span>
                   </li>
                 ))}
@@ -426,23 +426,23 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       })()}
 
 
-      <div className="border-2 border-lumiere-primary rounded-lg p-4 space-y-2">
+      <div className="border-2 border-ink rounded-lg p-4 space-y-2">
         {isOnSale ? (
           <>
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-lumiere-primary">
+              <span className="text-3xl font-bold text-ink">
                 {formatBDT(product.sale_price)}
               </span>
-              <span className="text-lg text-lumiere-text-secondary line-through">
+              <span className="text-lg text-muted line-through">
                 {formatBDT(product.regular_price)}
               </span>
             </div>
-            <div className="inline-block bg-lumiere-primary text-white text-xs font-semibold px-2 py-1 rounded">
+            <div className="inline-block bg-ink text-white text-xs font-semibold px-2 py-1 rounded">
               Save {formatSavingsAmount(product.regular_price, product.sale_price)}
             </div>
           </>
         ) : (
-          <span className="text-3xl font-bold text-lumiere-primary">
+          <span className="text-3xl font-bold text-ink">
             {formatBDT(product.price)}
           </span>
         )}
