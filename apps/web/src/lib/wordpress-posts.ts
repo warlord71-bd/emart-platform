@@ -65,6 +65,7 @@ async function fetchWordPressPosts(params: Record<string, string | number | bool
     const response = await fetch(url.toString(), {
       headers: { Accept: 'application/json' },
       next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(8000),
     });
 
     if (!response.ok) return [];

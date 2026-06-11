@@ -68,6 +68,7 @@ async function rankMathFetch<T>(
       },
       body: JSON.stringify({ query, variables }),
       next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return null;
     const json = await res.json() as { data?: T; errors?: unknown[] };

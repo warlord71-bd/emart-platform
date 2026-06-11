@@ -305,6 +305,7 @@ async function fetchWordPressProductPostPage(page: number): Promise<{
 
   const response = await fetch(url, {
     next: { revalidate: 3600 },
+    signal: AbortSignal.timeout(8000),
   });
 
   if (!response.ok) {

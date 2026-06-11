@@ -3,6 +3,7 @@ import { calculateLineItemsSubtotal, createOrderViaPlugin, getShippingQuote } fr
 import { ensureCustomerByEmail } from '@/lib/customerAccounts';
 import { sendMetaPurchaseEvent } from '@/lib/metaCapi';
 import { checkoutStockErrorMessage, normalizeStockAvailability } from '@/lib/stock';
+import { getCheckoutErrorResponse } from '@/lib/checkoutErrors';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -202,13 +203,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, order }, { status: 201 });
   } catch (error: any) {
-    const message = error?.response?.data?.message || error?.message || 'Checkout failed. Please try again or contact support.';
     console.error('Checkout API error:', {
-      message,
+      message: error?.response?.data?.error || error?.response?.data?.message || error?.message,
       status: error?.response?.status,
       data: error?.response?.data,
     });
 
-    return NextResponse.json({ error: message }, { status: error?.response?.status || 500 });
+    const { message, status } = getCheckoutErrorResponse(error);
+    return NextResponse.json({ error: message }, { status });
   }
 }

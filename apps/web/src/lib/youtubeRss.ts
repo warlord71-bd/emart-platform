@@ -11,7 +11,7 @@ export async function getYouTubeVideos(maxResults = 9): Promise<RssVideo[]> {
   try {
     const rss = await fetch(
       `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`,
-      { next: { revalidate: 3600 } },
+      { next: { revalidate: 3600 }, signal: AbortSignal.timeout(8000) },
     );
     if (!rss.ok) throw new Error(`RSS ${rss.status}`);
     const xml = await rss.text();
