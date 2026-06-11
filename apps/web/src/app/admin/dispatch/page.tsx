@@ -34,7 +34,7 @@ export default function DispatchPage() {
   const [pathaoZone, setPathaoZone] = useState('');
 
   useEffect(() => {
-    const saved = localStorage.getItem(TOKEN_KEY);
+    const saved = sessionStorage.getItem(TOKEN_KEY);
     if (saved) setToken(saved);
   }, []);
 
@@ -50,7 +50,7 @@ export default function DispatchPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Login failed');
-      localStorage.setItem(TOKEN_KEY, data.token);
+      sessionStorage.setItem(TOKEN_KEY, data.token);
       setToken(data.token);
     } catch (err: any) {
       setLoginError(err.message);
@@ -60,7 +60,7 @@ export default function DispatchPage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
     setToken('');
   };
 
@@ -70,7 +70,8 @@ export default function DispatchPage() {
     setError('');
     try {
       const res = await fetch(
-        `/api/admin/orders?token=${token}&status=processing&per_page=50`,
+        `/api/admin/orders?status=processing&per_page=50`,
+        { headers: { 'x-admin-token': token } },
       );
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
@@ -96,9 +97,9 @@ export default function DispatchPage() {
     if (!pathaoZone) { alert('Enter Pathao zone ID first'); return; }
     setDispatching((p) => ({ ...p, [order.id]: 'pathao' }));
     try {
-      const res = await fetch(`/api/pathao/order?token=${token}`, {
+      const res = await fetch(`/api/pathao/order`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
         body: JSON.stringify({
           woo_order_id: order.id,
           store_id: Number(pathaoStore),
@@ -125,9 +126,9 @@ export default function DispatchPage() {
   const dispatchPackzy = async (order: WooOrderSummary) => {
     setDispatching((p) => ({ ...p, [order.id]: 'packzy' }));
     try {
-      const res = await fetch(`/api/packzy/order?token=${token}`, {
+      const res = await fetch(`/api/packzy/order`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
         body: JSON.stringify({ woo_order_id: order.id }),
       });
       const data = await res.json();

@@ -5,26 +5,18 @@
  * then writes the tracking details back to WooCommerce order meta.
  *
  * Body: { woo_order_id: number, note?: string }
- * Requires x-revalidate-secret header or ?token= query param.
+ * Requires x-admin-token header (ADMIN_API_TOKEN).
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { createPackzyOrder } from '@/lib/packzy';
 import { getOrder, updateOrder, addOrderNote } from '@/lib/woocommerce';
+import { isAdminAuthorized } from '@/lib/adminAuth';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-function isAuthorized(req: NextRequest): boolean {
-  const secret = process.env.REVALIDATE_SECRET;
-  if (!secret) return false;
-  return (
-    req.headers.get('x-revalidate-secret') === secret ||
-    req.nextUrl.searchParams.get('token') === secret
-  );
-}
-
 export async function POST(req: NextRequest) {
-  if (!isAuthorized(req)) {
+  if (!isAdminAuthorized(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
