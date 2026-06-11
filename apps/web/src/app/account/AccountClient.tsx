@@ -55,18 +55,12 @@ export default function AccountPage() {
   const [socialProviders, setSocialProviders] = useState<Record<string, { id: string; name: string }>>({});
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [showPasswordReset, setShowPasswordReset] = useState(false);
-  const [showPhoneLogin, setShowPhoneLogin] = useState(false);
-  const [phoneLoginSubmitting, setPhoneLoginSubmitting] = useState(false);
   const [registrationNotice, setRegistrationNotice] = useState('');
   const [loginForm, setLoginForm] = useState({
     login: '',
     password: '',
   });
   const [resetLogin, setResetLogin] = useState('');
-  const [phoneLoginForm, setPhoneLoginForm] = useState({
-    email: '',
-    phone: '',
-  });
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',
@@ -231,46 +225,6 @@ export default function AccountPage() {
     }
   };
 
-  const handlePhoneLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneLoginForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handlePhoneLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setPhoneLoginSubmitting(true);
-    try {
-      const response = await fetch('/api/auth/login-by-phone', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(phoneLoginForm),
-      });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data?.user) {
-        throw new Error(data?.error || 'No account found with that email and phone');
-      }
-
-      const meResponse = await fetch('/api/auth/me', { cache: 'no-store' });
-      const meData = await meResponse.json().catch(() => ({}));
-
-      if (meResponse.ok && meData?.authenticated && meData?.user) {
-        setUser(meData.user);
-        setLatestSkinQuiz(meData?.skin_quiz ?? null);
-      } else {
-        setUser(data.user);
-        setLatestSkinQuiz(null);
-      }
-
-      setShowPhoneLogin(false);
-      setPhoneLoginForm({ email: '', phone: '' });
-      toast.success('Logged in successfully');
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'No account found with that email and phone';
-      toast.error(message);
-    } finally {
-      setPhoneLoginSubmitting(false);
-    }
-  };
-
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
@@ -345,7 +299,6 @@ export default function AccountPage() {
                     value={loginForm.login}
                     onChange={handleLoginChange}
                     placeholder="Email address or username"
-                    autoComplete="username"
                     required
                     className="rounded-lg border border-gray-300 px-4 py-3 text-sm"
                   />
@@ -355,7 +308,6 @@ export default function AccountPage() {
                     value={loginForm.password}
                     onChange={handleLoginChange}
                     placeholder="Password"
-                    autoComplete="current-password"
                     required
                     className="rounded-lg border border-gray-300 px-4 py-3 text-sm"
                   />
@@ -364,22 +316,13 @@ export default function AccountPage() {
                   </button>
                 </form>
 
-                <div className="flex flex-wrap gap-x-4 gap-y-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowPasswordReset((current) => !current)}
-                    className="text-sm font-semibold text-primary-600 hover:underline"
-                  >
-                    Forgot your password?
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowPhoneLogin((current) => !current)}
-                    className="text-sm font-semibold text-primary-600 hover:underline"
-                  >
-                    Log in with email + phone
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordReset((current) => !current)}
+                  className="text-sm font-semibold text-primary-600 hover:underline"
+                >
+                  Forgot your password?
+                </button>
 
                 {showPasswordReset && (
                   <form onSubmit={handlePasswordReset} className="rounded-xl border border-gray-200 bg-gray-50 p-4">
@@ -392,7 +335,6 @@ export default function AccountPage() {
                         value={resetLogin}
                         onChange={(event) => setResetLogin(event.target.value)}
                         placeholder="Email address or username"
-                        autoComplete="username"
                         required
                         className="rounded-lg border border-gray-300 px-4 py-3 text-sm"
                       />
@@ -402,52 +344,14 @@ export default function AccountPage() {
                     </div>
                   </form>
                 )}
-
-                {showPhoneLogin && (
-                  <form onSubmit={handlePhoneLogin} className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                    <label className="mb-2 block text-sm font-semibold text-gray-700">
-                      Log in with email + phone
-                    </label>
-                    <p className="mb-3 text-xs text-gray-500">
-                      Use the email and phone number from your last order. No password needed.
-                    </p>
-                    <div className="grid grid-cols-1 gap-3">
-                      <input
-                        name="email"
-                        type="email"
-                        value={phoneLoginForm.email}
-                        onChange={handlePhoneLoginChange}
-                        placeholder="Email address"
-                        autoComplete="email"
-                        inputMode="email"
-                        required
-                        className="rounded-lg border border-gray-300 px-4 py-3 text-sm"
-                      />
-                      <input
-                        name="phone"
-                        type="tel"
-                        value={phoneLoginForm.phone}
-                        onChange={handlePhoneLoginChange}
-                        placeholder="Phone number (e.g. 01XXXXXXXXX)"
-                        autoComplete="tel"
-                        inputMode="tel"
-                        required
-                        className="rounded-lg border border-gray-300 px-4 py-3 text-sm"
-                      />
-                      <button type="submit" disabled={phoneLoginSubmitting} className="rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white hover:bg-primary-700 disabled:opacity-60">
-                        {phoneLoginSubmitting ? 'Logging in...' : 'Log in'}
-                      </button>
-                    </div>
-                  </form>
-                )}
               </div>
             ) : (
               <form onSubmit={handleRegister} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <input name="first_name" value={form.first_name} onChange={handleChange} placeholder="First name" autoComplete="given-name" className="rounded-lg border border-gray-300 px-4 py-3 text-sm" />
-                <input name="last_name" value={form.last_name} onChange={handleChange} placeholder="Last name" autoComplete="family-name" className="rounded-lg border border-gray-300 px-4 py-3 text-sm" />
-                <input name="username" value={form.username} onChange={handleChange} placeholder="Username" autoComplete="username" required className="rounded-lg border border-gray-300 px-4 py-3 text-sm sm:col-span-2" />
-                <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email address" autoComplete="email" required className="rounded-lg border border-gray-300 px-4 py-3 text-sm sm:col-span-2" />
-                <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="Password" autoComplete="new-password" required className="rounded-lg border border-gray-300 px-4 py-3 text-sm sm:col-span-2" />
+                <input name="first_name" value={form.first_name} onChange={handleChange} placeholder="First name" className="rounded-lg border border-gray-300 px-4 py-3 text-sm" />
+                <input name="last_name" value={form.last_name} onChange={handleChange} placeholder="Last name" className="rounded-lg border border-gray-300 px-4 py-3 text-sm" />
+                <input name="username" value={form.username} onChange={handleChange} placeholder="Username" required className="rounded-lg border border-gray-300 px-4 py-3 text-sm sm:col-span-2" />
+                <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email address" required className="rounded-lg border border-gray-300 px-4 py-3 text-sm sm:col-span-2" />
+                <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="Password" required className="rounded-lg border border-gray-300 px-4 py-3 text-sm sm:col-span-2" />
                 <button type="submit" disabled={submitting} className="sm:col-span-2 rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white hover:bg-primary-700 disabled:opacity-60">
                   {submitting ? 'Creating account...' : 'Create account'}
                 </button>
