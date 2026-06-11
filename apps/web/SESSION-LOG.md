@@ -2310,3 +2310,11 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - New finding (pre-existing, not caused by R19): live `/categories` throws 8 React hydration console errors (#422/#425). Root cause traced to `flash-context.tsx:56` (`Date.now()`-seeded countdown `useState`, SSR vs client time mismatch in `CountdownTiles.tsx`) — confirmed via worktree SSR diff of pre/post-R19 builds, unrelated to this change. Documented in TASKS.md, not fixed (out of scope, low priority).
 - Blockers: none for R19 — fully closed. R3 (Cloudflare Access) remains the only open pre-freeze item, owner-side.
 - Next step: R3 owner recheck; R12/R18 remain frozen until Jul 3; new `/categories` countdown-hydration finding available for a future low-priority session.
+
+## 2026-06-11 (Claude — R3 closed, third Cloudflare Access attempt)
+- Owner audited Zero Trust Access apps: only a pre-existing unrelated app (`OpenClaw Agent` on `agent.e-mart.com.bd`, separate subdomain) remained; the broad/blocking app from attempt 2 was confirmed fully deleted.
+- Owner created two narrow per-path Access apps for `e-mart.com.bd`: Path `/wp-login.php*` and Path `/wp-admin/*`, both policy Allow -> `hgc.bd71@gmail.com`. Root cause of attempt 2 documented in `OWNER-ACTION-R3-cloudflare-access-20260611.md`: a blank/`/` Path field matches the entire hostname.
+- Live-verified: `/`, `/shop`, a PDP all 200 with no Access challenge; `/wp-login.php` and `/wp-admin/` return 302 to `cloudflareaccess.com` Access login; `/wp-json/wc/v3/products` still 403 (pre-existing, unaffected by Access).
+- R3 (H-06) CLOSED. **All pre-freeze audit items (R1-R17) are now closed.** R20 (A+ re-audit) is unblocked; only R12 (PDP ISR) and R18 (homepage product rail) remain frozen until Jul 3.
+- Blockers: none.
+- Next step: R20 re-audit can run anytime (owner discretion on timing); R12/R18 wait for Jul 3 / owner approval.

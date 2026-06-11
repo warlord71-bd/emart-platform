@@ -34,7 +34,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 14. **1304-product meta regen (781 missing + 523 bad "original" pattern) — IN PROGRESS, 94/1266 done** — `meta_generator.py` switched to paid `deepseek/deepseek-chat-v3.1` (free models gave ~6% defect rate: literal "XYZ" placeholders, garbled grammar, raw `&amp;` entities — none caught by `meta_validator.py`). 2026-06-10: regenerated+validated+applied 94 metas (88 from the original dry-run batch + 11 "XYZ"-brand-fix products + 3 retries), `tag:products` revalidated. Side-fix: `pa_brand="XYZ"` (term 8050, 11 live products) was a real data bug already live in meta descriptions — reassigned to "Beaute"(9744)/"Athena"(1211)/"LUOFMiSS"(9745), old term deleted. Wrapper scripts `_run_generator.py`/`_run_validator.py` (VPS `workspace/docs/`) handle secrets in-process. Remaining: ~1172 IDs in `workspace/docs/meta_regen_ids_remaining_20260610.txt`, continue in ~50-ID batches: dry-run --force --ids-file → validator --input → apply-reviewed → revalidate.
 12. ~~**Product duplicate review**~~ — ✅ resolved Jun 9: redirects deployed first, 12 retire products set to `draft`; manually purge the 12 old URLs listed in `workspace/audit/active/duplicate-resolution-recommendations-20260609.md` if Cloudflare still serves stale old PDP HTML
 13. **Image/duplicate follow-up** — final browser-ranked list ready at `workspace/audit/active/combined-image-duplicate-browser-final-20260609.md`; 33 Level A likely image/action items need source-image approval before changes
-15. **R3 — Cloudflare Access for wp-login.php** — owner picked "Cloudflare Access (email gate)" over IP allowlist/fail2ban/accept-risk. Step-by-step doc: `workspace/docs/OWNER-ACTION-R3-cloudflare-access-20260611.md`. 2026-06-11 attempts: first still reached WordPress directly; second protected login/admin but also protected `/`, `/shop`, and PDPs, so owner deleted it and storefront recovered. R3 remains pending; do not re-enable broad Access on bare `e-mart.com.bd`.
+15. ~~**R3 — Cloudflare Access for wp-login.php**~~ — ✅ CLOSED 2026-06-11. Owner picked "Cloudflare Access (email gate)" over IP allowlist/fail2ban/accept-risk. Step-by-step doc: `workspace/docs/OWNER-ACTION-R3-cloudflare-access-20260611.md`. First two attempts failed (first still reached WordPress directly; second protected login/admin but also caught `/`, `/shop`, PDPs and was deleted). Third attempt: two narrow per-path Access apps (`e-mart.com.bd` + Path `/wp-login.php*`, and `e-mart.com.bd` + Path `/wp-admin/*`), policy Allow → `hgc.bd71@gmail.com`. Live-verified: `/`, `/shop`, PDP all 200 no challenge; `/wp-login.php` and `/wp-admin/` return 302 to `cloudflareaccess.com` login challenge; `/wp-json/wc/v3/products` still 403 (unaffected, pre-existing).
 
 ---
 
@@ -93,9 +93,9 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 Full platform audit done 2026-06-10 (read-only): `workspace/docs/audits/EMART_AUDIT_20260610.md`.
 Step-by-step plan with per-task specs, verify lines, and agent prompt template: **`workspace/docs/AUDIT_REMEDIATION_PLAN_20260610.md`**.
 
-Current execution order check (2026-06-11): R2/R13/R14/R15 are done; R17 decision landed and is live. R3 is still open: Cloudflare Access attempt that caught login/admin also caught the storefront, so it was deleted; live storefront is public again and `wp-login.php` is public again. Remaining pre-freeze audit work is only R3 owner apply/recheck with a path-safe method.
+Current execution order check (2026-06-11): R2/R13/R14/R15 are done; R17 decision landed and is live. R3 CLOSED 2026-06-11 (third attempt, see row below). **All pre-freeze audit items are now closed.**
 
-**Freeze partially broken 2026-06-11 (owner decision)**: of the post-freeze backlog (R12/R18/R19/R20), owner kept only R12 (PDP ISR, 3,600+ URLs) and R18 (homepage product rail, OWNER approval gated) frozen until Jul 3 — both touch crawl-critical surfaces. R19 (low-risk CSS/token cleanup, no URL/canonical/sitemap/nav) was unfrozen and completed same day (see R19 row below). R20 (re-audit) remains safe to run anytime once R3/R12/R18 close. Standing rule regardless of calendar freeze: never touch URL/redirect/sitemap/canonical/nav without explicit request.
+**Freeze partially broken 2026-06-11 (owner decision)**: of the post-freeze backlog (R12/R18/R19/R20), owner kept only R12 (PDP ISR, 3,600+ URLs) and R18 (homepage product rail, OWNER approval gated) frozen until Jul 3 — both touch crawl-critical surfaces. R19 (low-risk CSS/token cleanup, no URL/canonical/sitemap/nav) was unfrozen and completed same day (see R19 row below). R20 (re-audit) is now unblocked — only R12/R18 remain frozen until Jul 3. Standing rule regardless of calendar freeze: never touch URL/redirect/sitemap/canonical/nav without explicit request.
 
 | # | Task | Audit ID | Agent | Status |
 |---|---|---|---|---|
@@ -107,7 +107,7 @@ Current execution order check (2026-06-11): R2/R13/R14/R15 are done; R17 decisio
 | R7 | `aggregateRating` in Product JSON-LD when `rating_count > 0` | H-04 | [S] | ✅ (stale finding) |
 | R9 | Remove root-layout canonical inheritance (404 canonicals to home today) | M-04 | [S] | ✅ |
 | R10 | Trivia batch: safeJsonLd categories page, search alt fallback, best-definitions dates | L-02/04/05/07 | [S] | ✅ |
-| R3 | Cloudflare Access for `wp-login.php` | H-06 | [O] + recheck | 🟡 attempted then rolled back; login public again |
+| R3 | Cloudflare Access for `wp-login.php` + `/wp-admin/*` | H-06 | [O] + recheck | ✅ CLOSED 2026-06-11 (third attempt: two narrow per-path apps, live-verified) |
 | R2 | Nginx rate limiting: /api/checkout, /api/admin/auth, /api/newsletter, /api/search | H-05 | [X] prep + [C] apply | ✅ |
 | R11 | PDP `s-maxage` via existing Nginx override pattern (stage 1, reversible) | H-01 | [C] | ✅ CLOSED 2026-06-11 (Nginx + Cloudflare respect-origin + purge, live-verified) |
 | R13 | Single price formatter (`formatBDT`); delete 3 duplicates | M-05 | [X] | ✅ |
@@ -159,7 +159,7 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 
 **R2 — DONE 2026-06-11**: applied runtime Nginx rate limiting with Cloudflare real-client-IP restoration. Added `/etc/nginx/conf.d/cloudflare-real-ip.conf` from `workspace/docs/R2-cloudflare-real-ip-nginx.conf`; updated `/etc/nginx/nginx.conf` rate zones to key on real client IP with VPS/localhost exemption for `emart-checkout-monitor`; split `/api/admin/auth`, `/api/newsletter/subscribe`, and `/api/search` into exact Nginx locations with their own buckets, keeping `/api/checkout` separately limited and general APIs on the existing general bucket. Backups: `/etc/nginx/nginx.conf.backup-20260611-r2-rate-limit` and `/root/.attic-2026-06-11/nginx/sites-enabled/emart-nextjs.backup-20260611-r2-rate-limit` (moved out of `sites-enabled` so Nginx does not load it). `nginx -t` passed; `systemctl reload nginx` done; live smoke: home 200, search 200, admin/newsletter/checkout GETs return normal 405, not accidental 429. Direct 429 burst could not be meaningfully tested from the VPS because the VPS public IP is intentionally exempt.
 
-**Pre-freeze remaining after R2/R13/R14/R15/R17**: R3 owner Cloudflare Access apply/recheck. Once R3 is closed, every pre-freeze audit item is closed and A+ re-audit waits on post-freeze R12/R18/R19/R20.
+**Pre-freeze status**: every pre-freeze audit item (R1-R17) is now closed as of 2026-06-11. R20 (A+ re-audit) is unblocked and can run anytime; only R12 (PDP ISR) and R18 (homepage product rail, owner approval gated) remain frozen until Jul 3.
 
 ---
 
