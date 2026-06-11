@@ -9,6 +9,7 @@ import { formatPrice } from '@/lib/woocommerce';
 import toast from 'react-hot-toast';
 import { COMPANY } from '@/lib/companyProfile';
 import { META_PIXEL_PURCHASE_STORAGE_KEY, parseMetaPixelValue, trackMetaEvent } from '@/lib/metaPixel';
+import { trackGA4 } from '@/lib/ga4';
 import { readAttribution } from '@/components/AttributionTracker';
 
 const DISTRICTS = [
@@ -90,6 +91,16 @@ export default function CheckoutPage() {
       num_items: items.reduce((s, i) => s + i.quantity, 0),
       currency: 'BDT',
       value: total,
+    });
+    trackGA4('begin_checkout', {
+      currency: 'BDT',
+      value: total,
+      items: items.map((i) => ({
+        item_id: String(i.id),
+        item_name: i.name,
+        price: parseFloat(i.price || '0'),
+        quantity: i.quantity,
+      })),
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

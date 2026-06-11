@@ -86,14 +86,20 @@ export default function ProductCard({ product, variant = 'grid', priority = fals
     e.stopPropagation();
     if (!inStock) return;
     addItem(product);
-    const [{ default: toast }, { trackMetaEvent, getMetaPixelProductParams }, { trackRedditEvent, getRedditPixelProductParams }] = await Promise.all([
+    const [{ default: toast }, { trackMetaEvent, getMetaPixelProductParams }, { trackRedditEvent, getRedditPixelProductParams }, { trackGA4, getGA4ProductItem, getGA4ProductValue }] = await Promise.all([
       import('react-hot-toast'),
       import('@/lib/metaPixel'),
       import('@/lib/redditPixel'),
+      import('@/lib/ga4'),
     ]);
     toast.success('Added to Cart', { duration: 2000 });
     trackMetaEvent('AddToCart', getMetaPixelProductParams(product));
     trackRedditEvent('AddToCart', getRedditPixelProductParams(product));
+    trackGA4('add_to_cart', {
+      currency: 'BDT',
+      value: getGA4ProductValue(product),
+      items: [getGA4ProductItem(product)],
+    });
   };
 
   const imageAlt = imageAltOverride || `${product.name} - Emart Skincare Bangladesh`;

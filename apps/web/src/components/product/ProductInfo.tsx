@@ -14,7 +14,7 @@ import { COMPANY } from '@/lib/companyProfile';
 import { getMetaPixelProductParams, trackMetaEvent } from '@/lib/metaPixel';
 import { getRedditPixelProductParams, trackRedditEvent } from '@/lib/redditPixel';
 import { STORE_POLICIES } from '@/config/storePolicies';
-import { trackGA4, GA4_STICKY_VARIANT_KEY } from '@/lib/ga4';
+import { trackGA4, getGA4ProductItem, getGA4ProductValue, GA4_STICKY_VARIANT_KEY } from '@/lib/ga4';
 
 interface ProductInfoProps {
   product: WooProduct;
@@ -225,6 +225,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     for (let i = 0; i < quantity; i++) { addItem(product); }
     trackMetaEvent('AddToCart', getMetaPixelProductParams(product, quantity));
     trackRedditEvent('AddToCart', getRedditPixelProductParams(product, quantity));
+    trackGA4('add_to_cart', {
+      currency: 'BDT',
+      value: getGA4ProductValue(product, quantity),
+      items: [getGA4ProductItem(product, quantity)],
+    });
     setIsAdded(true);
     openCart();
     toast.success('Added to Cart');
@@ -237,6 +242,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     addItem(product, quantity);
     trackMetaEvent('AddToCart', getMetaPixelProductParams(product, quantity));
     trackRedditEvent('AddToCart', getRedditPixelProductParams(product, quantity));
+    trackGA4('add_to_cart', {
+      currency: 'BDT',
+      value: getGA4ProductValue(product, quantity),
+      items: [getGA4ProductItem(product, quantity)],
+    });
     window.location.href = '/checkout';
   };
 
