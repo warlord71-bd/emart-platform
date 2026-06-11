@@ -96,8 +96,8 @@ Step-by-step plan with per-task specs, verify lines, and agent prompt template: 
 | # | Task | Audit ID | Agent | Status |
 |---|---|---|---|---|
 | R1 | Admin auth: stop returning REVALIDATE_SECRET as admin token; new `ADMIN_API_TOKEN`; drop `?token=`; timing-safe compare | C-01 | [S] | ✅ |
-| R5 | Attic `.env.local.backup-20260502-google-restore` (Local+VPS) | L-06 | any | ⬜ |
-| R4 | Checkout error-message mapping + AbortSignal timeouts in 4 lib fetchers | M-10, M-09 | [S] | ⬜ |
+| R5 | Attic `.env.local.backup-20260502-google-restore` (Local+VPS) | L-06 | any | ✅ |
+| R4 | Checkout error-message mapping + AbortSignal timeouts in 4 lib fetchers | M-10, M-09 | [S] | ✅ |
 | R6 | Product schema availability from `normalizeStockAvailability` (+BackOrder) | H-03 | [S] | ⬜ |
 | R8 | Drop fabricated `mpn` from Product schema | M-01 | [S] | ⬜ |
 | R7 | `aggregateRating` in Product JSON-LD when `rating_count > 0` | H-04 | [S] | ⬜ |
@@ -114,6 +114,10 @@ Schema tasks (R6–R9): content-level = freeze-OK, but read `workspace/SEO_MASTE
 Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3 (R12/R18/R19 are parked in BACKLOG).
 
 **R1 — DONE 2026-06-11**: New `ADMIN_API_TOKEN` (Local+VPS `.env.local`) replaces `REVALIDATE_SECRET` as the dispatch dashboard token. New `src/lib/adminAuth.ts` (`isAdminAuthorized`, `timingSafeEqualStr`) used by `/api/admin/orders`, `/api/pathao/order`, `/api/packzy/order` — header-only (`x-admin-token`), `?token=` dropped. `/api/admin/auth` does timing-safe username/password compare and returns `ADMIN_API_TOKEN`. Dispatch page (`src/app/admin/dispatch/page.tsx`) moved token storage from `localStorage`→`sessionStorage` and sends `x-admin-token` header. `/api/revalidate` unchanged (still `REVALIDATE_SECRET`). Live-verified: new token → 200, old `REVALIDATE_SECRET` → 401, `?token=` → 401, no-auth → 401, `/api/revalidate` still 200. Committed `13ad3c1`, deployed via `deploy.sh`, pushed to `origin/main`, VPS aligned.
+
+**R5 — DONE 2026-06-11**: moved `apps/web/.env.local.backup-20260502-google-restore` (Local + VPS) to `/root/.attic-2026-06-11/emart-platform/apps/web/`. File was gitignored, no repo change needed.
+
+**R4 — DONE 2026-06-11**: new `src/lib/checkoutErrors.ts` → `getCheckoutErrorResponse()` maps raw Woo/plugin checkout errors to customer-safe messages (stock/coupon messages pass through, everything else generic by status); `/api/checkout` catch-all now logs full raw details server-side and returns the mapped message. Added `signal: AbortSignal.timeout(8000)` to the bare `fetch()` calls in `wordpress-posts.ts`, `sitemapEntries.ts`, `youtubeRss.ts`, `seo.ts` (all already had try/catch fallbacks). Build clean, `sitemap.xml` 200 live, checkout validation smoke OK. Committed `45736fc`, deployed, pushed, VPS aligned.
 
 **Owner decisions needed (audit):**
 - ~~**R3 / H-06**~~ — DECIDED 2026-06-11: Cloudflare Access (email gate). Owner action item #15 above (`OWNER-ACTION-R3-cloudflare-access-20260611.md`); needs owner to apply in Cloudflare dashboard, then "R3 done" reply to close.

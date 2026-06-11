@@ -2225,3 +2225,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: asked owner about R2 (rate limiting) and R3 (wp-login.php exposure). Owner picked Cloudflare Access (email gate) for R3 — no Cloudflare API token on VPS, so wrote owner action doc `workspace/docs/OWNER-ACTION-R3-cloudflare-access-20260611.md` (Zero Trust app + policy steps, allowlist `hgc.bd71@gmail.com`, verify steps, rollback). Added as TASKS.md owner item #15. Owner picked "stick to suggested order" for R2 — deferred to its own session at position 7 (after R5/R4/R6+R8/R7/R9+R10).
 - Blockers: R3 awaiting owner to apply Cloudflare dashboard config, then reply "R3 done" for live recheck.
 - Next step: R5 (attic env backup, trivial) then R4 (checkout error hygiene + fetch timeouts).
+
+## 2026-06-11 (Claude — R5 + R4)
+- Did R5 (L-06): moved `.env.local.backup-20260502-google-restore` (Local + VPS) to `/root/.attic-2026-06-11/emart-platform/apps/web/`; was gitignored, no repo change.
+- Did R4 (M-09/M-10): new `src/lib/checkoutErrors.ts` (`getCheckoutErrorResponse`) maps raw Woo/plugin checkout errors to customer-safe messages (stock/coupon text passes through, else generic-by-status); `/api/checkout` catch-all logs full raw error server-side, returns mapped message+status. Added `AbortSignal.timeout(8000)` to bare fetches in `wordpress-posts.ts`, `sitemapEntries.ts`, `youtubeRss.ts`, `seo.ts`.
+- Verified: build clean, `sitemap.xml` → 200 live, checkout validation (`{}` payload) still returns friendly 400. Committed `45736fc`, deployed via `deploy.sh`, pushed, VPS aligned.
+- Blockers: none. R1, R4, R5 all closed.
+- Next step: R6+R8 (schema availability from `normalizeStockAvailability` + drop fabricated `mpn`), then R7 (aggregateRating), per suggested order.
