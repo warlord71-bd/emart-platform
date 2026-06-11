@@ -93,7 +93,9 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 Full platform audit done 2026-06-10 (read-only): `workspace/docs/audits/EMART_AUDIT_20260610.md`.
 Step-by-step plan with per-task specs, verify lines, and agent prompt template: **`workspace/docs/AUDIT_REMEDIATION_PLAN_20260610.md`**.
 
-Current execution order check (2026-06-11): R2/R13/R14/R15 are done; R17 decision landed and is live. R3 is still open: Cloudflare Access attempt that caught login/admin also caught the storefront, so it was deleted; live storefront is public again and `wp-login.php` is public again. Remaining pre-freeze audit work is only R3 owner apply/recheck with a path-safe method. After R3 lands, the A+ re-audit waits only on post-freeze R12 -> R18 (owner approval) -> R19 -> R20.
+Current execution order check (2026-06-11): R2/R13/R14/R15 are done; R17 decision landed and is live. R3 is still open: Cloudflare Access attempt that caught login/admin also caught the storefront, so it was deleted; live storefront is public again and `wp-login.php` is public again. Remaining pre-freeze audit work is only R3 owner apply/recheck with a path-safe method.
+
+**Freeze partially broken 2026-06-11 (owner decision)**: of the post-freeze backlog (R12/R18/R19/R20), owner kept only R12 (PDP ISR, 3,600+ URLs) and R18 (homepage product rail, OWNER approval gated) frozen until Jul 3 — both touch crawl-critical surfaces. R19 (low-risk CSS/token cleanup, no URL/canonical/sitemap/nav) was unfrozen and completed same day (see R19 row below). R20 (re-audit) remains safe to run anytime once R3/R12/R18 close. Standing rule regardless of calendar freeze: never touch URL/redirect/sitemap/canonical/nav without explicit request.
 
 | # | Task | Audit ID | Agent | Status |
 |---|---|---|---|---|
@@ -113,6 +115,7 @@ Current execution order check (2026-06-11): R2/R13/R14/R15 are done; R17 decisio
 | R17 | Pixel deferral tradeoff: shorten analytics pixels to ~8s | M-03 | [O] | ✅ |
 | R14 | Split 1,558-line `woocommerce.ts` into `lib/woo/*` + type the 29 `any`s (barrel re-export, zero behavior change) | M-08 | [X] | ✅ |
 | R15 | Attic atomic-design scaffolding; make pixel IDs env-required (set VPS env FIRST, verify pixels live, then remove fallbacks) | L-01, L-03 | [X] | ✅ |
+| R19 | Design-token sweep items 1+2: hex literal dedup (`#9f1239`/`#D4A248` -> `PORCELAIN_COLORS`), `lumiere-*` -> porcelain class rename (16 files) | M-06/M-07 | [C] | ✅ CLOSED 2026-06-11, commit `5dd5bb4`, deployed live |
 
 Schema tasks (R6–R9): content-level = freeze-OK, but read `workspace/SEO_MASTER.md` first, validate live JSON-LD + Rich Results after deploy.
 Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3 (R12/R18/R19 are parked in BACKLOG).
@@ -162,10 +165,12 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 
 ## 🔵 BACKLOG (post-freeze Jul 3+)
 
-- **R12 (audit H-01 stage 2)** — PDP ISR: remove `force-dynamic` from `shop/[slug]` + `category/[slug]`, rely on `revalidate`+tags; own session + 24h monitoring
-- **R18 (audit H-02)** — server-render first homepage product rail (crawlable product links); OWNER approval required; guardrail Lighthouse ≥90 / LCP ≤2.5s
-- **R19 (audit M-06/M-07)** — design-token sweep (33× `#9f1239`, 26× `#D4A248`, legacy `#1a1a2e`) + consolidate porcelain/lumiere/midnight-blossom themes (20 files)
+- **R12 (audit H-01 stage 2)** — PDP ISR: remove `force-dynamic` from `shop/[slug]` + `category/[slug]`, rely on `revalidate`+tags; own session + 24h monitoring (still frozen until Jul 3)
+- **R18 (audit H-02)** — server-render first homepage product rail (crawlable product links); OWNER approval required; guardrail Lighthouse ≥90 / LCP ≤2.5s (still frozen until Jul 3)
+- ~~**R19 (audit M-06/M-07)**~~ — ✅ DONE 2026-06-11, see table above. Items 1+2 (hex dedup + lumiere->porcelain rename) shipped in `5dd5bb4`. Item 3 (Midnight Blossom theme consolidation) intentionally OUT OF SCOPE — `data-theme="midnight-blossom"` + `--mb-*` vars in `src/styles/midnight-blossom.css` is a deliberate distinct secondary theme for `/categories` and ~10 components (ConcernGrid, CustomerWall, FlashDealsRow, CategoryChips, LiveTickerBar, categories/TrustStrip, PopularCategoriesGrid, StockBar, FlashWeekHero, ShopByCategory); document, do not merge into porcelain.
 - **R20** — re-audit for A+ grade after R-tasks close
+
+**New finding 2026-06-11 (pre-existing, not caused by R19)**: live `/categories` page throws 8 React console errors (#422 ×4, #425 ×4 — hydration text mismatch -> client-render fallback). Root cause: `src/lib/realtime/flash-context.tsx:56` seeds `secondsRemaining` via `useState(() => diffSeconds(promotion?.ends_at))`, which calls `Date.now()` — SSR time vs client-hydration time differ by a few seconds, so `CountdownTiles.tsx` renders a different digit on server vs client on first paint. Confirmed unrelated to R19 (verified via worktree SSR diff of pre/post-R19 builds — only diffs were this counter and a harmless `#D4A248`->`#d4a248` case change). Fix would need an `isMounted`/skeleton-on-first-render pattern in `CountdownTiles`/`flash-context`; not attempted (out of R19 scope, low priority — Midnight Blossom `/categories` only).
 
 - Blog content at scale: 51 posts vs Shajgoj 5,904
 - UCP/MCP commerce endpoint: build when reviews > 200 (currently 5)
