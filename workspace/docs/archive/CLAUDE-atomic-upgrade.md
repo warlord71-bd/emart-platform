@@ -1,3 +1,15 @@
+> **STATUS (2026-06-12): EXECUTED 2026-05-29, superseded by `/srv/hgc/memory-kit/DECISIONS.md` tokens.**
+> Phase A (component extraction: `lib/seo/product.ts`, `lib/product-utils.ts`,
+> `ProductFaqSection`) merged in `391afbc`, parity verified. Phase B feature flags
+> (`FF_PDP_STICKY_BUYBAR`, `FF_NAV_CONSOLIDATE`, `FF_TRUST_BILINGUAL`) exist on `main`,
+> all OFF. Branch `feat/atomic-refactor` was fully merged (0 unique commits) and deleted.
+> **Do not follow this doc** — it is stale: it assumes Next 15/pnpm (real stack is
+> Next 14/npm) and an `#E8739E` accent (discarded; brand-primary is `#9f1239` per
+> DECISIONS.md). The `midnight-blossom` theme is `/categories`-only, not global.
+> Kept for historical reference only.
+
+---
+
 # CLAUDE.md — Emart Platform · Atomic Design Upgrade (Home · PDP · URL/SEO)
 
 You are operating on a **live, revenue-generating** storefront. Your prime directive: **upgrade the code into a proper atomic design system WITHOUT changing one pixel that customers currently see.** Structure changes; output does not. Any visual/UX change is separate, opt-in, and feature-flagged OFF.
