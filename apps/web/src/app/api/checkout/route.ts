@@ -176,21 +176,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Order creation failed' }, { status: 502 });
     }
 
+    // Checkout monitor (PM2 cron) creates-then-deletes a real order every 15 min to
+    // verify the BFF write path; skip Meta CAPI and account emails for those runs.
+    const isSyntheticMonitor = !!process.env.CHECKOUT_MONITOR_SECRET
+      && request.headers.get('x-checkout-monitor-secret') === process.env.CHECKOUT_MONITOR_SECRET;
+
     const metaEventId = isNonEmptyString(meta_event_id)
       ? meta_event_id.trim()
       : `emart-purchase-${order.id}`;
 
-    try {
-      await sendMetaPurchaseEvent({ request, order, eventId: metaEventId });
-    } catch (error: any) {
-      console.error('Meta CAPI Purchase exception', {
-        orderId: order.id,
-        message: error?.message || 'Unknown Meta CAPI error',
-      });
+    if (!isSyntheticMonitor) {
+      try {
+        await sendMetaPurchaseEvent({ request, order, eventId: metaEventId });
+      } catch (error: any) {
+        console.error('Meta CAPI Purchase exception', {
+          orderId: order.id,
+          message: error?.message || 'Unknown Meta CAPI error',
+        });
+      }
     }
 
     // New customer from guest checkout — send password reset so they can access order history
-    if (isNewCustomer) {
+    if (isNewCustomer && !isSyntheticMonitor) {
       const WP_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://e-mart.com.bd';
       fetch(`${WP_URL}/wp-json/emart/v1/customer/lost-password`, {
         method: 'POST',

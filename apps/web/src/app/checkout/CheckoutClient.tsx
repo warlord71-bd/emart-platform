@@ -1,7 +1,7 @@
 'use client';
 // src/app/checkout/page.tsx
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
@@ -82,8 +82,10 @@ export default function CheckoutPage() {
   const fallbackShippingFee = form.city === 'Dhaka' ? 70 : 100;
   const shippingFee = shippingQuote ? shippingQuote.total : fallbackShippingFee;
 
+  const initiateCheckoutFired = useRef(false);
   useEffect(() => {
-    if (items.length === 0) return;
+    if (items.length === 0 || initiateCheckoutFired.current) return;
+    initiateCheckoutFired.current = true;
     const total = items.reduce((sum, i) => sum + parseFloat(i.price || '0') * i.quantity, 0);
     trackMetaEvent('InitiateCheckout', {
       content_ids: items.map((i) => String(i.id)),
@@ -102,7 +104,7 @@ export default function CheckoutPage() {
         quantity: i.quantity,
       })),
     });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [items.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (items.length === 0) return;
