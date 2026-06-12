@@ -25,9 +25,9 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 ## 🔴 OWNER — Do these (workspace/docs/OWNER-ACTIONS-20260605.md)
 
 1. ~~**MailPoet review email**~~ — ✅ done 2026-06-12: WooCommerce Order Completed → 3-day delay → review email automation set up and verified
-2. **Meta CAPI test** — ✅ test order 94184 placed 2026-06-12, Purchase event confirmed in Events Manager (BDT, value > 0, 8.0/10 match quality). Found+fixed same session: `emart-checkout-monitor` was firing real CAPI Purchase events for its 15-min synthetic test orders (root cause of 3 logged 500s on 94165-94167); fixed via `CHECKOUT_MONITOR_SECRET` skip-flag (commit `d18fe89`). Also fixed R16 InitiateCheckout/begin_checkout hydration race in same commit. **Outstanding**: owner to cancel/delete test order **94184** in WooCommerce admin, and re-check Events Manager Purchase count in 24-48h to confirm phantom Purchases stop
-3. **GSC URL indexing** — 7 URLs listed in OWNER-ACTIONS doc
-4. **Cloudflare cache rule** — /shop + /category, 1hr edge TTL
+2. **Meta CAPI test** — ✅ test order 94184 placed 2026-06-12, Purchase event confirmed in Events Manager (BDT, value > 0, 8.0/10 match quality). Found+fixed same session: `emart-checkout-monitor` was firing real CAPI Purchase events for its 15-min synthetic test orders (root cause of 3 logged 500s on 94165-94167); fixed via `CHECKOUT_MONITOR_SECRET` skip-flag (commit `d18fe89`). Also fixed R16 InitiateCheckout/begin_checkout hydration race in same commit. ✅ Outstanding item done 2026-06-12: owner cancelled test order **94184** in WooCommerce admin. Remaining: re-check Events Manager Purchase count in 24-48h to confirm phantom Purchases stop
+3. ~~**GSC URL indexing**~~ — ✅ done 2026-06-12 (7 URLs from OWNER-ACTIONS doc resolved)
+4. ~~**Cloudflare cache rule**~~ — ✅ confirmed live 2026-06-12: re-checked `/shop/cosrx-low-ph-good-morning-gel-cleanser`, `cf-cache-status: HIT` at `age: 16-19s` with origin `cache-control: public, s-maxage=300, stale-while-revalidate=600` intact — Cloudflare is respecting origin TTL as set 2026-06-11 (R11). No regression.
 5. **GMC title-risk products** — 11 products in gmc-steps3-6-report-20260605.md, approve/reject title changes
 6. **GMC data/asset** — 2 products missing price/image: IDs 63749, 62576
 7. **GMC mixed manual** — 6 products: IDs 36262, 3274, 56108, 3753, 38292, 26194
