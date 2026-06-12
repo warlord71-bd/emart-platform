@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-12 (Android Appetize smoke passed; bottom nav icons fixed)
+Last updated: 2026-06-13 (app-wide mobile icon-font removal pushed; cross-workspace check)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -39,6 +39,8 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 12. ~~**Product duplicate review**~~ — ✅ resolved Jun 9: redirects deployed first, 12 retire products set to `draft`; manually purge the 12 old URLs listed in `workspace/audit/active/duplicate-resolution-recommendations-20260609.md` if Cloudflare still serves stale old PDP HTML
 13. **Image/duplicate follow-up** — final browser-ranked list ready at `workspace/audit/active/combined-image-duplicate-browser-final-20260609.md`; 33 Level A likely image/action items need source-image approval before changes
 15. ~~**R3 — Cloudflare Access for wp-login.php**~~ — ✅ CLOSED 2026-06-11. Owner picked "Cloudflare Access (email gate)" over IP allowlist/fail2ban/accept-risk. Step-by-step doc: `workspace/docs/OWNER-ACTION-R3-cloudflare-access-20260611.md`. First two attempts failed (first still reached WordPress directly; second protected login/admin but also caught `/`, `/shop`, PDPs and was deleted). Third attempt: two narrow per-path Access apps (`e-mart.com.bd` + Path `/wp-login.php*`, and `e-mart.com.bd` + Path `/wp-admin/*`), policy Allow → `hgc.bd71@gmail.com`. Live-verified: `/`, `/shop`, PDP all 200 no challenge; `/wp-login.php` and `/wp-admin/` return 302 to `cloudflareaccess.com` login challenge; `/wp-json/wc/v3/products` still 403 (unaffected, pre-existing).
+16. **Stale PM2 entry `emart-cleanser-apply`** (id 29) — found 2026-06-13. Points to `workspace/scripts/active/run_cleanser_apply.sh`, which doesn't exist on Local or VPS and has no git history. Stopped, `restart_time: 0`, likely a leftover registration from earlier humanizer work. Owner decision needed before `pm2 delete` + `pm2 save`.
+17. **VPS git metadata lag** — found 2026-06-13. VPS `HEAD` is at `fa1f873` (8 commits behind Local/origin's `60b10b8`). Content matches Local HEAD exactly (verified diff on all "modified" files); this is metadata-only staleness, not real divergence. Needs a git fetch/reset on VPS to realign — owner decision on timing.
 
 ---
 
@@ -96,7 +98,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 - ✅ Android preview APK built 2026-06-12 via EAS `preview`: app `1.1.1`, build `24`, build ID `3bc989ee-3b42-49e0-a544-548918ec91f7`; APK downloaded to `/tmp/emart-preview.apk` and local APK integrity/structure checks passed
 - ✅ Appetize browser smoke 2026-06-12: uploaded APK to `https://appetize.io/app/wquy3ev7ce2pqffnj3zh4lbah4`, launched via Chromium/CDP, verified Home/Shop/Cart/Account render
 - ✅ Bottom nav missing-icons bug fixed in commit `ce952ac`: tab bar now uses fontless React Native shapes; fixed EAS build `cb07590d-b556-4667-8198-fb582ea765df` uploaded to same Appetize app (versionCode 2) and screenshot-verified
-- ⚠️ Remaining mobile icon follow-up: non-tab Ionicons can still render blank in Appetize (header/action/account row icons); fix separately if full icon-font independence is required
+- ✅ App-wide icon-font removal in commit `60b10b8`: all `Ionicons`/`@expo/vector-icons` usage replaced with new fontless `apps/mobile/src/components/AppIcon.js` across `App.js` and every screen; `expo-font` plugin/deps removed. EAS build `db756401-83d1-4aae-8e7b-b0eb2428a157` FINISHED (artifact ready); pushed to `origin/main`. Not yet re-uploaded to Appetize for visual confirmation.
 - ⚠️ Live BFF gap: `/api/mobile/cart` and `/api/mobile/payment` 404; current app uses local cart + manual bKash/Nagad TrxID via `/api/checkout`
 - ⚠️ ADB gap: `adb` installed on VPS, but no phone visible; local laptop USB device is not exposed to the VPS
 - Next: real device COD/bKash/Nagad checkout smoke, then EAS production AAB + Play Store internal testing upload
