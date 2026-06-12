@@ -24,8 +24,8 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 
 ## 🔴 OWNER — Do these (workspace/docs/OWNER-ACTIONS-20260605.md)
 
-1. **MailPoet review email** — WooCommerce trigger → Order Completed → 3-day delay → review email
-2. **Meta CAPI test** — COD test order → Events Manager: verify Purchase value > 0 + BDT + InitiateCheckout
+1. ~~**MailPoet review email**~~ — ✅ done 2026-06-12: WooCommerce Order Completed → 3-day delay → review email automation set up and verified
+2. **Meta CAPI test** — ✅ test order 94184 placed 2026-06-12, Purchase event confirmed in Events Manager (BDT, value > 0, 8.0/10 match quality). Found+fixed same session: `emart-checkout-monitor` was firing real CAPI Purchase events for its 15-min synthetic test orders (root cause of 3 logged 500s on 94165-94167); fixed via `CHECKOUT_MONITOR_SECRET` skip-flag (commit `d18fe89`). Also fixed R16 InitiateCheckout/begin_checkout hydration race in same commit. **Outstanding**: owner to cancel/delete test order **94184** in WooCommerce admin, and re-check Events Manager Purchase count in 24-48h to confirm phantom Purchases stop
 3. **GSC URL indexing** — 7 URLs listed in OWNER-ACTIONS doc
 4. **Cloudflare cache rule** — /shop + /category, 1hr edge TTL
 5. **GMC title-risk products** — 11 products in gmc-steps3-6-report-20260605.md, approve/reject title changes
