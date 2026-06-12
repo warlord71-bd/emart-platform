@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
+import AppIcon from '../components/AppIcon';
 import { useOrders } from "../context/OrderContext";
 import { COLORS, FONTS } from "../theme/colors";
 
@@ -27,7 +27,7 @@ const MyOrdersScreen = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+            <AppIcon name="arrow-back" size={18} color={COLORS.text} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>My Orders</Text>
           <View style={{ width: 38 }} />
@@ -35,7 +35,7 @@ const MyOrdersScreen = ({ navigation }) => {
 
         <View style={styles.emptyWrap}>
           <View style={styles.emptyIcon}>
-            <Ionicons name="cube-outline" size={44} color={COLORS.accent} />
+            <AppIcon name="cube-outline" size={44} color={COLORS.accent} />
           </View>
           <Text style={styles.emptyTitle}>No Orders Yet</Text>
           <Text style={styles.emptySub}>Your order history will appear here</Text>
@@ -53,7 +53,7 @@ const MyOrdersScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+          <AppIcon name="arrow-back" size={18} color={COLORS.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>My Orders</Text>
         <Text style={styles.orderCount}>{orders.length}</Text>
@@ -72,7 +72,7 @@ const MyOrdersScreen = ({ navigation }) => {
                   <Text style={styles.orderDate}>{order.date}</Text>
                 </View>
                 <View style={[styles.statusBadge, { backgroundColor: config.bg }]}>
-                  <Ionicons name={config.icon} size={12} color={config.color} />
+                  <AppIcon name={config.icon} size={12} color={config.color} />
                   <Text style={[styles.statusText, { color: config.color }]}>{order.status}</Text>
                 </View>
               </View>
@@ -83,7 +83,7 @@ const MyOrdersScreen = ({ navigation }) => {
                   <Image source={{ uri: order.image }} style={styles.productImage} />
                 ) : (
                   <View style={styles.noImage}>
-                    <Ionicons name="cube-outline" size={22} color={COLORS.textLight} />
+                    <AppIcon name="cube-outline" size={22} color={COLORS.textLight} />
                   </View>
                 )}
                 <View style={{ flex: 1 }}>

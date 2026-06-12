@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -59,7 +59,7 @@ const AccountScreen = ({ navigation }) => {
     <View style={styles.container}>
       <LinearGradient colors={COLORS.gradientHeader} style={styles.header}>
         <View style={styles.avatar}>
-          <Ionicons name="person" size={28} color="rgba(255,255,255,0.6)" />
+          <AppIcon name="person" size={28} color="rgba(255,255,255,0.6)" />
         </View>
 
         {isLoggedIn ? (
@@ -90,7 +90,7 @@ const AccountScreen = ({ navigation }) => {
         <View style={styles.langCard}>
           <View style={styles.langLeft}>
             <View style={styles.menuIcon}>
-              <Ionicons name="language-outline" size={18} color={COLORS.accent} />
+              <AppIcon name="language-outline" size={18} color={COLORS.accent} />
             </View>
 
             <View>
@@ -122,7 +122,7 @@ const AccountScreen = ({ navigation }) => {
             onPress={() => navigation.navigate(item.screen)}
           >
             <View style={styles.menuIcon}>
-              <Ionicons name={item.icon} size={18} color={COLORS.accent} />
+              <AppIcon name={item.icon} size={18} color={COLORS.accent} />
             </View>
 
             <View style={styles.menuInfo}>
@@ -130,7 +130,7 @@ const AccountScreen = ({ navigation }) => {
               <Text style={styles.menuSub}>{item.sub}</Text>
             </View>
 
-            <Ionicons name="chevron-forward" size={16} color={COLORS.textLight} />
+            <AppIcon name="chevron-forward" size={16} color={COLORS.textLight} />
           </TouchableOpacity>
         ))}
 

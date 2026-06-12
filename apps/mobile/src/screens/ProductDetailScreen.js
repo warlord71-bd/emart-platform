@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, TextInput, Alert, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
@@ -16,7 +16,7 @@ const StarInput = ({ rating, onRate }) => (
   <View style={{ flexDirection: 'row', gap: 4 }}>
     {[1, 2, 3, 4, 5].map((star) => (
       <TouchableOpacity key={star} onPress={() => onRate(star)}>
-        <Ionicons
+        <AppIcon
           name={star <= rating ? 'star' : 'star-outline'}
           size={24}
           color={COLORS.gold}
@@ -157,14 +157,14 @@ const ProductDetailScreen = ({ navigation, route }) => {
       {/* Top Bar */}
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.topBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+          <AppIcon name="arrow-back" size={18} color={COLORS.text} />
         </TouchableOpacity>
         <View style={{ flexDirection: 'row', gap: 8 }}>
           <TouchableOpacity style={styles.topBtn}>
-            <Ionicons name="heart-outline" size={18} color={COLORS.text} />
+            <AppIcon name="heart-outline" size={18} color={COLORS.text} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.topBtn}>
-            <Ionicons name="share-outline" size={18} color={COLORS.text} />
+            <AppIcon name="share-outline" size={18} color={COLORS.text} />
           </TouchableOpacity>
         </View>
       </View>
@@ -246,7 +246,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
               ['shield-checkmark-outline', t('guarantee'), t('guaranteeInfo')],
             ].map(([icon, label, value]) => (
               <View key={label} style={styles.infoRow}>
-                <Ionicons name={icon} size={16} color={COLORS.accent} />
+                <AppIcon name={icon} size={16} color={COLORS.accent} />
                 <Text style={styles.infoLabel}>{label}:</Text>
                 <Text style={styles.infoValue}>{value}</Text>
               </View>
@@ -270,7 +270,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
                 style={styles.writeReviewBtn}
                 onPress={() => setShowReviewForm(!showReviewForm)}
               >
-                <Ionicons name="create-outline" size={14} color={COLORS.accent} />
+                <AppIcon name="create-outline" size={14} color={COLORS.accent} />
                 <Text style={styles.writeReviewText}>Write Review</Text>
               </TouchableOpacity>
             </View>
@@ -325,7 +325,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
               ))
             ) : (
               <View style={styles.noReviews}>
-                <Ionicons name="chatbubble-outline" size={28} color={COLORS.textLight} />
+                <AppIcon name="chatbubble-outline" size={28} color={COLORS.textLight} />
                 <Text style={styles.noReviewsText}>No reviews yet. Be the first!</Text>
               </View>
             )}

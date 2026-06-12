@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 
 import { COLORS, FONTS } from '../theme/colors';
 import { useLanguage } from '../context/LanguageContext';
@@ -81,7 +81,7 @@ const CartScreen = ({ navigation }) => {
       </View>
 
       <TouchableOpacity style={styles.removeBtn} onPress={() => removeFromCart(item.id)}>
-        <Ionicons name="trash-outline" size={16} color={COLORS.error} />
+        <AppIcon name="trash-outline" size={16} color={COLORS.error} />
       </TouchableOpacity>
     </View>
   );

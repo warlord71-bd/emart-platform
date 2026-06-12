@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from "../theme/colors";
 import { useCart } from "../context/CartContext";
 import { useOrders } from "../context/OrderContext";
@@ -127,7 +127,7 @@ const CheckoutScreen = ({ navigation }) => {
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.headerRow}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+            <AppIcon name="arrow-back" size={18} color={COLORS.text} />
           </TouchableOpacity>
           <Text style={styles.title}>Checkout</Text>
           <View style={{ width: 38 }} />
@@ -136,27 +136,27 @@ const CheckoutScreen = ({ navigation }) => {
         {/* Customer Info */}
         <View style={styles.section}>
           <View style={styles.sectionTitleRow}>
-            <Ionicons name="person-outline" size={16} color={COLORS.accent} />
+            <AppIcon name="person-outline" size={16} color={COLORS.accent} />
             <Text style={styles.sectionTitle}>Customer Information</Text>
           </View>
           <View style={styles.inputWrap}>
-            <Ionicons name="person-outline" size={16} color={COLORS.textLight} />
+            <AppIcon name="person-outline" size={16} color={COLORS.textLight} />
             <TextInput style={styles.input} placeholder="Full Name" placeholderTextColor={COLORS.textLight} value={name} onChangeText={setName} />
           </View>
           <View style={styles.inputWrap}>
-            <Ionicons name="mail-outline" size={16} color={COLORS.textLight} />
+            <AppIcon name="mail-outline" size={16} color={COLORS.textLight} />
             <TextInput style={styles.input} placeholder="Email Address" placeholderTextColor={COLORS.textLight} keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} />
           </View>
           <View style={styles.inputWrap}>
-            <Ionicons name="call-outline" size={16} color={COLORS.textLight} />
+            <AppIcon name="call-outline" size={16} color={COLORS.textLight} />
             <TextInput style={styles.input} placeholder="Phone Number" placeholderTextColor={COLORS.textLight} keyboardType="phone-pad" value={phone} onChangeText={setPhone} />
           </View>
           <View style={[styles.inputWrap, { height: 80, alignItems: "flex-start", paddingTop: 12 }]}>
-            <Ionicons name="location-outline" size={16} color={COLORS.textLight} style={{ marginTop: 2 }} />
+            <AppIcon name="location-outline" size={16} color={COLORS.textLight} style={{ marginTop: 2 }} />
             <TextInput style={[styles.input, { height: 60 }]} placeholder="Delivery Address" placeholderTextColor={COLORS.textLight} value={address} onChangeText={setAddress} multiline />
           </View>
           <View style={styles.inputWrap}>
-            <Ionicons name="business-outline" size={16} color={COLORS.textLight} />
+            <AppIcon name="business-outline" size={16} color={COLORS.textLight} />
             <TextInput style={styles.input} placeholder="City / District" placeholderTextColor={COLORS.textLight} value={city} onChangeText={setCity} />
           </View>
         </View>
@@ -164,26 +164,26 @@ const CheckoutScreen = ({ navigation }) => {
         {/* Coupon */}
         <View style={styles.section}>
           <View style={styles.sectionTitleRow}>
-            <Ionicons name="pricetag-outline" size={16} color={COLORS.accent} />
+            <AppIcon name="pricetag-outline" size={16} color={COLORS.accent} />
             <Text style={styles.sectionTitle}>Coupon Code</Text>
           </View>
           {couponApplied ? (
             <View style={styles.couponApplied}>
               <View style={styles.couponAppliedLeft}>
-                <Ionicons name="checkmark-circle" size={18} color={COLORS.success} />
+                <AppIcon name="checkmark-circle" size={18} color={COLORS.success} />
                 <View>
                   <Text style={styles.couponAppliedCode}>{couponApplied.code.toUpperCase()}</Text>
                   <Text style={styles.couponAppliedSave}>You save ৳{couponDiscount}</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={removeCoupon}>
-                <Ionicons name="close-circle" size={22} color={COLORS.error} />
+                <AppIcon name="close-circle" size={22} color={COLORS.error} />
               </TouchableOpacity>
             </View>
           ) : (
             <View style={styles.couponRow}>
               <View style={[styles.inputWrap, { flex: 1, marginBottom: 0 }]}>
-                <Ionicons name="pricetag-outline" size={16} color={COLORS.textLight} />
+                <AppIcon name="pricetag-outline" size={16} color={COLORS.textLight} />
                 <TextInput style={styles.input} placeholder="Enter coupon code" placeholderTextColor={COLORS.textLight} value={couponCode} onChangeText={setCouponCode} autoCapitalize="characters" />
               </View>
               <TouchableOpacity style={styles.couponApplyBtn} onPress={handleApplyCoupon} disabled={couponLoading}>
@@ -196,7 +196,7 @@ const CheckoutScreen = ({ navigation }) => {
         {/* Payment */}
         <View style={styles.section}>
           <View style={styles.sectionTitleRow}>
-            <Ionicons name="card-outline" size={16} color={COLORS.accent} />
+            <AppIcon name="card-outline" size={16} color={COLORS.accent} />
             <Text style={styles.sectionTitle}>Payment Method</Text>
           </View>
           {paymentMethods.map((method) => (
@@ -204,7 +204,7 @@ const CheckoutScreen = ({ navigation }) => {
               <View style={[styles.radio, payment === method.key && styles.radioActive]}>
                 {payment === method.key && <View style={styles.radioDot} />}
               </View>
-              <Ionicons name={method.icon} size={18} color={payment === method.key ? COLORS.accent : COLORS.textSecondary} />
+              <AppIcon name={method.icon} size={18} color={payment === method.key ? COLORS.accent : COLORS.textSecondary} />
               <Text style={[styles.payText, payment === method.key && styles.payTextActive]}>{method.label}</Text>
             </TouchableOpacity>
           ))}
@@ -215,7 +215,7 @@ const CheckoutScreen = ({ navigation }) => {
                 <Text style={styles.merchantNumber}>{MERCHANT_NUMBER}</Text>
               </View>
               <View style={styles.inputWrap}>
-                <Ionicons name="receipt-outline" size={16} color={COLORS.textLight} />
+                <AppIcon name="receipt-outline" size={16} color={COLORS.textLight} />
                 <TextInput style={styles.input} placeholder="Enter Transaction ID" placeholderTextColor={COLORS.textLight} value={trxId} onChangeText={setTrxId} />
               </View>
             </View>
@@ -225,7 +225,7 @@ const CheckoutScreen = ({ navigation }) => {
         {/* Summary */}
         <View style={styles.section}>
           <View style={styles.sectionTitleRow}>
-            <Ionicons name="receipt-outline" size={16} color={COLORS.accent} />
+            <AppIcon name="receipt-outline" size={16} color={COLORS.accent} />
             <Text style={styles.sectionTitle}>Order Summary</Text>
           </View>
           <View style={styles.summaryRow}><Text style={styles.summaryLabel}>Items ({items.reduce((sum, item) => sum + item.quantity, 0)})</Text><Text style={styles.summaryValue}>৳{Math.round(cartTotal)}</Text></View>

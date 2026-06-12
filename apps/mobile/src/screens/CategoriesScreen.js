@@ -4,7 +4,7 @@ import {
   StyleSheet, ActivityIndicator, Animated,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import { useLanguage } from '../context/LanguageContext';
 import { getParentCategories, getSubCategories } from '../services/woocommerce';
@@ -107,7 +107,7 @@ const CategoriesScreen = ({ navigation }) => {
               onPress={() => setActiveTab(tab.key)}
               activeOpacity={0.8}
             >
-              <Ionicons name={tab.icon} size={14} color={activeTab === tab.key ? '#fff' : COLORS.text} />
+              <AppIcon name={tab.icon} size={14} color={activeTab === tab.key ? '#fff' : COLORS.text} />
               <Text style={[styles.tabText, activeTab === tab.key && styles.tabTextActive]}>{tab.label}</Text>
             </TouchableOpacity>
           ))}
@@ -123,7 +123,7 @@ const CategoriesScreen = ({ navigation }) => {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleRow}>
-                <Ionicons name="pricetag" size={16} color={COLORS.accent} />
+                <AppIcon name="pricetag" size={16} color={COLORS.accent} />
                 <Text style={styles.sectionTitle}>Shop by Brand</Text>
               </View>
               {activeTab === 'all' && (
@@ -178,7 +178,7 @@ const CategoriesScreen = ({ navigation }) => {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleRow}>
-                <Ionicons name="medkit" size={16} color={COLORS.accent} />
+                <AppIcon name="medkit" size={16} color={COLORS.accent} />
                 <Text style={styles.sectionTitle}>Skincare by Concern</Text>
               </View>
             </View>
@@ -192,7 +192,7 @@ const CategoriesScreen = ({ navigation }) => {
                   activeOpacity={0.8}
                 >
                   <View style={[styles.concernIcon, { backgroundColor: concern.color + '20' }]}>
-                    <Ionicons name={concern.icon} size={20} color={concern.color} />
+                    <AppIcon name={concern.icon} size={20} color={concern.color} />
                   </View>
                   <Text style={styles.concernName}>{concern.name}</Text>
                 </TouchableOpacity>
@@ -208,7 +208,7 @@ const CategoriesScreen = ({ navigation }) => {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleRow}>
-                <Ionicons name="grid" size={16} color={COLORS.accent} />
+                <AppIcon name="grid" size={16} color={COLORS.accent} />
                 <Text style={styles.sectionTitle}>Product Categories</Text>
               </View>
             </View>
@@ -243,7 +243,7 @@ const CategoriesScreen = ({ navigation }) => {
                       <Text style={styles.catCount}>{cat.count} products</Text>
                     </View>
                     <View style={styles.catArrow}>
-                      <Ionicons name="chevron-forward" size={14} color={COLORS.textLight} />
+                      <AppIcon name="chevron-forward" size={14} color={COLORS.textLight} />
                     </View>
                   </TouchableOpacity>
                 ))}
@@ -262,7 +262,7 @@ const CategoriesScreen = ({ navigation }) => {
                   <Text style={styles.ctaSub}>Check out today's best discounts</Text>
                 </View>
                 <View style={styles.ctaArrow}>
-                  <Ionicons name="flash" size={20} color={COLORS.accent} />
+                  <AppIcon name="flash" size={20} color={COLORS.accent} />
                 </View>
               </LinearGradient>
             </TouchableOpacity>

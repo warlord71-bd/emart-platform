@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import { useAuth } from '../context/AuthContext';
 
@@ -34,14 +34,14 @@ const LoginScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <View style={styles.backCircle}>
-            <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+            <AppIcon name="arrow-back" size={18} color={COLORS.text} />
           </View>
         </TouchableOpacity>
 
         {/* Header */}
         <View style={styles.header}>
           <LinearGradient colors={COLORS.gradientAccent} style={styles.iconCircle}>
-            <Ionicons name="person-outline" size={28} color="#fff" />
+            <AppIcon name="person-outline" size={28} color="#fff" />
           </LinearGradient>
           <Text style={styles.title}>Welcome Back</Text>
           <Text style={styles.subtitle}>Sign in to your eMart BD account</Text>
@@ -70,15 +70,15 @@ const LoginScreen = ({ navigation }) => {
         {/* Form */}
         <View style={styles.form}>
           <View style={styles.inputWrap}>
-            <Ionicons name="mail-outline" size={18} color={COLORS.textLight} style={styles.inputIcon} />
+            <AppIcon name="mail-outline" size={18} color={COLORS.textLight} style={styles.inputIcon} />
             <TextInput placeholder="Email or Phone" placeholderTextColor={COLORS.textLight} style={styles.input} value={emailOrPhone} onChangeText={setEmailOrPhone} autoCapitalize="none" keyboardType="email-address" />
           </View>
 
           <View style={styles.inputWrap}>
-            <Ionicons name="lock-closed-outline" size={18} color={COLORS.textLight} style={styles.inputIcon} />
+            <AppIcon name="lock-closed-outline" size={18} color={COLORS.textLight} style={styles.inputIcon} />
             <TextInput placeholder="Password" placeholderTextColor={COLORS.textLight} secureTextEntry={!showPassword} style={styles.input} value={password} onChangeText={setPassword} />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeBtn}>
-              <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={18} color={COLORS.textLight} />
+              <AppIcon name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={18} color={COLORS.textLight} />
             </TouchableOpacity>
           </View>
 
@@ -90,7 +90,7 @@ const LoginScreen = ({ navigation }) => {
             <LinearGradient colors={COLORS.gradientButton} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.signInBtn}>
               {loading
                 ? <ActivityIndicator color="#fff" />
-                : <><Text style={styles.signInText}>Sign In</Text><Ionicons name="arrow-forward" size={18} color="#fff" /></>
+                : <><Text style={styles.signInText}>Sign In</Text><AppIcon name="arrow-forward" size={18} color="#fff" /></>
               }
             </LinearGradient>
           </TouchableOpacity>

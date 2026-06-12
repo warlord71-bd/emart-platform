@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from './AppIcon';
 
 import { COLORS, FONTS } from '../theme/colors';
 import { useCart } from '../context/CartContext';
@@ -47,7 +47,7 @@ const ProductCard = ({ product, onPress, compact = false }) => {
               onError={() => { setImageError(true); setImageLoading(false); }}
             />
           ) : (
-            <Ionicons name="image-outline" size={30} color={COLORS.textLight} />
+            <AppIcon name="image-outline" size={30} color={COLORS.textLight} />
           )}
         </View>
 
@@ -92,7 +92,7 @@ const ProductCard = ({ product, onPress, compact = false }) => {
           />
         ) : (
           <View style={styles.errorBox}>
-            <Ionicons name="image-outline" size={36} color={COLORS.textLight} />
+            <AppIcon name="image-outline" size={36} color={COLORS.textLight} />
           </View>
         )}
       </View>
@@ -140,7 +140,7 @@ const ProductCard = ({ product, onPress, compact = false }) => {
             end={{ x: 1, y: 0 }}
             style={styles.addBtn}
           >
-            <Ionicons name="cart-outline" size={13} color="#fff" />
+            <AppIcon name="cart-outline" size={13} color="#fff" />
             <Text style={styles.addBtnText}>{inStock ? 'ADD TO CART' : 'OUT OF STOCK'}</Text>
           </LinearGradient>
         </TouchableOpacity>

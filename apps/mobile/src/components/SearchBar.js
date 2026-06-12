@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from './AppIcon';
 import { COLORS } from '../theme/colors';
 
 const SearchBar = ({ onSearch, placeholder = 'Search...', dark = false }) => {
@@ -12,7 +12,7 @@ const SearchBar = ({ onSearch, placeholder = 'Search...', dark = false }) => {
 
   return (
     <View style={[styles.container, dark && styles.containerDark]}>
-      <Ionicons name="search" size={16} color={dark ? 'rgba(255,255,255,0.5)' : COLORS.textLight} />
+      <AppIcon name="search" size={16} color={dark ? 'rgba(255,255,255,0.5)' : COLORS.textLight} />
       <TextInput
         style={[styles.input, dark && styles.inputDark]}
         placeholder={placeholder}
@@ -24,7 +24,7 @@ const SearchBar = ({ onSearch, placeholder = 'Search...', dark = false }) => {
       />
       {query.length > 0 && (
         <TouchableOpacity onPress={() => { setQuery(''); onSearch?.(''); }}>
-          <Ionicons name="close-circle" size={16} color={dark ? 'rgba(255,255,255,0.5)' : COLORS.textLight} />
+          <AppIcon name="close-circle" size={16} color={dark ? 'rgba(255,255,255,0.5)' : COLORS.textLight} />
         </TouchableOpacity>
       )}
     </View>

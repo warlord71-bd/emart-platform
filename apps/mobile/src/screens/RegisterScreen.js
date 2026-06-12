@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import { useAuth } from '../context/AuthContext';
 
@@ -81,7 +81,7 @@ const RegisterScreen = ({ navigation }) => {
         {/* Back Button */}
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <View style={styles.backCircle}>
-            <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+            <AppIcon name="arrow-back" size={18} color={COLORS.text} />
           </View>
         </TouchableOpacity>
 
@@ -91,7 +91,7 @@ const RegisterScreen = ({ navigation }) => {
             colors={COLORS.gradientAccent}
             style={styles.iconCircle}
           >
-            <Ionicons name="person-add-outline" size={28} color="#fff" />
+            <AppIcon name="person-add-outline" size={28} color="#fff" />
           </LinearGradient>
           <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subtitle}>Join eMart BD for the best beauty deals</Text>
@@ -101,7 +101,7 @@ const RegisterScreen = ({ navigation }) => {
         <View style={styles.form}>
           {fields.map((field) => (
             <View key={field.key} style={styles.inputWrap}>
-              <Ionicons name={field.icon} size={18} color={COLORS.textLight} style={styles.inputIcon} />
+              <AppIcon name={field.icon} size={18} color={COLORS.textLight} style={styles.inputIcon} />
               <TextInput
                 placeholder={field.placeholder}
                 placeholderTextColor={COLORS.textLight}
@@ -116,7 +116,7 @@ const RegisterScreen = ({ navigation }) => {
 
           {/* Password */}
           <View style={styles.inputWrap}>
-            <Ionicons name="lock-closed-outline" size={18} color={COLORS.textLight} style={styles.inputIcon} />
+            <AppIcon name="lock-closed-outline" size={18} color={COLORS.textLight} style={styles.inputIcon} />
             <TextInput
               placeholder="Password *"
               placeholderTextColor={COLORS.textLight}
@@ -126,7 +126,7 @@ const RegisterScreen = ({ navigation }) => {
               onChangeText={setPassword}
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeBtn}>
-              <Ionicons
+              <AppIcon
                 name={showPassword ? 'eye-off-outline' : 'eye-outline'}
                 size={18}
                 color={COLORS.textLight}
@@ -136,7 +136,7 @@ const RegisterScreen = ({ navigation }) => {
 
           {/* Confirm Password */}
           <View style={styles.inputWrap}>
-            <Ionicons name="shield-checkmark-outline" size={18} color={COLORS.textLight} style={styles.inputIcon} />
+            <AppIcon name="shield-checkmark-outline" size={18} color={COLORS.textLight} style={styles.inputIcon} />
             <TextInput
               placeholder="Confirm Password *"
               placeholderTextColor={COLORS.textLight}
@@ -157,7 +157,7 @@ const RegisterScreen = ({ navigation }) => {
             >
               {loading
                 ? <ActivityIndicator color="#fff" />
-                : <><Text style={styles.registerText}>Create Account</Text><Ionicons name="arrow-forward" size={18} color="#fff" /></>
+                : <><Text style={styles.registerText}>Create Account</Text><AppIcon name="arrow-forward" size={18} color="#fff" /></>
               }
             </LinearGradient>
           </TouchableOpacity>

@@ -15,7 +15,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
@@ -80,7 +80,7 @@ const FlashSaleHeader = ({ onSeeAll, t }) => {
   return (
     <View style={styles.flashHeader}>
       <View style={styles.flashLeft}>
-        <Ionicons name="flash" size={18} color={COLORS.accent} />
+        <AppIcon name="flash" size={18} color={COLORS.accent} />
         <Text style={styles.flashTitle}>{t('flashDeals')}</Text>
       </View>
       <View style={styles.flashRight}>
@@ -291,10 +291,10 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.langText}>{langLabel === 'English' ? 'বাং' : 'EN'}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.headerIcon}>
-                <Ionicons name="notifications-outline" size={18} color="#fff" />
+                <AppIcon name="notifications-outline" size={18} color="#fff" />
               </TouchableOpacity>
               <TouchableOpacity style={styles.headerIcon} onPress={() => navigation.navigate('CartTab')}>
-                <Ionicons name="cart-outline" size={18} color="#fff" />
+                <AppIcon name="cart-outline" size={18} color="#fff" />
                 {cartCount > 0 && (
                   <View style={styles.cartBadge}>
                     <Text style={styles.cartBadgeText}>{cartCount > 99 ? '99+' : cartCount}</Text>
@@ -310,11 +310,11 @@ const HomeScreen = ({ navigation }) => {
         <Animated.View style={[styles.miniHeader, { opacity: miniHeaderOpacity }]}>
           <Image source={require('../../assets/logo.png')} style={styles.miniLogo} />
           <View style={styles.miniSearch}>
-            <Ionicons name="search-outline" size={16} color={COLORS.textSecondary} />
+            <AppIcon name="search-outline" size={16} color={COLORS.textSecondary} />
             <Text style={styles.miniSearchText}>Search products…</Text>
           </View>
           <TouchableOpacity style={styles.headerIcon} onPress={() => navigation.navigate('CartTab')}>
-            <Ionicons name="cart-outline" size={18} color="#fff" />
+            <AppIcon name="cart-outline" size={18} color="#fff" />
             {cartCount > 0 && (
               <View style={styles.cartBadge}>
                 <Text style={styles.cartBadgeText}>{cartCount > 99 ? '99+' : cartCount}</Text>
@@ -335,10 +335,10 @@ const HomeScreen = ({ navigation }) => {
       >
         {/* ── Delivery Bar ── */}
         <View style={styles.deliveryBar}>
-          <Ionicons name="location-outline" size={14} color={COLORS.accent} />
+          <AppIcon name="location-outline" size={14} color={COLORS.accent} />
           <Text style={styles.deliveryText}>Deliver to <Text style={styles.deliveryBold}>Dhaka</Text></Text>
           <View style={styles.deliveryDivider} />
-          <Ionicons name="checkmark-circle-outline" size={13} color="#27AE60" />
+          <AppIcon name="checkmark-circle-outline" size={13} color="#27AE60" />
           <Text style={styles.deliveryCod}>Cash on Delivery</Text>
         </View>
 
@@ -391,7 +391,7 @@ const HomeScreen = ({ navigation }) => {
           ].map((chip) => (
             <TouchableOpacity key={chip.key} style={styles.chip} onPress={chip.onPress} activeOpacity={0.85}>
               <View style={[styles.chipIconCircle, { backgroundColor: chip.color + '18' }]}>
-                <Ionicons name={chip.icon} size={15} color={chip.color} />
+                <AppIcon name={chip.icon} size={15} color={chip.color} />
               </View>
               <Text style={styles.chipText}>{chip.label}</Text>
             </TouchableOpacity>
@@ -463,7 +463,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionTitleRow}>
-              <Ionicons name="trophy-outline" size={16} color={COLORS.accent} />
+              <AppIcon name="trophy-outline" size={16} color={COLORS.accent} />
               <Text style={[styles.sectionTitle, { marginLeft: 6 }]}>Top Picks</Text>
             </View>
             <TouchableOpacity onPress={() => navigation.navigate('Products')}>
@@ -498,7 +498,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionTitleRow}>
-              <Ionicons name="sparkles-outline" size={16} color="#7C3AED" />
+              <AppIcon name="sparkles-outline" size={16} color="#7C3AED" />
               <Text style={[styles.sectionTitle, { marginLeft: 6 }]}>{t('newArrivals')}</Text>
             </View>
             <TouchableOpacity onPress={() => navigation.navigate('Products', { sort: 'newest' })}>
@@ -520,7 +520,7 @@ const HomeScreen = ({ navigation }) => {
             { icon: 'refresh-outline', label: 'Easy Returns', sub: '7 day policy' },
           ].map((item, i) => (
             <View key={i} style={[styles.promoItem, i < 2 && styles.promoItemBorder]}>
-              <Ionicons name={item.icon} size={22} color={COLORS.accent} />
+              <AppIcon name={item.icon} size={22} color={COLORS.accent} />
               <Text style={styles.promoLabel}>{item.label}</Text>
               <Text style={styles.promoSub}>{item.sub}</Text>
             </View>
@@ -536,7 +536,7 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.ctaSub}>Explore the full collection</Text>
               </View>
               <View style={styles.ctaArrow}>
-                <Ionicons name="arrow-forward" size={20} color={COLORS.accent} />
+                <AppIcon name="arrow-forward" size={20} color={COLORS.accent} />
               </View>
             </LinearGradient>
           </TouchableOpacity>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 
 const AddressScreen = ({ navigation }) => {
@@ -9,7 +9,7 @@ const AddressScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+          <AppIcon name="arrow-back" size={18} color={COLORS.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Delivery Address</Text>
         <View style={{ width: 38 }} />
@@ -17,7 +17,7 @@ const AddressScreen = ({ navigation }) => {
 
       <View style={styles.emptyWrap}>
         <View style={styles.iconCircle}>
-          <Ionicons name="location-outline" size={40} color={COLORS.accent} />
+          <AppIcon name="location-outline" size={40} color={COLORS.accent} />
         </View>
         <Text style={styles.title}>No Address Added</Text>
         <Text style={styles.subtitle}>
@@ -30,7 +30,7 @@ const AddressScreen = ({ navigation }) => {
             end={{ x: 1, y: 0 }}
             style={styles.btn}
           >
-            <Ionicons name="add" size={18} color="#fff" />
+            <AppIcon name="add" size={18} color="#fff" />
             <Text style={styles.btnText}>Add Address</Text>
           </LinearGradient>
         </TouchableOpacity>

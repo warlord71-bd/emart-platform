@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 
 const PaymentsScreen = ({ navigation }) => {
@@ -14,7 +14,7 @@ const PaymentsScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+          <AppIcon name="arrow-back" size={18} color={COLORS.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Payment Methods</Text>
         <View style={{ width: 38 }} />
@@ -26,7 +26,7 @@ const PaymentsScreen = ({ navigation }) => {
         {methods.map((method, i) => (
           <View key={i} style={styles.card}>
             <View style={styles.cardIcon}>
-              <Ionicons name={method.icon} size={20} color={COLORS.accent} />
+              <AppIcon name={method.icon} size={20} color={COLORS.accent} />
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.cardLabel}>{method.label}</Text>
@@ -37,7 +37,7 @@ const PaymentsScreen = ({ navigation }) => {
         ))}
 
         <View style={styles.infoBox}>
-          <Ionicons name="information-circle-outline" size={16} color={COLORS.accent} />
+          <AppIcon name="information-circle-outline" size={16} color={COLORS.accent} />
           <Text style={styles.infoText}>
             Payment method is selected during checkout. All transactions are secure.
           </Text>

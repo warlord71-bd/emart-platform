@@ -43,14 +43,6 @@
       "shippingPolicyUrl": "https://e-mart.com.bd/shipping-policy"
     },
     "plugins": [
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf"
-          ]
-        }
-      ],
       "expo-notifications",
       [
         "expo-build-properties",

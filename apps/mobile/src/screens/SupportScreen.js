@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 
 const WHATSAPP_NUMBER = '8801919797399';
@@ -29,7 +29,7 @@ const SupportScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+          <AppIcon name="arrow-back" size={18} color={COLORS.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Help & Support</Text>
         <View style={{ width: 38 }} />
@@ -40,13 +40,13 @@ const SupportScreen = ({ navigation }) => {
         {supportOptions.map((opt, i) => (
           <TouchableOpacity key={i} style={styles.card} activeOpacity={0.8} onPress={opt.onPress}>
             <View style={[styles.cardIcon, { backgroundColor: opt.color + '18' }]}>
-              <Ionicons name={opt.icon} size={20} color={opt.color} />
+              <AppIcon name={opt.icon} size={20} color={opt.color} />
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.cardLabel}>{opt.label}</Text>
               <Text style={styles.cardSub}>{opt.sub}</Text>
             </View>
-            <Ionicons name="chevron-forward" size={16} color={COLORS.textLight} />
+            <AppIcon name="chevron-forward" size={16} color={COLORS.textLight} />
           </TouchableOpacity>
         ))}
 

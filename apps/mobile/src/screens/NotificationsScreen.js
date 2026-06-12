@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Switch, Alert, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
@@ -116,7 +116,7 @@ const NotificationsScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+          <AppIcon name="arrow-back" size={18} color={COLORS.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Notifications</Text>
         <View style={{ width: 38 }} />
@@ -127,7 +127,7 @@ const NotificationsScreen = ({ navigation }) => {
         <View style={styles.masterCard}>
           <View style={styles.masterLeft}>
             <View style={[styles.iconCircle, { backgroundColor: pushEnabled ? COLORS.accent + '18' : COLORS.bg }]}>
-              <Ionicons name={pushEnabled ? 'notifications' : 'notifications-off-outline'} size={22} color={pushEnabled ? COLORS.accent : COLORS.textLight} />
+              <AppIcon name={pushEnabled ? 'notifications' : 'notifications-off-outline'} size={22} color={pushEnabled ? COLORS.accent : COLORS.textLight} />
             </View>
             <View>
               <Text style={styles.masterLabel}>Push Notifications</Text>
@@ -149,7 +149,7 @@ const NotificationsScreen = ({ navigation }) => {
             {notifTypes.map((item) => (
               <View key={item.key} style={styles.typeCard}>
                 <View style={styles.typeIcon}>
-                  <Ionicons name={item.icon} size={18} color={COLORS.accent} />
+                  <AppIcon name={item.icon} size={18} color={COLORS.accent} />
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.typeLabel}>{item.label}</Text>
@@ -169,7 +169,7 @@ const NotificationsScreen = ({ navigation }) => {
 
         {!pushEnabled && (
           <View style={styles.disabledBox}>
-            <Ionicons name="notifications-off-outline" size={40} color={COLORS.textLight} />
+            <AppIcon name="notifications-off-outline" size={40} color={COLORS.textLight} />
             <Text style={styles.disabledTitle}>Notifications are off</Text>
             <Text style={styles.disabledSub}>Enable push notifications to get order updates, deals, and new arrival alerts</Text>
           </View>

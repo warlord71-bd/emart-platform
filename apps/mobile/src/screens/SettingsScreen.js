@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Switch, Linking } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -37,7 +37,7 @@ const SettingsScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+          <AppIcon name="arrow-back" size={18} color={COLORS.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Settings</Text>
         <View style={{ width: 38 }} />
@@ -55,7 +55,7 @@ const SettingsScreen = ({ navigation }) => {
                 onPress={item.onPress}
               >
                 <View style={styles.rowIcon}>
-                  <Ionicons name={item.icon} size={18} color={COLORS.accent} />
+                  <AppIcon name={item.icon} size={18} color={COLORS.accent} />
                 </View>
                 <Text style={styles.rowLabel}>{item.label}</Text>
                 {item.value && <Text style={styles.rowValue}>{item.value}</Text>}
@@ -75,7 +75,7 @@ const SettingsScreen = ({ navigation }) => {
                     style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
                   />
                 ) : (
-                  <Ionicons name="chevron-forward" size={16} color={COLORS.textLight} />
+                  <AppIcon name="chevron-forward" size={16} color={COLORS.textLight} />
                 )}
               </TouchableOpacity>
             ))}

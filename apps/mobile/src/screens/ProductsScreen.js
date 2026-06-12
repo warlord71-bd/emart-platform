@@ -4,7 +4,7 @@ import {
   ActivityIndicator, Animated, ScrollView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
@@ -130,7 +130,7 @@ const ProductsScreen = ({ navigation, route }) => {
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Ionicons name="arrow-back" size={18} color={COLORS.text} />
+            <AppIcon name="arrow-back" size={18} color={COLORS.text} />
           </TouchableOpacity>
 
           <View style={styles.titleWrap}>
@@ -143,7 +143,7 @@ const ProductsScreen = ({ navigation, route }) => {
           </View>
 
           <TouchableOpacity style={styles.cartIcon} onPress={() => navigation.navigate('CartTab')}>
-            <Ionicons name="cart-outline" size={20} color={COLORS.text} />
+            <AppIcon name="cart-outline" size={20} color={COLORS.text} />
             {cartCount > 0 && (
               <View style={styles.cartBadge}>
                 <Text style={styles.cartBadgeText}>{cartCount > 99 ? '99+' : cartCount}</Text>
@@ -162,7 +162,7 @@ const ProductsScreen = ({ navigation, route }) => {
               style={[styles.filterChip, showSort && styles.filterChipActive]}
               onPress={() => setShowSort(!showSort)}
             >
-              <Ionicons name="swap-vertical" size={13} color={showSort ? '#fff' : COLORS.text} />
+              <AppIcon name="swap-vertical" size={13} color={showSort ? '#fff' : COLORS.text} />
               <Text style={[styles.filterChipText, showSort && { color: '#fff' }]}>
                 {currentSort?.key ? currentSort.label : t('sort')}
               </Text>
@@ -171,7 +171,7 @@ const ProductsScreen = ({ navigation, route }) => {
             {/* On Sale chip */}
             {onSale && (
               <View style={styles.activeChip}>
-                <Ionicons name="flash" size={12} color={COLORS.accent} />
+                <AppIcon name="flash" size={12} color={COLORS.accent} />
                 <Text style={styles.activeChipText}>On Sale</Text>
               </View>
             )}
@@ -181,7 +181,7 @@ const ProductsScreen = ({ navigation, route }) => {
               <View style={styles.activeChip}>
                 <Text style={styles.activeChipText}>{categoryName}</Text>
                 <TouchableOpacity onPress={() => navigation.setParams({ categoryId: null, categoryName: null })}>
-                  <Ionicons name="close-circle" size={14} color={COLORS.accent} />
+                  <AppIcon name="close-circle" size={14} color={COLORS.accent} />
                 </TouchableOpacity>
               </View>
             )}
@@ -193,13 +193,13 @@ const ProductsScreen = ({ navigation, route }) => {
               style={[styles.viewBtn, viewMode === 'grid' && styles.viewBtnActive]}
               onPress={() => setViewMode('grid')}
             >
-              <Ionicons name="grid-outline" size={14} color={viewMode === 'grid' ? COLORS.accent : COLORS.textLight} />
+              <AppIcon name="grid-outline" size={14} color={viewMode === 'grid' ? COLORS.accent : COLORS.textLight} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.viewBtn, viewMode === 'list' && styles.viewBtnActive]}
               onPress={() => setViewMode('list')}
             >
-              <Ionicons name="list-outline" size={14} color={viewMode === 'list' ? COLORS.accent : COLORS.textLight} />
+              <AppIcon name="list-outline" size={14} color={viewMode === 'list' ? COLORS.accent : COLORS.textLight} />
             </TouchableOpacity>
           </View>
         </View>
@@ -214,10 +214,10 @@ const ProductsScreen = ({ navigation, route }) => {
                 onPress={() => { setSortBy(opt.key); setShowSort(false); }}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <Ionicons name={opt.icon} size={14} color={sortBy === opt.key ? COLORS.accent : COLORS.textSecondary} />
+                  <AppIcon name={opt.icon} size={14} color={sortBy === opt.key ? COLORS.accent : COLORS.textSecondary} />
                   <Text style={[styles.sortOptionText, sortBy === opt.key && styles.sortOptionTextActive]}>{opt.label}</Text>
                 </View>
-                {sortBy === opt.key && <Ionicons name="checkmark-circle" size={16} color={COLORS.accent} />}
+                {sortBy === opt.key && <AppIcon name="checkmark-circle" size={16} color={COLORS.accent} />}
               </TouchableOpacity>
             ))}
           </View>
@@ -266,7 +266,7 @@ const ProductsScreen = ({ navigation, route }) => {
           ListEmptyComponent={
             <View style={styles.empty}>
               <View style={styles.emptyIcon}>
-                <Ionicons name="search-outline" size={36} color={COLORS.textLight} />
+                <AppIcon name="search-outline" size={36} color={COLORS.textLight} />
               </View>
               <Text style={styles.emptyTitle}>{t('noProducts')}</Text>
               <Text style={styles.emptySub}>Try a different search or browse categories</Text>

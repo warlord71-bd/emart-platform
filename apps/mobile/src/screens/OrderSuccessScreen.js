@@ -7,7 +7,7 @@ import {
   Animated,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { COLORS, FONTS } from '../theme/colors';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -42,7 +42,7 @@ const OrderSuccessScreen = ({ navigation, route }) => {
           colors={[COLORS.success, '#2ECC71']}
           style={styles.iconCircle}
         >
-          <Ionicons name="checkmark" size={48} color="#fff" />
+          <AppIcon name="checkmark" size={48} color="#fff" />
         </LinearGradient>
       </Animated.View>
 
@@ -81,7 +81,7 @@ const OrderSuccessScreen = ({ navigation, route }) => {
           ].map((item, i) => (
             <View key={i} style={styles.infoCard}>
               <View style={styles.infoIcon}>
-                <Ionicons name={item.icon} size={18} color={COLORS.accent} />
+                <AppIcon name={item.icon} size={18} color={COLORS.accent} />
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.infoLabel}>{item.label}</Text>
@@ -102,7 +102,7 @@ const OrderSuccessScreen = ({ navigation, route }) => {
             end={{ x: 1, y: 0 }}
             style={styles.primaryBtn}
           >
-            <Ionicons name="cube-outline" size={18} color="#fff" />
+            <AppIcon name="cube-outline" size={18} color="#fff" />
             <Text style={styles.primaryBtnText}>View My Orders</Text>
           </LinearGradient>
         </TouchableOpacity>
