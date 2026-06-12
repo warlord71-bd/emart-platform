@@ -180,7 +180,13 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 
 **New finding 2026-06-11 (pre-existing, not caused by R19)**: live `/categories` page throws 8 React console errors (#422 ×4, #425 ×4 — hydration text mismatch -> client-render fallback). Root cause: `src/lib/realtime/flash-context.tsx:56` seeds `secondsRemaining` via `useState(() => diffSeconds(promotion?.ends_at))`, which calls `Date.now()` — SSR time vs client-hydration time differ by a few seconds, so `CountdownTiles.tsx` renders a different digit on server vs client on first paint. Confirmed unrelated to R19 (verified via worktree SSR diff of pre/post-R19 builds — only diffs were this counter and a harmless `#D4A248`->`#d4a248` case change). Fix would need an `isMounted`/skeleton-on-first-render pattern in `CountdownTiles`/`flash-context`; not attempted (out of R19 scope, low priority — Midnight Blossom `/categories` only).
 
-- **New finding 2026-06-12 (Codex live validation sweep)**: Schema code/deploy fixed, but Cloudflare still serves stale root `/` HTML with old `availableDeliveryMethod` until edge TTL/purge; cache-busted homepage is clean. Follow-up polish: W3C shared errors (`aria-label` on announcement marquee divs, duplicate `id="header-search"`, Next `next-size-adjust` framework meta), blog nested `<main>`, contact iframe `width="100%"`, PDP/FAQ heading-level skips, raw blog post + `/faq` missing `og:image`; Lighthouse mobile is 80 with LCP 4.6s while SEO/accessibility score 100.
+- **R21 — validation polish (found 2026-06-12, low/medium, freeze-safe if kept cosmetic/metadata-only)**:
+  - **Fix** shared W3C/accessibility issues: duplicate `id="header-search"` in `Header.tsx`; `aria-label="Store announcements"` on generic announcement-marquee `div`s (use `role` or remove label).
+  - **Fix** metadata gaps: blog post `generateMetadata()` should emit `openGraph.images`; `/faq` page metadata currently overrides layout OG image, so add images there too.
+  - **Fix** simple page HTML validity: blog post nested `<main>` inside root layout `<main>`; contact map iframe `width="100%"` attribute (use CSS/class instead).
+  - **Review before changing** heading-level skips on PDP/FAQ: W3C flags `h1 → h3`; likely cosmetic/semantic, avoid disruptive layout changes during freeze unless scoped.
+  - **Do not chase unless needed** Next framework `meta name="next-size-adjust"` W3C warning/error; emitted by Next/font, not an Emart-authored SEO issue.
+  - **Verification target**: W3C Nu representative URLs have no Emart-authored errors; Chromium/CDP still shows 0 console messages; raw + rendered JSON-LD remains parse-clean; Lighthouse SEO/accessibility stay 100.
 
 - Blog content at scale: 51 posts vs Shajgoj 5,904
 - UCP/MCP commerce endpoint: build when reviews > 200 (currently 5)
