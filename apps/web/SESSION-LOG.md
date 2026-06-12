@@ -2379,3 +2379,11 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Local APK sanity checks passed: `file` identifies it as an Android package, size is 69M, ZIP integrity test reports no compressed-data errors, and the package contains `AndroidManifest.xml`, `resources.arsc`, native libraries, and `assets/index.android.bundle`.
 - Blocker: no Appetize API token/login is configured locally. Appetize docs require an account API token (`X-API-KEY`) for REST upload, or manual browser upload via their dashboard.
 - Next step: provide/configure an Appetize API token, then upload the EAS APK artifact and run it in the browser emulator for visual/functional smoke testing.
+
+## 2026-06-12 (Codex — Appetize Android smoke + bottom nav icon fix)
+- Owner provided Appetize API token. Created Appetize Android app from the EAS preview APK; public URL: `https://appetize.io/app/wquy3ev7ce2pqffnj3zh4lbah4`.
+- Ran Appetize via Chromium/CDP. Initial APK launched successfully and rendered Home, Shop, Cart, and Account screens, but bottom tab icons were missing; screenshots also showed other Ionicons-dependent UI icons blank.
+- Fix: changed the bottom tab bar in `apps/mobile/App.js` to use small fontless React Native shapes for Home/Categories/Shop/Cart/Account instead of Ionicons. This avoids the icon-font rendering failure for critical navigation while leaving other app Ionicons unchanged.
+- Verified locally: `npx expo config --type public`, `npx expo export --platform android`, and `npx expo-doctor` all passed.
+- Built fixed EAS Android preview APK, build ID `cb07590d-b556-4667-8198-fb582ea765df`, commit `ce952ac`, app `1.1.1` build `24`. Updated the same Appetize app to versionCode 2 with the fixed APK.
+- Verified in Appetize screenshot: bottom nav icons now visible on Home screen. Remaining follow-up: non-tab Ionicons (header/account/menu icons) can still render blank in Appetize and should be addressed separately if full icon-font independence is desired.
