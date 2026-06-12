@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
@@ -50,6 +50,56 @@ const CategoriesStackNav = createNativeStackNavigator();
 const ShopStackNav = createNativeStackNavigator();
 const CartStackNav = createNativeStackNavigator();
 const AccountStackNav = createNativeStackNavigator();
+
+function FontlessTabIcon({ routeName, color }) {
+  if (routeName === 'HomeTab') {
+    return (
+      <View style={tabIconStyles.iconBox}>
+        <View style={[tabIconStyles.homeRoof, { borderBottomColor: color }]} />
+        <View style={[tabIconStyles.homeBody, { borderColor: color }]} />
+      </View>
+    );
+  }
+
+  if (routeName === 'CategoriesTab') {
+    return (
+      <View style={[tabIconStyles.iconBox, tabIconStyles.gridBox]}>
+        {[0, 1, 2, 3].map((item) => (
+          <View key={item} style={[tabIconStyles.gridDot, { backgroundColor: color }]} />
+        ))}
+      </View>
+    );
+  }
+
+  if (routeName === 'ShopTab') {
+    return (
+      <View style={tabIconStyles.iconBox}>
+        <View style={[tabIconStyles.bagHandle, { borderColor: color }]} />
+        <View style={[tabIconStyles.bagBody, { borderColor: color }]} />
+      </View>
+    );
+  }
+
+  if (routeName === 'CartTab') {
+    return (
+      <View style={tabIconStyles.iconBox}>
+        <View style={[tabIconStyles.cartBasket, { borderColor: color }]} />
+        <View style={[tabIconStyles.cartHandle, { backgroundColor: color }]} />
+        <View style={tabIconStyles.cartWheels}>
+          <View style={[tabIconStyles.cartWheel, { backgroundColor: color }]} />
+          <View style={[tabIconStyles.cartWheel, { backgroundColor: color }]} />
+        </View>
+      </View>
+    );
+  }
+
+  return (
+    <View style={tabIconStyles.iconBox}>
+      <View style={[tabIconStyles.personHead, { borderColor: color }]} />
+      <View style={[tabIconStyles.personBody, { borderColor: color }]} />
+    </View>
+  );
+}
 
 function HomeStack() {
   return (
@@ -116,15 +166,7 @@ function TabNavigator() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarIcon: ({ focused, color }) => {
-          let iconName = 'home-outline';
-          if (route.name === 'HomeTab') iconName = focused ? 'home' : 'home-outline';
-          else if (route.name === 'CategoriesTab') iconName = focused ? 'grid' : 'grid-outline';
-          else if (route.name === 'ShopTab') iconName = focused ? 'bag' : 'bag-outline';
-          else if (route.name === 'CartTab') iconName = focused ? 'cart' : 'cart-outline';
-          else if (route.name === 'AccountTab') iconName = focused ? 'person' : 'person-outline';
-          return <Ionicons name={iconName} size={22} color={color} />;
-        },
+        tabBarIcon: ({ color }) => <FontlessTabIcon routeName={route.name} color={color} />,
         tabBarActiveTintColor: COLORS.tabActive,
         tabBarInactiveTintColor: COLORS.tabInactive,
         tabBarStyle: {
@@ -146,6 +188,100 @@ function TabNavigator() {
     </Tab.Navigator>
   );
 }
+
+const tabIconStyles = StyleSheet.create({
+  iconBox: {
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  homeRoof: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 8,
+    borderRightWidth: 8,
+    borderBottomWidth: 7,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    marginBottom: -1,
+  },
+  homeBody: {
+    width: 13,
+    height: 10,
+    borderWidth: 2,
+    borderTopWidth: 0,
+    borderRadius: 2,
+  },
+  gridBox: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 3,
+    padding: 3,
+  },
+  gridDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 2,
+  },
+  bagHandle: {
+    width: 10,
+    height: 7,
+    borderWidth: 2,
+    borderBottomWidth: 0,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    marginBottom: -2,
+  },
+  bagBody: {
+    width: 17,
+    height: 14,
+    borderWidth: 2,
+    borderRadius: 4,
+  },
+  cartBasket: {
+    width: 17,
+    height: 11,
+    borderWidth: 2,
+    borderTopWidth: 1,
+    borderRadius: 3,
+    transform: [{ skewX: '-8deg' }],
+  },
+  cartHandle: {
+    position: 'absolute',
+    top: 5,
+    left: 2,
+    width: 6,
+    height: 2,
+    borderRadius: 1,
+    transform: [{ rotate: '18deg' }],
+  },
+  cartWheels: {
+    flexDirection: 'row',
+    gap: 7,
+    marginTop: 2,
+  },
+  cartWheel: {
+    width: 3,
+    height: 3,
+    borderRadius: 2,
+  },
+  personHead: {
+    width: 9,
+    height: 9,
+    borderWidth: 2,
+    borderRadius: 5,
+    marginBottom: 1,
+  },
+  personBody: {
+    width: 16,
+    height: 9,
+    borderWidth: 2,
+    borderRadius: 8,
+    borderTopLeftRadius: 9,
+    borderTopRightRadius: 9,
+  },
+});
 
 function AppLoading() {
   return (
