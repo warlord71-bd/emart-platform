@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { COMPANY } from '@/lib/companyProfile';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 export const metadata: Metadata = {
   title: 'FAQ — Emart Skincare Bangladesh | Delivery, Returns & Authenticity',
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
     description:
       'Find answers about delivery, returns, authenticity, and payment at Emart — Bangladesh\'s trusted skincare store.',
     url: 'https://e-mart.com.bd/faq',
+    images: [{ url: absoluteUrl('/wp-content/uploads/2026/03/logo.png'), width: 600, height: 600, alt: 'Emart Skincare Bangladesh' }],
   },
 };
 

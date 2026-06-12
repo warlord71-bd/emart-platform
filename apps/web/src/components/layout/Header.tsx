@@ -514,7 +514,7 @@ export default function Header() {
           </select>
         )}
         <input
-          id="header-search"
+          id={variant === 'desktop' ? 'header-search-desktop' : 'header-search-mobile'}
           name="q"
           type="search"
           value={search}

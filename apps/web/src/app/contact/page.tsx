@@ -175,7 +175,6 @@ export default function ContactPage() {
         <iframe
           title="Emart Skincare Bangladesh — Shop Location"
           src={MAP_EMBED_URL}
-          width="100%"
           height="400"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"

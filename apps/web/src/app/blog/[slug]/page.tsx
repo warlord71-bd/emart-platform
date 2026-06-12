@@ -89,6 +89,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.date,
       modifiedTime: post.modified,
       locale: bengali ? 'bn_BD' : 'en_US',
+      images: post.imageUrl
+        ? [{ url: post.imageUrl, alt: post.imageAlt }]
+        : [{ url: absoluteUrl('/wp-content/uploads/2026/03/logo.png'), width: 600, height: 600, alt: 'Emart Skincare Bangladesh' }],
     },
   };
 }
@@ -174,7 +177,7 @@ export default async function BlogPostPage({ params }: Props) {
   };
 
   return (
-    <main className="bg-bg">
+    <div className="bg-bg">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(articleJsonLd) }} />
 
       <article className="mx-auto max-w-3xl px-4 py-10">
@@ -273,6 +276,6 @@ export default async function BlogPostPage({ params }: Props) {
           </section>
         )}
       </article>
-    </main>
+    </div>
   );
 }
