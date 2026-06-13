@@ -2403,3 +2403,11 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: `git diff --check -- apps/mobile`, `npx expo config --type public`, `npx expo-doctor` (18/18), and `npx expo export --platform android` all passed.
 - Blockers: no device/Appetize manual checkout smoke in this session; BFF support needed for the two auth/order follow-ups above.
 - Next step: run real-device or Appetize smoke for deep links, notification tap routing, cart clamping, and COD/bKash/Nagad checkout flow before release build.
+
+## 2026-06-13 (Codex — mobile JWT SecureStore)
+- Closed the JWT storage blocker from the mobile audit: installed `expo-secure-store` (`~14.0.1`) and added its Expo config plugin.
+- Added shared `apps/mobile/src/utils/authStorage.js`: non-sensitive auth profile remains in AsyncStorage, JWT moves to SecureStore, and old `@emart_user.token` data migrates to SecureStore on restore/API use.
+- Updated `AuthContext` and authenticated mobile API requests in `services/woocommerce.js` to use the shared helper; no app code reads `user.token` now.
+- Verified: `npx expo config --type public`, `npx expo-doctor` (18/18), and `npx expo export --platform android` all passed.
+- Blockers: npm install required network approval; npm reports existing dependency audit issues (28 total) not addressed in this focused change.
+- Next step: BFF design/implementation for mobile order history and Google token exchange, or Appetize/device smoke for the newly committed mobile branch.

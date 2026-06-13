@@ -1,8 +1,7 @@
 import { API_CONFIG } from '../config/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAuthToken } from '../utils/authStorage';
 
 const BASE = API_CONFIG.baseUrl;
-const AUTH_KEY = '@emart_user';
 
 
 // ================================
@@ -38,11 +37,8 @@ const buildUrl = (endpoint, params = '') => {
 
 const getAuthHeaders = async () => {
   try {
-    const saved = await AsyncStorage.getItem(AUTH_KEY);
-    if (!saved) return {};
-
-    const user = JSON.parse(saved);
-    return user?.token ? { Authorization: `Bearer ${user.token}` } : {};
+    const token = await getAuthToken();
+    return token ? { Authorization: `Bearer ${token}` } : {};
   } catch {
     return {};
   }

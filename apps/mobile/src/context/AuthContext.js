@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import { API_CONFIG } from '../config/api';
+import { clearAuthUser, restoreAuthUser, saveAuthUser } from '../utils/authStorage';
 
 WebBrowser.maybeCompleteAuthSession();
 
-const AUTH_KEY = '@emart_user';
 const AuthContext = createContext();
 
 const fetchWithTimeout = (url, options = {}, timeoutMs = 15000) => {
@@ -44,8 +43,8 @@ export const AuthProvider = ({ children }) => {
         avatar: googleUser.picture,
         provider: 'google',
       };
-      setUser(userData);
-      await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(userData));
+      const savedUser = await saveAuthUser(userData);
+      setUser(savedUser);
     } catch (e) {
       if (__DEV__) console.log('Google fetch error:', e);
     }
@@ -54,11 +53,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const restore = async () => {
       try {
-        const saved = await AsyncStorage.getItem(AUTH_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed && typeof parsed === 'object') setUser(parsed);
-        }
+        const savedUser = await restoreAuthUser();
+        if (savedUser) setUser(savedUser);
       } catch (e) {
         if (__DEV__) console.log('Auth restore error:', e);
       } finally {
@@ -87,9 +83,9 @@ export const AuthProvider = ({ children }) => {
       expires_at: data.expires_at,
       provider: 'email',
     };
-    setUser(userData);
-    await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(userData));
-    return userData;
+    const savedUser = await saveAuthUser(userData);
+    setUser(savedUser);
+    return savedUser;
   };
 
   // Real API register — calls BFF → WordPress register
@@ -105,9 +101,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signIn = async (userData) => {
-    setUser(userData);
     try {
-      await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(userData));
+      const savedUser = await saveAuthUser(userData);
+      setUser(savedUser);
     } catch (e) {
       console.log('Auth save error:', e);
     }
@@ -122,9 +118,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    setUser(userData);
     try {
-      await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(userData));
+      const savedUser = await saveAuthUser(userData);
+      setUser(savedUser);
     } catch (e) {
       console.log('Auth save error:', e);
     }
@@ -133,7 +129,7 @@ export const AuthProvider = ({ children }) => {
   const signOut = async () => {
     setUser(null);
     try {
-      await AsyncStorage.removeItem(AUTH_KEY);
+      await clearAuthUser();
     } catch (e) {
       console.log('Auth remove error:', e);
     }
