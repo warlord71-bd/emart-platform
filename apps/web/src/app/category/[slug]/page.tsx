@@ -631,7 +631,84 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                     Buying guide for {category.name}
                     <span className="ml-2 text-accent">Read more</span>
                   </summary>
-                  {isSunscreen ? (
+                  {params.slug === 'face-cleansers' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">How to choose a face cleanser in Bangladesh</h2>
+                        <p>
+                          The right cleanser depends on your skin type and the season. In Dhaka&apos;s humid months,
+                          oily skin usually needs a low-pH gel that removes sweat and sunscreen without leaving the
+                          face tight. In cooler months, dry or sensitive skin often feels better with a cream, oil,
+                          or low-foam wash. Choose by skin comfort first; brand and price come after.
+                        </p>
+                      </section>
+
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">By skin type</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li>
+                            <strong className="text-ink">Oily / acne-prone:</strong> choose a low-pH gel or gentle
+                            BHA cleanser. COSRX Low pH Good Morning Gel Cleanser and COSRX Salicylic Acid Daily Gentle
+                            Cleanser are reliable daily options.
+                          </li>
+                          <li>
+                            <strong className="text-ink">Dry / sensitive:</strong> look for a low-foam, fragrance-free
+                            cleanser that leaves skin comfortable, not squeaky. CeraVe Hydrating Foaming Oil Cleanser
+                            and CeraVe Foaming Facial Cleanser are safer starting points.
+                          </li>
+                          <li>
+                            <strong className="text-ink">Combination:</strong> use a balanced gel cleanser that can
+                            handle an oily T-zone without drying the cheeks. Axis-Y Quinoa One Step Balanced Gel
+                            Cleanser fits this kind of routine.
+                          </li>
+                          <li>
+                            <strong className="text-ink">Sunscreen or makeup users:</strong> double cleanse at night:
+                            oil or balm first, then a gentle foam or gel. Some By Mi Propolis B5 Oil-to-Foam Cleanser
+                            works when you want one cleanser that can handle a heavier evening routine.
+                          </li>
+                        </ul>
+                      </section>
+
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">What to look for</h3>
+                        <p>
+                          A pH around 5-6 is usually kinder to the skin barrier. If your face feels tight after
+                          washing, the cleanser is probably too stripping. For clogged pores, salicylic acid (BHA)
+                          can help. For easily irritated skin, centella and panthenol are calmer choices. Texture is
+                          personal: gel feels lighter in humidity, foam feels fresh, and oil or balm is better for
+                          removing sunscreen and makeup.
+                        </p>
+                      </section>
+
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          <div>
+                            <h3 className="mb-1 text-sm font-semibold text-ink">অয়েলি ও ব্রণপ্রবণ ত্বকের জন্য কোন ফেসওয়াশ ভালো?</h3>
+                            <p>
+                              লো-পিএইচ জেল ক্লিনজার বা মৃদু BHA ক্লিনজার ভালো শুরু। COSRX Low pH Good Morning
+                              বা COSRX Salicylic Acid Daily Gentle Cleanser ব্যবহার করতে পারেন। দিনে দুইবারের বেশি
+                              ক্লিনজিং সাধারণত দরকার হয় না।
+                            </p>
+                          </div>
+                          <div>
+                            <h3 className="mb-1 text-sm font-semibold text-ink">শুষ্ক ত্বকে কি ফোমিং ক্লিনজার ব্যবহার করা যায়?</h3>
+                            <p>
+                              যায়, তবে fragrance-free ও hydrating formula বেছে নিন। ধোয়ার পর ত্বক টানটান লাগলে
+                              সেটি আপনার জন্য বেশি stripping হতে পারে।
+                            </p>
+                          </div>
+                          <div>
+                            <h3 className="mb-1 text-sm font-semibold text-ink">ডাবল ক্লিনজিং কখন দরকার?</h3>
+                            <p>
+                              sunscreen, makeup, বা heavy outdoor exposure থাকলে রাতে আগে oil/balm cleanser, এরপর
+                              gentle foam বা gel cleanser ব্যবহার করলেই যথেষ্ট।
+                            </p>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  ) : isSunscreen ? (
                     <div className="mt-4 grid gap-5 text-sm leading-relaxed text-muted sm:grid-cols-2">
                       <div>
                         <h2 className="mb-1 text-sm font-semibold text-ink">Why You Need Sunscreen Every Day in Bangladesh</h2>

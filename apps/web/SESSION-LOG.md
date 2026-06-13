@@ -2431,3 +2431,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: `cd apps/web && npm run build` passed.
 - Blockers: not deployed/live-smoked in this session.
 - Next step: deploy/smoke representative PDPs from shampoo, fragrance, lipstick/lip balm, body wash/lotion, and skincare.
+
+## 2026-06-13 (Codex — face cleansers category guide upgrade)
+- Replaced the generic Face Cleansers category buying-guide fallback with a dedicated guide matching the owner-provided quality bar: decision-first skin type + Bangladesh weather advice, real catalog picks, low-pH/BHA/centella/panthenol/texture guidance, and Bangla shopper Q&A.
+- Scope: `apps/web/src/app/category/[slug]/page.tsx` for `face-cleansers` only; no PDP content or product data changed.
+- Verified: `cd apps/web && npm run build` passed.
+- Blockers: not deployed/live-smoked in this session.
+- Next step: deploy/smoke `/category/face-cleansers` and verify the collapsed buying guide renders correctly on mobile/desktop.
