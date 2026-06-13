@@ -38,13 +38,17 @@ const NotificationsScreen = ({ navigation }) => {
         setNewArrivals(prefs.newArrivals || false);
         setPushToken(prefs.pushToken || null);
       }
-    } catch (e) {}
+    } catch (e) {
+      if (__DEV__) console.warn('Failed to load notification preferences:', e);
+    }
   };
 
   const savePrefs = async (prefs) => {
     try {
       await AsyncStorage.setItem(NOTIF_KEY, JSON.stringify(prefs));
-    } catch (e) {}
+    } catch (e) {
+      if (__DEV__) console.warn('Failed to save notification preferences:', e);
+    }
   };
 
   const registerForPush = async () => {
