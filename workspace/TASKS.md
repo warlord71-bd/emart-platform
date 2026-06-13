@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-13 (app-wide mobile icon-font removal pushed; cross-workspace check)
+Last updated: 2026-06-13 (mobile audit Batch B/C/D remediation committed locally)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -99,6 +99,8 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 - ✅ Appetize browser smoke 2026-06-12: uploaded APK to `https://appetize.io/app/wquy3ev7ce2pqffnj3zh4lbah4`, launched via Chromium/CDP, verified Home/Shop/Cart/Account render
 - ✅ Bottom nav missing-icons bug fixed in commit `ce952ac`: tab bar now uses fontless React Native shapes; fixed EAS build `cb07590d-b556-4667-8198-fb582ea765df` uploaded to same Appetize app (versionCode 2) and screenshot-verified
 - ✅ App-wide icon-font removal in commit `60b10b8`: all `Ionicons`/`@expo/vector-icons` usage replaced with new fontless `apps/mobile/src/components/AppIcon.js` across `App.js` and every screen; `expo-font` plugin/deps removed. EAS build `db756401-83d1-4aae-8e7b-b0eb2428a157` FINISHED (artifact ready); pushed to `origin/main`. Not yet re-uploaded to Appetize for visual confirmation.
+- ✅ Mobile audit Batch B/C/D remediation in local branch `fix/mobile-audit-june`: safe-area provider foundation, root error boundary, fetch/JSON timeouts, centralized StatusBar, Android checkout keyboard avoidance, capped PDP review rendering, scoped accessibility labels/roles, minimized local order PII, cart quantity clamping, deep-link config, and notification tap navigation. Validated with `npx expo config --type public`, `npx expo-doctor` 18/18, and `npx expo export --platform android`.
+- ⚠️ Mobile audit blocked findings: JWT storage hardening needs `expo-secure-store` dependency before migration; server-backed mobile order history and Google token→Emart JWT exchange need BFF endpoints (not present under `/api/mobile/*` today).
 - ⚠️ Live BFF gap: `/api/mobile/cart` and `/api/mobile/payment` 404; current app uses local cart + manual bKash/Nagad TrxID via `/api/checkout`
 - ⚠️ ADB gap: `adb` installed on VPS, but no phone visible; local laptop USB device is not exposed to the VPS
 - Next: real device COD/bKash/Nagad checkout smoke, then EAS production AAB + Play Store internal testing upload

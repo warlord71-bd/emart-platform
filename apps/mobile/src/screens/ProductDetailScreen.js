@@ -7,15 +7,23 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { getProductPrice, getProductImages, getProductReviews, submitProductReview, stripHTML } from '../services/woocommerce';
-import { isProductAvailableForCart } from '../utils/stock';
+import { getMaxCartQuantity, isProductAvailableForCart } from '../utils/stock';
 
 const { width } = Dimensions.get('window');
+const HIT_SLOP = { top: 8, bottom: 8, left: 8, right: 8 };
+const REVIEW_PREVIEW_LIMIT = 8;
 
 // ── Star Rating Input ──
 const StarInput = ({ rating, onRate }) => (
   <View style={{ flexDirection: 'row', gap: 4 }}>
     {[1, 2, 3, 4, 5].map((star) => (
-      <TouchableOpacity key={star} onPress={() => onRate(star)}>
+      <TouchableOpacity
+        key={star}
+        onPress={() => onRate(star)}
+        accessibilityRole="button"
+        accessibilityLabel={`Rate ${star} star${star > 1 ? 's' : ''}`}
+        hitSlop={HIT_SLOP}
+      >
         <AppIcon
           name={star <= rating ? 'star' : 'star-outline'}
           size={24}
@@ -83,6 +91,8 @@ const ProductDetailScreen = ({ navigation, route }) => {
     ? safeProduct.brands[0]?.name || ''
     : safeProduct.brands || safeProduct.attributes?.find(a => a.name === 'Brand')?.options?.[0] || '';
   const inStock = isProductAvailableForCart(safeProduct);
+  const maxQuantity = getMaxCartQuantity(safeProduct);
+  const visibleReviews = reviews.slice(0, REVIEW_PREVIEW_LIMIT);
 
   useEffect(() => {
     if (!product) navigation.goBack();
@@ -142,7 +152,14 @@ const ProductDetailScreen = ({ navigation, route }) => {
       Alert.alert('Out of Stock', `${product.name} is currently out of stock.`);
       return false;
     }
-    for (let i = 0; i < qty; i++) addToCart(product);
+    let addedCount = 0;
+    for (let i = 0; i < qty; i++) {
+      if (addToCart(product)) addedCount += 1;
+    }
+    if (addedCount === 0) {
+      Alert.alert('Quantity limit reached', 'You already have the available quantity in your cart.');
+      return false;
+    }
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
     return true;
@@ -156,14 +173,30 @@ const ProductDetailScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       {/* Top Bar */}
       <View style={styles.topBar}>
-        <TouchableOpacity style={styles.topBtn} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.topBtn}
+          onPress={() => navigation.goBack()}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+          hitSlop={HIT_SLOP}
+        >
           <AppIcon name="arrow-back" size={18} color={COLORS.text} />
         </TouchableOpacity>
         <View style={{ flexDirection: 'row', gap: 8 }}>
-          <TouchableOpacity style={styles.topBtn}>
+          <TouchableOpacity
+            style={styles.topBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Add to wishlist"
+            hitSlop={HIT_SLOP}
+          >
             <AppIcon name="heart-outline" size={18} color={COLORS.text} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.topBtn}>
+          <TouchableOpacity
+            style={styles.topBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Share product"
+            hitSlop={HIT_SLOP}
+          >
             <AppIcon name="share-outline" size={18} color={COLORS.text} />
           </TouchableOpacity>
         </View>
@@ -176,8 +209,13 @@ const ProductDetailScreen = ({ navigation, route }) => {
           {images.length > 1 && (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.thumbRow}>
               {images.map((img, i) => (
-                <TouchableOpacity key={i} onPress={() => setActiveImage(i)}
-                  style={[styles.thumb, i === activeImage && styles.thumbActive]}>
+                <TouchableOpacity
+                  key={i}
+                  onPress={() => setActiveImage(i)}
+                  style={[styles.thumb, i === activeImage && styles.thumbActive]}
+                  accessibilityRole="imagebutton"
+                  accessibilityLabel={`View product image ${i + 1}`}
+                >
                   <Image source={{ uri: img }} style={styles.thumbImg} resizeMode="contain" />
                 </TouchableOpacity>
               ))}
@@ -217,11 +255,24 @@ const ProductDetailScreen = ({ navigation, route }) => {
           <View style={styles.qtyRow}>
             <Text style={styles.label}>{t('quantity')}:</Text>
             <View style={styles.qtyBox}>
-              <TouchableOpacity style={styles.qtyBtn} onPress={() => setQty(Math.max(1, qty - 1))}>
+              <TouchableOpacity
+                style={styles.qtyBtn}
+                onPress={() => setQty(Math.max(1, qty - 1))}
+                accessibilityRole="button"
+                accessibilityLabel="Decrease quantity"
+                hitSlop={HIT_SLOP}
+              >
                 <Text style={styles.qtyBtnText}>−</Text>
               </TouchableOpacity>
               <Text style={styles.qtyNum}>{qty}</Text>
-              <TouchableOpacity style={styles.qtyBtn} onPress={() => setQty(qty + 1)}>
+              <TouchableOpacity
+                style={styles.qtyBtn}
+                onPress={() => setQty(Math.min(maxQuantity || 1, qty + 1))}
+                disabled={!inStock || qty >= maxQuantity}
+                accessibilityRole="button"
+                accessibilityLabel="Increase quantity"
+                hitSlop={HIT_SLOP}
+              >
                 <Text style={styles.qtyBtnText}>+</Text>
               </TouchableOpacity>
             </View>
@@ -269,6 +320,8 @@ const ProductDetailScreen = ({ navigation, route }) => {
               <TouchableOpacity
                 style={styles.writeReviewBtn}
                 onPress={() => setShowReviewForm(!showReviewForm)}
+                accessibilityRole="button"
+                accessibilityLabel="Write a review"
               >
                 <AppIcon name="create-outline" size={14} color={COLORS.accent} />
                 <Text style={styles.writeReviewText}>Write Review</Text>
@@ -320,7 +373,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
             {reviewsLoading ? (
               <ActivityIndicator color={COLORS.accent} style={{ padding: 20 }} />
             ) : reviews.length > 0 ? (
-              reviews.map((review) => (
+              visibleReviews.map((review) => (
                 <ReviewCard key={review.id} review={review} />
               ))
             ) : (
@@ -328,6 +381,11 @@ const ProductDetailScreen = ({ navigation, route }) => {
                 <AppIcon name="chatbubble-outline" size={28} color={COLORS.textLight} />
                 <Text style={styles.noReviewsText}>No reviews yet. Be the first!</Text>
               </View>
+            )}
+            {!reviewsLoading && reviews.length > REVIEW_PREVIEW_LIMIT && (
+              <Text style={styles.reviewsCappedText}>
+                Showing latest {REVIEW_PREVIEW_LIMIT} reviews
+              </Text>
             )}
           </View>
 
@@ -342,6 +400,8 @@ const ProductDetailScreen = ({ navigation, route }) => {
           onPress={handleAddToCart}
           disabled={!inStock}
           activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel={inStock ? 'Add product to cart' : 'Product out of stock'}
         >
           <Text style={[styles.cartBtnText, added && { color: '#fff' }, !inStock && styles.cartBtnTextDisabled]}>
             {!inStock ? t('outOfStock') : added ? `✓ ${t('addedToCart')}` : t('addToCart')}
@@ -351,6 +411,8 @@ const ProductDetailScreen = ({ navigation, route }) => {
           style={{ flex: 1.5 }}
           activeOpacity={0.8}
           disabled={!inStock}
+          accessibilityRole="button"
+          accessibilityLabel={inStock ? 'Buy now' : 'Product out of stock'}
           onPress={() => {
             if (handleAddToCart()) navigation.navigate('CartTab');
           }}
@@ -446,6 +508,7 @@ const styles = StyleSheet.create({
   reviewText: { fontSize: 12, color: COLORS.textSecondary, lineHeight: 18 },
   noReviews: { alignItems: 'center', padding: 24, gap: 8 },
   noReviewsText: { fontSize: 12, color: COLORS.textSecondary },
+  reviewsCappedText: { fontSize: 11, color: COLORS.textLight, textAlign: 'center', marginTop: 4 },
 
   // ── Bottom Bar ──
   bottomBar: {

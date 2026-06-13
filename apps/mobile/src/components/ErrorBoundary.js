@@ -30,7 +30,12 @@ class ErrorBoundary extends React.Component {
           <Text style={styles.message}>
             The app ran into an unexpected error. Please try again.
           </Text>
-          <TouchableOpacity style={styles.retryBtn} onPress={this.handleReset}>
+          <TouchableOpacity
+            style={styles.retryBtn}
+            onPress={this.handleReset}
+            accessibilityRole="button"
+            accessibilityLabel="Try again"
+          >
             <AppIcon name="refresh-outline" size={16} color="#fff" />
             <Text style={styles.retryText}>Try Again</Text>
           </TouchableOpacity>

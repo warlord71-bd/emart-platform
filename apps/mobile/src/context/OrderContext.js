@@ -4,6 +4,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ORDERS_KEY = '@emart_orders';
 const OrderContext = createContext();
 
+const toOrderSummary = (orderData = {}) => ({
+  wcOrderId: orderData.wcOrderId,
+  paymentMethod: orderData.paymentMethod,
+  itemsCount: orderData.itemsCount,
+  total: orderData.total,
+  products: orderData.products,
+  image: orderData.image,
+  coupon: orderData.coupon,
+});
+
 export const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -45,7 +55,7 @@ export const OrderProvider = ({ children }) => {
         year: 'numeric',
       }),
       status: 'Processing',
-      ...orderData,
+      ...toOrderSummary(orderData),
       createdAt: Date.now(),
     };
 

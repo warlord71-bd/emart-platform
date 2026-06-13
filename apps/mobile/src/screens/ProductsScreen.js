@@ -12,6 +12,8 @@ import { getProducts, searchProducts, getProductsByCategory, getOnSaleProducts, 
 import ProductCard from '../components/ProductCard';
 import SearchBar from '../components/SearchBar';
 
+const HIT_SLOP = { top: 8, bottom: 8, left: 8, right: 8 };
+
 // ── Skeleton ──
 const SkeletonCard = () => {
   const anim = useRef(new Animated.Value(0.4)).current;
@@ -144,7 +146,13 @@ const ProductsScreen = ({ navigation, route }) => {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
+            hitSlop={HIT_SLOP}
+          >
             <AppIcon name="arrow-back" size={18} color={COLORS.text} />
           </TouchableOpacity>
 
@@ -157,7 +165,13 @@ const ProductsScreen = ({ navigation, route }) => {
             )}
           </View>
 
-          <TouchableOpacity style={styles.cartIcon} onPress={() => navigation.navigate('CartTab')}>
+          <TouchableOpacity
+            style={styles.cartIcon}
+            onPress={() => navigation.navigate('CartTab')}
+            accessibilityRole="button"
+            accessibilityLabel={`Open cart${cartCount ? `, ${cartCount} items` : ''}`}
+            hitSlop={HIT_SLOP}
+          >
             <AppIcon name="cart-outline" size={20} color={COLORS.text} />
             {cartCount > 0 && (
               <View style={styles.cartBadge}>
@@ -176,6 +190,9 @@ const ProductsScreen = ({ navigation, route }) => {
             <TouchableOpacity
               style={[styles.filterChip, showSort && styles.filterChipActive]}
               onPress={() => setShowSort(!showSort)}
+              accessibilityRole="button"
+              accessibilityLabel="Open sort options"
+              accessibilityState={{ expanded: showSort }}
             >
               <AppIcon name="swap-vertical" size={13} color={showSort ? '#fff' : COLORS.text} />
               <Text style={[styles.filterChipText, showSort && { color: '#fff' }]}>
@@ -195,7 +212,12 @@ const ProductsScreen = ({ navigation, route }) => {
             {categoryId && (
               <View style={styles.activeChip}>
                 <Text style={styles.activeChipText}>{categoryName}</Text>
-                <TouchableOpacity onPress={() => navigation.setParams({ categoryId: null, categoryName: null })}>
+                <TouchableOpacity
+                  onPress={() => navigation.setParams({ categoryId: null, categoryName: null })}
+                  accessibilityRole="button"
+                  accessibilityLabel="Remove category filter"
+                  hitSlop={HIT_SLOP}
+                >
                   <AppIcon name="close-circle" size={14} color={COLORS.accent} />
                 </TouchableOpacity>
               </View>
@@ -207,12 +229,18 @@ const ProductsScreen = ({ navigation, route }) => {
             <TouchableOpacity
               style={[styles.viewBtn, viewMode === 'grid' && styles.viewBtnActive]}
               onPress={() => setViewMode('grid')}
+              accessibilityRole="button"
+              accessibilityLabel="Use grid view"
+              accessibilityState={{ selected: viewMode === 'grid' }}
             >
               <AppIcon name="grid-outline" size={14} color={viewMode === 'grid' ? COLORS.accent : COLORS.textLight} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.viewBtn, viewMode === 'list' && styles.viewBtnActive]}
               onPress={() => setViewMode('list')}
+              accessibilityRole="button"
+              accessibilityLabel="Use list view"
+              accessibilityState={{ selected: viewMode === 'list' }}
             >
               <AppIcon name="list-outline" size={14} color={viewMode === 'list' ? COLORS.accent : COLORS.textLight} />
             </TouchableOpacity>
@@ -227,6 +255,9 @@ const ProductsScreen = ({ navigation, route }) => {
                 key={opt.key}
                 style={[styles.sortOption, sortBy === opt.key && styles.sortOptionActive]}
                 onPress={() => { setSortBy(opt.key); setShowSort(false); }}
+                accessibilityRole="button"
+                accessibilityLabel={`Sort by ${opt.label}`}
+                accessibilityState={{ selected: sortBy === opt.key }}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                   <AppIcon name={opt.icon} size={14} color={sortBy === opt.key ? COLORS.accent : COLORS.textSecondary} />
@@ -258,6 +289,8 @@ const ProductsScreen = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.emptyBtn}
             onPress={() => loadProducts(1, true)}
+            accessibilityRole="button"
+            accessibilityLabel="Retry loading products"
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
               <AppIcon name="refresh-outline" size={14} color={COLORS.accent} />
@@ -305,6 +338,8 @@ const ProductsScreen = ({ navigation, route }) => {
               <TouchableOpacity
                 style={styles.emptyBtn}
                 onPress={() => { setSearchQuery(''); loadProducts(1, true); }}
+                accessibilityRole="button"
+                accessibilityLabel="Clear search"
               >
                 <Text style={styles.emptyBtnText}>Clear Search</Text>
               </TouchableOpacity>

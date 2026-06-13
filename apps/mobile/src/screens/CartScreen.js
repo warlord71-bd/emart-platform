@@ -8,6 +8,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { BUSINESS } from '../config/business';
 
+const HIT_SLOP = { top: 8, bottom: 8, left: 8, right: 8 };
+
 const CartScreen = ({ navigation }) => {
   const { t } = useLanguage();
   const { items, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount } = useCart();
@@ -22,7 +24,12 @@ const CartScreen = ({ navigation }) => {
         <Text style={styles.emptyTitle}>{t('cartEmpty')}</Text>
         <Text style={styles.emptySub}>{t('cartEmptySub')}</Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate('HomeTab')} activeOpacity={0.8}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('HomeTab')}
+          activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel="Start shopping"
+        >
           <LinearGradient
             colors={COLORS.gradientButton}
             start={{ x: 0, y: 0 }}
@@ -64,6 +71,9 @@ const CartScreen = ({ navigation }) => {
             <TouchableOpacity
               style={styles.qtyBtn}
               onPress={() => updateQuantity(item.id, item.quantity - 1)}
+              accessibilityRole="button"
+              accessibilityLabel={`Decrease quantity of ${item.name}`}
+              hitSlop={HIT_SLOP}
             >
               <Text style={styles.qtyBtnText}>−</Text>
             </TouchableOpacity>
@@ -73,6 +83,10 @@ const CartScreen = ({ navigation }) => {
             <TouchableOpacity
               style={styles.qtyBtn}
               onPress={() => updateQuantity(item.id, item.quantity + 1)}
+              disabled={item.quantity >= (item.maxQuantity || 99)}
+              accessibilityRole="button"
+              accessibilityLabel={`Increase quantity of ${item.name}`}
+              hitSlop={HIT_SLOP}
             >
               <Text style={styles.qtyBtnText}>+</Text>
             </TouchableOpacity>
@@ -80,7 +94,13 @@ const CartScreen = ({ navigation }) => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.removeBtn} onPress={() => removeFromCart(item.id)}>
+      <TouchableOpacity
+        style={styles.removeBtn}
+        onPress={() => removeFromCart(item.id)}
+        accessibilityRole="button"
+        accessibilityLabel={`Remove ${item.name} from cart`}
+        hitSlop={HIT_SLOP}
+      >
         <AppIcon name="trash-outline" size={16} color={COLORS.error} />
       </TouchableOpacity>
     </View>
@@ -94,7 +114,12 @@ const CartScreen = ({ navigation }) => {
           {t('myCart')} <Text style={styles.titleCount}>({cartCount})</Text>
         </Text>
 
-        <TouchableOpacity onPress={clearCart}>
+        <TouchableOpacity
+          onPress={clearCart}
+          accessibilityRole="button"
+          accessibilityLabel="Clear cart"
+          hitSlop={HIT_SLOP}
+        >
           <Text style={styles.clearText}>{t('clearCart')}</Text>
         </TouchableOpacity>
       </View>
@@ -137,6 +162,8 @@ const CartScreen = ({ navigation }) => {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => navigation.navigate('Checkout')}
+              accessibilityRole="button"
+              accessibilityLabel="Go to checkout"
             >
               <LinearGradient
                 colors={COLORS.gradientButton}

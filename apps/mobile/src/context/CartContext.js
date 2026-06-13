@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCartProductIds, isProductAvailableForCart } from '../utils/stock';
+import { getCartProductIds, getMaxCartQuantity, isProductAvailableForCart } from '../utils/stock';
 
 const CART_KEY = '@emart_cart';
 const CartContext = createContext();
@@ -14,7 +14,9 @@ const cartReducer = (state, action) => {
       const existingIndex = state.items.findIndex(item => item.id === action.payload.id);
       if (existingIndex >= 0) {
         const updated = state.items.map((item, i) =>
-          i === existingIndex ? { ...item, quantity: item.quantity + 1 } : item
+          i === existingIndex
+            ? { ...item, quantity: Math.min(item.quantity + 1, item.maxQuantity || 99) }
+            : item
         );
         return { ...state, items: updated };
       }
@@ -29,9 +31,12 @@ const cartReducer = (state, action) => {
       if (action.payload.quantity <= 0) {
         return { ...state, items: state.items.filter(item => item.id !== action.payload.id) };
       }
+      const item = state.items.find(entry => entry.id === action.payload.id);
+      const maxQuantity = item?.maxQuantity || 99;
+      const quantity = Math.min(action.payload.quantity, maxQuantity);
       const updated = state.items.map(item =>
         item.id === action.payload.id
-          ? { ...item, quantity: action.payload.quantity }
+          ? { ...item, quantity }
           : item
       );
       return { ...state, items: updated };
@@ -82,9 +87,13 @@ export const CartProvider = ({ children }) => {
   const addToCart = (product) => {
     if (!isProductAvailableForCart(product)) return false;
 
+    const maxQuantity = getMaxCartQuantity(product);
+    const ids = getCartProductIds(product);
+    const currentQuantity = state.items.find(item => item.id === ids.cartItemId)?.quantity || 0;
+    if (currentQuantity >= maxQuantity) return false;
+
     const price = parseFloat(product.sale_price) || parseFloat(product.price) || 0;
     const regularPrice = parseFloat(product.regular_price) || price;
-    const ids = getCartProductIds(product);
 
     dispatch({
       type: 'ADD_ITEM',
@@ -100,6 +109,7 @@ export const CartProvider = ({ children }) => {
         brand: product.brands || product.attributes?.find(a => a.name === 'Brand')?.options?.[0] || '',
         stock_status: product.stock_status,
         purchasable: product.purchasable,
+        maxQuantity,
       },
     });
     return true;

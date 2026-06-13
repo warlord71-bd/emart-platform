@@ -2395,3 +2395,11 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Found stale PM2 entry `emart-cleanser-apply` (id 29): points to `workspace/scripts/active/run_cleanser_apply.sh`, which doesn't exist on Local or VPS and has no git history — stopped, `restart_time: 0`, likely leftover from earlier humanizer work. Left in place pending owner decision.
 - Pushed `60b10b8` to `origin/main` (mobile-only change, EAS-verified). VPS git metadata realignment (`fa1f873` → `60b10b8`) and the stale `emart-cleanser-apply` PM2 entry remain open/deferred.
 - Next step: optionally run the new APK through Appetize to confirm the app-wide icon fix visually; decide on VPS git metadata realignment and `emart-cleanser-apply` cleanup; commit/sync the new meta-regen ids file.
+
+## 2026-06-13 (Codex — mobile audit Batch B/C/D remediation)
+- Continued mobile audit remediation on branch `fix/mobile-audit-june`: added deep-link route config + notification tap navigation in `apps/mobile/App.js`; added stock-aware max cart quantities and cart/PDP quantity clamping; capped PDP reviews to the latest 8 to avoid unbounded in-scroll rendering; added scoped accessibility roles/labels/hitSlop across PDP/cart/checkout/products/error-boundary controls.
+- Minimized locally persisted order history in `OrderContext`: checkout still sends full billing/shipping data to WooCommerce, but AsyncStorage now keeps only display-safe summary fields (Woo order id, payment method, count, total, product summary, image, coupon).
+- Investigated blocked audit items: `expo-secure-store` is not installed, so JWT SecureStore migration is dependency-gated; no mobile BFF endpoint exists for server-backed order history or Google-token-to-Emart-JWT exchange.
+- Verified: `git diff --check -- apps/mobile`, `npx expo config --type public`, `npx expo-doctor` (18/18), and `npx expo export --platform android` all passed.
+- Blockers: no device/Appetize manual checkout smoke in this session; BFF support needed for the two auth/order follow-ups above.
+- Next step: run real-device or Appetize smoke for deep links, notification tap routing, cart clamping, and COD/bKash/Nagad checkout flow before release build.

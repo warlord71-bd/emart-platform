@@ -10,6 +10,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { BUSINESS } from "../config/business";
 
 const MERCHANT_NUMBER = BUSINESS.MERCHANT_NUMBER;
+const HIT_SLOP = { top: 8, bottom: 8, left: 8, right: 8 };
 
 const CheckoutScreen = ({ navigation }) => {
   const { t } = useLanguage();
@@ -126,7 +127,13 @@ const CheckoutScreen = ({ navigation }) => {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.headerRow}>
-          <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            style={styles.backBtn}
+            onPress={() => navigation.goBack()}
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
+            hitSlop={HIT_SLOP}
+          >
             <AppIcon name="arrow-back" size={18} color={COLORS.text} />
           </TouchableOpacity>
           <Text style={styles.title}>Checkout</Text>
@@ -176,7 +183,12 @@ const CheckoutScreen = ({ navigation }) => {
                   <Text style={styles.couponAppliedSave}>You save ৳{couponDiscount}</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={removeCoupon}>
+              <TouchableOpacity
+                onPress={removeCoupon}
+                accessibilityRole="button"
+                accessibilityLabel="Remove coupon"
+                hitSlop={HIT_SLOP}
+              >
                 <AppIcon name="close-circle" size={22} color={COLORS.error} />
               </TouchableOpacity>
             </View>
@@ -186,7 +198,13 @@ const CheckoutScreen = ({ navigation }) => {
                 <AppIcon name="pricetag-outline" size={16} color={COLORS.textLight} />
                 <TextInput style={styles.input} placeholder="Enter coupon code" placeholderTextColor={COLORS.textLight} value={couponCode} onChangeText={setCouponCode} autoCapitalize="characters" />
               </View>
-              <TouchableOpacity style={styles.couponApplyBtn} onPress={handleApplyCoupon} disabled={couponLoading}>
+              <TouchableOpacity
+                style={styles.couponApplyBtn}
+                onPress={handleApplyCoupon}
+                disabled={couponLoading}
+                accessibilityRole="button"
+                accessibilityLabel="Apply coupon"
+              >
                 {couponLoading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.couponApplyText}>Apply</Text>}
               </TouchableOpacity>
             </View>
@@ -200,7 +218,15 @@ const CheckoutScreen = ({ navigation }) => {
             <Text style={styles.sectionTitle}>Payment Method</Text>
           </View>
           {paymentMethods.map((method) => (
-            <TouchableOpacity key={method.key} style={[styles.payOption, payment === method.key && styles.payOptionActive]} onPress={() => setPayment(method.key)} activeOpacity={0.8}>
+            <TouchableOpacity
+              key={method.key}
+              style={[styles.payOption, payment === method.key && styles.payOptionActive]}
+              onPress={() => setPayment(method.key)}
+              activeOpacity={0.8}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: payment === method.key }}
+              accessibilityLabel={`Pay with ${method.label}`}
+            >
               <View style={[styles.radio, payment === method.key && styles.radioActive]}>
                 {payment === method.key && <View style={styles.radioDot} />}
               </View>
@@ -235,7 +261,14 @@ const CheckoutScreen = ({ navigation }) => {
           <View style={styles.summaryRow}><Text style={styles.totalLabel}>Total</Text><Text style={styles.totalValue}>৳{Math.round(total)}</Text></View>
         </View>
 
-        <TouchableOpacity activeOpacity={0.85} onPress={placeOrder} disabled={placing}>
+        <TouchableOpacity
+          activeOpacity={0.85}
+          onPress={placeOrder}
+          disabled={placing}
+          accessibilityRole="button"
+          accessibilityLabel="Place order"
+          accessibilityState={{ disabled: placing }}
+        >
           <LinearGradient colors={placing ? [COLORS.textLight, COLORS.textLight] : COLORS.gradientButton} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.button}>
             {placing ? <Text style={styles.buttonText}>Placing Order...</Text> : <><Text style={styles.buttonText}>Place Order</Text><Text style={styles.buttonPrice}>৳{Math.round(total)}</Text></>}
           </LinearGradient>

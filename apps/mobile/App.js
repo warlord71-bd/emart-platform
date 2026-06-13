@@ -291,7 +291,75 @@ function AppLoading() {
   );
 }
 
-function AppContent() {
+const linking = {
+  prefixes: ['emartbd://', 'https://e-mart.com.bd'],
+  config: {
+    screens: {
+      HomeTab: {
+        screens: {
+          HomeMain: '',
+          Products: 'shop',
+        },
+      },
+      CategoriesTab: {
+        screens: {
+          CategoriesMain: 'categories',
+          Products: 'category/:categorySlug',
+        },
+      },
+      ShopTab: {
+        screens: {
+          ProductsMain: 'products',
+        },
+      },
+      CartTab: {
+        screens: {
+          CartMain: 'cart',
+          Checkout: 'checkout',
+          OrderSuccess: 'order-success/:orderId',
+        },
+      },
+      AccountTab: {
+        screens: {
+          AccountMain: 'account',
+          Login: 'login',
+          Register: 'register',
+          MyOrders: 'account/orders',
+          Wishlist: 'wishlist',
+          Address: 'address',
+          Payments: 'payments',
+          Notifications: 'notifications',
+          Support: 'support',
+          Settings: 'settings',
+        },
+      },
+    },
+  },
+};
+
+const navigateFromNotification = (navigationRef, data = {}) => {
+  if (!navigationRef.current?.isReady()) return;
+
+  switch (data.screen) {
+    case 'MyOrders':
+      navigationRef.current.navigate('AccountTab', { screen: 'MyOrders' });
+      break;
+    case 'Cart':
+      navigationRef.current.navigate('CartTab', { screen: 'CartMain' });
+      break;
+    case 'Checkout':
+      navigationRef.current.navigate('CartTab', { screen: 'Checkout' });
+      break;
+    case 'Account':
+      navigationRef.current.navigate('AccountTab', { screen: 'AccountMain' });
+      break;
+    default:
+      navigationRef.current.navigate('HomeTab', { screen: 'HomeMain' });
+      break;
+  }
+};
+
+function AppContent({ navigationRef }) {
   const { loading } = useAuth();
   const notificationListener = useRef();
   const responseListener = useRef();
@@ -306,17 +374,14 @@ function AppContent() {
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
       // User tapped on notification
       const data = response.notification.request.content.data;
-      // Navigate based on notification data
-      if (data?.screen === 'MyOrders') {
-        // Handle navigation to orders
-      }
+      navigateFromNotification(navigationRef, data);
     });
 
     return () => {
       if (notificationListener.current) Notifications.removeNotificationSubscription(notificationListener.current);
       if (responseListener.current) Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, []);
+  }, [navigationRef]);
 
   if (loading) return <AppLoading />;
 
@@ -329,6 +394,8 @@ function AppContent() {
 }
 
 export default function App() {
+  const navigationRef = useNavigationContainerRef();
+
   return (
     <ErrorBoundary>
       <SafeAreaProvider>
@@ -337,8 +404,8 @@ export default function App() {
             <AuthProvider>
               <CartProvider>
                 <OrderProvider>
-                  <NavigationContainer>
-                    <AppContent />
+                  <NavigationContainer ref={navigationRef} linking={linking}>
+                    <AppContent navigationRef={navigationRef} />
                   </NavigationContainer>
                 </OrderProvider>
               </CartProvider>
