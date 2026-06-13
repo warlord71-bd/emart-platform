@@ -9,6 +9,12 @@ WebBrowser.maybeCompleteAuthSession();
 const AUTH_KEY = '@emart_user';
 const AuthContext = createContext();
 
+const fetchWithTimeout = (url, options = {}, timeoutMs = 15000) => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer));
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,10 +31,12 @@ export const AuthProvider = ({ children }) => {
 
   const fetchGoogleUser = async (token) => {
     try {
-      const res = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+      const res = await fetchWithTimeout('https://www.googleapis.com/userinfo/v2/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const googleUser = await res.json();
+      const googleUser = await res.json().catch(() => null);
+      if (!res.ok || !googleUser) throw new Error('Failed to fetch Google profile');
+
       const userData = {
         name: googleUser.name,
         email: googleUser.email,
@@ -39,7 +47,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(userData));
     } catch (e) {
-      console.log('Google fetch error:', e);
+      if (__DEV__) console.log('Google fetch error:', e);
     }
   };
 
@@ -47,9 +55,12 @@ export const AuthProvider = ({ children }) => {
     const restore = async () => {
       try {
         const saved = await AsyncStorage.getItem(AUTH_KEY);
-        if (saved) setUser(JSON.parse(saved));
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && typeof parsed === 'object') setUser(parsed);
+        }
       } catch (e) {
-        console.log('Auth restore error:', e);
+        if (__DEV__) console.log('Auth restore error:', e);
       } finally {
         setLoading(false);
       }
@@ -59,12 +70,12 @@ export const AuthProvider = ({ children }) => {
 
   // Real API login — calls BFF → WordPress JWT auth
   const apiSignIn = async (emailOrPhone, password) => {
-    const res = await fetch(`${API_CONFIG.baseUrl}/api/mobile/auth/login`, {
+    const res = await fetchWithTimeout(`${API_CONFIG.baseUrl}/api/mobile/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ login: emailOrPhone, password }),
     });
-    const data = await res.json();
+    const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || 'Login failed');
 
     const userData = {
@@ -83,12 +94,12 @@ export const AuthProvider = ({ children }) => {
 
   // Real API register — calls BFF → WordPress register
   const apiRegister = async ({ name, email, phone, password }) => {
-    const res = await fetch(`${API_CONFIG.baseUrl}/api/mobile/auth/register`, {
+    const res = await fetchWithTimeout(`${API_CONFIG.baseUrl}/api/mobile/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, phone, password }),
     });
-    const data = await res.json();
+    const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || 'Registration failed');
     return data; // { success, pending_verification, message }
   };
