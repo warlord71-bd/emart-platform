@@ -270,8 +270,6 @@ const HomeScreen = ({ navigation }) => {
   // ── Render ──
   return (
     <View style={styles.container}>
-      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-
       {/* ── Sticky Animated Header ── */}
       <Animated.View style={[styles.stickyHeader, { height: headerHeight }]}>
         <LinearGradient colors={COLORS.gradientHeader} style={StyleSheet.absoluteFill} />
