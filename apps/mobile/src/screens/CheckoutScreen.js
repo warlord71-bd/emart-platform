@@ -116,7 +116,7 @@ const CheckoutScreen = ({ navigation }) => {
       if (!isMounted.current) return;
       const errorMsg = error?.message || "Failed to place order. Please try again.";
       Alert.alert("Order Error", errorMsg);
-      console.error("Checkout error:", error);
+      if (__DEV__) console.error("Checkout error:", errorMsg);
     } finally {
       if (isMounted.current) setPlacing(false);
     }

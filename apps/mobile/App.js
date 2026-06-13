@@ -298,7 +298,7 @@ function AppContent() {
   useEffect(() => {
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       // Notification received while app is open
-      console.log('Notification:', notification);
+      if (__DEV__) console.log('Notification:', notification);
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {

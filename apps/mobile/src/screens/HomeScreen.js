@@ -222,7 +222,7 @@ const HomeScreen = ({ navigation }) => {
       if (saleRes?.data) setSaleProducts(saleRes.data);
       if (newRes?.data) setNewProducts(newRes.data);
     } catch (error) {
-      console.log('Home load error:', error);
+      if (__DEV__) console.log('Home load error:', error);
     } finally {
       setLoading(false);
     }
