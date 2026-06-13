@@ -50,6 +50,7 @@ const ProductsScreen = ({ navigation, route }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [searchQuery, setSearchQuery] = useState(initialSearch || '');
@@ -62,47 +63,61 @@ const ProductsScreen = ({ navigation, route }) => {
   }, [categoryId, categorySlug, onSale, sortBy]);
 
   const loadProducts = async (pageNum = 1, reset = false) => {
-    if (reset) setLoading(true);
-    else setLoadingMore(true);
-
-    let result;
-    let sortParams = '';
-    if (sortBy === 'price_asc') sortParams = 'orderby=price&order=asc';
-    else if (sortBy === 'price_desc') sortParams = 'orderby=price&order=desc';
-    else if (sortBy === 'rating') sortParams = 'orderby=rating&order=desc';
-    else if (sortBy === 'popularity') sortParams = 'orderby=popularity&order=desc';
-    else if (sortBy === 'newest') sortParams = 'orderby=date&order=desc';
-
-    if (searchQuery) {
-      result = await searchProducts(searchQuery, pageNum);
-    } else if (categorySlug) {
-      result = await productListFetch({ category: categorySlug, page: pageNum, per_page: 20 });
-    } else if (categoryId) {
-      result = await getProductsByCategory(categoryId, pageNum);
-    } else if (onSale) {
-      result = await getOnSaleProducts(pageNum);
+    if (reset) {
+      setLoading(true);
+      setError(null);
     } else {
-      result = await getProducts(pageNum, 20, sortParams);
+      setLoadingMore(true);
     }
 
-    if (result.data) {
-      setProducts(prev => reset ? result.data : [...prev, ...result.data]);
-      setHasMore(result.data.length >= 20);
+    try {
+      let result;
+      let sortParams = '';
+      if (sortBy === 'price_asc') sortParams = 'orderby=price&order=asc';
+      else if (sortBy === 'price_desc') sortParams = 'orderby=price&order=desc';
+      else if (sortBy === 'rating') sortParams = 'orderby=rating&order=desc';
+      else if (sortBy === 'popularity') sortParams = 'orderby=popularity&order=desc';
+      else if (sortBy === 'newest') sortParams = 'orderby=date&order=desc';
+
+      if (searchQuery) {
+        result = await searchProducts(searchQuery, pageNum);
+      } else if (categorySlug) {
+        result = await productListFetch({ category: categorySlug, page: pageNum, per_page: 20 });
+      } else if (categoryId) {
+        result = await getProductsByCategory(categoryId, pageNum);
+      } else if (onSale) {
+        result = await getOnSaleProducts(pageNum);
+      } else {
+        result = await getProducts(pageNum, 20, sortParams);
+      }
+
+      if (result.error) throw new Error(result.error);
+
+      setProducts(prev => reset ? result.data : [...prev, ...(result.data || [])]);
+      setHasMore(pageNum < (result.totalPages || 0));
       setPage(pageNum);
+    } catch (err) {
+      if (reset) setError(err.message || 'Failed to load products');
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
     }
-    setLoading(false);
-    setLoadingMore(false);
   };
 
   const handleSearch = (query) => {
     setSearchQuery(query);
     if (query) {
+      setLoading(true);
+      setError(null);
       searchProducts(query, 1).then(result => {
-        if (result.data) {
-          setProducts(result.data);
-          setHasMore(result.data.length >= 20);
+        if (result.error) {
+          setError(result.error);
+        } else {
+          setProducts(result.data || []);
+          setHasMore(1 < (result.totalPages || 0));
           setPage(1);
         }
+        setLoading(false);
       });
     } else {
       loadProducts(1, true);
@@ -232,6 +247,23 @@ const ProductsScreen = ({ navigation, route }) => {
               <SkeletonCard />
             </View>
           ))}
+        </View>
+      ) : error ? (
+        <View style={styles.empty}>
+          <View style={styles.emptyIcon}>
+            <AppIcon name="close-circle-outline" size={36} color={COLORS.textLight} />
+          </View>
+          <Text style={styles.emptyTitle}>Something went wrong</Text>
+          <Text style={styles.emptySub}>{error}</Text>
+          <TouchableOpacity
+            style={styles.emptyBtn}
+            onPress={() => loadProducts(1, true)}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <AppIcon name="refresh-outline" size={14} color={COLORS.accent} />
+              <Text style={styles.emptyBtnText}>Retry</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       ) : (
         <FlatList

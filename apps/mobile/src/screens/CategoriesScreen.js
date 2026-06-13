@@ -56,15 +56,23 @@ const CategoriesScreen = ({ navigation }) => {
   const { t } = useLanguage();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('all'); // all, brands, concerns
 
   useEffect(() => { loadCategories(); }, []);
 
   const loadCategories = async () => {
     setLoading(true);
-    const { data } = await getParentCategories();
-    if (data) setCategories(data);
-    setLoading(false);
+    setError(null);
+    try {
+      const { data, error: err } = await getParentCategories();
+      if (err) throw new Error(err);
+      setCategories(data || []);
+    } catch (err) {
+      setError(err.message || 'Failed to load categories');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearch = (query) => {
@@ -222,6 +230,15 @@ const CategoriesScreen = ({ navigation }) => {
                 contentContainerStyle={styles.brandScroll}
                 renderItem={() => <SkeletonPill />}
               />
+            ) : error ? (
+              <View style={styles.catError}>
+                <AppIcon name="close-circle-outline" size={28} color={COLORS.textLight} />
+                <Text style={styles.catErrorText}>{error}</Text>
+                <TouchableOpacity style={styles.catRetryBtn} onPress={loadCategories}>
+                  <AppIcon name="refresh-outline" size={13} color={COLORS.accent} />
+                  <Text style={styles.catRetryText}>Retry</Text>
+                </TouchableOpacity>
+              </View>
             ) : (
               <View style={styles.catList}>
                 {categories.map((cat, i) => (
@@ -358,6 +375,16 @@ const styles = StyleSheet.create({
     width: 28, height: 28, borderRadius: 8, backgroundColor: COLORS.bg,
     alignItems: 'center', justifyContent: 'center',
   },
+
+  // Categories error/retry
+  catError: { alignItems: 'center', paddingHorizontal: 16, paddingVertical: 20, gap: 10 },
+  catErrorText: { fontSize: 12, color: COLORS.textSecondary, textAlign: 'center' },
+  catRetryBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 6,
+    paddingVertical: 8, paddingHorizontal: 18, borderRadius: 10,
+    borderWidth: 1, borderColor: COLORS.accent,
+  },
+  catRetryText: { fontSize: 12, ...FONTS.bold, color: COLORS.accent },
 
   // CTA Banner
   ctaWrap: { paddingHorizontal: 16, marginTop: 24 },
