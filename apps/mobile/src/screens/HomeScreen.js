@@ -263,7 +263,7 @@ const HomeScreen = ({ navigation }) => {
 
   const banners = [
     { title: t('bannerSaleTitle'), sub: t('bannerSaleSub'), emoji: '🌸', colors: COLORS.gradientBanner, onPress: () => navigation.navigate('Products', { onSale: true }) },
-    { title: t('bannerNewTitle'), sub: t('bannerNewSub'), emoji: '🇯🇵', colors: ['#2D2B55', '#1B1B2F', '#E8739E'], onPress: () => navigation.navigate('Products', { sort: 'newest' }) },
+    { title: t('bannerNewTitle'), sub: t('bannerNewSub'), emoji: '✨', colors: ['#2D2B55', '#1B1B2F', '#E8739E'], onPress: () => navigation.navigate('Products', { sort: 'newest' }) },
     { title: t('bannerDeliveryTitle'), sub: t('bannerDeliverySub'), emoji: '🚚', colors: ['#1B1B2F', '#0BA360', '#3CBA92'], onPress: () => navigation.navigate('Products') },
   ];
 

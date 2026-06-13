@@ -1,7 +1,7 @@
 export default {
   // App
   appName: 'eMart BD',
-  appTagline: 'Authentic Korean, Japanese & Global Beauty',
+  appTagline: 'Authentic K-Beauty & Global Beauty Essentials',
 
   // Tab Navigation
   tabHome: 'Home',
@@ -20,10 +20,10 @@ export default {
   newArrivals: 'New Arrivals',
   featured: 'Featured',
   shopNow: 'Shop Now',
-  bannerSaleTitle: 'K-Beauty Sale',
-  bannerSaleSub: 'Up to 40% Off on K-Beauty',
-  bannerNewTitle: 'Japanese Skincare',
-  bannerNewSub: 'New arrivals from Japan',
+  bannerSaleTitle: 'Flash Sale',
+  bannerSaleSub: 'Up to 40% Off Today',
+  bannerNewTitle: 'New Arrivals',
+  bannerNewSub: 'Just added to the store',
   bannerDeliveryTitle: 'Free Delivery',
   bannerDeliverySub: 'Orders over ৳3,000 in Dhaka',
 

@@ -1,6 +1,6 @@
 # eMart BD — Mobile App
 
-Korean & Japanese Beauty E-Commerce App for Bangladesh
+K-Beauty & Global Beauty E-Commerce App for Bangladesh
 
 Built with Expo 52 + React Native 0.76 + secure Emart API routes
 

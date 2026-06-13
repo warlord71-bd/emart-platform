@@ -1,7 +1,7 @@
 export default {
   // App
   appName: 'ইমার্ট বিডি',
-  appTagline: 'অথেনটিক কোরিয়ান, জাপানি ও গ্লোবাল বিউটি',
+  appTagline: 'অথেনটিক কে-বিউটি ও গ্লোবাল বিউটি এসেনশিয়ালস',
 
   // Tab Navigation
   tabHome: 'হোম',
@@ -20,10 +20,10 @@ export default {
   newArrivals: 'নতুন পণ্য',
   featured: 'বিশেষ পণ্য',
   shopNow: 'এখনই কিনুন',
-  bannerSaleTitle: 'কে-বিউটি সেল',
-  bannerSaleSub: 'কে-বিউটিতে ৪০% পর্যন্ত ছাড়',
-  bannerNewTitle: 'জাপানি স্কিনকেয়ার',
-  bannerNewSub: 'জাপান থেকে নতুন পণ্য',
+  bannerSaleTitle: 'ফ্ল্যাশ সেল',
+  bannerSaleSub: 'আজই ৪০% পর্যন্ত ছাড়',
+  bannerNewTitle: 'নতুন পণ্য',
+  bannerNewSub: 'স্টোরে নতুন যুক্ত হয়েছে',
   bannerDeliveryTitle: 'ফ্রি ডেলিভারি',
   bannerDeliverySub: 'ঢাকায় ৳৩,০০০ এর বেশি অর্ডারে',
 
