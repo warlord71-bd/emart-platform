@@ -282,29 +282,91 @@ function getProductBreadcrumbParent(product: WooProduct) {
   return getCleanBreadcrumbCategory(product);
 }
 
-function isHairCareProduct(product: WooProduct): boolean {
+type GeneratedFaqContext = {
+  fitLabel: string;
+  useFallback: string;
+  fitQuestion: string;
+  fitAnswer: string;
+  cautionAnswer: string;
+};
+
+function getGeneratedFaqContext(product: WooProduct, skinType: string, concern: string): GeneratedFaqContext {
   const source = [
     product.name,
     ...(product.categories || []).flatMap((category) => [category.name, category.slug]),
   ].join(' ').toLowerCase();
+  const isHairCare = /shampoo|conditioner|hair|scalp/.test(source);
+  const isFragrance = /fragrance|perfume|body-mist|body mist|eau de|cologne/.test(source);
+  const isMakeup = /makeup|lipstick|lip-tint|lip tint|mascara|eyeliner|foundation|primer|concealer|blush|powder|palette/.test(source);
+  const isLipCare = /lip-balm|lip balm|lip-care|lip care|lip-mask|lip mask/.test(source);
+  const isBodyCare = /body-wash|body wash|body-lotion|body lotion|bath|hand-care|hand care|hand-cream|hand cream|foot|soap|deodorant/.test(source);
 
-  return /shampoo|conditioner|hair|scalp/.test(source);
+  if (isHairCare) {
+    const fitLabel = getProductAttributeValue(product, /(hair type|scalp type|hair concern)/i) || 'most hair and scalp routines';
+    return {
+      fitLabel,
+      useFallback: 'Use as directed for this hair care product, then rinse thoroughly if it is a wash-off formula.',
+      fitQuestion: `${product.name} কোন hair বা scalp type এর জন্য ভালো?`,
+      fitAnswer: `${product.name} সাধারণত ${fitLabel} এর জন্য উপযোগী। scalp sensitive হলে আগে অল্প ব্যবহার করে দেখুন।`,
+      cautionAnswer: 'প্রথমবার ব্যবহারের আগে scalp sensitivity খেয়াল করুন, চোখে গেলে দ্রুত পানি দিয়ে ধুয়ে ফেলুন, irritation বা অতিরিক্ত dryness হলে ব্যবহার বন্ধ করুন।',
+    };
+  }
+
+  if (isFragrance) {
+    return {
+      fitLabel: 'everyday fragrance use',
+      useFallback: 'Apply lightly to pulse points or clothing from a short distance, and avoid over-spraying.',
+      fitQuestion: `${product.name} কোন ধরনের ব্যবহারের জন্য ভালো?`,
+      fitAnswer: `${product.name} সাধারণত everyday fragrance use এর জন্য উপযোগী। scent preference ব্যক্তিভেদে আলাদা, তাই হালকা ব্যবহার দিয়ে শুরু করুন।`,
+      cautionAnswer: 'চোখ, মুখ ও irritated skin থেকে দূরে রাখুন। sensitive skin হলে সরাসরি ত্বকে না দিয়ে পোশাকে অল্প ব্যবহার করুন।',
+    };
+  }
+
+  if (isMakeup) {
+    const fitLabel = isLipCare ? 'daily lip care routines' : 'daily makeup routines';
+    return {
+      fitLabel,
+      useFallback: isLipCare
+        ? 'Apply a thin layer to clean lips and reapply when lips feel dry.'
+        : 'Apply as directed for this makeup product, building coverage or colour gradually.',
+      fitQuestion: `${product.name} কোন ধরনের ব্যবহারের জন্য ভালো?`,
+      fitAnswer: `${product.name} সাধারণত ${fitLabel} এর জন্য উপযোগী। shade বা finish পছন্দের উপর ফল আলাদা হতে পারে।`,
+      cautionAnswer: 'প্রথমবার ব্যবহারের আগে অল্প করে test করুন। irritation, itching বা dryness হলে ব্যবহার বন্ধ করুন; eye/lip product হলে hygiene বজায় রাখুন।',
+    };
+  }
+
+  if (isBodyCare) {
+    return {
+      fitLabel: 'daily body care routines',
+      useFallback: 'Use as directed for this body care product, adjusting amount based on comfort and dryness.',
+      fitQuestion: `${product.name} কোন ধরনের body care routine এর জন্য ভালো?`,
+      fitAnswer: `${product.name} সাধারণত daily body care routines এর জন্য উপযোগী। খুব sensitive বা irritated area-তে আগে অল্প ব্যবহার করে দেখুন।`,
+      cautionAnswer: 'প্রথমবার ব্যবহারের আগে অল্প জায়গায় test করুন। irritation হলে ব্যবহার বন্ধ করুন, এবং চোখ বা broken skin এ ব্যবহার এড়িয়ে চলুন।',
+    };
+  }
+
+  return {
+    fitLabel: skinType,
+    useFallback: 'Apply as directed for this product type, starting with a small amount and adjusting based on your skin comfort.',
+    fitQuestion: `${product.name} কোন skin type এর জন্য ভালো?`,
+    fitAnswer: `${product.name} সাধারণত ${skinType} এর জন্য উপযোগী।${
+      concern ? ` আপনার concern যদি ${concern} হয়, তাহলে এটি routine-এ যোগ করার আগে ধীরে শুরু করুন।` : ''
+    }`,
+    cautionAnswer: 'প্রথমবার ব্যবহারের আগে patch test করুন, চোখের খুব কাছে ব্যবহার এড়িয়ে চলুন, irritation হলে ব্যবহার বন্ধ করুন। active ingredient বা brightening/exfoliating product হলে দিনের বেলা sunscreen ব্যবহার করুন।',
+  };
 }
 
 function getGeneratedProductFaqItems(product: WooProduct): ProductFaqItem[] {
   const brand = getProductBrandName(product);
   const origin = getProductAttributeValue(product, /(origin|made in|country)/i);
-  const isHairCare = isHairCareProduct(product);
   const skinType = getProductAttributeValue(product, /skin type/i) || 'most skin types';
-  const fitLabel = isHairCare
-    ? getProductAttributeValue(product, /(hair type|scalp type|hair concern)/i) || 'most hair and scalp routines'
-    : skinType;
   const concern = getProductConcernLabel(product);
+  const faqContext = getGeneratedFaqContext(product, skinType, concern);
   const productType = getProductType(product);
   const howToUse = htmlToTextLines(getHowToUseHtml(product))[0];
   const purposeParts = [`${product.name} is a ${productType}`];
   if (concern) purposeParts.push(`for ${concern}`);
-  if (fitLabel) purposeParts.push(`suited to ${fitLabel}`);
+  if (faqContext.fitLabel) purposeParts.push(`suited to ${faqContext.fitLabel}`);
 
   return [
     {
@@ -320,25 +382,15 @@ function getGeneratedProductFaqItems(product: WooProduct): ProductFaqItem[] {
       question: `How should I use ${product.name}?`,
       answer:
         howToUse ||
-        (isHairCare
-          ? 'Use as directed for this hair care product, then rinse thoroughly if it is a wash-off formula.'
-          : 'Apply as directed for this product type, starting with a small amount and adjusting based on your skin comfort.'),
+        faqContext.useFallback,
     },
     {
-      question: isHairCare
-        ? `${product.name} কোন hair বা scalp type এর জন্য ভালো?`
-        : `${product.name} কোন skin type এর জন্য ভালো?`,
-      answer: isHairCare
-        ? `${product.name} সাধারণত ${fitLabel} এর জন্য উপযোগী। scalp sensitive হলে আগে অল্প ব্যবহার করে দেখুন।`
-        : `${product.name} সাধারণত ${skinType} এর জন্য উপযোগী।${
-          concern ? ` আপনার concern যদি ${concern} হয়, তাহলে এটি routine-এ যোগ করার আগে ধীরে শুরু করুন।` : ''
-        }`,
+      question: faqContext.fitQuestion,
+      answer: faqContext.fitAnswer,
     },
     {
       question: `${product.name} ব্যবহারের আগে কী সতর্কতা রাখা উচিত?`,
-      answer: isHairCare
-        ? 'প্রথমবার ব্যবহারের আগে scalp sensitivity খেয়াল করুন, চোখে গেলে দ্রুত পানি দিয়ে ধুয়ে ফেলুন, irritation বা অতিরিক্ত dryness হলে ব্যবহার বন্ধ করুন।'
-        : 'প্রথমবার ব্যবহারের আগে patch test করুন, চোখের খুব কাছে ব্যবহার এড়িয়ে চলুন, irritation হলে ব্যবহার বন্ধ করুন। active ingredient বা brightening/exfoliating product হলে দিনের বেলা sunscreen ব্যবহার করুন।',
+      answer: faqContext.cautionAnswer,
     },
   ];
 }

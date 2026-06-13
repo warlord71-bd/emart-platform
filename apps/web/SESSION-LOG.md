@@ -2424,3 +2424,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: `cd apps/web && npm run build` passed.
 - Blockers: not deployed/live-smoked in this session.
 - Next step: deploy/smoke if owner wants this FAQ wording corrected live immediately.
+
+## 2026-06-13 (Codex — PDP fallback FAQ non-skincare wording)
+- Extended the generated PDP FAQ context beyond hair care so non-skincare products do not receive skin-type or sunscreen-specific fallback wording.
+- Added category/name detection for fragrance, makeup/lip products, and bath/body/hand care. Generated Bangla fit questions now use "ব্যবহার", "body care routine", or hair/scalp wording as appropriate; skincare products still keep skin-type wording.
+- Verified: `cd apps/web && npm run build` passed.
+- Blockers: not deployed/live-smoked in this session.
+- Next step: deploy/smoke representative PDPs from shampoo, fragrance, lipstick/lip balm, body wash/lotion, and skincare.
