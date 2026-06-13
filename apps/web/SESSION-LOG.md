@@ -2411,3 +2411,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: `npx expo config --type public`, `npx expo-doctor` (18/18), and `npx expo export --platform android` all passed.
 - Blockers: npm install required network approval; npm reports existing dependency audit issues (28 total) not addressed in this focused change.
 - Next step: BFF design/implementation for mobile order history and Google token exchange, or Appetize/device smoke for the newly committed mobile branch.
+
+## 2026-06-13 (Codex — mobile audit status refresh)
+- Re-checked mobile audit task status on branch `fix/mobile-audit-june`: latest commits are `03092e3` (SecureStore) and `27bb2b4` (Batch B/C/D remediation); worktree is clean except unrelated pre-existing `workspace/BRAND_GUIDE.md`.
+- Confirmed remaining BFF blockers are still real: `apps/web/src/app/api/mobile` only exposes auth login/register, categories, coupons, and products; no mobile JWT order-history or Google-token exchange endpoint exists. Web `/api/account/orders` exists but is session-based and not a mobile JWT API.
+- Updated `workspace/TASKS.md` wording to reflect SecureStore completion and the confirmed BFF gap.
+- Next step remains device/Appetize smoke for the mobile branch, or a backend design pass for the two mobile BFF endpoints.

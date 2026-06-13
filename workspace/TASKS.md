@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-13 (mobile audit Batch B/C/D remediation committed locally)
+Last updated: 2026-06-13 (mobile audit remediation checked; SecureStore done, BFF blockers confirmed)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -101,7 +101,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 - ✅ App-wide icon-font removal in commit `60b10b8`: all `Ionicons`/`@expo/vector-icons` usage replaced with new fontless `apps/mobile/src/components/AppIcon.js` across `App.js` and every screen; `expo-font` plugin/deps removed. EAS build `db756401-83d1-4aae-8e7b-b0eb2428a157` FINISHED (artifact ready); pushed to `origin/main`. Not yet re-uploaded to Appetize for visual confirmation.
 - ✅ Mobile audit Batch B/C/D remediation in local branch `fix/mobile-audit-june`: safe-area provider foundation, root error boundary, fetch/JSON timeouts, centralized StatusBar, Android checkout keyboard avoidance, capped PDP review rendering, scoped accessibility labels/roles, minimized local order PII, cart quantity clamping, deep-link config, and notification tap navigation. Validated with `npx expo config --type public`, `npx expo-doctor` 18/18, and `npx expo export --platform android`.
 - ✅ Mobile JWT storage hardening in local branch `fix/mobile-audit-june`: added `expo-secure-store`, moved JWT persistence out of AsyncStorage, and added one-time migration for old `@emart_user.token` blobs.
-- ⚠️ Mobile audit blocked findings: server-backed mobile order history and Google token→Emart JWT exchange need BFF endpoints (not present under `/api/mobile/*` today).
+- ⚠️ Mobile audit blocked findings re-checked 2026-06-13: server-backed mobile order history and Google token→Emart JWT exchange need BFF endpoints. Current mobile BFF routes only include auth login/register, categories, coupons, and products; web `/api/account/orders` exists but is session-based, not a mobile JWT order-history API.
 - ⚠️ Live BFF gap: `/api/mobile/cart` and `/api/mobile/payment` 404; current app uses local cart + manual bKash/Nagad TrxID via `/api/checkout`
 - ⚠️ ADB gap: `adb` installed on VPS, but no phone visible; local laptop USB device is not exposed to the VPS
 - Next: real device COD/bKash/Nagad checkout smoke, then EAS production AAB + Play Store internal testing upload
