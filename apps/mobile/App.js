@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -330,19 +331,21 @@ function AppContent() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <LanguageProvider>
-          <AuthProvider>
-            <CartProvider>
-              <OrderProvider>
-                <NavigationContainer>
-                  <AppContent />
-                </NavigationContainer>
-              </OrderProvider>
-            </CartProvider>
-          </AuthProvider>
-        </LanguageProvider>
-      </GestureHandlerRootView>
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <LanguageProvider>
+            <AuthProvider>
+              <CartProvider>
+                <OrderProvider>
+                  <NavigationContainer>
+                    <AppContent />
+                  </NavigationContainer>
+                </OrderProvider>
+              </CartProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
     </ErrorBoundary>
   );
 }
