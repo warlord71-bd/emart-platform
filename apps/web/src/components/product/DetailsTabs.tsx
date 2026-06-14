@@ -47,6 +47,9 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
 
   return (
     <div className="clear-both rounded-2xl border border-hairline bg-white p-4 shadow-sm md:p-5">
+      {/* Heading anchors the product-content panels (which may contain h2/h3 from raw
+          Woo content) under a valid h2, avoiding an h1->h3 heading-level skip. */}
+      <h2 className="sr-only">Product details</h2>
       {/* Tab Navigation */}
       <div role="tablist" aria-label="Product details" className="flex gap-4 overflow-x-auto border-b border-gray-200 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" onKeyDown={handleKeyDown}>
         {tabs.map((tab) => (
