@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-15 (categories hydration + announcement aria polish fixed)
+Last updated: 2026-06-15 (meta regen #14 done 1360/1360; 70-item image alt-text SEO pass; PDP h1->h3 heading-skip fixed, deployed `bbfb31f`)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -10,7 +10,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | Job | Status | Notes |
 |---|---|---|
 | `emart-meta-gen` (PM2) | ✅ stopped — job complete | 41/42 bad metas fixed Jun 9; "original original" item re-checked Jun 10 — resolved, see #11 |
-| meta_generator dry-run (PID 448966, manual) | 🔄 running | Item #14 — 1266-product dry-run, see #14 below |
+| meta_generator (PID 448966, manual) | ✅ stopped — job complete | Item #14 — 1360/1360 done 2026-06-15, see #14 below |
 | `emart-presence` (PM2) | ✅ running | WebSocket, 33d uptime |
 | `emart-checkout-monitor` (PM2 cron) | ✅ all 8 steps pass | Every 15 min. Fixed 2026-06-10: Step 7b test SKU was hardcoded to product 93315 (Kerasys shampoo), which went out of stock and caused 5x false-alarm 409 alerts; switched test SKU to product 2591 (COSRX Snail Mucin essence, in stock) |
 | Python crons | ✅ running | site_health, daily_report, low_stock |
