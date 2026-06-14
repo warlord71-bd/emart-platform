@@ -2456,3 +2456,16 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Live metadata spot-check confirmed `/best` title/meta/OG/schema markers, `/faq` title/meta/OG + `Dhaka 1–2 business days` copy, `/origins/bangladesh` title/meta, and no `Emart Skincare BD` text in live header HTML.
 - Blockers: remaining SEO follow-ups are task-boarded; unrelated pre-existing `workspace/BRAND_GUIDE.md` remains dirty.
 - Next step: handle the small schema polish batch (`/faq`, `/shipping-policy`, `/categories`) or PDP title strategy in a separate scoped pass.
+
+## 2026-06-14 (Claude — SEO/GEO follow-up batch items 1-4 deployed)
+- Investigated GBP knowledge panel Bangla name issue (correct transliteration is `ইমার্ট`, not `এমার্ট`); documented in `workspace/BRAND_GUIDE.md` "Bangla Transliteration" section — GBP dashboard correction remains owner-action.
+- Ran read-only SERP/meta/schema audit per owner's structured prompt; cross-checked against `TASKS.md`/`SESSION-LOG.md` and found Codex had already shipped/deployed the bulk of the audit findings (`edf9652`, `3578adb`, `8cb43a6`). Narrowed remaining work to 6 items; executed 1-4 (5 is owner-gated, 6 is this write-up).
+- Item 1: `/categories` — added `CollectionPage` JSON-LD node (`@id`-linked to existing `ItemList`).
+- Item 2: `/faq` — converted `faqSchema` to `@graph` with added `BreadcrumbList`; `/shipping-policy` — added new `BreadcrumbList` JSON-LD (had none).
+- Item 3: PDP long-title shortening — new `truncateTitle` helper (`lib/seoText.ts`) + tiered logic in `buildProductSeoTitle` (`lib/seo/product.ts`), caps fallback titles at 60 chars without mutating Woo `product.name`/slug.
+- Item 4: site-wide OG sweep — added `openGraph.siteName`/`locale` to `concerns/[slug]`, `skin-type/[slug]`, and `shop/[slug]` (PDP) — the 3 remaining templates missing it.
+- Item 5: contact single-phone policy — left as owner-decision-gated, no code change.
+- Item 6: wrote up "C3 — Strategic SEO note" in `TASKS.md` (Android/google.com.bd mobile-first dominance, GBP vs website separation, AI Overview/Gemini/ChatGPT/Perplexity GEO/AEO readiness, TikTok/FB/YouTube → blog topic pipeline).
+- Verified: Local build clean, committed `5715207`, rsynced to VPS, VPS build clean, `pm2 restart emartweb` clean, live smoke-tested `/categories` (CollectionPage), `/faq` (BreadcrumbList), `/shipping-policy` (BreadcrumbList), `/concerns/anti-aging-repair` + `/skin-type/oily` + PDP (og:site_name/og:locale), and PDP title shortening on `kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml` (60 chars). Pushed to `origin/main`.
+- Blockers: none. GBP Bangla name correction and C1 blog generator remain owner-gated next steps (unrelated to this batch).
+- Next step: none required for this batch; future SEO work should continue per `SEO_MASTER.md` work order.
