@@ -106,6 +106,10 @@ const nextConfig = {
       { source: '/brands/bath', destination: '/brands/bath-and-body-works', permanent: true },
       { source: '/brands/house', destination: '/brands/house-of-hur', permanent: true },
       { source: '/brands/valencia', destination: '/brands/valencia-gio', permanent: true },
+      // Duplicate product_brand terms merged into canonical slugs 2026-06-15
+      { source: '/brands/blab', destination: '/brands/b-lab', permanent: true },
+      { source: '/brands/beauty-formulas-skin', destination: '/brands/beauty-formulas', permanent: true },
+      { source: '/brands/carene', destination: '/brands/carenel', permanent: true },
       { source: '/category/skincare/melasma', destination: '/concerns/melasma', permanent: true },
       { source: '/category/skincare/acne', destination: '/concerns/acne-blemish-care', permanent: true },
       { source: '/category/skincare/j-beauty-skincare', destination: '/category/japanese-beauty', permanent: true },
@@ -378,11 +382,6 @@ const nextConfig = {
       // Old /brand/ (singular) → /brands/
       { source: '/brand/:slug*', destination: '/brands/:slug*', permanent: true },
 
-      // Brand aliases not yet covered
-      { source: '/brands/i\'m-from',             destination: '/brands/im-from',          permanent: true },
-      { source: '/brands/i-m-from',              destination: '/brands/im-from',           permanent: true },
-      { source: '/brands/dr-jart',               destination: '/brands/dr-jart-plus',      permanent: true },
-
       // Brand pages that have no products or are discontinued → /shop
       { source: '/brands/beaute-moringa-melasma', destination: '/shop',                   permanent: true },
       { source: '/brands/japanese',               destination: '/category/japanese-beauty', permanent: true },
@@ -400,17 +399,13 @@ const nextConfig = {
       { source: '/brands/radiant',                destination: '/shop',                   permanent: true },
       { source: '/brands/tresemm',                destination: '/shop',                   permanent: true },
       { source: '/brands/karite',                 destination: '/shop',                   permanent: true },
-      { source: '/brands/healthy-place',          destination: '/shop',                   permanent: true },
       { source: '/brands/the',                    destination: '/shop',                   permanent: true },
       { source: '/brands/daily',                  destination: '/shop',                   permanent: true },
       { source: '/brands/bath',                   destination: '/shop',                   permanent: true },
       { source: '/brands/house',                  destination: '/shop',                   permanent: true },
-      { source: '/brands/innsaei',                destination: '/shop',                   permanent: true },
-      // skino + wishcare removed: WP brands have live products — brand pages now served normally
+      // skino, wishcare, innsaei, laxzin, sadoer, healthy-place removed: WP brands have live products — brand pages now served normally
       { source: '/brands/lucido',                 destination: '/shop',                   permanent: true },
-      { source: '/brands/laxzin',                 destination: '/shop',                   permanent: true },
       { source: '/brands/beauty',                 destination: '/shop',                   permanent: true },
-      { source: '/brands/sadoer',                 destination: '/shop',                   permanent: true },
       // Trashed products with GSC impressions — 301 to nearest live equivalent
       { source: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml',  destination: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant', permanent: true },
       { source: '/product/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml', destination: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant', permanent: true },

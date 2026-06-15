@@ -78,9 +78,9 @@ const WORDPRESS_URL = (process.env.WOO_INTERNAL_URL || process.env.NEXT_PUBLIC_W
 const REDIRECTED_BRAND_SLUGS = new Set([
   'beaute-moringa-melasma', 'japanese', 'green', 'valencia', 'sensitive',
   'absolute', 'cellpod', 'ruthair', 'kao', 'nizoral', 'ottogi', 'labelyoung',
-  'syoss', 'radiant', 'tresemm', 'karite', 'healthy-place', 'the', 'daily',
-  'bath', 'house', 'innsaei', 'lucido', 'laxzin', 'beauty', 'sadoer',
-  'dr-jart', 'a-pieu', 'wskin', 'purito', 'aztec', 'paula-s',
+  'syoss', 'radiant', 'tresemm', 'karite', 'the', 'daily',
+  'bath', 'house', 'lucido', 'beauty',
+  'a-pieu', 'wskin', 'purito', 'aztec', 'paula-s',
 ]);
 
 // Categories that 301-redirect to /concerns/* or /shop — must not appear in sitemap.

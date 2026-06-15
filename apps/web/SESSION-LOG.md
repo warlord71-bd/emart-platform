@@ -2531,3 +2531,26 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified via `sync.py --status`: 3,529/3,618 approved, 89 disapproved (down from 105), 390 with issues, 0 pending — total product count dropped by 17 as expected.
 - Both TASKS.md owner-action items #5 and #7 marked resolved.
 - Blockers: none. Next step: none for GMC; remaining open items are pa_concern 1,147 blank rows and the untriaged 466-product catalog meta-validator stylistic findings.
+
+## 2026-06-15 (Claude — WP /wp-admin/edit.php?post_type=page audit)
+- Owner asked to verify every WordPress "page" (post_type=page, wp-admin edit.php?post_type=page) is correctly represented on the Next.js frontend (route, schema, snippets).
+- Inventory: 22 WP pages total — 2 Elementor drafts (57532, 56421, not published, no live impact) + 20 published. All 20 published WP page slugs were tested live at e-mart.com.bd:
+  - 9 redirect cleanly to their Next.js equivalent (308/301): home2→/, stay-radiant-in-ramadan...→/blog/..., how-to-buy→/faq, help-center→/contact, shipping-delivery→/shipping-policy, refund_returns→/return-policy, my-account→/account, contact-us→/contact, policy→/return-policy, order-tracking→/track-order, my-orders→/account/orders, dashboard→/account, term-conditions→/terms-conditions, wishlist-2→/wishlist (308/301 mix, all correct destinations).
+  - 6 are live Next.js routes directly: /checkout, /shop, /cart (307→/checkout by design), /privacy-policy, /blog, /compare — all 200, correct titles/canonicals.
+  - 1 (compare-2) returns 410 Gone — intentional, /compare is the active replacement.
+  - Spot-checked schema: /faq (FAQPage+BreadcrumbList), /contact (LocalBusiness contactPoint), /shipping-policy (BreadcrumbList), /compare (full OG+canonical), blog post route (BlogPosting/NewsArticle) — all correct. checkout/account/wishlist/orders correctly noindex,nofollow; public content pages correctly index,follow with canonical.
+- **Found+fixed real bug**: `/return-policy`, `/shipping-policy`, `/terms-conditions`, `/privacy-policy`, `/track-order` had no page-level `openGraph` block, so `og:url` inherited the root layout's homepage URL (`https://e-mart.com.bd`) instead of their own canonical URL — would show wrong link context when shared on social platforms. Added full `openGraph` blocks (title/description/url/siteName/locale/images, matching the `/faq` pattern) to all 5. No title/canonical/robots/URL/route changes.
+- Verified: Local build clean, deployed via `deploy.sh` (Local build → VPS build → pm2 restart → smoke 200 → push). Commit `da48722` (+ deploy.sh's auto doc-commit `4148c9d`). Live-verified all 5 pages now emit correct `og:url`. Local=VPS=origin=Live at `4148c9d`.
+- Blockers: none. No other gaps found across the 20 published WP pages.
+
+## 2026-06-15 (Claude — product_brand taxonomy + /brands SEO audit)
+- Owner asked to audit `wp-admin/edit-tags.php?taxonomy=product_brand` and verify `/brands` + `/brands/[slug]` meta/snippets/URLs/schema are correct.
+- Pulled all 405 `product_brand` terms via `/wp-json/wp/v2/product_brand`. `/brands/cosrx` spot-check confirmed BreadcrumbList/CollectionPage/ItemList/Brand JSON-LD, canonical, OG, robots all correct.
+- Found and fixed (selected by owner):
+  1. Stale "no products" redirects to `/shop` for brands that now have live products — removed from `next.config.js` and `REDIRECTED_BRAND_SLUGS` in `sitemapEntries.ts`: Innsaei (7 products), Sadoer (18), Laxzin (7), Healthy Place (3). These now serve normal `/brands/[slug]` pages and appear in the sitemap.
+  2. `/brands/dr-jart` → `/brands/dr-jart-plus` was a broken redirect chain (target brand doesn't exist in WC → 404). Removed the rule along with two unreachable dead `i-m-from`/`i'm-from` → `/brands/im-from` rules (shadowed by earlier correct rules → `/brands/i-am-from`).
+  3. Merged 3 pairs of duplicate `product_brand` WC terms causing duplicate-content pages (identical title/meta, different self-canonical): B:Lab (`blab`→`b-lab`, now 5 products), Beauty Formulas (`beauty-formulas-skin`→`beauty-formulas`, now 3), Carenel (`carene`→`carenel`, now 20). Reassigned the 5 affected products via `wp eval-file`, deleted the source terms, added 301s from old slugs to canonical slugs in `next.config.js`.
+  4. Deleted 9 zero-count "ghost" `product_brand` terms cluttering wp-admin (Bath, Buy Retina Brand, Combo, Cow japan, Dr. Groot, Innsaei-dup `authentic-innsaei`, LG, Novale, Valentine).
+- Not fixed (reported only, owner didn't select): ~17 brands where the WP term display name differs in casing/punctuation from the brandWhitelist canonical name (e.g. "Cosrx" vs "COSRX", "La Roche Posay" vs "La Roche-Posay") — cosmetic, shows in titles/schema. Also noted: several more `/brands/<slug> → /shop` rules (valencia, absolute, tresemm, bath, house, lucido) are dead/unreachable because an earlier rule in the same redirects array already sends those same sources to specific brand pages — zero live impact, pure dead code, not cleaned up.
+- Verified: Local build clean. Deploying via `deploy.sh`.
+- Blockers: none. Next step: none — audit complete, fixes deployed.
