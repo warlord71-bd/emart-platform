@@ -175,3 +175,17 @@ Updated: 2026-05-21
   - 205 confirmed SKIP (hair/makeup/non-skin): keep as SKIP or override
 - **Do NOT assign via old WooCommerce category membership.** Category-based assignments are dirty. Use the keyword/ingredient mapping only.
 - Live concern counts (post-apply): dryness-hydration: 787, acne-blemish: 529, sensitivity: 435, anti-aging-repair: 353, hyperpigmentation: 346, brightening: 338, sunscreen: 306, wrinkle: 295, pores-blackheads: 234
+
+---
+
+## Brand Taxonomy — TWO separate "brand" systems in WordPress
+
+Added: 2026-06-15
+
+**`product_brand`** (wp-admin "Brands" menu — `edit-tags.php?taxonomy=product_brand&post_type=product`) is the ONLY taxonomy that drives the storefront. `lib/woo/brands.ts` (`getBrands`/`getBrandBySlug`) queries `/wp-json/wp/v2/product_brand`. Every `/brands/[slug]` page, the PDP brand chip, brand JSON-LD, and the brand sitemap entries come from this taxonomy. ~393 terms (after 2026-06-15 cleanup: merged 3 duplicate term pairs — B:Lab, Beauty Formulas, Carenel — and deleted 9 zero-count ghost terms).
+
+**`pa_brand`** (Products → Attributes → "Brand" → `edit-tags.php?taxonomy=pa_brand&post_type=product`) is a separate, legacy WooCommerce *attribute* taxonomy with **952 terms**, mostly noisy product-name fragments (e.g. "Abib Airy Sunstick", "& Honey Deep", "6 Years Red") rather than clean brand names. It is **not read anywhere in the frontend** (`apps/web/src`) — confirmed by full-repo grep, it appears only in a code comment in `brandWhitelist.ts`.
+
+> **Rule for all agents/admins**: To add, rename, merge, or fix a brand that affects the storefront `/brands/*` pages, edit terms under the **Brands** menu (`product_brand`), NOT Products → Attributes → Brand (`pa_brand`). Editing `pa_brand` has zero effect on `/brands/[slug]` pages, the PDP brand chip, or the sitemap.
+
+**Brand redirect notes (next.config.js)**: Innsaei, Sadoer, Laxzin, Healthy Place, Skino, and WishCare were previously 301-redirected to `/shop` as "no inventory" brands; all 6 now have live products (3-18 each) and serve normal `/brands/[slug]` pages as of 2026-06-15 (commit `e041df7`). If a `/brands/<slug>` redirect to `/shop` looks stale, check the live `product_brand` term count before assuming it's still correct.

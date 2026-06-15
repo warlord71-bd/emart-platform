@@ -2554,3 +2554,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Not fixed (reported only, owner didn't select): ~17 brands where the WP term display name differs in casing/punctuation from the brandWhitelist canonical name (e.g. "Cosrx" vs "COSRX", "La Roche Posay" vs "La Roche-Posay") — cosmetic, shows in titles/schema. Also noted: several more `/brands/<slug> → /shop` rules (valencia, absolute, tresemm, bath, house, lucido) are dead/unreachable because an earlier rule in the same redirects array already sends those same sources to specific brand pages — zero live impact, pure dead code, not cleaned up.
 - Verified: Local build clean. Deploying via `deploy.sh`.
 - Blockers: none. Next step: none — audit complete, fixes deployed.
+
+## 2026-06-15 (Claude — pa_brand vs product_brand clarification + docs)
+- Owner pointed out a second finding: WC has two separate "brand" taxonomies — `pa_brand` (Products → Attributes → Brand, 952 noisy product-fragment terms like "Abib Airy Sunstick") vs `product_brand` (Brands menu, ~393 terms, the one `/brands/[slug]` actually uses). Confirmed via full-repo grep: `pa_brand` is referenced only in a `brandWhitelist.ts` comment, never fetched/displayed — zero frontend effect.
+- Also re-confirmed the Innsaei/Sadoer/Laxzin/Healthy-Place/Skino/WishCare redirect fix from the earlier session today is fully live (all 6 return 200, not redirected) — owner's "uncommitted WIP" note was stale, already deployed in `e041df7`.
+- Added a new "Brand Taxonomy" section to `workspace/docs/category-taxonomy-status.md` documenting both taxonomies, the rule (manage brands via `product_brand`/"Brands" menu, not `pa_brand`/Attributes), and the 2026-06-15 redirect/merge cleanup.
+- Blockers: none. Next step: none.
