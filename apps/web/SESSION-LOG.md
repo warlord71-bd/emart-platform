@@ -2518,3 +2518,16 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Blockers: none. Next step: none required; Level B/C items beyond alt text remain optional low-priority hygiene per item #13's closing note.
 - Fixed PDP `h1 → h3` heading-skip (sr-only `h2` in `DetailsTabs.tsx`), verified locally on both example products, deployed via `deploy.sh` (Local build → VPS build → pm2 restart → smoke 200 → push). Commit `bbfb31f`, Local=VPS=origin=Live.
 - Session close: TASKS.md running-jobs table updated (meta_generator PID 448966 marked stopped/complete), header date stamp refreshed. Local + VPS git both clean at `bbfb31f`, no dirty files.
+
+## 2026-06-15 (Claude — GMC sync stale-flag re-check)
+- Re-checked "GMC sync stale (last run Jun 5)" item from TASKS.md. Found `/root/.gmc/sync.py` is run via root crontab `0 */6 * * *` and has been running continuously — `sync-cron.log` shows successful runs today at 00:01 and 06:00 (3611 synced, 0 errors, 13 skipped/excluded each time). The "Jun 5" note referred to a stale approval-count snapshot, not an actual sync gap.
+- Ran `python3 /root/.gmc/sync.py --status`: 3,530/3,635 approved, 105 disapproved (down from 127 baseline at start of the GMC policy-fix project), 408 with issues, 0 pending.
+- Updated TASKS.md row to reflect cron is healthy/active and current approval numbers. No code/data changes made.
+- Blockers: none. Next step: none for this item; GMC Step 4 (11 title-risk) and Step 6 (6 mixed-manual) remain owner-gated as before.
+
+## 2026-06-15 (Claude — GMC Step 4 + Step 6 exclusion, owner-approved)
+- Owner approved excluding both remaining owner-gated GMC groups from Merchant Center ("no need to show on gmc"): Step 4 (11 title-risk IDs: 43762,43757,60760,63855,63901,93109,63849,57059,37165,62034,62040) and Step 6 (6 mixed-manual IDs: 36262,3274,56108,3753,38292,26194). No title/copy/price changes made — same exclusion mechanism as Step 3's 15 identity products.
+- Applied: `_wc_gla_visibility=dont-sync-and-show` postmeta set on all 17 via `wp post meta update` (storefront unaffected, confirmed by Step 3 precedent). Added all 17 IDs to `/root/.gmc/exclude_ids.json` (13→30 entries) so the `0 */6 * * *` cron sync stops re-pushing them. Ran `python3 sync.py --delete <id>` for all 17 to remove existing listings from live Merchant Center.
+- Verified via `sync.py --status`: 3,529/3,618 approved, 89 disapproved (down from 105), 390 with issues, 0 pending — total product count dropped by 17 as expected.
+- Both TASKS.md owner-action items #5 and #7 marked resolved.
+- Blockers: none. Next step: none for GMC; remaining open items are pa_concern 1,147 blank rows and the untriaged 466-product catalog meta-validator stylistic findings.
