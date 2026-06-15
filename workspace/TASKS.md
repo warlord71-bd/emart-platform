@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-15 (meta regen #14 done 1360/1360; 70-item image alt-text SEO pass; PDP h1->h3 heading-skip fixed, deployed `bbfb31f`)
+Last updated: 2026-06-15 (GA4 landing-page audit: 21 /category 404s fixed `a0ac1a6`; 96 PDP 404 redirect map awaits owner review)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -92,6 +92,11 @@ These surfaces extract from: (a) clear, definition-first prose near the top of a
 - Moved hardcoded Resend API key from `emart-smtp.php` into `wp-config.php` (`EMART_RESEND_KEY`), matching `EMART_ORDER_SECRET`/`EMART_SMTP_*` convention.
 - **Fixed critical live bug**: `login`/`register`/`request-password-reset`/`verify-email`/`login-by-phone` were all returning 404 in prod because `getWordPressBaseUrl()` resolved to `http://127.0.0.1`, nginx 301'd to HTTPS, downgrading POST→GET, hitting `rest_no_route`. Now resolves to `https://e-mart.com.bd` directly (same as checkout's `PUBLIC_SITE_URL`). Live smoke-tested all 5 endpoints post-deploy — correct 401/400/200/307 responses, no more 404s. Built, deployed, `pm2 restart emartweb`, committed `b2f10ae`, pushed to `origin/main`.
 - Deferred (post-freeze, after 2026-07-03): session consolidation (NextAuth/wc_session/JWT unification), SMS OTP (no SMS provider).
+
+### C8 — GA4 whole-site landing-page audit — Finding 1+3 done 2026-06-15, Finding 2 awaits owner review
+- GA4 landing-page CSV (1,439 paths, 4,816 sessions/4wk) cross-checked against live routes. `/brands/*` clean (162 sessions, all 200).
+- **Done (`a0ac1a6`)**: 21 stale `/category/*` 404s (legacy nested WooCommerce paths + old category/brand slugs, ~48 sessions/4wk) now 301 to correct `/category/[slug]` or `/brands/[slug]` — all in `next.config.js`.
+- **Owner review needed**: 96 `/shop/[slug]` PDP 404s (140 sessions/4wk) — products renamed/re-slugged without redirects (2026-05-29 size-correction + humanizer work). Candidate map at `workspace/audit/active/pdp-404-redirect-map-20260615.csv`: 35 HIGH (51 sessions, safe to apply), 24 MEDIUM (30 sessions, quick review), 37 LOW (59 sessions, fallback to `/brands/<brand>` or `/shop` — likely discontinued). Next step: owner picks which tiers to apply as `next.config.js` 301s.
 
 ---
 
