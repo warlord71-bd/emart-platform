@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { MapPin, Truck, CheckCircle, Clock, Package, AlertCircle } from 'lucide-react';
+import { MapPin, Truck, CheckCircle, Clock, Package, AlertCircle, Download } from 'lucide-react';
 import Link from 'next/link';
+import { type InvoiceData } from '@/lib/generateInvoicePdf';
 
 interface OrderStatus {
   status: string;
@@ -47,6 +48,25 @@ export default function TrackOrderPage() {
   const [trackingData, setTrackingData] = useState<TrackingData | null>(null);
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [invoiceLoading, setInvoiceLoading] = useState(false);
+
+  const handleDownloadInvoice = async () => {
+    if (!trackingData) return;
+    setInvoiceLoading(true);
+    try {
+      const params = new URLSearchParams({ orderId: String(trackingData.order_id) });
+      if (identity) params.set('identity', identity);
+      const res = await fetch(`/api/invoice?${params}`);
+      if (!res.ok) throw new Error('Could not load invoice data');
+      const invoiceData: InvoiceData = await res.json();
+      const { generateInvoicePdf } = await import('@/lib/generateInvoicePdf');
+      await generateInvoicePdf(invoiceData);
+    } catch {
+      alert('Could not generate invoice. Please try again.');
+    } finally {
+      setInvoiceLoading(false);
+    }
+  };
 
   const handleTrackOrder = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -386,6 +406,23 @@ export default function TrackOrderPage() {
           >
             Back to Orders
           </Link>
+          <button
+            onClick={handleDownloadInvoice}
+            disabled={invoiceLoading}
+            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {invoiceLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Download className="h-4 w-4" />
+                Download Invoice
+              </>
+            )}
+          </button>
           <Link
             href="/contact"
             className="flex-1 inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
