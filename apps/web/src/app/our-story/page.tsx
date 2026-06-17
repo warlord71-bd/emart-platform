@@ -51,6 +51,14 @@ const values = [
 export default function OurStoryPage() {
   return (
     <main className="bg-bg">
+      <div className="mx-auto max-w-6xl px-4 pt-6">
+        <nav className="flex items-center gap-1.5 text-sm text-muted">
+          <Link href="/" className="hover:text-accent">Home</Link>
+          <span>/</span>
+          <span className="font-medium text-ink">Our Story</span>
+        </nav>
+      </div>
+
       <section className="border-b border-hairline bg-card">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-accent">{COMPANY.storeName}</p>
@@ -129,9 +137,14 @@ export default function OurStoryPage() {
             <h2 className="mb-2 text-xl font-bold text-ink">Need help choosing your routine?</h2>
             <p className="text-sm text-muted">Talk to the team before ordering, visit the office, or contact support for help.</p>
           </div>
-          <Link href="/contact" className="btn-primary text-center">
-            Contact Us
-          </Link>
+          <div className="flex gap-3">
+            <Link href="/contact" className="btn-primary text-center">
+              Contact Us
+            </Link>
+            <Link href="/shop" className="btn-outline text-center">
+              Shop Now
+            </Link>
+          </div>
         </div>
       </section>
     </main>

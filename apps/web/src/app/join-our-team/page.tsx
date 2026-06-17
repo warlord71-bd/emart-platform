@@ -37,6 +37,14 @@ const qualities = [
 export default function JoinOurTeamPage() {
   return (
     <main className="bg-bg">
+      <div className="mx-auto max-w-6xl px-4 pt-6">
+        <nav className="flex items-center gap-1.5 text-sm text-muted">
+          <Link href="/" className="hover:text-accent">Home</Link>
+          <span>/</span>
+          <span className="font-medium text-ink">Join Our Team</span>
+        </nav>
+      </div>
+
       <section className="border-b border-hairline bg-card">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-accent">Careers At Emart</p>

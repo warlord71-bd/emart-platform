@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { COMPANY } from '@/lib/companyProfile';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
@@ -98,6 +99,13 @@ export default function ContactPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(contactSchema) }} />
+
+      <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/" className="hover:text-accent">Home</Link>
+        <span>/</span>
+        <span className="font-medium text-ink">Contact</span>
+      </nav>
+
       <h1 className="mb-6 text-2xl font-bold text-ink">Contact Us</h1>
 
       <div className="mb-10 grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -206,6 +214,16 @@ export default function ContactPage() {
             Get Directions
           </a>
         </div>
+      </div>
+
+      <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-hairline bg-card p-6 text-center shadow-card sm:flex-row sm:justify-between sm:text-left">
+        <div>
+          <p className="font-semibold text-ink">Looking for products?</p>
+          <p className="mt-1 text-sm text-muted">Browse authentic Korean and global skincare.</p>
+        </div>
+        <Link href="/shop" className="shrink-0 rounded-xl bg-ink px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-black">
+          Shop All Products
+        </Link>
       </div>
     </div>
   );

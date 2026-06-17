@@ -5,6 +5,7 @@ import { searchProducts } from '@/lib/woocommerce';
 import { canonicalPath } from '@/lib/canonicalUrl';
 import ProductCard from '@/components/product/ProductCard';
 import { ProductListGrid } from '@/components/product/ProductListGrid';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getPaginationHref, getValidPage } from '@/lib/paginationSeo';
@@ -69,6 +70,12 @@ export default async function SearchPage({ searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/" className="hover:text-accent">Home</Link>
+        <span>/</span>
+        <span className="font-medium text-ink">Search</span>
+      </nav>
+
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-ink">
           Search: &ldquo;{query}&rdquo;
@@ -86,11 +93,11 @@ export default async function SearchPage({ searchParams }: Props) {
           {totalPages > 1 && (
             <div className="mt-10 flex items-center justify-center gap-2">
               {page > 1 && (
-                <a href={getPaginationHref('/search', { q: query }, page - 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</a>
+                <Link href={getPaginationHref('/search', { q: query }, page - 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
               )}
               <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
               {page < totalPages && (
-                <a href={getPaginationHref('/search', { q: query }, page + 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</a>
+                <Link href={getPaginationHref('/search', { q: query }, page + 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
               )}
             </div>
           )}
@@ -99,7 +106,7 @@ export default async function SearchPage({ searchParams }: Props) {
         <div className="py-20 text-center">
           <div className="text-5xl mb-4">😔</div>
           <p className="text-lg text-muted">No products found for &ldquo;{query}&rdquo;</p>
-          <a href="/shop" className="btn-primary inline-block mt-4">Browse All Products</a>
+          <Link href="/shop" className="btn-primary inline-block mt-4">Browse All Products</Link>
         </div>
       )}
     </div>

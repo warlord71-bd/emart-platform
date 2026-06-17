@@ -78,6 +78,12 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
     <div className="mx-auto max-w-7xl px-4 py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
+      <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/" className="hover:text-accent">Home</Link>
+        <span>/</span>
+        <span className="font-medium text-ink">New Arrivals</span>
+      </nav>
+
       <div className="mb-6 border-b border-hairline pb-5">
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">New</p>
         <h1 className="text-2xl font-bold text-ink sm:text-3xl">New Arrivals</h1>

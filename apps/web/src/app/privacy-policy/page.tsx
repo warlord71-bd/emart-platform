@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { COMPANY } from '@/lib/companyProfile';
 import { absoluteUrl } from '@/lib/siteUrl';
 
@@ -19,6 +20,12 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/" className="hover:text-accent">Home</Link>
+        <span>/</span>
+        <span className="font-medium text-ink">Privacy Policy</span>
+      </nav>
+
       <h1 className="mb-6 text-2xl font-bold text-ink">Privacy Policy</h1>
 
       <div className="prose prose-sm max-w-none space-y-6 text-muted prose-headings:text-ink prose-strong:text-ink prose-li:text-muted prose-a:text-accent">

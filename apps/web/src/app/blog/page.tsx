@@ -64,6 +64,12 @@ export default async function BlogPage() {
     <main className="bg-bg">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
       <section className="mx-auto max-w-7xl px-4 py-10">
+        <nav className="mb-6 flex items-center gap-1.5 text-sm text-muted">
+          <Link href="/" className="hover:text-accent">Home</Link>
+          <span>/</span>
+          <span className="font-medium text-ink">Guides</span>
+        </nav>
+
         <div className="mb-8 max-w-3xl">
           <p className="text-xs font-bold uppercase tracking-widest text-accent">Beauty Guides</p>
           <h1 className="mt-2 text-3xl font-bold text-ink">Skincare advice from Emart</h1>
@@ -108,6 +114,16 @@ export default async function BlogPage() {
             Guides are loading. Please check back shortly.
           </div>
         )}
+
+        <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-hairline bg-card p-6 text-center shadow-card sm:flex-row sm:justify-between sm:text-left">
+          <div>
+            <p className="font-semibold text-ink">Ready to shop?</p>
+            <p className="mt-1 text-sm text-muted">Browse authentic Korean and global skincare products.</p>
+          </div>
+          <Link href="/shop" className="shrink-0 rounded-xl bg-ink px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-black">
+            Shop All Products
+          </Link>
+        </div>
       </section>
     </main>
   );

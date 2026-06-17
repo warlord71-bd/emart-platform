@@ -172,6 +172,15 @@ export default function AboutUsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(personSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqSchema) }} />
 
+      {/* Breadcrumbs */}
+      <div className="mx-auto max-w-6xl px-4 pt-6">
+        <nav className="flex items-center gap-1.5 text-sm text-muted">
+          <Link href="/" className="hover:text-accent">Home</Link>
+          <span>/</span>
+          <span className="font-medium text-ink">About Us</span>
+        </nav>
+      </div>
+
       {/* Hero */}
       <section className="border-b border-hairline bg-card">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">

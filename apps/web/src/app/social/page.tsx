@@ -78,6 +78,12 @@ export default async function SocialPage() {
     <main className="min-h-screen overflow-x-hidden bg-bg pb-32 pt-8 lg:pb-16">
       <div className="w-full max-w-[24.375rem] px-4 sm:mx-auto sm:max-w-6xl">
 
+        <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted">
+          <Link href="/" className="hover:text-accent">Home</Link>
+          <span>/</span>
+          <span className="font-medium text-ink">Social</span>
+        </nav>
+
         {/* Header */}
         <div className="mb-12 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Watch &amp; Follow</p>
@@ -148,7 +154,7 @@ export default async function SocialPage() {
         </section>
 
         <div className="mt-4 text-center">
-          <Link href="/" className="text-sm font-semibold text-accent hover:underline">← Back to shop</Link>
+          <Link href="/shop" className="text-sm font-semibold text-accent hover:underline">Browse All Products →</Link>
         </div>
       </div>
     </main>

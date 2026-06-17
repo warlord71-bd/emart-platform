@@ -89,14 +89,19 @@ export default function ComparePage() {
           <p className="mt-1 text-sm text-muted-2">
             WhatsApp us — our team helps you choose between any two products before you buy.
           </p>
-          <a
-            href="https://wa.me/8801919797399"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-block rounded-xl bg-[#25D366] px-5 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
-          >
-            Ask on WhatsApp →
-          </a>
+          <div className="mt-3 flex flex-wrap justify-center gap-3">
+            <a
+              href="https://wa.me/8801919797399"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-xl bg-[#25D366] px-5 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
+            >
+              Ask on WhatsApp →
+            </a>
+            <Link href="/shop" className="inline-block rounded-xl bg-ink px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-black">
+              Browse All Products
+            </Link>
+          </div>
         </div>
       </div>
     </div>

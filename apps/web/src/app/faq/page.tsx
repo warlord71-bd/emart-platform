@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { COMPANY } from '@/lib/companyProfile';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
@@ -105,6 +106,13 @@ export default function FAQPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(faqSchema) }}
       />
+
+      <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/" className="hover:text-accent">Home</Link>
+        <span>/</span>
+        <span className="font-medium text-ink">FAQ</span>
+      </nav>
+
       <h1 className="mb-2 text-2xl font-bold text-ink">Frequently Asked Questions</h1>
       <p className="mb-6 text-sm text-muted">Find answers to common questions about Emart, our products, shipping, and more.</p>
 
@@ -118,6 +126,16 @@ export default function FAQPage() {
         <p className="text-sm text-ink-2">
           <strong>Still have questions?</strong> Contact us at <a href={`mailto:${COMPANY.supportEmail}`} className="text-accent hover:underline">{COMPANY.supportEmail}</a> or call <a href={`tel:${COMPANY.phones.primaryHref}`} className="text-accent hover:underline">{COMPANY.phones.primary}</a>
         </p>
+      </div>
+
+      <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-hairline bg-card p-6 text-center shadow-card sm:flex-row sm:justify-between sm:text-left">
+        <div>
+          <p className="font-semibold text-ink">Ready to shop?</p>
+          <p className="mt-1 text-sm text-muted">Browse authentic Korean and global skincare products.</p>
+        </div>
+        <Link href="/shop" className="shrink-0 rounded-xl bg-ink px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-black">
+          Shop All Products
+        </Link>
       </div>
     </div>
   );

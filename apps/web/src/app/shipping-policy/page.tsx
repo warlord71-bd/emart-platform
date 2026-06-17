@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { COMPANY } from '@/lib/companyProfile';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
@@ -35,6 +36,12 @@ export default function ShippingPolicyPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }}
       />
+      <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/" className="hover:text-accent">Home</Link>
+        <span>/</span>
+        <span className="font-medium text-ink">Shipping Policy</span>
+      </nav>
+
       <h1 className="mb-6 text-2xl font-bold text-ink">Shipping Policy</h1>
 
       <div className="prose prose-sm max-w-none space-y-6 text-muted prose-headings:text-ink prose-strong:text-ink prose-li:text-muted prose-th:text-ink prose-td:text-muted">

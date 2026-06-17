@@ -36,6 +36,14 @@ const warningSigns = [
 export default function AuthenticityPage() {
   return (
     <main className="bg-bg">
+      <div className="mx-auto max-w-6xl px-4 pt-6">
+        <nav className="flex items-center gap-1.5 text-sm text-muted">
+          <Link href="/" className="hover:text-accent">Home</Link>
+          <span>/</span>
+          <span className="font-medium text-ink">Authenticity</span>
+        </nav>
+      </div>
+
       <section className="border-b border-hairline bg-card">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-accent">Genuine Products Only</p>
@@ -104,6 +112,18 @@ export default function AuthenticityPage() {
               Contact Support
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-10">
+        <div className="flex flex-col items-center gap-3 rounded-2xl border border-hairline bg-card p-6 text-center shadow-card sm:flex-row sm:justify-between sm:text-left">
+          <div>
+            <p className="font-semibold text-ink">Shop with confidence</p>
+            <p className="mt-1 text-sm text-muted">Browse our full range of authenticated skincare products.</p>
+          </div>
+          <Link href="/shop" className="shrink-0 rounded-xl bg-ink px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-black">
+            Shop All Products
+          </Link>
         </div>
       </section>
     </main>

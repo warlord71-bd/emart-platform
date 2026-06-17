@@ -2,6 +2,7 @@ import { getProducts } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
 import CatalogFilters from '@/components/product/CatalogFilters';
 import { ProductListGrid } from '@/components/product/ProductListGrid';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { absoluteUrl } from '@/lib/siteUrl';
 import {
@@ -124,6 +125,13 @@ export default async function SalePage({ searchParams }: SalePageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
 
+      {/* Breadcrumbs */}
+      <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/" className="hover:text-accent">Home</Link>
+        <span>/</span>
+        <span className="font-medium text-ink">Sale</span>
+      </nav>
+
       {/* Header */}
       <div className="mb-6 border-b border-hairline pb-5">
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Limited Time</p>
@@ -173,11 +181,11 @@ export default async function SalePage({ searchParams }: SalePageProps) {
               {totalPages > 1 && (
                 <div className="mt-10 flex items-center justify-center gap-2">
                   {page > 1 && (
-                    <a href={getPaginationHref('/sale', searchParamsRecord, page - 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</a>
+                    <Link href={getPaginationHref('/sale', searchParamsRecord, page - 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Previous</Link>
                   )}
                   <span className="rounded-xl border border-hairline bg-bg-alt px-4 py-2 text-sm text-muted">Page {page} of {totalPages}</span>
                   {page < totalPages && (
-                    <a href={getPaginationHref('/sale', searchParamsRecord, page + 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</a>
+                    <Link href={getPaginationHref('/sale', searchParamsRecord, page + 1)} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black">Next</Link>
                   )}
                 </div>
               )}
@@ -185,9 +193,9 @@ export default async function SalePage({ searchParams }: SalePageProps) {
           ) : (
             <div className="py-20 text-center text-muted-2">
               <p className="text-lg font-medium text-ink">No sale items right now</p>
-              <a href="/shop" className="mt-2 block text-accent hover:underline">
+              <Link href="/shop" className="mt-2 block text-accent hover:underline">
                 Browse all products
-              </a>
+              </Link>
             </div>
           )}
         </div>

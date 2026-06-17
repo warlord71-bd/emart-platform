@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function IngredientsPage() {
   return (
     <div className="min-h-screen bg-bg">
-      <BrowseHubNav active="concerns" />
+      <BrowseHubNav active="ingredients" />
 
       <div className="border-b border-hairline bg-card">
         <div className="mx-auto max-w-7xl px-4 py-8">
