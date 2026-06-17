@@ -6,6 +6,7 @@ import { MobileDiscovery } from '@/components/home/MobileDiscovery';
 import ShopByCategory from '@/components/home/ShopByCategory';
 import OfferCollectionsRail from '@/components/home/OfferCollectionsRail';
 import HomepageDeferredSections from '@/components/home/HomepageDeferredSections';
+import HomepageProductLinks from '@/components/home/HomepageProductLinks';
 import { HOME_TOP_CATEGORY_ORDER, TOP_CATEGORY_IMAGE_OVERRIDES } from '@/lib/category-navigation';
 import brandLogoManifest from '../../public/images/brands-e-mart/manifest.json';
 import type { Metadata } from 'next';
@@ -83,23 +84,25 @@ function toHomepageCardProduct(product: WooProduct): WooProduct {
 
 export default async function HomePage() {
   const emptyPage = { products: [] as Awaited<ReturnType<typeof getProducts>>['products'], totalPages: 0, total: 0 };
-  let [bestSelling, newArrivals, onSale, fallbackResult, blogPosts, allCategories]: [
+  let [bestSelling, newArrivals, onSale, fallbackResult, blogPosts, allCategories, crawlLinks]: [
     Awaited<ReturnType<typeof getBestSellingProducts>>,
     Awaited<ReturnType<typeof getNewArrivals>>,
     Awaited<ReturnType<typeof getSaleProducts>>,
     Awaited<ReturnType<typeof getProducts>>,
     Awaited<ReturnType<typeof getWordPressPosts>>,
     Awaited<ReturnType<typeof getCategories>>,
-  ] = [[], [], [], emptyPage, [], []];
+    Awaited<ReturnType<typeof getBestSellingProducts>>,
+  ] = [[], [], [], emptyPage, [], [], []];
 
   try {
-    [bestSelling, newArrivals, onSale, fallbackResult, blogPosts, allCategories] = await Promise.all([
+    [bestSelling, newArrivals, onSale, fallbackResult, blogPosts, allCategories, crawlLinks] = await Promise.all([
       getBestSellingProducts(4),
       getNewArrivals(4),
       getSaleProducts(6),
       getProducts({ per_page: 4, orderby: 'popularity' }),
       getWordPressPosts({ perPage: 3 }),
       getCategories({ per_page: 100, hide_empty: true }),
+      getBestSellingProducts(30),
     ]);
   } catch {
     // WooCommerce API unreachable (e.g. local build without VPN/tunnel) — render with empty data
@@ -177,6 +180,7 @@ export default async function HomePage() {
         brandLogos={brandLogos}
         blogPosts={blogPosts}
       />
+      <HomepageProductLinks products={crawlLinks.map(({ slug, name }) => ({ slug, name }))} />
 
     </div>
   );
