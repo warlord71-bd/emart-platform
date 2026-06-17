@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
             <AppIcon name="person-outline" size={28} color="#fff" />
           </LinearGradient>
           <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Sign in to your eMart BD account</Text>
+          <Text style={styles.subtitle}>Sign in to your Emart account</Text>
         </View>
 
         {/* Google Sign-In */}

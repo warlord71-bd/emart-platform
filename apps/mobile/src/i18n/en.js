@@ -1,6 +1,6 @@
 export default {
   // App
-  appName: 'eMart BD',
+  appName: 'Emart',
   appTagline: 'Authentic K-Beauty & Global Beauty Essentials',
 
   // Tab Navigation

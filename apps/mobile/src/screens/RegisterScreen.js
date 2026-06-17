@@ -94,7 +94,7 @@ const RegisterScreen = ({ navigation }) => {
             <AppIcon name="person-add-outline" size={28} color="#fff" />
           </LinearGradient>
           <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join eMart BD for the best beauty deals</Text>
+          <Text style={styles.subtitle}>Join Emart for the best beauty deals</Text>
         </View>
 
         {/* Form Fields */}

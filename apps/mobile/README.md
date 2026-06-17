@@ -1,4 +1,4 @@
-# eMart BD — Mobile App
+# Emart — Mobile App
 
 K-Beauty & Global Beauty E-Commerce App for Bangladesh
 

@@ -136,7 +136,7 @@ const AccountScreen = ({ navigation }) => {
         ))}
 
         <View style={styles.appInfo}>
-          <Text style={styles.appInfoText}>eMart BD v{APP_VERSION}</Text>
+          <Text style={styles.appInfoText}>Emart v{APP_VERSION}</Text>
           <Text style={styles.appInfoText}>e-mart.com.bd</Text>
         </View>
       </ScrollView>

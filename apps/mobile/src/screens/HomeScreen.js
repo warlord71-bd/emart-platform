@@ -280,7 +280,7 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.headerLeft}>
               <Image source={require('../../assets/logo.png')} style={styles.logo} />
               <View>
-                <Text style={styles.appName}>eMart BD</Text>
+                <Text style={styles.appName}>Emart</Text>
                 <Text style={styles.appTagline}>{t('appTagline')}</Text>
               </View>
             </View>

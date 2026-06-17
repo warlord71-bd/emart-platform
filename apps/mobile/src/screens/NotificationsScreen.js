@@ -72,7 +72,7 @@ const NotificationsScreen = ({ navigation }) => {
 
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('default', {
-        name: 'eMart BD',
+        name: 'Emart',
         importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
       });
