@@ -19,6 +19,24 @@ import { CATEGORY_NAV_SECTIONS, ORIGIN_NAV_ITEMS } from '@/lib/category-navigati
 import { CONCERN_DEFINITIONS, getConcernHref } from '@/lib/concerns';
 import { OFFER_COLLECTIONS } from '@/lib/offerCollectionConfig';
 import { absoluteUrl } from '@/lib/siteUrl';
+import { getBrands, type WooBrand } from '@/lib/woocommerce';
+
+export const revalidate = 3600;
+
+const BRAND_FALLBACK_LINKS = [
+  { label: 'COSRX', href: '/brands/cosrx' },
+  { label: 'Anua', href: '/brands/anua' },
+  { label: 'Beauty of Joseon', href: '/brands/beauty-of-joseon' },
+  { label: 'La Roche-Posay', href: '/brands/la-roche-posay' },
+];
+
+const REDIRECTED_BRAND_SLUGS = new Set([
+  'beaute-moringa-melasma', 'japanese', 'green', 'valencia', 'sensitive',
+  'absolute', 'cellpod', 'ruthair', 'kao', 'nizoral', 'ottogi', 'labelyoung',
+  'syoss', 'radiant', 'tresemm', 'karite', 'the', 'daily',
+  'bath', 'house', 'lucido', 'beauty',
+  'a-pieu', 'wskin', 'purito', 'aztec', 'paula-s',
+]);
 
 export const metadata: Metadata = {
   title: { absolute: 'Sitemap | Emart Skincare Bangladesh' },
@@ -58,6 +76,28 @@ const STORY_LINKS = [
   { label: 'Social', href: '/social' },
   { label: 'Join Our Team', href: '/join-our-team' },
 ];
+
+function brandToSitemapLink(brand: WooBrand) {
+  return {
+    label: brand.name,
+    href: `/brands/${encodeURIComponent(brand.slug)}`,
+    description: `${brand.count} product${brand.count === 1 ? '' : 's'}`,
+  };
+}
+
+async function getBrandLinks() {
+  try {
+    const brands = await getBrands({ orderby: 'count', order: 'desc' });
+    const links = brands
+      .filter((brand) => brand.count > 0 && !REDIRECTED_BRAND_SLUGS.has(brand.slug))
+      .slice(0, 24)
+      .map(brandToSitemapLink);
+
+    return links.length > 0 ? links : BRAND_FALLBACK_LINKS;
+  } catch {
+    return BRAND_FALLBACK_LINKS;
+  }
+}
 
 function TreePanel({
   title,
@@ -106,7 +146,8 @@ function LinkList({ links }: { links: Array<{ label: string; href: string; descr
   );
 }
 
-export default function HumanSitemapPage() {
+export default async function HumanSitemapPage() {
+  const brandLinks = await getBrandLinks();
   const sitemapJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -185,10 +226,7 @@ export default function HumanSitemapPage() {
             <LinkList
               links={[
                 { label: 'All Brands', href: '/brands', description: 'Browse every listed beauty brand.' },
-                { label: 'COSRX', href: '/brands/cosrx' },
-                { label: 'Anua', href: '/brands/anua' },
-                { label: 'Beauty of Joseon', href: '/brands/beauty-of-joseon' },
-                { label: 'La Roche-Posay', href: '/brands/la-roche-posay' },
+                ...brandLinks,
               ]}
             />
           </TreePanel>
