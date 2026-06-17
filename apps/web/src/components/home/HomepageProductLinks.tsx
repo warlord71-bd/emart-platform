@@ -5,7 +5,7 @@ export default function HomepageProductLinks({ products }: { products: Pick<WooP
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-8">
-      <h2 className="mb-4 text-lg font-semibold text-ink/80">Popular Korean Skincare Products in Bangladesh</h2>
+      <h2 className="mb-4 text-lg font-semibold text-ink/80">Bestselling Skincare Products in Bangladesh</h2>
       <ul className="columns-2 gap-x-6 text-sm leading-relaxed sm:columns-3">
         {products.map((p) => (
           <li key={p.slug}>
