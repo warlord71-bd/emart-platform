@@ -2569,3 +2569,14 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Noise (not actionable): `/admin`, `/Shop`, `/cmd_sco`, `/...`, `/courier`, `/daiso-japan`, `/new-homepage-by-smjuber` (old indexed dev URL, 2 sessions), 1 mojibake blog URL — all 1-4 sessions, bot/typo traffic.
 - Verified: Local build clean, deployed via `deploy.sh`. Local=VPS=origin=Live at `a0ac1a6`.
 - Blockers: none. Next step: owner reviews `pdp-404-redirect-map-20260615.csv` and decides which confidence tiers to apply as `next.config.js` 301s (HIGH tier is the obvious quick win).
+
+## 2026-06-17 (Codex — PDP 404 redirect re-analysis)
+- Owner asked to re-analyze the 96 PDP 404 redirect candidates with maximum reliable matching. Read `workspace/SEO_MASTER.md` first because this is SEO/redirect work.
+- Reclassified the existing fuzzy map at `workspace/audit/active/pdp-404-redirect-map-20260615.csv` with stricter same-product checks: size/shade/product-type differences are no longer treated as automatically safe. New artifacts: `workspace/audit/active/pdp-404-redirect-reanalysis-20260617.csv` and `workspace/audit/active/pdp-404-redirect-reanalysis-20260617.md`.
+- Result: 26 `PRODUCT_REDIRECT_SAFE` rows / 37 sessions; 18 `REVIEW_PRODUCT_CANDIDATE` rows / 27 sessions; 52 `NO_PRODUCT_MATCH` rows / 76 sessions. This supersedes the prior "35 HIGH safe" note.
+- Verified the 26 safe targets with live curl: 26/26 return 200. One originally safe-looking Paula's Choice candidate was removed from safe because `/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml` currently 308s to `/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant`, which is 404; public search returned no replacement.
+- Blockers: none for applying the safe 26. Review-only rows need owner/product judgment before redirecting because several are shade/size/product substitutions (e.g. MAC NC37→NC35, CeraVe 50ml/177ml→454g, Some By Mi face cleanser→body cleanser).
+- Applied the 26 `PRODUCT_REDIRECT_SAFE` PDP→PDP redirects in `apps/web/next.config.js`. Also fixed the existing Paula's Choice dead-chain redirects (`30ml-2`, `30ml`, `118ml`) to `/shop` because the previous target ultimately returned 404 and no live product replacement was found.
+- Verification before deploy: `npm run build` passed locally; config-level verifier checked all 29 intended rules (26 safe + 3 Paula's cleanup) with zero mismatches; local `next start -p 3017` spot checks returned 308 to the intended destinations.
+- Blockers: unrelated untracked root PNG files exist, so avoid `deploy.sh`'s `git add -A`; use a scoped commit/deploy sequence for relevant files only.
+- Next step: deploy scoped changes, smoke test live, push only after live smoke passes. Review-only/fallback rows remain separate owner decisions.

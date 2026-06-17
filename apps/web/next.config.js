@@ -287,8 +287,8 @@ const nextConfig = {
       { source: '/product/thank-you-farmer-sun-project-light-sun-essence-spf50-pa-40ml-2', destination: '/shop/thank-you-farmer-sun-project-light-sun-essence-spf50-pa-40ml', permanent: true },
       { source: '/shop/mise-en-scene-golden-morocco-argan-oil-shampoo-680-ml-2', destination: '/shop/mise-en-scene-golden-morocco-argan-oil-shampoo-680-ml', permanent: true },
       { source: '/product/mise-en-scene-golden-morocco-argan-oil-shampoo-680-ml-2', destination: '/shop/mise-en-scene-golden-morocco-argan-oil-shampoo-680-ml', permanent: true },
-      { source: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml-2', destination: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml', permanent: true },
-      { source: '/product/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml-2', destination: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml', permanent: true },
+      { source: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml-2', destination: '/shop', permanent: true },
+      { source: '/product/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml-2', destination: '/shop', permanent: true },
       { source: '/shop/farm-stay-cica-farm-nature-solution-cleansing-foam-180ml-2', destination: '/shop/farm-stay-cica-farm-nature-solution-cleansing-foam-180ml', permanent: true },
       { source: '/product/farm-stay-cica-farm-nature-solution-cleansing-foam-180ml-2', destination: '/shop/farm-stay-cica-farm-nature-solution-cleansing-foam-180ml', permanent: true },
       { source: '/shop/3w-clinic-relaxing-body-lotion-camellia-550ml-2', destination: '/shop/3w-clinic-relaxing-body-lotion-camellia-550ml', permanent: true },
@@ -375,6 +375,34 @@ const nextConfig = {
       { source: '/product/karite-bubble-pink-mud-mask-5ml-2', destination: '/shop/karite-bubble-pink-mud-mask-5ml', permanent: true },
       { source: '/shop/aplb-glutathione-niacinamide-body-lotion-300ml-copy', destination: '/shop/aplb-glutathione-niacinamide-body-lotion-300ml', permanent: true },
       { source: '/product/aplb-glutathione-niacinamide-body-lotion-300ml-copy', destination: '/shop/aplb-glutathione-niacinamide-body-lotion-300ml', permanent: true },
+
+      // GA4 PDP 404 audit safe redirects (2026-06-17)
+      { source: '/shop/neutrogena-oil-free-acne-wash', destination: '/shop/neutrogena-oil-free-acne-wash-269ml', permanent: true },
+      { source: '/shop/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel', destination: '/shop/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel-300-ml', permanent: true },
+      { source: '/shop/maybelline-fit-me-matte-poreless-foundation-classic-ivory-120', destination: '/shop/maybelline-fit-me-matte-liquid-foundation-spf22-classic-ivory-120-30ml', permanent: true },
+      { source: '/shop/abib-heartleaf-teca-capsule-serum-50ml', destination: '/shop/abib-heartleaf-teca-capsule-serum-calming-drop-50-ml', permanent: true },
+      { source: '/shop/beauty-formulas-vitamin-e-hair-removal-wax-strips-for-legs-body-20pc-2', destination: '/shop/beauty-formulas-vitamin-e-hair-removal-wax-strips-for-legs-body-20pc', permanent: true },
+      { source: '/shop/beauty-of-joseon-ginseng-cleansing-oil', destination: '/shop/beauty-of-joseon-ginseng-cleansing-oil-210ml', permanent: true },
+      { source: '/shop/bioderma-node-p-anti-dandruff-purifying-shampoo-400ml-2', destination: '/shop/bioderma-node-p-anti-dandruff-purifying-shampoo-400ml', permanent: true },
+      { source: '/shop/carenel-derma-alpha-arbutin-glutathione-whitening-cream-45ml', destination: '/shop/carenel-derma-alpha-arbutin-gluthathoine-whiteing-cream', permanent: true },
+      { source: '/shop/cerave-moisturizing-cream-pump-453ml-2', destination: '/shop/cerave-moisturizing-cream-pump-453ml', permanent: true },
+      { source: '/shop/cetaphil-moisturising-cream-226g50g', destination: '/shop/cetaphil-moisturising-cream', permanent: true },
+      { source: '/shop/cosrx-advanced-snail-96-mucin-power-essence-100ml', destination: '/shop/cosrx-advanced-snail-mucin-96-power-essence-100ml', permanent: true },
+      { source: '/shop/cosrx-oil-free-ultra-moisturizing-lotion-100ml', destination: '/shop/cosrx-oil-free-ultra-moisturizing-lotion-with-birch-sap-100ml', permanent: true },
+      { source: '/shop/cosrx-the-retinol-0-1-cream-2', destination: '/shop/cosrx-the-retinol-0-1-cream', permanent: true },
+      { source: '/shop/good-molecules-discoloration-correcting-serum-30-ml', destination: '/shop/good-molecules-good-molecules-discoloration-correcting-serum-30ml', permanent: true },
+      { source: '/shop/jumiso-antioxidant-glow-facial-essence-40ml-2', destination: '/shop/jumiso-antioxidant-glow-facial-essence-40ml', permanent: true },
+      { source: '/shop/manyo-pure-deep-cleansing-foam', destination: '/shop/manyo-pure-and-deep-cleansing-foam-200ml', permanent: true },
+      { source: '/shop/marymay-blackberry-complex-glow-washoff-pack-125g', destination: '/shop/marymay-blackberry-complex-glow-washoff-pack-125g-2', permanent: true },
+      { source: '/shop/maybelline-dream-liquid-mousse-foundation-pure-beige-70-2', destination: '/shop/maybelline-dream-liquid-mousse-foundation-pure-beige-70', permanent: true },
+      { source: '/shop/nature-republic-aloe-vera-92-soothing-gel-300ml', destination: '/shop/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel-300-ml', permanent: true },
+      { source: '/shop/palmers-cocoa-butter-stretch-marks-massage-lotion-250ml-2', destination: '/shop/palmers-cocoa-butter-stretch-marks-massage-lotion-250ml', permanent: true },
+      { source: '/shop/ponds-age-miracle-youthful-glow-night-cream', destination: '/shop/ponds-age-miracle-youthful-glow-night-cream-45g', permanent: true },
+      { source: '/shop/pookie-combo-offer-5-buy-2-trendy-beauties-liquid-matte-waterproof-lipstick-and-get-1-free-2', destination: '/shop/pookie-combo-offer-5-buy-2-trendy-beauties-liquid-matte-waterproof-lipstick-and-get-1-free', permanent: true },
+      { source: '/shop/rohto-mentholatum-hada-labo-shirojyun-premium-whitening-lotion-170m-light-2', destination: '/shop/rohto-mentholatum-hada-labo-shirojyun-premium-whitening-lotion-170m-light', permanent: true },
+      { source: '/shop/tresemme-keratin-smooth-marula-oil-shampoo-700ml', destination: '/shop/tresemme-keratin-smooth-shampoo-with-marula-oil-700ml', permanent: true },
+      { source: '/shop/tresemme-pro-collection-keratin-smooth-shampoo-400ml', destination: '/shop/tresemme-keratin-smooth-shampoo-400ml', permanent: true },
+      { source: '/shop/vaseline-blue-seal-aloe-fresh-petroleum-jelly', destination: '/shop/vaseline-blue-seal-aloe-fresh-petroleum-jelly-100ml', permanent: true },
       // Old WooCommerce concern categories → canonical concern pages (2026-05-13)
       // These /category/* URLs are superseded by /concerns/* SEO pages.
       // The WooCommerce taxonomy stays intact for product assignment; only the public URL changes.
@@ -429,8 +457,8 @@ const nextConfig = {
       { source: '/brands/lucido',                 destination: '/shop',                   permanent: true },
       { source: '/brands/beauty',                 destination: '/shop',                   permanent: true },
       // Trashed products with GSC impressions — 301 to nearest live equivalent
-      { source: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml',  destination: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant', permanent: true },
-      { source: '/product/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml', destination: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant', permanent: true },
+      { source: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml',  destination: '/shop', permanent: true },
+      { source: '/product/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml', destination: '/shop', permanent: true },
       { source: '/shop/jumiso-all-day-pure-c-5-5-serum-30ml',   destination: '/brands/jumiso',  permanent: true },
       { source: '/product/jumiso-all-day-pure-c-5-5-serum-30ml', destination: '/brands/jumiso', permanent: true },
       { source: '/shop/medi-peel-melanon-x-cream-30ml',          destination: '/brands/medi-peel', permanent: true },
@@ -455,7 +483,7 @@ const nextConfig = {
       // Specific broken shop slugs (underscore/encoding variants)
       { source: '/shop/b_lab-matcha-hydrating-real-sun-stick-21g',   destination: '/shop/b-lab-matcha-hydrating-real-sun-stick-21g',  permanent: true },
       { source: '/shop/round-lab-eng-1025-dokdo-ampule_45g',         destination: '/shop/round-lab-1025-dokdo-ampule',               permanent: true },
-      { source: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-118ml', destination: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant', permanent: true },
+      { source: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-118ml', destination: '/shop', permanent: true },
 
       // Junk/old WordPress routes
       { source: '/elementor-:id',                 destination: '/',    permanent: true },

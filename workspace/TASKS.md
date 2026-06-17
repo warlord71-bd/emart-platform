@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-15 (GA4 landing-page audit: 21 /category 404s fixed `a0ac1a6`; 96 PDP 404 redirect map awaits owner review)
+Last updated: 2026-06-17 (PDP 404 redirects: 26 safe routes applied; review-only/fallback rows still open)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -96,7 +96,7 @@ These surfaces extract from: (a) clear, definition-first prose near the top of a
 ### C8 — GA4 whole-site landing-page audit — Finding 1+3 done 2026-06-15, Finding 2 awaits owner review
 - GA4 landing-page CSV (1,439 paths, 4,816 sessions/4wk) cross-checked against live routes. `/brands/*` clean (162 sessions, all 200).
 - **Done (`a0ac1a6`)**: 21 stale `/category/*` 404s (legacy nested WooCommerce paths + old category/brand slugs, ~48 sessions/4wk) now 301 to correct `/category/[slug]` or `/brands/[slug]` — all in `next.config.js`.
-- **Owner review needed**: 96 `/shop/[slug]` PDP 404s (140 sessions/4wk) — products renamed/re-slugged without redirects (2026-05-29 size-correction + humanizer work). Candidate map at `workspace/audit/active/pdp-404-redirect-map-20260615.csv`: 35 HIGH (51 sessions, safe to apply), 24 MEDIUM (30 sessions, quick review), 37 LOW (59 sessions, fallback to `/brands/<brand>` or `/shop` — likely discontinued). Next step: owner picks which tiers to apply as `next.config.js` 301s.
+- **Partially done, re-analyzed 2026-06-17**: 96 `/shop/[slug]` PDP 404s (140 sessions/4wk) — products renamed/re-slugged without redirects (2026-05-29 size-correction + humanizer work). Original fuzzy map remains at `workspace/audit/active/pdp-404-redirect-map-20260615.csv`, but do **not** bulk-apply its old HIGH tier: re-analysis found false positives and one broken Paula's Choice target. New files: `workspace/audit/active/pdp-404-redirect-reanalysis-20260617.csv` and `.md`. Applied in `next.config.js`: 26 safe PDP→PDP redirects (37 sessions) plus Paula's Choice broken redirect cleanup to `/shop`. Still open: 18 review-only candidates (27 sessions; size/shade/product-type differences) and 52 no reliable product match rows (76 sessions; brand/shop fallback only if wanted).
 
 ---
 
