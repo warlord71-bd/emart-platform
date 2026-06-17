@@ -112,7 +112,7 @@ export default async function Footer() {
                 <div className="text-accent-soft text-xs font-bold tracking-widest uppercase">Emart Skincare Bangladesh</div>
               </div>
             </Link>
-            <p className="text-sm text-bg-stone/80 leading-relaxed mb-4">
+            <p className="text-sm text-bg-stone/80 leading-relaxed mb-4" data-nosnippet>
               {COMPANY.storeName} is an enterprise of {COMPANY.enterpriseName}. We source authentic global beauty,
               verify every order in Dhanmondi, and support customers across Bangladesh with a local team that cares.
             </p>

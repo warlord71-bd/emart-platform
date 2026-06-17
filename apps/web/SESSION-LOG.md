@@ -2580,3 +2580,18 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verification before deploy: `npm run build` passed locally; config-level verifier checked all 29 intended rules (26 safe + 3 Paula's cleanup) with zero mismatches; local `next start -p 3017` spot checks returned 308 to the intended destinations.
 - Blockers: unrelated untracked root PNG files exist, so avoid `deploy.sh`'s `git add -A`; use a scoped commit/deploy sequence for relevant files only.
 - Next step: deploy scoped changes, smoke test live, push only after live smoke passes. Review-only/fallback rows remain separate owner decisions.
+
+## 2026-06-18 (Codex — mobile Play/AAB readiness check)
+- Owner asked whether the mobile app is OK, ready for AAB internal testing, and likely to pass Google checks.
+- Verified mobile source has no bundled Woo consumer keys/secrets or direct `/wp-json/wc/v3` calls. Fixed visible invalid brand strings from `eMart BD` to `Emart` in `apps/mobile/app.json`, app UI copy, notifications channel name, English i18n, and README.
+- Validation after fix: `npx expo-doctor` passed 18/18; `npx expo export --platform android` passed; `npx expo config --type public` shows Android package `com.emartbd.app`, version `1.1.1`, target/compile SDK 35, permissions limited to notifications/vibrate, EAS project ID `8b0a3cc9-2926-4fe5-8504-6c549b5dedcd`.
+- EAS/Play readiness: `eas whoami` OK as `warlord71`; `eas project:info` OK for `@warlord71/emart-bd`; Play service-account JSON exists at `/root/.config/emart-play-service-account.json` with `0600` perms and expected service-account metadata. Recent EAS production AAB from Jun 5 exists, but it predates today's brand fix; use a fresh production build before Play internal test submission.
+- Blockers: no physical Android device/real checkout smoke was run in this session; EAS `credentials --non-interactive` is not supported by installed CLI, so signing credentials were inferred from successful prior production AABs rather than re-displayed interactively.
+- Next step: create fresh EAS production AAB from current mobile source, then submit to Play internal testing; run real COD/bKash/Nagad checkout smoke if a device is available.
+
+## 2026-06-18 (Codex — Google sitelink duplicate snippet finding)
+- Owner shared a Google SERP screenshot showing several sitelinks using the same snippet: "Emart Skincare Bangladesh is an enterprise of HG Corporation ...".
+- Root cause: the global footer brand paragraph appears on every public page, so Google selected that repeated footer text as the snippet for multiple sitelinks instead of each page's unique meta/intro copy.
+- Fix: added `data-nosnippet` to the footer brand paragraph in `apps/web/src/components/layout/Footer.tsx`. The text remains visible to users, but Google should stop using it in snippets after recrawl/reprocessing.
+- Verification: `npm run build` in `apps/web` passed before deploy.
+- Blockers: SERP snippets are Google-controlled and may take days/weeks to refresh after deploy + URL inspection.
