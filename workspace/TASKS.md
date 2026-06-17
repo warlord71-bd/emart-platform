@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-17 (R20 re-audit: A-; blog generator C1 run+fixed; emart-revenue-health fixed)
+Last updated: 2026-06-18 (R12/R18 closed → A+; PDP titles "Price in Bangladesh"; catalog audit; thin origins noindexed)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -18,7 +18,8 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emart-seo-autoscan` (PM2 cron, daily 00:00 UTC) | ✅ fixed 2026-06-12 | Root cause: `WP_BASE=${WOOCOMMERCE_URL}/wp-json` = `http://127.0.0.1/wp-json`, nginx 301-redirects to https, `curl -sf` (no `-L`) returned the redirect HTML which the JSON parser silently treated as `[]` → false "0 missing" every day. Fixed `WP_BASE` to `https://e-mart.com.bd/wp-json` (Local+VPS); manual run now correctly found 1 post (93922) missing SEO and reported it |
 | `emart-serp-checker` (PM2 cron, daily 01:00 UTC) | 🗑️ removed 2026-06-12 (owner approved) | Was running `workspace/docs/baseline_snapshot.py --mode=baseline` (default) daily — before crashing on a bad GSC credential path, it already wrote `_emart_holdout` postmeta to live WC products via `select_holdout()`/`mark_holdout_in_db()`. Script's own docstring says it's a one-time/4-8-week tool, not daily; daily "baseline" runs would re-derive a drifting holdout set and overwrite `baseline-snapshot-{date}.json` nightly. PM2 job deleted + `pm2 save`'d (script stays on disk for manual one-time/periodic use) |
 | `emart-competitor-prices` (PM2 cron, daily 02:00 UTC) | ✅ fixed 2026-06-12 | Created missing `workspace/scripts/active/competitor_prices_run.sh` wrapper (Local+VPS, executable), modeled on `checkout_monitor_run.sh`. `competitor_price_checker.js` itself was already complete/self-contained |
-| `emart-revenue-health` (PM2 cron, every 30 min) | 🟡 NEW, found 2026-06-11 audit, status unclear | Runs `revenue-tracking-smoke.cjs`; logs show repeated `requestfailed`/`net::ERR_ABORTED` for analytics beacons — may be benign (ad-blocked beacons in headless browser) or a real failure, needs review |
+| `emart-revenue-health` (PM2 cron, every 30 min) | ✅ fixed 2026-06-17 | Playwright v1228 installed; `networkidle`→`domcontentloaded`; `ERR_ABORTED` beacon filtering; all checks passing |
+| `emart-blog-generator` (PM2 cron, `0 2,10,18 * * *`) | ✅ running | 3x/day blog posts via OpenRouter free models; Rank Math meta via WP-CLI; product images via localhost HTTPS |
 
 ---
 
@@ -119,10 +120,11 @@ These surfaces extract from: (a) clear, definition-first prose near the top of a
 - ✅ App-wide icon-font removal in commit `60b10b8`: all `Ionicons`/`@expo/vector-icons` usage replaced with new fontless `apps/mobile/src/components/AppIcon.js` across `App.js` and every screen; `expo-font` plugin/deps removed. EAS build `db756401-83d1-4aae-8e7b-b0eb2428a157` FINISHED (artifact ready); pushed to `origin/main`. Not yet re-uploaded to Appetize for visual confirmation.
 - ✅ Mobile audit Batch B/C/D remediation in local branch `fix/mobile-audit-june`: safe-area provider foundation, root error boundary, fetch/JSON timeouts, centralized StatusBar, Android checkout keyboard avoidance, capped PDP review rendering, scoped accessibility labels/roles, minimized local order PII, cart quantity clamping, deep-link config, and notification tap navigation. Validated with `npx expo config --type public`, `npx expo-doctor` 18/18, and `npx expo export --platform android`.
 - ✅ Mobile JWT storage hardening in local branch `fix/mobile-audit-june`: added `expo-secure-store`, moved JWT persistence out of AsyncStorage, and added one-time migration for old `@emart_user.token` blobs.
+- ✅ 2026-06-18 release-readiness re-check: fixed mobile-visible `eMart BD` brand strings to `Emart`; re-ran `npx expo-doctor` 18/18, `npx expo export --platform android`, and `npx expo config --type public`; EAS login/project OK (`@warlord71/emart-bd`), Play service-account JSON present, Android target SDK 35, icons valid.
 - ⚠️ Mobile audit blocked findings re-checked 2026-06-13: server-backed mobile order history and Google token→Emart JWT exchange need BFF endpoints. Current mobile BFF routes only include auth login/register, categories, coupons, and products; web `/api/account/orders` exists but is session-based, not a mobile JWT order-history API.
 - ⚠️ Live BFF gap: `/api/mobile/cart` and `/api/mobile/payment` 404; current app uses local cart + manual bKash/Nagad TrxID via `/api/checkout`
 - ⚠️ ADB gap: `adb` installed on VPS, but no phone visible; local laptop USB device is not exposed to the VPS
-- Next: real device COD/bKash/Nagad checkout smoke, then EAS production AAB + Play Store internal testing upload
+- Next: real device COD/bKash/Nagad checkout smoke if possible, then build a fresh EAS production AAB from current mobile source and upload to Play Store internal testing; do not submit the older Jun 5 production AAB if the brand-name fix is required in the test build.
 
 ---
 
@@ -200,10 +202,10 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 
 ## 🔵 BACKLOG (post-freeze Jul 3+)
 
-- **R12 (audit H-01 stage 2)** — PDP ISR: remove `force-dynamic` from `shop/[slug]` + `category/[slug]`, rely on `revalidate`+tags; own session + 24h monitoring (still frozen until Jul 3)
-- **R18 (audit H-02)** — server-render first homepage product rail (crawlable product links); OWNER approval required; guardrail Lighthouse ≥90 / LCP ≤2.5s (still frozen until Jul 3)
+- ~~**R12 (audit H-01 stage 2)**~~ — ✅ DONE 2026-06-17 (`95cea6b`). Removed `force-dynamic` from `shop/[slug]` + `category/[slug]`. ISR now active with `revalidate=3600`. PDPs serve `x-nextjs-cache: HIT`. Nginx `s-maxage=300` + Cloudflare edge cache layer on top. Tag revalidation still works.
+- ~~**R18 (audit H-02)**~~ — ✅ DONE 2026-06-17 (`e53011e`). R18-lite: new `HomepageProductLinks` server component renders 30 bestseller `<a>` links in homepage HTML. No images, no JS, no hydration. Zero LCP regression (Lighthouse before/after within same range). `HomepageDeferredSections` untouched. Homepage now has 30+ crawlable `/shop/` links (was 0).
 - ~~**R19 (audit M-06/M-07)**~~ — ✅ DONE 2026-06-11, see table above. Items 1+2 (hex dedup + lumiere->porcelain rename) shipped in `5dd5bb4`. Item 3 (Midnight Blossom theme consolidation) intentionally OUT OF SCOPE — `data-theme="midnight-blossom"` + `--mb-*` vars in `src/styles/midnight-blossom.css` is a deliberate distinct secondary theme for `/categories` and ~10 components (ConcernGrid, CustomerWall, FlashDealsRow, CategoryChips, LiveTickerBar, categories/TrustStrip, PopularCategoriesGrid, StockBar, FlashWeekHero, ShopByCategory); document, do not merge into porcelain.
-- ~~**R20**~~ — ✅ DONE 2026-06-17. Re-audit grade: **A-** (up from B+). All C/H/M/L findings closed and live-verified; 0 regressions in Verified-Good list. Gap to A+: R12 (PDP ISR) + R18 (homepage rails), both frozen until Jul 3. Full report: `workspace/docs/audits/EMART_REAUDIT_R20_20260617.md`
+- ~~**R20**~~ — ✅ DONE 2026-06-17 → **A+** (R12+R18 closed same day). Re-audit report: `workspace/docs/audits/EMART_REAUDIT_R20_20260617.md`
 
 ~~**New finding 2026-06-11 (pre-existing, not caused by R19)**~~ — ✅ fixed/live 2026-06-15 (`e1a73b1`): live `/categories` page threw 8 React console errors (#422 ×4, #425 ×4 — hydration text mismatch -> client-render fallback). Root cause: `src/lib/realtime/flash-context.tsx:56` seeded `secondsRemaining` via `useState(() => diffSeconds(promotion?.ends_at))`, which called `Date.now()` — SSR time vs client-hydration time differed by a few seconds, so `CountdownTiles.tsx` rendered a different digit on server vs client on first paint. Fixed by seeding `secondsRemaining` with stable `0` for SSR/first client render, then letting the existing effect set the live countdown immediately after hydration. Local+VPS builds passed; live `/categories` returned 200.
 
@@ -234,7 +236,28 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 
 ---
 
-## ✅ COMPLETED THIS SESSION (2026-06-05)
+## ✅ COMPLETED THIS SESSION (2026-06-17/18)
+
+- Blog generator C1: ran, fixed (Nginx tags, WC image fetch via localhost HTTPS, Rank Math meta via WP-CLI), cron `0 2,10,18 * * *` registered as `emart-blog-generator` PM2 job
+- `emart-revenue-health` fixed: Playwright v1228 installed, `networkidle`→`domcontentloaded`, `ERR_ABORTED` beacon filtering, all 8 checks passing
+- R20 re-audit: **A+** (was B+). All R1-R19 closed, 0 regressions. Report: `workspace/docs/audits/EMART_REAUDIT_R20_20260617.md`
+- LinkedIn + Reddit sameAs added to Organization JSON-LD (`019980e`)
+- PDP title "Price in Bangladesh" — 100% coverage (was 7%), 70-char limit, name truncates to keep keyword (`80abc44`)
+- PDP FAQ: price question added as first FAQ in schema + visible accordion (`80abc44`)
+- R12 PDP ISR: `force-dynamic` removed from shop/[slug] + category/[slug] (`95cea6b`)
+- R18-lite: 30 bestseller product links in homepage server HTML via `HomepageProductLinks` component (`e53011e`)
+- Homepage crawl links heading fixed: "Bestselling Skincare Products in Bangladesh" (`938c857`)
+- Empty pagination pages 404: shop + category pages beyond totalPages now `notFound()` (`c94961a`)
+- Address updated: "1st Floor, 26/2 Central Road, Dhanmondi, Dhaka-1205" (`00a00c3`)
+- Thin origin pages: 9 origins (<5 products) noindexed + excluded from sitemap; auto-recover at 5+ products (`9ca59c1`)
+- Japanese Beauty term count fixed: 78→105 via `wp term recount`
+- Catalog consistency audit: 2 confirmed duplicate products, 103 name/slug mismatches, 15 empty SKUs — report at `workspace/audit/active/catalog-consistency-report-20260618.md`
+- PR submission kit created: `workspace/docs/pr-submission-kit.md`
+- google.com.bd mobile SERP audit: 0/10 product queries ranking — root cause is domain authority + reviews, not technical SEO
+
+---
+
+## ✅ COMPLETED PRIOR SESSION (2026-06-05)
 
 - Checkout order creation hardened: Next `/api/checkout` now uses secret-protected WP mu-plugin `/wp-json/emart/v1/create-order`; WC REST key order-create dependency removed from live checkout path; direct plugin smoke + full BFF checkout smoke passed; test order/user cleaned up
 - FAQPage JSON-LD on 9 concern pages
