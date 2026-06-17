@@ -269,6 +269,8 @@ export default function RootLayout({
                     COMPANY.social.youtube,
                     COMPANY.social.x,
                     COMPANY.social.tiktok,
+                    COMPANY.social.linkedin,
+                    COMPANY.social.reddit,
                     `https://www.google.com/maps?q=${COMPANY.shop.geo.latitude},${COMPANY.shop.geo.longitude}`,
                   ],
                   'founder': {

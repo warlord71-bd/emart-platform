@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-17 (PDP 404 redirects: 26 safe routes applied; review-only/fallback rows still open)
+Last updated: 2026-06-17 (R20 re-audit: A-; blog generator C1 run+fixed; emart-revenue-health fixed)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -203,7 +203,7 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 - **R12 (audit H-01 stage 2)** — PDP ISR: remove `force-dynamic` from `shop/[slug]` + `category/[slug]`, rely on `revalidate`+tags; own session + 24h monitoring (still frozen until Jul 3)
 - **R18 (audit H-02)** — server-render first homepage product rail (crawlable product links); OWNER approval required; guardrail Lighthouse ≥90 / LCP ≤2.5s (still frozen until Jul 3)
 - ~~**R19 (audit M-06/M-07)**~~ — ✅ DONE 2026-06-11, see table above. Items 1+2 (hex dedup + lumiere->porcelain rename) shipped in `5dd5bb4`. Item 3 (Midnight Blossom theme consolidation) intentionally OUT OF SCOPE — `data-theme="midnight-blossom"` + `--mb-*` vars in `src/styles/midnight-blossom.css` is a deliberate distinct secondary theme for `/categories` and ~10 components (ConcernGrid, CustomerWall, FlashDealsRow, CategoryChips, LiveTickerBar, categories/TrustStrip, PopularCategoriesGrid, StockBar, FlashWeekHero, ShopByCategory); document, do not merge into porcelain.
-- **R20** — re-audit for A+ grade after R-tasks close
+- ~~**R20**~~ — ✅ DONE 2026-06-17. Re-audit grade: **A-** (up from B+). All C/H/M/L findings closed and live-verified; 0 regressions in Verified-Good list. Gap to A+: R12 (PDP ISR) + R18 (homepage rails), both frozen until Jul 3. Full report: `workspace/docs/audits/EMART_REAUDIT_R20_20260617.md`
 
 ~~**New finding 2026-06-11 (pre-existing, not caused by R19)**~~ — ✅ fixed/live 2026-06-15 (`e1a73b1`): live `/categories` page threw 8 React console errors (#422 ×4, #425 ×4 — hydration text mismatch -> client-render fallback). Root cause: `src/lib/realtime/flash-context.tsx:56` seeded `secondsRemaining` via `useState(() => diffSeconds(promotion?.ends_at))`, which called `Date.now()` — SSR time vs client-hydration time differed by a few seconds, so `CountdownTiles.tsx` rendered a different digit on server vs client on first paint. Fixed by seeding `secondsRemaining` with stable `0` for SSR/first client render, then letting the existing effect set the live countdown immediately after hydration. Local+VPS builds passed; live `/categories` returned 200.
 

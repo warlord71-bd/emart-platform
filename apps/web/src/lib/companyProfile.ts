@@ -49,5 +49,7 @@ export const COMPANY = {
     youtube: 'https://www.youtube.com/@emartbd.official',
     tiktok: 'https://www.tiktok.com/@emart_bdofficial',
     telegram: 'https://t.me/emartbd',
+    linkedin: 'https://www.linkedin.com/in/emart-skincare-bangladesh',
+    reddit: 'https://www.reddit.com/user/Fantastic-Scar2859/',
   },
 } as const;
