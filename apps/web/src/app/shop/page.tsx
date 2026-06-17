@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { formatCatalogProductCount, getAllProductIdsByBrand, getBrandBySlug, getCatalogProductCount, getCategoryBySlug, getOriginTermBySlug, getProducts } from '@/lib/woocommerce';
 import CatalogFilters from '@/components/product/CatalogFilters';
 import { ProductListGrid } from '@/components/product/ProductListGrid';
@@ -197,6 +198,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   // Recalculate page count from skincare-filtered total (approximate when concern active).
   const skincareTotal = activeConcern ? Math.max(products.length, total - Math.round(total * 0.15)) : total;
   const totalPages = Math.ceil(skincareTotal / 24);
+
+  if (page > 1 && page > totalPages) notFound();
 
   const title = activeBrand ? activeBrand.name
     : activeConcern ? activeConcern.label

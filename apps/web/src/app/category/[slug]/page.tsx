@@ -483,6 +483,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     attribute_term: activeOriginTerm ? String(activeOriginTerm.id) : undefined,
   });
 
+  if (page > 1 && page > totalPages) notFound();
+
   const rawDescription = 'description' in category ? (category as any).description || '' : '';
   const introText = getCategoryIntro(category.name, params.slug, rawDescription);
   const isSunscreen = params.slug === 'sunscreen';
