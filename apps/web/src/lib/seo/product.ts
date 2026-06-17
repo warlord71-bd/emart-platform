@@ -207,13 +207,9 @@ export function buildProductSeoTitle(product: WooProduct): string {
   const rankMathTitle = getProductMetaString(product, '_rank_math_title');
   if (rankMathTitle) return syncLivePrice(rankMathTitle, product);
 
-  const fullSuffix = ' Price in Bangladesh | Emart';
-  const fullTitle = `${product.name}${fullSuffix}`;
-  if (fullTitle.length <= 60) return fullTitle;
+  const suffix = ' Price in Bangladesh | Emart';
+  const full = `${product.name}${suffix}`;
+  if (full.length <= 70) return full;
 
-  const shortSuffix = ' | Emart';
-  const shortTitle = `${product.name}${shortSuffix}`;
-  if (shortTitle.length <= 60) return shortTitle;
-
-  return `${truncateTitle(product.name, 60 - shortSuffix.length)}${shortSuffix}`;
+  return `${truncateTitle(product.name, 70 - suffix.length)}${suffix}`;
 }

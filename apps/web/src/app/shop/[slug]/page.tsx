@@ -369,7 +369,14 @@ function getGeneratedProductFaqItems(product: WooProduct): ProductFaqItem[] {
   if (concern) purposeParts.push(`for ${concern}`);
   if (faqContext.fitLabel) purposeParts.push(`suited to ${faqContext.fitLabel}`);
 
+  const price = Math.round(Number.parseFloat(product.price || product.regular_price || '0'));
+  const priceFaq: ProductFaqItem[] = price > 0 ? [{
+    question: `What is the price of ${product.name} in Bangladesh?`,
+    answer: `The price of ${product.name} is ৳${price.toLocaleString('en-BD')} at Emart Skincare Bangladesh, with cash on delivery available nationwide.`,
+  }] : [];
+
   return [
+    ...priceFaq,
     {
       question: `Is ${product.name} authentic?`,
       answer:
