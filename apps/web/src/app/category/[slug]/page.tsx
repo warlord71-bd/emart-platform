@@ -383,7 +383,6 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   };
 }
 
-export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 export const revalidate = 3600;
 
