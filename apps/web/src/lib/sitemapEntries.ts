@@ -22,6 +22,7 @@ import { CONCERN_DEFINITIONS } from '@/lib/concerns';
 import { INGREDIENT_DEFINITIONS } from '@/lib/ingredients';
 import { ROUTINE_STEPS } from '@/lib/routine';
 import { ORIGIN_DEFINITIONS } from '@/lib/origin-navigation';
+import { getOriginTermCounts } from '@/lib/woocommerce';
 import { SKIN_TYPE_DEFINITIONS } from '@/lib/skin-type-definitions';
 import { COMPARE_DEFINITIONS } from '@/lib/compare-definitions';
 import { BEST_DEFINITIONS } from '@/lib/best-definitions';
@@ -44,11 +45,18 @@ const ROUTINE_SLUG_PAGES: MetadataRoute.Sitemap = ROUTINE_STEPS.map((s) => ({
   priority: 0.75,
 }));
 
-const ORIGIN_SLUG_PAGES: MetadataRoute.Sitemap = ORIGIN_DEFINITIONS.map((o) => ({
-  url: absoluteUrl(`/origins/${o.country}`),
-  changeFrequency: 'weekly' as const,
-  priority: 0.75,
-}));
+const MIN_ORIGIN_PRODUCTS = 5;
+
+async function getOriginSlugPages(): Promise<MetadataRoute.Sitemap> {
+  const counts = await getOriginTermCounts();
+  return ORIGIN_DEFINITIONS
+    .filter((o) => (counts[o.country] || 0) >= MIN_ORIGIN_PRODUCTS)
+    .map((o) => ({
+      url: absoluteUrl(`/origins/${o.country}`),
+      changeFrequency: 'weekly' as const,
+      priority: 0.75,
+    }));
+}
 
 const SKIN_TYPE_SLUG_PAGES: MetadataRoute.Sitemap = SKIN_TYPE_DEFINITIONS.map((st) => ({
   url: absoluteUrl(`/skin-type/${st.slug}`),
@@ -142,7 +150,8 @@ const STATIC_PAGES_NO_DATE: MetadataRoute.Sitemap = [
 // listings) changes as the catalog changes, so lastModified is set to the
 // sitemap's generation time (refreshed hourly via the route's revalidate cache)
 // instead of a frozen date.
-function getCatalogStaticPages(now: Date): MetadataRoute.Sitemap {
+async function getCatalogStaticPages(now: Date): Promise<MetadataRoute.Sitemap> {
+  const originPages = await getOriginSlugPages();
   return [
     { url: BASE_URL, lastModified: now, changeFrequency: 'daily', priority: 1 },
     { url: absoluteUrl('/shop'), lastModified: now, changeFrequency: 'daily', priority: 0.9 },
@@ -158,7 +167,7 @@ function getCatalogStaticPages(now: Date): MetadataRoute.Sitemap {
     ...BEST_SLUG_PAGES.map((p) => ({ ...p, lastModified: now })),
     { url: absoluteUrl('/brands'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: absoluteUrl('/origins'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
-    ...ORIGIN_SLUG_PAGES.map((p) => ({ ...p, lastModified: now })),
+    ...originPages.map((p) => ({ ...p, lastModified: now })),
     { url: absoluteUrl('/concerns'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: absoluteUrl('/ingredients'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: absoluteUrl('/routine'), lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
@@ -174,8 +183,8 @@ function getCatalogStaticPages(now: Date): MetadataRoute.Sitemap {
   ];
 }
 
-function getStaticPages(): MetadataRoute.Sitemap {
-  return [...getCatalogStaticPages(new Date()), ...STATIC_PAGES_NO_DATE];
+async function getStaticPages(): Promise<MetadataRoute.Sitemap> {
+  return [...await getCatalogStaticPages(new Date()), ...STATIC_PAGES_NO_DATE];
 }
 
 async function getBlogSitemapEntries(): Promise<MetadataRoute.Sitemap> {
@@ -214,7 +223,7 @@ async function getSitemapViaGraphQL(): Promise<MetadataRoute.Sitemap> {
   const blogEntries = await getBlogSitemapEntries();
   const brandEntries = await getBrandSitemapEntries();
 
-  return [...getStaticPages(), ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
+  return [...await getStaticPages(), ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
 }
 
 async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
@@ -252,7 +261,7 @@ async function getSitemapViaREST(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-  return [...getStaticPages(), ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
+  return [...await getStaticPages(), ...categoryEntries, ...brandEntries, ...productEntries, ...blogEntries];
 }
 
 async function getBrandSitemapEntries(): Promise<MetadataRoute.Sitemap> {
@@ -379,6 +388,6 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   try {
     return deduplicateSitemap(await getSitemapViaREST());
   } catch {
-    return deduplicateSitemap(getStaticPages());
+    return deduplicateSitemap(await getStaticPages());
   }
 }

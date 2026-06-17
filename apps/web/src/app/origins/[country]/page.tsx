@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { getProductsByOriginTermSlug } from '@/lib/woocommerce';
+import { getOriginTermCounts, getProductsByOriginTermSlug } from '@/lib/woocommerce';
 import ProductCard from '@/components/product/ProductCard';
 import CatalogFilters from '@/components/product/CatalogFilters';
 import { ProductListGrid } from '@/components/product/ProductListGrid';
@@ -74,10 +74,14 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
           : `Shop authentic ${origin.label} beauty and skincare in Bangladesh from Emart. ${origin.story} COD available, nationwide delivery.`
       );
 
+  const counts = await getOriginTermCounts();
+  const isThin = (counts[origin.country] || 0) < 5;
+
   return {
     title: { absolute: title },
     description,
     alternates: { canonical },
+    ...(isThin ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title,
       description,
