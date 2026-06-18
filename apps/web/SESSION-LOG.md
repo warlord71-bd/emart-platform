@@ -2621,3 +2621,11 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - New files: `lib/qdrant.ts` (server-side similarity lookup), `api/search/semantic/route.ts` (POST API for vector search), `workspace/scripts/active/qdrant_product_sync.py` + `qdrant_sync_run.sh`.
 - Blockers: none.
 - Next step: AI customer support agent (on-site + WhatsApp); commit + full deploy.
+
+## 2026-06-19 (Claude — smart search + blog products + cross-sell fix)
+- Enhanced `/api/search`: falls back to Qdrant payload text search when WooCommerce keyword search returns <2 results. Desktop placeholder updated to hint natural language ("Search products or try 'serum for acne'...").
+- Blog → Product Recommendations: replaced hardcoded `KEYWORD_CATEGORY` map with `getProductsForBlogContent()` — extracts skincare terms from blog title+content, searches Qdrant payload fields (name/brand/category). Falls back to WooCommerce category if Qdrant returns <2. Live-verified: Innisfree blog post now shows contextually relevant serums and sunscreens.
+- PDP cross-sell fix: "Complete Your Routine" was showing only cleansers because category filter excluded based on *all* source categories including "Korean Beauty" (shared by all COSRX). Fixed to only exclude product-type categories (Face Cleansers, Serums, etc.), keeping concern categories (Acne & Blemish) as connectors. Also added name-overlap filter (≥3 shared words) to exclude same-product-different-size.
+- New file: `lib/qdrantSearch.ts` (payload text search + blog content matching).
+- Blockers: none.
+- Next step: AI customer support agent.

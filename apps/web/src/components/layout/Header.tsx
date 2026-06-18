@@ -521,7 +521,7 @@ export default function Header() {
           onChange={(event) => setSearch(event.target.value)}
           onFocus={() => setSearchFocused(true)}
           onBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
-          placeholder={variant === 'desktop' ? 'Search authentic products...' : 'Search products, brands...'}
+          placeholder={variant === 'desktop' ? 'Search products or try "serum for acne"...' : 'Search products, brands...'}
           className="h-full w-0 min-w-0 flex-1 bg-transparent px-3 text-sm text-ink outline-none placeholder:text-muted-2 sm:px-4"
         />
         <button

@@ -7,6 +7,7 @@ import { getProducts } from '@/lib/woocommerce';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { safeJsonLd, sanitizeHtml } from '@/lib/sanitizeHtml';
 import { formatBDT } from '@/lib/formatters';
+import { getProductsForBlogContent } from '@/lib/qdrantSearch';
 
 interface Props {
   params: { slug: string };
@@ -96,43 +97,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Map title keywords → WC category ID for related products
-const KEYWORD_CATEGORY: [string[], number][] = [
-  [['sunscreen', 'spf', 'sun protection'], 806],
-  [['serum', 'vitamin c', 'niacinamide', 'retinol', 'aha', 'bha', 'ceramide', 'hyaluronic'], 7996],
-  [['moisturizer', 'moisturize', 'cream', 'gel cream', 'hydration', 'hydrating'], 8941],
-  [['cleanser', 'cleansing', 'face wash', 'foam', 'cleanse'], 7984],
-  [['toner', 'essence', 'mist'], 7994],
-  [['acne', 'breakout', 'pimple', 'blemish'], 7999],
-  [['eye cream', 'eye care', 'dark circle'], 7989],
-  [['sheet mask', 'face mask', 'sleeping mask'], 957],
-  [['lip', 'lip balm', 'lip care'], 8023],
-  [['hair', 'shampoo', 'conditioner', 'scalp'], 7141],
-  [['body lotion', 'body care', 'body wash'], 7987],
-  [['k-beauty', 'korean', 'kbeauty'], 3529],
-  [['japanese', 'j-beauty'], 7976],
-  [['men', "men's"], 9677],
-];
-
-function getRelatedCategoryId(titleAndSlug: string): number {
-  const text = titleAndSlug.toLowerCase();
-  for (const [keywords, catId] of KEYWORD_CATEGORY) {
-    if (keywords.some((kw) => text.includes(kw))) return catId;
-  }
-  return 806; // sunscreen as default — reliable images
-}
+const FALLBACK_CATEGORY_ID = 806; // sunscreen — reliable images
 
 export default async function BlogPostPage({ params }: Props) {
   const post = await getWordPressPostBySlug(params.slug);
   if (!post) notFound();
 
-  const relatedCatId = getRelatedCategoryId(`${post.title} ${post.slug}`);
-  const { products: relatedProducts } = await getProducts({
-    category: String(relatedCatId),
-    per_page: 4,
-    orderby: 'popularity',
-    order: 'desc',
-  });
+  const [qdrantBlogProducts, categoryFallback] = await Promise.all([
+    getProductsForBlogContent(post.title, post.content, 4),
+    getProducts({
+      category: String(FALLBACK_CATEGORY_ID),
+      per_page: 4,
+      orderby: 'popularity',
+      order: 'desc',
+    }).catch(() => ({ products: [] as { id: number; name: string; slug: string; price: string; sale_price: string; regular_price: string; stock_status: string; images: { id: number; src: string; alt: string }[]; categories: { id: number; name: string; slug: string }[] }[] })),
+  ]);
+
+  const relatedProducts = qdrantBlogProducts.length >= 2
+    ? qdrantBlogProducts.map((p) => ({
+        id: p.product_id,
+        name: p.name,
+        slug: p.slug,
+        price: String(p.price_bdt),
+        sale_price: '',
+        regular_price: String(p.price_bdt),
+        stock_status: p.stock_status,
+        images: p.image_url ? [{ id: 0, src: p.image_url, alt: p.name }] : [],
+        categories: [] as { id: number; name: string; slug: string }[],
+      }))
+    : categoryFallback.products;
 
   const articleJsonLd = {
     '@context': 'https://schema.org',

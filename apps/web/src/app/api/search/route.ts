@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchProducts } from '@/lib/woocommerce';
+import { searchByText } from '@/lib/qdrantSearch';
 
 export const dynamic = 'force-dynamic';
 
-// Old/redirect categories that should not appear as product labels
 const SKIP_CATEGORY_SLUGS = new Set([
   'k-beauty-j-beauty',
   'skincare-essentials',
@@ -42,13 +42,32 @@ export async function GET(request: NextRequest) {
       categories: getBestCategory(product.categories),
     }));
 
+    if (suggestions.length >= 2) {
+      return NextResponse.json(
+        { products: suggestions, total },
+        { headers: { 'Cache-Control': 'private, no-store, max-age=0' } }
+      );
+    }
+
+    const qdrantResults = await searchByText(query, limit);
+    const existingIds = new Set(suggestions.map((s) => s.id));
+    const qdrantSuggestions = qdrantResults
+      .filter((p) => !existingIds.has(p.product_id))
+      .map((p) => ({
+        id: p.product_id,
+        name: p.name,
+        slug: p.slug,
+        price: String(p.price_bdt),
+        sale_price: '',
+        images: p.image_url ? [{ id: 0, src: p.image_url, alt: p.name }] : [],
+        categories: [],
+      }));
+
+    const combined = [...suggestions, ...qdrantSuggestions].slice(0, limit);
+
     return NextResponse.json(
-      { products: suggestions, total },
-      {
-        headers: {
-          'Cache-Control': 'private, no-store, max-age=0',
-        },
-      }
+      { products: combined, total: Math.max(total, combined.length) },
+      { headers: { 'Cache-Control': 'private, no-store, max-age=0' } }
     );
   } catch (error) {
     console.error('Search API error:', error);
