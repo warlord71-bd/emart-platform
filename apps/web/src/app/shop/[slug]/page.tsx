@@ -14,6 +14,7 @@ import ProductViewContentEvent from '@/components/analytics/ProductViewContentEv
 import { absoluteUrl } from '@/lib/siteUrl';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { getCleanBreadcrumbCategory } from '@/lib/product-display';
+import { getSimilarProducts } from '@/lib/qdrant';
 import { COMPANY } from '@/lib/companyProfile';
 // SEO helpers — extracted to lib/seo/product.ts
 import {
@@ -485,11 +486,28 @@ export default async function ProductPage({ params }: Props) {
     ? product.categories.find(c => c.slug === _relatedCatSlug)
     : product.categories[0];
 
-  const [relatedResult, reviews] = await Promise.all([
-    getProducts({ category: _relatedCat?.id?.toString(), per_page: 4, exclude: [product.id].join(',') }).catch(() => ({ products: [] })),
+  const [similarPayloads, categoryFallback, reviews] = await Promise.all([
+    getSimilarProducts(product.id, 4),
+    getProducts({ category: _relatedCat?.id?.toString(), per_page: 4, exclude: [product.id].join(',') }).catch(() => ({ products: [] as WooProduct[] })),
     getProductReviews(product.id).catch(() => []),
   ]);
-  const { products: related } = relatedResult;
+
+  // Prefer vector-similar products; fall back to same-category if Qdrant is empty/down
+  const related = similarPayloads.length > 0
+    ? similarPayloads.map((p) => ({
+        id: p.product_id,
+        name: p.name,
+        slug: p.slug,
+        price: String(p.price_bdt),
+        sale_price: '',
+        regular_price: '',
+        stock_status: p.stock_status,
+        images: p.image_url ? [{ id: 0, src: p.image_url, alt: p.name }] : [],
+        categories: [],
+        attributes: [] as WooProduct['attributes'],
+        meta_data: [] as WooMetaData[],
+      } as unknown as WooProduct))
+    : categoryFallback.products;
 
   const descriptionHtml =
     removeFaqFromHtml(product.description || '') ||

@@ -2603,3 +2603,21 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Improvement: made `/sitemap` an hourly ISR page (`revalidate=3600`) and changed its Brands panel from a small hardcoded list to live Woo `product_brand` links: top 24 non-redirected brands by product count, with a safe fallback if Woo is unavailable. Product URLs remain XML-only so the HTML sitemap stays scan-friendly.
 - Verification: `npm run build` passed; `.next/prerender-manifest.json` confirms `/sitemap` has `initialRevalidateSeconds: 3600`.
 - Next step: deploy scoped sitemap update and smoke-test live `/sitemap` + `/sitemap.xml`.
+
+## 2026-06-18 (Claude — deploy fix, PDP tab gap, kbazar login, CF purge)
+- Fixed emart live site chunk 404s: stale Cloudflare-cached HTML referencing old build's chunk hashes. Purged CF cache.
+- Added Cloudflare cache purge step to `deploy.sh` — runs after smoke test, before git push; uses `CF_ZONE_ID` + `CF_API_TOKEN` env vars (saved to `/root/.bashrc`). Skips gracefully if not set.
+- Fixed PDP `DetailsTabs` blank gap between tab bar and content: reduced `py-6` to `pt-4 pb-6`, added `[&>div>*:first-child]:mt-0` to strip prose heading top margin. Verified on live site across multiple products/tabs.
+- Fixed kbazar24 login: Nginx `wp-json` location used `try_files` which internally redirected to Next.js instead of WordPress. Replaced with direct `fastcgi_pass` to PHP-FPM. Added `Cache-Control: no-store` + `CDN-Cache-Control: no-store` headers to prevent Cloudflare caching API responses.
+- Removed kbazar24 wp-login.php + wp-admin IP restriction (was locked to `103.197.153.14` only). Now accessible from any IP.
+- Deployed commit `1993203` via `deploy.sh --no-commit`. Local = VPS = Repo = Live.
+- Blockers: none.
+- Next step: C8 Finding 2 PDP redirect review (18 candidates awaiting owner decision); C1 blog generator cron (awaiting owner go-ahead).
+
+## 2026-06-18 (Claude — VPS audit, Qdrant revival, vector Related Products)
+- VPS audit: freed 2.5 GB RAM (stale Chrome/orphan processes) + 15 GB disk (Ollama removed, /tmp cleaned, snap cache purged, PM2 logs flushed, old Playwright browser removed). Disk 87%→71%.
+- Qdrant vector DB: fixed unhealthy container (new health check with wget, strong API key, 512MB memory limit, TZ=Asia/Dhaka). Deleted 7 empty collections. Fresh sync of 3,625 products with `all-mpnet-base-v2` 768-dim embeddings. Weekly cron added (Sunday 5am).
+- PDP Related Products: wired to Qdrant vector similarity instead of random same-category. Falls back to WooCommerce category if Qdrant unavailable. ISR-compatible (`next: { revalidate: 3600 }`). Live-verified: COSRX cleanser now shows genuinely similar COSRX cleansers instead of random category picks.
+- New files: `lib/qdrant.ts` (server-side similarity lookup), `api/search/semantic/route.ts` (POST API for vector search), `workspace/scripts/active/qdrant_product_sync.py` + `qdrant_sync_run.sh`.
+- Blockers: none.
+- Next step: AI customer support agent (on-site + WhatsApp); commit + full deploy.
