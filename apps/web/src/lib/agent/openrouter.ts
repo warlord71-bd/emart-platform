@@ -6,5 +6,5 @@ export const openrouter = createOpenAI({
 });
 
 export const agentModel = openrouter(
-  process.env.OPENROUTER_MODEL || 'deepseek/deepseek-chat-v3.1',
+  process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free',
 );
