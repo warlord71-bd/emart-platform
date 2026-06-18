@@ -17,6 +17,8 @@ VPS=/var/www/emart-platform
 APP=apps/web
 PM2_NAME=emartweb
 SMOKE_URL=https://e-mart.com.bd/
+CF_ZONE_ID="${CF_ZONE_ID:-}"
+CF_API_TOKEN="${CF_API_TOKEN:-}"
 
 # ── Colours ─────────────────────────────────────────────────────────────────
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
@@ -120,6 +122,23 @@ if [ "$HTTP" = "200" ]; then
   success "Live: HTTP $HTTP ✅"
 else
   die "Smoke test FAILED — got HTTP $HTTP. NOT pushing to repo. Check logs: pm2 logs $PM2_NAME --lines 50"
+fi
+
+# ── Cloudflare cache purge ──────────────────────────────────────────────────
+if [ -n "$CF_ZONE_ID" ] && [ -n "$CF_API_TOKEN" ]; then
+  info "Purging Cloudflare cache"
+  CF_RESP=$(curl -sS -X POST \
+    "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
+    -H "Authorization: Bearer ${CF_API_TOKEN}" \
+    -H "Content-Type: application/json" \
+    --data '{"purge_everything":true}' 2>&1)
+  if echo "$CF_RESP" | grep -q '"success":true'; then
+    success "Cloudflare cache purged"
+  else
+    warn "Cloudflare purge failed — users may see stale chunks until TTL expires"
+  fi
+else
+  warn "CF_ZONE_ID / CF_API_TOKEN not set — skipping Cloudflare cache purge"
 fi
 
 # ── Push to origin/main ──────────────────────────────────────────────────────

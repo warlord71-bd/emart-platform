@@ -73,7 +73,7 @@ export const DetailsTabs: React.FC<DetailsTabsProps> = ({
       </div>
 
       {/* All three panels always in SSR HTML; client switches visibility after hydration */}
-      <div className="prose prose-sm max-w-none py-6">
+      <div className="prose prose-sm max-w-none pb-6 pt-4 [&>div>*:first-child]:mt-0">
         {tabs.map((tab) => (
           <div
             key={tab.id}
