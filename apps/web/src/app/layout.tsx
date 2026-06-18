@@ -4,7 +4,8 @@ import './globals.css';
 import '@/styles/midnight-blossom.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import WhatsAppFloat from '@/components/layout/WhatsAppFloat';
+import dynamic from 'next/dynamic';
+const ChatWidget = dynamic(() => import('@/components/chat/ChatWidget'), { ssr: false });
 import Providers from './providers';
 import RuntimeWidgets from './runtime-widgets';
 import { Suspense } from 'react';
@@ -321,7 +322,7 @@ export default function RootLayout({
           <Header />
           <main id="main-content" className="min-h-screen max-w-full overflow-x-hidden pb-20 lg:pb-0">{children}</main>
           <Footer />
-          <WhatsAppFloat />
+          <ChatWidget />
           <RuntimeWidgets googleTagId={GOOGLE_TAG_ID} />
           <Suspense fallback={null}><AttributionTracker /></Suspense>
         </Providers>

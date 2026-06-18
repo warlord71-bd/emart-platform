@@ -66,3 +66,4 @@
 - [R2/R3 audit state 2026-06-11](project_audit_r2_r3_state_20260611.md) — R2 Nginx rate limiting is done/live; R3 Cloudflare Access still pending because live wp-login reaches WordPress; next owner fix is Access paths `/wp-login.php*` + `/wp-admin/*`
 - [Brand taxonomy audit + fixes 2026-06-15](project_brand_taxonomy_audit_20260615.md) — merged 3 dup product_brand term pairs, fixed stale Innsaei/Sadoer/Laxzin/Healthy-Place redirects, fixed broken dr-jart redirect, deleted 9 ghost terms; deployed `e041df7`
 - [GA4 landing-page audit 2026-06-15](project_ga4_landing_page_audit_20260615.md) — 21 stale /category/* 404s fixed in `a0ac1a6`; 96 PDP 404 redirect map at workspace/audit/active/pdp-404-redirect-map-20260615.csv awaits owner review (35 HIGH/24 MEDIUM/37 LOW confidence)
+- [AI customer agent briefing 2026-06-19](project_ai_agent_briefing.md) — Qdrant/OpenRouter/architecture/safety rules for building the on-site chat agent

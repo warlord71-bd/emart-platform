@@ -8,7 +8,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   BadgeCheck,
   BookOpen,
-  Camera,
   ChevronDown,
   ChevronRight,
   Droplets,
@@ -289,7 +288,6 @@ const DRAWER_GROUP_ICONS: Record<string, LucideIcon> = {
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const imageInputRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
   const [searchScope, setSearchScope] = useState(SEARCH_SCOPES[0].value);
   const [searchFocused, setSearchFocused] = useState(false);
@@ -478,17 +476,6 @@ export default function Header() {
     recognition.start();
   };
 
-  const openVisualSearch = () => {
-    imageInputRef.current?.click();
-  };
-
-  const handleVisualImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSearchFocused(true);
-    }
-    event.target.value = '';
-  };
 
   const renderSearchForm = (variant: 'desktop' | 'mobile') => (
     <form
@@ -535,16 +522,6 @@ export default function Header() {
           title="Voice search"
         >
           <Mic size={18} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={openVisualSearch}
-          className="flex h-full w-10 shrink-0 items-center justify-center text-muted transition-colors hover:text-accent"
-          aria-label="Visual search"
-          title="Visual search"
-        >
-          <Camera size={18} />
         </button>
         <button
           type="submit"
@@ -1172,14 +1149,6 @@ export default function Header() {
         </button>
       </nav>
 
-      <input
-        ref={imageInputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleVisualImage}
-        aria-hidden="true"
-      />
     </>
   );
 }
