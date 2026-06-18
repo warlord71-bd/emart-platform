@@ -14,7 +14,8 @@ import ProductViewContentEvent from '@/components/analytics/ProductViewContentEv
 import { absoluteUrl } from '@/lib/siteUrl';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { getCleanBreadcrumbCategory } from '@/lib/product-display';
-import { getSimilarProducts } from '@/lib/qdrant';
+import { getSimilarAndCrossSell } from '@/lib/qdrant';
+import type { QdrantPayload } from '@/lib/qdrant';
 import { COMPANY } from '@/lib/companyProfile';
 // SEO helpers — extracted to lib/seo/product.ts
 import {
@@ -486,28 +487,30 @@ export default async function ProductPage({ params }: Props) {
     ? product.categories.find(c => c.slug === _relatedCatSlug)
     : product.categories[0];
 
-  const [similarPayloads, categoryFallback, reviews] = await Promise.all([
-    getSimilarProducts(product.id, 4),
+  const [vectorResults, categoryFallback, reviews] = await Promise.all([
+    getSimilarAndCrossSell(product.id, 4, 4),
     getProducts({ category: _relatedCat?.id?.toString(), per_page: 4, exclude: [product.id].join(',') }).catch(() => ({ products: [] as WooProduct[] })),
     getProductReviews(product.id).catch(() => []),
   ]);
 
-  // Prefer vector-similar products; fall back to same-category if Qdrant is empty/down
-  const related = similarPayloads.length > 0
-    ? similarPayloads.map((p) => ({
-        id: p.product_id,
-        name: p.name,
-        slug: p.slug,
-        price: String(p.price_bdt),
-        sale_price: '',
-        regular_price: '',
-        stock_status: p.stock_status,
-        images: p.image_url ? [{ id: 0, src: p.image_url, alt: p.name }] : [],
-        categories: [],
-        attributes: [] as WooProduct['attributes'],
-        meta_data: [] as WooMetaData[],
-      } as unknown as WooProduct))
+  const toWooShape = (p: QdrantPayload) => ({
+    id: p.product_id,
+    name: p.name,
+    slug: p.slug,
+    price: String(p.price_bdt),
+    sale_price: '',
+    regular_price: '',
+    stock_status: p.stock_status,
+    images: p.image_url ? [{ id: 0, src: p.image_url, alt: p.name }] : [],
+    categories: [],
+    attributes: [] as WooProduct['attributes'],
+    meta_data: [] as WooMetaData[],
+  } as unknown as WooProduct);
+
+  const similar = vectorResults.similar.length > 0
+    ? vectorResults.similar.map(toWooShape)
     : categoryFallback.products;
+  const crossSell = vectorResults.crossSell.map(toWooShape);
 
   const descriptionHtml =
     removeFaqFromHtml(product.description || '') ||
@@ -568,12 +571,23 @@ export default async function ProductPage({ params }: Props) {
         <ProductFaqSection items={faqItems} />
       </section>
 
-      {related.length > 0 && (
+      {similar.length > 0 && (
         <section className="mt-16">
-          <h2 className="section-title mb-6">Related Products</h2>
+          <h2 className="section-title mb-6">Similar Products</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {related.map((relatedProduct) => (
-              <ProductCard key={relatedProduct.id} product={relatedProduct} />
+            {similar.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {crossSell.length > 0 && (
+        <section className="mt-12">
+          <h2 className="section-title mb-6">Complete Your Routine</h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {crossSell.map((p) => (
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </section>
