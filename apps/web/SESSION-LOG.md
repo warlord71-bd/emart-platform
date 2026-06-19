@@ -2640,3 +2640,11 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
   - Sidecar RAM: ~220MB, VPS still has 5.3GB available
 - Also: ChatMessages.tsx link rendering fix (FormatMessage component), visual search button removed.
 - Blockers: none.
+
+## 2026-06-19 (Codex — SEO review pipeline crosscheck + deploy prep)
+- Owner asked to crosscheck Claude's uncommitted SEO review work against `workspace/seo-review/` and `workspace/SEO_MASTER.md`, preserve completed work, and deploy logically.
+- Crosschecked the standalone SEO/AEO review pipeline: Python scripts compile, JSON/JSONL review outputs parse, and outputs remain review-only under `workspace/seo-review/` with no Woo/product writes.
+- Updated `SEO_MASTER.md` to match live crawler policy and sitemap count, and clarified Product `Review`/`AggregateRating` schema is conditional on real approved reviews/rating count.
+- Added PDP Product JSON-LD `Review` nodes from real Woo reviews when present; build passed.
+- Preserved the old root `SEO_AUDIT_2026-06-07.md` instead of deleting it, so no previous audit work is lost.
+- Blockers: none before deploy; next step is scoped commit, deploy, live smoke test, then push after live passes.

@@ -238,6 +238,10 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 
 ## ✅ COMPLETED THIS SESSION (2026-06-17/18)
 
+- SEO/AEO review pipeline staged for deploy: `workspace/seo-review/` added with GSC tracker, internal Qdrant/Woo/OpenRouter SEO scorer, priority queues, content-gap/internal-link/duplicate/agentic-score review outputs. Crosschecked against `SEO_MASTER.md`; JSON/JSONL outputs parse clean; Python scripts compile. Review-only outputs, no Woo/product writes.
+- PDP Product JSON-LD now includes individual `Review` nodes when real Woo reviews exist; `SEO_MASTER.md` updated to clarify review schema is conditional on approved reviews and review volume remains the business gap.
+- Preserved old root `SEO_AUDIT_2026-06-07.md`; findings are superseded by current audit/source-of-truth docs, but the completed audit artifact remains in the repo.
+
 - Blog generator C1: ran, fixed (Nginx tags, WC image fetch via localhost HTTPS, Rank Math meta via WP-CLI), cron `0 2,10,18 * * *` registered as `emart-blog-generator` PM2 job
 - `emart-revenue-health` fixed: Playwright v1228 installed, `networkidle`→`domcontentloaded`, `ERR_ABORTED` beacon filtering, all 8 checks passing
 - R20 re-audit: **A+** (was B+). All R1-R19 closed, 0 regressions. Report: `workspace/docs/audits/EMART_REAUDIT_R20_20260617.md`

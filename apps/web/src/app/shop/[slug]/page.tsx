@@ -519,7 +519,7 @@ export default async function ProductPage({ params }: Props) {
   const howToUseHtml = getHowToUseHtml(product);
   const faqItems = getProductFaqItems(product);
   const faqJsonLd = getProductFaqJsonLd(product, faqItems);
-  const productJsonLd = getProductJsonLd(product);
+  const productJsonLd = getProductJsonLd(product, reviews);
   const breadcrumbParent = getProductBreadcrumbParent(product);
 
   const breadcrumbItems = [

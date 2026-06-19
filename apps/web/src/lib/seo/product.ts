@@ -1,4 +1,5 @@
 import type { WooProduct } from '@/lib/woocommerce';
+import type { WooProductReview } from '@/lib/woo/types';
 import { absoluteUrl } from '@/lib/siteUrl';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { getCleanBreadcrumbCategory } from '@/lib/product-display';
@@ -75,7 +76,7 @@ export function getSeoDescription(product: WooProduct): string {
 
 // ── JSON-LD generators ────────────────────────────────────────────────────────
 
-export function getProductJsonLd(product: WooProduct) {
+export function getProductJsonLd(product: WooProduct, reviews: WooProductReview[] = []) {
   const imageUrls = product.images?.map((image) => image.src).filter(Boolean) || [];
   const price = getNumericPrice(product);
   const sku = product.sku?.trim() || '';
@@ -173,7 +174,26 @@ export function getProductJsonLd(product: WooProduct) {
       },
     } : {}),
     ...(offer ? { offers: offer } : {}),
-    // speakable: marks title + first description paragraph as voice/AI readable
+    ...(reviews.length > 0 ? {
+      review: reviews.slice(0, 10).map((r) => {
+        const reviewBody = (r.review || '')
+          .replace(/<[^>]+>/g, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        return {
+          '@type': 'Review',
+          author: { '@type': 'Person', name: r.reviewer || 'Emart Customer' },
+          datePublished: r.date_created ? new Date(r.date_created).toISOString().split('T')[0] : undefined,
+          reviewBody: reviewBody || undefined,
+          reviewRating: {
+            '@type': 'Rating',
+            ratingValue: r.rating,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        };
+      }),
+    } : {}),
     speakable: {
       '@type': 'SpeakableSpecification',
       xpath: ['/html/head/title', '//h1', '//meta[@name="description"]/@content'],

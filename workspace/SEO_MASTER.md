@@ -28,8 +28,8 @@ All items below are verified working on the live site as of 2026-05-19.
 - HTTPS, www→non-www 301, HTTP→HTTPS 301 ✅
 - No redirect chains — all resolve in 1 hop ✅
 - HSTS preload, CSP, X-Frame-Options DENY ✅
-- robots.txt — blocks private routes, allows Googlebot/LLMs, blocks CCBot/Bytespider ✅
-- Sitemap at 4,221 URLs — products/brands/categories/concerns/ingredients/blog/routine/origins ✅
+- robots.txt — blocks private routes, allows Googlebot/LLM crawlers including CCBot, blocks bulk scrapers like Bytespider/cohere-ai ✅
+- Sitemap at 4,205 URLs — products/brands/categories/concerns/ingredients/blog/routine/origins ✅
 - ISR: product pages `x-nextjs-cache: HIT`, category pages `cf-cache-status: HIT` ✅
 
 ### Metadata & Canonicals
@@ -229,12 +229,60 @@ This cannot be solved in a sprint — requires a sustained content calendar.
 
 ---
 
-## Schema Coverage Map (live-verified 2026-05-21)
+## 🟠 OPEN — External / Off-Page SEO
+
+### E1: Backlink acquisition — BD business directories
+**Status:** Not started
+**What:** Submit Emart to BD business directories and e-commerce listings.
+**Targets:**
+- BDYellow Pages (bdyellow.com)
+- Bangladesh Trade Portal
+- Dhaka Chamber of Commerce directory
+- Local business listings (Google Business Profile — Dhanmondi address)
+- BD startup/e-commerce directories
+**Why:** Domain authority is the #1 gap. Position 1–5 with 0% CTR means Google trusts the content but users don't recognize the brand. Directory presence builds entity trust.
+**Owner:** Warlord — requires business registration docs for some directories.
+
+### E2: Google Business Profile
+**Status:** Not verified
+**What:** Claim/verify GBP for "Emart Skincare Bangladesh" at 1st Floor, 26/2 Central Road, Dhanmondi, Dhaka 1205. Link to https://e-mart.com.bd. Add store photos, hours (Sa-Th 09:00-21:00), phone (+8801919797399).
+**Why:** Establishes Emart as a verified local entity in Google's Knowledge Graph. LLMs cross-reference GBP for "is this business real" signals. Enables Google Maps presence for "skincare store near me" queries.
+**Owner:** Warlord — requires Google account verification (postcard/phone).
+
+### E3: Product image gallery expansion
+**Status:** Ongoing gap (M9 from Medium section)
+**What:** Add 3–5 angle shots per top-100 products. Current state: most products have 1–2 images.
+**Why:** Google Images is a discovery channel. Google Shopping requires at least 1 clean product image, but competitors average 4–6. More images = more Google Image impressions = more Shopping card appearances.
+**Execution:** Prioritize by `priority-queue.json` top 50 — highest search visibility products first.
+**Owner:** Warlord — photography/supplier image sourcing.
+
+### E4: Social profile link authority
+**Status:** Schema sameAs already lists all profiles
+**What:** Ensure Facebook (emartbd.official), Instagram (emartbd.official), YouTube, TikTok, LinkedIn profiles all link back to https://e-mart.com.bd in their bio/about sections. Post product links using `/shop/slug` URLs (not WooCommerce `/product/` URLs).
+**Why:** Bidirectional social→site links strengthen entity recognition. Facebook + Instagram are the primary product discovery channels in BD.
+**Owner:** Warlord — social media profile edits.
+
+### E5: Beauty blogger / influencer outreach
+**Status:** Not started
+**What:** Send products to 5–10 BD skincare reviewers (YouTube/TikTok/Facebook) who link to the product page in video descriptions.
+**Why:** One quality backlink from a BD beauty blog is worth more than 50 directory submissions. YouTube descriptions pass link equity.
+**Target:** YouTube reviewers with 5K–50K subscribers who review K-beauty in Bangla.
+**Owner:** Warlord — outreach + product sending.
+
+### E6: Structured review collection
+**Status:** 16 approved reviews across 3,500+ products
+**What:** Implement post-purchase review request email (mu-plugin `emart-review-request.php` exists). Target: 100+ reviews within 60 days.
+**Why:** Individual Review schema now deployed (2026-06-19) but most products have 0 reviews. AggregateRating + individual Review schema together unlock Google review stars in SERP. LLMs cite verified buyer sentiment.
+**Owner:** Activate the review request email flow.
+
+---
+
+## Schema Coverage Map (live-verified 2026-06-19)
 
 | Page type | Schema present | Still missing |
 |---|---|---|
 | Homepage | WebSite, OnlineStore, Organization | — |
-| Product (PDP) | Product, BreadcrumbList, FAQPage | AggregateRating (needs real Woo reviews) |
+| Product (PDP) | Product, BreadcrumbList, FAQPage, Review (when real approved reviews exist), AggregateRating (when Woo rating_count > 0) | Review volume remains the business gap; schema support added 2026-06-19 |
 | Category | CollectionPage, ItemList, BreadcrumbList | — |
 | Brand | CollectionPage, ItemList, BreadcrumbList | — |
 | Concern | CollectionPage, ItemList, BreadcrumbList | — |
