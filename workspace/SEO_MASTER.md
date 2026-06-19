@@ -1,6 +1,6 @@
 # Emart SEO Master — Source of Truth
 
-**Last verified:** 2026-05-23 (live curl audit + on-page.ai scans: 3 PDPs + homepage + sunscreen category)
+**Last verified:** 2026-06-19 (live curl audit: sitemap, robots, LLM docs, representative PDP/category/concern/ingredient/blog JSON-LD)
 **Owner:** Claude (code) + Warlord (content/business decisions)
 **Rule:** This file is the single SEO source of truth. Update it when items close or new gaps are confirmed live. Do not update based on AI analysis alone — verify with curl before changing status.
 
@@ -44,7 +44,7 @@ All items below are verified working on the live site as of 2026-05-19.
 ### Schema
 - Product pages: Product + BreadcrumbList + FAQPage JSON-LD ✅
 - Product schema: SKU, GTIN (if numeric), MPN=SKU fallback, priceValidUntil +1yr (fixed 2026-05-19) ✅
-- Product schema: aggregateRating only when real Woo reviews exist — correct behaviour ✅
+- Product schema: Review + aggregateRating only when real Woo reviews exist — correct behaviour ✅
 - MerchantReturnPolicy (7-day, BD, FreeReturn, ReturnByMail) ✅
 - OfferShippingDetails with handlingTime + transitTime ✅
 - FAQPage on /faq page ✅

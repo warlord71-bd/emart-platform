@@ -47,10 +47,10 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 
 ## 🟢 CLAUDE — Next tasks (2026-06-10)
 
-### C1 — Blog generator: rewritten, tested, READY TO RUN (not scheduled)
+### C1 — Blog generator: rewritten, tested, scheduled via PM2 cron
 - `/root/.openclaw/workspace-emart/blog_generator.py` fully rewritten: GSC-informed + evergreen topic bank, 5 rotating writer personas, anti-AI-detection prompt rules (no separate humanizer pass), in-content internal auto-linking (`/ingredients/*`, `/concerns/*`, `/category/*`), always-attach featured product image, OpenRouter model list fixed to working free models.
 - ✅ Live test passed: published post 93922 "Innisfree Skincare Guide for Bangladesh" (https://e-mart.com.bd/blog/innisfree-skincare-guide-for-bangladesh-volcanic-clay-mask-face-wash-sunscreen) via `openai/gpt-oss-120b:free` fallback. State file updated (`gsc_used_indices: [0]`, `persona_index: 1`).
-- **Per owner instruction "meta first, blog next" — do NOT run again or add cron until item #14 (meta regen) has progressed/completed** (shared OpenRouter free-tier quota). Suggested cron once cleared: `0 2,10,18 * * *` (3x/day).
+- ✅ Meta-first blocker cleared; cron `0 2,10,18 * * *` registered as `emart-blog-generator` PM2 job. PM2 may show the process stopped between scheduled runs; that is expected for cron-style jobs.
 
 ### C2 — Schema/social sameAs — ✅ DONE 2026-06-10
 - Added `COMPANY.social.tiktok` to Organization `sameAs` in `layout.tsx`. Built on Local + VPS, `pm2 restart emartweb` done, live smoke HTTP 200, live JSON-LD confirmed includes `https://www.tiktok.com/@emart_bdofficial`. Committed `806938f`, pushed to `origin/main`, VPS git aligned to `806938f`.
