@@ -2,6 +2,40 @@ import { tool } from 'ai';
 import { z } from 'zod';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { COMPANY } from '@/lib/companyProfile';
+import type { QdrantPayload } from '@/lib/qdrant';
+
+const EMBED_URL = 'http://127.0.0.1:8077/embed';
+const QDRANT_URL = 'http://127.0.0.1:6333';
+const QDRANT_KEY = process.env.QDRANT_API_KEY || '';
+
+async function embedAndSearch(query: string, limit: number): Promise<QdrantPayload[]> {
+  try {
+    const embedRes = await fetch(EMBED_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: query }),
+    });
+    if (!embedRes.ok) return [];
+    const { vector } = await embedRes.json() as { vector: number[] };
+
+    const searchRes = await fetch(`${QDRANT_URL}/collections/emart_products/points/search`, {
+      method: 'POST',
+      headers: { 'api-key': QDRANT_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        vector,
+        limit,
+        with_payload: true,
+        score_threshold: 0.35,
+        filter: { must: [{ key: 'stock_status', match: { value: 'instock' } }] },
+      }),
+    });
+    if (!searchRes.ok) return [];
+    const data = await searchRes.json();
+    return (data.result || []).map((r: { payload: QdrantPayload }) => r.payload);
+  } catch {
+    return [];
+  }
+}
 
 export const agentTools = {
   searchProducts: tool({
@@ -13,23 +47,38 @@ export const agentTools = {
     }),
     execute: async ({ query, limit }) => {
       const { searchByText } = await import('@/lib/qdrantSearch');
-      const results = await searchByText(query, limit);
 
-      if (results.length) {
+      // Run payload text search + vector search in parallel
+      const [textResults, vectorResults] = await Promise.all([
+        searchByText(query, limit),
+        embedAndSearch(query, limit + 3),
+      ]);
+
+      // Merge and dedupe by product_id — text matches first (exact), then vector (semantic)
+      const seen = new Set<number>();
+      const merged: { name: string; slug: string; price: string; stock_status: string; brand: string; category: string }[] = [];
+
+      for (const p of [...textResults, ...vectorResults]) {
+        if (seen.has(p.product_id)) continue;
+        seen.add(p.product_id);
+        merged.push({
+          name: p.name,
+          slug: p.slug,
+          price: `৳${p.price_bdt}`,
+          stock_status: p.stock_status,
+          brand: p.brand,
+          category: p.category,
+        });
+      }
+
+      if (merged.length) {
         return {
-          found: results.length,
-          products: results.map((p) => ({
-            name: p.name,
-            slug: p.slug,
-            price: `৳${p.price_bdt}`,
-            stock_status: p.stock_status,
-            brand: p.brand,
-            category: p.category,
-            link: `https://e-mart.com.bd/shop/${p.slug}`,
-          })),
+          found: merged.length,
+          products: merged.slice(0, limit),
         };
       }
 
+      // Final fallback: WooCommerce keyword search
       const { getProducts } = await import('@/lib/woocommerce');
       const { products } = await getProducts({ search: query, per_page: limit, status: 'publish' });
       if (!products.length) return { found: 0, message: 'No products found for that query.' };
@@ -39,12 +88,9 @@ export const agentTools = {
           name: p.name,
           slug: p.slug,
           price: `৳${p.price}`,
-          regular_price: p.regular_price ? `৳${p.regular_price}` : undefined,
-          on_sale: p.on_sale,
           stock_status: p.stock_status,
           brand: p.brands?.[0]?.name || '',
           categories: p.categories?.map((c) => c.name).join(', '),
-          link: `https://e-mart.com.bd/shop/${p.slug}`,
         })),
       };
     },

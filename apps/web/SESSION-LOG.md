@@ -2629,3 +2629,14 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - New file: `lib/qdrantSearch.ts` (payload text search + blog content matching).
 - Blockers: none.
 - Next step: AI customer support agent.
+
+## 2026-06-19 (Claude — agent 3 surgical fixes)
+- Fix 1: maxSteps 5→3 in `/api/chat/route.ts` — stops repeated "Let me search..." messages.
+- Fix 2: System prompt updated — agent now outputs markdown links `[Product Name](/shop/slug)` instead of bare URLs.
+- Fix 3: Embedding sidecar + hybrid vector search:
+  - Created `services/embed/embed_service.py` (FastAPI, `all-mpnet-base-v2`, 768-dim, port 8077, PM2 `emart-embed`)
+  - `searchProducts` tool now runs payload text search + vector search in parallel, merges + dedupes
+  - Validated 5 query types: semantic ("dry flaky skin"→moisturizers), exact ("cosrx"→COSRX products), price queries all return relevant results
+  - Sidecar RAM: ~220MB, VPS still has 5.3GB available
+- Also: ChatMessages.tsx link rendering fix (FormatMessage component), visual search button removed.
+- Blockers: none.

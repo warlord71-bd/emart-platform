@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     system: SYSTEM_PROMPT,
     messages,
     tools: agentTools,
-    maxSteps: 5,
+    maxSteps: 3,
   });
 
   return result.toDataStreamResponse();
