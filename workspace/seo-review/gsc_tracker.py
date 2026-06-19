@@ -79,6 +79,23 @@ TRENDS_GEO     = "BD"
 TRENDS_TIMEFRAME = "today 3-m"
 TRENDS_MAX_QUERIES = 15  # top queries to check trends for (rate limit friendly)
 
+BRAND_QUERY_PATTERNS = (
+    "emart",
+    "e mart",
+    "e-mart",
+    "emartbd",
+    "emart bd",
+    "emart skincare",
+    "e mart bd",
+    "e mart way",
+    "us mart",
+    "korea mart",
+    "korean mart",
+    "imarket",
+    "emarrt",
+    "dhaka e mart",
+)
+
 # ── GSC Auth ──────────────────────────────────────────────────────────────────
 
 def get_service():
@@ -115,6 +132,23 @@ def date_range(days=28, end_offset=3):
 
 def today_str():
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+def normalize_query(query: str) -> str:
+    return " ".join(query.lower().replace("-", " ").replace(".", " ").split())
+
+def is_brand_query(query: str) -> bool:
+    q = normalize_query(query)
+    compact = q.replace(" ", "")
+    if q == "mart" or " com bd" in q or q.endswith(" com"):
+        return True
+    return any(pattern in q or pattern.replace(" ", "") in compact for pattern in BRAND_QUERY_PATTERNS)
+
+def normalize_page_path(page: str) -> str:
+    page = page.strip()
+    for host in ("https://e-mart.com.bd", "http://www.e-mart.com.bd", "https://www.e-mart.com.bd"):
+        if page.startswith(host):
+            page = page[len(host):] or "/"
+    return page
 
 # ── GSC API calls ─────────────────────────────────────────────────────────────
 
@@ -453,15 +487,17 @@ def cmd_blog_gaps():
 
     # Queries where our only appearance is homepage or category pages
     # (not a dedicated product or blog post)
-    dedicated_prefixes = (PRODUCT_PREFIX, BLOG_PREFIX, BEST_PREFIX,
+    dedicated_prefixes = (PRODUCT_PREFIX, "/product/", BLOG_PREFIX, BEST_PREFIX,
                           "/ingredients/", "/concerns/", "/brands/")
 
     gaps = []
     for pq in snapshot.get("page_queries", []):
-        page_path = pq["page"]
+        page_path = normalize_page_path(pq["page"])
         if any(page_path.startswith(p) for p in dedicated_prefixes):
             continue  # already have a dedicated page
         if pq["impressions"] < 10:
+            continue
+        if is_brand_query(pq["query"]):
             continue
         gaps.append({
             "query": pq["query"],
@@ -525,11 +561,10 @@ def cmd_search_trends():
     snapshot = load_latest_snapshot()
 
     # Get top non-brand queries by impressions
-    brand_words = {"emart", "e mart", "e-mart", "emarrt", "us mart", "e mart way"}
     top_queries = [
         q for q in snapshot["queries"]
         if q["impressions"] >= 20
-        and not any(bw in q["query"].lower() for bw in brand_words)
+        and not is_brand_query(q["query"])
     ][:TRENDS_MAX_QUERIES]
 
     if not top_queries:

@@ -245,6 +245,7 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 ## ✅ COMPLETED THIS SESSION (2026-06-17/18)
 
 - SEO/AEO review pipeline staged for deploy: `workspace/seo-review/` added with GSC tracker, internal Qdrant/Woo/OpenRouter SEO scorer, priority queues, content-gap/internal-link/duplicate/agentic-score review outputs. Crosschecked against `SEO_MASTER.md`; JSON/JSONL outputs parse clean; Python scripts compile. Review-only outputs, no Woo/product writes.
+- SEO review `blog-gaps` filter fixed: brand/navigation marketplace queries and legacy/full-URL product page keys no longer pollute `blog-topic-candidates.json`; latest output reduced to 8 cleaner content candidates.
 - PDP Product JSON-LD now includes individual `Review` nodes when real Woo reviews exist; `SEO_MASTER.md` updated to clarify review schema is conditional on approved reviews and review volume remains the business gap.
 - Preserved old root `SEO_AUDIT_2026-06-07.md`; findings are superseded by current audit/source-of-truth docs, but the completed audit artifact remains in the repo.
 

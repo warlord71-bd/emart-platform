@@ -2648,3 +2648,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Added PDP Product JSON-LD `Review` nodes from real Woo reviews when present; build passed.
 - Preserved the old root `SEO_AUDIT_2026-06-07.md` instead of deleting it, so no previous audit work is lost.
 - Blockers: none before deploy; next step is scoped commit, deploy, live smoke test, then push after live passes.
+
+## 2026-06-19 (Codex — SEO review blog-gap filter)
+- Owner asked what could run now from `workspace/seo-review/`; ran review-only `gsc_tracker.py score`, `blog-gaps`, and `humanizer-queue`.
+- Fixed `gsc_tracker.py blog-gaps` brand/navigation filtering so `emart`, `e mart`, marketplace-style `mart` queries, full URL page keys, and legacy `/product/` pages no longer pollute content-gap output.
+- Regenerated `blog-topic-candidates.json`: query gaps reduced from 45 mostly brand/noise items to 8 cleaner content candidates.
+- Validation: `python3 -m py_compile workspace/seo-review/gsc_tracker.py` passed; regenerated JSON parses clean. No Woo/product/order/checkout writes.
