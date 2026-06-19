@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-18 (R12/R18 closed → A+; PDP titles "Price in Bangladesh"; catalog audit; thin origins noindexed)
+Last updated: 2026-06-19 (SEO/AEO review pipeline deployed; task board aligned with SEO_MASTER; deploy-gate gap added)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -74,6 +74,12 @@ These surfaces extract from: (a) clear, definition-first prose near the top of a
 
 ### C4 — GEO/AEO standing consideration (added 2026-06-10)
 - Owner: keep Generative Engine Optimization (AI Overviews/ChatGPT/Perplexity/Gemini citations) and Answer Engine Optimization (featured snippets/PAA/voice, FAQPage schema) in mind for ALL future SEO/content work, not a one-off task. Documented in `workspace/SEO_MASTER.md` under "STANDING CONSIDERATION — GEO & AEO". New content types (blog, future `/best/*`, `/compare/*`) should ship with `Article`/`FAQPage`/`HowTo` schema from the start.
+
+### C5 — SEO/AEO deploy gate + LLM docs freshness — OPEN
+- Crosscheck 2026-06-19 confirmed the base layer is live: dynamic `/sitemap.xml` 200 with 4,205 URLs, `robots.txt` 200 and declares sitemap, `/llms.txt` 200, `/agents.md` 200, and representative home/PDP/category/concern/ingredient/blog pages have valid JSON-LD with 0 parse errors.
+- Gaps to close: `/llms-full.txt` returns 404; `llms.txt`/`agents.md` need freshness checks for stale canonical links; no IndexNow integration is wired; `deploy.sh` smoke currently checks homepage 200 only, not SEO/AEO surfaces before push.
+- Build `workspace/scripts/active/seo-aeo-deploy-check.mjs` as a read-only deploy gate. It should validate `/robots.txt`, `/sitemap.xml`, `/llms.txt`, `/llms-full.txt`, `/agents.md`, one sitemap-sourced PDP/category/concern/ingredient/blog URL, canonical/title/meta description, JSON-LD parse + required schema types, Product `offers.price`/`availability`/`priceValidUntil`, and stale links inside LLM docs.
+- Wire the gate into `deploy.sh` before the push step after it passes locally/live. Do not write Woo/product/order data. Note: `GET /api/mobile/products/{id}` exists at `apps/web/src/app/api/mobile/products/[id]/route.ts`; do not treat that route as missing.
 
 ### C6 — Reddit Conversions Pixel (frontend) — DONE 2026-06-10, live
 - Owner asked to "activate Reddit" — investigation found wp-admin's "Jetpack account info" JSON error comes from `google-listings-and-ads`/`reddit-for-woocommerce` plugins' broken Jetpack-connection check (cosmetic, doesn't affect product saves or GMC sync; left as-is).
