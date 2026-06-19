@@ -12,6 +12,7 @@ import html
 import json
 import os
 import re
+import signal
 import ssl
 import subprocess
 import sys
@@ -49,6 +50,7 @@ DUPLICATE_FLAGS_FILE = OUTPUT_DIR / "duplicate-flags.jsonl"
 AGENTIC_SCORE_FILE = OUTPUT_DIR / "agentic-score.jsonl"
 
 LLM_MIN_INTERVAL_SECONDS = 3.2  # <= ~18.75/minute
+LLM_TIMEOUT_SECONDS = 30
 LLM_PRODUCT_BATCH_SIZE = 5
 SEARCH_LIMIT = 48
 NEIGHBOR_LIMIT = 8
@@ -171,6 +173,19 @@ class StopRun(RuntimeError):
     pass
 
 
+def hard_timeout(seconds: int, label: str, fn):
+    def raise_timeout(_signum, _frame):
+        raise TimeoutError(f"{label} exceeded {seconds}s")
+
+    previous = signal.signal(signal.SIGALRM, raise_timeout)
+    signal.setitimer(signal.ITIMER_REAL, seconds)
+    try:
+        return fn()
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous)
+
+
 _ssl_ctx = ssl.create_default_context()
 _ssl_ctx.check_hostname = False
 _ssl_ctx.verify_mode = ssl.CERT_NONE
@@ -189,7 +204,7 @@ class RunState:
 
 def req_json(method: str, url: str, body: Any | None = None, headers: dict[str, str] | None = None, timeout: int = 60) -> Any:
     data = json.dumps(body).encode("utf-8") if body is not None else None
-    merged = {"Content-Type": "application/json", "Accept": "application/json"}
+    merged = {"Content-Type": "application/json", "Accept": "application/json", "Connection": "close"}
     if headers:
         merged.update(headers)
     request = Request(url, data=data, method=method, headers=merged)
@@ -211,10 +226,10 @@ def qdrant(method: str, path: str, body: Any | None = None) -> Any:
 
 
 def wc_credentials() -> tuple[str, str]:
-    key = os.environ.get("WC_CONSUMER_KEY", "")
-    secret = os.environ.get("WC_CONSUMER_SECRET", "")
+    key = os.environ.get("WC_CONSUMER_KEY") or os.environ.get("WOO_CONSUMER_KEY", "")
+    secret = os.environ.get("WC_CONSUMER_SECRET") or os.environ.get("WOO_CONSUMER_SECRET", "")
     if not key or not secret:
-        raise StopRun("WC_CONSUMER_KEY / WC_CONSUMER_SECRET are required for read-only Job E scoring")
+        raise StopRun("WOO_CONSUMER_KEY / WOO_CONSUMER_SECRET are required for read-only Job E scoring")
     return key, secret
 
 
@@ -239,12 +254,16 @@ def openrouter_headers() -> dict[str, str]:
 
 
 def chat_call(model: str, messages: list[dict[str, str]], max_tokens: int = 600, temperature: float = 0.15) -> dict[str, Any]:
-    return req_json(
-        "POST",
-        OPENROUTER_URL,
-        body={"model": model, "messages": messages, "max_tokens": max_tokens, "temperature": temperature},
-        headers=openrouter_headers(),
-        timeout=90,
+    return hard_timeout(
+        LLM_TIMEOUT_SECONDS + 5,
+        f"OpenRouter {model}",
+        lambda: req_json(
+            "POST",
+            OPENROUTER_URL,
+            body={"model": model, "messages": messages, "max_tokens": max_tokens, "temperature": temperature},
+            headers=openrouter_headers(),
+            timeout=LLM_TIMEOUT_SECONDS,
+        ),
     )
 
 
@@ -644,6 +663,8 @@ def llm_gap_recs(state: RunState, gaps: list[dict[str, Any]]) -> list[dict[str, 
 
 
 def llm_with_fallback(state: RunState, messages: list[dict[str, str]], max_tokens: int) -> str:
+    if getattr(state, "llm_disabled", False):
+        return ""
     if not hasattr(llm_with_fallback, "last_call"):
         llm_with_fallback.last_call = 0.0  # type: ignore[attr-defined]
     elapsed = time.monotonic() - llm_with_fallback.last_call  # type: ignore[attr-defined]
@@ -656,7 +677,12 @@ def llm_with_fallback(state: RunState, messages: list[dict[str, str]], max_token
         state.rate_events.append(f"{state.model} call failed: {type(exc).__name__}; retried fallback")
         state.model = FALLBACK_MODEL
         state.fallback_used = True
-        response = chat_call(FALLBACK_MODEL, messages, max_tokens=max_tokens)
+        try:
+            response = chat_call(FALLBACK_MODEL, messages, max_tokens=max_tokens)
+        except Exception as fallback_exc:
+            state.rate_events.append(f"{FALLBACK_MODEL} call failed: {type(fallback_exc).__name__}; disabled LLM for deterministic fallback")
+            setattr(state, "llm_disabled", True)
+            return ""
     finally:
         llm_with_fallback.last_call = time.monotonic()  # type: ignore[attr-defined]
     state.llm_calls += 1

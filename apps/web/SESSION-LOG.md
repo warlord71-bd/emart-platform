@@ -2654,3 +2654,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed `gsc_tracker.py blog-gaps` brand/navigation filtering so `emart`, `e mart`, marketplace-style `mart` queries, full URL page keys, and legacy `/product/` pages no longer pollute content-gap output.
 - Regenerated `blog-topic-candidates.json`: query gaps reduced from 45 mostly brand/noise items to 8 cleaner content candidates.
 - Validation: `python3 -m py_compile workspace/seo-review/gsc_tracker.py` passed; regenerated JSON parses clean. No Woo/product/order/checkout writes.
+
+## 2026-06-19 (Codex — internal SEO tool limit-20 sample)
+- Ran `workspace/seo-review/internal_seo_tool.py --limit 20` after preflight with `.env.local` loaded.
+- Fixed script env compatibility to accept platform `WOO_CONSUMER_KEY/SECRET`, added hard OpenRouter timeout, and made LLM failures degrade to deterministic review output instead of crashing/hanging.
+- Sample confirmed mpnet sidecar running and Qdrant collection dim 768. Outputs written only under `workspace/seo-review/`: 20 internal-link rows, 46 content-gap rows, 6 duplicate flags, 20 agentic-score rows.
+- OpenRouter primary timed out and fallback `deepseek/deepseek-chat-v3.1` also timed out on generation; sample used deterministic fallbacks and recorded rate events. Owner review still required before any full-catalog run.
