@@ -2660,3 +2660,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed script env compatibility to accept platform `WOO_CONSUMER_KEY/SECRET`, added hard OpenRouter timeout, and made LLM failures degrade to deterministic review output instead of crashing/hanging.
 - Sample confirmed mpnet sidecar running and Qdrant collection dim 768. Outputs written only under `workspace/seo-review/`: 20 internal-link rows, 46 content-gap rows, 6 duplicate flags, 20 agentic-score rows.
 - OpenRouter primary timed out and fallback `deepseek/deepseek-chat-v3.1` also timed out on generation; sample used deterministic fallbacks and recorded rate events. Owner review still required before any full-catalog run.
+
+## 2026-06-19 (Codex — duplicate shade-variant calibration)
+- Owner confirmed the four M.A.C Studio Fix NC 30/35/37/40 matches are legitimate shade variants, not duplicates.
+- Added NC/NW shade-code recognition to `internal_seo_tool.py`; shade variants are classified as `SHADE_VARIANT` and excluded from `duplicate-flags.jsonl`.
+- Refreshed the committed sample artifact from 6 flags to 2 legitimate Dabo size variants; actual possible duplicates now 0.
+- Validation: Python compile passed; all four M.A.C regression cases, size-variant behavior, and SPF-number guard passed. No Woo/live changes.
+- Blockers: none. Next step: calibrate the 20 internal-link recommendations before expanding the sample.

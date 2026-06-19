@@ -504,10 +504,12 @@ def dedupe_key(a: str, b: str) -> tuple[str, str]:
 
 
 SIZE_RE = re.compile(r"\b\d+(?:\.\d+)?\s?(?:ml|g|gm|gram|kg|oz|fl oz|pcs|pads|sheets|tablets|capsules)\b", re.I)
+SHADE_RE = re.compile(r"\b(?:nc|nw)\s*[-:]?\s*\d{1,3}\b", re.I)
 
 
 def normalized_base_name(name: str) -> str:
-    cleaned = SIZE_RE.sub(" ", name.lower())
+    cleaned = SHADE_RE.sub(" ", name.lower())
+    cleaned = SIZE_RE.sub(" ", cleaned)
     cleaned = re.sub(r"\([^)]*\)", " ", cleaned)
     cleaned = re.sub(r"[^a-z0-9]+", " ", cleaned)
     return re.sub(r"\s+", " ", cleaned).strip()
@@ -518,8 +520,17 @@ def size_value(name: str) -> str:
     return match.group(0).lower().replace(" ", "") if match else ""
 
 
+def shade_value(name: str) -> str:
+    match = SHADE_RE.search(name)
+    return re.sub(r"[^a-z0-9]", "", match.group(0).lower()) if match else ""
+
+
 def duplicate_note(source: dict[str, Any], candidate: dict[str, Any]) -> tuple[str, str]:
     same_base = normalized_base_name(source.get("name", "")) == normalized_base_name(candidate.get("name", ""))
+    source_shade = shade_value(source.get("name", ""))
+    candidate_shade = shade_value(candidate.get("name", ""))
+    if same_base and source_shade != candidate_shade and (source_shade or candidate_shade):
+        return "SHADE_VARIANT", "Near-identical embedding but product shade differs; legitimate cosmetic shade variant, not duplicate."
     source_size = size_value(source.get("name", ""))
     candidate_size = size_value(candidate.get("name", ""))
     if same_base and source_size and candidate_size and source_size != candidate_size:
@@ -549,6 +560,8 @@ def candidate_neighbors(point: dict[str, Any], duplicate_pairs: dict[tuple[str, 
             continue
         if cand["score"] and cand["score"] >= DUPLICATE_THRESHOLD:
             duplicate_type, note = duplicate_note(src, cand)
+            if duplicate_type == "SHADE_VARIANT":
+                continue
             duplicate_pairs[dedupe_key(src["slug"], cand["slug"])] = {
                 "product_a_slug": src["slug"],
                 "product_b_slug": cand["slug"],
