@@ -21,6 +21,7 @@ interface BlogPostSummary {
   date: string;
 }
 
+const RecentlyViewedRail = dynamic(() => import('@/components/home/RecentlyViewedRail'), { ssr: false });
 const FlashSaleBanner = dynamic(() => import('@/components/home/FlashSaleBanner'), { ssr: false });
 const ProductGridSection = dynamic(
   () => import('@/components/home/HomepageSections').then((m) => m.ProductGridSection),
@@ -139,6 +140,10 @@ export default function HomepageDeferredSections({
 }) {
   return (
     <>
+      <DeferredSection>
+        <RecentlyViewedRail />
+      </DeferredSection>
+
       <DeferredSection minHeight={260}>
         <FlashSaleBanner products={saleProducts} />
       </DeferredSection>
