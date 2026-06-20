@@ -57,6 +57,17 @@ Counts reconciled: MySQL/WC REST/Qdrant/Sitemap all 3,625. URL prefix `/shop/` c
 | 8 | P4.ingr | Auto pa_ingredient for skincare products only from _emart_ingredients (regex) | [X] | 🟡 proposal/apply-reviewed workflow ready | Small |
 | 9 | AI-OPS1 | Restart competitor price checker PM2 job | [X] | ✅ restarted; 25 checked, 9 undercuts, Sheets updated | Trivial |
 | 10 | AI-OPS2 | Recreate Qdrant sync state file (next run = full resync) | [X] | ✅ `.qdrant_sync_state.json` recreated with null watermark | Trivial |
+| 11 | AI-UX1 | Chat conversion audit: mobile concern chips + safe product/blog/category link rendering; no root placeholders/raw code | [X] | ✅ `70da8e9` deployed live; `/` placeholder blocked in system prompt; relative markdown links render in chat | Small |
+
+### Live SEO/UI Audit Follow-ups (2026-06-20)
+
+| # | Item | Owner | Status |
+|---|---|---|---|
+| UX-1 | Emart AI Assistant concern chips: Oily, Dry, Acne, Dark Spots, Sunscreen | [X] | ✅ live via `70da8e9` |
+| UX-2 | Emart AI Assistant link safety: never use homepage/root placeholders for specific recommendations | [X] | ✅ live via `70da8e9` |
+| UX-3 | Emart AI Assistant "E" logo display | [X] | ✅ already present; keep verified in chat launcher |
+| SEO-1 | Product title cleanup for raw/lowercase catalog titles | [O]+[X] | 🟡 propose/review/apply only; no blind Woo title writes |
+| SEO-2 | Journal internal-link cluster proposals from articles to product/category pages | [X] | 🔲 next safe automation batch |
 
 ### Content Pipeline (spec: `workspace/CONTENT_STANDARD.md`)
 
