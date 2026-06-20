@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-20T21:13:50Z",
+  "generated": "2026-06-20T21:16:11Z",
   "site": {
     "status": 200,
     "ok": true
@@ -103,34 +103,34 @@
   ],
   "git_recent": [
     {
+      "hash": "ee64ba9",
+      "message": "fix(ops): verify system state stopped jobs",
+      "author": "Warlord",
+      "ago": "2 minutes ago"
+    },
+    {
       "hash": "7dea3f6",
       "message": "chore(seo): close meta validator cleanup",
       "author": "Warlord",
-      "ago": "4 minutes ago"
+      "ago": "6 minutes ago"
     },
     {
       "hash": "20d5b9e",
       "message": "feat(ai): complete search and chat pending batch",
       "author": "Warlord",
-      "ago": "11 minutes ago"
+      "ago": "13 minutes ago"
     },
     {
       "hash": "e374856",
       "message": "fix(chat): show Emart logo in AI assistant",
       "author": "Warlord",
-      "ago": "25 minutes ago"
+      "ago": "27 minutes ago"
     },
     {
       "hash": "0af74dd",
       "message": "feat: harden AI ops and add design previews",
       "author": "Warlord",
-      "ago": "39 minutes ago"
-    },
-    {
-      "hash": "5782ad5",
-      "message": "fix(seo): gate title writes behind propose/review/apply pipeline",
-      "author": "Warlord",
-      "ago": "2 hours ago"
+      "ago": "41 minutes ago"
     }
   ],
   "crons": [
