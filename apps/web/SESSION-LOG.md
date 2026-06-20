@@ -2667,3 +2667,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Refreshed the committed sample artifact from 6 flags to 2 legitimate Dabo size variants; actual possible duplicates now 0.
 - Validation: Python compile passed; all four M.A.C regression cases, size-variant behavior, and SPF-number guard passed. No Woo/live changes.
 - Blockers: none. Next step: calibrate the 20 internal-link recommendations before expanding the sample.
+
+## 2026-06-20 (Codex — SEO/AEO deploy gate + LLM freshness)
+- Closed C5 live in commit `6057a58`: added `/llms-full.txt`, refreshed stale links/facts in `/llms.txt`, linked the expanded reference from `/agents.md`, and added the read-only SEO/AEO deploy gate.
+- Wired the gate into `deploy.sh` before push; it checks robots/sitemap, representative PDP/category/concern/ingredient/blog metadata and JSON-LD, Product offer fields, and LLM-document canonical-link freshness.
+- Confirmed IndexNow public key HTTP 200 and homepage submission HTTP 200; product/category revalidation now awaits the non-blocking submission instead of abandoning an unawaited request.
+- Local and VPS builds passed; live homepage and all 10 SEO/AEO gate groups passed; Cloudflare purged; Local/VPS/origin aligned at `6057a58`.
+- Blockers: none. Next step: keep C5 closed; future deploys automatically stop before push if an SEO/AEO surface regresses.

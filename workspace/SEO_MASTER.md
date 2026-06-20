@@ -1,6 +1,6 @@
 # Emart SEO Master — Source of Truth
 
-**Last verified:** 2026-06-19 (live curl audit: sitemap, robots, LLM docs, representative PDP/category/concern/ingredient/blog JSON-LD)
+**Last verified:** 2026-06-20 (live SEO/AEO deploy gate: sitemap, robots, LLM docs/link freshness, IndexNow, representative PDP/category/concern/ingredient/blog metadata + JSON-LD)
 **Owner:** Claude (code) + Warlord (content/business decisions)
 **Rule:** This file is the single SEO source of truth. Update it when items close or new gaps are confirmed live. Do not update based on AI analysis alone — verify with curl before changing status.
 
@@ -30,6 +30,9 @@ All items below are verified working on the live site as of 2026-05-19.
 - HSTS preload, CSP, X-Frame-Options DENY ✅
 - robots.txt — blocks private routes, allows Googlebot/LLM crawlers including CCBot, blocks bulk scrapers like Bytespider/cohere-ai ✅
 - Sitemap at 4,205 URLs — products/brands/categories/concerns/ingredients/blog/routine/origins ✅
+- `/llms.txt`, `/llms-full.txt`, and `/agents.md` live with canonical-link freshness validation in every deploy ✅
+- IndexNow product/category revalidation submission verified accepted (HTTP 200) ✅
+- `deploy.sh` blocks push unless the live SEO/AEO gate passes representative metadata, canonical, schema, Product offer, sitemap, robots, and LLM-document checks ✅
 - ISR: product pages `x-nextjs-cache: HIT`, category pages `cf-cache-status: HIT` ✅
 
 ### Metadata & Canonicals
