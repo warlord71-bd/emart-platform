@@ -2742,3 +2742,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Backed up old values in `workspace/audit/active/meta-validator-fix-rollback-20260620.json`, updated only `_emart_meta_description` and `_rank_math_description` for product IDs 60685 and 94593, and revalidated both product pages.
 - Re-ran validator after fixes: 0/3,625 flagged. Live HTML confirmed both corrected `<meta name="description">` values.
 - No checkout, cart, payment, order, stock, price, or taxonomy writes were made. Next step: continue owner-review-gated content/taxonomy backlog.
+
+## 2026-06-20 (Codex — system state verification)
+- Regenerated `workspace/seo-review/system-state.json` with runtime access: live site health now reports HTTP 200 and PM2 expected-stopped jobs are separated from real failures.
+- Confirmed `emart-blog-generator` is healthy as a cron-style PM2 job: published posts at 00:00, 08:00, and 16:00 UTC, then exited normally. Added it to expected-stopped classification and updated the task board wording.
+- Closed F3 in `workspace/TASKS.md`. No storefront/catalog/order/checkout/payment/stock/price data was changed.

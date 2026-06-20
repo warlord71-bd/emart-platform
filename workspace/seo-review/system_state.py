@@ -68,6 +68,7 @@ def get_site_health():
 
 def get_pm2():
     intentionally_stopped = {
+        "emart-blog-generator",
         "emart-checkout-monitor",
         "emart-competitor-prices",
         "emart-revenue-health",

@@ -12,7 +12,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emartweb` (PM2, :3000) | ✅ online | Next.js 14, v0.39.0 |
 | `emart-presence` (PM2, :3011) | ✅ online | WebSocket, 49d uptime |
 | `emart-embed` (PM2, :8077) | ✅ online | all-mpnet-base-v2 + bge-reranker-v2-m3, 2.2GB RAM |
-| `emart-blog-generator` (PM2 cron) | ✅ running | 3x/day via OpenRouter |
+| `emart-blog-generator` (PM2 cron) | ✅ scheduled | 3x/day via OpenRouter; stops between cron runs, last published 2026-06-20 16:00 UTC |
 | `emart-checkout-monitor` (PM2 cron) | ✅ stopped | All 8 steps pass; intentionally stopped |
 | `emart-competitor-prices` (PM2 cron) | ✅ restarted | Manual run completed 2026-06-20; Google Sheets updated |
 | `emart-revenue-health` (PM2 cron) | ✅ stopped | Intentionally stopped |
@@ -35,7 +35,7 @@ Counts reconciled: MySQL/WC REST/Qdrant/Sitemap all 3,625. URL prefix `/shop/` c
 |---|---|---|---|---|
 | F1 | ~~Crit~~ | ~~cmd_fix_titles() auto-writes truncated titles nightly~~ | [C] | ✅ `98ccdea` — propose/review/apply pipeline; 5 titles reverted |
 | F2 | High | `emart-embed` 2.2GB RAM; reranker ~90s cold start; no fetch timeout in `tools.ts`; `maxDuration:60` < cold start | [X] | 🟡 fetch timeouts/config added; cold-start RAM still ops concern |
-| F3 | High | `system_state.py`: 403 health check, agent bus misparse, stopped jobs shown as failures | [X] | 🟡 health UA + expected-stopped classification patched; verify next cron output |
+| F3 | High | `system_state.py`: 403 health check, agent bus misparse, stopped jobs shown as failures | [X] | ✅ verified manually: live HTTP 200; expected stopped PM2 jobs separated |
 | F4 | Med | Qdrant sync: no deletion of unpublished products; watermark race; state file missing | [X] | ✅ code fixed: state file, 5-min watermark rewind, full-sync stale deletion |
 | F5 | Med | `CONTENT_STANDARD.md` pa_brand says ~100% but actual is 3,589/3,625 | [X] | ✅ corrected to reconciled 2026-06-20 counts |
 | F6 | Med | `SEO_MASTER.md` says both 1,084 and stale 1,161 for pa_concern; dead CSV ref | [X] | ✅ corrected active pa_concern gap text |

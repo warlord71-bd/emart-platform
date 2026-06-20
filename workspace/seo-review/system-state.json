@@ -1,27 +1,27 @@
 {
-  "generated": "2026-06-20T17:36:39Z",
+  "generated": "2026-06-20T21:13:50Z",
   "site": {
-    "status": 0,
-    "ok": false,
-    "error": "HTTP Error 403: Forbidden"
+    "status": 200,
+    "ok": true
   },
   "pm2": {
     "online": [
       "n8n",
       "emart-presence",
       "medimartweb",
-      "emart-competitor-prices",
       "emartweb",
       "kbazar24web",
       "emart-embed"
     ],
-    "stopped": [
+    "stopped_expected": [
       "emart-seo-autoscan",
       "emart-meta-gen",
       "emart-checkout-monitor",
+      "emart-competitor-prices",
       "emart-revenue-health",
       "emart-blog-generator"
     ],
+    "stopped_unexpected": [],
     "total": 12
   },
   "agents": {
@@ -56,75 +56,81 @@
   },
   "session_log": [
     {
-      "header": "2026-06-19 (Codex — duplicate shade-variant calibration)",
+      "header": "2026-06-20 (Codex — owner ecommerce roadmap briefing)",
       "items": [
-        "Owner confirmed the four M.A.C Studio Fix NC 30/35/37/40 matches are legitimate shade variants, not duplicates.",
-        "Added NC/NW shade-code recognition to `internal_seo_tool.py`; shade variants are classified as `SHADE_VARIANT` and exclu",
-        "Refreshed the committed sample artifact from 6 flags to 2 legitimate Dabo size variants; actual possible duplicates now ",
-        "Validation: Python compile passed; all four M.A.C regression cases, size-variant behavior, and SPF-number guard passed. ",
-        "Blockers: none. Next step: calibrate the 20 internal-link recommendations before expanding the sample."
+        "Reviewed current memory, task board, recent session log, and latest commits to answer owner's beginner-level question ab",
+        "Updated task/content/SEO docs so product taxonomy gaps show skincare-only scope: 279 skincare-like pa_concern rows held;",
+        "No product code, catalog, checkout, payment, stock, price, WooCommerce DB, deploy, or live system changes made.",
+        "Blockers: none. Next step: if owner wants execution, translate the roadmap into a phased build/ops plan after the July 3"
       ]
     },
     {
-      "header": "2026-06-20 (Codex — SEO/AEO deploy gate + LLM freshness)",
+      "header": "2026-06-20 (Codex — AI assistant logo fix)",
       "items": [
-        "Closed C5 live in commit `6057a58`: added `/llms-full.txt`, refreshed stale links/facts in `/llms.txt`, linked the expan",
-        "Wired the gate into `deploy.sh` before push; it checks robots/sitemap, representative PDP/category/concern/ingredient/bl",
-        "Confirmed IndexNow public key HTTP 200 and homepage submission HTTP 200; product/category revalidation now awaits the no",
-        "Local and VPS builds passed; live homepage and all 10 SEO/AEO gate groups passed; Cloudflare purged; Local/VPS/origin al",
-        "Blockers: none. Next step: keep C5 closed; future deploys automatically stop before push if an SEO/AEO surface regresses"
+        "Replaced the Emart AI assistant letter avatar with the actual Emart `/logo.png` mark in the floating launcher, chat head",
+        "Kept the small chat bubble badge on the launcher so users still recognize it as chat/support.",
+        "Validation: `npm run lint` passed with existing image warnings; `npm run build` passed.",
+        "Blockers: none. Next step: deploy this small frontend polish if owner wants it live immediately."
       ]
     },
     {
-      "header": "2026-06-20 (Codex — Qdrant pa_concern cross-check/apply)",
+      "header": "2026-06-20 (Codex — AI/search pending batch except mobile)",
       "items": [
-        "Recounted live catalog: 1,141 published products initially lacked `pa_concern`; the earlier 1,147 task count was stale.",
-        "Crosschecked candidates against 3,625 Qdrant vectors joined to 2,484 products with trusted existing concern labels. Foun",
-        "Applied 57 high-confidence products/relationships only: dryness-hydration 43, sensitivity 8, brightening 4, acne-blemish",
-        "Revalidated `tag:products`; refreshed all 3,625 Qdrant product vectors; final published missing count is 1,084. Remainin",
-        "Removed hardcoded credentials from `qdrant_sync_run.sh`; it now loads protected runtime environment values. Blocker/risk"
+        "Completed safe non-mobile AI/search items: typo correction, Bangla query expansion, dynamic search API trending from `se",
+        "Recreated Qdrant sync state with a null watermark so the next scheduled sync runs full; restarted `emart-competitor-pric",
+        "Kept pa_concern/pa_skin_type/pa_ingredient Woo write-backs review-gated per SEO_MASTER; no catalog taxonomy, checkout, p",
+        "Validation: `npm run lint` passed with existing image warnings; `npm run build` passed. PM2 log check found only pre-exi",
+        "Blockers: taxonomy application still needs owner review/approval before Woo writes. Next step: deploy and smoke test thi"
       ]
     },
     {
-      "header": "2026-06-20 (Codex — whole-catalog Qdrant concern audit)",
+      "header": "2026-06-20 (Codex — meta validator cleanup)",
       "items": [
-        "Ran a read-only audit across all 3,625 Woo products / 3,625 Qdrant points using newly generated concern-free embeddings,",
-        "Corrected audit heuristics for `snail`/`nail` and explicit-evidence conflicts. Final result: 3,268 OK, 124 critical non-",
-        "Critical breakdown: 51 makeup, 45 hair/scalp or hair-removal, 11 supplements, 5 tools/accessories, 12 other non-skincare",
-        "Corrected report: `workspace/audit/active/pa-concern-qdrant-catalog-audit-20260620-134415-corrected.csv`."
+        "Regenerated live full-catalog meta validator report; stale 466-issue board count was no longer current. Fresh result fou",
+        "Backed up old values in `workspace/audit/active/meta-validator-fix-rollback-20260620.json`, updated only `_emart_meta_de",
+        "Re-ran validator after fixes: 0/3,625 flagged. Live HTML confirmed both corrected `<meta name=\"description\">` values.",
+        "No checkout, cart, payment, order, stock, price, or taxonomy writes were made. Next step: continue owner-review-gated co"
+      ]
+    },
+    {
+      "header": "2026-06-20 (Codex — system state verification)",
+      "items": [
+        "Regenerated `workspace/seo-review/system-state.json` with runtime access: live site health now reports HTTP 200 and PM2 ",
+        "Confirmed `emart-blog-generator` is healthy as a cron-style PM2 job: published posts at 00:00, 08:00, and 16:00 UTC, the",
+        "Closed F3 in `workspace/TASKS.md`. No storefront/catalog/order/checkout/payment/stock/price data was changed."
       ]
     }
   ],
   "git_recent": [
     {
-      "hash": "7742191",
-      "message": "docs(seo): close AEO deploy gate task",
+      "hash": "7dea3f6",
+      "message": "chore(seo): close meta validator cleanup",
       "author": "Warlord",
-      "ago": "5 hours ago"
+      "ago": "4 minutes ago"
     },
     {
-      "hash": "6057a58",
-      "message": "feat(seo): add AEO deploy gate and LLM index",
+      "hash": "20d5b9e",
+      "message": "feat(ai): complete search and chat pending batch",
       "author": "Warlord",
-      "ago": "5 hours ago"
+      "ago": "11 minutes ago"
     },
     {
-      "hash": "2876565",
-      "message": "fix(seo): exclude cosmetic shade variants",
+      "hash": "e374856",
+      "message": "fix(chat): show Emart logo in AI assistant",
       "author": "Warlord",
-      "ago": "19 hours ago"
+      "ago": "25 minutes ago"
     },
     {
-      "hash": "fed8cd5",
-      "message": "fix(seo): harden internal review sample run",
+      "hash": "0af74dd",
+      "message": "feat: harden AI ops and add design previews",
       "author": "Warlord",
-      "ago": "20 hours ago"
+      "ago": "39 minutes ago"
     },
     {
-      "hash": "bd3c822",
-      "message": "fix(seo): filter brand noise from blog gaps",
+      "hash": "5782ad5",
+      "message": "fix(seo): gate title writes behind propose/review/apply pipeline",
       "author": "Warlord",
-      "ago": "20 hours ago"
+      "ago": "2 hours ago"
     }
   ],
   "crons": [
@@ -194,7 +200,9 @@
     "gsc_snapshots": 2
   },
   "task_counts": {
-    "checked": 4,
-    "unchecked": 19
+    "checked": 9,
+    "unchecked": 0,
+    "open_markers": 22,
+    "warn_markers": 1
   }
 }
