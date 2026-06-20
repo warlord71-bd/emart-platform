@@ -25,7 +25,7 @@ function FormatMessage({ text, isUser }: { text: string; isUser: boolean }) {
 }
 
 function renderLine(line: string, linkClass: string): ReactNode {
-  const re = /(\[([^\]]+)\]\((https?:\/\/[^)]+)\)|\*\*([^*]+)\*\*|(https?:\/\/[^\s,)]+))/g;
+  const re = /(\[([^\]]+)\]((?:\((https?:\/\/[^)]+|\/[^)]+)\)))|\*\*([^*]+)\*\*|(https?:\/\/[^\s,)]+))/g;
   const parts: ReactNode[] = [];
   let last = 0;
   let match: RegExpExecArray | null;
@@ -33,12 +33,12 @@ function renderLine(line: string, linkClass: string): ReactNode {
   while ((match = re.exec(line)) !== null) {
     if (match.index > last) parts.push(line.slice(last, match.index));
 
-    if (match[2] && match[3]) {
-      parts.push(makeLink(match[3], match[2], linkClass, parts.length));
-    } else if (match[4]) {
-      parts.push(<strong key={parts.length}>{match[4]}</strong>);
+    if (match[2] && match[4]) {
+      parts.push(makeLink(match[4], match[2], linkClass, parts.length));
     } else if (match[5]) {
-      parts.push(makeLink(match[5], null, linkClass, parts.length));
+      parts.push(<strong key={parts.length}>{match[5]}</strong>);
+    } else if (match[6]) {
+      parts.push(makeLink(match[6], null, linkClass, parts.length));
     }
     last = match.index + match[0].length;
   }
@@ -48,8 +48,8 @@ function renderLine(line: string, linkClass: string): ReactNode {
 }
 
 function makeLink(url: string, label: string | null, cls: string, key: number) {
-  const isInternal = url.includes('e-mart.com.bd');
-  const href = isInternal ? url.replace(/https?:\/\/e-mart\.com\.bd/, '') || '/' : url;
+  const isInternal = url.startsWith('/') || url.includes('e-mart.com.bd');
+  const href = url.startsWith('/') ? url : isInternal ? url.replace(/https?:\/\/e-mart\.com\.bd/, '') || '/' : url;
   const display = label || (isInternal ? href : url);
   return (
     <a
@@ -124,9 +124,12 @@ function ToolInvocationCards({ invocations }: { invocations: ToolInvocation[] })
 }
 
 const STARTER_CHIPS = [
-  { label: 'Find a product', query: "I'm looking for a skincare product" },
+  { label: 'Oily skin', query: 'Recommend lightweight skincare for oily skin in Bangladesh.' },
+  { label: 'Dry skin', query: 'Recommend hydrating skincare for dry skin in Bangladesh.' },
+  { label: 'Acne', query: 'Recommend gentle acne and blemish care products from Emart.' },
+  { label: 'Dark spots', query: 'Recommend products for dark spots and uneven tone.' },
+  { label: 'Sunscreen', query: 'Show me good sunscreen options for Bangladesh weather.' },
   { label: 'Track my order', query: 'I want to track my order' },
-  { label: 'Skincare routine', query: 'Can you recommend a skincare routine for me?' },
   { label: 'Shipping info', query: 'What are your shipping rates and delivery times?' },
   { label: 'Talk to human', query: "I'd like to speak with a human agent" },
 ];

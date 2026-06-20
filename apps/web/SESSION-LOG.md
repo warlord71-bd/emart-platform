@@ -2747,3 +2747,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Regenerated `workspace/seo-review/system-state.json` with runtime access: live site health now reports HTTP 200 and PM2 expected-stopped jobs are separated from real failures.
 - Confirmed `emart-blog-generator` is healthy as a cron-style PM2 job: published posts at 00:00, 08:00, and 16:00 UTC, then exited normally. Added it to expected-stopped classification and updated the task board wording.
 - Closed F3 in `workspace/TASKS.md`. No storefront/catalog/order/checkout/payment/stock/price data was changed.
+
+## 2026-06-20 (Codex — chat conversion audit fix)
+- Addressed the live audit's customer-chat friction points: starter chips now expose direct mobile-friendly concerns (`Oily skin`, `Dry skin`, `Acne`, `Dark spots`, `Sunscreen`) instead of requiring users to type long skin concerns.
+- Fixed chat markdown rendering for relative internal links like `[Product](/shop/slug)`, matching the agent prompt and preventing raw markdown from appearing in customer replies.
+- Tightened the assistant prompt to forbid homepage/root placeholder links for specific resources and to avoid raw code/JSON/database placeholders in customer-facing answers.
+- Validation: `npm run lint` passed with existing image warnings; `npm run build` passed despite transient Woo timeout retries during static generation.
