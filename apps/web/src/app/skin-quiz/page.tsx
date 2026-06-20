@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
-import { getCategoryBySlug, getProducts, type WooProduct } from '@/lib/woocommerce';
-import { getConcernListing } from '@/lib/concerns';
 import SkinQuizClient from './SkinQuizClient';
-import type { SkinConcern, SkinQuizProduct, SkinQuizProductPools } from '@/lib/skinQuiz';
+import type { SkinQuizProductPools } from '@/lib/skinQuiz';
+import { getQuizProductPoolsFromQdrant } from '@/lib/routineQdrant';
 import { absoluteUrl } from '@/lib/siteUrl';
 
 export const metadata: Metadata = {
@@ -28,98 +27,8 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
-function toQuizProduct(product: WooProduct): SkinQuizProduct {
-  return {
-    id: product.id,
-    name: product.name,
-    slug: product.slug,
-    price: product.price,
-    regular_price: product.regular_price,
-    sale_price: product.sale_price,
-    on_sale: product.on_sale,
-    purchasable: product.purchasable,
-    stock_status: product.stock_status,
-    featured: product.featured,
-    average_rating: product.average_rating,
-    rating_count: product.rating_count,
-    short_description: product.short_description,
-    images: (product.images || []).slice(0, 1).map((image) => ({
-      src: image.src,
-      alt: image.alt,
-      name: image.name,
-    })),
-    categories: (product.categories || []).map((category) => ({
-      id: category.id,
-      name: category.name,
-      slug: category.slug,
-    })),
-  };
-}
-
-async function getProductsForCategorySlugCandidates(slugCandidates: string[], perPage = 10) {
-  for (const slug of slugCandidates) {
-    const category = await getCategoryBySlug(slug);
-    if (!category?.id) continue;
-
-    const listing = await getProducts({
-      category: String(category.id),
-      per_page: perPage,
-      orderby: 'popularity',
-      order: 'desc',
-      stock_status: 'instock',
-    });
-
-    if (listing.products.length > 0) {
-      return listing.products.map(toQuizProduct);
-    }
-  }
-
-  return [] as SkinQuizProduct[];
-}
-
 async function getSkinQuizProductPools(): Promise<SkinQuizProductPools> {
-  const concernSlugs: SkinConcern[] = [
-    'acne-blemish-care',
-    'pores-oil-control',
-    'dryness-hydration',
-    'melasma',
-    'brightening',
-    'sensitivity',
-    'anti-aging-repair',
-  ];
-
-  const [
-    cleansers,
-    toners,
-    serums,
-    moisturizers,
-    sunscreens,
-    masks,
-    concernEntries,
-  ] = await Promise.all([
-    getProductsForCategorySlugCandidates(['face-cleansers']),
-    getProductsForCategorySlugCandidates(['toners-mists', 'serums-ampoules-essences']),
-    getProductsForCategorySlugCandidates(['serums-ampoules-essences']),
-    getProductsForCategorySlugCandidates(['night-cream', 'cream-moisturizers', 'moisturizer']),
-    getProductsForCategorySlugCandidates(['sunscreen']),
-    getProductsForCategorySlugCandidates(['face-masks']),
-    Promise.all(
-      concernSlugs.map(async (slug) => {
-        const listing = await getConcernListing(slug, 1, 10);
-        return [slug, listing.products.map(toQuizProduct)] as const;
-      }),
-    ),
-  ]);
-
-  return {
-    cleansers,
-    toners,
-    serums,
-    moisturizers,
-    sunscreens,
-    masks,
-    concerns: Object.fromEntries(concernEntries) as SkinQuizProductPools['concerns'],
-  };
+  return getQuizProductPoolsFromQdrant();
 }
 
 export default async function SkinQuizPage() {

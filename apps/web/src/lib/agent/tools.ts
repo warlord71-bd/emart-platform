@@ -307,58 +307,65 @@ export const agentTools = {
 
   recommendByProfile: tool({
     description:
-      'Recommend skincare products based on skin type and concerns. Call when the customer asks for personalized product recommendations or a skincare routine.',
+      'Build a personalized AM/PM skincare routine based on skin type and concerns. Returns structured morning and night steps with product recommendations. Call when the customer asks for a skincare routine, personalized recommendations, or what products to use.',
     parameters: z.object({
       skin_type: z.enum(['oily', 'combination', 'dry', 'sensitive', 'normal']).describe('Customer skin type'),
-      concerns: z.array(z.string()).describe('Skin concerns like acne, dryness, brightening, anti-aging'),
+      concerns: z.array(z.string()).describe('Skin concerns like acne, dryness, brightening, anti-aging, pores, melasma, sensitivity'),
     }),
     execute: async ({ skin_type, concerns }) => {
-      const { getProducts } = await import('@/lib/woocommerce');
-      const concernKeywords: Record<string, string[]> = {
-        acne: ['acne', 'blemish', 'salicylic', 'tea tree', 'centella'],
-        dryness: ['hydrating', 'moisturizing', 'hyaluronic', 'ceramide'],
-        brightening: ['vitamin c', 'niacinamide', 'brightening', 'glow'],
-        'anti-aging': ['retinol', 'peptide', 'anti-aging', 'collagen', 'wrinkle'],
-        sensitivity: ['sensitive', 'gentle', 'calming', 'soothing', 'centella'],
-        melasma: ['melasma', 'dark spot', 'pigmentation', 'tranexamic'],
-        pores: ['pore', 'oil control', 'mattifying', 'bha'],
+      const { getQuizProductPoolsFromQdrant } = await import('@/lib/routineQdrant');
+      const { buildSkinQuizResult } = await import('@/lib/skinQuiz');
+      type SkinConcern = import('@/lib/skinQuiz').SkinConcern;
+
+      const concernMap: Record<string, SkinConcern> = {
+        acne: 'acne-blemish-care', blemish: 'acne-blemish-care',
+        pores: 'pores-oil-control', 'oil control': 'pores-oil-control', oily: 'pores-oil-control',
+        dryness: 'dryness-hydration', hydration: 'dryness-hydration', dry: 'dryness-hydration',
+        melasma: 'melasma', 'dark spot': 'melasma', pigmentation: 'melasma',
+        brightening: 'brightening', glow: 'brightening',
+        sensitivity: 'sensitivity', redness: 'sensitivity', sensitive: 'sensitivity',
+        'anti-aging': 'anti-aging-repair', wrinkle: 'anti-aging-repair', aging: 'anti-aging-repair',
       };
 
-      const searchTerms = concerns
-        .flatMap((c) => concernKeywords[c.toLowerCase()] || [c])
-        .slice(0, 3);
+      const mappedConcerns = concerns
+        .map((c) => concernMap[c.toLowerCase()])
+        .filter(Boolean) as SkinConcern[];
 
-      const results = await Promise.all(
-        searchTerms.map((term) => getProducts({ search: term, per_page: 3, status: 'publish' })),
-      );
+      if (!mappedConcerns.length) mappedConcerns.push('dryness-hydration');
 
-      const seen = new Set<number>();
-      const recommended = results
-        .flatMap((r) => r.products)
-        .filter((p) => {
-          if (seen.has(p.id) || p.stock_status !== 'instock') return false;
-          seen.add(p.id);
-          return true;
-        })
-        .slice(0, 6);
+      const answers = {
+        skinType: skin_type,
+        concerns: mappedConcerns.slice(0, 3),
+        environment: 'dhaka-heat' as const,
+        routinePace: 'balanced' as const,
+        budget: 'steady' as const,
+      };
 
-      if (!recommended.length) {
-        return { message: 'No specific matches found. Browse our full catalog at https://e-mart.com.bd/shop' };
-      }
+      const pools = await getQuizProductPoolsFromQdrant(answers);
+      const result = buildSkinQuizResult(answers, pools);
+
+      const formatStep = (step: { label: string; cadence: string; why: string; product: { name: string; slug: string; price: string; images: { src: string }[] } | null }) => ({
+        step: step.label,
+        time: step.cadence,
+        why: step.why,
+        product: step.product ? {
+          name: step.product.name,
+          slug: step.product.slug,
+          price: `৳${step.product.price}`,
+          image: step.product.images?.[0]?.src || '',
+        } : null,
+      });
 
       return {
+        headline: result.headline,
+        summary: result.summary,
         skin_type,
-        concerns,
-        recommended: recommended.map((p) => ({
-          name: p.name,
-          slug: p.slug,
-          price: `৳${p.price}`,
-          brand: p.brands?.[0]?.name || '',
-          category: p.categories?.[0]?.name || '',
-          image: p.images?.[0]?.src || '',
-          link: `https://e-mart.com.bd/shop/${p.slug}`,
-        })),
-        browse_more: 'https://e-mart.com.bd/shop',
+        concerns: mappedConcerns,
+        morning: result.morning.map(formatStep),
+        night: result.night.map(formatStep),
+        weekly: result.weekly.map(formatStep),
+        notes: result.notes,
+        quiz_link: 'https://e-mart.com.bd/skin-quiz',
       };
     },
   }),
