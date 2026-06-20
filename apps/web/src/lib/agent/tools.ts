@@ -5,8 +5,30 @@ import { COMPANY } from '@/lib/companyProfile';
 import type { QdrantPayload } from '@/lib/qdrant';
 
 const EMBED_URL = 'http://127.0.0.1:8077/embed';
+const RERANK_URL = 'http://127.0.0.1:8077/rerank';
 const QDRANT_URL = 'http://127.0.0.1:6333';
 const QDRANT_KEY = process.env.QDRANT_API_KEY || '';
+
+async function rerankResults(
+  query: string,
+  items: { name: string; slug: string; brand: string; category: string }[],
+  topK: number,
+): Promise<number[]> {
+  if (items.length <= 2) return items.map((_, i) => i);
+  try {
+    const documents = items.map((p) => `${p.name} — ${p.brand} ${p.category}`);
+    const res = await fetch(RERANK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, documents, top_k: topK }),
+    });
+    if (!res.ok) return items.map((_, i) => i);
+    const data = await res.json() as { results: { index: number; score: number }[] };
+    return data.results.map((r) => r.index);
+  } catch {
+    return items.map((_, i) => i);
+  }
+}
 
 async function embedAndSearch(query: string, limit: number): Promise<QdrantPayload[]> {
   try {
@@ -56,7 +78,7 @@ export const agentTools = {
 
       // Merge and dedupe by product_id — text matches first (exact), then vector (semantic)
       const seen = new Set<number>();
-      const merged: { name: string; slug: string; price: string; stock_status: string; brand: string; category: string }[] = [];
+      const merged: { name: string; slug: string; price: string; stock_status: string; brand: string; category: string; image: string }[] = [];
 
       for (const p of [...textResults, ...vectorResults]) {
         if (seen.has(p.product_id)) continue;
@@ -68,13 +90,16 @@ export const agentTools = {
           stock_status: p.stock_status,
           brand: p.brand,
           category: p.category,
+          image: p.image_url || '',
         });
       }
 
       if (merged.length) {
+        const rerankedIndices = await rerankResults(query, merged, limit);
+        const reranked = rerankedIndices.map((i) => merged[i]).filter(Boolean);
         return {
-          found: merged.length,
-          products: merged.slice(0, limit),
+          found: reranked.length,
+          products: reranked.slice(0, limit),
         };
       }
 
@@ -90,7 +115,8 @@ export const agentTools = {
           price: `৳${p.price}`,
           stock_status: p.stock_status,
           brand: p.brands?.[0]?.name || '',
-          categories: p.categories?.map((c) => c.name).join(', '),
+          category: p.categories?.map((c) => c.name).join(', '),
+          image: p.images?.[0]?.src || '',
         })),
       };
     },
@@ -122,6 +148,7 @@ export const agentTools = {
         stock_status: product.stock_status,
         brand: product.brands?.[0]?.name || '',
         categories: product.categories?.map((c) => c.name).join(', '),
+        image: product.images?.[0]?.src || '',
         short_description: product.short_description?.replace(/<[^>]+>/g, '').trim().slice(0, 500),
         ingredients: ingredients ? String(ingredients).replace(/<[^>]+>/g, '').trim().slice(0, 500) : undefined,
         how_to_use: howToUse ? String(howToUse).replace(/<[^>]+>/g, '').trim().slice(0, 300) : undefined,
@@ -324,9 +351,11 @@ export const agentTools = {
         concerns,
         recommended: recommended.map((p) => ({
           name: p.name,
+          slug: p.slug,
           price: `৳${p.price}`,
           brand: p.brands?.[0]?.name || '',
           category: p.categories?.[0]?.name || '',
+          image: p.images?.[0]?.src || '',
           link: `https://e-mart.com.bd/shop/${p.slug}`,
         })),
         browse_more: 'https://e-mart.com.bd/shop',

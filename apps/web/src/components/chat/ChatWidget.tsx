@@ -15,9 +15,16 @@ export default function ChatWidget() {
   const [tab, setTab] = useState<Tab>('chat');
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading, append } = useChat({
     api: '/api/chat',
   });
+
+  const handleSend = useCallback(
+    (text: string) => {
+      append({ role: 'user', content: text });
+    },
+    [append],
+  );
 
   const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
@@ -99,7 +106,7 @@ export default function ChatWidget() {
             {/* Content */}
             {tab === 'chat' ? (
               <div ref={scrollRef} className="flex flex-1 flex-col overflow-hidden">
-                <ChatMessages messages={messages} isLoading={isLoading} />
+                <ChatMessages messages={messages} isLoading={isLoading} onSend={handleSend} />
                 <ChatInput
                   input={input}
                   isLoading={isLoading}

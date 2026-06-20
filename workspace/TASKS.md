@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-19 (SEO/AEO review pipeline deployed; task board aligned with SEO_MASTER; deploy-gate gap added)
+Last updated: 2026-06-20 (AI Intelligence Plan added after cross-check; SEO/AEO review pipeline deployed; task board aligned with SEO_MASTER; deploy-gate gap added)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -206,6 +206,47 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
 
 ---
 
+## 🧠 AI INTELLIGENCE PLAN (added 2026-06-20, cross-checked against live codebase)
+
+Infrastructure: Qdrant 3,625 products (768-dim `all-mpnet-base-v2`), embed sidecar PM2 `emart-embed` at `:8077`, reranker `/rerank` (bge-reranker-v2-m3) already wired, chat agent `/api/chat` via OpenRouter, VPS 5.5GB RAM free / 6 CPU cores.
+Freeze: structural/nav frozen until 2026-07-03. All AI items below are freeze-safe (new features, automation, or backend-only — no URL/nav/structural changes).
+
+### Already done (confirmed by cross-check)
+| ID | Item | Evidence |
+|---|---|---|
+| ~~P1~~ | ~~Reranker~~ | `embed_service.py` `/rerank` endpoint + `tools.ts` `rerankResults()` — fully wired |
+| ~~P3a~~ | ~~Cross-sell rail on PDP~~ | `getSimilarAndCrossSell()` → "Similar Products" + "Complete Your Routine" rails on PDP |
+| ~~P4c~~ | ~~Pricing intelligence~~ | 800-line Playwright scraper + Telegram + Google Sheets; PM2 `emart-competitor-prices` exists |
+
+### Ops attention only (no code, just verify/restart)
+| ID | Item | Agent | Action |
+|---|---|---|---|
+| AI-OPS1 | Restart competitor price checker | [C] | `pm2 restart emart-competitor-prices` — PM2 job exists but is stopped |
+| AI-OPS2 | Verify Qdrant sync cron | [C] | `.qdrant_sync_state.json` missing — check root crontab for `qdrant_sync_run.sh`, verify incremental sync is firing weekly |
+
+### New work — prioritized
+
+| # | ID | Item | Agent | Status | Effort | Notes |
+|---|---|---|---|---|---|---|
+| 1 | AI-1 | Chat: product cards + quick-reply buttons | [C] | 🔲 | Small | `ChatMessages.tsx` renders text-only; Qdrant payload has `image_url` but not surfaced; add product card component with image/price/link + quick-reply buttons ("Show sunscreens", "Check order", "Talk to human") |
+| 2 | AI-2 | Chat: starter suggestion buttons | [C] | 🔲 | Small | `ChatWidget.tsx` shows static greeting only; add 4-5 contextual starter chips on empty state; optionally page-context-aware (PDP → "Tell me about this product") |
+| 3 | AI-3 | Homepage: "Recently Viewed" / "For You" rail | [C] | 🔲 | Small-Med | No recently-viewed tracking exists; add `localStorage` viewed-product tracking on PDP visit; homepage rail calls `getSimilarProducts()` for last 3 viewed; no login/PII needed; **needs owner approval under freeze if touching homepage layout** |
+| 4 | AI-4 | Chat: server session memory | [C] | 🔲 | Medium | Currently stateless (`useChat()` client-only, refresh = gone); add server-side session store (in-memory Map with TTL or lightweight SQLite) keyed by session cookie; enables multi-turn context ("I have oily skin" remembered across messages) |
+| 5 | AI-5 | Chat: AM/PM routine builder tool | [C] | 🔲 | Medium | `recommendByProfile` tool exists but returns flat product list; upgrade to structured AM/PM routine with step sequencing (cleanser → toner → serum → moisturizer → SPF); use reranked Qdrant results per step |
+| 6 | AI-6 | Search: dynamic trending + typo correction | [C] | 🔲 | Medium | Autocomplete exists with hardcoded popular searches + recent searches; add: server-side search query counter (rotate daily) for real trending; fuzzy/Levenshtein "did you mean?" from Qdrant payload text; category/brand suggestions in dropdown |
+| 7 | AI-7 | Back-in-stock notification | [C] | 🔲 | Medium | No notify-me UI exists; add PDP "Notify me" button for out-of-stock → email + product_id via API route → MailPoet tag or WP meta; `qdrant_product_sync.py` detects `outofstock` → `instock` change → trigger email |
+| 8 | AI-8 | Auto pa_concern: LLM-assisted for remaining 1,084 | [C]+[O] | 🔲 | Medium | Rule + Qdrant KNN voting script exists (`pa_concern_qdrant_assign.py`); 57 applied so far; add LLM classification layer for products where rules + vectors lack confidence; apply only above 0.85; queue rest for owner review |
+| 9 | AI-9 | SEO scoring: full-catalog cron + Telegram alerts | [C] | 🔲 | Small | `internal_seo_tool.py` (1,070 lines, 14-field agentic score) runs `--limit 20` sample only; create PM2 cron for weekly full-catalog run; Telegram alert for top 20 worst-scoring products |
+| 10 | AI-10 | Chat: Bangla search + model routing | [C] | 🔲 | Medium | System prompt says "respond in Bangla" but search hits English-only embeddings; add Bangla product name aliases to Qdrant payload in `qdrant_product_sync.py`; optionally detect Bangla input → route to better multilingual model (DeepSeek v3.1 paid, already proven) |
+
+### Gated / deferred
+| ID | Item | Gate | Notes |
+|---|---|---|---|
+| AI-D1 | Review sentiment analysis | Review count ≥ 100 | Near-zero reviews currently; no sentiment code exists; build when volume justifies |
+| AI-D2 | UCP/MCP commerce endpoint | Review count > 200 | Already in backlog |
+
+---
+
 ## 🔵 BACKLOG (post-freeze Jul 3+)
 
 - ~~**R12 (audit H-01 stage 2)**~~ — ✅ DONE 2026-06-17 (`95cea6b`). Removed `force-dynamic` from `shop/[slug]` + `category/[slug]`. ISR now active with `revalidate=3600`. PDPs serve `x-nextjs-cache: HIT`. Nginx `s-maxage=300` + Cloudflare edge cache layer on top. Tag revalidation still works.
@@ -232,17 +273,115 @@ Freeze guard: NO homepage layout / nav / visible structural changes before Jul 3
   - **Do not chase unless needed** Next framework `meta name="next-size-adjust"` W3C warning/error; emitted by Next/font, not an Emart-authored SEO issue.
   - **Verification target**: W3C Nu representative URLs have no Emart-authored errors; Chromium/CDP still shows 0 console messages; raw + rendered JSON-LD remains parse-clean; Lighthouse SEO/accessibility stay 100.
 
-- Blog content at scale: 51 posts vs Shajgoj 5,904
 - UCP/MCP commerce endpoint: build when reviews > 200 (currently 5)
-- Critical CSS (critters): DEV_MASTER W6
-- Origin editorial: UK, France, Bangladesh, others — owner confirms list
-- FAQ quality improvement: top 200 products have templated answers (M4)
 - getSeoDescription() code: add product.description (first 155 chars) as fallback tier between short_description and generic template — prevents any future product landing on the weak generic fallback
 - GCP service account key rotation: fingerprint ce8b30ba
 
 ---
 
-## ✅ COMPLETED THIS SESSION (2026-06-17/18)
+## 📋 SEO GAPS — Unified View (detail: `workspace/SEO_MASTER.md`)
+
+### Critical
+| ID | Gap | Owner | Notes |
+|---|---|---|---|
+| C_CONCERN | pa_concern: 1,084 published products without concern | [O] | 57 high-confidence Qdrant-crosschecked assignments applied Jun 20. Whole-catalog concern-free vector audit: 3,268 OK; 124 non-skincare products carrying concerns; 63 high-review rows; 170 medium missing-label candidates. No audit-driven corrections applied. |
+
+### Medium
+| ID | Gap | Owner | Notes |
+|---|---|---|---|
+| M4 | FAQ answer quality: top 200 products use templated answers | [C]+[O] | Re-generate with product-specific inputs; owner approves first 10 before bulk |
+| M6 | Ingredient/concern education content: FAQPage JSON-LD missing; content templated; internal links sparse | [C]+[O] | First 4 pages (niacinamide, hyaluronic-acid, acne-blemish-care, dryness-hydration), then bulk |
+| M9 | Image count gap: 1–2 images/product vs competitor avg 4–6 | [O] | Photography/supplier sourcing task |
+
+### Owner Decision Required
+| ID | Gap | Owner | Notes |
+|---|---|---|---|
+| O1 | `/origins/[country]` editorial: only 3/22 countries have copy | [O] | Owner picks which countries; prioritize by product count |
+| O2 | Product comparison pages (`/compare/`) | [O] | Owner provides curated 20–30 pairs first |
+| O3 | "Best [X] in Bangladesh" listicle pages (`/best/`) | [O] | Owner approves topic list; verify first 2 |
+| O4 | Skin-type pages (`/skin-type/[slug]`) | [O] | Owner confirms whether to build (4 pages max) |
+
+### Low / Backlog
+| ID | Gap | Owner | Status |
+|---|---|---|---|
+| ~~L1~~ | ~~Cloudflare cache rule~~ | ~~[O]~~ | ✅ DONE — R11 closed 2026-06-11, owner applied rule 2026-06-12 |
+| L2 | Critical CSS inlining (critters) | [C] | DEV_MASTER W6; medium effort/risk |
+| L3 | `/brands` page 785KB | [C] | Lazy-load logos or paginate |
+| ~~L4~~ | ~~H2s on /brands, /sale, /new-arrivals~~ | ~~[C]~~ | ✅ DONE 2026-06-05 |
+| L5 | Google-Extended bot policy | [O] | Business decision — keep allowed or block |
+| L6 | Blog content volume: 51 posts vs Shajgoj 5,904 | [O] | Content calendar decision; blog generator (C1) ready |
+
+### External / Off-Page (owner-driven)
+| ID | Gap | Owner | Notes |
+|---|---|---|---|
+| E1 | Backlink acquisition: BD business directories | [O] | Requires business registration docs |
+| E2 | Google Business Profile: claim/verify at Dhanmondi address | [O] | GBP dashboard; also fix Bangla name to ইমার্ট স্কিনকেয়ার বাংলাদেশ |
+| E3 | Product image gallery: 3–5 angle shots per top-100 products | [O] | Photography/supplier sourcing |
+| E4 | Social profile link authority: all profiles → e-mart.com.bd | [O] | FB/IG/YT/TikTok bio edits |
+| E5 | Beauty blogger/influencer outreach | [O] | 5–10 BD skincare reviewers, 5K–50K subs |
+| E6 | Structured review collection: target 100+ reviews in 60 days | [O] | Activate post-purchase review email flow |
+
+---
+
+## ✅ COMPLETED THIS SESSION (2026-06-20)
+
+- **P1.1 Reranker:** `/rerank` endpoint added to `embed_service.py` using `BAAI/bge-reranker-v2-m3` cross-encoder (~150MB). Lazy-loads on first call. Tested: CeraVe foaming cleanser correctly scores highest for "gentle cleanser for oily sensitive skin". PM2 `emart-embed` restarted.
+- **P1.2 Reranker wired to chat:** `tools.ts` `searchProducts` now reranks merged Qdrant+text results via `/rerank` before returning to LLM. Built, type-checked, deployed, smoke-tested.
+- **P1.4 Incremental Qdrant sync:** `qdrant_product_sync.py` now supports `--full` (old behavior) and default incremental mode (only products modified since last sync). Tracks state in `.qdrant_sync_state.json`. Cron changed from weekly Sunday to daily 3AM.
+- **P1.5 Auto title fix:** `gsc_tracker.py fix-titles` writes `_rank_math_title` for top 5 CTR-gap products nightly. Format: `Buy {Name} | Price in Bangladesh - Emart` (55-65 chars). 5 titles fixed (CeraVe Night Cream, COSRX Snail Mucin, Axis-Y, Medicube, Neutrogena). Runs as part of `gsc_tracker.py full`.
+- **SEO pipeline unified actions:** `gsc_tracker.py actions` now auto-executes safe tasks (blog topic feed, humanizer queue), categorizes remaining into agent tasks (WHO/HOW/WHY/STANDARD) and owner tasks, sends structured Telegram report to `@Emart_official` + `@WARLORD_71`.
+- **Individual Review schema:** `getProductJsonLd()` now includes `@type: Review` items from WooCommerce approved reviews. Deployed live, verified on COSRX Low pH Cleanser PDP.
+- **GSC tracker cron:** Added `30 2 * * * gsc_tracker.py full` to crontab. First run confirmed working. 2 daily snapshots (Jun 19 + Jun 20), position trends operational.
+- **Telegram dual delivery:** Reports sent to both `@Emart_official` (6906852635) and `@WARLORD_71` (6639867372). Owner personal account added to OpenClaw allowlist.
+- **Telegram commands:** `tg_commands.py` CLI with 7 commands (/report, /top10, /trends, /drops, /humanize, /status, /run). OpenClaw skill `emart-seo-report` registered.
+- **OpenClaw cleanup:** Old `skincare-trends` job disabled (was timing out). New `seo-daily-pipeline` job added. Old `seo_scorer.py`/`seo_improver.py`/`seo_generator.py` archived (revoked WC keys).
+- **SEO_MASTER.md:** Added §E1-E6 external/off-page SEO section. Schema map updated (Review schema added 2026-06-19). SEO_AUDIT_2026-06-07.md verified all-closed and archived.
+- **Content standard:** `workspace/CONTENT_STANDARD.md` created — 16-layer product content spec with scoring formula, quality gates, execution pipeline. Benchmarked against Skinnora (~2,850 words) → Emart target 800-1,200 words (dense, not padded).
+- **AI Intelligence Plan:** `workspace/AI_PLAN.md` created — unified P1-P4 plan with dependency chain, freeze-safety, priority order. Cross-checked: P1 done, P3a (cross-sell) already exists, P2/P3b-d/P4a-d are new.
+- **URL structure audit:** Confirmed `/shop/` prefix is non-standard (no competitor uses it) but migration risk too high. Redirect chain clean (single 301). GMC feed + schema + canonical all aligned. Not worth changing.
+- **Google SERP competitor analysis:** Compared Emart titles vs Arogga/Daraz/Rokomari/Shajgoj. Pattern matches winners. CTR gap is domain authority + zero-click SERPs, not title format.
+
+---
+
+## 🔵 AI INTELLIGENCE PLAN — Phase Status (ref: workspace/AI_PLAN.md)
+
+### Phase 1 — Foundation ✅ DONE
+- [x] P1.1 Reranker endpoint
+- [x] P1.2 Reranker wired to chat
+- [x] P1.4 Incremental Qdrant sync
+- [x] P1.5 Auto title fix nightly
+- [ ] P1.3 Cross-sell PDP rail — **already exists** (getSimilarAndCrossSell wired to PDP)
+
+### Phase 2 — Chat Intelligence (next session)
+- [ ] P2a Session memory (server-side, in-memory Map + TTL)
+- [ ] P2b Routine builder tool (AM/PM routine from Qdrant cross-sell)
+- [ ] P2c Bangla model routing (detect → DeepSeek v3.1)
+- [ ] P2d Proactive suggestions (PDP idle → widget surfaces cross-sell)
+- [ ] P2e Rich chat messages (product cards, quick-reply buttons)
+
+### Phase 3 — Storefront Intelligence (post-freeze 2026-07-03)
+- [ ] P3b Smart search autocomplete
+- [ ] P3c "For You" homepage rail (localStorage recently-viewed)
+- [ ] P3d Back-in-stock alerts
+
+### Phase 4 — Internal Ops Intelligence (parallel)
+- [ ] P4a Auto pa_concern tagging (reranker + LLM, 1,084 remaining)
+- [ ] P4b Content quality scoring (expand internal_seo_tool.py to full catalog)
+- [ ] P4c Pricing intelligence (structured output + Telegram alerts)
+- [ ] P4d Review sentiment (when 100+ reviews)
+- [ ] P4.skin Auto pa_skin_type from _emart_ingredients (rule-based extraction)
+- [ ] P4.ingr Auto pa_ingredient from _emart_ingredients (regex parse)
+
+### Content Pipeline (parallel)
+- [ ] Auto-extract pa_ingredient from existing _emart_ingredients (99% have data)
+- [ ] Auto-extract pa_skin_type from ingredient profile (rule-based)
+- [ ] Hybrid humanizer: 800-1,200 word descriptions (60% auto-fill + 40% LLM)
+- [ ] FAQ generation: 5 Q&A per product, product-specific
+- Spec: `workspace/CONTENT_STANDARD.md` (16-layer, scoring 0-100)
+
+---
+
+## ✅ COMPLETED PRIOR SESSION (2026-06-17/18)
 
 - SEO/AEO review pipeline staged for deploy: `workspace/seo-review/` added with GSC tracker, internal Qdrant/Woo/OpenRouter SEO scorer, priority queues, content-gap/internal-link/duplicate/agentic-score review outputs. Crosschecked against `SEO_MASTER.md`; JSON/JSONL outputs parse clean; Python scripts compile. Review-only outputs, no Woo/product writes.
 - SEO review `blog-gaps` filter fixed: brand/navigation marketplace queries and legacy/full-URL product page keys no longer pollute `blog-topic-candidates.json`; latest output reduced to 8 cleaner content candidates.
