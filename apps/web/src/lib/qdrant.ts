@@ -1,6 +1,9 @@
-const QDRANT_URL = 'http://127.0.0.1:6333';
-const QDRANT_KEY = process.env.QDRANT_API_KEY || '';
-const COLLECTION = 'emart_products';
+import {
+  QDRANT_COLLECTION,
+  QDRANT_KEY,
+  QDRANT_URL,
+  fetchWithTimeout,
+} from './aiServiceConfig';
 
 export interface QdrantPayload {
   product_id: number;
@@ -22,7 +25,7 @@ interface QdrantPoint {
 }
 
 async function qdrantFetch(method: string, path: string, body?: unknown) {
-  const res = await fetch(`${QDRANT_URL}${path}`, {
+  const res = await fetchWithTimeout(`${QDRANT_URL}${path}`, {
     method,
     headers: { 'api-key': QDRANT_KEY, 'Content-Type': 'application/json' },
     body: body ? JSON.stringify(body) : undefined,
@@ -113,7 +116,7 @@ export async function getSimilarAndCrossSell(
 }
 
 async function getProductVector(productId: number) {
-  const scrollResult = await qdrantFetch('POST', `/collections/${COLLECTION}/points/scroll`, {
+  const scrollResult = await qdrantFetch('POST', `/collections/${QDRANT_COLLECTION}/points/scroll`, {
     filter: { must: [{ key: 'product_id', match: { value: productId } }] },
     limit: 1,
     with_vector: true,
@@ -129,7 +132,7 @@ async function vectorSearch(
   excludeIds: string[],
   limit: number,
 ) {
-  const searchResult = await qdrantFetch('POST', `/collections/${COLLECTION}/points/search`, {
+  const searchResult = await qdrantFetch('POST', `/collections/${QDRANT_COLLECTION}/points/search`, {
     vector,
     limit: limit + 1,
     with_payload: true,

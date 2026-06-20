@@ -56,12 +56,12 @@ All items below are verified working on the live site as of 2026-05-19.
 - WebSite + OnlineStore + Organization on all pages via layout ✅
 
 ### Content & Data
-- All 3,564 products have `_rank_math_description` meta ✅
-- Brand taxonomy + pa_origin assigned for 3,641 products ✅
+- 3,624/3,625 published products have `_rank_math_description` meta ✅
+- Brand taxonomy + pa_origin assigned for 3,624/3,625 published products ✅
 - Wrong "Korea import" copy cleaned across catalog ✅
 - Sale prices cleared catalog-wide ✅
 - SKU gaps fixed (0 missing, 0 duplicate) ✅
-- pa_concern + pa_ingredient + pa_skin_type assigned ✅ (pa_ingredient + pa_skin_type done; pa_concern PARTIALLY done — 2,235/3,641 have concern as of 2026-05-21, 1,406 still missing)
+- Product taxonomy assignment is partial, but only skincare-applicable products should be completed: pa_concern 2,541/3,625 total catalog with 279 skincare-like rows held for review; pa_ingredient 1,084/3,625 total catalog; pa_skin_type 28/3,625 total catalog as of 2026-06-20. Makeup, hair, tools/accessories, supplements, and other non-skincare should remain blank unless owner explicitly overrides.
 - Lint enforced in production builds ✅
 - Category/brand page descriptions no longer truncated — `line-clamp-2` removed ✅
 - Authentic badge hidden on mobile (was leaking through filter reindex) ✅
@@ -98,15 +98,14 @@ All items below are verified working on the live site as of 2026-05-19.
 ## 🔴 OPEN — Critical
 
 ### C_CONCERN: pa_concern — HIGH+MED applied, LOW+SKIP awaiting manual review
-**Updated 2026-06-20:** **1,084 published products remain without pa_concern.** A Qdrant cross-check joined 3,625 product vectors to 2,484 trusted labeled products. The original 487 “skincare” estimate contained false positives caused by broad/malformed categories and generic words (for example hair serum and SPF makeup), so it was not bulk-applied.
+**Updated 2026-06-20:** **279 skincare-like products remain in the pa_concern review queue.** There are 1,084 total published products without pa_concern, but that all-catalog number includes makeup, hair, tools/accessories, supplements, and other non-skincare products that should stay blank. A Qdrant cross-check joined 3,625 product vectors to 2,484 trusted labeled products. The original 487 “skincare” estimate contained false positives caused by broad/malformed categories and generic words (for example hair serum and SPF makeup), so it was not bulk-applied.
 **2026-06-20 apply:** 57 high-confidence products / 57 relationships: dryness-hydration 43, sensitivity 8, brightening 4, acne-blemish 1, sunscreen 1. Only explicit title/category/ingredient/skin-type evidence with Qdrant support was accepted; 279 skincare-like rows were held rather than guessed. Review: `workspace/audit/active/pa-concern-qdrant-review-20260620-133206.csv`; rollback: `workspace/audit/active/pa-concern-qdrant-rollback-20260620-133206.json`. Product cache revalidated and all 3,625 Qdrant vectors refreshed.
 **Applied:** 245 products (HIGH:1 MED:244) × 376 concern assignments. Rollback: `pa-concern-rollback-20260521-174257.sql`
 **Post-apply concern counts:** dryness-hydration:787, acne-blemish:529, sensitivity:435, anti-aging-repair:353, hyperpigmentation:346, brightening:338, sunscreen:306, wrinkle:295, pores-blackheads:234
-**Remaining gap:** ~1,161 products still without concern — manual review CSV ready:
-  `workspace/audit/active/pa-concern-manual-review-20260521-174247.csv` (1,161 rows)
-  — 353 LOW-confidence rows: concern already suggested, just approve/change/skip
-  — 603 no-signal rows (korean-beauty only, no sub-category): suggestion column filled
-  — 205 confirmed SKIP (hair/makeup/non-skin): keep as SKIP or override
+**Remaining skincare scope:** do not treat all 1,084 products without concern as work. Current review source is the 2026-06-20 Qdrant audit/review output:
+  `workspace/audit/active/pa-concern-qdrant-review-20260620-133206.csv`
+  — 279 skincare-like rows held for stronger evidence/manual review
+  — non-skincare rows should remain intentionally blank unless owner overrides
 **How to apply reviewed rows:** edit `review_action` column → APPROVE, then run `pa-concern-apply.py` on filtered CSV
 **Logic note:** korean-beauty alone is NOT used as a concern signal — products only in that category need manual assignment or a specific sub-category.
 

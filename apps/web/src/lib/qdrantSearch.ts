@@ -1,11 +1,13 @@
 import type { QdrantPayload } from './qdrant';
-
-const QDRANT_URL = 'http://127.0.0.1:6333';
-const QDRANT_KEY = process.env.QDRANT_API_KEY || '';
-const COLLECTION = 'emart_products';
+import {
+  QDRANT_COLLECTION,
+  QDRANT_KEY,
+  QDRANT_URL,
+  fetchWithTimeout,
+} from './aiServiceConfig';
 
 async function qdrantPost(path: string, body: unknown) {
-  const res = await fetch(`${QDRANT_URL}${path}`, {
+  const res = await fetchWithTimeout(`${QDRANT_URL}${path}`, {
     method: 'POST',
     headers: { 'api-key': QDRANT_KEY, 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -39,7 +41,7 @@ export async function searchByText(
       ],
     }));
 
-    const result = await qdrantPost(`/collections/${COLLECTION}/points/scroll`, {
+    const result = await qdrantPost(`/collections/${QDRANT_COLLECTION}/points/scroll`, {
       filter: {
         must: [
           { key: 'stock_status', match: { value: 'instock' } },
@@ -96,7 +98,7 @@ export async function getProductsForBlogContent(
   }));
 
   try {
-    const result = await qdrantPost(`/collections/${COLLECTION}/points/scroll`, {
+    const result = await qdrantPost(`/collections/${QDRANT_COLLECTION}/points/scroll`, {
       filter: {
         must: [{ key: 'stock_status', match: { value: 'instock' } }],
         should: conditions,

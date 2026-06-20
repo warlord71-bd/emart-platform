@@ -18,11 +18,11 @@ Emart quality).
 | 2. FAQ (5 product-specific Q&A) | 5% | 100% | 95% missing |
 | 3. How-to-use tab | 69% | 100% | 31% missing |
 | 4. Ingredients tab (structured) | 99% | 100% | Nearly done |
-| 5. pa_brand | ~100% | 100% | Done |
-| 6. pa_origin | ~100% | 100% | Done |
-| 7. pa_concern | ~68% | 100% | 1,084 missing |
-| 8. pa_skin_type | ~0% | 100% | Not populated |
-| 9. pa_ingredient (key actives) | ~0% | 100% | Not populated |
+| 5. pa_brand | 3,624/3,625 (99.97%) | 100% | 1 missing |
+| 6. pa_origin | 3,624/3,625 (99.97%) | 100% | 1 missing |
+| 7. pa_concern | 2,541/3,625 total catalog | 100% of skincare products only | 279 skincare-like rows held; non-skincare stays blank |
+| 8. pa_skin_type | 28/3,625 total catalog | Skincare products only | Proposal/apply-reviewed pipeline ready |
+| 9. pa_ingredient (key actives) | 1,084/3,625 total catalog | Skincare products only | Proposal/apply-reviewed pipeline ready |
 | 10. SKU | 100% | 100% | Done |
 | 11. Size/volume attribute | In name only | Structured attr | Not structured |
 | 12. Product images (3+ per) | 3% | 100% top-200 | Owner task |
@@ -184,11 +184,12 @@ Current coverage: 99%
 
 ## Layer 7: Concern Tags (`pa_concern`)
 
-### Target: Every product has 1-3 concern tags
+### Target: Every skincare product has 1-3 concern tags
 
 ```
-Current: ~68% coverage (2,480/3,641)
-Missing: ~1,084 products
+Current: 2,541/3,625 total catalog products have concern tags
+Open review: 279 skincare-like rows held for stronger evidence/manual review
+Do not tag: makeup, hair, tools/accessories, supplements, and other non-skincare
 ```
 
 ### Assignment method
@@ -207,10 +208,11 @@ hyperpigmentation, melasma, pores-oil-control, sensitivity, sunscreen, wrinkle
 
 ## Layer 8: Skin Type Tags (`pa_skin_type`)
 
-### Target: Every product has 1-2 skin type tags
+### Target: Every skincare product has 1-2 skin type tags
 
 ```
-Current: ~0% coverage
+Current: 28/3,625 total catalog products have skin type tags
+Open scope: skincare products only; non-skincare should remain intentionally blank
 ```
 
 ### Valid values
@@ -227,10 +229,11 @@ oily, dry, combination, sensitive, normal, all-skin-types
 
 ## Layer 9: Key Ingredient Tags (`pa_ingredient`)
 
-### Target: Top 100 products have 2-3 ingredient tags
+### Target: Top skincare products have 2-3 ingredient tags
 
 ```
-Current: ~0% coverage
+Current: 1,084/3,625 total catalog products have ingredient tags
+Open scope: skincare products only; non-skincare should remain intentionally blank
 ```
 
 ### Valid values

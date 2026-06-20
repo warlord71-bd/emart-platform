@@ -3,11 +3,15 @@ import { z } from 'zod';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { COMPANY } from '@/lib/companyProfile';
 import type { QdrantPayload } from '@/lib/qdrant';
-
-const EMBED_URL = 'http://127.0.0.1:8077/embed';
-const RERANK_URL = 'http://127.0.0.1:8077/rerank';
-const QDRANT_URL = 'http://127.0.0.1:6333';
-const QDRANT_KEY = process.env.QDRANT_API_KEY || '';
+import {
+  AI_RERANK_TIMEOUT_MS,
+  EMBED_URL,
+  QDRANT_COLLECTION,
+  QDRANT_KEY,
+  QDRANT_URL,
+  RERANK_URL,
+  fetchWithTimeout,
+} from '@/lib/aiServiceConfig';
 
 async function rerankResults(
   query: string,
@@ -17,11 +21,11 @@ async function rerankResults(
   if (items.length <= 2) return items.map((_, i) => i);
   try {
     const documents = items.map((p) => `${p.name} — ${p.brand} ${p.category}`);
-    const res = await fetch(RERANK_URL, {
+    const res = await fetchWithTimeout(RERANK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, documents, top_k: topK }),
-    });
+    }, AI_RERANK_TIMEOUT_MS);
     if (!res.ok) return items.map((_, i) => i);
     const data = await res.json() as { results: { index: number; score: number }[] };
     return data.results.map((r) => r.index);
@@ -32,7 +36,7 @@ async function rerankResults(
 
 async function embedAndSearch(query: string, limit: number): Promise<QdrantPayload[]> {
   try {
-    const embedRes = await fetch(EMBED_URL, {
+    const embedRes = await fetchWithTimeout(EMBED_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: query }),
@@ -40,7 +44,7 @@ async function embedAndSearch(query: string, limit: number): Promise<QdrantPaylo
     if (!embedRes.ok) return [];
     const { vector } = await embedRes.json() as { vector: number[] };
 
-    const searchRes = await fetch(`${QDRANT_URL}/collections/emart_products/points/search`, {
+    const searchRes = await fetchWithTimeout(`${QDRANT_URL}/collections/${QDRANT_COLLECTION}/points/search`, {
       method: 'POST',
       headers: { 'api-key': QDRANT_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({

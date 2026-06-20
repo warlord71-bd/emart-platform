@@ -7,8 +7,60 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd=$(jq -r \".tool_input.command // \\\"\\\"\"); if echo \"$cmd\" | grep -qE \"nginx -s reload|systemctl reload nginx|service nginx reload\"; then if ! nginx -t >/tmp/nginx-hook-test 2>&1; then echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"PreToolUse\\\",\\\"permissionDecision\\\":\\\"deny\\\",\\\"permissionDecisionReason\\\":\\\"nginx -t FAILED \u2014 config invalid, reload blocked to protect the live site. Run nginx -t to see the error, fix the config, then retry the reload.\\\"}}\"; fi; fi",
+            "command": "cmd=$(jq -r \".tool_input.command // \\\"\\\"\"); if echo \"$cmd\" | grep -qE \"nginx -s reload|systemctl reload nginx|service nginx reload\"; then if ! nginx -t >/tmp/nginx-hook-test 2>&1; then echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"PreToolUse\\\",\\\"permissionDecision\\\":\\\"deny\\\",\\\"permissionDecisionReason\\\":\\\"nginx -t FAILED — config invalid, reload blocked to protect the live site. Run nginx -t to see the error, fix the config, then retry the reload.\\\"}}\"; fi; fi",
             "statusMessage": "Checking nginx config before reload..."
+          },
+          {
+            "type": "command",
+            "command": "cmd=$(jq -r \".tool_input.command // \\\"\\\"\"); if echo \"$cmd\" | grep -qE \"git push.*--force[^-]|git push.*-f[^o]|git reset --hard.*origin|rm -rf /var/www\"; then echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"PreToolUse\\\",\\\"permissionDecision\\\":\\\"deny\\\",\\\"permissionDecisionReason\\\":\\\"BLOCKED — destructive command detected (force push / hard reset / rm -rf on VPS). This requires explicit owner approval.\\\"}}\"; fi",
+            "statusMessage": "Checking for destructive commands..."
+          },
+          {
+            "type": "command",
+            "command": "cmd=$(jq -r \".tool_input.command // \\\"\\\"\"); if echo \"$cmd\" | grep -qE \"pm2 restart emartweb\"; then vps_dirty=$(git -C /var/www/emart-platform diff HEAD --stat 2>/dev/null | wc -l); if [ \"$vps_dirty\" -gt 0 ]; then echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"PreToolUse\\\",\\\"permissionDecision\\\":\\\"deny\\\",\\\"permissionDecisionReason\\\":\\\"VPS runtime tree has $vps_dirty uncommitted changes — clean it before restarting pm2. Run: git -C /var/www/emart-platform diff --stat\\\"}}\"; fi; fi",
+            "statusMessage": "Checking VPS tree cleanliness before pm2 restart..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file=$(jq -r \".tool_input.file_path // \\\"\\\"\"); if echo \"$file\" | grep -qE '\\.env|\\.secret|credentials|password'; then echo \"{\\\"hookSpecificOutput\\\":{\\\"message\\\":\\\"Warning: Edited a sensitive file: $file — do NOT commit this without reviewing.\\\"}}\"; fi",
+            "statusMessage": "Checking for sensitive file edits..."
+          },
+          {
+            "type": "command",
+            "command": "file=$(jq -r \".tool_input.file_path // \\\"\\\"\"); if echo \"$file\" | grep -qE 'apps/web/src/(app|components|lib)/.*\\.(tsx?|css)$'; then echo \"{\\\"hookSpecificOutput\\\":{\\\"message\\\":\\\"Tip: Frontend file changed. Consider /smoke-test or /deploy when ready.\\\"}}\"; fi",
+            "statusMessage": ""
+          },
+          {
+            "type": "command",
+            "command": "file=$(jq -r \".tool_input.file_path // \\\"\\\"\"); if echo \"$file\" | grep -qE 'sitemap|robots|canonical|generateMetadata|middleware\\.ts|next\\.config'; then echo \"{\\\"hookSpecificOutput\\\":{\\\"message\\\":\\\"Tip: SEO-sensitive file changed. Consider /audit-seo before deploying.\\\"}}\"; fi",
+            "statusMessage": ""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd=$(jq -r \".tool_input.command // \\\"\\\"\"); if echo \"$cmd\" | grep -qE \"pm2 restart emartweb\"; then echo \"{\\\"hookSpecificOutput\\\":{\\\"message\\\":\\\"Tip: PM2 restarted. Consider /smoke-test to verify the live site.\\\"}}\"; fi",
+            "statusMessage": ""
+          },
+          {
+            "type": "command",
+            "command": "cmd=$(jq -r \".tool_input.command // \\\"\\\"\"); if echo \"$cmd\" | grep -qE \"git push origin main\"; then echo \"{\\\"hookSpecificOutput\\\":{\\\"message\\\":\\\"Tip: Pushed to origin. Consider /session-end to log what was done.\\\"}}\"; fi",
+            "statusMessage": ""
+          },
+          {
+            "type": "command",
+            "command": "cmd=$(jq -r \".tool_input.command // \\\"\\\"\"); if echo \"$cmd\" | grep -qE \"rsync.*/var/www/emart-platform\"; then echo \"{\\\"hookSpecificOutput\\\":{\\\"message\\\":\\\"Tip: Synced to VPS. Consider /smoke-test to verify, then /deploy to commit and push.\\\"}}\"; fi",
+            "statusMessage": ""
           }
         ]
       }

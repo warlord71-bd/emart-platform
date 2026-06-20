@@ -54,22 +54,38 @@ def _run(cmd, timeout=5):
 def get_site_health():
     try:
         import urllib.request
-        r = urllib.request.urlopen("https://e-mart.com.bd/", timeout=5)
+        req = urllib.request.Request(
+            "https://e-mart.com.bd/",
+            headers={
+                "User-Agent": "Emart-System-State/1.0",
+                "Accept": "text/html,application/xhtml+xml",
+            },
+        )
+        r = urllib.request.urlopen(req, timeout=5)
         return {"status": r.status, "ok": True}
     except Exception as e:
         return {"status": 0, "ok": False, "error": str(e)[:80]}
 
 def get_pm2():
+    intentionally_stopped = {
+        "emart-checkout-monitor",
+        "emart-competitor-prices",
+        "emart-revenue-health",
+        "emart-seo-autoscan",
+        "emart-meta-gen",
+    }
     try:
         out = _run("pm2 jlist", timeout=5)
         procs = json.loads(out)
+        stopped = [p["name"] for p in procs if p.get("pm2_env", {}).get("status") != "online"]
         return {
             "online": [p["name"] for p in procs if p.get("pm2_env", {}).get("status") == "online"],
-            "stopped": [p["name"] for p in procs if p.get("pm2_env", {}).get("status") != "online"],
+            "stopped_expected": [name for name in stopped if name in intentionally_stopped],
+            "stopped_unexpected": [name for name in stopped if name not in intentionally_stopped],
             "total": len(procs),
         }
     except Exception:
-        return {"online": [], "stopped": [], "total": 0}
+        return {"online": [], "stopped_expected": [], "stopped_unexpected": [], "total": 0}
 
 def get_git_recent():
     out = _run("git -C /root/emart-platform log --oneline -10 --format='%h|%s|%an|%ar'")
@@ -113,6 +129,8 @@ def get_agent_bus():
 
         if "|" in line and "---" not in line and "Agent" not in line and "(none)" not in line:
             cells = [c.strip() for c in line.split("|") if c.strip()]
+            if cells and cells[0].lower() in {"agent", "owner", "status"}:
+                continue
             if in_active and len(cells) >= 3:
                 active.append({"agent": cells[0], "started": cells[1], "task": cells[2]})
             elif in_last and len(cells) >= 3:
@@ -190,6 +208,8 @@ def get_task_counts():
     return {
         "checked": text.count("- [x]"),
         "unchecked": text.count("- [ ]"),
+        "open_markers": text.count("🔲"),
+        "warn_markers": text.count("⚠️"),
     }
 
 def main():
@@ -224,7 +244,11 @@ def main():
     print(f"🔧 SYSTEM STATE — {s['generated']}")
     print(f"")
     print(f"Site:     {'✅' if s['site']['ok'] else '❌'} HTTP {s['site'].get('status','?')}")
-    print(f"PM2:      {len(pm['online'])} online, {len(pm['stopped'])} stopped")
+    print(
+        f"PM2:      {len(pm['online'])} online, "
+        f"{len(pm['stopped_unexpected'])} unexpected stopped, "
+        f"{len(pm['stopped_expected'])} intentionally stopped"
+    )
     print(f"GSC:      {seo.get('gsc_latest','none')} ({seo.get('gsc_snapshots',0)} snapshots)")
     print(f"Actions:  {seo.get('actions',{}).get('agent_tasks',0)} agent + {seo.get('actions',{}).get('owner_tasks',0)} owner")
     print(f"Tasks:    {tc.get('checked',0)} done, {tc.get('unchecked',0)} pending")
@@ -246,7 +270,7 @@ def main():
     if "--tg" in sys.argv:
         tg_lines = [
             f"<b>🔧 System State — {s['generated'][:10]}</b>",
-            f"Site: {'✅' if s['site']['ok'] else '❌'} | PM2: {len(pm['online'])} online",
+            f"Site: {'✅' if s['site']['ok'] else '❌'} | PM2: {len(pm['online'])} online / {len(pm['stopped_unexpected'])} unexpected stopped",
             f"GSC: {seo.get('gsc_latest','?')} | Tasks: {tc.get('unchecked',0)} pending",
         ]
         if agents["active"]:

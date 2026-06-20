@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import {
+  QDRANT_COLLECTION,
+  QDRANT_KEY,
+  QDRANT_URL,
+  fetchWithTimeout,
+} from '@/lib/aiServiceConfig';
 
 export const dynamic = 'force-dynamic';
-
-const QDRANT_URL = 'http://127.0.0.1:6333';
-const QDRANT_KEY = process.env.QDRANT_API_KEY || '';
-const COLLECTION = 'emart_products';
 
 interface QdrantPoint {
   id: string;
@@ -39,7 +41,7 @@ async function qdrantSearch(vector: number[], limit: number, filters?: Record<st
       })),
     };
   }
-  const res = await fetch(`${QDRANT_URL}/collections/${COLLECTION}/points/search`, {
+  const res = await fetchWithTimeout(`${QDRANT_URL}/collections/${QDRANT_COLLECTION}/points/search`, {
     method: 'POST',
     headers: { 'api-key': QDRANT_KEY, 'Content-Type': 'application/json' },
     body: JSON.stringify(body),

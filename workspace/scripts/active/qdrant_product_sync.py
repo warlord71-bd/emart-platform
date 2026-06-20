@@ -16,9 +16,9 @@ from pathlib import Path
 from urllib.request import Request, urlopen
 from urllib.parse import urlencode
 
-QDRANT_URL = "http://127.0.0.1:6333"
+QDRANT_URL = os.environ.get("QDRANT_URL", "http://127.0.0.1:6333").rstrip("/")
 QDRANT_KEY = os.environ.get("QDRANT_API_KEY", "")
-COLLECTION = "emart_products"
+COLLECTION = os.environ.get("QDRANT_COLLECTION", "emart_products")
 EMBED_MODEL = "all-mpnet-base-v2"  # 768-dim, matches existing data
 BATCH_SIZE = 50  # WooCommerce API page size
 UPSERT_BATCH = 64
@@ -51,6 +51,40 @@ def qdrant_req(method, path, body=None):
     })
     with urlopen(req, timeout=30) as resp:
         return json.loads(resp.read())
+
+
+def qdrant_scroll_product_ids():
+    """Return product IDs currently stored in Qdrant, using payload scroll."""
+    product_ids = set()
+    offset = None
+    while True:
+        body = {"limit": 256, "with_payload": ["product_id"], "with_vector": False}
+        if offset is not None:
+            body["offset"] = offset
+        data = qdrant_req("POST", f"/collections/{COLLECTION}/points/scroll", body)
+        result = data.get("result", {})
+        for point in result.get("points", []):
+            payload = point.get("payload") or {}
+            pid = payload.get("product_id")
+            if pid is not None:
+                product_ids.add(int(pid))
+        offset = result.get("next_page_offset")
+        if not offset:
+            break
+    return product_ids
+
+
+def qdrant_delete_product_ids(product_ids):
+    if not product_ids:
+        return
+    qdrant_req("POST", f"/collections/{COLLECTION}/points/delete", {
+        "filter": {
+            "should": [
+                {"key": "product_id", "match": {"value": int(pid)}}
+                for pid in sorted(product_ids)
+            ]
+        }
+    })
 
 
 def fetch_all_products():
@@ -161,6 +195,15 @@ def fetch_modified_since(since_iso: str):
         page += 1
     return products
 
+
+def sync_window_start(last_sync_iso: str) -> str:
+    """Rewind the incremental window slightly so second-level watermarks do not miss edits."""
+    try:
+        parsed = datetime.fromisoformat(last_sync_iso.replace("Z", "+00:00"))
+        return (parsed - timedelta(minutes=5)).strftime("%Y-%m-%dT%H:%M:%S")
+    except Exception:
+        return last_sync_iso
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
@@ -174,6 +217,7 @@ def main():
 
     state = load_sync_state()
     last_sync = state.get("last_sync_iso")
+    sync_started_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
 
     if args.full or not last_sync:
         mode = "full"
@@ -181,8 +225,9 @@ def main():
         products = fetch_all_products()
     else:
         mode = "incremental"
-        print(f"[1/4] Incremental sync — products modified since {last_sync}...")
-        products = fetch_modified_since(last_sync)
+        since = sync_window_start(last_sync)
+        print(f"[1/4] Incremental sync — products modified since {since} (stored watermark {last_sync})...")
+        products = fetch_modified_since(since)
 
     print(f"  → {len(products)} products to sync ({mode})")
 
@@ -227,14 +272,24 @@ def main():
         done = min(i + UPSERT_BATCH, len(products))
         print(f"  upserted {done}/{len(products)}")
 
+    deleted_count = 0
+    if mode == "full":
+        print("[4b/4] Removing unpublished/deleted products from qdrant...")
+        published_ids = {int(p["id"]) for p in products}
+        existing_ids = qdrant_scroll_product_ids()
+        stale_ids = existing_ids - published_ids
+        qdrant_delete_product_ids(stale_ids)
+        deleted_count = len(stale_ids)
+        print(f"  deleted {deleted_count} stale points")
+
     final = qdrant_req("GET", f"/collections/{COLLECTION}")
     count = final["result"]["points_count"]
 
-    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
     save_sync_state({
-        "last_sync_iso": now_iso,
+        "last_sync_iso": sync_started_iso,
         "last_sync_mode": mode,
         "last_sync_count": len(products),
+        "last_deleted_count": deleted_count,
         "total_in_qdrant": count,
     })
     print(f"\n✓ Sync complete ({mode}): {len(products)} synced, {count} total in qdrant:{COLLECTION}")

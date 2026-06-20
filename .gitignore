@@ -305,6 +305,10 @@ workspace/audit/seo/
 workspace/audit/active/faq-regen-*.txt
 workspace/logs/
 workspace/scripts/active/
+!workspace/scripts/active/
+!workspace/scripts/active/product_onboarding.py
+workspace/scripts/active/*
+!workspace/scripts/active/product_onboarding.py
 workspace/scripts/active/generate-product-faq-samples.mjs
 workspace/scripts/active/verify-product-faq-top200.mjs
 workspace/archive/

@@ -1,15 +1,18 @@
 import type { QdrantPayload } from './qdrant';
 import type { SkinQuizAnswers, SkinQuizProduct, SkinQuizProductPools, SkinConcern } from './skinQuiz';
-
-const QDRANT_URL = 'http://127.0.0.1:6333';
-const QDRANT_KEY = process.env.QDRANT_API_KEY || '';
-const EMBED_URL = 'http://127.0.0.1:8077/embed';
-const RERANK_URL = 'http://127.0.0.1:8077/rerank';
-const COLLECTION = 'emart_products';
+import {
+  AI_RERANK_TIMEOUT_MS,
+  EMBED_URL,
+  QDRANT_COLLECTION,
+  QDRANT_KEY,
+  QDRANT_URL,
+  RERANK_URL,
+  fetchWithTimeout,
+} from './aiServiceConfig';
 
 async function embed(text: string): Promise<number[] | null> {
   try {
-    const res = await fetch(EMBED_URL, {
+    const res = await fetchWithTimeout(EMBED_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text }),
@@ -30,7 +33,7 @@ async function qdrantSearch(vector: number[], categoryFilter: string[], limit: n
   }
 
   try {
-    const res = await fetch(`${QDRANT_URL}/collections/${COLLECTION}/points/search`, {
+    const res = await fetchWithTimeout(`${QDRANT_URL}/collections/${QDRANT_COLLECTION}/points/search`, {
       method: 'POST',
       headers: { 'api-key': QDRANT_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({ vector, limit, with_payload: true, score_threshold: 0.25, filter }),
@@ -46,11 +49,11 @@ async function rerank(query: string, items: QdrantPayload[], topK: number): Prom
   if (items.length <= 1) return items;
   try {
     const documents = items.map((p) => `${p.name} — ${p.brand} ${p.category}`);
-    const res = await fetch(RERANK_URL, {
+    const res = await fetchWithTimeout(RERANK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, documents, top_k: topK }),
-    });
+    }, AI_RERANK_TIMEOUT_MS);
     if (!res.ok) return items.slice(0, topK);
     const data = await res.json() as { results: { index: number }[] };
     return data.results.map((r) => items[r.index]).filter(Boolean);

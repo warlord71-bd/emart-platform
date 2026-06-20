@@ -2701,3 +2701,25 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Phase 5 (omnichannel): Meta verification rejected; documented workarounds (Meta Business Agent, Telegram bot, WhatsApp BSP).
 - Codex cross-check: while this session ran, Codex delivered P2a (session memory), P2e (product cards + quick replies), P3c (recently viewed rail), P2b (routine builder). All non-conflicting.
 - Blockers: none. Next: auto-extract pa_ingredient + pa_skin_type from existing data, then hybrid humanizer.
+
+## 2026-06-20 (Codex — product onboarding pipeline recovery)
+- Recovered the unfinished `product_onboarding.py` prototype and made it trackable; no catalog writes were run.
+- Fixed published-product scoping, first-N-gap selection, FAQ Q:/A: storage, strict meta/FAQ validation, real live skin-type slugs, sourced ingredient extraction, and safe missing-dependency/config failures.
+- Read-only live coverage: 3,625 published; brand/origin 3,624; concern 2,541; skin type 28; ingredient 1,084; meta descriptions 3,624; FAQ 3,493.
+- Generated a 20-product dry-run proposal: 6 products had evidence-backed rule assignments; unresolved fields remain visibly queued instead of being silently reported as complete.
+- Validation: Python compile and static validator assertions passed. Blocker: SEO_MASTER requires owner review of generated samples before any Woo taxonomy/meta apply.
+
+## 2026-06-20 (Codex — non-mobile backlog hardening)
+- Honored owner clarification to exclude mobile app work; removed the accidental `/api/mobile/cart`, `/api/mobile/payment`, and mobile checkout helper edits before continuing.
+- Added shared AI service config for Qdrant/embed/rerank URLs plus request timeouts; wired chat search, routine Qdrant, semantic search, PDP similar/cross-sell, and blog product search to it.
+- Hardened Qdrant product sync: env-configurable URL/collection, persistent state watermark, 5-minute incremental rewind, and full-sync stale-product deletion for unpublished/removed products.
+- Patched `system_state.py` to avoid false 403 health failures and classify intentionally stopped PM2 jobs separately from unexpected failures.
+- Extended `product_onboarding.py` into a review-gated proposal/apply workflow for long descriptions, product FAQs, meta descriptions, pa_skin_type, and pa_ingredient; direct fresh-LLM apply is blocked.
+- Updated `TASKS.md`, `CONTENT_STANDARD.md`, and `SEO_MASTER.md` with reconciled 2026-06-20 counts and closed/partial non-mobile audit findings. No deploy, live sync, or Woo writes were run.
+- Validation: `python3 -m py_compile` passed; `npm run lint` passed with existing image warnings; `npm run build` passed.
+
+## 2026-06-20 (Codex — owner ecommerce roadmap briefing)
+- Reviewed current memory, task board, recent session log, and latest commits to answer owner's beginner-level question about building a complete ecommerce site/app from the ground up.
+- Updated task/content/SEO docs so product taxonomy gaps show skincare-only scope: 279 skincare-like pa_concern rows held; non-skincare products should remain blank for concern, skin type, and ingredient tags.
+- No product code, catalog, checkout, payment, stock, price, WooCommerce DB, deploy, or live system changes made.
+- Blockers: none. Next step: if owner wants execution, translate the roadmap into a phased build/ops plan after the July 3 structural freeze.
