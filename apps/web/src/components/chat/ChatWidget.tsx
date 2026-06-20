@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
+import EmartAssistantLogo from './EmartAssistantLogo';
 
 type Tab = 'chat' | 'whatsapp';
 
@@ -83,10 +84,13 @@ export default function ChatWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary-500 text-white shadow-lg transition-transform hover:scale-110 active:scale-95 lg:bottom-8"
-          aria-label="Open customer support"
+          className="fixed bottom-6 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform hover:scale-110 active:scale-95 lg:bottom-8"
+          aria-label="Open Emart AI assistant"
         >
-          <MessageCircle size={26} />
+          <EmartAssistantLogo size="lg" />
+          <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white text-primary-500 shadow-sm">
+            <MessageCircle size={12} aria-hidden="true" />
+          </span>
         </button>
       )}
 
@@ -103,9 +107,7 @@ export default function ChatWidget() {
             {/* Header */}
             <div className="flex items-center justify-between bg-primary-500 px-4 py-3 text-white">
               <div className="flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-sm font-bold">
-                  E
-                </span>
+                <EmartAssistantLogo size="md" className="ring-white/40" />
                 <div>
                   <p className="text-sm font-semibold">Emart Support</p>
                   <p className="text-[11px] opacity-80">Skincare · Orders · Shipping</p>

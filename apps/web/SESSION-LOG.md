@@ -2723,3 +2723,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Updated task/content/SEO docs so product taxonomy gaps show skincare-only scope: 279 skincare-like pa_concern rows held; non-skincare products should remain blank for concern, skin type, and ingredient tags.
 - No product code, catalog, checkout, payment, stock, price, WooCommerce DB, deploy, or live system changes made.
 - Blockers: none. Next step: if owner wants execution, translate the roadmap into a phased build/ops plan after the July 3 structural freeze.
+
+## 2026-06-20 (Codex — AI assistant logo fix)
+- Replaced the Emart AI assistant letter avatar with the actual Emart `/logo.png` mark in the floating launcher, chat header, starter state, assistant messages, and typing state.
+- Kept the small chat bubble badge on the launcher so users still recognize it as chat/support.
+- Validation: `npm run lint` passed with existing image warnings; `npm run build` passed.
+- Blockers: none. Next step: deploy this small frontend polish if owner wants it live immediately.

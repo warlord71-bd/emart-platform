@@ -4,14 +4,7 @@ import type { Message } from 'ai';
 import type { ToolInvocation } from '@ai-sdk/ui-utils';
 import { Fragment, type ReactNode } from 'react';
 import ChatProductCard from './ChatProductCard';
-
-function AssistantIcon() {
-  return (
-    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-500 text-xs font-bold text-white">
-      E
-    </span>
-  );
-}
+import EmartAssistantLogo from './EmartAssistantLogo';
 
 function FormatMessage({ text, isUser }: { text: string; isUser: boolean }) {
   const linkClass = isUser
@@ -141,7 +134,7 @@ const STARTER_CHIPS = [
 function StarterChips({ onSelect }: { onSelect: (query: string) => void }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-3 p-4 text-center">
-      <AssistantIcon />
+      <EmartAssistantLogo size="sm" />
       <div>
         <p className="text-sm font-medium text-gray-600">Hi! I&apos;m Emart&apos;s AI assistant.</p>
         <p className="mt-0.5 text-xs text-gray-400">How can I help you today?</p>
@@ -226,7 +219,7 @@ export default function ChatMessages({ messages, isLoading, onSend }: ChatMessag
         return (
           <div key={m.id}>
             <div className={`flex gap-2 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-              {m.role === 'assistant' && <AssistantIcon />}
+              {m.role === 'assistant' && <EmartAssistantLogo size="sm" />}
               <div className="max-w-[85%]">
                 {m.content && (
                   <div
@@ -252,7 +245,7 @@ export default function ChatMessages({ messages, isLoading, onSend }: ChatMessag
       })}
       {isLoading && (
         <div className="flex items-center gap-2">
-          <AssistantIcon />
+          <EmartAssistantLogo size="sm" />
           <div className="flex gap-1 rounded-2xl bg-gray-100 px-4 py-3">
             <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: '0ms' }} />
             <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: '150ms' }} />
