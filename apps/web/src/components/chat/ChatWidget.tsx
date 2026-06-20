@@ -3,7 +3,7 @@
 import { useChat } from '@ai-sdk/react';
 import type { Message } from 'ai';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import { MessageCircle, Sparkles, X } from 'lucide-react';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
 import EmartAssistantLogo from './EmartAssistantLogo';
@@ -13,6 +13,7 @@ type Tab = 'chat' | 'whatsapp';
 const WHATSAPP_HREF = 'https://wa.me/8801919797399';
 const SESSION_KEY = 'emart-chat-session';
 const MESSAGES_KEY = 'emart-chat-messages';
+const PDP_NUDGE_KEY = 'emart-chat-pdp-nudge';
 
 function getSessionId(): string {
   try {
@@ -45,6 +46,7 @@ function saveMessages(msgs: Message[]) {
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<Tab>('chat');
+  const [pdpNudge, setPdpNudge] = useState<{ slug: string } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const sessionId = useMemo(() => getSessionId(), []);
@@ -68,6 +70,20 @@ export default function ChatWidget() {
     [append],
   );
 
+  const handlePdpNudge = useCallback(() => {
+    if (!pdpNudge) return;
+    setOpen(true);
+    setTab('chat');
+    setPdpNudge(null);
+    try {
+      sessionStorage.setItem(PDP_NUDGE_KEY, pdpNudge.slug);
+    } catch { /* sessionStorage unavailable */ }
+    append({
+      role: 'user',
+      content: `I am viewing /shop/${pdpNudge.slug}. Suggest a simple skincare routine or matching products from Emart that go well with this product.`,
+    });
+  }, [append, pdpNudge]);
+
   const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -78,20 +94,51 @@ export default function ChatWidget() {
     scrollToBottom();
   }, [messages, isLoading, scrollToBottom]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const match = window.location.pathname.match(/^\/shop\/([^/?#]+)/);
+    if (!match) return;
+    const slug = decodeURIComponent(match[1]);
+    try {
+      if (sessionStorage.getItem(PDP_NUDGE_KEY) === slug) return;
+    } catch { /* sessionStorage unavailable */ }
+    const timer = window.setTimeout(() => {
+      if (!open) setPdpNudge({ slug });
+    }, 8000);
+    return () => window.clearTimeout(timer);
+  }, [open]);
+
   return (
     <>
       {/* Floating Action Button */}
       {!open && (
-        <button
-          onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform hover:scale-110 active:scale-95 lg:bottom-8"
-          aria-label="Open Emart AI assistant"
-        >
-          <EmartAssistantLogo size="lg" />
-          <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white text-primary-500 shadow-sm">
-            <MessageCircle size={12} aria-hidden="true" />
-          </span>
-        </button>
+        <>
+          {pdpNudge && (
+            <button
+              onClick={handlePdpNudge}
+              className="fixed bottom-24 right-4 z-50 max-w-[250px] rounded-2xl border border-primary-100 bg-white p-3 text-left shadow-xl transition-transform hover:-translate-y-0.5 lg:bottom-28"
+              aria-label="Ask Emart AI for product suggestions"
+            >
+              <span className="mb-1 flex items-center gap-1.5 text-xs font-semibold text-primary-600">
+                <Sparkles size={14} aria-hidden="true" />
+                Need pairing ideas?
+              </span>
+              <span className="block text-xs leading-5 text-gray-600">
+                Ask Emart AI what goes well with this product.
+              </span>
+            </button>
+          )}
+          <button
+            onClick={() => setOpen(true)}
+            className="fixed bottom-6 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform hover:scale-110 active:scale-95 lg:bottom-8"
+            aria-label="Open Emart AI assistant"
+          >
+            <EmartAssistantLogo size="lg" />
+            <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white text-primary-500 shadow-sm">
+              <MessageCircle size={12} aria-hidden="true" />
+            </span>
+          </button>
+        </>
       )}
 
       {/* Chat Panel */}

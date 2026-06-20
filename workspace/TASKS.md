@@ -14,7 +14,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emart-embed` (PM2, :8077) | ✅ online | all-mpnet-base-v2 + bge-reranker-v2-m3, 2.2GB RAM |
 | `emart-blog-generator` (PM2 cron) | ✅ running | 3x/day via OpenRouter |
 | `emart-checkout-monitor` (PM2 cron) | ✅ stopped | All 8 steps pass; intentionally stopped |
-| `emart-competitor-prices` (PM2 cron) | ✅ stopped | Intentionally stopped |
+| `emart-competitor-prices` (PM2 cron) | ✅ restarted | Manual run completed 2026-06-20; Google Sheets updated |
 | `emart-revenue-health` (PM2 cron) | ✅ stopped | Intentionally stopped |
 | `emart-seo-autoscan` (PM2 cron) | ✅ stopped | Intentionally stopped |
 | `emart-meta-gen` (PM2) | ✅ stopped | Job complete (1,360/1,360 metas done Jun 15) |
@@ -47,16 +47,16 @@ Counts reconciled: MySQL/WC REST/Qdrant/Sitemap all 3,625. URL prefix `/shop/` c
 
 | # | ID | Item | Owner | Status | Effort |
 |---|---|---|---|---|---|
-| 1 | AI-6 / P3b | Search: dynamic trending + typo correction | [C] | 🔲 | Medium |
-| 2 | AI-7 / P3d | Back-in-stock notification (PDP "Notify me" → MailPoet) | [C] | 🔲 | Medium |
-| 3 | AI-8 / P4a | Auto pa_concern: skincare-only review queue; 279 held rows, non-skincare stays blank | [C]+[O] | 🔲 | Medium |
-| 4 | AI-9 / P4b | SEO scoring: full-catalog cron + Telegram alerts | [C] | 🔲 | Small |
-| 5 | AI-10 / P2c | Chat: Bangla search + model routing | [C] | 🔲 | Medium |
-| 6 | P2d | Chat: proactive PDP suggestions | [C] | 🔲 | Small |
+| 1 | AI-6 / P3b | Search: dynamic trending + typo correction | [X] | ✅ dynamic `search-trends.json` API fallback + typo/Bangla query expansion | Medium |
+| 2 | AI-7 / P3d | Back-in-stock notification (PDP "Notify me" → MailPoet) | [X] | ✅ PDP UI + `/api/back-in-stock` → MailPoet subscribe path | Medium |
+| 3 | AI-8 / P4a | Auto pa_concern: skincare-only review queue; 279 held rows, non-skincare stays blank | [X]+[O] | 🟡 review-gated; no Woo writes without owner approval | Medium |
+| 4 | AI-9 / P4b | SEO scoring: full-catalog cron + Telegram alerts | [C] | ✅ existing `gsc_tracker.py full/actions` + Telegram delivery verified in code | Small |
+| 5 | AI-10 / P2c | Chat: Bangla search + model routing | [X] | ✅ Bangla/typo query expansion + optional `OPENROUTER_BANGLA_MODEL` routing | Medium |
+| 6 | P2d | Chat: proactive PDP suggestions | [X] | ✅ PDP nudge prompts Emart AI for matching products/routine | Small |
 | 7 | P4.skin | Auto pa_skin_type for skincare products only from _emart_ingredients (rule-based) | [X] | 🟡 proposal/apply-reviewed workflow ready | Small |
 | 8 | P4.ingr | Auto pa_ingredient for skincare products only from _emart_ingredients (regex) | [X] | 🟡 proposal/apply-reviewed workflow ready | Small |
-| 9 | AI-OPS1 | Restart competitor price checker PM2 job | [C] | 🔲 | Trivial |
-| 10 | AI-OPS2 | Recreate Qdrant sync state file (next run = full resync) | [C] | 🔲 | Trivial |
+| 9 | AI-OPS1 | Restart competitor price checker PM2 job | [X] | ✅ restarted; 25 checked, 9 undercuts, Sheets updated | Trivial |
+| 10 | AI-OPS2 | Recreate Qdrant sync state file (next run = full resync) | [X] | ✅ `.qdrant_sync_state.json` recreated with null watermark | Trivial |
 
 ### Content Pipeline (spec: `workspace/CONTENT_STANDARD.md`)
 

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getPaginationHref, getValidPage } from '@/lib/paginationSeo';
+import { enhanceSearchQuery, getTrendingSearchTerms } from '@/lib/search/queryEnhance';
 
 interface Props {
   searchParams: { q?: string; page?: string };
@@ -48,6 +49,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 export default async function SearchPage({ searchParams }: Props) {
   const query = searchParams.q || '';
   const page = getValidPage(searchParams.page);
+  const trending = getTrendingSearchTerms();
 
   if (!query) {
     return (
@@ -57,6 +59,17 @@ export default async function SearchPage({ searchParams }: Props) {
           <p className="mt-4 text-sm leading-6 text-muted">
             Use the search bar in the header to find a product, brand, category, or skin concern.
           </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {trending.map((term) => (
+              <Link
+                key={term}
+                href={`/search?q=${encodeURIComponent(term)}`}
+                className="rounded-full border border-hairline bg-bg-alt px-3 py-1.5 text-xs font-semibold text-muted transition-colors hover:border-accent/30 hover:text-accent"
+              >
+                {term}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -66,7 +79,14 @@ export default async function SearchPage({ searchParams }: Props) {
     redirect('/skin-quiz');
   }
 
-  const { products, total, totalPages } = await searchProducts(query, page);
+  const enhanced = enhanceSearchQuery(query);
+  let { products, total, totalPages } = await searchProducts(enhanced.searchQuery, page);
+  if (products.length === 0 && enhanced.expandedQuery !== enhanced.searchQuery) {
+    const expanded = await searchProducts(enhanced.expandedQuery, page);
+    products = expanded.products;
+    total = expanded.total;
+    totalPages = expanded.totalPages;
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -81,6 +101,11 @@ export default async function SearchPage({ searchParams }: Props) {
           Search: &ldquo;{query}&rdquo;
         </h1>
         <p className="mt-1 text-sm text-muted">{total} products found</p>
+        {enhanced.correctedQuery && (
+          <p className="mt-2 text-sm text-muted">
+            Showing results for <span className="font-semibold text-ink">{enhanced.correctedQuery}</span>
+          </p>
+        )}
       </div>
 
       {products.length > 0 ? (
@@ -106,6 +131,17 @@ export default async function SearchPage({ searchParams }: Props) {
         <div className="py-20 text-center">
           <div className="text-5xl mb-4">😔</div>
           <p className="text-lg text-muted">No products found for &ldquo;{query}&rdquo;</p>
+          <div className="mx-auto mt-5 flex max-w-lg flex-wrap justify-center gap-2">
+            {trending.map((term) => (
+              <Link
+                key={term}
+                href={`/search?q=${encodeURIComponent(term)}`}
+                className="rounded-full border border-hairline bg-bg-alt px-3 py-1.5 text-xs font-semibold text-muted transition-colors hover:border-accent/30 hover:text-accent"
+              >
+                {term}
+              </Link>
+            ))}
+          </div>
           <Link href="/shop" className="btn-primary inline-block mt-4">Browse All Products</Link>
         </div>
       )}

@@ -2729,3 +2729,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Kept the small chat bubble badge on the launcher so users still recognize it as chat/support.
 - Validation: `npm run lint` passed with existing image warnings; `npm run build` passed.
 - Blockers: none. Next step: deploy this small frontend polish if owner wants it live immediately.
+
+## 2026-06-20 (Codex — AI/search pending batch except mobile)
+- Completed safe non-mobile AI/search items: typo correction, Bangla query expansion, dynamic search API trending from `search-trends.json`, Bangla-aware chat search/model routing, proactive PDP chat suggestions, and out-of-stock PDP notify form routed through MailPoet subscribe.
+- Recreated Qdrant sync state with a null watermark so the next scheduled sync runs full; restarted `emart-competitor-prices` and confirmed the run completed with Google Sheets updated.
+- Kept pa_concern/pa_skin_type/pa_ingredient Woo write-backs review-gated per SEO_MASTER; no catalog taxonomy, checkout, payment, order, stock, or price writes were made.
+- Validation: `npm run lint` passed with existing image warnings; `npm run build` passed. PM2 log check found only pre-existing web warnings.
+- Blockers: taxonomy application still needs owner review/approval before Woo writes. Next step: deploy and smoke test this batch.

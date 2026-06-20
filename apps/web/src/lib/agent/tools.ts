@@ -12,6 +12,7 @@ import {
   RERANK_URL,
   fetchWithTimeout,
 } from '@/lib/aiServiceConfig';
+import { enhanceSearchQuery } from '@/lib/search/queryEnhance';
 
 async function rerankResults(
   query: string,
@@ -73,11 +74,12 @@ export const agentTools = {
     }),
     execute: async ({ query, limit }) => {
       const { searchByText } = await import('@/lib/qdrantSearch');
+      const enhanced = enhanceSearchQuery(query);
 
       // Run payload text search + vector search in parallel
       const [textResults, vectorResults] = await Promise.all([
-        searchByText(query, limit),
-        embedAndSearch(query, limit + 3),
+        searchByText(enhanced.expandedQuery, limit),
+        embedAndSearch(enhanced.expandedQuery, limit + 3),
       ]);
 
       // Merge and dedupe by product_id — text matches first (exact), then vector (semantic)
@@ -99,20 +101,24 @@ export const agentTools = {
       }
 
       if (merged.length) {
-        const rerankedIndices = await rerankResults(query, merged, limit);
+        const rerankedIndices = await rerankResults(enhanced.expandedQuery, merged, limit);
         const reranked = rerankedIndices.map((i) => merged[i]).filter(Boolean);
         return {
           found: reranked.length,
+          correctedQuery: enhanced.correctedQuery,
+          language: enhanced.language,
           products: reranked.slice(0, limit),
         };
       }
 
       // Final fallback: WooCommerce keyword search
       const { getProducts } = await import('@/lib/woocommerce');
-      const { products } = await getProducts({ search: query, per_page: limit, status: 'publish' });
+      const { products } = await getProducts({ search: enhanced.searchQuery, per_page: limit, status: 'publish' });
       if (!products.length) return { found: 0, message: 'No products found for that query.' };
       return {
         found: products.length,
+        correctedQuery: enhanced.correctedQuery,
+        language: enhanced.language,
         products: products.map((p) => ({
           name: p.name,
           slug: p.slug,

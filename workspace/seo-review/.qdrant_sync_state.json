@@ -1,0 +1,6 @@
+{
+  "last_sync_iso": null,
+  "last_sync_mode": "full_resync_requested",
+  "last_sync_count": 0,
+  "note": "Recreated 2026-06-20 so the next scheduled qdrant_product_sync.py run performs a full sync."
+}

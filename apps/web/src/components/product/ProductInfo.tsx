@@ -14,6 +14,7 @@ import { getMetaPixelProductParams, trackMetaEvent } from '@/lib/metaPixel';
 import { getRedditPixelProductParams, trackRedditEvent } from '@/lib/redditPixel';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { trackGA4, getGA4ProductItem, getGA4ProductValue, GA4_STICKY_VARIANT_KEY } from '@/lib/ga4';
+import BackInStockNotify from './BackInStockNotify';
 
 interface ProductInfoProps {
   product: WooProduct;
@@ -500,6 +501,14 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         <MessageCircle size={17} />
         Order on WhatsApp
       </a>
+
+      {!inStock && (
+        <BackInStockNotify
+          productId={product.id}
+          productName={product.name}
+          productSlug={product.slug}
+        />
+      )}
 
 
       {/* Info Box - 2x2 Grid */}

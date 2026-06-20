@@ -8,3 +8,11 @@ export const openrouter = createOpenAI({
 export const agentModel = openrouter(
   process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free',
 );
+
+export function getAgentModel(options?: { bangla?: boolean }) {
+  const model = options?.bangla
+    ? process.env.OPENROUTER_BANGLA_MODEL || process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free'
+    : process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free';
+
+  return openrouter(model);
+}
