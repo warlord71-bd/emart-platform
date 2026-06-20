@@ -56,7 +56,7 @@ All items below are verified working on the live site as of 2026-05-19.
 - WebSite + OnlineStore + Organization on all pages via layout ✅
 
 ### Content & Data
-- 3,624/3,625 published products have `_rank_math_description` meta ✅
+- 3,625/3,625 published products have `_rank_math_description` meta; full validator clean 0/3,625 flagged ✅
 - Brand taxonomy + pa_origin assigned for 3,624/3,625 published products ✅
 - Wrong "Korea import" copy cleaned across catalog ✅
 - Sale prices cleared catalog-wide ✅

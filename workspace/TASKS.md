@@ -65,7 +65,7 @@ Counts reconciled: MySQL/WC REST/Qdrant/Sitemap all 3,625. URL prefix `/shop/` c
 | Product onboarding proposal tool (`product_onboarding.py`) | 🟡 review-gated apply ready; no fresh LLM response can write directly |
 | Hybrid humanizer: 800-1,200 word descriptions (60% auto-fill + 40% LLM) | 🟡 proposal generation added; owner review required before write-back |
 | FAQ generation: 5 Q&A per product, product-specific | 🟡 proposal generation + strict 5-Q/A validation ready |
-| Meta validator 466 stylistic issues (311 repeat-clause, 191 missing brand/locale) | 🔲 triage |
+| Meta validator stale stylistic issues | ✅ clean 2026-06-20: regenerated full catalog validator, fixed final 2 rows, now 0/3,625 flagged |
 
 ### Phase 5 — Omnichannel Agent (BLOCKED)
 

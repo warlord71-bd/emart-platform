@@ -2736,3 +2736,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Kept pa_concern/pa_skin_type/pa_ingredient Woo write-backs review-gated per SEO_MASTER; no catalog taxonomy, checkout, payment, order, stock, or price writes were made.
 - Validation: `npm run lint` passed with existing image warnings; `npm run build` passed. PM2 log check found only pre-existing web warnings.
 - Blockers: taxonomy application still needs owner review/approval before Woo writes. Next step: deploy and smoke test this batch.
+
+## 2026-06-20 (Codex — meta validator cleanup)
+- Regenerated live full-catalog meta validator report; stale 466-issue board count was no longer current. Fresh result found 2/3,625 flagged rows.
+- Backed up old values in `workspace/audit/active/meta-validator-fix-rollback-20260620.json`, updated only `_emart_meta_description` and `_rank_math_description` for product IDs 60685 and 94593, and revalidated both product pages.
+- Re-ran validator after fixes: 0/3,625 flagged. Live HTML confirmed both corrected `<meta name="description">` values.
+- No checkout, cart, payment, order, stock, price, or taxonomy writes were made. Next step: continue owner-review-gated content/taxonomy backlog.
