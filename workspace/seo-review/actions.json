@@ -1,0 +1,259 @@
+{
+  "generated": "2026-06-20",
+  "period": {
+    "start": "2026-05-21",
+    "end": "2026-06-17"
+  },
+  "summary": {
+    "total_clicks": 753,
+    "total_impressions": 27436,
+    "pages_in_search": 2296,
+    "risers": 20,
+    "fallers": 20,
+    "hot_trends": 1,
+    "cooling_trends": 2
+  },
+  "auto_executed": [
+    "Fed 5 blog topics to generator: skincare bd, skincare bangladesh, baby wipes, wipes, private part whitening cream in bangladesh",
+    "Humanizer queue updated: 417 products prioritized"
+  ],
+  "agent_tasks": [
+    {
+      "type": "title_fix",
+      "priority": "HIGH",
+      "slug": "cerave-skin-renewing-night-cream-48g",
+      "who": "Claude/Codex",
+      "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
+      "why": "Position 3.6 with 977 impressions but only 0.3% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
+      "standard": "Title must include 'Buy' prefix + product name + 'Best Price in Bangladesh' + '| Emart'. Under 65 chars.",
+      "data": {
+        "position": 3.6,
+        "impressions": 977,
+        "ctr": 0.0031,
+        "clicks": 3
+      }
+    },
+    {
+      "type": "title_fix",
+      "priority": "HIGH",
+      "slug": "cosrx-advanced-snail-mucin-96-power-essence-100ml",
+      "who": "Claude/Codex",
+      "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
+      "why": "Position 4.8 with 376 impressions but only 0.3% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
+      "standard": "Title must include 'Buy' prefix + product name + 'Best Price in Bangladesh' + '| Emart'. Under 65 chars.",
+      "data": {
+        "position": 4.8,
+        "impressions": 376,
+        "ctr": 0.0027,
+        "clicks": 1
+      }
+    },
+    {
+      "type": "title_fix",
+      "priority": "HIGH",
+      "slug": "axis-y-dark-spot-correcting-glow-serum-50ml",
+      "who": "Claude/Codex",
+      "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
+      "why": "Position 1.9 with 218 impressions but only 0.5% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
+      "standard": "Title must include 'Buy' prefix + product name + 'Best Price in Bangladesh' + '| Emart'. Under 65 chars.",
+      "data": {
+        "position": 1.9,
+        "impressions": 218,
+        "ctr": 0.0046,
+        "clicks": 1
+      }
+    },
+    {
+      "type": "title_fix",
+      "priority": "HIGH",
+      "slug": "medicube-deep-vita-c-capsule-cream-55ml",
+      "who": "Claude/Codex",
+      "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
+      "why": "Position 4.0 with 226 impressions but only 0.4% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
+      "standard": "Title must include 'Buy' prefix + product name + 'Best Price in Bangladesh' + '| Emart'. Under 65 chars.",
+      "data": {
+        "position": 4,
+        "impressions": 226,
+        "ctr": 0.0044,
+        "clicks": 1
+      }
+    },
+    {
+      "type": "humanize",
+      "priority": "MEDIUM",
+      "slug": "cerave-skin-renewing-night-cream-48g",
+      "who": "Claude/Codex (via humanizer_impression_priority.py)",
+      "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
+      "why": "Position 3.6, 977 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
+      "data": {
+        "humanizer_priority": 3652.4,
+        "content_tier": "UNSCORED",
+        "hot_trend": false
+      }
+    },
+    {
+      "type": "humanize",
+      "priority": "MEDIUM",
+      "slug": "skin1004-madagascar-centella-tone-brightening-capsule-ampoule-100ml",
+      "who": "Claude/Codex (via humanizer_impression_priority.py)",
+      "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
+      "why": "Position 5.2, 1020 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
+      "data": {
+        "humanizer_priority": 2290.4,
+        "content_tier": "UNSCORED",
+        "hot_trend": false
+      }
+    },
+    {
+      "type": "humanize",
+      "priority": "MEDIUM",
+      "slug": "cosrx-advanced-snail-mucin-96-power-essence-100ml",
+      "who": "Claude/Codex (via humanizer_impression_priority.py)",
+      "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
+      "why": "Position 4.8, 376 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
+      "data": {
+        "humanizer_priority": 1406.2,
+        "content_tier": "UNSCORED",
+        "hot_trend": false
+      }
+    },
+    {
+      "type": "humanize",
+      "priority": "MEDIUM",
+      "slug": "axis-y-dark-spot-correcting-glow-serum-50ml",
+      "who": "Claude/Codex (via humanizer_impression_priority.py)",
+      "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
+      "why": "Position 1.9, 218 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
+      "data": {
+        "humanizer_priority": 976.5,
+        "content_tier": "UNSCORED",
+        "hot_trend": false
+      }
+    },
+    {
+      "type": "humanize",
+      "priority": "MEDIUM",
+      "slug": "medicube-deep-vita-c-capsule-cream-55ml",
+      "who": "Claude/Codex (via humanizer_impression_priority.py)",
+      "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
+      "why": "Position 4.0, 226 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
+      "data": {
+        "humanizer_priority": 843.8,
+        "content_tier": "UNSCORED",
+        "hot_trend": false
+      }
+    },
+    {
+      "type": "investigate_drop",
+      "priority": "HIGH",
+      "slug": "mandom-lucido-ageing-care-milk-q10-for-men-100ml",
+      "who": "Claude/Codex",
+      "how": "Check: (1) page still returns 200, (2) canonical intact, (3) schema valid, (4) competitor content changes, (5) GSC coverage report for errors",
+      "why": "Lost 41.8 positions (89.7 → 131.5) — if this continues, impressions will drop next week",
+      "standard": "Report findings. Only fix if a technical issue is found. Position fluctuations <3 are normal.",
+      "data": {
+        "path": "/shop/mandom-lucido-ageing-care-milk-q10-for-men-100ml",
+        "slug": "mandom-lucido-ageing-care-milk-q10-for-men-100ml",
+        "position_now": 131.5,
+        "position_prev": 89.7,
+        "position_delta": -41.8,
+        "impressions_now": 2,
+        "impressions_delta": -1,
+        "direction": "down"
+      }
+    },
+    {
+      "type": "investigate_drop",
+      "priority": "HIGH",
+      "slug": "neutrogena-ultra-sheer-dry-touch-sunscreen-lotion-spf-55-147ml",
+      "who": "Claude/Codex",
+      "how": "Check: (1) page still returns 200, (2) canonical intact, (3) schema valid, (4) competitor content changes, (5) GSC coverage report for errors",
+      "why": "Lost 12.6 positions (36.5 → 49.1) — if this continues, impressions will drop next week",
+      "standard": "Report findings. Only fix if a technical issue is found. Position fluctuations <3 are normal.",
+      "data": {
+        "path": "/shop/neutrogena-ultra-sheer-dry-touch-sunscreen-lotion-spf-55-147ml",
+        "slug": "neutrogena-ultra-sheer-dry-touch-sunscreen-lotion-spf-55-147ml",
+        "position_now": 49.1,
+        "position_prev": 36.5,
+        "position_delta": -12.6,
+        "impressions_now": 7,
+        "impressions_delta": -3,
+        "direction": "down"
+      }
+    },
+    {
+      "type": "investigate_drop",
+      "priority": "HIGH",
+      "slug": "maange-12pcs-mix-makeup-brush-set-pink",
+      "who": "Claude/Codex",
+      "how": "Check: (1) page still returns 200, (2) canonical intact, (3) schema valid, (4) competitor content changes, (5) GSC coverage report for errors",
+      "why": "Lost 7.0 positions (4.0 → 11.0) — if this continues, impressions will drop next week",
+      "standard": "Report findings. Only fix if a technical issue is found. Position fluctuations <3 are normal.",
+      "data": {
+        "path": "/shop/maange-12pcs-mix-makeup-brush-set-pink",
+        "slug": "maange-12pcs-mix-makeup-brush-set-pink",
+        "position_now": 11,
+        "position_prev": 4,
+        "position_delta": -7,
+        "impressions_now": 2,
+        "impressions_delta": 1,
+        "direction": "down"
+      }
+    },
+    {
+      "type": "trend_content",
+      "priority": "HIGH",
+      "query": "skincare bd",
+      "who": "Claude/Codex",
+      "how": "Check if existing product/blog page covers this query. If yes, optimize title+description. If no, create blog post or add to /best/ guide.",
+      "why": "Rising on Google/YouTube right now — 219 impressions at position 8.1. Content created now will catch the wave.",
+      "standard": "Match the query intent. Product query → optimize PDP. Informational query → blog post. Comparison query → /best/ guide.",
+      "data": {
+        "query": "skincare bd",
+        "gsc_impressions": 219,
+        "gsc_position": 8.1,
+        "gsc_ctr": 0,
+        "google_trend": {
+          "recent_avg": 57.1,
+          "prior_avg": 62.7,
+          "change_pct": -8.9,
+          "direction": "stable",
+          "peak": 100,
+          "current": 54
+        },
+        "youtube_trend": {
+          "recent_avg": 14.3,
+          "prior_avg": 0.0,
+          "change_pct": 100.0,
+          "direction": "rising"
+        },
+        "combined_signal": "HOT"
+      }
+    }
+  ],
+  "owner_tasks": [
+    {
+      "type": "collect_reviews",
+      "priority": "MEDIUM",
+      "why": "Only 16 product reviews across 3,500+ products. Review stars in Google SERP require AggregateRating + individual Review schema (now deployed). More reviews = more stars = more clicks.",
+      "action": "Activate post-purchase review request emails via MailPoet. Target: 100 reviews in 60 days."
+    },
+    {
+      "type": "google_business_profile",
+      "priority": "HIGH",
+      "why": "Google Business Profile establishes Emart as a verified entity. LLMs check GBP for 'is this business real'. Without it, AI search won't cite Emart as a trusted retailer.",
+      "action": "Claim/verify GBP at Dhanmondi address. Add store photos, hours, phone. Link to https://e-mart.com.bd"
+    },
+    {
+      "type": "social_backlinks",
+      "priority": "LOW",
+      "why": "Facebook/Instagram/YouTube bio links should point to e-mart.com.bd/shop/ URLs. Bidirectional social→site links strengthen entity recognition.",
+      "action": "Update FB/IG/YT/TikTok profile bios to link to https://e-mart.com.bd"
+    }
+  ]
+}

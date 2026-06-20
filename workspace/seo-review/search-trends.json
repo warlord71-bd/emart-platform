@@ -1,166 +1,57 @@
 {
-  "generated": "2026-06-19",
+  "generated": "2026-06-20",
   "geo": "BD",
   "timeframe": "today 3-m",
   "queries_checked": 15,
   "hot_queries": [
     {
-      "query": "axis y dark spot serum",
-      "gsc_impressions": 152,
-      "gsc_position": 1,
+      "query": "skincare bd",
+      "gsc_impressions": 219,
+      "gsc_position": 8.1,
       "gsc_ctr": 0,
       "google_trend": {
-        "recent_avg": 30.7,
-        "prior_avg": 13.9,
-        "change_pct": 121.6,
-        "direction": "rising",
+        "recent_avg": 57.1,
+        "prior_avg": 62.7,
+        "change_pct": -8.9,
+        "direction": "stable",
         "peak": 100,
-        "current": 0
+        "current": 54
       },
       "youtube_trend": {
-        "recent_avg": 51.3,
-        "prior_avg": 64.4,
-        "change_pct": -20.4,
-        "direction": "falling"
-      },
-      "combined_signal": "HOT"
-    },
-    {
-      "query": "aromatica bd",
-      "gsc_impressions": 73,
-      "gsc_position": 7.7,
-      "gsc_ctr": 0,
-      "google_trend": {
-        "recent_avg": 0.9,
+        "recent_avg": 14.3,
         "prior_avg": 0.0,
         "change_pct": 100.0,
-        "direction": "rising",
-        "peak": 100,
-        "current": 0
-      },
-      "youtube_trend": {
-        "direction": "no_data"
-      },
-      "combined_signal": "HOT"
-    },
-    {
-      "query": "cosrx snail mucin",
-      "gsc_impressions": 62,
-      "gsc_position": 1.6,
-      "gsc_ctr": 0,
-      "google_trend": {
-        "recent_avg": 68.0,
-        "prior_avg": 40.7,
-        "change_pct": 67.0,
-        "direction": "rising",
-        "peak": 100,
-        "current": 96
-      },
-      "youtube_trend": {
-        "recent_avg": 36.9,
-        "prior_avg": 70.0,
-        "change_pct": -47.3,
-        "direction": "falling"
+        "direction": "rising"
       },
       "combined_signal": "HOT"
     }
   ],
-  "cooling_queries": [],
-  "all_trends": [
-    {
-      "query": "centella serum 100ml price in bangladesh",
-      "gsc_impressions": 350,
-      "gsc_position": 2.1,
-      "gsc_ctr": 0,
-      "youtube_trend": {
-        "direction": "no_data"
-      },
-      "combined_signal": "STEADY"
-    },
-    {
-      "query": "skincare bd",
-      "gsc_impressions": 252,
-      "gsc_position": 8.1,
-      "gsc_ctr": 0,
-      "google_trend": {
-        "recent_avg": 12.3,
-        "prior_avg": 15.3,
-        "change_pct": -19.6,
-        "direction": "falling",
-        "peak": 100,
-        "current": 12
-      },
-      "youtube_trend": {
-        "direction": "no_data"
-      },
-      "combined_signal": "STEADY"
-    },
-    {
-      "query": "centella tone brightening ampoule price in bangladesh",
-      "gsc_impressions": 211,
-      "gsc_position": 7.5,
-      "gsc_ctr": 0,
-      "youtube_trend": {
-        "direction": "no_data"
-      },
-      "combined_signal": "STEADY"
-    },
+  "cooling_queries": [
     {
       "query": "best face wash for oily skin",
-      "gsc_impressions": 206,
-      "gsc_position": 8.1,
-      "gsc_ctr": 0.0097,
+      "gsc_impressions": 222,
+      "gsc_position": 8.0,
+      "gsc_ctr": 0.009,
       "google_trend": {
-        "recent_avg": 44.4,
-        "prior_avg": 56.3,
-        "change_pct": -21.1,
+        "recent_avg": 2.1,
+        "prior_avg": 2.6,
+        "change_pct": -16.7,
         "direction": "falling",
         "peak": 100,
-        "current": 74
+        "current": 0
       },
       "youtube_trend": {
-        "recent_avg": 64.6,
-        "prior_avg": 74.4,
-        "change_pct": -13.2,
-        "direction": "stable"
+        "recent_avg": 5.1,
+        "prior_avg": 6.3,
+        "change_pct": -18.2,
+        "direction": "falling"
       },
-      "combined_signal": "STEADY"
-    },
-    {
-      "query": "cerave whitening night cream price in bangladesh",
-      "gsc_impressions": 164,
-      "gsc_position": 3.5,
-      "gsc_ctr": 0.0061,
-      "youtube_trend": {
-        "direction": "no_data"
-      },
-      "combined_signal": "STEADY"
+      "combined_signal": "COOLING"
     },
     {
       "query": "axis y dark spot serum",
       "gsc_impressions": 152,
       "gsc_position": 1,
-      "gsc_ctr": 0,
-      "google_trend": {
-        "recent_avg": 30.7,
-        "prior_avg": 13.9,
-        "change_pct": 121.6,
-        "direction": "rising",
-        "peak": 100,
-        "current": 0
-      },
-      "youtube_trend": {
-        "recent_avg": 51.3,
-        "prior_avg": 64.4,
-        "change_pct": -20.4,
-        "direction": "falling"
-      },
-      "combined_signal": "HOT"
-    },
-    {
-      "query": "beauty of joseon red bean water gel price in bangladesh",
-      "gsc_impressions": 144,
-      "gsc_position": 6.1,
       "gsc_ctr": 0,
       "google_trend": {
         "recent_avg": 0.0,
@@ -171,28 +62,146 @@
         "current": 0
       },
       "youtube_trend": {
+        "recent_avg": 29.1,
+        "prior_avg": 43.9,
+        "change_pct": -33.6,
+        "direction": "falling"
+      },
+      "combined_signal": "COOLING"
+    }
+  ],
+  "all_trends": [
+    {
+      "query": "centella serum 100ml price in bangladesh",
+      "gsc_impressions": 351,
+      "gsc_position": 2.1,
+      "gsc_ctr": 0.0028,
+      "youtube_trend": {
+        "direction": "no_data"
+      },
+      "combined_signal": "STEADY"
+    },
+    {
+      "query": "best face wash for oily skin",
+      "gsc_impressions": 222,
+      "gsc_position": 8.0,
+      "gsc_ctr": 0.009,
+      "google_trend": {
+        "recent_avg": 2.1,
+        "prior_avg": 2.6,
+        "change_pct": -16.7,
+        "direction": "falling",
+        "peak": 100,
+        "current": 0
+      },
+      "youtube_trend": {
+        "recent_avg": 5.1,
+        "prior_avg": 6.3,
+        "change_pct": -18.2,
+        "direction": "falling"
+      },
+      "combined_signal": "COOLING"
+    },
+    {
+      "query": "skincare bd",
+      "gsc_impressions": 219,
+      "gsc_position": 8.1,
+      "gsc_ctr": 0,
+      "google_trend": {
+        "recent_avg": 57.1,
+        "prior_avg": 62.7,
+        "change_pct": -8.9,
+        "direction": "stable",
+        "peak": 100,
+        "current": 54
+      },
+      "youtube_trend": {
+        "recent_avg": 14.3,
+        "prior_avg": 0.0,
+        "change_pct": 100.0,
+        "direction": "rising"
+      },
+      "combined_signal": "HOT"
+    },
+    {
+      "query": "centella tone brightening ampoule price in bangladesh",
+      "gsc_impressions": 218,
+      "gsc_position": 7.5,
+      "gsc_ctr": 0,
+      "youtube_trend": {
+        "direction": "no_data"
+      },
+      "combined_signal": "STEADY"
+    },
+    {
+      "query": "cerave whitening night cream price in bangladesh",
+      "gsc_impressions": 169,
+      "gsc_position": 3.5,
+      "gsc_ctr": 0.0059,
+      "youtube_trend": {
+        "direction": "no_data"
+      },
+      "combined_signal": "STEADY"
+    },
+    {
+      "query": "axis y dark spot serum",
+      "gsc_impressions": 152,
+      "gsc_position": 1,
+      "gsc_ctr": 0,
+      "google_trend": {
+        "recent_avg": 0.0,
+        "prior_avg": 14.3,
+        "change_pct": -100.0,
+        "direction": "falling",
+        "peak": 100,
+        "current": 0
+      },
+      "youtube_trend": {
+        "recent_avg": 29.1,
+        "prior_avg": 43.9,
+        "change_pct": -33.6,
+        "direction": "falling"
+      },
+      "combined_signal": "COOLING"
+    },
+    {
+      "query": "beauty of joseon red bean water gel price in bangladesh",
+      "gsc_impressions": 152,
+      "gsc_position": 6.1,
+      "gsc_ctr": 0,
+      "youtube_trend": {
         "direction": "no_data"
       },
       "combined_signal": "STEADY"
     },
     {
       "query": "cerave night cream",
-      "gsc_impressions": 123,
+      "gsc_impressions": 136,
       "gsc_position": 1.2,
-      "gsc_ctr": 0.0081,
+      "gsc_ctr": 0.0074,
       "google_trend": {
-        "recent_avg": 65.9,
-        "prior_avg": 70.7,
-        "change_pct": -6.9,
-        "direction": "stable",
+        "recent_avg": 45.6,
+        "prior_avg": 69.3,
+        "change_pct": -34.2,
+        "direction": "falling",
         "peak": 100,
-        "current": 55
+        "current": 0
       },
       "youtube_trend": {
-        "recent_avg": 22.9,
-        "prior_avg": 23.6,
-        "change_pct": -3.0,
+        "recent_avg": 75.4,
+        "prior_avg": 73.7,
+        "change_pct": 2.3,
         "direction": "stable"
+      },
+      "combined_signal": "STEADY"
+    },
+    {
+      "query": "cerave moisturizing cream 50ml price in bangladesh",
+      "gsc_impressions": 106,
+      "gsc_position": 6.8,
+      "gsc_ctr": 0,
+      "youtube_trend": {
+        "direction": "no_data"
       },
       "combined_signal": "STEADY"
     },
@@ -202,57 +211,34 @@
       "gsc_position": 1.5,
       "gsc_ctr": 0,
       "google_trend": {
-        "recent_avg": 6.3,
-        "prior_avg": 6.9,
-        "change_pct": -8.3,
+        "recent_avg": 8.4,
+        "prior_avg": 9.6,
+        "change_pct": -11.9,
         "direction": "stable",
         "peak": 100,
-        "current": 10
+        "current": 0
       },
       "youtube_trend": {
-        "recent_avg": 66.3,
-        "prior_avg": 82.0,
-        "change_pct": -19.2,
+        "recent_avg": 6.4,
+        "prior_avg": 8.3,
+        "change_pct": -22.4,
         "direction": "falling"
       },
       "combined_signal": "STEADY"
     },
     {
       "query": "cerave skin renewing night cream",
-      "gsc_impressions": 102,
-      "gsc_position": 3.6,
-      "gsc_ctr": 0,
-      "youtube_trend": {
-        "recent_avg": 0.0,
-        "prior_avg": 14.3,
-        "change_pct": -100.0,
-        "direction": "falling"
-      },
-      "combined_signal": "STEADY"
-    },
-    {
-      "query": "cerave moisturizing cream 50ml price in bangladesh",
-      "gsc_impressions": 85,
-      "gsc_position": 7,
+      "gsc_impressions": 100,
+      "gsc_position": 3.5,
       "gsc_ctr": 0,
       "google_trend": {
         "recent_avg": 0.0,
-        "prior_avg": 0.0,
-        "change_pct": 0.0,
-        "direction": "stable",
+        "prior_avg": 26.7,
+        "change_pct": -100.0,
+        "direction": "falling",
         "peak": 100,
         "current": 0
       },
-      "youtube_trend": {
-        "direction": "no_data"
-      },
-      "combined_signal": "STEADY"
-    },
-    {
-      "query": "medicube vitamin c cream",
-      "gsc_impressions": 74,
-      "gsc_position": 1,
-      "gsc_ctr": 0,
       "youtube_trend": {
         "direction": "no_data"
       },
@@ -263,24 +249,34 @@
       "gsc_impressions": 73,
       "gsc_position": 7.7,
       "gsc_ctr": 0,
+      "youtube_trend": {
+        "direction": "no_data"
+      },
+      "combined_signal": "STEADY"
+    },
+    {
+      "query": "medicube vitamin c cream",
+      "gsc_impressions": 72,
+      "gsc_position": 1,
+      "gsc_ctr": 0,
       "google_trend": {
-        "recent_avg": 0.9,
-        "prior_avg": 0.0,
-        "change_pct": 100.0,
-        "direction": "rising",
+        "recent_avg": 0.0,
+        "prior_avg": 1.6,
+        "change_pct": -100.0,
+        "direction": "falling",
         "peak": 100,
         "current": 0
       },
       "youtube_trend": {
         "direction": "no_data"
       },
-      "combined_signal": "HOT"
+      "combined_signal": "STEADY"
     },
     {
       "query": "neutrogena clear face sunscreen price in bangladesh",
-      "gsc_impressions": 63,
+      "gsc_impressions": 64,
       "gsc_position": 1,
-      "gsc_ctr": 0.0159,
+      "gsc_ctr": 0.0156,
       "youtube_trend": {
         "direction": "no_data"
       },
@@ -292,20 +288,20 @@
       "gsc_position": 1.6,
       "gsc_ctr": 0,
       "google_trend": {
-        "recent_avg": 68.0,
-        "prior_avg": 40.7,
-        "change_pct": 67.0,
-        "direction": "rising",
+        "recent_avg": 53.7,
+        "prior_avg": 53.0,
+        "change_pct": 1.3,
+        "direction": "stable",
         "peak": 100,
-        "current": 96
+        "current": 0
       },
       "youtube_trend": {
-        "recent_avg": 36.9,
-        "prior_avg": 70.0,
-        "change_pct": -47.3,
+        "recent_avg": 5.3,
+        "prior_avg": 8.4,
+        "change_pct": -37.3,
         "direction": "falling"
       },
-      "combined_signal": "HOT"
+      "combined_signal": "STEADY"
     }
   ]
 }

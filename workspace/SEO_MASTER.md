@@ -98,7 +98,8 @@ All items below are verified working on the live site as of 2026-05-19.
 ## 🔴 OPEN — Critical
 
 ### C_CONCERN: pa_concern — HIGH+MED applied, LOW+SKIP awaiting manual review
-**Updated 2026-05-21:** 2,235 → **2,480** products now have pa_concern (68%).
+**Updated 2026-06-20:** **1,084 published products remain without pa_concern.** A Qdrant cross-check joined 3,625 product vectors to 2,484 trusted labeled products. The original 487 “skincare” estimate contained false positives caused by broad/malformed categories and generic words (for example hair serum and SPF makeup), so it was not bulk-applied.
+**2026-06-20 apply:** 57 high-confidence products / 57 relationships: dryness-hydration 43, sensitivity 8, brightening 4, acne-blemish 1, sunscreen 1. Only explicit title/category/ingredient/skin-type evidence with Qdrant support was accepted; 279 skincare-like rows were held rather than guessed. Review: `workspace/audit/active/pa-concern-qdrant-review-20260620-133206.csv`; rollback: `workspace/audit/active/pa-concern-qdrant-rollback-20260620-133206.json`. Product cache revalidated and all 3,625 Qdrant vectors refreshed.
 **Applied:** 245 products (HIGH:1 MED:244) × 376 concern assignments. Rollback: `pa-concern-rollback-20260521-174257.sql`
 **Post-apply concern counts:** dryness-hydration:787, acne-blemish:529, sensitivity:435, anti-aging-repair:353, hyperpigmentation:346, brightening:338, sunscreen:306, wrinkle:295, pores-blackheads:234
 **Remaining gap:** ~1,161 products still without concern — manual review CSV ready:
@@ -205,9 +206,8 @@ Routes/indexing are already handled: `/origins/[country]` pages are live, sitema
 
 ## 🟢 LOW — Backlog (do when convenient)
 
-### L1: Cloudflare cache rule for `/shop` and `/category/*`
-Nginx sets `s-maxage` correctly. Cloudflare CDN rule still needs dashboard setup.
-**Owner:** Dashboard-only task.
+### ~~L1: Cloudflare cache rule for `/shop` and `/category/*`~~ ✅ DONE
+Owner applied Cloudflare cache rule 2026-06-12; R11 closed 2026-06-11. Edge now respects origin `s-maxage`.
 
 ### L2: Critical CSS inlining (`critters`)
 Main CSS (94KB / 16.8KB gzipped) blocks first paint on mobile slow-4G.

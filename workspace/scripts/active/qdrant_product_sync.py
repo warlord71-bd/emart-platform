@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """Sync published Emart products → Qdrant vector DB.
 
-Fetches all published products from WooCommerce, generates 768-dim
-embeddings via sentence-transformers (CPU), and upserts into the
-`emart_products` collection. Idempotent — safe to run on cron.
+Fetches products from WooCommerce, generates 768-dim embeddings
+via sentence-transformers (CPU), and upserts into Qdrant.
 
-Usage:
-    python3 workspace/scripts/active/qdrant_product_sync.py          # full sync
-    python3 workspace/scripts/active/qdrant_product_sync.py --dry-run # count only
+Modes:
+    python3 qdrant_product_sync.py                # incremental (only changed products)
+    python3 qdrant_product_sync.py --full          # full re-sync (all products)
+    python3 qdrant_product_sync.py --dry-run       # count only
 """
 
 import argparse, json, os, sys, time, uuid, math, ssl
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from urllib.request import Request, urlopen
 from urllib.parse import urlencode
 
@@ -20,6 +22,7 @@ COLLECTION = "emart_products"
 EMBED_MODEL = "all-mpnet-base-v2"  # 768-dim, matches existing data
 BATCH_SIZE = 50  # WooCommerce API page size
 UPSERT_BATCH = 64
+STATE_FILE = Path("/root/emart-platform/workspace/seo-review/.qdrant_sync_state.json")
 
 WC_KEY = os.environ.get("WC_CONSUMER_KEY", "")
 WC_SECRET = os.environ.get("WC_CONSUMER_SECRET", "")
@@ -130,9 +133,38 @@ def deterministic_uuid(product_id):
     return str(uuid.uuid5(uuid.NAMESPACE_URL, f"emart-product-{product_id}"))
 
 
+def load_sync_state():
+    if STATE_FILE.exists():
+        return json.loads(STATE_FILE.read_text())
+    return {}
+
+def save_sync_state(state):
+    STATE_FILE.write_text(json.dumps(state, indent=2))
+
+def fetch_modified_since(since_iso: str):
+    """Fetch only products modified after a given ISO timestamp."""
+    products = []
+    page = 1
+    while True:
+        batch = wc_get("products", {
+            "per_page": BATCH_SIZE, "page": page,
+            "status": "publish", "type": "simple",
+            "modified_after": since_iso,
+            "orderby": "modified", "order": "asc",
+        })
+        if not batch:
+            break
+        products.extend(batch)
+        print(f"  fetched page {page}: {len(batch)} changed (total: {len(products)})")
+        if len(batch) < BATCH_SIZE:
+            break
+        page += 1
+    return products
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--full", action="store_true", help="Full re-sync instead of incremental")
     args = parser.parse_args()
 
     if not QDRANT_KEY:
@@ -140,12 +172,28 @@ def main():
     if not WC_KEY or not WC_SECRET:
         sys.exit("WC_CONSUMER_KEY / WC_CONSUMER_SECRET not set")
 
-    print(f"[1/4] Fetching published products from WooCommerce...")
-    products = fetch_all_products()
-    print(f"  → {len(products)} products")
+    state = load_sync_state()
+    last_sync = state.get("last_sync_iso")
+
+    if args.full or not last_sync:
+        mode = "full"
+        print(f"[1/4] Full sync — fetching ALL published products...")
+        products = fetch_all_products()
+    else:
+        mode = "incremental"
+        print(f"[1/4] Incremental sync — products modified since {last_sync}...")
+        products = fetch_modified_since(last_sync)
+
+    print(f"  → {len(products)} products to sync ({mode})")
 
     if args.dry_run:
         print(f"[dry-run] Would sync {len(products)} products to qdrant:{COLLECTION}")
+        return
+
+    if len(products) == 0:
+        now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
+        save_sync_state({**state, "last_sync_iso": now_iso, "last_sync_mode": mode, "last_sync_count": 0})
+        print("  No changes since last sync. Done.")
         return
 
     print(f"[2/4] Loading embedding model ({EMBED_MODEL})...")
@@ -181,7 +229,15 @@ def main():
 
     final = qdrant_req("GET", f"/collections/{COLLECTION}")
     count = final["result"]["points_count"]
-    print(f"\n✓ Sync complete: {count} products in qdrant:{COLLECTION}")
+
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
+    save_sync_state({
+        "last_sync_iso": now_iso,
+        "last_sync_mode": mode,
+        "last_sync_count": len(products),
+        "total_in_qdrant": count,
+    })
+    print(f"\n✓ Sync complete ({mode}): {len(products)} synced, {count} total in qdrant:{COLLECTION}")
 
 
 if __name__ == "__main__":

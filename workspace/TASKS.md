@@ -239,6 +239,49 @@ Freeze: structural/nav frozen until 2026-07-03. All AI items below are freeze-sa
 | 9 | AI-9 | SEO scoring: full-catalog cron + Telegram alerts | [C] | 🔲 | Small | `internal_seo_tool.py` (1,070 lines, 14-field agentic score) runs `--limit 20` sample only; create PM2 cron for weekly full-catalog run; Telegram alert for top 20 worst-scoring products |
 | 10 | AI-10 | Chat: Bangla search + model routing | [C] | 🔲 | Medium | System prompt says "respond in Bangla" but search hits English-only embeddings; add Bangla product name aliases to Qdrant payload in `qdrant_product_sync.py`; optionally detect Bangla input → route to better multilingual model (DeepSeek v3.1 paid, already proven) |
 
+### Phase 5 — Omnichannel Agent (WhatsApp + Messenger + Mobile)
+
+**Gate:** Meta Business verification for HG Corporation must be approved first.
+**Ref:** Owner mentioned 2026-06-20. No code exists yet for any of these.
+
+| # | ID | Item | Agent | Status | Gate | Notes |
+|---|---|---|---|---|---|---|
+| 1 | AI-11 | WhatsApp Business API webhook | [C] | 🔲 BLOCKED | Meta Business verification | Connect WhatsApp Cloud API → receive customer messages → route to AI agent → respond via WhatsApp. Same agent brain as `/api/chat` but different transport. Requires: Meta Business Manager verified, WhatsApp Business Platform access, phone number `8801919797399` registered. |
+| 2 | AI-12 | Facebook Messenger webhook | [C] | 🔲 BLOCKED | Meta Business verification | Connect FB Page (`emartbd.official`) Messenger → receive messages → route to AI agent → respond. Same agent brain, Messenger transport. Requires: Meta app with `pages_messaging` permission. |
+| 3 | AI-13 | Mobile app chat screen | [C] | 🔲 | AI-11/12 done | Add chat screen to Expo mobile app (`apps/mobile/`). Connects to same `/api/chat` endpoint. UI: product cards, quick replies, typing indicator. |
+| 4 | AI-14 | Conversation analytics | [C] | 🔲 | AI-11/12/13 live | Track: total conversations, resolution rate, escalation rate, popular queries, response time. Dashboard or Telegram daily summary. |
+| 5 | AI-15 | Bangla language tuning | [C]+[X] | 🔲 | AI-10 done first | Fine-tune: Bangla product name aliases in Qdrant, Bangla system prompt variants, detect-and-route to DeepSeek v3.1 for quality Bangla responses. Test across WhatsApp + web + mobile. |
+
+**Architecture:**
+```
+Customer sends message via:
+  ├─ Web (e-mart.com.bd/chat widget)     → /api/chat
+  ├─ WhatsApp (+8801919797399)           → /api/webhook/whatsapp → /api/chat
+  ├─ Facebook Messenger (@emartbd)       → /api/webhook/messenger → /api/chat
+  └─ Mobile app (Emart app)              → /api/chat
+                                              │
+                                    Same AI agent brain
+                                    (tools, Qdrant, reranker)
+                                              │
+                                    Response → same channel back
+```
+
+**Existing Meta infrastructure:**
+- Meta App ID: `560221051834045` (name: "Conversions API Application") — LIVE, valid
+- Meta Pixel ID: `763041131179021` — CAPI Purchase/InitiateCheckout tracking active
+- Facebook for WooCommerce plugin — installed, handles catalog feed
+- Current scopes: `read_ads_dataset_quality` only (CAPI)
+
+**Meta Business verification: REJECTED** — cannot get `pages_messaging` or `whatsapp_business_messaging` permissions.
+**Existing Meta App:** `560221051834045` (Conversions API Application) — CAPI-only, Pixel `763041131179021` active.
+
+**Workarounds (no verification needed):**
+1. ✅ **Meta Business Agent** (built-in, no-code) — turn ON in Meta Business Suite → All Tools → Meta Business Agent. Handles basic FAQ (hours, location, catalog). NOT our smart AI agent.
+2. 🔲 **Telegram customer bot** — full smart AI agent on Telegram. Free, no verification. Build when ready.
+3. 🔲 **WhatsApp BSP** (WATI/Interakt, ~$30/month) — they handle verification. Connects our smart agent to WhatsApp. Add when ready to pay.
+
+**Owner immediate action:** Turn on Meta Business Agent in Business Suite + add website URL + product catalog. Takes 5 minutes.
+
 ### Gated / deferred
 | ID | Item | Gate | Notes |
 |---|---|---|---|
@@ -353,31 +396,51 @@ Freeze: structural/nav frozen until 2026-07-03. All AI items below are freeze-sa
 - [ ] P1.3 Cross-sell PDP rail — **already exists** (getSimilarAndCrossSell wired to PDP)
 
 ### Phase 2 — Chat Intelligence (next session)
-- [ ] P2a Session memory (server-side, in-memory Map + TTL)
-- [ ] P2b Routine builder tool (AM/PM routine from Qdrant cross-sell)
-- [ ] P2c Bangla model routing (detect → DeepSeek v3.1)
-- [ ] P2d Proactive suggestions (PDP idle → widget surfaces cross-sell)
-- [ ] P2e Rich chat messages (product cards, quick-reply buttons)
+- [ ] P2a = **AI-4** Session memory (server-side, in-memory Map + TTL)
+- [ ] P2b = **AI-5** Routine builder tool (AM/PM routine from Qdrant cross-sell)
+- [ ] P2c = **AI-10** Bangla model routing (detect → DeepSeek v3.1)
+- [ ] P2d = (new) Proactive suggestions (PDP idle → widget surfaces cross-sell)
+- [ ] P2e = **AI-1** + **AI-2** Rich chat messages + starter buttons
 
 ### Phase 3 — Storefront Intelligence (post-freeze 2026-07-03)
-- [ ] P3b Smart search autocomplete
-- [ ] P3c "For You" homepage rail (localStorage recently-viewed)
-- [ ] P3d Back-in-stock alerts
+- [ ] P3b = **AI-6** Smart search autocomplete
+- [ ] P3c = **AI-3** "For You" homepage rail (localStorage recently-viewed)
+- [ ] P3d = **AI-7** Back-in-stock alerts
 
 ### Phase 4 — Internal Ops Intelligence (parallel)
-- [ ] P4a Auto pa_concern tagging (reranker + LLM, 1,084 remaining)
-- [ ] P4b Content quality scoring (expand internal_seo_tool.py to full catalog)
-- [ ] P4c Pricing intelligence (structured output + Telegram alerts)
-- [ ] P4d Review sentiment (when 100+ reviews)
-- [ ] P4.skin Auto pa_skin_type from _emart_ingredients (rule-based extraction)
-- [ ] P4.ingr Auto pa_ingredient from _emart_ingredients (regex parse)
+- [ ] P4a = **AI-8** Auto pa_concern tagging (reranker + LLM, 1,084 remaining)
+- [ ] P4b = **AI-9** Content quality scoring (expand internal_seo_tool.py to full catalog)
+- [ ] P4c = **AI-OPS1** Pricing intelligence (restart + structured output)
+- [ ] P4d = **AI-D1** Review sentiment (gated: review count ≥ 100)
+- [ ] P4.skin = (new) Auto pa_skin_type from _emart_ingredients (rule-based)
+- [ ] P4.ingr = (new) Auto pa_ingredient from _emart_ingredients (regex parse)
 
-### Content Pipeline (parallel)
+### Content Pipeline (parallel, spec: `workspace/CONTENT_STANDARD.md`)
 - [ ] Auto-extract pa_ingredient from existing _emart_ingredients (99% have data)
 - [ ] Auto-extract pa_skin_type from ingredient profile (rule-based)
 - [ ] Hybrid humanizer: 800-1,200 word descriptions (60% auto-fill + 40% LLM)
 - [ ] FAQ generation: 5 Q&A per product, product-specific
-- Spec: `workspace/CONTENT_STANDARD.md` (16-layer, scoring 0-100)
+- Scoring: 16-layer, 0-100, tiers THIN/PARTIAL/STRONG/GOLDEN
+
+### Cross-reference: AI_PLAN.md ↔ TASKS.md AI items
+```
+AI_PLAN.md    TASKS.md     What
+──────────    ────────     ────
+P1.1-P1.5    (done)       Reranker, chat wiring, Qdrant sync, auto titles
+P2a          AI-4         Session memory
+P2b          AI-5         Routine builder
+P2c          AI-10        Bangla routing
+P2d          (new)        Proactive suggestions
+P2e          AI-1+AI-2    Rich messages + starter buttons
+P3a          (done)       Cross-sell rail already exists
+P3b          AI-6         Search autocomplete
+P3c          AI-3         For You rail
+P3d          AI-7         Back-in-stock
+P4a          AI-8         Auto pa_concern
+P4b          AI-9         SEO full-catalog scoring
+P4c          AI-OPS1      Pricing intelligence
+P4d          AI-D1        Review sentiment (gated)
+```
 
 ---
 

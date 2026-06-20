@@ -1,15 +1,15 @@
 {
-  "generated": "2026-06-19",
+  "generated": "2026-06-20",
   "period": {
-    "start": "2026-05-20",
-    "end": "2026-06-16"
+    "start": "2026-05-21",
+    "end": "2026-06-17"
   },
   "total_gaps": 8,
   "candidates": [
     {
       "query": "skincare bd",
       "current_page": "/",
-      "impressions": 252,
+      "impressions": 219,
       "clicks": 0,
       "position": 8.1,
       "suggestion": "informational"
@@ -17,8 +17,8 @@
     {
       "query": "skincare bangladesh",
       "current_page": "/",
-      "impressions": 39,
-      "clicks": 1,
+      "impressions": 38,
+      "clicks": 0,
       "position": 8.5,
       "suggestion": "informational"
     },
@@ -31,11 +31,11 @@
       "suggestion": "informational"
     },
     {
-      "query": "korean skincare bd",
-      "current_page": "/",
+      "query": "wipes",
+      "current_page": "/category/diapers-wipes",
       "impressions": 12,
-      "clicks": 2,
-      "position": 13.7,
+      "clicks": 0,
+      "position": 27.6,
       "suggestion": "informational"
     },
     {
@@ -47,19 +47,19 @@
       "suggestion": "informational"
     },
     {
-      "query": "wipes",
-      "current_page": "/category/diapers-wipes",
-      "impressions": 11,
-      "clicks": 0,
-      "position": 27.8,
-      "suggestion": "informational"
-    },
-    {
       "query": "face mask sheet",
       "current_page": "/category/face-masks",
       "impressions": 11,
       "clicks": 0,
       "position": 9.5,
+      "suggestion": "informational"
+    },
+    {
+      "query": "korean skincare bd",
+      "current_page": "/",
+      "impressions": 10,
+      "clicks": 2,
+      "position": 14.2,
       "suggestion": "informational"
     },
     {

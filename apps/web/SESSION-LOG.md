@@ -2674,3 +2674,30 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Confirmed IndexNow public key HTTP 200 and homepage submission HTTP 200; product/category revalidation now awaits the non-blocking submission instead of abandoning an unawaited request.
 - Local and VPS builds passed; live homepage and all 10 SEO/AEO gate groups passed; Cloudflare purged; Local/VPS/origin aligned at `6057a58`.
 - Blockers: none. Next step: keep C5 closed; future deploys automatically stop before push if an SEO/AEO surface regresses.
+
+## 2026-06-20 (Codex — Qdrant pa_concern cross-check/apply)
+- Recounted live catalog: 1,141 published products initially lacked `pa_concern`; the earlier 1,147 task count was stale.
+- Crosschecked candidates against 3,625 Qdrant vectors joined to 2,484 products with trusted existing concern labels. Found the earlier 487 skincare estimate included false positives from polluted/broad taxonomy and generic title terms; rejected vector-only inference and malformed Sunscreen-category self-validation.
+- Applied 57 high-confidence products/relationships only: dryness-hydration 43, sensitivity 8, brightening 4, acne-blemish 1, sunscreen 1. Rollback and full review CSV saved under `workspace/audit/active/`.
+- Revalidated `tag:products`; refreshed all 3,625 Qdrant product vectors; final published missing count is 1,084. Remaining 279 skincare-like candidates are held for manual/stronger-evidence review.
+- Removed hardcoded credentials from `qdrant_sync_run.sh`; it now loads protected runtime environment values. Blocker/risk: rotate the affected Woo/Qdrant credentials because they had existed in plaintext in that local wrapper.
+
+## 2026-06-20 (Codex — whole-catalog Qdrant concern audit)
+- Ran a read-only audit across all 3,625 Woo products / 3,625 Qdrant points using newly generated concern-free embeddings, preventing existing `pa_concern` labels from validating themselves.
+- Corrected audit heuristics for `snail`/`nail` and explicit-evidence conflicts. Final result: 3,268 OK, 124 critical non-skincare products carrying skincare concerns, 63 high-review rows (43 assigned conflicts + 20 strong missing candidates), and 170 medium missing-label candidates.
+- Critical breakdown: 51 makeup, 45 hair/scalp or hair-removal, 11 supplements, 5 tools/accessories, 12 other non-skincare. No catalog changes made from this audit.
+- Corrected report: `workspace/audit/active/pa-concern-qdrant-catalog-audit-20260620-134415-corrected.csv`.
+
+## 2026-06-20 (Claude — SEO pipeline + AI Phase 1 + system integration)
+- Built `gsc_tracker.py` 9-command orchestrator: pull, score, trends, blog-gaps, search-trends, humanizer-queue, fix-titles, actions, full. Cron 2:30 AM daily.
+- P1.1: Reranker `/rerank` endpoint on embed_service.py (bge-reranker-v2-m3). P1.2: Wired into chat agent `tools.ts` searchProducts.
+- P1.4: Incremental Qdrant sync (daily instead of weekly). P1.5: Auto title fix nightly (5 titles fixed: CeraVe, COSRX, Axis-Y, Medicube, Neutrogena).
+- Individual Review schema deployed on all PDPs with Woo reviews.
+- Telegram dual delivery (@Emart_official + @WARLORD_71). tg_commands.py CLI (8 commands). OpenClaw skill registered.
+- system_state.py: unified JSON state file readable by all agents. Symlinked to OpenClaw workspace. Cron 2:35 AM. Daily report updated to include AI/SEO status.
+- AGENT_BUS.md: live multi-agent coordination bus. CLAUDE.md session protocol updated.
+- CONTENT_STANDARD.md: 16-layer product content spec (benchmarked vs Skinnora). AI_PLAN.md: unified P1-P5 plan.
+- SEO_MASTER.md: added §E1-E6 external/off-page. Schema map updated. SEO_AUDIT_2026-06-07 archived (all findings closed).
+- Phase 5 (omnichannel): Meta verification rejected; documented workarounds (Meta Business Agent, Telegram bot, WhatsApp BSP).
+- Codex cross-check: while this session ran, Codex delivered P2a (session memory), P2e (product cards + quick replies), P3c (recently viewed rail), P2b (routine builder). All non-conflicting.
+- Blockers: none. Next: auto-extract pa_ingredient + pa_skin_type from existing data, then hybrid humanizer.

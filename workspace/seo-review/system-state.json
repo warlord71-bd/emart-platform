@@ -1,0 +1,200 @@
+{
+  "generated": "2026-06-20T17:36:39Z",
+  "site": {
+    "status": 0,
+    "ok": false,
+    "error": "HTTP Error 403: Forbidden"
+  },
+  "pm2": {
+    "online": [
+      "n8n",
+      "emart-presence",
+      "medimartweb",
+      "emart-competitor-prices",
+      "emartweb",
+      "kbazar24web",
+      "emart-embed"
+    ],
+    "stopped": [
+      "emart-seo-autoscan",
+      "emart-meta-gen",
+      "emart-checkout-monitor",
+      "emart-revenue-health",
+      "emart-blog-generator"
+    ],
+    "total": 12
+  },
+  "agents": {
+    "active": [],
+    "last_completed": [
+      {
+        "agent": "Claude",
+        "when": "2026-06-20 16:00",
+        "what": "P1.1-P1.5 (reranker, chat wiring, incremental sync, auto titles), SEO pipeline actions+Telegram, Review schema, CONTENT_STANDARD.md, AI_PLAN.md"
+      },
+      {
+        "agent": "Codex",
+        "when": "2026-06-20 14:34",
+        "what": "C5 deploy gate closed, pa_concern 57 applied, whole-catalog concern audit (124 critical)"
+      },
+      {
+        "agent": "Codex",
+        "when": "2026-06-20 ~13:00",
+        "what": "Cosmetic shade variant exclusion, internal review hardening, blog gap noise filter"
+      },
+      {
+        "agent": "Task type",
+        "when": "Default owner",
+        "what": "Why"
+      },
+      {
+        "agent": "Code changes (Next.js/React)",
+        "when": "Claude",
+        "what": "Needs build+deploy+smoke test"
+      }
+    ]
+  },
+  "session_log": [
+    {
+      "header": "2026-06-19 (Codex — duplicate shade-variant calibration)",
+      "items": [
+        "Owner confirmed the four M.A.C Studio Fix NC 30/35/37/40 matches are legitimate shade variants, not duplicates.",
+        "Added NC/NW shade-code recognition to `internal_seo_tool.py`; shade variants are classified as `SHADE_VARIANT` and exclu",
+        "Refreshed the committed sample artifact from 6 flags to 2 legitimate Dabo size variants; actual possible duplicates now ",
+        "Validation: Python compile passed; all four M.A.C regression cases, size-variant behavior, and SPF-number guard passed. ",
+        "Blockers: none. Next step: calibrate the 20 internal-link recommendations before expanding the sample."
+      ]
+    },
+    {
+      "header": "2026-06-20 (Codex — SEO/AEO deploy gate + LLM freshness)",
+      "items": [
+        "Closed C5 live in commit `6057a58`: added `/llms-full.txt`, refreshed stale links/facts in `/llms.txt`, linked the expan",
+        "Wired the gate into `deploy.sh` before push; it checks robots/sitemap, representative PDP/category/concern/ingredient/bl",
+        "Confirmed IndexNow public key HTTP 200 and homepage submission HTTP 200; product/category revalidation now awaits the no",
+        "Local and VPS builds passed; live homepage and all 10 SEO/AEO gate groups passed; Cloudflare purged; Local/VPS/origin al",
+        "Blockers: none. Next step: keep C5 closed; future deploys automatically stop before push if an SEO/AEO surface regresses"
+      ]
+    },
+    {
+      "header": "2026-06-20 (Codex — Qdrant pa_concern cross-check/apply)",
+      "items": [
+        "Recounted live catalog: 1,141 published products initially lacked `pa_concern`; the earlier 1,147 task count was stale.",
+        "Crosschecked candidates against 3,625 Qdrant vectors joined to 2,484 products with trusted existing concern labels. Foun",
+        "Applied 57 high-confidence products/relationships only: dryness-hydration 43, sensitivity 8, brightening 4, acne-blemish",
+        "Revalidated `tag:products`; refreshed all 3,625 Qdrant product vectors; final published missing count is 1,084. Remainin",
+        "Removed hardcoded credentials from `qdrant_sync_run.sh`; it now loads protected runtime environment values. Blocker/risk"
+      ]
+    },
+    {
+      "header": "2026-06-20 (Codex — whole-catalog Qdrant concern audit)",
+      "items": [
+        "Ran a read-only audit across all 3,625 Woo products / 3,625 Qdrant points using newly generated concern-free embeddings,",
+        "Corrected audit heuristics for `snail`/`nail` and explicit-evidence conflicts. Final result: 3,268 OK, 124 critical non-",
+        "Critical breakdown: 51 makeup, 45 hair/scalp or hair-removal, 11 supplements, 5 tools/accessories, 12 other non-skincare",
+        "Corrected report: `workspace/audit/active/pa-concern-qdrant-catalog-audit-20260620-134415-corrected.csv`."
+      ]
+    }
+  ],
+  "git_recent": [
+    {
+      "hash": "7742191",
+      "message": "docs(seo): close AEO deploy gate task",
+      "author": "Warlord",
+      "ago": "5 hours ago"
+    },
+    {
+      "hash": "6057a58",
+      "message": "feat(seo): add AEO deploy gate and LLM index",
+      "author": "Warlord",
+      "ago": "5 hours ago"
+    },
+    {
+      "hash": "2876565",
+      "message": "fix(seo): exclude cosmetic shade variants",
+      "author": "Warlord",
+      "ago": "19 hours ago"
+    },
+    {
+      "hash": "fed8cd5",
+      "message": "fix(seo): harden internal review sample run",
+      "author": "Warlord",
+      "ago": "20 hours ago"
+    },
+    {
+      "hash": "bd3c822",
+      "message": "fix(seo): filter brand noise from blog gaps",
+      "author": "Warlord",
+      "ago": "20 hours ago"
+    }
+  ],
+  "crons": [
+    "*/30 * * * * python3 /root/.openclaw/workspace-emart/site_health.py >> /tmp/emart-site-health.log 2>",
+    "0 3 * * * python3 /root/.openclaw/workspace-emart/daily_report.py >> /tmp/emart-daily-report.log 2>&",
+    "0 */6 * * * python3 /root/.openclaw/workspace-emart/low_stock.py >> /tmp/emart-low-stock.log 2>&1",
+    "0 3 * * 0 python3 /root/.openclaw/workspace-emart/competitor_prices.py >> /tmp/emart-competitor.log ",
+    "0 4 * * * python3 /root/.openclaw/workspace-emart/blog_check.py >> /tmp/emart-blog-check.log 2>&1",
+    "0 */6 * * * /usr/bin/python3 /root/.gmc/sync.py >> /root/.gmc/sync-cron.log 2>&1",
+    "0 21 * * * /root/emart-backup.sh >> /root/emart-backups/backup.log 2>&1",
+    "*/20 * * * * /bin/bash -c 'LAST=$(stat -c %Y /root/.pm2/logs/emart-checkout-monitor-out.log 2>/dev/n",
+    "0 3 * * * /root/emart-platform/workspace/scripts/active/qdrant_sync_run.sh >> /tmp/qdrant-sync.log 2",
+    "30 2 * * * cd /root/emart-platform && python3 workspace/seo-review/gsc_tracker.py full >> /tmp/emart",
+    "35 2 * * * cd /root/emart-platform && python3 workspace/seo-review/system_state.py --tg >> /tmp/emar"
+  ],
+  "seo_pipeline": {
+    "actions": {
+      "generated": "2026-06-20",
+      "auto_done": 2,
+      "agent_tasks": 13,
+      "owner_tasks": 3
+    },
+    "summary": {
+      "total_clicks": 753,
+      "total_impressions": 27436,
+      "pages_in_search": 2296,
+      "risers": 20,
+      "fallers": 20,
+      "hot_trends": 1,
+      "cooling_trends": 2
+    },
+    "priority_top5": [
+      {
+        "slug": "cerave-skin-renewing-night-cream-48g",
+        "score": 2434.9,
+        "position": 3.6
+      },
+      {
+        "slug": "skin1004-madagascar-centella-tone-bright",
+        "score": 1526.9,
+        "position": 5.2
+      },
+      {
+        "slug": "cosrx-advanced-snail-mucin-96-power-esse",
+        "score": 937.5,
+        "position": 4.8
+      },
+      {
+        "slug": "axis-y-dark-spot-correcting-glow-serum-5",
+        "score": 651.0,
+        "position": 1.9
+      },
+      {
+        "slug": "medicube-deep-vita-c-capsule-cream-55ml",
+        "score": 562.5,
+        "position": 4
+      }
+    ],
+    "hot_queries": [
+      "skincare bd"
+    ],
+    "cooling_queries": [
+      "best face wash for oily skin",
+      "axis y dark spot serum"
+    ],
+    "gsc_latest": "2026-06-20",
+    "gsc_snapshots": 2
+  },
+  "task_counts": {
+    "checked": 4,
+    "unchecked": 19
+  }
+}

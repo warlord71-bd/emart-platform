@@ -44,9 +44,11 @@ Hotfix on VPS: reverse-sync VPS → Local before committing. Never commit from V
 Quick reference: `workspace/docs/claude-reference/deploy-reference.md`
 
 ## Session Protocol (all agents)
-- **Start:** `cat apps/web/.agent-memory/MEMORY.md` + `tail -50 apps/web/SESSION-LOG.md` + `cat workspace/TASKS.md` + `git log --oneline -10`
-- **End:** append one block to `SESSION-LOG.md` (date · did · blockers · next step) + update `workspace/TASKS.md`
+- **Start:** `cat apps/web/.agent-memory/AGENT_BUS.md` + `cat apps/web/.agent-memory/MEMORY.md` + `tail -50 apps/web/SESSION-LOG.md` + `cat workspace/TASKS.md` + `git log --oneline -10`
+- **Before work:** Check AGENT_BUS.md ACTIVE WORK — if your task overlaps, pick something else. Add your entry to ACTIVE WORK.
+- **End:** Move entry from ACTIVE to LAST COMPLETED in AGENT_BUS.md. Append block to `SESSION-LOG.md`. Update `workspace/TASKS.md`.
 - For Claude: memory also auto-syncs via `/root/.claude/projects/-root-emart-platform/memory/`
+- **Multi-agent coordination:** `apps/web/.agent-memory/AGENT_BUS.md` is the live bus. Read it first, always.
 
 ## Live Business Rules
 - WhatsApp signup: `8801717082135` | support/payment: `8801919797399` — do NOT merge

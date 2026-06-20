@@ -811,10 +811,405 @@ def cmd_humanizer_queue():
               f"tier:{item['content_tier']} "
               f"pos:{item['position']:.1f}{hot}")
 
+# ── Actions + Telegram report ─────────────────────────────────────────────────
+
+ACTIONS_FILE = OUTPUT_DIR / "actions.json"
+TG_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+TG_CHAT_IDS = [
+    "6906852635",   # @Emart_official (business)
+    "6639867372",   # @WARLORD_71 (owner/admin)
+]
+
+def _load_env_from_openclaw():
+    global TG_TOKEN
+    if TG_TOKEN:
+        return
+    env_file = Path("/root/.openclaw/openclaw.env")
+    if env_file.exists():
+        for line in env_file.read_text().strip().split("\n"):
+            if "=" in line and not line.startswith("#"):
+                k, v = line.split("=", 1)
+                if k.strip() == "TELEGRAM_BOT_TOKEN":
+                    TG_TOKEN = v.strip()
+
+def send_telegram(text: str):
+    _load_env_from_openclaw()
+    if not TG_TOKEN:
+        print("  (Telegram bot token not found, skipping)")
+        return
+    import urllib.request, urllib.parse
+    for chat_id in TG_CHAT_IDS:
+        try:
+            url = f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage"
+            data = urllib.parse.urlencode({
+                "chat_id": chat_id, "text": text,
+                "parse_mode": "HTML", "disable_web_page_preview": "true",
+            }).encode()
+            urllib.request.urlopen(url, data, timeout=10)
+        except Exception as e:
+            print(f"  (Telegram → {chat_id} failed: {e})")
+
+def cmd_actions():
+    """
+    Unified action engine:
+    1. Reads all pipeline outputs
+    2. Categorizes actions by WHO does them and HOW
+    3. Auto-executes safe actions (blog topic feed, humanizer queue write)
+    4. Sends structured Telegram report with context
+    5. Writes actions.json for agent consumption
+    """
+    queue = json.loads(QUEUE_FILE.read_text()) if QUEUE_FILE.exists() else {}
+    trends = json.loads(TRENDS_FILE.read_text()) if TRENDS_FILE.exists() else {}
+    search = json.loads(SEARCH_TRENDS_FILE.read_text()) if SEARCH_TRENDS_FILE.exists() else {}
+    blog = json.loads(BLOG_FILE.read_text()) if BLOG_FILE.exists() else {}
+    humanizer = json.loads(HUMANIZER_FILE.read_text()) if HUMANIZER_FILE.exists() else {}
+    snap = load_latest_snapshot()
+
+    auto_done = []    # executed automatically
+    agent_tasks = []  # for Claude/Codex to execute on next session
+    owner_tasks = []  # only the owner can do these
+
+    brand_words = {"emart", "e mart", "e-mart", "us mart", "e mart way"}
+
+    # ── AUTO: Feed blog topics to blog_generator state ──
+    blog_state_file = Path("/root/.openclaw/workspace-emart/blog_generator_state.json")
+    if blog_state_file.exists() and blog.get("candidates"):
+        non_brand_gaps = [
+            g for g in blog.get("candidates", [])
+            if not any(bw in g["query"].lower() for bw in brand_words)
+            and g["impressions"] >= 10
+        ]
+        if non_brand_gaps:
+            try:
+                state = json.loads(blog_state_file.read_text())
+                gsc_topics = state.get("gsc_topics", [])
+                existing = {t.get("query", "") for t in gsc_topics}
+                added = 0
+                for g in non_brand_gaps[:5]:
+                    if g["query"] not in existing:
+                        gsc_topics.append({
+                            "query": g["query"],
+                            "impressions": g["impressions"],
+                            "position": g["position"],
+                            "type": g["suggestion"],
+                            "added": today_str(),
+                        })
+                        added += 1
+                if added:
+                    state["gsc_topics"] = gsc_topics
+                    blog_state_file.write_text(json.dumps(state, indent=2))
+                    auto_done.append(f"Fed {added} blog topics to generator: {', '.join(g['query'] for g in non_brand_gaps[:added])}")
+            except Exception as e:
+                auto_done.append(f"Blog topic feed failed: {e}")
+
+    # ── AUTO: Update humanizer queue file (already done in cmd_humanizer_queue) ──
+    hq_count = humanizer.get("needs_humanization", 0)
+    if hq_count > 0:
+        auto_done.append(f"Humanizer queue updated: {hq_count} products prioritized")
+
+    # ── AUTO: Report title fixes (already done in cmd_fix_titles) ──
+    if TITLE_FIX_LOG.exists():
+        try:
+            tfl = json.loads(TITLE_FIX_LOG.read_text())
+            today_fixes = [f for f in tfl.get("fixes", []) if f.get("date") == today_str()]
+            if today_fixes:
+                slugs = ", ".join(f["slug"][:25] for f in today_fixes[:3])
+                auto_done.append(f"Fixed {len(today_fixes)} titles: {slugs}")
+        except Exception:
+            pass
+
+    # ── AGENT TASKS: Title/description CTR fixes ──
+    for item in queue.get("priority_queue", [])[:5]:
+        if item["position"] <= 5 and item["ctr"] < 0.02:
+            agent_tasks.append({
+                "type": "title_fix",
+                "priority": "HIGH",
+                "slug": item["slug"],
+                "who": "Claude/Codex",
+                "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
+                "why": f"Position {item['position']:.1f} with {item['impressions']} impressions but only {item['ctr']*100:.1f}% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
+                "standard": "Title must include 'Buy' prefix + product name + 'Best Price in Bangladesh' + '| Emart'. Under 65 chars.",
+                "data": {"position": item["position"], "impressions": item["impressions"], "ctr": item["ctr"], "clicks": item["clicks"]},
+            })
+
+    # ── AGENT TASKS: Content humanization ──
+    for item in humanizer.get("queue", [])[:5]:
+        is_hot = item.get("has_hot_trend", False)
+        agent_tasks.append({
+            "type": "humanize",
+            "priority": "HIGH" if is_hot else "MEDIUM",
+            "slug": item["slug"],
+            "who": "Claude/Codex (via humanizer_impression_priority.py)",
+            "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
+            "why": f"Position {item['position']:.1f}, {item['impressions']} impressions, content tier: {item['content_tier']} — {'🔥 trending query, act now' if is_hot else 'generic description hurts CTR and AI citation potential'}",
+            "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
+            "data": {"humanizer_priority": item["humanizer_priority"], "content_tier": item["content_tier"], "hot_trend": is_hot},
+        })
+
+    # ── AGENT TASKS: Investigate ranking drops ──
+    for item in trends.get("fallers", [])[:3]:
+        if abs(item.get("position_delta", 0)) >= 5:
+            agent_tasks.append({
+                "type": "investigate_drop",
+                "priority": "HIGH",
+                "slug": item["slug"],
+                "who": "Claude/Codex",
+                "how": "Check: (1) page still returns 200, (2) canonical intact, (3) schema valid, (4) competitor content changes, (5) GSC coverage report for errors",
+                "why": f"Lost {abs(item['position_delta']):.1f} positions ({item['position_prev']:.1f} → {item['position_now']:.1f}) — if this continues, impressions will drop next week",
+                "standard": "Report findings. Only fix if a technical issue is found. Position fluctuations <3 are normal.",
+                "data": item,
+            })
+
+    # ── AGENT TASKS: Hot trend content ──
+    for item in search.get("hot_queries", []):
+        agent_tasks.append({
+            "type": "trend_content",
+            "priority": "HIGH",
+            "query": item["query"],
+            "who": "Claude/Codex",
+            "how": "Check if existing product/blog page covers this query. If yes, optimize title+description. If no, create blog post or add to /best/ guide.",
+            "why": f"Rising on Google/YouTube right now — {item['gsc_impressions']} impressions at position {item['gsc_position']:.1f}. Content created now will catch the wave.",
+            "standard": "Match the query intent. Product query → optimize PDP. Informational query → blog post. Comparison query → /best/ guide.",
+            "data": item,
+        })
+
+    # ── OWNER TASKS: Things only the owner can do ──
+    # Check review count
+    owner_tasks.append({
+        "type": "collect_reviews",
+        "priority": "MEDIUM",
+        "why": "Only 16 product reviews across 3,500+ products. Review stars in Google SERP require AggregateRating + individual Review schema (now deployed). More reviews = more stars = more clicks.",
+        "action": "Activate post-purchase review request emails via MailPoet. Target: 100 reviews in 60 days.",
+    })
+
+    # GBP
+    owner_tasks.append({
+        "type": "google_business_profile",
+        "priority": "HIGH",
+        "why": "Google Business Profile establishes Emart as a verified entity. LLMs check GBP for 'is this business real'. Without it, AI search won't cite Emart as a trusted retailer.",
+        "action": "Claim/verify GBP at Dhanmondi address. Add store photos, hours, phone. Link to https://e-mart.com.bd",
+    })
+
+    # Social backlinks
+    owner_tasks.append({
+        "type": "social_backlinks",
+        "priority": "LOW",
+        "why": "Facebook/Instagram/YouTube bio links should point to e-mart.com.bd/shop/ URLs. Bidirectional social→site links strengthen entity recognition.",
+        "action": "Update FB/IG/YT/TikTok profile bios to link to https://e-mart.com.bd",
+    })
+
+    # ── Write actions.json ──
+    output = {
+        "generated": today_str(),
+        "period": queue.get("period", {}),
+        "summary": {
+            "total_clicks": snap["summary"]["total_clicks"],
+            "total_impressions": snap["summary"]["total_impressions"],
+            "pages_in_search": snap["summary"]["page_count"],
+            "risers": len(trends.get("risers", [])),
+            "fallers": len(trends.get("fallers", [])),
+            "hot_trends": len(search.get("hot_queries", [])),
+            "cooling_trends": len(search.get("cooling_queries", [])),
+        },
+        "auto_executed": auto_done,
+        "agent_tasks": agent_tasks,
+        "owner_tasks": owner_tasks,
+    }
+
+    ACTIONS_FILE.write_text(json.dumps(output, indent=2, ensure_ascii=False))
+    print(f"Actions: {ACTIONS_FILE}")
+    print(f"  Auto-executed: {len(auto_done)}")
+    print(f"  Agent tasks:   {len(agent_tasks)}")
+    print(f"  Owner tasks:   {len(owner_tasks)}")
+
+    # ── Build Telegram report ──
+    s = output["summary"]
+    tg = []
+    tg.append(f"<b>📊 Emart SEO — {today_str()}</b>")
+    tg.append(f"Clicks: {s['total_clicks']} | Impr: {s['total_impressions']:,}")
+    tg.append(f"▲{s['risers']} risers | ▼{s['fallers']} fallers")
+    if s['hot_trends']:
+        tg.append(f"🔥 {s['hot_trends']} trending queries")
+
+    if auto_done:
+        tg.append(f"\n<b>✅ Auto-done:</b>")
+        for a in auto_done:
+            tg.append(f"  • {a[:70]}")
+
+    if agent_tasks:
+        high = [t for t in agent_tasks if t["priority"] == "HIGH"]
+        med = [t for t in agent_tasks if t["priority"] != "HIGH"]
+        tg.append(f"\n<b>🤖 Agent tasks ({len(agent_tasks)}):</b>")
+        for t in high[:4]:
+            name = t.get("slug", t.get("query", "?"))[:30]
+            tg.append(f"  🔴 {t['type']}: {name}")
+            tg.append(f"     ↳ {t['why'][:80]}")
+        if med:
+            tg.append(f"  + {len(med)} medium priority")
+
+    if owner_tasks:
+        high_owner = [t for t in owner_tasks if t["priority"] == "HIGH"]
+        if high_owner:
+            tg.append(f"\n<b>👤 Owner action needed:</b>")
+            for t in high_owner[:2]:
+                tg.append(f"  ⚡ {t['action'][:80]}")
+
+    tg.append(f"\n<i>Reply /report for full report</i>")
+
+    send_telegram("\n".join(tg))
+    print(f"  Telegram sent to {len(TG_CHAT_IDS)} recipients")
+
+# ── Auto title fix command ────────────────────────────────────────────────────
+
+TITLE_FIX_LOG = OUTPUT_DIR / "title-fixes.json"
+
+def cmd_fix_titles():
+    """
+    Auto-fix meta titles for top CTR-gap products.
+
+    Standard:
+      Buy {Product Name} | Best Price in Bangladesh - Emart
+      Max 65 chars. Drop size first if over, then truncate name.
+      Writes _rank_math_title to WooCommerce (buildProductSeoTitle reads it first).
+      Only fixes products with position ≤5 and CTR <2%.
+      Max 5 per run.
+    """
+    import ssl, urllib.request, urllib.parse
+
+    queue = json.loads(QUEUE_FILE.read_text()) if QUEUE_FILE.exists() else {}
+    targets = [
+        p for p in queue.get("priority_queue", [])
+        if p["position"] <= 5 and p["ctr"] < 0.02 and p["impressions"] >= 50
+    ][:5]
+
+    if not targets:
+        print("No title fix targets (no products with pos ≤5 and CTR <2%)")
+        return
+
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
+    wc_key = os.environ.get("WC_CONSUMER_KEY", "") or os.environ.get("WOO_CONSUMER_KEY", "")
+    wc_secret = os.environ.get("WC_CONSUMER_SECRET", "") or os.environ.get("WOO_CONSUMER_SECRET", "")
+    if not wc_key or not wc_secret:
+        env_file = Path("/var/www/emart-platform/apps/web/.env.local")
+        if env_file.exists():
+            for line in env_file.read_text().strip().split("\n"):
+                if "=" in line and not line.startswith("#"):
+                    k, v = line.split("=", 1)
+                    if k.strip() in ("WOO_CONSUMER_KEY", "WC_CONSUMER_KEY"):
+                        wc_key = v.strip()
+                    elif k.strip() in ("WOO_CONSUMER_SECRET", "WC_CONSUMER_SECRET"):
+                        wc_secret = v.strip()
+    if not wc_key or not wc_secret:
+        print("WooCommerce credentials not found, skipping title fixes")
+        return
+
+    fixes = []
+    for item in targets:
+        slug = item["slug"]
+
+        # Fetch current product name from WC
+        try:
+            url = (f"https://127.0.0.1/wp-json/wc/v3/products?slug={slug}"
+                   f"&consumer_key={wc_key}&consumer_secret={wc_secret}"
+                   f"&_fields=id,name,meta_data")
+            req = urllib.request.Request(url, headers={"Host": "e-mart.com.bd"})
+            resp = urllib.request.urlopen(req, context=ctx, timeout=10)
+            products = json.loads(resp.read())
+            if not products:
+                continue
+            product = products[0]
+        except Exception as e:
+            print(f"  Skip {slug}: fetch failed ({e})")
+            continue
+
+        pid = product["id"]
+        name = product["name"]
+
+        # Check if _rank_math_title already set to our format
+        existing_rm_title = ""
+        for m in product.get("meta_data", []):
+            if m.get("key") == "_rank_math_title":
+                existing_rm_title = m.get("value", "")
+        if existing_rm_title.startswith("Buy "):
+            continue  # already fixed
+
+        # Build new title: Buy {Name} | Price in Bangladesh - Emart
+        # Target: 60-65 chars. Keep as much product name as possible.
+        import re
+
+        title_name = name
+        suffix = " | Price in Bangladesh - Emart"
+        prefix = "Buy "
+        max_total = 65
+
+        full = f"{prefix}{title_name}{suffix}"
+        if len(full) <= max_total:
+            new_title = full
+        else:
+            # Step 1: drop size from name
+            size_match = re.search(r'\s+\d+\s*(ml|g|gm|oz|pcs|kg|l|pack|sheets?)\s*$', title_name, re.I)
+            if size_match:
+                title_name = title_name[:size_match.start()].strip()
+            full = f"{prefix}{title_name}{suffix}"
+            if len(full) <= max_total:
+                new_title = full
+            else:
+                # Step 2: truncate name at word boundary
+                avail = max_total - len(prefix) - len(suffix)
+                title_name = title_name[:avail].rsplit(" ", 1)[0]
+                new_title = f"{prefix}{title_name}{suffix}"
+
+        # Write to WooCommerce
+        try:
+            put_url = (f"https://127.0.0.1/wp-json/wc/v3/products/{pid}"
+                       f"?consumer_key={wc_key}&consumer_secret={wc_secret}")
+            put_data = json.dumps({
+                "meta_data": [{"key": "_rank_math_title", "value": new_title}]
+            }).encode()
+            put_req = urllib.request.Request(
+                put_url, data=put_data, method="PUT",
+                headers={"Host": "e-mart.com.bd", "Content-Type": "application/json"},
+            )
+            urllib.request.urlopen(put_req, context=ctx, timeout=15)
+            fixes.append({
+                "slug": slug, "product_id": pid,
+                "old_title": existing_rm_title or f"{name} Price in Bangladesh | Emart",
+                "new_title": new_title,
+                "position": item["position"], "impressions": item["impressions"],
+            })
+            print(f"  ✅ {slug[:45]} → {new_title[:55]}")
+        except Exception as e:
+            print(f"  ❌ {slug}: write failed ({e})")
+
+    if fixes:
+        # Save log
+        log = json.loads(TITLE_FIX_LOG.read_text()) if TITLE_FIX_LOG.exists() else {"fixes": []}
+        log["fixes"].extend([{**f, "date": today_str()} for f in fixes])
+        TITLE_FIX_LOG.write_text(json.dumps(log, indent=2))
+
+        # Revalidate ISR cache
+        try:
+            secret = os.environ.get("REVALIDATE_SECRET", "")
+            if secret:
+                urllib.request.urlopen(urllib.request.Request(
+                    "https://e-mart.com.bd/api/revalidate",
+                    data=json.dumps({"tag": "products"}).encode(),
+                    headers={"Content-Type": "application/json", "x-revalidate-secret": secret},
+                ), timeout=10)
+                print("  Cache revalidated")
+        except Exception:
+            pass
+
+    print(f"Title fixes: {len(fixes)} applied")
+    return fixes
+
 # ── Full command ──────────────────────────────────────────────────────────────
 
 def cmd_full():
-    """Run pull + score + trends + blog-gaps in sequence."""
+    """Run pull + score + trends + blog-gaps + humanizer-queue + fix-titles + actions."""
     cmd_pull()
     print()
     cmd_score()
@@ -824,6 +1219,10 @@ def cmd_full():
     cmd_blog_gaps()
     print()
     cmd_humanizer_queue()
+    print()
+    cmd_fix_titles()
+    print()
+    cmd_actions()
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 
@@ -835,6 +1234,8 @@ COMMANDS = {
     "blog-gaps": cmd_blog_gaps,
     "search-trends": cmd_search_trends,
     "humanizer-queue": cmd_humanizer_queue,
+    "actions": cmd_actions,
+    "fix-titles": cmd_fix_titles,
 }
 
 if __name__ == "__main__":
