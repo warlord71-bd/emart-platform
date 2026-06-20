@@ -17,6 +17,7 @@ VPS=/var/www/emart-platform
 APP=apps/web
 PM2_NAME=emartweb
 SMOKE_URL=https://e-mart.com.bd/
+SEO_AEO_GATE="$LOCAL/workspace/scripts/active/seo-aeo-deploy-check.mjs"
 CF_ZONE_ID="${CF_ZONE_ID:-}"
 CF_API_TOKEN="${CF_API_TOKEN:-}"
 
@@ -123,6 +124,10 @@ if [ "$HTTP" = "200" ]; then
 else
   die "Smoke test FAILED — got HTTP $HTTP. NOT pushing to repo. Check logs: pm2 logs $PM2_NAME --lines 50"
 fi
+
+info "SEO/AEO live deploy gate"
+node "$SEO_AEO_GATE" || die "SEO/AEO gate FAILED. NOT pushing to repo. Live remains deployed; inspect the reported surface before retrying."
+success "SEO/AEO live deploy gate passed"
 
 # ── Cloudflare cache purge ──────────────────────────────────────────────────
 if [ -n "$CF_ZONE_ID" ] && [ -n "$CF_API_TOKEN" ]; then

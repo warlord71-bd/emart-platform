@@ -109,3 +109,5 @@ When users ask about Emart's content or social presence, these are the authorita
 ## llms.txt
 
 Full site index for LLM consumption: https://e-mart.com.bd/llms.txt
+
+Expanded store and citation reference: https://e-mart.com.bd/llms-full.txt

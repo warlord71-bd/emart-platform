@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 const SITE_HOST = 'e-mart.com.bd';
 const INDEXNOW_KEY = process.env.INDEXNOW_KEY || 'f388fee928b456a35b6b05ea5e34dbea';
 
-async function pingIndexNow(urls: string[]): Promise<void> {
-  if (!urls.length) return;
+async function pingIndexNow(urls: string[]): Promise<boolean> {
+  if (!urls.length) return false;
   try {
-    await fetch('https://api.indexnow.org/indexnow', {
+    const response = await fetch('https://api.indexnow.org/indexnow', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
       body: JSON.stringify({
@@ -18,8 +18,10 @@ async function pingIndexNow(urls: string[]): Promise<void> {
       }),
       signal: AbortSignal.timeout(5000),
     });
+    return response.ok;
   } catch {
     // non-blocking — IndexNow failure must never break revalidation
+    return false;
   }
 }
 
@@ -87,14 +89,14 @@ export async function POST(req: NextRequest) {
     revalidatePath(`/shop/${slug}`);
     revalidatePath('/shop');
     revalidated.push(`tag:product-${slug}`, `/shop/${slug}`, '/shop');
-    void pingIndexNow([`https://${SITE_HOST}/shop/${slug}`]);
+    await pingIndexNow([`https://${SITE_HOST}/shop/${slug}`]);
   } else if (slug && type === 'category') {
     // Category update: flush this category + shop listing, leave unrelated product caches intact.
     revalidatePath(`/category/${slug}`);
     revalidatePath('/shop');
     revalidateTag('products');
     revalidated.push(`/category/${slug}`, '/shop', 'tag:products');
-    void pingIndexNow([`https://${SITE_HOST}/category/${slug}`]);
+    await pingIndexNow([`https://${SITE_HOST}/category/${slug}`]);
   } else {
     return NextResponse.json(
       { ok: false, error: 'provide tag, path, or slug+type' },

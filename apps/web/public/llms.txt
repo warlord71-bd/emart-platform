@@ -1,6 +1,6 @@
 # Emart Skincare Bangladesh
 
-> Emart Skincare Bangladesh (e-mart.com.bd) is Bangladesh's trusted online destination for authentic Korean, Japanese, and international skincare and beauty products. Tagline: Authentic Korean, Japanese & Global Beauty. Serving all 64 districts. Cash on delivery (COD), bKash, and Nagad accepted. All products are 100% authentic, sourced directly from brand distributors.
+> Emart Skincare Bangladesh (e-mart.com.bd) is Bangladesh's trusted online destination for authentic Korean, Japanese, and international skincare and beauty products. Tagline: Global Beauty. Local Trust. Serving all 64 districts. Cash on delivery (COD), bKash, and Nagad accepted.
 
 ## Shop
 
@@ -29,18 +29,17 @@
 - [CeraVe](https://e-mart.com.bd/brands/cerave): American dermatologist-developed skincare — ceramide moisturizers, cleansers.
 - [The Ordinary](https://e-mart.com.bd/brands/the-ordinary): Evidence-based skincare — niacinamide, retinol, AHA 30%, hyaluronic acid.
 - [Neutrogena](https://e-mart.com.bd/brands/neutrogena): American skincare — hydro boost, sunscreen, retinol range.
-- [Dr. Jart+](https://e-mart.com.bd/brands/dr-jart): Korean dermatological skincare — Cicapair tiger grass, Ceramidin.
 
 ## Categories
 
 - [All Categories](https://e-mart.com.bd/categories): Browse by skincare type, concern, origin, and ingredient.
-- [Acne & Blemish Care](https://e-mart.com.bd/category/acne-blemish-care): Acne patches, BHA cleansers, spot treatments, salicylic acid products.
+- [Acne & Blemish Care](https://e-mart.com.bd/concerns/acne-blemish-care): Acne patches, BHA cleansers, spot treatments, salicylic acid products.
 - [Sunscreen](https://e-mart.com.bd/category/sunscreen): Korean, Japanese, and European SPF 30–50+ sunscreens for Bangladesh climate.
 - [Serum & Ampoule](https://e-mart.com.bd/category/serums-ampoules-essences): Vitamin C, niacinamide, retinol, hyaluronic acid, and centella serums.
 - [Moisturizer](https://e-mart.com.bd/category/cream-moisturizer): Lightweight gels, ceramide creams, and barrier repair moisturizers.
 - [Face Cleanser](https://e-mart.com.bd/category/face-cleansers): Low-pH cleansers, foam cleansers, micellar water, oil cleansers.
-- [Toner & Essence](https://e-mart.com.bd/category/toners-essences): Hydrating toners, exfoliating toners, first essences.
-- [Sheet Masks](https://e-mart.com.bd/category/sheet-face-mask): Korean and Japanese sheet masks for all skin types.
+- [Toner & Essence](https://e-mart.com.bd/category/toners-mists): Hydrating toners, exfoliating toners, first essences.
+- [Face Masks](https://e-mart.com.bd/category/face-masks): Korean and Japanese face masks for all skin types.
 - [Eye Care](https://e-mart.com.bd/category/eye-care): Eye creams and patches for dark circles, puffiness, and fine lines.
 - [Korean Beauty](https://e-mart.com.bd/category/korean-beauty): Full K-beauty selection — bestsellers and trending products.
 - [Japanese Beauty](https://e-mart.com.bd/category/japanese-beauty): J-beauty selection — Hada Labo, Biore, Kose, Rohto.
@@ -49,12 +48,12 @@
 ## Skin Concerns
 
 - [All Concerns](https://e-mart.com.bd/concerns): Browse products by skin concern.
-- [Acne](https://e-mart.com.bd/concerns/acne): Products for acne-prone skin — salicylic acid, niacinamide, tea tree.
-- [Hyperpigmentation](https://e-mart.com.bd/concerns/hyperpigmentation): Vitamin C, alpha arbutin, tranexamic acid for dark spots and uneven tone.
+- [Acne](https://e-mart.com.bd/concerns/acne-blemish-care): Products for acne-prone skin — salicylic acid, niacinamide, tea tree.
+- [Hyperpigmentation & Brightening](https://e-mart.com.bd/concerns/brightening): Vitamin C, alpha arbutin, tranexamic acid for dark spots and uneven tone.
 - [Dryness & Dehydration](https://e-mart.com.bd/concerns/dryness-hydration): Hyaluronic acid, ceramide, and occlusives for dry skin.
 - [Sensitivity](https://e-mart.com.bd/concerns/sensitivity): Fragrance-free, centella, and barrier-repair products.
-- [Anti-Aging](https://e-mart.com.bd/concerns/anti-aging): Retinol, peptide, and collagen products for wrinkles and firmness.
-- [Sun Protection](https://e-mart.com.bd/concerns/sun-protection): SPF products and post-sun care for Bangladesh climate.
+- [Anti-Aging](https://e-mart.com.bd/concerns/anti-aging-repair): Retinol, peptide, and collagen products for wrinkles and firmness.
+- [Sun Protection](https://e-mart.com.bd/concerns/sunscreen): SPF products and post-sun care for Bangladesh climate.
 
 ## Origins
 
@@ -85,4 +84,5 @@
 - Language: English and Bengali (বাংলা)
 - Founded: Dhaka, Bangladesh
 - Specialty: Authentic K-beauty and J-beauty for South Asian skin types and climate
-- Support: WhatsApp +8801717082135, Hotline +8809696682135
+- Sales WhatsApp: +8801717082135
+- Support/payment WhatsApp: +8801919797399

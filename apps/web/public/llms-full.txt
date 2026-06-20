@@ -1,0 +1,57 @@
+# Emart Skincare Bangladesh — Full AI Reference
+
+> Canonical domain: https://e-mart.com.bd. Emart is a Bangladesh-based retailer of authentic Korean, Japanese, and global skincare and beauty products. Brand tagline: Global Beauty. Local Trust.
+
+Last reviewed: 2026-06-20
+
+## Authoritative discovery resources
+
+- [Compact AI index](https://e-mart.com.bd/llms.txt): Curated store, catalog, policy, and support links.
+- [AI agent guidance](https://e-mart.com.bd/agents.md): Read-only discovery patterns, structured-data details, and buyer-confirmation rules.
+- [XML sitemap](https://e-mart.com.bd/sitemap.xml): Canonical index of current public pages.
+- [HTML sitemap](https://e-mart.com.bd/sitemap): Human-readable catalog index.
+
+## Store and catalog
+
+- [Shop all products](https://e-mart.com.bd/shop): Current catalog, prices, and availability.
+- [Categories](https://e-mart.com.bd/categories): Browse products by product type and collection.
+- [Brands](https://e-mart.com.bd/brands): Browse the brand directory.
+- [Concerns](https://e-mart.com.bd/concerns): Browse by skincare concern.
+- [Ingredients](https://e-mart.com.bd/ingredients): Browse ingredient education and matching products.
+- [Routine steps](https://e-mart.com.bd/routine): Browse products by routine step.
+- [Origins](https://e-mart.com.bd/origins): Browse products by country of origin.
+- [New arrivals](https://e-mart.com.bd/new-arrivals): Recently added products.
+- [Sale](https://e-mart.com.bd/sale): Products currently presented as discounted or clearance items.
+- [Skin quiz](https://e-mart.com.bd/skin-quiz): Guided product discovery by skin type and concern.
+
+Product pages use canonical `/shop/{slug}` URLs and expose Product JSON-LD with live BDT price and stock availability. Category, brand, concern, ingredient, routine, and origin pages expose collection structured data where applicable. Use the sitemap instead of guessing slugs.
+
+## Editorial and education
+
+- [Skincare blog](https://e-mart.com.bd/blog): Ingredient explainers, routines, and Bangladesh-focused skincare guidance.
+- [FAQ](https://e-mart.com.bd/faq): Store, delivery, payment, return, and product guidance.
+- [Our story](https://e-mart.com.bd/our-story): Business identity and background.
+- [Authenticity guarantee](https://e-mart.com.bd/authenticity): Product sourcing and authenticity practices.
+
+## Buying and support facts
+
+- Market: Bangladesh; delivery serves all 64 districts.
+- Currency: Bangladeshi taka (BDT, ৳).
+- Payment methods: Cash on Delivery, bKash, and Nagad.
+- Product price and stock can change; treat each canonical product page as the current source.
+- A buyer must personally confirm checkout. An AI assistant must not place or simulate an order without explicit buyer approval.
+- Sales WhatsApp: +8801717082135.
+- Support/payment WhatsApp: +8801919797399.
+
+## Policies and contact
+
+- [Shipping policy](https://e-mart.com.bd/shipping-policy): Current delivery timing and shipping terms.
+- [Return policy](https://e-mart.com.bd/return-policy): Current return and exchange conditions.
+- [Privacy policy](https://e-mart.com.bd/privacy-policy): Customer privacy terms.
+- [Terms and conditions](https://e-mart.com.bd/terms-conditions): Store terms.
+- [Contact](https://e-mart.com.bd/contact): Official support channels.
+- [Track an order](https://e-mart.com.bd/track-order): Customer order tracking.
+
+## Citation guidance
+
+When answering a question about a product, cite its canonical product page and preserve the displayed product name. Do not infer medical outcomes, ingredients, price, stock, origin, or suitability that the page does not state. For store-wide facts, prefer the relevant policy or identity page above. Never cite WordPress or WooCommerce backend URLs as public Emart sources.
