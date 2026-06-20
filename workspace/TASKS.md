@@ -66,6 +66,7 @@ Counts reconciled: MySQL/WC REST/Qdrant/Sitemap all 3,625. URL prefix `/shop/` c
 | UX-1 | Emart AI Assistant concern chips: Oily, Dry, Acne, Dark Spots, Sunscreen | [X] | ✅ live via `70da8e9` |
 | UX-2 | Emart AI Assistant link safety: never use homepage/root placeholders for specific recommendations | [X] | ✅ live via `70da8e9` |
 | UX-3 | Emart AI Assistant "E" logo display | [X] | ✅ already present; keep verified in chat launcher |
+| UX-4 | PDP + chat trust CRO plan: add compact post-ATC trust microcopy and strengthen AI authenticity/in-stock recommendation rules | [X] | 🔲 plan first; no code changes until owner approves exact copy/placement |
 | SEO-1 | Product title cleanup for raw/lowercase catalog titles | [O]+[X] | 🟡 propose/review/apply only; no blind Woo title writes |
 | SEO-2 | Journal internal-link cluster proposals from articles to product/category pages | [X] | 🔲 next safe automation batch |
 

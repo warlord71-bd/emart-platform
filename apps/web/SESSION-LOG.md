@@ -2753,3 +2753,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed chat markdown rendering for relative internal links like `[Product](/shop/slug)`, matching the agent prompt and preventing raw markdown from appearing in customer replies.
 - Tightened the assistant prompt to forbid homepage/root placeholder links for specific resources and to avoid raw code/JSON/database placeholders in customer-facing answers.
 - Validation: `npm run lint` passed with existing image warnings; `npm run build` passed despite transient Woo timeout retries during static generation.
+
+## 2026-06-20 (Codex — task board first rule)
+- Added `UX-4` to `workspace/TASKS.md` for the PDP/chat trust CRO plan; implementation remains paused until exact copy and placement are approved.
+- Recorded owner workflow preference in agent memory: check/update `workspace/TASKS.md` before any non-trivial work, then plan or implement.
+- No storefront code, catalog data, checkout, cart, payment, order, stock, price, WooCommerce DB, deploy, or live system changes were made.

@@ -1,4 +1,5 @@
 - [Execution style for backend/config tasks](feedback_execution_style.md) — execute end-to-end, report only at end; auto-pick safer option mid-task; confirm only for frontend changes under `apps/web/`
+- [Task board first rule](feedback_task_board_first.md) — before non-trivial work, check/update `workspace/TASKS.md` first; then plan or implement
 - [Never leave a job half-finished due to token budget](feedback_finish_what_you_start.md) — estimate cost up front; refuse if it won't fit; never end with unbuilt/uncommitted/undeployed work unless user said stop
 - [Two WhatsApp numbers are intentional](project_whatsapp_numbers.md) — signup uses `8801717082135` (sales), support/FAB/Header uses `8801919797399`; do not consolidate
 - [Newsletter + MailPoet subscribe stack](project_newsletter_stack.md) — Next `/api/newsletter/subscribe` → mu-plugin `/wp-json/emart/v1/subscribe` → `SubscriberActions::subscribe`; MailPoet captcha is off by design
