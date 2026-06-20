@@ -8,13 +8,16 @@ and YouTube search trends, and writes a priority queue that integrates
 with the existing seo-review pipeline and content humanizer.
 
 Usage:
-  python3 workspace/seo-review/gsc_tracker.py pull         # daily GSC snapshot
-  python3 workspace/seo-review/gsc_tracker.py score        # score + priority queue
-  python3 workspace/seo-review/gsc_tracker.py full         # pull + score + trends + blog-gaps
-  python3 workspace/seo-review/gsc_tracker.py trends       # 7-day position deltas
-  python3 workspace/seo-review/gsc_tracker.py blog-gaps    # content gaps → blog topics
-  python3 workspace/seo-review/gsc_tracker.py search-trends # Google+YouTube trend signals
+  python3 workspace/seo-review/gsc_tracker.py pull            # daily GSC snapshot
+  python3 workspace/seo-review/gsc_tracker.py score           # score + priority queue
+  python3 workspace/seo-review/gsc_tracker.py full            # pull + score + trends + propose-titles + actions
+  python3 workspace/seo-review/gsc_tracker.py trends          # 7-day position deltas
+  python3 workspace/seo-review/gsc_tracker.py blog-gaps       # content gaps → blog topics
+  python3 workspace/seo-review/gsc_tracker.py search-trends   # Google+YouTube trend signals
   python3 workspace/seo-review/gsc_tracker.py humanizer-queue # prioritized humanizer targets
+  python3 workspace/seo-review/gsc_tracker.py propose-titles  # propose title fixes (read-only)
+  python3 workspace/seo-review/gsc_tracker.py review-titles   # print pending title queue
+  python3 workspace/seo-review/gsc_tracker.py apply-titles    # write approved titles to Woo
 
 Outputs:
   gsc-daily/YYYY-MM-DD.json        — raw GSC page+query data
@@ -23,6 +26,7 @@ Outputs:
   blog-topic-candidates.json        — queries with impressions but no matching page
   search-trends.json                — Google Trends + YouTube trend data for top queries
   humanizer-queue.json              — products needing description humanization, by priority
+  title_fixes_pending.json          — proposed title changes awaiting review
 
 Integrates with:
   agentic-score.jsonl               — merges on-page SEO score with search position
@@ -907,14 +911,13 @@ def cmd_actions():
     if hq_count > 0:
         auto_done.append(f"Humanizer queue updated: {hq_count} products prioritized")
 
-    # ── AUTO: Report title fixes (already done in cmd_fix_titles) ──
-    if TITLE_FIX_LOG.exists():
+    # ── AUTO: Report title proposals (from cmd_propose_titles) ──
+    if TITLE_PENDING_FILE.exists():
         try:
-            tfl = json.loads(TITLE_FIX_LOG.read_text())
-            today_fixes = [f for f in tfl.get("fixes", []) if f.get("date") == today_str()]
-            if today_fixes:
-                slugs = ", ".join(f["slug"][:25] for f in today_fixes[:3])
-                auto_done.append(f"Fixed {len(today_fixes)} titles: {slugs}")
+            tp = json.loads(TITLE_PENDING_FILE.read_text())
+            pending_count = sum(1 for e in tp if e.get("status") == "pending")
+            if pending_count:
+                auto_done.append(f"{pending_count} title fixes proposed — awaiting review")
         except Exception:
             pass
 
@@ -928,7 +931,7 @@ def cmd_actions():
                 "who": "Claude/Codex",
                 "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
                 "why": f"Position {item['position']:.1f} with {item['impressions']} impressions but only {item['ctr']*100:.1f}% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
-                "standard": "Title must include 'Buy' prefix + product name + 'Best Price in Bangladesh' + '| Emart'. Under 65 chars.",
+                "standard": "Title: '{Product Name} Price in Bangladesh | Emart'. Max 70 chars. Review via: python3 gsc_tracker.py review-titles",
                 "data": {"position": item["position"], "impressions": item["impressions"], "ctr": item["ctr"], "clicks": item["clicks"]},
             })
 
@@ -1059,138 +1062,205 @@ def cmd_actions():
     send_telegram("\n".join(tg))
     print(f"  Telegram sent to {len(TG_CHAT_IDS)} recipients")
 
-# ── Auto title fix command ────────────────────────────────────────────────────
+# ── Title propose / review / apply pipeline ──────────────────────────────────
 
-TITLE_FIX_LOG = OUTPUT_DIR / "title-fixes.json"
+TITLE_PENDING_FILE = OUTPUT_DIR / "title_fixes_pending.json"
+TITLE_SUFFIX = " Price in Bangladesh | Emart"
+TITLE_MAX = 70
 
-def cmd_fix_titles():
-    """
-    Auto-fix meta titles for top CTR-gap products.
 
-    Standard:
-      Buy {Product Name} | Best Price in Bangladesh - Emart
-      Max 65 chars. Drop size first if over, then truncate name.
-      Writes _rank_math_title to WooCommerce (buildProductSeoTitle reads it first).
-      Only fixes products with position ≤5 and CTR <2%.
-      Max 5 per run.
-    """
-    import ssl, urllib.request, urllib.parse
+def _build_title(name: str) -> str:
+    """Match Next.js buildProductSeoTitle format exactly."""
+    full = f"{name}{TITLE_SUFFIX}"
+    if len(full) <= TITLE_MAX:
+        return full
+    avail = TITLE_MAX - len(TITLE_SUFFIX)
+    truncated = name[:avail].rsplit(" ", 1)[0]
+    return f"{truncated}{TITLE_SUFFIX}"
 
-    queue = json.loads(QUEUE_FILE.read_text()) if QUEUE_FILE.exists() else {}
-    targets = [
-        p for p in queue.get("priority_queue", [])
-        if p["position"] <= 5 and p["ctr"] < 0.02 and p["impressions"] >= 50
-    ][:5]
 
-    if not targets:
-        print("No title fix targets (no products with pos ≤5 and CTR <2%)")
-        return
-
+def _wc_ssl_ctx():
+    import ssl
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
+    return ctx
 
-    wc_key = os.environ.get("WC_CONSUMER_KEY", "") or os.environ.get("WOO_CONSUMER_KEY", "")
-    wc_secret = os.environ.get("WC_CONSUMER_SECRET", "") or os.environ.get("WOO_CONSUMER_SECRET", "")
-    if not wc_key or not wc_secret:
-        env_file = Path("/var/www/emart-platform/apps/web/.env.local")
-        if env_file.exists():
-            for line in env_file.read_text().strip().split("\n"):
-                if "=" in line and not line.startswith("#"):
-                    k, v = line.split("=", 1)
-                    if k.strip() in ("WOO_CONSUMER_KEY", "WC_CONSUMER_KEY"):
-                        wc_key = v.strip()
-                    elif k.strip() in ("WOO_CONSUMER_SECRET", "WC_CONSUMER_SECRET"):
-                        wc_secret = v.strip()
-    if not wc_key or not wc_secret:
-        print("WooCommerce credentials not found, skipping title fixes")
-        return
 
-    fixes = []
+def _load_wc_creds():
+    key = os.environ.get("WOO_CONSUMER_KEY", "") or os.environ.get("WC_CONSUMER_KEY", "")
+    secret = os.environ.get("WOO_CONSUMER_SECRET", "") or os.environ.get("WC_CONSUMER_SECRET", "")
+    if key and secret:
+        return key, secret
+    env_file = Path("/var/www/emart-platform/apps/web/.env.local")
+    if env_file.exists():
+        for line in env_file.read_text().strip().split("\n"):
+            if "=" in line and not line.startswith("#"):
+                k, v = line.split("=", 1)
+                k = k.strip()
+                if k in ("WOO_CONSUMER_KEY", "WC_CONSUMER_KEY"):
+                    key = v.strip()
+                elif k in ("WOO_CONSUMER_SECRET", "WC_CONSUMER_SECRET"):
+                    secret = v.strip()
+    return key, secret
+
+
+def _wc_get_product(slug: str, wc_key: str, wc_secret: str, ctx):
+    """Fetch one product by slug (read-only GET)."""
+    import urllib.request
+    url = (f"https://127.0.0.1/wp-json/wc/v3/products?slug={slug}"
+           f"&consumer_key={wc_key}&consumer_secret={wc_secret}"
+           f"&_fields=id,name,meta_data")
+    req = urllib.request.Request(url, headers={"Host": "e-mart.com.bd"})
+    resp = urllib.request.urlopen(req, context=ctx, timeout=10)
+    products = json.loads(resp.read())
+    return products[0] if products else None
+
+
+def _load_pending():
+    if TITLE_PENDING_FILE.exists():
+        return json.loads(TITLE_PENDING_FILE.read_text())
+    return []
+
+
+def _save_pending(entries):
+    TITLE_PENDING_FILE.write_text(json.dumps(entries, indent=2, ensure_ascii=False))
+
+
+def cmd_propose_titles():
+    """Propose title fixes for high-opportunity products. READ-ONLY — never writes to WooCommerce."""
+
+    wc_key, wc_secret = _load_wc_creds()
+    if not wc_key or not wc_secret:
+        print("WooCommerce credentials not found, skipping title proposals")
+        return 0
+
+    ctx = _wc_ssl_ctx()
+    queue = json.loads(QUEUE_FILE.read_text()) if QUEUE_FILE.exists() else {}
+    targets = [
+        p for p in queue.get("priority_queue", [])
+        if p["position"] <= 10 and p["impressions"] >= 50
+    ][:20]
+
+    if not targets:
+        print("No title proposal targets")
+        return 0
+
+    pending = _load_pending()
+    already = {e["slug"] for e in pending if e.get("status") in ("pending", "approved", "applied")}
+    proposed = 0
+
     for item in targets:
         slug = item["slug"]
+        if slug in already:
+            continue
 
-        # Fetch current product name from WC
         try:
-            url = (f"https://127.0.0.1/wp-json/wc/v3/products?slug={slug}"
-                   f"&consumer_key={wc_key}&consumer_secret={wc_secret}"
-                   f"&_fields=id,name,meta_data")
-            req = urllib.request.Request(url, headers={"Host": "e-mart.com.bd"})
-            resp = urllib.request.urlopen(req, context=ctx, timeout=10)
-            products = json.loads(resp.read())
-            if not products:
-                continue
-            product = products[0]
+            product = _wc_get_product(slug, wc_key, wc_secret, ctx)
         except Exception as e:
             print(f"  Skip {slug}: fetch failed ({e})")
             continue
+        if not product:
+            continue
 
-        pid = product["id"]
         name = product["name"]
-
-        # Check if _rank_math_title already set to our format
-        existing_rm_title = ""
+        current_rm = ""
         for m in product.get("meta_data", []):
             if m.get("key") == "_rank_math_title":
-                existing_rm_title = m.get("value", "")
-        if existing_rm_title.startswith("Buy "):
-            continue  # already fixed
+                current_rm = m.get("value", "")
 
-        # Build new title: Buy {Name} | Price in Bangladesh - Emart
-        # Target: 60-65 chars. Keep as much product name as possible.
-        import re
+        expected = _build_title(name)
+        if current_rm == expected:
+            continue
 
-        title_name = name
-        suffix = " | Price in Bangladesh - Emart"
-        prefix = "Buy "
-        max_total = 65
+        pending.append({
+            "product_id": product["id"],
+            "slug": slug,
+            "old_title": current_rm or f"(none — fallback: {name}{TITLE_SUFFIX})",
+            "new_title": expected,
+            "reason": f"pos {item['position']:.1f}, {item['impressions']} impr, {item['ctr']*100:.1f}% CTR",
+            "proposed_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "status": "pending",
+        })
+        proposed += 1
 
-        full = f"{prefix}{title_name}{suffix}"
-        if len(full) <= max_total:
-            new_title = full
-        else:
-            # Step 1: drop size from name
-            size_match = re.search(r'\s+\d+\s*(ml|g|gm|oz|pcs|kg|l|pack|sheets?)\s*$', title_name, re.I)
-            if size_match:
-                title_name = title_name[:size_match.start()].strip()
-            full = f"{prefix}{title_name}{suffix}"
-            if len(full) <= max_total:
-                new_title = full
-            else:
-                # Step 2: truncate name at word boundary
-                avail = max_total - len(prefix) - len(suffix)
-                title_name = title_name[:avail].rsplit(" ", 1)[0]
-                new_title = f"{prefix}{title_name}{suffix}"
+    _save_pending(pending)
+    print(f"Title proposals: {proposed} new, {len(pending)} total in queue → {TITLE_PENDING_FILE}")
+    return proposed
 
-        # Write to WooCommerce
+
+def cmd_review_titles():
+    """Print the pending title review queue."""
+    pending = _load_pending()
+    by_status = {}
+    for e in pending:
+        by_status.setdefault(e.get("status", "?"), []).append(e)
+
+    for status in ("pending", "approved", "applied", "rejected"):
+        items = by_status.get(status, [])
+        if not items:
+            continue
+        print(f"\n── {status.upper()} ({len(items)}) ──")
+        for i, e in enumerate(items):
+            print(f"  [{i}] {e['slug']}")
+            print(f"      old: {e['old_title'][:70]}")
+            print(f"      new: {e['new_title'][:70]}")
+            print(f"      why: {e.get('reason', '')}")
+
+    if not pending:
+        print("No title proposals in queue")
+
+
+def cmd_apply_titles():
+    """Write approved titles to WooCommerce. Only touches entries with status=approved."""
+    import urllib.request
+
+    wc_key, wc_secret = _load_wc_creds()
+    if not wc_key or not wc_secret:
+        print("WooCommerce credentials not found")
+        return
+
+    ctx = _wc_ssl_ctx()
+    pending = _load_pending()
+    approved = [e for e in pending if e.get("status") == "approved"]
+
+    if not approved:
+        print("No approved titles to apply. Edit title_fixes_pending.json: set status to 'approved'.")
+        return
+
+    applied = 0
+    for entry in approved:
+        pid = entry["product_id"]
+        new_title = entry["new_title"]
         try:
             put_url = (f"https://127.0.0.1/wp-json/wc/v3/products/{pid}"
                        f"?consumer_key={wc_key}&consumer_secret={wc_secret}")
-            put_data = json.dumps({
-                "meta_data": [{"key": "_rank_math_title", "value": new_title}]
-            }).encode()
+            put_data = json.dumps({"meta_data": [{"key": "_rank_math_title", "value": new_title}]}).encode()
             put_req = urllib.request.Request(
                 put_url, data=put_data, method="PUT",
                 headers={"Host": "e-mart.com.bd", "Content-Type": "application/json"},
             )
-            urllib.request.urlopen(put_req, context=ctx, timeout=15)
-            fixes.append({
-                "slug": slug, "product_id": pid,
-                "old_title": existing_rm_title or f"{name} Price in Bangladesh | Emart",
-                "new_title": new_title,
-                "position": item["position"], "impressions": item["impressions"],
-            })
-            print(f"  ✅ {slug[:45]} → {new_title[:55]}")
+            resp = urllib.request.urlopen(put_req, context=ctx, timeout=15)
+            result = json.loads(resp.read())
+
+            written = ""
+            for m in result.get("meta_data", []):
+                if m.get("key") == "_rank_math_title":
+                    written = m.get("value", "")
+            if written != new_title:
+                print(f"  ⚠ {entry['slug']}: verify mismatch (wrote '{new_title}', read back '{written}')")
+                continue
+
+            entry["status"] = "applied"
+            entry["applied_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            applied += 1
+            print(f"  ✅ {entry['slug']} → {new_title[:60]}")
         except Exception as e:
-            print(f"  ❌ {slug}: write failed ({e})")
+            print(f"  ❌ {entry['slug']}: {e}")
 
-    if fixes:
-        # Save log
-        log = json.loads(TITLE_FIX_LOG.read_text()) if TITLE_FIX_LOG.exists() else {"fixes": []}
-        log["fixes"].extend([{**f, "date": today_str()} for f in fixes])
-        TITLE_FIX_LOG.write_text(json.dumps(log, indent=2))
+    _save_pending(pending)
 
-        # Revalidate ISR cache
+    if applied:
         try:
             secret = os.environ.get("REVALIDATE_SECRET", "")
             if secret:
@@ -1199,17 +1269,16 @@ def cmd_fix_titles():
                     data=json.dumps({"tag": "products"}).encode(),
                     headers={"Content-Type": "application/json", "x-revalidate-secret": secret},
                 ), timeout=10)
-                print("  Cache revalidated")
+                print(f"  Cache revalidated (tag:products)")
         except Exception:
             pass
 
-    print(f"Title fixes: {len(fixes)} applied")
-    return fixes
+    print(f"Applied: {applied}/{len(approved)}")
 
 # ── Full command ──────────────────────────────────────────────────────────────
 
 def cmd_full():
-    """Run pull + score + trends + blog-gaps + humanizer-queue + fix-titles + actions."""
+    """Run pull + score + trends + blog-gaps + humanizer-queue + propose-titles + actions."""
     cmd_pull()
     print()
     cmd_score()
@@ -1220,7 +1289,7 @@ def cmd_full():
     print()
     cmd_humanizer_queue()
     print()
-    cmd_fix_titles()
+    cmd_propose_titles()
     print()
     cmd_actions()
 
@@ -1235,7 +1304,9 @@ COMMANDS = {
     "search-trends": cmd_search_trends,
     "humanizer-queue": cmd_humanizer_queue,
     "actions": cmd_actions,
-    "fix-titles": cmd_fix_titles,
+    "propose-titles": cmd_propose_titles,
+    "review-titles": cmd_review_titles,
+    "apply-titles": cmd_apply_titles,
 }
 
 if __name__ == "__main__":
