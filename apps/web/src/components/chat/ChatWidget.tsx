@@ -1,7 +1,8 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import type { Message } from 'ai';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
@@ -9,15 +10,55 @@ import ChatInput from './ChatInput';
 type Tab = 'chat' | 'whatsapp';
 
 const WHATSAPP_HREF = 'https://wa.me/8801919797399';
+const SESSION_KEY = 'emart-chat-session';
+const MESSAGES_KEY = 'emart-chat-messages';
+
+function getSessionId(): string {
+  try {
+    let id = sessionStorage.getItem(SESSION_KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      sessionStorage.setItem(SESSION_KEY, id);
+    }
+    return id;
+  } catch {
+    return 'anon';
+  }
+}
+
+function loadMessages(): Message[] {
+  try {
+    const raw = sessionStorage.getItem(MESSAGES_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveMessages(msgs: Message[]) {
+  try {
+    sessionStorage.setItem(MESSAGES_KEY, JSON.stringify(msgs));
+  } catch { /* sessionStorage unavailable */ }
+}
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<Tab>('chat');
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const sessionId = useMemo(() => getSessionId(), []);
+  const initialMessages = useMemo(() => loadMessages(), []);
+
   const { messages, input, handleInputChange, handleSubmit, isLoading, append } = useChat({
     api: '/api/chat',
+    id: sessionId,
+    initialMessages,
+    body: { sessionId },
   });
+
+  useEffect(() => {
+    if (messages.length > 0) saveMessages(messages);
+  }, [messages]);
 
   const handleSend = useCallback(
     (text: string) => {

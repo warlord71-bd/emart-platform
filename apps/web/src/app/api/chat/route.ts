@@ -2,16 +2,23 @@ import { streamText } from 'ai';
 import { agentModel } from '@/lib/agent/openrouter';
 import { agentTools } from '@/lib/agent/tools';
 import { SYSTEM_PROMPT } from '@/lib/agent/system-prompt';
+import { buildContextNote, extractContext, updateSession } from '@/lib/agent/sessionStore';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, sessionId } = await req.json();
+  const sid = typeof sessionId === 'string' && sessionId ? sessionId : 'anon';
+
+  const ctx = extractContext(messages);
+  if (Object.keys(ctx).length > 0) updateSession(sid, ctx);
+
+  const contextNote = buildContextNote(sid);
 
   const result = await streamText({
     model: agentModel,
-    system: SYSTEM_PROMPT,
+    system: SYSTEM_PROMPT + contextNote,
     messages,
     tools: agentTools,
     maxSteps: 3,
