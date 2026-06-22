@@ -3,7 +3,7 @@
 import { useChat } from '@ai-sdk/react';
 import type { Message } from 'ai';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { MessageCircle, Sparkles, X } from 'lucide-react';
+import { MessageCircle, Minus, Sparkles, X } from 'lucide-react';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
 import EmartAssistantLogo from './EmartAssistantLogo';
@@ -160,13 +160,25 @@ export default function ChatWidget() {
                   <p className="text-[11px] opacity-80">Skincare · Orders · Shipping</p>
                 </div>
               </div>
-              <button
-                onClick={() => setOpen(false)}
-                className="rounded-lg p-1 transition-colors hover:bg-white/20"
-                aria-label="Close chat"
-              >
-                <X size={20} />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg p-1 transition-colors hover:bg-white/20"
+                  aria-label="Minimize chat"
+                >
+                  <Minus size={20} />
+                </button>
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                    try { sessionStorage.removeItem(MESSAGES_KEY); } catch {}
+                  }}
+                  className="rounded-lg p-1 transition-colors hover:bg-white/20"
+                  aria-label="Close chat"
+                >
+                  <X size={20} />
+                </button>
+              </div>
             </div>
 
             {/* Tabs */}
