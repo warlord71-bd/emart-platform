@@ -2805,3 +2805,20 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - D2 (striking-distance queries): no code fix — `/best/*` titles already match queries exactly; it's a ranking/authority gap, not a snippet gap.
 - Blockers: none. Deferred (owner/content): GMC 309 small-image enforcement risk, 83 disapproved descriptions (1-by-1 by potential), Germany GA4 internal-traffic filter (dashboard-only), /concerns/sunscreen + /skin-type/oily content depth.
 - Next: build→VPS→smoke→push this deploy; then draft concern/skin-type content for owner approval.
+
+## 2026-06-23 — Agent: Claude Code
+- **Did:**
+  - Fixed PDP nudge overlapping sticky ATC bar — moved from `bottom-24` to `bottom-40` on mobile (`5b5461d`)
+  - Added clickable WhatsApp link to AI chat human escalation response (was plain text, now markdown `wa.me` link)
+  - Moved Recently Viewed rail from top of homepage to bottom (before Blog/TrustStrip) — best practice placement
+  - Fixed social_image_gen.py: AI backgrounds now use deterministic seed (product ID) instead of random — same product always generates identical image
+  - Fixed SPF DNS record: added `include:spf.resend.com` to Cloudflare TXT — order emails were missing SPF authorization
+  - Fixed `/api/auth/register` returning 500 — VPS build was missing `_error.js`; full rebuild fixed it
+  - Verified full checkout flow: cart → form fill → order summary → payment methods → all working correctly
+  - Verified email system: outbound (Resend API) + inbound (Cloudflare routing) + SPF + DKIM + DMARC all valid
+  - Created TikTok Content Posting API setup guide (`workspace/docs/TIKTOK-API-SETUP-GUIDE.md`)
+  - Guided Cloudflare Email Routing setup for `developer@e-mart.com.bd` (TikTok verification)
+  - Synced Codex agent work from VPS (GA4 eager load + GSC 404 redirects in `c3dd2f6`)
+  - Deployed all changes live, smoke tested, pushed to origin
+- **Blockers:** TikTok Developer app pending approval (1-3 business days)
+- **Next:** Build TikTok OAuth callback + publish pipeline once app is approved; owner to share Client Key + Client Secret

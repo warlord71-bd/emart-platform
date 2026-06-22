@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-22 (integrated GA4+GSC+GMC audit)
+Last updated: 2026-06-23 (UI fixes, email/checkout verification, TikTok API setup)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -130,6 +130,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 | O-13 | PDP 404 redirect map: 18 review-only + 52 no-match candidates | 🔲 review |
 | O-14 | Google-Extended bot policy: keep allowed or block? | 🔲 decision |
 | O-15 | Meta Page publishing: provide/rotate Page ID + Page access token + IG user ID; pasted token should be treated as exposed | 🔲 credentials |
+| O-16 | TikTok Developer app: pending approval; share Client Key + Client Secret once approved → Claude builds OAuth + publish pipeline | 🔲 pending TikTok review |
 
 ### Codex — Open
 
