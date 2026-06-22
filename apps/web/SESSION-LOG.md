@@ -2709,6 +2709,18 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Generated a 20-product dry-run proposal: 6 products had evidence-backed rule assignments; unresolved fields remain visibly queued instead of being silently reported as complete.
 - Validation: Python compile and static validator assertions passed. Blocker: SEO_MASTER requires owner review of generated samples before any Woo taxonomy/meta apply.
 
+## 2026-06-21 (Codex — Emart promo image generation)
+- Generated a new Emart-themed vertical skincare promotional image using the local Emart logo/theme reference and AESTURA Atobarrier 365 Cream store product reference.
+- Saved final asset to `workspace/generated-assets/emart-aestura-promo.png`; original generated image left under `/root/.codex/generated_images/`.
+- Saved reusable moisturizer promo image-generation prompt to `workspace/generated-assets/emart-moisturizer-imagegen-prompt.md`.
+- Added dry-run-first Meta social publisher at `workspace/scripts/active/social_publish.py` plus README; Facebook supports local image upload, Instagram requires public HTTPS `image_url`.
+- Dry-run confirmed current env lacks publishing credentials: `META_PAGE_ID` and `META_PAGE_ACCESS_TOKEN`; existing Pixel/CAPI token is not enough for posting.
+- Created standalone Node Meta Graph API poster in `/opt/fb-poster` using API `v19.0`: reads `PAGE_ID`/`PAGE_ACCESS_TOKEN`, auto-fetches linked IG user ID, posts to `/{PAGE_ID}/feed`, and publishes Instagram via media container + `media_publish`. Installed `axios`/`dotenv`; `.env` still needs real Page credentials.
+- Updated `/opt/fb-poster` `post.js` and `accounts.js` to include optional `appsecret_proof` on every Graph API request when `APP_SECRET` is set; token pasted in chat should be treated as exposed and rotated.
+- Fixed `/opt/fb-poster/post.js` Facebook image behavior: when `imageUrl` is provided, Facebook now uses `POST /{PAGE_ID}/photos` with `url` + `caption`; previous successful test used `/feed`, so Facebook got text only while Instagram got the image.
+- No storefront code, catalog data, checkout, cart, payment, order, stock, price, WooCommerce DB, deploy, or live system changes made.
+- Blockers: Meta Page publishing credentials are needed before real Facebook/Instagram posts. Next step: add Page ID/Page access token/IG user ID, then run the script with `--publish`.
+
 ## 2026-06-20 (Codex — non-mobile backlog hardening)
 - Honored owner clarification to exclude mobile app work; removed the accidental `/api/mobile/cart`, `/api/mobile/payment`, and mobile checkout helper edits before continuing.
 - Added shared AI service config for Qdrant/embed/rerank URLs plus request timeouts; wired chat search, routine Qdrant, semantic search, PDP similar/cross-sell, and blog product search to it.

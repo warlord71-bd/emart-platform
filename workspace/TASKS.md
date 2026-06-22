@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-20
+Last updated: 2026-06-21
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 

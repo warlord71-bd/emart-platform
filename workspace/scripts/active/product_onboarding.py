@@ -42,8 +42,8 @@ PREFIX = "wp4h_"
 DB_HOST = "localhost"
 DB_USER = "emart_user"
 DB_NAME = "emart_live"
-MODEL = "deepseek/deepseek-v4-flash"
-FALLBACK_MODELS = ["deepseek/deepseek-v3.2"]
+MODEL = "deepseek/deepseek-v3.2"
+FALLBACK_MODELS = ["deepseek/deepseek-v4-flash"]
 
 AUDIT_DIR = Path("workspace/audit/active")
 TIMESTAMP = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -109,16 +109,83 @@ INGREDIENT_KEYWORD_MAP = {
     "vitamin-e": ["vitamin e", "tocopherol"],
 }
 
+# ── Source 1: Woo product_cat → pa_concern (most authoritative) ───────────────
+CAT_CONCERN_MAP = {
+    "acne-blemish-care": "acne-blemish",
+    "anti-aging-repair": "anti-aging-repair",
+    "dryness-hydration": "dryness-hydration",
+    "pores-oil-control": "pores-blackheads",
+    "melasma": "hyperpigmentation",
+    "sunscreen": "sunscreen",
+    "spot-treatment": "acne-blemish",
+    "eye-care": "anti-aging-repair",
+}
+
+# ── Source 2: TKM (thekoreanmall.com) competitor concern data ─────────────────
+TKM_CONCERN_MAP = {
+    "acne": "acne-blemish",
+    "aging": "anti-aging-repair",
+    "dryness": "dryness-hydration",
+    "spot": "brightening",
+    "pores": "pores-blackheads",
+    "melasma": "hyperpigmentation",
+}
+
+BRAND_PHILOSOPHY_FILE = Path("/root/emart-platform/workspace/scripts/active/brand_philosophies.json")
+
+def _get_brand_context(brand_name: str) -> dict:
+    """Load brand philosophy for LLM context."""
+    if not BRAND_PHILOSOPHY_FILE.exists():
+        return {"philosophy": "", "tone": "Informative, product-focused", "origin": ""}
+    data = json.loads(BRAND_PHILOSOPHY_FILE.read_text())
+    for key in [brand_name, brand_name.title(), brand_name.lower(), brand_name.upper()]:
+        if key in data:
+            return data[key]
+    return data.get("_default", {"philosophy": "", "tone": "Informative, product-focused", "origin": ""})
+
+TKM_FILE = Path("/root/.attic-2026-05-15/emart-archive/tkm-concern-progress.json")
+_tkm_data = None
+
+def _load_tkm():
+    global _tkm_data
+    if _tkm_data is None:
+        if TKM_FILE.exists():
+            raw = json.loads(TKM_FILE.read_text())
+            _tkm_data = {}
+            for slug, label in raw.items():
+                if isinstance(label, str) and label in TKM_CONCERN_MAP:
+                    _tkm_data[slug] = TKM_CONCERN_MAP[label]
+        else:
+            _tkm_data = {}
+    return _tkm_data
+
+# ── Source 3: Title/ingredient keyword fallback ───────────────────────────────
 CONCERN_KEYWORD_MAP = {
     "dryness-hydration": ["hydrat", "moistur", "dry", "ceramide", "hyaluronic"],
     "acne-blemish": ["acne", "blemish", "salicylic", "bha", "tea tree", "pimpl"],
     "sensitivity": ["sensitive", "soothing", "calming", "centella", "cica", "aloe"],
     "anti-aging-repair": ["anti-aging", "retinol", "peptide", "collagen", "wrinkle", "firming"],
     "hyperpigmentation": ["pigment", "dark spot", "melasma", "tranexamic", "arbutin"],
-    "brightening": ["brighten", "vitamin c", "niacinamide", "glow", "radian"],
+    "brightening": ["brighten", "vitamin c", "niacinamide", "glow", "radian",
+                    "arbutin", "dark spot", "whitening", "luminous", "radiance", "azelaic"],
     "sunscreen": ["spf", "sunscreen", "sun block", "uv protect", "sun cream"],
-    "wrinkle": ["wrinkle", "fine line", "retinol", "peptide", "anti-wrinkle"],
+    "wrinkle": ["wrinkle", "fine line", "retinol", "peptide", "anti-wrinkle",
+                "lifting", "firming", "elastin"],
     "pores-blackheads": ["pore", "blackhead", "oil control", "mattif", "bha", "clay"],
+}
+
+# Explicit title phrases (highest confidence — product says what it's for)
+TITLE_SKIN_PHRASES = {
+    "for oily skin": "oily",
+    "for oily": "oily",
+    "oil control": "oily",
+    "for combination skin": "combination",
+    "for dry skin": "dry",
+    "for dryness": "dry",
+    "for normal skin": "normal",
+    "for sensitive skin": "sensitive",
+    "for sensitive": "sensitive",
+    "for all skin": "normal",
 }
 
 SKIN_TYPE_KEYWORD_MAP = {
@@ -261,27 +328,55 @@ def get_products_needing_work(limit=20, product_ids=None):
 # ── Stage 1: Rule-based assignment (no LLM) ──────────────────────────────────
 
 def rule_assign_concern(product):
-    """Match concerns from product name + ingredients using keywords."""
+    """Three-source priority: (1) Woo category, (2) TKM data, (3) keyword fallback."""
     if product["is_non_skincare"] or product["has_concern"]:
         return []
-    text = f"{product['name']} {product.get('ingredients_text', '')}".lower()
-    matched = []
-    for slug, keywords in CONCERN_KEYWORD_MAP.items():
-        if any(kw in text for kw in keywords):
-            matched.append(slug)
-    return matched[:3]
+
+    matched = set()
+
+    # Source 1: Woo product_cat → concern (most authoritative)
+    for cat_slug in product.get("cat_slugs", set()):
+        if cat_slug in CAT_CONCERN_MAP:
+            matched.add(CAT_CONCERN_MAP[cat_slug])
+
+    # Source 2: TKM competitor data (slug-based lookup)
+    if not matched:
+        tkm = _load_tkm()
+        product_slug = product.get("slug", "")
+        if product_slug in tkm:
+            matched.add(tkm[product_slug])
+
+    # Source 3: title + ingredient keyword fallback (only when 1 and 2 miss)
+    if not matched:
+        text = f"{product['name']} {product.get('ingredients_text', '')}".lower()
+        for slug, keywords in CONCERN_KEYWORD_MAP.items():
+            if any(kw in text for kw in keywords):
+                matched.add(slug)
+
+    return sorted(matched)[:3]
 
 
 def rule_assign_skin_type(product):
-    """Match skin types from product name + ingredients using keywords."""
+    """Two-pass: (1) explicit title phrases, (2) keyword fallback."""
     if product["is_non_skincare"] or product["has_skin_type"]:
         return []
-    text = f"{product['name']} {product.get('ingredients_text', '')}".lower()
-    matched = []
-    for slug, keywords in SKIN_TYPE_KEYWORD_MAP.items():
-        if any(kw in text for kw in keywords):
-            matched.append(slug)
-    return matched[:2]
+
+    matched = set()
+    title_lower = product["name"].lower()
+
+    # Pass 1: explicit title phrases (highest confidence)
+    for phrase, slug in TITLE_SKIN_PHRASES.items():
+        if phrase in title_lower:
+            matched.add(slug)
+
+    # Pass 2: keyword fallback from name + ingredients
+    if not matched:
+        text = f"{product['name']} {product.get('ingredients_text', '')}".lower()
+        for slug, keywords in SKIN_TYPE_KEYWORD_MAP.items():
+            if any(kw in text for kw in keywords):
+                matched.add(slug)
+
+    return sorted(matched)[:2]
 
 
 def rule_assign_ingredients(product):
@@ -310,20 +405,60 @@ def build_llm_prompt(product):
   - No quotes, no line breaks""")
 
     if product["needs"].get("description") and not product["is_non_skincare"]:
-        parts.append("""DESCRIPTION (required):
-  - 800-1200 words in helpful ecommerce style for Bangladesh buyers
-  - Use safe HTML with h2, p, ul, li only
-  - Include sections: what it is, key benefits, ingredients, best for, how to use, Bangladesh climate/store note, caution
-  - Mention product-specific facts only from supplied inputs; say "check the label" when ingredients are incomplete
-  - No medical cure claims, no prices, no fake review claims""")
+        parts.append("""DESCRIPTION_HTML (required):
+  Write a 900-1200 word product page in safe HTML (h2, h3, p, strong, ul, li only).
+  Write like a real product page from a trusted skincare retailer — NOT like AI-generated filler.
+  AIM FOR 1000+ WORDS. Skinnora.com averages 1,250 words per product. Match that depth.
+
+  STRUCTURE (vary the headings — don't use exact same words every time):
+
+  Opening (2 paragraphs, 150-200 words total):
+    - Paragraph 1: What this product is, what it does, who should care. Start with the product
+      name and a concrete statement. Short sentences mixed with longer ones.
+    - Paragraph 2: Why the formula works — name 2-3 ingredients and explain what they do in
+      plain language. Mention one product to pair it with.
+
+  Ingredients section (3-5 ingredients, 150-200 words):
+    - Bold ingredient name, then 1-2 sentences on what it does IN THIS PRODUCT
+    - Be specific: "draws water into the upper epidermis" not "hydrates skin"
+
+  Who it's for (80-100 words):
+    - List 3-4 skin types/concerns this actually helps, with a one-line reason each
+    - Include 1 honest "skip this if..." note
+
+  How to use (60-80 words):
+    - 3-4 short steps. When (AM/PM). Where in routine. One real tip.
+
+  Routine Fit (80-120 words):
+    - Where this product sits in a full AM or PM routine (step 1, 2, 3...)
+    - Name 2-3 specific complementary products from the same brand or popular pairings
+    - Example: "After cleansing with [X], apply this before [Y] moisturizer"
+    - This is what makes Skinnora pages sticky — readers discover other products to buy
+
+  Local note (50-70 words):
+    - Origin + authenticity. One climate-relevant sentence. COD mention.
+    - Make it feel like a real store's guarantee, not marketing copy
+
+  RULES:
+  - "Bangladesh" appears 2-3 times naturally
+  - "COD" or "Cash on Delivery" once
+  - Brand name 3+ times
+  - No medical cure claims, no prices, no fake review references
+  - Every sentence must be specific to THIS product — not swappable with another product
+  - Include one honest limitation (texture, scent, not suitable for X)
+  - MINIMUM 900 WORDS in description_html. Count your output. If under 900, expand the
+    ingredients section (add 2-3 more ingredients), add more detail to routine fit, and
+    flesh out the how-to-use with a longer pro tip. Our competitor Skinnora averages 1,250
+    words. Do not submit under 900.""")
 
     if product["needs"]["faq"] and not product["is_non_skincare"]:
         parts.append("""FAQ (required):
-  - Exactly 5 product-specific Q&A pairs
-  - Questions customers actually ask about THIS product
-  - Include: what it does, key ingredients, how to use, skin type suitability, size/value
-  - No delivery/COD/return questions
-  - Keep answers 2-3 sentences each""")
+  - Exactly 5 Q&A pairs about THIS specific product
+  - Use the product's full name in at least 3 questions (e.g. "Is the COSRX Low pH Good Morning Gel Cleanser suitable for sensitive skin?")
+  - Topics: (1) what it does/main benefit, (2) skin type suitability, (3) daily use/frequency, (4) specific concern it addresses, (5) size/how long it lasts or layering advice
+  - Answers: 2-3 sentences, actionable, mention one complementary product if relevant
+  - No delivery/COD/return/price questions — product-only
+  - Tone: knowledgeable friend, not marketing copy""")
 
     if product["needs"]["concern"] and not product["is_non_skincare"]:
         parts.append(f"""CONCERNS (required):
@@ -342,12 +477,51 @@ def build_llm_prompt(product):
 
     category_str = ", ".join(product["categories"][:3])
     ingredients_str = product.get("ingredients_text", "")[:300]
+    brand_name = product.get("brand", "")
+    brand_ctx = _get_brand_context(brand_name) if brand_name else {"philosophy": "", "tone": "Informative", "origin": ""}
 
     return f"""Product: {product['name']}
-Brand: {product['brand'] or 'Unknown'}
+Brand: {brand_name or 'Unknown'}
+Brand philosophy: {brand_ctx.get('philosophy', '')}
+Brand tone: {brand_ctx.get('tone', 'Informative, product-focused')}
+Origin: {brand_ctx.get('origin', '')}
 Categories: {category_str}
 Ingredients: {ingredients_str or 'Not available'}
 Existing short description: {product.get('short_description') or 'Not available'}
+
+EMART WRITING STYLE — CRITICAL RULES:
+
+ANTI-AI-DETECTION (if you violate these, the content is useless):
+- NEVER use these words/phrases: "formulated with", "designed to", "perfect for", "making it ideal",
+  "powerhouse", "game-changer", "holy grail", "elevate", "unlock", "journey", "transform your",
+  "dive into", "harness", "embark", "delve", "realm", "seamless", "ensuring", "boasting",
+  "it is worth noting", "furthermore", "moreover", "in conclusion", "whether you're"
+- VARY sentence structure — mix short punchy sentences (5-8 words) with longer ones. Never start
+  3+ sentences in a row the same way. Use fragments occasionally. Ask a question mid-paragraph.
+- VARY section order and headings — do NOT always use the exact same H2 headings in the same order.
+  Rename headings naturally: "What's Inside" instead of always "Key Ingredients", "Who Should Use This"
+  instead of always "Best For", "The Emart Take" instead of always "Why Buy from Emart".
+- Use contractions (it's, doesn't, won't, you'll). Never write "it is" when "it's" works.
+- Include 1-2 slightly informal expressions per description ("this stuff works", "not gonna lie",
+  "here's the deal", "the short version")
+- Mention a specific limitation or honest drawback — real reviews always note one downside
+- Vary paragraph lengths: 2 sentences, then 4, then 1, then 3 — never uniform blocks
+
+VOICE:
+- Write like a skincare-obsessed friend in Dhaka who actually uses the products and knows the science
+- First sentence: state what the product IS and what it DOES — no preamble, no "Are you looking for"
+- Bangladesh climate: pick ONE that fits this product (humidity, summer heat, AC-dried skin, pollution,
+  winter dryness). NOT monsoon on every product.
+- Origin authenticity: mention once naturally
+- "COD" or "Cash on Delivery": mention once
+- Brand philosophy informs the language subtly — don't announce it
+
+CONTENT:
+- Every claim must be product-specific — if you can swap in another product name and the sentence
+  still works, rewrite it
+- Name 3+ specific ingredients with what they actually do (not "powerful ingredient")
+- Include one honest "this won't work for..." note
+- Reference one complementary product from the same brand for routine pairing
 
 Generate the following for this product. Return ONLY valid JSON, no markdown fences.
 
@@ -367,19 +541,21 @@ Only include keys you were asked to generate. Omit keys not listed above."""
 
 def call_llm(prompt, models=None):
     """Call OpenRouter with fallback models."""
-    if not API_KEY:
+    api_key = os.environ.get("OPENROUTER_API_KEY", "") or API_KEY
+    if not api_key:
         return None
-    client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=API_KEY)
+    client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=api_key)
     model_list = models or [MODEL] + FALLBACK_MODELS
 
     for model in model_list:
         try:
+            print(f"    LLM call: {model}...")
             resp = client.chat.completions.create(
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
-                temperature=0.3,
-                max_tokens=3500,
-                timeout=30,
+                temperature=0.4,
+                max_tokens=6000,
+                timeout=120,
             )
             text = resp.choices[0].message.content.strip()
             text = re.sub(r"^```(?:json)?\s*", "", text)
@@ -425,7 +601,7 @@ def validate_description_html(description):
         return False
     text = re.sub(r"<[^>]+>", " ", description)
     word_count = len(re.findall(r"\w+", text))
-    if word_count < 650 or word_count > 1400:
+    if word_count < 700 or word_count > 1500:
         return False
     if re.search(r"<script|<iframe|onerror=|onclick=", description, re.I):
         return False

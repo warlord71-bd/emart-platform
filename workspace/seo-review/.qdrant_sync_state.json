@@ -1,6 +1,7 @@
 {
-  "last_sync_iso": null,
-  "last_sync_mode": "full_resync_requested",
+  "last_sync_iso": "2026-06-22T01:00:01",
+  "last_sync_mode": "incremental",
   "last_sync_count": 0,
-  "note": "Recreated 2026-06-20 so the next scheduled qdrant_product_sync.py run performs a full sync."
+  "last_deleted_count": 0,
+  "total_in_qdrant": 3625
 }

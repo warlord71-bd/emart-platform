@@ -1,644 +1,489 @@
 {
-  "generated": "2026-06-20",
+  "generated": "2026-06-22",
   "current_period": {
-    "start": "2026-05-21",
-    "end": "2026-06-17"
+    "start": "2026-05-23",
+    "end": "2026-06-19"
   },
   "previous_period": {
-    "start": "2026-05-20",
-    "end": "2026-06-16"
+    "start": "2026-05-22",
+    "end": "2026-06-18"
   },
   "risers": [
     {
-      "path": "/shop/palmers-cocoa-butter-formula-with-vitamin-e-bust-cream-125ml",
-      "slug": "palmers-cocoa-butter-formula-with-vitamin-e-bust-cream-125ml",
-      "position_now": 39.5,
-      "position_prev": 69,
-      "position_delta": 29.5,
+      "path": "/shop/the-body-shop-vitamin-e-gel-moisture-cream-50ml",
+      "slug": "the-body-shop-vitamin-e-gel-moisture-cream-50ml",
+      "position_now": 133.5,
+      "position_prev": 257,
+      "position_delta": 123.5,
       "impressions_now": 2,
       "impressions_delta": 1,
       "direction": "up"
     },
     {
-      "path": "/shop/cosrx-centella-blemish-cream-30gm",
-      "slug": "cosrx-centella-blemish-cream-30gm",
-      "position_now": 30,
-      "position_prev": 52,
-      "position_delta": 22,
-      "impressions_now": 4,
-      "impressions_delta": 2,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/m-a-c-satin-lipstick-retro",
-      "slug": "m-a-c-satin-lipstick-retro",
-      "position_now": 50.3,
-      "position_prev": 71,
-      "position_delta": 20.7,
+      "path": "/shop/skylake-oriental-herb-houttuynia-cordata-hair-tonic",
+      "slug": "skylake-oriental-herb-houttuynia-cordata-hair-tonic",
+      "position_now": 58.7,
+      "position_prev": 87.5,
+      "position_delta": 28.8,
       "impressions_now": 3,
       "impressions_delta": 1,
       "direction": "up"
     },
     {
-      "path": "/shop/rated-green-cold-brew-hibiscus-moisturizing-scalp-pack-200ml",
-      "slug": "rated-green-cold-brew-hibiscus-moisturizing-scalp-pack-200ml",
-      "position_now": 22,
-      "position_prev": 34,
-      "position_delta": 12,
-      "impressions_now": 2,
-      "impressions_delta": 1,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/fully-green-tomato-cream-90ml",
-      "slug": "fully-green-tomato-cream-90ml",
-      "position_now": 27.8,
-      "position_prev": 39.7,
-      "position_delta": 11.9,
-      "impressions_now": 5,
-      "impressions_delta": 2,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/p-calm-trial-kit",
-      "slug": "p-calm-trial-kit",
-      "position_now": 22.2,
-      "position_prev": 33.7,
-      "position_delta": 11.5,
-      "impressions_now": 5,
-      "impressions_delta": 2,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/pure-ground-glutathione-tone-up-sun-cream-spf50-pa-70ml",
-      "slug": "pure-ground-glutathione-tone-up-sun-cream-spf50-pa-70ml",
+      "path": "/shop/innisfree-the-green-tea-seed-serum-80ml",
+      "slug": "innisfree-the-green-tea-seed-serum-80ml",
       "position_now": 39,
-      "position_prev": 48.7,
-      "position_delta": 9.7,
-      "impressions_now": 9,
+      "position_prev": 61.3,
+      "position_delta": 22.3,
+      "impressions_now": 5,
       "impressions_delta": 2,
       "direction": "up"
     },
     {
-      "path": "/shop/doctor-g-red-blemish-clear-soothing-cream-70ml",
-      "slug": "doctor-g-red-blemish-clear-soothing-cream-70ml",
-      "position_now": 20,
-      "position_prev": 29,
-      "position_delta": 9,
-      "impressions_now": 3,
-      "impressions_delta": 1,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/aplb-glutathione-niacinamide-beauty-tablet-500mg-x-30-tablets",
-      "slug": "aplb-glutathione-niacinamide-beauty-tablet-500mg-x-30-tablets",
-      "position_now": 4.2,
-      "position_prev": 12,
-      "position_delta": 7.8,
-      "impressions_now": 4,
-      "impressions_delta": 3,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/neutrogena-rapid-wrinkle-repair-retinol-regenerating-cream-48g",
-      "slug": "neutrogena-rapid-wrinkle-repair-retinol-regenerating-cream-48g",
-      "position_now": 42.5,
-      "position_prev": 48.8,
-      "position_delta": 6.3,
-      "impressions_now": 6,
-      "impressions_delta": 1,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/nacific-fresh-herb-origin-kit",
-      "slug": "nacific-fresh-herb-origin-kit",
-      "position_now": 21,
-      "position_prev": 27,
-      "position_delta": 6,
-      "impressions_now": 6,
-      "impressions_delta": 2,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/cerave-ultra-light-moisturizing-lotion-spf30",
-      "slug": "cerave-ultra-light-moisturizing-lotion-spf30",
-      "position_now": 25.4,
-      "position_prev": 31,
-      "position_delta": 5.6,
-      "impressions_now": 8,
-      "impressions_delta": 2,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/mixsoon-bean-essence-50ml",
-      "slug": "mixsoon-bean-essence-50ml",
-      "position_now": 16,
-      "position_prev": 21.2,
-      "position_delta": 5.2,
-      "impressions_now": 7,
-      "impressions_delta": 2,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/illiyoon-ceramide-ato-concentrate-cream-200ml",
-      "slug": "illiyoon-ceramide-ato-concentrate-cream-200ml",
-      "position_now": 23.2,
-      "position_prev": 28,
-      "position_delta": 4.8,
-      "impressions_now": 4,
-      "impressions_delta": 1,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/cetaphil-baby-daily-lotion-399ml-gr",
-      "slug": "cetaphil-baby-daily-lotion-399ml-gr",
-      "position_now": 19,
-      "position_prev": 23.5,
-      "position_delta": 4.5,
-      "impressions_now": 3,
-      "impressions_delta": 1,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/simple-10-vitamin-cef-booster-serum-30ml",
-      "slug": "simple-10-vitamin-cef-booster-serum-30ml",
+      "path": "/shop/neutrogena-hydro-boost-gel-cream-for-dry-skin-50ml",
+      "slug": "neutrogena-hydro-boost-gel-cream-for-dry-skin-50ml",
       "position_now": 1,
-      "position_prev": 5.5,
-      "position_delta": 4.5,
+      "position_prev": 6.5,
+      "position_delta": 5.5,
       "impressions_now": 1,
       "impressions_delta": -1,
       "direction": "up"
     },
     {
-      "path": "/shop/palmers-cocoa-butter-stretch-marks-massage-lotion-250ml",
-      "slug": "palmers-cocoa-butter-stretch-marks-massage-lotion-250ml",
-      "position_now": 5.2,
-      "position_prev": 9.5,
-      "position_delta": 4.3,
+      "path": "/shop/milk-baobab-baby-kids-facial-foam-300-ml",
+      "slug": "milk-baobab-baby-kids-facial-foam-300-ml",
+      "position_now": 3.7,
+      "position_prev": 9,
+      "position_delta": 5.3,
+      "impressions_now": 3,
+      "impressions_delta": 2,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/cosrx-aha-bha-clarifying-treatment-toner-50ml",
+      "slug": "cosrx-aha-bha-clarifying-treatment-toner-50ml",
+      "position_now": 18.3,
+      "position_prev": 23.4,
+      "position_delta": 5.1,
+      "impressions_now": 11,
+      "impressions_delta": 3,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/romnd-blur-fudge-tint-08-current-jam",
+      "slug": "romnd-blur-fudge-tint-08-current-jam",
+      "position_now": 5,
+      "position_prev": 10,
+      "position_delta": 5,
+      "impressions_now": 2,
+      "impressions_delta": 1,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/neutrogena-ultra-sheer-dry-touch-sunscreen-spf-45-88ml",
+      "slug": "neutrogena-ultra-sheer-dry-touch-sunscreen-spf-45-88ml",
+      "position_now": 1,
+      "position_prev": 6,
+      "position_delta": 5,
+      "impressions_now": 1,
+      "impressions_delta": -2,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/innisfree-retinol-cica-repair-ampoule-30ml",
+      "slug": "innisfree-retinol-cica-repair-ampoule-30ml",
+      "position_now": 5.5,
+      "position_prev": 10,
+      "position_delta": 4.5,
+      "impressions_now": 2,
+      "impressions_delta": 1,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/be-the-skin-bha-pore-zero-serum-30ml",
+      "slug": "be-the-skin-bha-pore-zero-serum-30ml",
+      "position_now": 4.5,
+      "position_prev": 8,
+      "position_delta": 3.5,
       "impressions_now": 4,
       "impressions_delta": 2,
       "direction": "up"
     },
     {
-      "path": "/shop/beauty-of-joseon-ginseng-essence-water-150ml",
-      "slug": "beauty-of-joseon-ginseng-essence-water-150ml",
-      "position_now": 9,
-      "position_prev": 13,
-      "position_delta": 4,
-      "impressions_now": 2,
-      "impressions_delta": 1,
-      "direction": "up"
-    },
-    {
-      "path": "/shop/bioaqua-rice-raw-pulp-facial-mask-sheet-25g",
-      "slug": "bioaqua-rice-raw-pulp-facial-mask-sheet-25g",
+      "path": "/shop/paulas-choice-pro-collagen-multi-peptide-booster-20ml",
+      "slug": "paulas-choice-pro-collagen-multi-peptide-booster-20ml",
       "position_now": 5,
-      "position_prev": 9,
-      "position_delta": 4,
+      "position_prev": 8,
+      "position_delta": 3,
       "impressions_now": 2,
       "impressions_delta": 1,
       "direction": "up"
     },
     {
-      "path": "/shop/phytotree-radiance-foundation-50-ml",
-      "slug": "phytotree-radiance-foundation-50-ml",
-      "position_now": 17.5,
-      "position_prev": 21.3,
-      "position_delta": 3.8,
-      "impressions_now": 8,
-      "impressions_delta": 2,
+      "path": "/shop/3w-clinic-olive-argan-2in1-shampoo-500ml",
+      "slug": "3w-clinic-olive-argan-2in1-shampoo-500ml",
+      "position_now": 7.5,
+      "position_prev": 10,
+      "position_delta": 2.5,
+      "impressions_now": 2,
+      "impressions_delta": 1,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/simple-kind-to-skin-smoothing-facial-scrub-75ml",
+      "slug": "simple-kind-to-skin-smoothing-facial-scrub-75ml",
+      "position_now": 7.5,
+      "position_prev": 10,
+      "position_delta": 2.5,
+      "impressions_now": 2,
+      "impressions_delta": 1,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/mi-some-by-mi-yuja-niacin-brightening-moisture-gel-cream-100ml",
+      "slug": "mi-some-by-mi-yuja-niacin-brightening-moisture-gel-cream-100ml",
+      "position_now": 6,
+      "position_prev": 8.5,
+      "position_delta": 2.5,
+      "impressions_now": 1,
+      "impressions_delta": -1,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/hojo-luminous-high-sparkling-highlighter-03-10g",
+      "slug": "hojo-luminous-high-sparkling-highlighter-03-10g",
+      "position_now": 10,
+      "position_prev": 12.3,
+      "position_delta": 2.3,
+      "impressions_now": 4,
+      "impressions_delta": 1,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/klairs-rich-moist-foaming-cleanser-100ml",
+      "slug": "klairs-rich-moist-foaming-cleanser-100ml",
+      "position_now": 6.7,
+      "position_prev": 9,
+      "position_delta": 2.3,
+      "impressions_now": 3,
+      "impressions_delta": 1,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/nivea-soft-light-moisturising-cream-jar",
+      "slug": "nivea-soft-light-moisturising-cream-jar",
+      "position_now": 5.7,
+      "position_prev": 8,
+      "position_delta": 2.3,
+      "impressions_now": 3,
+      "impressions_delta": 1,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/the-ordinary-pycnogenol-5-15ml",
+      "slug": "the-ordinary-pycnogenol-5-15ml",
+      "position_now": 5.5,
+      "position_prev": 7.7,
+      "position_delta": 2.2,
+      "impressions_now": 2,
+      "impressions_delta": -1,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/some-by-mi-galactomyces-glutathione-brightening-cream-40ml",
+      "slug": "some-by-mi-galactomyces-glutathione-brightening-cream-40ml",
+      "position_now": 6,
+      "position_prev": 8.2,
+      "position_delta": 2.2,
+      "impressions_now": 1,
+      "impressions_delta": -3,
+      "direction": "up"
+    },
+    {
+      "path": "/shop/the-derma-co-5-nia-ceramide-mattifying-moisturizer-100g",
+      "slug": "the-derma-co-5-nia-ceramide-mattifying-moisturizer-100g",
+      "position_now": 8,
+      "position_prev": 10,
+      "position_delta": 2,
+      "impressions_now": 3,
+      "impressions_delta": 1,
       "direction": "up"
     }
   ],
   "fallers": [
     {
-      "path": "/shop/mandom-lucido-ageing-care-milk-q10-for-men-100ml",
-      "slug": "mandom-lucido-ageing-care-milk-q10-for-men-100ml",
-      "position_now": 131.5,
-      "position_prev": 89.7,
-      "position_delta": -41.8,
+      "path": "/shop/kerasys-propolis-damage-repair-shampoo-1000ml",
+      "slug": "kerasys-propolis-damage-repair-shampoo-1000ml",
+      "position_now": 57,
+      "position_prev": 38.7,
+      "position_delta": -18.3,
       "impressions_now": 2,
       "impressions_delta": -1,
       "direction": "down"
     },
     {
-      "path": "/shop/neutrogena-ultra-sheer-dry-touch-sunscreen-lotion-spf-55-147ml",
-      "slug": "neutrogena-ultra-sheer-dry-touch-sunscreen-lotion-spf-55-147ml",
-      "position_now": 49.1,
-      "position_prev": 36.5,
-      "position_delta": -12.6,
-      "impressions_now": 7,
-      "impressions_delta": -3,
-      "direction": "down"
-    },
-    {
-      "path": "/shop/maange-12pcs-mix-makeup-brush-set-pink",
-      "slug": "maange-12pcs-mix-makeup-brush-set-pink",
-      "position_now": 11,
-      "position_prev": 4,
-      "position_delta": -7,
-      "impressions_now": 2,
-      "impressions_delta": 1,
-      "direction": "down"
-    },
-    {
-      "path": "/shop/garnier-skin-active-micellar-cleansing-gel-wash-200ml",
-      "slug": "garnier-skin-active-micellar-cleansing-gel-wash-200ml",
-      "position_now": 18,
-      "position_prev": 11.7,
-      "position_delta": -6.3,
-      "impressions_now": 1,
-      "impressions_delta": -2,
-      "direction": "down"
-    },
-    {
-      "path": "/shop/dabo-hyaluronic8-quenching-solution-ampoule-80-ml",
-      "slug": "dabo-hyaluronic8-quenching-solution-ampoule-80-ml",
-      "position_now": 10,
-      "position_prev": 4,
-      "position_delta": -6,
+      "path": "/shop/buy-cerave-hydrating-cleanser-for-normal-to-dry-skin-237ml",
+      "slug": "buy-cerave-hydrating-cleanser-for-normal-to-dry-skin-237ml",
+      "position_now": 22.3,
+      "position_prev": 4.5,
+      "position_delta": -17.8,
       "impressions_now": 3,
       "impressions_delta": 1,
       "direction": "down"
     },
     {
-      "path": "/shop/dongsung-melanin-care-rannce-cream-10-g",
-      "slug": "dongsung-melanin-care-rannce-cream-10-g",
-      "position_now": 13.8,
-      "position_prev": 8.2,
-      "position_delta": -5.6,
-      "impressions_now": 6,
+      "path": "/shop/cerave-baby-moisturizing-cream-226g",
+      "slug": "cerave-baby-moisturizing-cream-226g",
+      "position_now": 20,
+      "position_prev": 7,
+      "position_delta": -13,
+      "impressions_now": 3,
       "impressions_delta": 1,
       "direction": "down"
     },
     {
-      "path": "/shop/m-a-c-studio-fix-fluid-spf-15-foundation-30ml",
-      "slug": "m-a-c-studio-fix-fluid-spf-15-foundation-30ml",
-      "position_now": 28,
-      "position_prev": 22.7,
-      "position_delta": -5.3,
-      "impressions_now": 2,
+      "path": "/shop/heimish-moringa-creamide-bb-cream-30g-27n-light-tan",
+      "slug": "heimish-moringa-creamide-bb-cream-30g-27n-light-tan",
+      "position_now": 57.4,
+      "position_prev": 49,
+      "position_delta": -8.4,
+      "impressions_now": 5,
       "impressions_delta": -1,
       "direction": "down"
     },
     {
-      "path": "/shop/romnd-juicy-lasting-tint-25-bare-grape",
-      "slug": "romnd-juicy-lasting-tint-25-bare-grape",
-      "position_now": 34.5,
-      "position_prev": 30.1,
-      "position_delta": -4.4,
-      "impressions_now": 6,
-      "impressions_delta": -1,
-      "direction": "down"
-    },
-    {
-      "path": "/shop/medicube-pdrn-pink-collagen-capsule-cream-55g",
-      "slug": "medicube-pdrn-pink-collagen-capsule-cream-55g",
-      "position_now": 7,
-      "position_prev": 3,
-      "position_delta": -4,
-      "impressions_now": 2,
+      "path": "/shop/sudocrem-antiseptic-healing-cream-125g",
+      "slug": "sudocrem-antiseptic-healing-cream-125g",
+      "position_now": 12.3,
+      "position_prev": 4.5,
+      "position_delta": -7.8,
+      "impressions_now": 3,
       "impressions_delta": 1,
       "direction": "down"
     },
     {
-      "path": "/shop/skin-cafe-coconut-oil-100ml",
-      "slug": "skin-cafe-coconut-oil-100ml",
-      "position_now": 10,
+      "path": "/shop/paxmoly-aloe-vera-soothing-gel-300g",
+      "slug": "paxmoly-aloe-vera-soothing-gel-300g",
+      "position_now": 32.5,
+      "position_prev": 26.3,
+      "position_delta": -6.2,
+      "impressions_now": 4,
+      "impressions_delta": -2,
+      "direction": "down"
+    },
+    {
+      "path": "/shop/cosrx-acne-pimple-master-patch-24-patch",
+      "slug": "cosrx-acne-pimple-master-patch-24-patch",
+      "position_now": 24.6,
+      "position_prev": 18.6,
+      "position_delta": -6.0,
+      "impressions_now": 14,
+      "impressions_delta": -1,
+      "direction": "down"
+    },
+    {
+      "path": "/shop/cosrx-bha-blackhead-power-liquid-100ml",
+      "slug": "cosrx-bha-blackhead-power-liquid-100ml",
+      "position_now": 11,
       "position_prev": 6,
-      "position_delta": -4,
+      "position_delta": -5,
       "impressions_now": 1,
       "impressions_delta": -1,
       "direction": "down"
     },
     {
-      "path": "/shop/nacific-fresh-herb-origin-serum",
-      "slug": "nacific-fresh-herb-origin-serum",
-      "position_now": 8.5,
+      "path": "/shop/garnier-whole-blends-coconut-water-aloe-vera-refreshing-conditioner-for-normal-hair-370ml",
+      "slug": "garnier-whole-blends-coconut-water-aloe-vera-refreshing-conditioner-for-normal-hair-370ml",
+      "position_now": 9.2,
       "position_prev": 5,
+      "position_delta": -4.2,
+      "impressions_now": 6,
+      "impressions_delta": 5,
+      "direction": "down"
+    },
+    {
+      "path": "/shop/seravix-2-salicylic-acid-acne-control-cleanser-90ml",
+      "slug": "seravix-2-salicylic-acid-acne-control-cleanser-90ml",
+      "position_now": 8,
+      "position_prev": 4,
+      "position_delta": -4,
+      "impressions_now": 1,
+      "impressions_delta": -2,
+      "direction": "down"
+    },
+    {
+      "path": "/shop/confume-argan-smoothing-hair-essence-500-gm",
+      "slug": "confume-argan-smoothing-hair-essence-500-gm",
+      "position_now": 5.5,
+      "position_prev": 2,
       "position_delta": -3.5,
       "impressions_now": 2,
       "impressions_delta": 1,
       "direction": "down"
     },
     {
-      "path": "/shop/aveeno-daily-care-baby-moisturising-lotion-150ml",
-      "slug": "aveeno-daily-care-baby-moisturising-lotion-150ml",
-      "position_now": 10.5,
-      "position_prev": 7.3,
-      "position_delta": -3.2,
-      "impressions_now": 4,
-      "impressions_delta": 1,
-      "direction": "down"
-    },
-    {
-      "path": "/shop/skin-cafe-sunscreen-spf-50-pa-lightweight-non-greasy-60g",
-      "slug": "skin-cafe-sunscreen-spf-50-pa-lightweight-non-greasy-60g",
-      "position_now": 5.8,
-      "position_prev": 3.3,
-      "position_delta": -2.5,
-      "impressions_now": 5,
-      "impressions_delta": 2,
-      "direction": "down"
-    },
-    {
-      "path": "/shop/superdrug-naturally-radiant-renewing-night-cream-75ml",
-      "slug": "superdrug-naturally-radiant-renewing-night-cream-75ml",
-      "position_now": 10,
-      "position_prev": 7.5,
-      "position_delta": -2.5,
-      "impressions_now": 1,
-      "impressions_delta": -1,
-      "direction": "down"
-    },
-    {
-      "path": "/shop/neutrogena-sheer-zinc-dry-touch-sunscreen-broad-spectrum-spf-50-88ml",
-      "slug": "neutrogena-sheer-zinc-dry-touch-sunscreen-broad-spectrum-spf-50-88ml",
-      "position_now": 9.1,
-      "position_prev": 6.7,
-      "position_delta": -2.4,
-      "impressions_now": 19,
+      "path": "/shop/enguun-mask-pack-sheet-mask-heart-leaf",
+      "slug": "enguun-mask-pack-sheet-mask-heart-leaf",
+      "position_now": 5.4,
+      "position_prev": 2,
+      "position_delta": -3.4,
+      "impressions_now": 7,
       "impressions_delta": 4,
-      "direction": "down"
-    },
-    {
-      "path": "/shop/laxzin-saffron-with-goat-milk-soap-100g",
-      "slug": "laxzin-saffron-with-goat-milk-soap-100g",
-      "position_now": 8.3,
-      "position_prev": 6.5,
-      "position_delta": -1.8,
-      "impressions_now": 3,
-      "impressions_delta": -1,
       "direction": "down"
     },
     {
       "path": "/shop/anua-heartleaf-77-soothing-toner-40ml",
       "slug": "anua-heartleaf-77-soothing-toner-40ml",
-      "position_now": 7.5,
-      "position_prev": 6,
-      "position_delta": -1.5,
-      "impressions_now": 2,
+      "position_now": 10,
+      "position_prev": 7.5,
+      "position_delta": -2.5,
+      "impressions_now": 3,
       "impressions_delta": 1,
       "direction": "down"
     },
     {
-      "path": "/shop/cosrx-low-ph-niacinamide-micellar-cleansing-water-400ml",
-      "slug": "cosrx-low-ph-niacinamide-micellar-cleansing-water-400ml",
-      "position_now": 2.5,
+      "path": "/shop/cerave-hydrating-hyaluronic-acid-serum-30ml",
+      "slug": "cerave-hydrating-hyaluronic-acid-serum-30ml",
+      "position_now": 3.5,
       "position_prev": 1,
-      "position_delta": -1.5,
+      "position_delta": -2.5,
       "impressions_now": 2,
       "impressions_delta": 1,
       "direction": "down"
     },
     {
-      "path": "/shop/maybelline-baby-skin-instant-pore-eraser-uk",
-      "slug": "maybelline-baby-skin-instant-pore-eraser-uk",
+      "path": "/shop/jigott-turmeric-moisturizing-soothing-gel",
+      "slug": "jigott-turmeric-moisturizing-soothing-gel",
+      "position_now": 24,
+      "position_prev": 21.6,
+      "position_delta": -2.4,
+      "impressions_now": 6,
+      "impressions_delta": -1,
+      "direction": "down"
+    },
+    {
+      "path": "/shop/bioaqua-rice-raw-pulp-facial-mask-sheet-25g",
+      "slug": "bioaqua-rice-raw-pulp-facial-mask-sheet-25g",
+      "position_now": 7.2,
+      "position_prev": 5,
+      "position_delta": -2.2,
+      "impressions_now": 5,
+      "impressions_delta": 3,
+      "direction": "down"
+    },
+    {
+      "path": "/shop/skin1004-madagascar-centella-hyalu-cica-water-fit-sun-serum-50ml",
+      "slug": "skin1004-madagascar-centella-hyalu-cica-water-fit-sun-serum-50ml",
+      "position_now": 7.7,
+      "position_prev": 5.5,
+      "position_delta": -2.2,
+      "impressions_now": 3,
+      "impressions_delta": 1,
+      "direction": "down"
+    },
+    {
+      "path": "/shop/the-saem-care-plus-baobab-collagen-cream-100ml",
+      "slug": "the-saem-care-plus-baobab-collagen-cream-100ml",
+      "position_now": 6.1,
+      "position_prev": 4,
+      "position_delta": -2.1,
+      "impressions_now": 7,
+      "impressions_delta": 1,
+      "direction": "down"
+    },
+    {
+      "path": "/shop/ryo-hair-loss-care-root-strength-shampoo-490ml",
+      "slug": "ryo-hair-loss-care-root-strength-shampoo-490ml",
       "position_now": 11,
-      "position_prev": 9.7,
-      "position_delta": -1.3,
-      "impressions_now": 1,
+      "position_prev": 9,
+      "position_delta": -2,
+      "impressions_now": 5,
       "impressions_delta": -2,
       "direction": "down"
     },
     {
-      "path": "/shop/purito-seoul-purito-daily-soft-touch-sunscreen-15ml",
-      "slug": "purito-seoul-purito-daily-soft-touch-sunscreen-15ml",
-      "position_now": 3.3,
-      "position_prev": 2.1,
-      "position_delta": -1.2,
-      "impressions_now": 18,
-      "impressions_delta": 4,
+      "path": "/shop/neutrogena-sheer-zinc-dry-touch-sunscreen-broad-spectrum-spf-50-88ml",
+      "slug": "neutrogena-sheer-zinc-dry-touch-sunscreen-broad-spectrum-spf-50-88ml",
+      "position_now": 11,
+      "position_prev": 9.1,
+      "position_delta": -1.9,
+      "impressions_now": 15,
+      "impressions_delta": -4,
       "direction": "down"
     }
   ],
   "new_in_search": [
     {
-      "path": "/shop/on-the-body-cashmere-perfume-sweet-love-400-ml",
-      "slug": "on-the-body-cashmere-perfume-sweet-love-400-ml",
-      "url": "https://e-mart.com.bd/shop/on-the-body-cashmere-perfume-sweet-love-400-ml",
+      "path": "/shop/cetaphil-baby-calendula-advanced-protection-cream-85g",
+      "slug": "cetaphil-baby-calendula-advanced-protection-cream-85g",
+      "url": "https://e-mart.com.bd/shop/cetaphil-baby-calendula-advanced-protection-cream-85g",
+      "clicks": 0,
+      "impressions": 4,
+      "ctr": 0,
+      "position": 4.8
+    },
+    {
+      "path": "/shop/innisfree-black-tea-youth-enhancing-ampoule-30-ml",
+      "slug": "innisfree-black-tea-youth-enhancing-ampoule-30-ml",
+      "url": "https://e-mart.com.bd/shop/innisfree-black-tea-youth-enhancing-ampoule-30-ml",
       "clicks": 0,
       "impressions": 3,
       "ctr": 0,
-      "position": 9.7
+      "position": 6.7
     },
     {
-      "path": "/shop/phytotree-lha-phytoseed-cleansing-oil-200-ml",
-      "slug": "phytotree-lha-phytoseed-cleansing-oil-200-ml",
-      "url": "https://e-mart.com.bd/shop/phytotree-lha-phytoseed-cleansing-oil-200-ml",
+      "path": "/shop/concealar-brush",
+      "slug": "concealar-brush",
+      "url": "https://e-mart.com.bd/shop/concealar-brush",
       "clicks": 0,
       "impressions": 2,
-      "ctr": 0,
-      "position": 10
-    },
-    {
-      "path": "/shop/the-body-shop-vitamin-e-night-nourishing-cream-50ml",
-      "slug": "the-body-shop-vitamin-e-night-nourishing-cream-50ml",
-      "url": "https://e-mart.com.bd/shop/the-body-shop-vitamin-e-night-nourishing-cream-50ml",
-      "clicks": 0,
-      "impressions": 2,
-      "ctr": 0,
-      "position": 6.5
-    },
-    {
-      "path": "/shop/garnier-ultimate-blends-hair-food-banana-3-in-1-dry-hair-mask-treatment-400ml",
-      "slug": "garnier-ultimate-blends-hair-food-banana-3-in-1-dry-hair-mask-treatment-400ml",
-      "url": "https://e-mart.com.bd/shop/garnier-ultimate-blends-hair-food-banana-3-in-1-dry-hair-mask-treatment-400ml",
-      "clicks": 1,
-      "impressions": 1,
-      "ctr": 1,
-      "position": 4
-    },
-    {
-      "path": "/shop/mielle-organics-rosemary-mint-light-scalp-hair-strengthening-oil-59ml",
-      "slug": "mielle-organics-rosemary-mint-light-scalp-hair-strengthening-oil-59ml",
-      "url": "https://e-mart.com.bd/shop/mielle-organics-rosemary-mint-light-scalp-hair-strengthening-oil-59ml",
-      "clicks": 1,
-      "impressions": 1,
-      "ctr": 1,
-      "position": 2
-    },
-    {
-      "path": "/shop/aplb-glutathione-niacinamide-facial-cleanser-80ml",
-      "slug": "aplb-glutathione-niacinamide-facial-cleanser-80ml",
-      "url": "https://e-mart.com.bd/shop/aplb-glutathione-niacinamide-facial-cleanser-80ml",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 3
-    },
-    {
-      "path": "/shop/aplb-tranexamic-acid-niacinamide-ampoule-serum-40ml",
-      "slug": "aplb-tranexamic-acid-niacinamide-ampoule-serum-40ml",
-      "url": "https://e-mart.com.bd/shop/aplb-tranexamic-acid-niacinamide-ampoule-serum-40ml",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 2
-    },
-    {
-      "path": "/shop/aztec-secret-indian-healing-clay",
-      "slug": "aztec-secret-indian-healing-clay",
-      "url": "https://e-mart.com.bd/shop/aztec-secret-indian-healing-clay",
-      "clicks": 0,
-      "impressions": 1,
       "ctr": 0,
       "position": 7
     },
     {
-      "path": "/shop/beaute-melasma-x-aha-bha-brightening-foam-cleansing-160ml",
-      "slug": "beaute-melasma-x-aha-bha-brightening-foam-cleansing-160ml",
-      "url": "https://e-mart.com.bd/shop/beaute-melasma-x-aha-bha-brightening-foam-cleansing-160ml",
+      "path": "/shop/dr-forhair-folligen-treatment-200ml",
+      "slug": "dr-forhair-folligen-treatment-200ml",
+      "url": "https://e-mart.com.bd/shop/dr-forhair-folligen-treatment-200ml",
       "clicks": 0,
-      "impressions": 1,
+      "impressions": 2,
       "ctr": 0,
-      "position": 3
+      "position": 8.5
     },
     {
-      "path": "/shop/bio-oil-specialist-skincare-oil-60ml",
-      "slug": "bio-oil-specialist-skincare-oil-60ml",
-      "url": "https://e-mart.com.bd/shop/bio-oil-specialist-skincare-oil-60ml",
+      "path": "/shop/eucerin-dry-skin-face-cream-50ml",
+      "slug": "eucerin-dry-skin-face-cream-50ml",
+      "url": "https://e-mart.com.bd/shop/eucerin-dry-skin-face-cream-50ml",
       "clicks": 0,
-      "impressions": 1,
+      "impressions": 2,
       "ctr": 0,
-      "position": 1
+      "position": 11.5
     },
     {
-      "path": "/shop/bioderma-photoderm-akn-mat-spf-30-uvb-uva-40ml",
-      "slug": "bioderma-photoderm-akn-mat-spf-30-uvb-uva-40ml",
-      "url": "https://e-mart.com.bd/shop/bioderma-photoderm-akn-mat-spf-30-uvb-uva-40ml",
+      "path": "/shop/iunik-beta-glucan-barrier-sunscreen-spf50-pa-60-ml",
+      "slug": "iunik-beta-glucan-barrier-sunscreen-spf50-pa-60-ml",
+      "url": "https://e-mart.com.bd/shop/iunik-beta-glucan-barrier-sunscreen-spf50-pa-60-ml",
       "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 2
-    },
-    {
-      "path": "/shop/bioderma-photoderm-max-spf-50-cream-40ml",
-      "slug": "bioderma-photoderm-max-spf-50-cream-40ml",
-      "url": "https://e-mart.com.bd/shop/bioderma-photoderm-max-spf-50-cream-40ml",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 9
-    },
-    {
-      "path": "/shop/cerave-moisturising-lotion-for-dry-to-very-dry-skin-473ml-uk-version",
-      "slug": "cerave-moisturising-lotion-for-dry-to-very-dry-skin-473ml-uk-version",
-      "url": "https://e-mart.com.bd/shop/cerave-moisturising-lotion-for-dry-to-very-dry-skin-473ml-uk-version",
-      "clicks": 0,
-      "impressions": 1,
+      "impressions": 2,
       "ctr": 0,
       "position": 13
     },
     {
-      "path": "/shop/combo-axis-y-dark-spot-correcting-glow-cream-50ml-axis-y-dark-spot-correcting-glow-serum-50ml-axis-y-dark-spot-correcting-glow-toner-125ml",
-      "slug": "combo-axis-y-dark-spot-correcting-glow-cream-50ml-axis-y-dark-spot-correcting-glow-serum-50ml-axis-y-dark-spot-correcting-glow-toner-125ml",
-      "url": "https://e-mart.com.bd/shop/combo-axis-y-dark-spot-correcting-glow-cream-50ml-axis-y-dark-spot-correcting-glow-serum-50ml-axis-y-dark-spot-correcting-glow-toner-125ml",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 4
-    },
-    {
-      "path": "/shop/dabo-pink-collagen-pdrn-cream-serum-toner-combo",
-      "slug": "dabo-pink-collagen-pdrn-cream-serum-toner-combo",
-      "url": "https://e-mart.com.bd/shop/dabo-pink-collagen-pdrn-cream-serum-toner-combo",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 10
-    },
-    {
-      "path": "/shop/hada-labo-shirojyun-premium-deep-whitening-cream-50g",
-      "slug": "hada-labo-shirojyun-premium-deep-whitening-cream-50g",
-      "url": "https://e-mart.com.bd/shop/hada-labo-shirojyun-premium-deep-whitening-cream-50g",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 1
-    },
-    {
-      "path": "/shop/hawaa-hair-fall-avenger-oil-100ml",
-      "slug": "hawaa-hair-fall-avenger-oil-100ml",
-      "url": "https://e-mart.com.bd/shop/hawaa-hair-fall-avenger-oil-100ml",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 11
-    },
-    {
-      "path": "/shop/imagic-tinted-eyebrow-pomade-e06-ebony-4g",
-      "slug": "imagic-tinted-eyebrow-pomade-e06-ebony-4g",
-      "url": "https://e-mart.com.bd/shop/imagic-tinted-eyebrow-pomade-e06-ebony-4g",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 5
-    },
-    {
-      "path": "/shop/innisfree-retinol-cica-repair-ampoule-30ml",
-      "slug": "innisfree-retinol-cica-repair-ampoule-30ml",
-      "url": "https://e-mart.com.bd/shop/innisfree-retinol-cica-repair-ampoule-30ml",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 10
-    },
-    {
-      "path": "/shop/insight-cosmetics-beauty-blender-sponge-applicator-pink",
-      "slug": "insight-cosmetics-beauty-blender-sponge-applicator-pink",
-      "url": "https://e-mart.com.bd/shop/insight-cosmetics-beauty-blender-sponge-applicator-pink",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 7
-    }
-  ],
-  "dropped_from_search": [
-    {
-      "path": "/shop/im-from-mugwort-gel-cleanser-150ml",
-      "slug": "im-from-mugwort-gel-cleanser-150ml",
-      "url": "https://e-mart.com.bd/shop/im-from-mugwort-gel-cleanser-150ml",
-      "clicks": 0,
-      "impressions": 3,
-      "ctr": 0,
-      "position": 8
-    },
-    {
-      "path": "/shop/the-body-shop-skin-defence-multi-protection-lotion-spf50-60ml",
-      "slug": "the-body-shop-skin-defence-multi-protection-lotion-spf50-60ml",
-      "url": "https://e-mart.com.bd/shop/the-body-shop-skin-defence-multi-protection-lotion-spf50-60ml",
+      "path": "/shop/mizon-all-in-one-snail-repair-cream-75g",
+      "slug": "mizon-all-in-one-snail-repair-cream-75g",
+      "url": "https://e-mart.com.bd/shop/mizon-all-in-one-snail-repair-cream-75g",
       "clicks": 0,
       "impressions": 2,
       "ctr": 0,
-      "position": 5
+      "position": 8.5
     },
     {
-      "path": "/shop/anua-heartleaf-pore-clay-pack-100ml",
-      "slug": "anua-heartleaf-pore-clay-pack-100ml",
-      "url": "https://e-mart.com.bd/shop/anua-heartleaf-pore-clay-pack-100ml",
+      "path": "/shop/anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini",
+      "slug": "anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini",
+      "url": "https://e-mart.com.bd/shop/anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini",
       "clicks": 0,
       "impressions": 1,
       "ctr": 0,
-      "position": 9
-    },
-    {
-      "path": "/shop/anua-heartleaf-quercetinol-pore-deep-cleansing-foam-150ml",
-      "slug": "anua-heartleaf-quercetinol-pore-deep-cleansing-foam-150ml",
-      "url": "https://e-mart.com.bd/shop/anua-heartleaf-quercetinol-pore-deep-cleansing-foam-150ml",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 8
-    },
-    {
-      "path": "/shop/aqualogica-refresh-sun-kissed-vanilla-perfume-body-mist-150ml",
-      "slug": "aqualogica-refresh-sun-kissed-vanilla-perfume-body-mist-150ml",
-      "url": "https://e-mart.com.bd/shop/aqualogica-refresh-sun-kissed-vanilla-perfume-body-mist-150ml",
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0,
-      "position": 10
+      "position": 12
     },
     {
       "path": "/shop/aromatica-rosemary-scalp-scaling-shampoo-400ml",
@@ -647,66 +492,284 @@
       "clicks": 0,
       "impressions": 1,
       "ctr": 0,
-      "position": 10
+      "position": 1
     },
     {
-      "path": "/shop/bellflower-camu-camu-blemish-care-serum-50ml",
-      "slug": "bellflower-camu-camu-blemish-care-serum-50ml",
-      "url": "https://e-mart.com.bd/shop/bellflower-camu-camu-blemish-care-serum-50ml",
+      "path": "/shop/cos-de-baha-acne-clearing-serum-acne-treatment-ac-30ml",
+      "slug": "cos-de-baha-acne-clearing-serum-acne-treatment-ac-30ml",
+      "url": "https://e-mart.com.bd/shop/cos-de-baha-acne-clearing-serum-acne-treatment-ac-30ml",
       "clicks": 0,
       "impressions": 1,
       "ctr": 0,
       "position": 1
     },
     {
-      "path": "/shop/cetaphil-baby-calendula-advanced-protection-cream-85g",
-      "slug": "cetaphil-baby-calendula-advanced-protection-cream-85g",
-      "url": "https://e-mart.com.bd/shop/cetaphil-baby-calendula-advanced-protection-cream-85g",
+      "path": "/shop/cos-de-baha-ma-peptide-cream-pc-45ml",
+      "slug": "cos-de-baha-ma-peptide-cream-pc-45ml",
+      "url": "https://e-mart.com.bd/shop/cos-de-baha-ma-peptide-cream-pc-45ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 8
+    },
+    {
+      "path": "/shop/cos-de-baha-tranexamic-acid-nacinamide-serum-tn-30ml",
+      "slug": "cos-de-baha-tranexamic-acid-nacinamide-serum-tn-30ml",
+      "url": "https://e-mart.com.bd/shop/cos-de-baha-tranexamic-acid-nacinamide-serum-tn-30ml",
       "clicks": 0,
       "impressions": 1,
       "ctr": 0,
       "position": 2
     },
     {
-      "path": "/shop/daiso-deep-c-collagen-moisture-gel-cream-40g",
-      "slug": "daiso-deep-c-collagen-moisture-gel-cream-40g",
-      "url": "https://e-mart.com.bd/shop/daiso-deep-c-collagen-moisture-gel-cream-40g",
+      "path": "/shop/dabo-foundation-skip-tone-up-cover-sun-cream-50-ml",
+      "slug": "dabo-foundation-skip-tone-up-cover-sun-cream-50-ml",
+      "url": "https://e-mart.com.bd/shop/dabo-foundation-skip-tone-up-cover-sun-cream-50-ml",
       "clicks": 0,
       "impressions": 1,
       "ctr": 0,
       "position": 10
     },
     {
-      "path": "/shop/imagic-studio-fix-powder-plus-foundation-fa-103-15g",
-      "slug": "imagic-studio-fix-powder-plus-foundation-fa-103-15g",
-      "url": "https://e-mart.com.bd/shop/imagic-studio-fix-powder-plus-foundation-fa-103-15g",
+      "path": "/shop/dabo-gold-my-jin-korea-red-ginseng-aqua-wrinkle-whitening-cream",
+      "slug": "dabo-gold-my-jin-korea-red-ginseng-aqua-wrinkle-whitening-cream",
+      "url": "https://e-mart.com.bd/shop/dabo-gold-my-jin-korea-red-ginseng-aqua-wrinkle-whitening-cream",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 9
+    },
+    {
+      "path": "/shop/dabo-rice-ferment-foam-cleanser-whitening-shining-100ml",
+      "slug": "dabo-rice-ferment-foam-cleanser-whitening-shining-100ml",
+      "url": "https://e-mart.com.bd/shop/dabo-rice-ferment-foam-cleanser-whitening-shining-100ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 6
+    },
+    {
+      "path": "/shop/dabo-urea-10-silk-foot-therapy-cream-100-ml",
+      "slug": "dabo-urea-10-silk-foot-therapy-cream-100-ml",
+      "url": "https://e-mart.com.bd/shop/dabo-urea-10-silk-foot-therapy-cream-100-ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 12
+    },
+    {
+      "path": "/shop/deconstruct-fluid-brightening-sunscreen-for-dry-skin-spf-50-50g",
+      "slug": "deconstruct-fluid-brightening-sunscreen-for-dry-skin-spf-50-50g",
+      "url": "https://e-mart.com.bd/shop/deconstruct-fluid-brightening-sunscreen-for-dry-skin-spf-50-50g",
       "clicks": 0,
       "impressions": 1,
       "ctr": 0,
       "position": 8
     },
     {
-      "path": "/shop/insight-waterproof-matte-eyeliner",
-      "slug": "insight-waterproof-matte-eyeliner",
-      "url": "https://e-mart.com.bd/shop/insight-waterproof-matte-eyeliner",
+      "path": "/shop/dr-sheths-mediglow-foaming-face-wash-100ml",
+      "slug": "dr-sheths-mediglow-foaming-face-wash-100ml",
+      "url": "https://e-mart.com.bd/shop/dr-sheths-mediglow-foaming-face-wash-100ml",
       "clicks": 0,
       "impressions": 1,
       "ctr": 0,
-      "position": 18
+      "position": 11
     },
     {
-      "path": "/shop/marymay-vegan-peptide-bakuchiol-sun-stick-spf50-pa-18g",
-      "slug": "marymay-vegan-peptide-bakuchiol-sun-stick-spf50-pa-18g",
-      "url": "https://e-mart.com.bd/shop/marymay-vegan-peptide-bakuchiol-sun-stick-spf50-pa-18g",
+      "path": "/shop/eqqualberry-swimming-pool-ampoule-50ml",
+      "slug": "eqqualberry-swimming-pool-ampoule-50ml",
+      "url": "https://e-mart.com.bd/shop/eqqualberry-swimming-pool-ampoule-50ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 9
+    },
+    {
+      "path": "/shop/etude-soon-jung-whip-cleanser-150ml",
+      "slug": "etude-soon-jung-whip-cleanser-150ml",
+      "url": "https://e-mart.com.bd/shop/etude-soon-jung-whip-cleanser-150ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 3
+    }
+  ],
+  "dropped_from_search": [
+    {
+      "path": "/shop/combo-dabo-all-in-one-snail-96-mucin-essence-100ml-dabo-all-in-one-black-snail-repair-cream-50ml",
+      "slug": "combo-dabo-all-in-one-snail-96-mucin-essence-100ml-dabo-all-in-one-black-snail-repair-cream-50ml",
+      "url": "https://e-mart.com.bd/shop/combo-dabo-all-in-one-snail-96-mucin-essence-100ml-dabo-all-in-one-black-snail-repair-cream-50ml",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 9.5
+    },
+    {
+      "path": "/shop/medi-peel-melanon-x-cream-30ml",
+      "slug": "medi-peel-melanon-x-cream-30ml",
+      "url": "https://e-mart.com.bd/shop/medi-peel-melanon-x-cream-30ml",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 9
+    },
+    {
+      "path": "/shop/eucerin-urearepair-5-urea-original-cream-75ml",
+      "slug": "eucerin-urearepair-5-urea-original-cream-75ml",
+      "url": "https://e-mart.com.bd/shop/eucerin-urearepair-5-urea-original-cream-75ml",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 1,
+      "position": 10
+    },
+    {
+      "path": "/shop/bioderma-sebium-hydra-ultra-moisturising-compensating-care-40ml",
+      "slug": "bioderma-sebium-hydra-ultra-moisturising-compensating-care-40ml",
+      "url": "https://e-mart.com.bd/shop/bioderma-sebium-hydra-ultra-moisturising-compensating-care-40ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 9
+    },
+    {
+      "path": "/shop/celimax-the-vita-a-retinal-shot-tightening-booster-15ml",
+      "slug": "celimax-the-vita-a-retinal-shot-tightening-booster-15ml",
+      "url": "https://e-mart.com.bd/shop/celimax-the-vita-a-retinal-shot-tightening-booster-15ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 7
+    },
+    {
+      "path": "/shop/cosrx-advanced-snail-96-mucin-power-essence-100ml",
+      "slug": "cosrx-advanced-snail-96-mucin-power-essence-100ml",
+      "url": "https://e-mart.com.bd/shop/cosrx-advanced-snail-96-mucin-power-essence-100ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 3
+    },
+    {
+      "path": "/shop/cosrx-snail-essence-snail-cream-combo-2-pcs",
+      "slug": "cosrx-snail-essence-snail-cream-combo-2-pcs",
+      "url": "https://e-mart.com.bd/shop/cosrx-snail-essence-snail-cream-combo-2-pcs",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 6
+    },
+    {
+      "path": "/shop/enchanteur-alluring-perfumed-body-lotion-500ml",
+      "slug": "enchanteur-alluring-perfumed-body-lotion-500ml",
+      "url": "https://e-mart.com.bd/shop/enchanteur-alluring-perfumed-body-lotion-500ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 7
+    },
+    {
+      "path": "/shop/farm-stay-pomegranate-all-in-one-ampoule-250ml",
+      "slug": "farm-stay-pomegranate-all-in-one-ampoule-250ml",
+      "url": "https://e-mart.com.bd/shop/farm-stay-pomegranate-all-in-one-ampoule-250ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 2
+    },
+    {
+      "path": "/shop/heimish-sheet-mask-buy-5-get-5-free",
+      "slug": "heimish-sheet-mask-buy-5-get-5-free",
+      "url": "https://e-mart.com.bd/shop/heimish-sheet-mask-buy-5-get-5-free",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 12
+    },
+    {
+      "path": "/shop/kerasys-devils-edition-mystic-blossom-perfumed-shampoo-600-ml",
+      "slug": "kerasys-devils-edition-mystic-blossom-perfumed-shampoo-600-ml",
+      "url": "https://e-mart.com.bd/shop/kerasys-devils-edition-mystic-blossom-perfumed-shampoo-600-ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 10
+    },
+    {
+      "path": "/shop/kerasys-red-propolis-root-care-shampoo-1000ml",
+      "slug": "kerasys-red-propolis-root-care-shampoo-1000ml",
+      "url": "https://e-mart.com.bd/shop/kerasys-red-propolis-root-care-shampoo-1000ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 7
+    },
+    {
+      "path": "/shop/korean-electric-bed-heater",
+      "slug": "korean-electric-bed-heater",
+      "url": "https://e-mart.com.bd/shop/korean-electric-bed-heater",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 1
+    },
+    {
+      "path": "/shop/maybelline-instant-age-rewind-eraser-dark-circles-treatment-concealer-110-fair",
+      "slug": "maybelline-instant-age-rewind-eraser-dark-circles-treatment-concealer-110-fair",
+      "url": "https://e-mart.com.bd/shop/maybelline-instant-age-rewind-eraser-dark-circles-treatment-concealer-110-fair",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 2
+    },
+    {
+      "path": "/shop/minimalist-05-maleic-bond-repair-complex-hair-mask-200g",
+      "slug": "minimalist-05-maleic-bond-repair-complex-hair-mask-200g",
+      "url": "https://e-mart.com.bd/shop/minimalist-05-maleic-bond-repair-complex-hair-mask-200g",
       "clicks": 0,
       "impressions": 1,
       "ctr": 0,
       "position": 8
     },
     {
-      "path": "/shop/raip-white-willow-calming-acne-body-wash-500-ml",
-      "slug": "raip-white-willow-calming-acne-body-wash-500-ml",
-      "url": "https://e-mart.com.bd/shop/raip-white-willow-calming-acne-body-wash-500-ml",
+      "path": "/shop/minimalist-multi-peptides-10-face-serum-30ml",
+      "slug": "minimalist-multi-peptides-10-face-serum-30ml",
+      "url": "https://e-mart.com.bd/shop/minimalist-multi-peptides-10-face-serum-30ml",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 6
+    },
+    {
+      "path": "/shop/rajkonna-henna-hair-pack-50g",
+      "slug": "rajkonna-henna-hair-pack-50g",
+      "url": "https://e-mart.com.bd/shop/rajkonna-henna-hair-pack-50g",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 9
+    },
+    {
+      "path": "/shop/sadoer-orange-moisturizing-lip-mask-8g",
+      "slug": "sadoer-orange-moisturizing-lip-mask-8g",
+      "url": "https://e-mart.com.bd/shop/sadoer-orange-moisturizing-lip-mask-8g",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 11
+    },
+    {
+      "path": "/shop/secret-key-snow-white-milky-pack-120g",
+      "slug": "secret-key-snow-white-milky-pack-120g",
+      "url": "https://e-mart.com.bd/shop/secret-key-snow-white-milky-pack-120g",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 17
+    },
+    {
+      "path": "/shop/skin1004-madagascar-centella-poremizing-fresh-ampoule-50ml",
+      "slug": "skin1004-madagascar-centella-poremizing-fresh-ampoule-50ml",
+      "url": "https://e-mart.com.bd/shop/skin1004-madagascar-centella-poremizing-fresh-ampoule-50ml",
       "clicks": 0,
       "impressions": 1,
       "ctr": 0,

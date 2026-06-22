@@ -1,31 +1,31 @@
 {
-  "generated": "2026-06-20",
+  "generated": "2026-06-22",
   "period": {
-    "start": "2026-05-21",
-    "end": "2026-06-17"
+    "start": "2026-05-23",
+    "end": "2026-06-19"
   },
-  "total_gaps": 8,
+  "total_gaps": 9,
   "candidates": [
     {
       "query": "skincare bd",
       "current_page": "/",
-      "impressions": 219,
+      "impressions": 171,
       "clicks": 0,
-      "position": 8.1,
+      "position": 8.6,
       "suggestion": "informational"
     },
     {
       "query": "skincare bangladesh",
       "current_page": "/",
-      "impressions": 38,
+      "impressions": 34,
       "clicks": 0,
-      "position": 8.5,
+      "position": 8.6,
       "suggestion": "informational"
     },
     {
       "query": "baby wipes",
       "current_page": "/category/diapers-wipes",
-      "impressions": 19,
+      "impressions": 18,
       "clicks": 0,
       "position": 26.2,
       "suggestion": "informational"
@@ -39,14 +39,6 @@
       "suggestion": "informational"
     },
     {
-      "query": "private part whitening cream in bangladesh",
-      "current_page": "/",
-      "impressions": 11,
-      "clicks": 0,
-      "position": 10.6,
-      "suggestion": "informational"
-    },
-    {
       "query": "face mask sheet",
       "current_page": "/category/face-masks",
       "impressions": 11,
@@ -55,11 +47,27 @@
       "suggestion": "informational"
     },
     {
-      "query": "korean skincare bd",
+      "query": "private part whitening cream in bangladesh",
       "current_page": "/",
       "impressions": 10,
-      "clicks": 2,
-      "position": 14.2,
+      "clicks": 0,
+      "position": 10.5,
+      "suggestion": "informational"
+    },
+    {
+      "query": "korean store bd",
+      "current_page": "/",
+      "impressions": 10,
+      "clicks": 0,
+      "position": 8.8,
+      "suggestion": "informational"
+    },
+    {
+      "query": "sheet mask",
+      "current_page": "/category/face-masks",
+      "impressions": 10,
+      "clicks": 0,
+      "position": 31.7,
       "suggestion": "informational"
     },
     {
