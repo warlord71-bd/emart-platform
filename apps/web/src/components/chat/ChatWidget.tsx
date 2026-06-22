@@ -116,7 +116,7 @@ export default function ChatWidget() {
           {pdpNudge && (
             <button
               onClick={handlePdpNudge}
-              className="fixed bottom-24 right-4 z-50 max-w-[250px] rounded-2xl border border-primary-100 bg-white p-3 text-left shadow-xl transition-transform hover:-translate-y-0.5 lg:bottom-28"
+              className="fixed bottom-40 right-4 z-50 max-w-[250px] rounded-2xl border border-primary-100 bg-white p-3 text-left shadow-xl transition-transform hover:-translate-y-0.5 lg:bottom-28"
               aria-label="Ask Emart AI for product suggestions"
             >
               <span className="mb-1 flex items-center gap-1.5 text-xs font-semibold text-primary-600">

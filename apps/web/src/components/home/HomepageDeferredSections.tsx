@@ -140,10 +140,6 @@ export default function HomepageDeferredSections({
 }) {
   return (
     <>
-      <DeferredSection>
-        <RecentlyViewedRail />
-      </DeferredSection>
-
       <DeferredSection minHeight={260}>
         <FlashSaleBanner products={saleProducts} />
       </DeferredSection>
@@ -192,6 +188,10 @@ export default function HomepageDeferredSections({
         <CustomerVoiceSection />
         <SkinQuizCTA />
         <OriginStoryBlock />
+      </DeferredSection>
+
+      <DeferredSection>
+        <RecentlyViewedRail />
       </DeferredSection>
 
       <DeferredSection minHeight={280}>

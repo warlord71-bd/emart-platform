@@ -408,11 +408,12 @@ export const agentTools = {
         }
       }
 
+      const waNumber = COMPANY.phones.primaryHref?.replace('+', '') || '8801919797399';
       return {
         escalated: true,
-        message: `Your request has been forwarded to our support team. They will contact you shortly via email (${COMPANY.supportEmail}) or WhatsApp (+${COMPANY.phones.primaryHref?.replace('+', '')}).`,
+        message: `Your request has been forwarded to our support team. They will contact you shortly via email (${COMPANY.supportEmail}) or [WhatsApp](https://wa.me/${waNumber}).`,
         support_email: COMPANY.supportEmail,
-        support_whatsapp: `https://wa.me/${COMPANY.phones.primaryHref?.replace('+', '')}`,
+        support_whatsapp: `https://wa.me/${waNumber}`,
         office_hours: COMPANY.officeHours,
       };
     },
