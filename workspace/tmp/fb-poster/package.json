@@ -1,0 +1,14 @@
+{
+  "name": "fb-poster",
+  "version": "1.0.0",
+  "description": "Post to a Facebook Page and linked Instagram Business account using the Meta Graph API.",
+  "main": "post.js",
+  "type": "commonjs",
+  "scripts": {
+    "post": "node post.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7"
+  }
+}
