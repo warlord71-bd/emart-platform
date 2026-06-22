@@ -35,15 +35,15 @@ Full GMC disapproved list: `workspace/audit/active/gmc-disapproved-20260622.md`
 
 | # | Sev | Finding | Owner | Status |
 |---|---|---|---|---|
-| D1 | Crit | **Zero-click rank-1 queries**: axis-y dark spot serum (152 imp, pos 1.0, 0 clicks), cosrx snail mucin (62 imp, pos 1.6, 0 clicks), cerave night cream (201 imp, pos 1.3, 0.5% CTR) — SERP title/snippet broken or unappealing | [C] | 🔲 fix titles/meta for these 3 PDPs |
-| D2 | High | **Striking-distance queries** (pos 4-20, high impressions): "best face wash for oily skin" (276 imp, pos 7.4), "centella tone brightening ampoule price in BD" (214 imp, pos 7.5), "beauty of joseon red bean water gel price in BD" (196 imp), "cerave moisturizing cream 50ml price in BD" (186 imp) | [C] | 🔲 optimize title/meta to match exact queries |
-| D3 | High | **GA4 tag 8.9s delay** — `useDeferredThirdParty(8000)` + `lazyOnload` in runtime-widgets.tsx loses bounce visitors; mobile engagement only 53% vs desktop 74% | [C] | 🔲 load GA4 eagerly (keep merchant badge deferred) |
-| D4 | High | **High-bounce landing pages**: `/concerns/sunscreen` 71% bounce (AI channel), `/skin-type/oily` 80% bounce, `/best/cleanser-oily-skin-bangladesh` 58% bounce, `/brands/cerave` 56% bounce | [C]+[O] | 🔲 improve content on these 4 pages |
-| D5 | Med | **GMC 309 small images** — "upcoming enforcement" warning; will mass-disapprove when enforced | [O] | 🔲 replace product images ≥ 100x100px → ≥ 250x250px |
+| D1 | ~~Crit~~ | ~~Zero-click rank-1 queries~~ — REFRAMED: titles/snippets fine; real issue was ranked-but-404 URLs. Validated old 26-row map vs live (24 already fixed Jun 17). | [C] | ✅ `c3dd2f6` — 3 verified redirects live (/brands/care-nel, /brands/rohto, Bengali sunscreen blog); 2 wrong-shade makeup 404s left as-is |
+| D2 | ~~High~~ | ~~Striking-distance queries~~ — `/best/*` titles already match queries exactly (e.g. "Best Face Wash for Oily Skin in Bangladesh 2026"); this is a ranking/authority gap, not a metadata fix | [C] | ✅ no code fix needed; needs links/content depth over time |
+| D3 | ~~High~~ | ~~GA4 tag 8.9s delay~~ — confirmed `tfd=8892` via live trace; lost mobile bounce sessions ~20% | [C] | ✅ `c3dd2f6` — GA4 now `afterInteractive`, merchant badge stays deferred 30s |
+| D4 | High | **High-bounce landing pages** — `/concerns/sunscreen` 71% (was nonsense template fill: "Can sunscreen help with sunscreen?"). `/skin-type/oily` 80% is 5-session noise (content already rich). `/best/cleanser` + `/brands/cerave` are ranking, not content. | [C] | ✅ `46088aa` — sunscreen rewritten (SPF/PA, skin-type fit, application, climate); others no-op |
+| D5 | Med | **GMC 309 small images** — "upcoming enforcement"; will mass-disapprove when enforced | [O] | 🔲 list at `gmc-small-images-20260623.csv`; re-upload ≥250px; see `OWNER-ACTIONS-20260623.md` |
 | D6 | Med | **GMC 83 disapproved** — healthcare claims (15), identity/belief shade names (25), personal hardships (38), illegal drugs (2), other (3). Fix 1-by-1 by sales potential | [C]+[O] | 🟡 7 unavailable removed; 83 remain; list at `gmc-disapproved-20260622.md` |
-| D7 | Med | **Germany bot traffic** — 1,735 sessions (53% of total), 0% engagement on /checkout; pollutes analytics | [O] | 🔲 investigate source; add GA4 internal traffic filter |
+| D7 | ~~Med~~ | ~~Germany bot traffic~~ — REFRAMED: 1,722 are Safari/iOS Apple Private Relay (REAL Bangladeshi iOS users masked as Germany); only /checkout 0%-eng cluster is synthetic | [O] | ✅ analyzed; DO NOT country-filter; use Bangladesh segment in `ga4_report.py`; see `OWNER-ACTIONS-20260623.md` |
 | D8 | Low | **AI Assistant is #2 BD channel** (334 sessions/14d) — `/brands/*` and `/best/*` pages drive most AI traffic; expand coverage | [C] | 🔲 ensure all active brand pages have rich content |
-| D9 | Low | **`http://www.e-mart.com.bd/`** getting 1,206 GSC impressions — non-HTTPS www variant leaking | [C] | 🔲 verify 301 redirect from http://www → https:// |
+| D9 | ~~Low~~ | ~~http://www leaking~~ — www→non-www 301 already correct; http://www is a historical 2-hop that resolves to https://non-www | [C] | ✅ verified non-issue; optional CF one-hop rule is owner dashboard |
 
 ### Audit Findings (2026-06-20 reconciliation)
 
