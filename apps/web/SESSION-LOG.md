@@ -2822,3 +2822,34 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
   - Deployed all changes live, smoke tested, pushed to origin
 - **Blockers:** TikTok Developer app pending approval (1-3 business days)
 - **Next:** Build TikTok OAuth callback + publish pipeline once app is approved; owner to share Client Key + Client Secret
+
+## 2026-06-23 (Claude — humanizer batch resumed)
+- Did: Resumed the stalled long-form product humanizer (not automated; manual proposal-gated). Verified OpenRouter key (`/root/.openclaw/credentials/openrouter_default.json`, deepseek-v4-flash works) + DB access. Ran dry-run → review → apply for 8 top GSC-impression / low-CTR products from the Jun 22 queue, excluding 212-product GSC measurement holdout + script holdout (2591/2611).
+- Products (all high-impression, sub-0.5% CTR): 43702 Axis-Y dark spot, 55943 BoJ red bean gel, 36776 Neutrogena body sunscreen, 26134 CeraVe dry-skin cream, 93121 CeraVe retinol, 58371 TIRTIR toner, 93315 Kerasys shampoo, 93078 Tiam B3 sunscreen.
+- Review: all 786–996 words, 6 H3 sections, Bangladesh context. Rephrased 2 "prescription retinoids" → "professional-strength" so the feed stays GMC-safe (same wording that disapproved 15 GMC products).
+- Applied: 8/8 to live DB, ISR revalidated. _emart_humanized flag 197→205. Rollback at `workspace/humanizer/impression-priority/active/rollback-2026-06-22.json`.
+- State: ~429 of the 437-product Jun 22 queue remain. Humanizer still NOT scheduled — runs as manual batches.
+- Blockers: none. Next: continue queue in batches (or schedule), pacing ~30–60s/product LLM latency.
+
+## 2026-06-23 (Claude — self-authored top-seller descriptions)
+- Context: OpenRouter ran out of credits (402) after the first 8-product model batch. User asked me to write them myself, natural and unique per product (not templated).
+- Did: Hand-wrote 7 unique long-form descriptions for top sellers (by total_sales) — each with a different opening, structure, subheadings, voice and length; no shared template. GMC-safe (no treats/cures/heals/prescription). Products: 18095 COSRX acne patch, 3700 COSRX snail cream, 4320 BoJ sunscreen, 23486 CeraVe retinol, 2597 SomeByMi Galactomyces VitC, 3018 Missha rice mask, 26653 3W Clinic sunblock.
+- Applied 7/7 to live DB, _emart_humanized 205→212, ISR products tag revalidated, verified live. Rollback snapshot of 309 top-seller targets at `active/rollback-topsellers-20260623.json`.
+- Note: COSRX snail 96 essence 100ml (#1 seller, id 2591) intentionally skipped — it is a GSC measurement holdout.
+- Blocker for bulk: hand-writing 300 unique descriptions exceeds a single session's output budget; model-based bulk needs OpenRouter credit top-up (deepseek-v4-flash) or a free model (nvidia nemotron-120b:free / google gemma-4-31b:free both work but lower quality than hand-written).
+- Next: continue hand-writing top sellers in batches, or owner tops up OpenRouter credits for a paced background run with the GMC-safe validator (`batch_topsellers.py`).
+
+## 2026-06-23 cont. (Claude — more hand-written serum/sunscreen/cream)
+- Per owner: skip cleansers (already humanized), focus serum/sunscreen/cream top sellers.
+- Hand-wrote + applied 13 more unique descriptions (no template, varied openings/structure, GMC-safe):
+  - batch2 (serum/cream/sunscreen subset): 50566 COSRX snail essence 30ml, 57130 Dr.Althea VitC serum, 58162 Dr.Althea relief cream, 50639 Kose Suncut gel sunscreen.
+  - batch3: 26169 CeraVe Resurfacing Retinol, 3008 Missha Sun Milk, 26660 CosDeBAHA Azelaic 10%, 42224 Neutrogena Hydro Boost, 4092 iUNIK Centella gel cream, 2972 PURITO VitC, 4324 COSRX Aloe Sun, 50830 COSRX VitC23, 50875 CeraVe Moisturizing Cream 236ml.
+- _emart_humanized 197 (session start) → 225. ISR revalidated each time. Scripts: selfwrite_topsellers.py, selfwrite_batch2.py, selfwrite_batch3.py.
+- This session total: 28 humanized (8 via free-tier model earlier, 20 hand-written by Claude). ~80 serum/sunscreen/cream top sellers still need work.
+- Next: continue hand-writing serum/sunscreen/cream top sellers in batches (list logic: top total_sales, title matches serum|sunscreen|cream|essence|ampoule|moistur, excl. cleans/hair/lip/mask + holdout + done).
+
+## 2026-06-23 cont.2 (Claude — full-length top-notch rewrite)
+- Owner feedback: top-notch human quality, don't make short. Switched to fuller long-form (~480-570 words) with expert voice, ingredient depth, safety nuance, BD context, honest caveats.
+- Applied 4 full-length serum/sunscreen/cream: 50673 The Ordinary Glycolic 7% Toner, 51313 Skin Aqua Gel SPF50, 2966 PURITO Centella Unscented Serum, 47846 Missha Aqua Sun SPF50+.
+- _emart_humanized now 229 (session start 197 → 229 = 32 total: 8 model + 24 hand-written). ISR revalidated.
+- Quality standard going forward: full-length only, unique per product, no template, GMC-safe. ~98 serum/sunscreen/cream top sellers still remain.
