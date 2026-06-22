@@ -2777,3 +2777,14 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Confirmed `main` and `origin/main` are aligned at `6ce5c4b`; tracked promo assets and GSC/system-state snapshots are committed; only `workspace/tmp/fb-poster/` is untracked.
 - No storefront code, catalog data, checkout, cart, payment, order, stock, price, WooCommerce DB, deploy, or live system changes were made.
 - Blockers: real Meta Page publishing credentials still required before Facebook/Instagram posting; exposed token should be rotated. Next step: owner provides fresh Page credentials or approves archiving/removing the untracked scratch `workspace/tmp/fb-poster/`.
+
+## 2026-06-22 — Agent: Claude Code
+- **Did:**
+  - Committed and pushed pending workspace state, GSC daily data (Jun 21+22), promo assets, influencer audit, SEO pipeline outputs (`6ce5c4b`)
+  - Committed fb-poster scratch scripts (`5a94f1e`)
+  - Fixed AI chat agent: OpenRouter credits depleted (402) because `.env.local` was set to paid `anthropic/claude-sonnet-4-6`; switched back to free `nvidia/nemotron-3-super-120b-a12b:free` on both Local and VPS; restarted `emartweb`; verified chat returns 200
+  - Added minimize button (`−`) to AI assistant chat header alongside close (`✕`); minimize preserves conversation, close clears it (`5d079a8`)
+  - Aligned VPS git HEAD from `24092c7` → `5d079a8` (was 4 commits behind)
+  - Confirmed dynamic price FAQ is already live on all PDPs — price changes in Woo auto-propagate via ISR
+- **Blockers:** none
+- **Next:** OpenRouter credit balance is low even for free model fallback routes; monitor if blog generator or chat hits rate limits on free tier

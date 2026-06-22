@@ -24,7 +24,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
-| Claude | 2026-06-20 16:00 | P1.1-P1.5 (reranker, chat wiring, incremental sync, auto titles), SEO pipeline actions+Telegram, Review schema, CONTENT_STANDARD.md, AI_PLAN.md | pending commit |
+| Claude | 2026-06-22 | Workspace sync+commit+push, OpenRouter free model fix (chat 402→200), chat minimize button, VPS git alignment | `6ce5c4b`, `5a94f1e`, `5d079a8` |
 | Codex | 2026-06-20 14:34 | C5 deploy gate closed, pa_concern 57 applied, whole-catalog concern audit (124 critical) | `7742191`, `6057a58`, `2876565` |
 | Codex | 2026-06-20 ~13:00 | Cosmetic shade variant exclusion, internal review hardening, blog gap noise filter | `fed8cd5`, `bd3c822` |
 
