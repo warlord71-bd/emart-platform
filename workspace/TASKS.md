@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-21
+Last updated: 2026-06-22
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -111,6 +111,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 | O-12 | Reddit/LinkedIn sameAs: provide real profile URLs | 🔲 |
 | O-13 | PDP 404 redirect map: 18 review-only + 52 no-match candidates | 🔲 review |
 | O-14 | Google-Extended bot policy: keep allowed or block? | 🔲 decision |
+| O-15 | Meta Page publishing: provide/rotate Page ID + Page access token + IG user ID; pasted token should be treated as exposed | 🔲 credentials |
 
 ### Codex — Open
 
@@ -118,6 +119,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 |---|---|
 | X2 — Impression-priority humanizer: monitor GSC, generate new JSONL batch | 🔲 |
 | X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⚠️ ADB blocked |
+| X4 — Social publishing tools: tracked promo assets ready; ignored scripts exist under `workspace/scripts/active/`; publish only after real Meta Page credentials | 🟡 credential-gated |
 | Mobile BFF gaps: `/api/mobile/cart` and `/api/mobile/payment` return 404 | ⏸️ out of scope per owner: "EXCEPT MOBILE APP" |
 
 ### Backlog (post-freeze Jul 3+)

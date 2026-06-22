@@ -2770,3 +2770,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Added `UX-4` to `workspace/TASKS.md` for the PDP/chat trust CRO plan; implementation remains paused until exact copy and placement are approved.
 - Recorded owner workflow preference in agent memory: check/update `workspace/TASKS.md` before any non-trivial work, then plan or implement.
 - No storefront code, catalog data, checkout, cart, payment, order, stock, price, WooCommerce DB, deploy, or live system changes were made.
+
+## 2026-06-22 03:53 CEST (Codex — work state update)
+- Did: Reviewed current agent memory, task board, recent session log, latest commits, worktree status, and ignored social publishing files after owner asked to update all Codex work.
+- Updated `workspace/TASKS.md` with the Meta Page publishing credential/rotation follow-up and the credential-gated social publishing state; added durable memory for the 2026-06-21 promo/social publishing work.
+- Confirmed `main` and `origin/main` are aligned at `6ce5c4b`; tracked promo assets and GSC/system-state snapshots are committed; only `workspace/tmp/fb-poster/` is untracked.
+- No storefront code, catalog data, checkout, cart, payment, order, stock, price, WooCommerce DB, deploy, or live system changes were made.
+- Blockers: real Meta Page publishing credentials still required before Facebook/Instagram posting; exposed token should be rotated. Next step: owner provides fresh Page credentials or approves archiving/removing the untracked scratch `workspace/tmp/fb-poster/`.
