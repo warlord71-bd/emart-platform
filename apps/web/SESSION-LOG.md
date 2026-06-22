@@ -2788,3 +2788,20 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
   - Confirmed dynamic price FAQ is already live on all PDPs — price changes in Woo auto-propagate via ISR
 - **Blockers:** none
 - **Next:** OpenRouter credit balance is low even for free model fallback routes; monitor if blog generator or chat hits rate limits on free tier
+
+## 2026-06-22 18:58 CEST (Codex — social image pipeline QA)
+- Did: Reviewed the COSRX generated social creative issue and traced it to the internal `social_image_gen.py` template/render pipeline rather than model capability.
+- Hardened future generation: reduced cramped fixed text sizing, raised price block clear of the footer, escaped catalog text before HTML injection, removed emoji flag rendering that showed missing-font boxes, added a Playwright layout/entity validation step, and made missing product images fail instead of rendering a broken placeholder.
+- Validation: `python3 -m py_compile workspace/scripts/active/social_image_gen.py` passed; dummy Playwright render passed with the new layout guard; real COSRX sample generated at `workspace/audit/active/social/product-2591-20260622-211513.png`; repeat generation was byte-identical (`cmp_exit=0`).
+- Follow-up: increased composite product prominence by cropping transparent cutout padding and forcing a larger product render height; front-facing COSRX sample generated at `workspace/audit/active/social/product-2591-20260622-212214.png`.
+- Blockers: no live publishing credentials; generated creatives still need manual review for price accuracy and brand/product visual authenticity before posting.
+- Next step: add duplicate-hash/perceptual-similarity checks before any batch social publishing run.
+
+## 2026-06-23 (Claude — integrated GA4+GSC+GMC audit + fixes)
+- Did: Set up GA4 Data API + GSC API + GMC API read access on VPS via new `emart-vps-reader` service account (`/root/.config/gcloud/emart-ga4-reader.json`). Built `workspace/scripts/active/ga4_report.py` (gitignored local tool).
+- Finding: "Traffic falling" in Site Kit was a chart artifact (today's incomplete day) — real BD traffic is UP ~78% (138→245 sessions/day). Germany = 53% bot/phantom traffic (0% engagement on /checkout). AI Assistant is the #2 real BD channel (334 sess/14d).
+- GMC: removed 7 dead/unavailable feed entries (3 trashed CeraVe/Glass Skin, 2 wrong-slug Beauty of Joseon, 1 trashed BoJ sun stick, 1 pending Mary&May). Full disapproved triage at `workspace/audit/active/gmc-disapproved-20260622.md` (gitignored).
+- Code (this deploy): (D1) 3 verified GSC-404 redirects in next.config.js — `/brands/care-nel`→carenel, `/brands/rohto`→rohto-mentholatum, Bengali sunscreen blog slug→`/blog/500-taka-sunscreen-for-men-bd`. Validated the older 26-row PDP-404 map against live: 24 already resolve to 200 (Jun 17 deploy), 2 remaining are wrong-shade makeup swaps (left as 404). (D3) GA4 now loads `afterInteractive` instead of 8s-gated `lazyOnload` — was firing ~9s late (`tfd=8892` confirmed via live network trace), undercounting mobile bounce visits ~20% and inflating Direct.
+- D2 (striking-distance queries): no code fix — `/best/*` titles already match queries exactly; it's a ranking/authority gap, not a snippet gap.
+- Blockers: none. Deferred (owner/content): GMC 309 small-image enforcement risk, 83 disapproved descriptions (1-by-1 by potential), Germany GA4 internal-traffic filter (dashboard-only), /concerns/sunscreen + /skin-type/oily content depth.
+- Next: build→VPS→smoke→push this deploy; then draft concern/skin-type content for owner approval.

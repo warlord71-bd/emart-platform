@@ -49,15 +49,18 @@ function useDeferredThirdParty(delayMs = 8000) {
 }
 
 function LazyGoogleAnalytics({ gaId }: { gaId: string }) {
-  // R17 (2026-06-11): analytics at 8s so short visits are measured; the
-  // cosmetic merchant badge below stays at 30s for page-speed.
-  const ready = useDeferredThirdParty(8000);
-  if (!gaId || !ready) return null;
+  // 2026-06-23 (GA4+GSC audit): the prior 8s gate + lazyOnload meant gtag.js
+  // fired ~9s after load, so mobile bounce visits (the majority on BD networks)
+  // were never measured — undercounting real traffic by ~20% and inflating the
+  // "Direct" channel from lost referrers. Load eagerly with afterInteractive
+  // (Google's recommended strategy for analytics). The cosmetic merchant badge
+  // below stays deferred at 30s for page-speed.
+  if (!gaId) return null;
 
   return (
     <Script
       id="ga-loader"
-      strategy="lazyOnload"
+      strategy="afterInteractive"
       src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`}
     />
   );

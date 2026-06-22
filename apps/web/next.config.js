@@ -110,6 +110,10 @@ const nextConfig = {
       { source: '/brands/blab', destination: '/brands/b-lab', permanent: true },
       { source: '/brands/beauty-formulas-skin', destination: '/brands/beauty-formulas', permanent: true },
       { source: '/brands/carene', destination: '/brands/carenel', permanent: true },
+      // GSC 404 recovery 2026-06-23 (integrated GA4+GSC audit): ranked URLs returning 404
+      { source: '/brands/care-nel', destination: '/brands/carenel', permanent: true },
+      { source: '/brands/rohto', destination: '/brands/rohto-mentholatum', permanent: true },
+      { source: '/blog/tk-bachan-500-takay-chheleder-5ti-sera-sunscreen', destination: '/blog/500-taka-sunscreen-for-men-bd', permanent: true },
       { source: '/category/skincare/melasma', destination: '/concerns/melasma', permanent: true },
       { source: '/category/skincare/acne', destination: '/concerns/acne-blemish-care', permanent: true },
       { source: '/category/skincare/j-beauty-skincare', destination: '/category/japanese-beauty', permanent: true },

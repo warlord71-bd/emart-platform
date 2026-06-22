@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-22
+Last updated: 2026-06-22 (integrated GA4+GSC+GMC audit)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -20,12 +20,30 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emart-meta-gen` (PM2) | ✅ stopped | Job complete (1,360/1,360 metas done Jun 15) |
 | GSC tracker (crontab, `30 2 * * *`) | ✅ running | `gsc_tracker.py full` — propose-only, no WC writes |
 | system_state.py (crontab, `35 2 * * *`) | 🟡 patched | Health UA + expected-stopped classification fixed locally; verify next cron/live run |
-| GMC sync (crontab, `0 */6 * * *`) | ✅ running | 3,529/3,618 approved |
+| GMC sync (crontab, `0 */6 * * *`) | ✅ running | 3,600/3,631 approved; 7 dead entries removed 2026-06-22 |
 | Python crons | ✅ running | site_health, daily_report, low_stock |
 
 ---
 
 ## 🔴 OPEN WORK — Prioritized
+
+### Integrated Analytics Audit (2026-06-22, GA4+GSC+GMC)
+
+Data sources: GA4 API (property 310219799), GSC API (sc-domain:e-mart.com.bd), GMC API (merchant 436245109).
+Report script: `workspace/scripts/active/ga4_report.py [days]`
+Full GMC disapproved list: `workspace/audit/active/gmc-disapproved-20260622.md`
+
+| # | Sev | Finding | Owner | Status |
+|---|---|---|---|---|
+| D1 | Crit | **Zero-click rank-1 queries**: axis-y dark spot serum (152 imp, pos 1.0, 0 clicks), cosrx snail mucin (62 imp, pos 1.6, 0 clicks), cerave night cream (201 imp, pos 1.3, 0.5% CTR) — SERP title/snippet broken or unappealing | [C] | 🔲 fix titles/meta for these 3 PDPs |
+| D2 | High | **Striking-distance queries** (pos 4-20, high impressions): "best face wash for oily skin" (276 imp, pos 7.4), "centella tone brightening ampoule price in BD" (214 imp, pos 7.5), "beauty of joseon red bean water gel price in BD" (196 imp), "cerave moisturizing cream 50ml price in BD" (186 imp) | [C] | 🔲 optimize title/meta to match exact queries |
+| D3 | High | **GA4 tag 8.9s delay** — `useDeferredThirdParty(8000)` + `lazyOnload` in runtime-widgets.tsx loses bounce visitors; mobile engagement only 53% vs desktop 74% | [C] | 🔲 load GA4 eagerly (keep merchant badge deferred) |
+| D4 | High | **High-bounce landing pages**: `/concerns/sunscreen` 71% bounce (AI channel), `/skin-type/oily` 80% bounce, `/best/cleanser-oily-skin-bangladesh` 58% bounce, `/brands/cerave` 56% bounce | [C]+[O] | 🔲 improve content on these 4 pages |
+| D5 | Med | **GMC 309 small images** — "upcoming enforcement" warning; will mass-disapprove when enforced | [O] | 🔲 replace product images ≥ 100x100px → ≥ 250x250px |
+| D6 | Med | **GMC 83 disapproved** — healthcare claims (15), identity/belief shade names (25), personal hardships (38), illegal drugs (2), other (3). Fix 1-by-1 by sales potential | [C]+[O] | 🟡 7 unavailable removed; 83 remain; list at `gmc-disapproved-20260622.md` |
+| D7 | Med | **Germany bot traffic** — 1,735 sessions (53% of total), 0% engagement on /checkout; pollutes analytics | [O] | 🔲 investigate source; add GA4 internal traffic filter |
+| D8 | Low | **AI Assistant is #2 BD channel** (334 sessions/14d) — `/brands/*` and `/best/*` pages drive most AI traffic; expand coverage | [C] | 🔲 ensure all active brand pages have rich content |
+| D9 | Low | **`http://www.e-mart.com.bd/`** getting 1,206 GSC impressions — non-HTTPS www variant leaking | [C] | 🔲 verify 301 redirect from http://www → https:// |
 
 ### Audit Findings (2026-06-20 reconciliation)
 
@@ -119,7 +137,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 |---|---|
 | X2 — Impression-priority humanizer: monitor GSC, generate new JSONL batch | 🔲 |
 | X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⚠️ ADB blocked |
-| X4 — Social publishing tools: tracked promo assets ready; ignored scripts exist under `workspace/scripts/active/`; publish only after real Meta Page credentials | 🟡 credential-gated |
+| X4 — Social publishing tools: tracked promo assets ready; ignored scripts exist under `workspace/scripts/active/`; social image generator now has basic layout/missing-image guards; publish only after real Meta Page credentials and manual creative review | 🟡 credential-gated |
 | Mobile BFF gaps: `/api/mobile/cart` and `/api/mobile/payment` return 404 | ⏸️ out of scope per owner: "EXCEPT MOBILE APP" |
 
 ### Backlog (post-freeze Jul 3+)
@@ -129,7 +147,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 - `getSeoDescription()` fallback: add `product.description` first-155-chars tier
 - Critical CSS inlining (critters) — medium effort/risk
 - `/brands` page 785KB — lazy-load logos or paginate
-- GCP service account key rotation (fingerprint ce8b30ba)
+- GCP service account key rotation (fingerprint ce8b30ba + ga4-reader db98ee6c)
 - `begin_checkout` GA4/Meta event: fires before Zustand cart rehydration — needs cart/checkout fix
 
 ---
