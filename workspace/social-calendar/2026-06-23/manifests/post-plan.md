@@ -2,7 +2,7 @@
 
 Timezone: Asia/Dhaka  
 Platforms: Facebook + Instagram  
-Status: 18 unique creatives, captions, links, and public assets are ready. Publishing is paused: the replacement credential was a short-lived user token, not a publish-capable Page token. No posts succeeded; the scheduler was stopped after the 14:46 BDT failure.
+Status: The three-month Page token is valid. Item 1 published successfully to Facebook and Instagram using JPEG delivery assets; its first comments failed because the token lacks comment-management permissions. Items 2-18 are paused until `pages_manage_engagement` and `instagram_manage_comments` are added.
 
 The authoritative schedule, captions, first-comment links, and publishing status are in `publish-schedule-18-alternating.md`.
 

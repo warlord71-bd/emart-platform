@@ -2886,3 +2886,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Finding: The renewed Meta credential was short-lived and expired at the campaign start. The 09:00 call also returned a missing/deprecated publishing-permission error; subsequent calls returned OAuth 190/subcode 463 (expired token).
 - Did: Hardened the scheduler to require `/me` identity equal to `PAGE_ID`, support `--validate-only`, and redistribute all 18 posts with `--catch-up=25` after validation.
 - Blocker: A long-lived Page access token with Facebook Page and Instagram publishing permissions must be validated before rescheduling all 18 posts to future times.
+
+## 2026-06-23 (Codex - three-month Page token retest)
+- Did: Confirmed the renewed credential resolves as the Emart Page and linked Instagram Business account. Converted all 18 Meta delivery assets from PNG to high-quality 1080x1350 JPEG; first JPEG is live at HTTP 200 and 200 KB.
+- Result: Controlled item-1 test published successfully to Facebook (`106908734057777_1325129596410669`) and Instagram (`18604410559043267`).
+- Blocker: First comments failed because the token lacks `pages_manage_engagement` and `instagram_manage_comments`. Remaining 17 posts are paused to preserve the buying-link requirement.
+- Next: Regenerate the Page token with both comment scopes, add the item-1 buying-link comments, then resume from `--start-index=1`.

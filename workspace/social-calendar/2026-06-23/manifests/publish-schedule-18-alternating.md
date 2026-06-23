@@ -173,3 +173,11 @@ Live status on 2026-06-23:
 - PM2 process `emart-meta-18-20260623` was stopped before the remaining slots.
 - The scheduler now validates that `/me` resolves to `PAGE_ID` before queuing and supports `--validate-only` plus catch-up scheduling.
 - Required next credential: the Emart Page `access_token` returned by `/me/accounts`, derived from a long-lived user or system-user token with Page/Instagram publishing permissions.
+
+Controlled retest after the three-month Page token update:
+
+- Facebook post succeeded: `106908734057777_1325129596410669`.
+- Instagram post succeeded: `18604410559043267`.
+- Facebook first comment failed without `pages_manage_engagement`.
+- Instagram first comment failed without `instagram_manage_comments`.
+- Items 2-18 remain paused; restart with `--start-index=1` after both comment permissions validate.
