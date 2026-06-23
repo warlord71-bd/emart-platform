@@ -2863,3 +2863,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Owner: do priority brands first (medicube/anua/dr althea/cosrx/numbuzin/skin1004/carenel/3w clinic/dabo/axis-y/the ordinary/cerave); continue until budget limit; commit per batch so nothing uncommitted.
 - Batches 8-14 applied live + revalidated + pushed individually. _emart_humanized now 275 (session start 197 → +78: 8 model + 70 hand-written, all full-length top-notch unique, GMC-safe).
 - Every batch committed+pushed immediately; live site 200; rollback snapshots preserved. Resume logic in project_humanizer_resume_20260623.
+## 2026-06-23 (Codex - 18-post Meta campaign prepared)
+- Did: Completed 10 unique product-only pipeline creatives with the approved wooden podium and 8 unique Codex model-real-item creatives using exact product references; produced 1:1 and 4:5 variants, contact sheets, SEO captions, first-comment product links, and an alternating 09:00-23:00 BDT calendar.
+- Did: Published all 18 4:5 assets at `/images/social/2026-06-23/meta-18/`, verified the live image endpoint, and built a Facebook + linked-Instagram scheduler that posts first comments.
+- Finding: Existing credentials were not missing; the repo tool expected different variable names. The real credentials are in `/opt/fb-poster/.env`, but Meta reports the Page token expired on 2026-06-21 (OAuth 190, subcode 463). Stopped the failed PM2 restart loop.
+- Blocker: Replace `PAGE_ACCESS_TOKEN` with a fresh Page access token before publishing.
+- Next: Start `emart-meta-18-20260623` with `--no-autorestart` immediately after token renewal; if the date has passed, regenerate schedule times first.

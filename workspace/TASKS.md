@@ -129,7 +129,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 | O-12 | Reddit/LinkedIn sameAs: provide real profile URLs | 🔲 |
 | O-13 | PDP 404 redirect map: 18 review-only + 52 no-match candidates | 🔲 review |
 | O-14 | Google-Extended bot policy: keep allowed or block? | 🔲 decision |
-| O-15 | Meta Page publishing: provide/rotate Page ID + Page access token + IG user ID; pasted token should be treated as exposed | 🔲 credentials |
+| O-15 | Meta Page publishing: replace expired `PAGE_ACCESS_TOKEN` in `/opt/fb-poster/.env`; existing token expired 2026-06-21 (OAuth 190/463). Page ID exists and IG account is resolved automatically after token validation. | 🔴 token expired |
 | O-16 | TikTok Developer app: pending approval; share Client Key + Client Secret once approved → Claude builds OAuth + publish pipeline | 🔲 pending TikTok review |
 
 ### Codex — Open
@@ -138,7 +138,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 |---|---|
 | X2 — Impression-priority humanizer: monitor GSC, generate new JSONL batch | 🔲 |
 | X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⚠️ ADB blocked |
-| X4 — Social publishing tools: tracked promo assets ready; ignored scripts exist under `workspace/scripts/active/`; social image generator now has basic layout/missing-image guards; publish only after real Meta Page credentials and manual creative review | 🟡 credential-gated |
+| X4 — Social publishing: 18 unique approved creatives, 09:00-23:00 BDT schedule, SEO captions, first-comment links, public HTTPS assets, deterministic podium pipeline, and FB+IG scheduler ready. Replace expired Meta Page token, then start one-day scheduler with `--no-autorestart`. | 🔴 token expired |
 | Mobile BFF gaps: `/api/mobile/cart` and `/api/mobile/payment` return 404 | ⏸️ out of scope per owner: "EXCEPT MOBILE APP" |
 
 ### Backlog (post-freeze Jul 3+)
