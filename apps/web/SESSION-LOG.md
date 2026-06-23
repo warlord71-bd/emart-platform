@@ -2858,3 +2858,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Continued hand-writing full-length top-notch serum/sunscreen/cream/toner descriptions, committing+pushing after each batch so nothing is ever uncommitted.
 - Batches 5-7 applied live (each + ISR revalidate + git push): 51158 BoJ sun stick, 4148 COSRX dual essence, 26933 COSRX cica serum, 27208 ISNTREE sun gel, 26942 ThankYouFarmer sun essence, 53311 ANUA toner, 56144 Nivea sun gel, 58268 WSKINLAB sun cream, 26435 Simple rich moisturizer, 2588 SomeByMi Miracle Toner, 2583 SomeByMi Yuja serum, 36232 Bioderma Photoderm M, 50557 COSRX AHA/BHA toner.
 - _emart_humanized now ~242. Resume state in memory project_humanizer_resume_20260623. ~105 serum/sunscreen/cream top sellers remain.
+
+## 2026-06-23 cont.4 (Claude — continued to limit, priority brands)
+- Owner: do priority brands first (medicube/anua/dr althea/cosrx/numbuzin/skin1004/carenel/3w clinic/dabo/axis-y/the ordinary/cerave); continue until budget limit; commit per batch so nothing uncommitted.
+- Batches 8-14 applied live + revalidated + pushed individually. _emart_humanized now 275 (session start 197 → +78: 8 model + 70 hand-written, all full-length top-notch unique, GMC-safe).
+- Every batch committed+pushed immediately; live site 200; rollback snapshots preserved. Resume logic in project_humanizer_resume_20260623.
