@@ -24,6 +24,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-24 | Built Phase 0 video engine, switched default scripts to OpenRouter free Gemma, added local reel QA, generated Beauty of Joseon sample reel | pending |
 | Claude | 2026-06-23 | PDP nudge fix, WhatsApp escalation link, Recently Viewed move, social_image_gen seed fix, SPF record fix, register 500 fix, checkout/email verification, TikTok API setup guide, Codex work synced | `5b5461d`, `c3dd2f6` |
 | Codex | 2026-06-20 14:34 | C5 deploy gate closed, pa_concern 57 applied, whole-catalog concern audit (124 critical) | `7742191`, `6057a58`, `2876565` |
 | Codex | 2026-06-20 ~13:00 | Cosmetic shade variant exclusion, internal review hardening, blog gap noise filter | `fed8cd5`, `bd3c822` |

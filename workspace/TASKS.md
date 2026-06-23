@@ -18,6 +18,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emart-revenue-health` (PM2 cron) | ✅ stopped | Intentionally stopped |
 | `emart-seo-autoscan` (PM2 cron) | ✅ stopped | Intentionally stopped |
 | `emart-meta-gen` (PM2) | ✅ stopped | Job complete (1,360/1,360 metas done Jun 15) |
+| Opus Humanizer Engine (detached, free OpenRouter) | 🟢 ongoing | `workspace/humanizer/engine/` — generates PDP descriptions on free models (gemma-4-31b chain), gated GMC+AI-residue, auto-applies PASS + revalidates + Telegram ping. Run: `bash workspace/humanizer/engine/run_detached.sh N`. 122 humanized as of 2026-06-23. Awaiting owner OpenRouter funds for Hermes handoff. |
 | GSC tracker (crontab, `30 2 * * *`) | ✅ running | `gsc_tracker.py full` — propose-only, no WC writes |
 | system_state.py (crontab, `35 2 * * *`) | 🟡 patched | Health UA + expected-stopped classification fixed locally; verify next cron/live run |
 | GMC sync (crontab, `0 */6 * * *`) | ✅ running | 3,600/3,631 approved; 7 dead entries removed 2026-06-22 |
@@ -26,6 +27,23 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 ---
 
 ## 🔴 OPEN WORK — Prioritized
+
+### 🟢 ONGOING — Product Description Humanization via Opus Humanizer Engine (2026-06-23)
+
+Reusable content-class at `workspace/humanizer/engine/` reproduces Opus-4.8 PDP copy on **free**
+OpenRouter models (gemma-4-31b-it:free chain), GMC-safe + AI-residue-free, gated by `residue_lint.py`
+(PASS = ≥80 + GMC-clean + residue-clean). Owner-directed handoff target = **Hermes agent**.
+
+- **State:** 122/~1,500 target serum/sunscreen/cream/lotion products humanized (`_emart_humanized=1`).
+- **Run (safe to close laptop):** `bash workspace/humanizer/engine/run_detached.sh <LIMIT>` — detached,
+  auto-applies PASS rows + revalidates `tag:products` + **Telegram ping on completion**.
+- **Blocker:** OpenRouter PAID credits exhausted (402) → using free models w/ rate-limit backoff;
+  **owner will add funds + notify** for faster/Hermes runs. Free key auto-read from
+  `/root/.openclaw/credentials/openrouter_default.json`.
+- **Self-improvement:** scores logged to `scores.jsonl`; promote PASS≥92 into `exemplars.jsonl`.
+- **Refs:** `OPUS_STYLE_SPEC.md`, `README.md`. Holdout (212 GSC slugs + ids 2591/2611/4064) auto-excluded.
+- **Minor follow-up:** `run_detached.sh` passes secrets via process env (visible in `ps`); fine on this
+  single-owner root VPS, harden to an env-file later if multi-user.
 
 ### Integrated Analytics Audit (2026-06-22, GA4+GSC+GMC)
 
@@ -39,7 +57,7 @@ Full GMC disapproved list: `workspace/audit/active/gmc-disapproved-20260622.md`
 | D2 | ~~High~~ | ~~Striking-distance queries~~ — `/best/*` titles already match queries exactly (e.g. "Best Face Wash for Oily Skin in Bangladesh 2026"); this is a ranking/authority gap, not a metadata fix | [C] | ✅ no code fix needed; needs links/content depth over time |
 | D3 | ~~High~~ | ~~GA4 tag 8.9s delay~~ — confirmed `tfd=8892` via live trace; lost mobile bounce sessions ~20% | [C] | ✅ `c3dd2f6` — GA4 now `afterInteractive`, merchant badge stays deferred 30s |
 | D4 | High | **High-bounce landing pages** — `/concerns/sunscreen` 71% (was nonsense template fill: "Can sunscreen help with sunscreen?"). `/skin-type/oily` 80% is 5-session noise (content already rich). `/best/cleanser` + `/brands/cerave` are ranking, not content. | [C] | ✅ `46088aa` — sunscreen rewritten (SPF/PA, skin-type fit, application, climate); others no-op |
-| D5 | Med | **GMC 309 small images** — "upcoming enforcement"; will mass-disapprove when enforced | [O] | 🔲 list at `gmc-small-images-20260623.csv`; re-upload ≥250px; see `OWNER-ACTIONS-20260623.md` |
+| D5 | ~~Med~~ | ~~GMC 309 small images~~ | [X] | ✅ 2026-06-23 — all 309 mapped products received exact-source enhanced images at ≥1200px; originals preserved; product cache revalidated; GMC full sync completed 3,595 synced / 30 excluded / 0 errors |
 | D6 | Med | **GMC 83 disapproved** — healthcare claims (15), identity/belief shade names (25), personal hardships (38), illegal drugs (2), other (3). Fix 1-by-1 by sales potential | [C]+[O] | 🟡 7 unavailable removed; 83 remain; list at `gmc-disapproved-20260622.md` |
 | D7 | ~~Med~~ | ~~Germany bot traffic~~ — REFRAMED: 1,722 are Safari/iOS Apple Private Relay (REAL Bangladeshi iOS users masked as Germany); only /checkout 0%-eng cluster is synthetic | [O] | ✅ analyzed; DO NOT country-filter; use Bangladesh segment in `ga4_report.py`; see `OWNER-ACTIONS-20260623.md` |
 | D8 | Low | **AI Assistant is #2 BD channel** (334 sessions/14d) — `/brands/*` and `/best/*` pages drive most AI traffic; expand coverage | [C] | 🔲 ensure all active brand pages have rich content |
@@ -136,9 +154,11 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 
 | Item | Status |
 |---|---|
+| X6 — VPS disk cleanup: Claude completed cleanup after Codex audit; disk now 63/96 GB used (66%, 34 GB free). | ✅ complete |
 | X2 — Impression-priority humanizer: monitor GSC, generate new JSONL batch | 🔲 |
 | X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⚠️ ADB blocked |
 | X4 — Social publishing: item 1 published successfully to FB+IG with JPEG delivery assets; first comments failed due missing comment scopes. Items 2-18 paused; resume from `--start-index=1` after permission update. | 🔴 comment permissions needed |
+| X7 — AI video engine: Phase 0 local reel engine built; direct Google dropped from default path. Scripts now use OpenRouter free Gemma fallback (`google/gemma-4-31b-it:free` proven), QA defaults to local ffprobe; sample reel live at `/public/videos/reels/20260624-gemma-boj-relief-sun-sample.mp4`; live publish remains owner-gated. | 🟡 publish gated |
 | X5 — SEO cron state hygiene: retained the valid 2026-06-23 GSC/state refresh and fixed `system_state.py` treating the em-dash placeholder as an active agent. | ✅ complete |
 | Mobile BFF gaps: `/api/mobile/cart` and `/api/mobile/payment` return 404 | ⏸️ out of scope per owner: "EXCEPT MOBILE APP" |
 

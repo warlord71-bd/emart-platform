@@ -1,0 +1,55 @@
+{
+  "_doc": "Tier-swappable provider registry. Each capability lists providers by tier. The router picks the cheapest provider at or below the job's tier_target that is marked enabled. Flip 'enabled' / add keys to switch free<->mid<->premium per job without code changes.",
+  "default_tier": "free",
+  "capabilities": {
+    "image": {
+      "_doc": "Shared upstream: same image sources feed BOTH static social posts and video reels. 'emart-branded' wraps workspace/scripts/active/social_image_gen.py (logo/price/COD overlay).",
+      "free":    { "provider": "emart-branded", "enabled": true,  "cost_per": 0.0, "wraps": "workspace/scripts/active/social_image_gen.py", "note": "branded composite; AI bg via pollinations" },
+      "free_raw":{ "provider": "woo-product-photo", "enabled": true, "cost_per": 0.0, "note": "raw WooCommerce product image, no branding" },
+      "mid":     { "provider": "codex-imagegen",  "enabled": false, "cost_per": 0.0, "note": "Codex image-gen capacity (produced AESTURA/promo assets); call when available" },
+      "mid_api": { "provider": "fal-flux-schnell", "enabled": false, "env": "FAL_KEY", "cost_per": 0.003 },
+      "premium": { "provider": "fal-flux-pro",   "enabled": false, "env": "FAL_KEY", "cost_per": 0.05 }
+    },
+    "face_consistency": {
+      "free":    { "provider": "seed-lock",      "enabled": true,  "cost_per": 0.0 },
+      "mid":     { "provider": "fal-instantid",  "enabled": false, "env": "FAL_KEY", "cost_per": 0.01 },
+      "premium": { "provider": "replicate-pulid","enabled": false, "env": "REPLICATE_API_TOKEN", "cost_per": 0.03 }
+    },
+    "video_broll": {
+      "free":    { "provider": "ffmpeg-kenburns","enabled": true,  "cost_per": 0.0 },
+      "mid":     { "provider": "minimax-hailuo", "enabled": false, "env": "MINIMAX_API_KEY", "cost_per": 0.20 },
+      "premium": { "provider": "kling",          "enabled": false, "env": "KLING_API_KEY", "cost_per": 0.50 }
+    },
+    "video_talking": {
+      "free":    { "provider": "none",           "enabled": false, "cost_per": 0.0 },
+      "mid":     { "provider": "did",            "enabled": false, "env": "DID_API_KEY", "cost_per": 0.30 },
+      "premium": { "provider": "heygen",         "enabled": false, "env": "HEYGEN_API_KEY", "cost_per": 1.00 }
+    },
+    "voice": {
+      "free":    { "provider": "piper-local",    "enabled": false, "cost_per": 0.0, "note": "needs piper install; falls back to silent" },
+      "mid":     { "provider": "google-tts",     "enabled": false, "env": "GOOGLE_TTS_KEY", "cost_per": 0.004, "langs": ["bn-BD","en-US"] },
+      "premium": { "provider": "elevenlabs",     "enabled": false, "env": "ELEVENLABS_API_KEY", "cost_per": 0.03, "langs": ["bn","en"] }
+    },
+    "storage": {
+      "free":    { "provider": "local",          "enabled": true,  "cost_per": 0.0, "note": "transient, auto-cleaned" },
+      "mid":     { "provider": "cloudflare-r2",  "enabled": false, "env": "R2_ACCESS_KEY", "cost_per": 0.0, "note": "10GB free, zero egress" },
+      "premium": { "provider": "s3",             "enabled": false, "env": "AWS_ACCESS_KEY_ID", "cost_per": 0.02 }
+    },
+    "script": {
+      "free":    { "provider": "claude-authored", "enabled": true,  "cost_per": 0.0, "note": "inline job.script; best quality when authored by an agent" },
+      "free_or": { "provider": "openrouter-gemma-free", "enabled": true,  "env": "OPENROUTER_API_KEY", "cost_per": 0.0, "models": ["google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free"], "note": "unattended free fallback; Google-family via OpenRouter" },
+      "mid_or":  { "provider": "openrouter-gemini-flash", "enabled": false, "env": "OPENROUTER_API_KEY", "cost_per": 0.0025, "models": ["google/gemini-2.5-flash", "google/gemini-3.1-flash-lite"], "note": "cheap paid route, enable only when budget cap allows" },
+      "direct_google": { "provider": "vertex-or-ai-studio", "enabled": false, "env": "GEMINI_SERVICE_ACCOUNT_FILE", "cost_per": 0.0, "note": "explicit only; blocked if project billing disabled" }
+    },
+    "qa": {
+      "free":    { "provider": "local-ffprobe",   "enabled": true,  "cost_per": 0.0, "note": "checks MP4 dimensions, duration, audio/video streams, and file size" },
+      "direct_google":{ "provider": "gemini-video-qa", "enabled": false, "env": "GEMINI_API_KEY", "cost_per": 0.0, "note": "explicit opt-in only via job.qa_provider=gemini" }
+    }
+  },
+  "guardrails": {
+    "max_videos_per_day": 6,
+    "daily_budget_cap_usd": 0.0,
+    "dry_run_default": true
+  },
+  "languages": ["en", "bn", "banglish"]
+}

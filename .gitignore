@@ -309,6 +309,10 @@ workspace/scripts/active/
 !workspace/scripts/active/product_onboarding.py
 workspace/scripts/active/*
 !workspace/scripts/active/product_onboarding.py
+!workspace/scripts/active/gmc_small_image_audit.php
+!workspace/scripts/active/gmc_image_enhance.py
+!workspace/scripts/active/gmc_image_apply.php
 workspace/scripts/active/generate-product-faq-samples.mjs
 workspace/scripts/active/verify-product-faq-top200.mjs
+workspace/generated-assets/gmc-image-fix-*/
 workspace/archive/

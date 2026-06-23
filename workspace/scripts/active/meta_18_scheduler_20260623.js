@@ -1,14 +1,22 @@
 #!/usr/bin/env node
 
-require('/opt/fb-poster/node_modules/dotenv').config({ path: '/opt/fb-poster/.env' });
+const path = require('path');
+const ENV_PATHS = [
+  path.resolve(__dirname, '../../..', 'apps/web/.env.local'),
+  '/var/www/emart-platform/apps/web/.env.local',
+];
+for (const p of ENV_PATHS) {
+  try { require('/opt/fb-poster/node_modules/dotenv').config({ path: p }); break; } catch {}
+}
+
 const axios = require('/opt/fb-poster/node_modules/axios');
 const crypto = require('crypto');
 
-const API_VERSION = process.env.META_GRAPH_API_VERSION || 'v19.0';
+const API_VERSION = process.env.META_GRAPH_API_VERSION || 'v25.0';
 const GRAPH_BASE_URL = `https://graph.facebook.com/${API_VERSION}`;
-const PAGE_ID = process.env.PAGE_ID;
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-const APP_SECRET = process.env.APP_SECRET;
+const PAGE_ID = process.env.META_PAGE_ID || process.env.PAGE_ID;
+const PAGE_ACCESS_TOKEN = process.env.META_PAGE_ACCESS_TOKEN || process.env.PAGE_ACCESS_TOKEN;
+const APP_SECRET = process.env.META_APP_SECRET || process.env.APP_SECRET;
 const LOG_PREFIX = '[emart-meta-18]';
 const RUN_STARTED_AT = Date.now();
 const catchUpArg = process.argv.find((arg) => arg.startsWith('--catch-up='));

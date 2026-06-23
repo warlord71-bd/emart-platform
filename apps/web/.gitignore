@@ -8,3 +8,6 @@ gsc-oauth-token.json
 
 # Generated design system previews (DesignSync)
 design-system/
+
+# Video-engine generated reels (runtime artifacts, never commit)
+/public/videos/

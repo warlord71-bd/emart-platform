@@ -2892,3 +2892,44 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Result: Controlled item-1 test published successfully to Facebook (`106908734057777_1325129596410669`) and Instagram (`18604410559043267`).
 - Blocker: First comments failed because the token lacks `pages_manage_engagement` and `instagram_manage_comments`. Remaining 17 posts are paused to preserve the buying-link requirement.
 - Next: Regenerate the Page token with both comment scopes, add the item-1 buying-link comments, then resume from `--start-index=1`.
+## 2026-06-23 (Codex - read-only whole-VPS disk audit)
+- Did: Audited filesystem usage, inodes, large files/directories, journals, package/tool caches, backups, runtime trees, PM2 services, snaps, and deleted-open files. No files were removed or moved.
+- Finding: Root filesystem is 84/96 GB used (88%, 13 GB free), with healthy inode usage (14%). Safely reclaimable candidates total roughly 25-28 GB: npm cache ~12 GB, pip cache ~3 GB, stale Chromium isolated profiles ~5 GB, journal reduction ~3.5 GB, and optional Playwright/VS Code/old backup/tool caches.
+- Protected: Keep the 8 GB swapfile, live `/var/www` trees, WordPress uploads/databases, newest backups, and 2.6 GB Hugging Face models used by `emart-embed`.
+- Finding: A long-running Playwright MCP process has accumulated about 1,900 isolated Chromium profiles since 2026-06-03 (roughly 96/day). Cleanup should preserve active profiles and address retention.
+- Blocker: Owner approval required before cleanup or moving archival backups to a local device.
+- Next: Execute a staged low-risk cleanup, verify active services/live sites, then report reclaimed space.
+
+## 2026-06-23 (Codex - GMC 309 undersized product images resolved)
+- Did: Mapped all 309 GMC rows to Woo media; corrected the one bad `woo_id=0` row to published product 36262. Source audit found 85 images at 250-799px and 224 at 100-249px.
+- Did: Created exact-source, non-destructive ≥1200px JPEG enhancements using Lanczos enlargement plus conservative contrast/sharpening. No AI-redrawn labels and no web-scraped replacements were needed.
+- Applied: Created 309 new Woo attachments and set them as featured images; originals remain intact. Per-batch rollback JSON and result CSV files are in `workspace/audit/active/gmc-image-*-apply-20260623/`.
+- Verified: Post-apply source audit reports all 309 adequate; representative live media/PDP returned HTTP 200 and rendered the enhanced source; `tag:products` revalidated.
+- GMC: Full sync completed: 3,595 synced, 30 intentional exclusions, 0 errors, 3,625 total.
+- Ops: Claude completed the separately approved disk cleanup; root filesystem now has 34 GB free (66% used).
+- Blockers: none. Next: allow GMC to reprocess image diagnostics; review Merchant Center status after its normal processing delay.
+
+## 2026-06-23 (Codex - AI video Gemini script + QA wiring)
+- Did: Added stdlib Gemini Interactions API client for `workspace/video-engine`, plus automatic secret loading from `apps/web/.env.local` / runtime `.env.local`.
+- Did: Updated `script_gen.py` priority to Gemini/AI Studio when `GEMINI_API_KEY` exists, then OpenRouter, then template; added explicit `--provider`.
+- Did: Added `reel_qa_gemini.py` and wired worker QA before store/publish. Gemini QA writes pass/warn/fail JSON and blocks publish on fail; missing key is recorded as skipped.
+- Verified: Python compile passes; template script generation works; QA missing-key path exits cleanly; worker dry-run on `snail-claude.json` remains ready with QA skipped.
+- Blocker: No validated AI Studio Gemini key on server. Add `GEMINI_API_KEY=...` to `apps/web/.env.local`; do not paste secrets into chat. Live publish still owner-gated.
+
+## 2026-06-24 (Codex - Gemini service-account path)
+- Did: Checked local credential files; no JSON for `gemini@emart-2923b.iam.gserviceaccount.com` is present. Existing files are GMC, Play, and old GSC service accounts.
+- Did: Added service-account/Vertex AI support to `workspace/video-engine/lib/gemini_client.py`; script generation now tries service-account auth before API-key auth when `GEMINI_SERVICE_ACCOUNT_FILE` or `GOOGLE_APPLICATION_CREDENTIALS` exists.
+- Verified: Python compile passes. Controlled Vertex test with existing `gmc-603@emart-2923b` credential authenticated but returned Google `BILLING_DISABLED` for project `emart-2923b`.
+- Blocker: Upload the `gemini@emart-2923b` service-account JSON to `/root/.config/gemini-service-account.json` and enable billing/Vertex AI for project `emart-2923b`; then rerun Gemini validation.
+
+## 2026-06-24 (Codex - OpenRouter free video-engine path)
+- Did: Stopped making direct Google/Gemini the default path for the video engine. `script_gen.py` now uses OpenRouter first in `auto` mode and tries free Google-family Gemma models (`google/gemma-4-31b-it:free`, `google/gemma-4-26b-a4b-it:free`) before other free fallbacks and template.
+- Did: Added `stages/reel_qa_local.py` and made worker QA default to local ffprobe validation. Direct Gemini video QA remains opt-in only via `qa_provider:"gemini"`.
+- Verified: OpenRouter model list confirms Gemma free models; script generation succeeded on `google/gemma-4-31b-it:free`; local QA passed on `20260623-snail-claude.mp4` (1080x1920, 8.00s, audio/video streams, publishable).
+- Note: OpenRouter Gemini Flash exists (`google/gemini-2.5-flash`, `google/gemini-3.1-flash-lite`) but is cheap paid, not free. Keep budget cap at $0 unless owner explicitly enables paid scripts.
+
+## 2026-06-24 (Codex - free Gemma reel sample + commit prep)
+- Did: Generated a fresh Beauty of Joseon Relief Sun reel sample through the worker with OpenRouter `google/gemma-4-31b-it:free`, rendered an 8s 1080x1920 MP4, ran local ffprobe QA, and kept Meta publish in dry-run mode.
+- Sample: `https://e-mart.com.bd/public/videos/reels/20260624-gemma-boj-relief-sun-sample.mp4?v=1782255312` returned HTTP 206 range response; QA score 96 and publishable=true.
+- Verified: `npm run build` passed locally; only existing `<img>` lint warnings in chat/recently viewed components.
+- Security: The Google service-account key pasted in chat remains compromised and must be revoked; default video path no longer needs direct Google/Gemini.

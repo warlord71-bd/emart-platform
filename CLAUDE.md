@@ -74,6 +74,7 @@ Key SEO search targets: `canonical` · `generateMetadata` · `sitemap` · `robot
 - [SEO Master](workspace/SEO_MASTER.md) — full SEO gap tracker, canonical/sitemap/schema rules
 - [OpenClaw](workspace/docs/claude-reference/openclaw.md) — VPS inspection, Telegram, safety rules, OpenRouter key
 - [Deploy function](workspace/docs/claude-reference/deploy-reference.md) — full rsync/pm2 reference script
+- [Social publishing](workspace/docs/claude-reference/social-publishing.md) — Meta FB+IG posting, credentials, scheduler template, token renewal
 - [Brand guide](workspace/BRAND_GUIDE.md) — copy tone, product naming, brand story
 - [Category taxonomy](workspace/docs/category-taxonomy-status.md) — active/redirected/backend-only categories
 - [Task board](workspace/TASKS.md) — open work, priority order, freeze scope
