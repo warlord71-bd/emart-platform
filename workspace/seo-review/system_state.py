@@ -132,6 +132,8 @@ def get_agent_bus():
             cells = [c.strip() for c in line.split("|") if c.strip()]
             if cells and cells[0].lower() in {"agent", "owner", "status"}:
                 continue
+            if cells and all(cell in {"-", "--", "---", "—"} for cell in cells):
+                continue
             if in_active and len(cells) >= 3:
                 active.append({"agent": cells[0], "started": cells[1], "task": cells[2]})
             elif in_last and len(cells) >= 3:

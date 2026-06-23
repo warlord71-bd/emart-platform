@@ -1,83 +1,83 @@
 {
-  "generated": "2026-06-22",
+  "generated": "2026-06-23",
   "period": {
-    "start": "2026-05-23",
-    "end": "2026-06-19"
+    "start": "2026-05-24",
+    "end": "2026-06-20"
   },
-  "total_products_in_search": 437,
+  "total_products_in_search": 445,
   "already_humanized": 0,
-  "needs_humanization": 437,
+  "needs_humanization": 445,
   "queue": [
     {
       "slug": "cerave-skin-renewing-night-cream-48g",
       "path": "/shop/cerave-skin-renewing-night-cream-48g",
-      "humanizer_priority": 4064.9,
-      "opportunity_score": 2709.9,
-      "impressions": 1087,
+      "humanizer_priority": 4199.9,
+      "opportunity_score": 2799.9,
+      "impressions": 1123,
       "clicks": 3,
       "position": 3.5,
-      "ctr": 0.0028,
+      "ctr": 0.0027,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
           "query": "cerave night cream",
-          "impressions": 194
+          "impressions": 201
         },
         {
           "query": "cerave whitening night cream price in bangladesh",
-          "impressions": 175
+          "impressions": 182
         },
         {
           "query": "cerave skin renewing night cream",
-          "impressions": 117
+          "impressions": 128
         }
       ]
     },
     {
       "slug": "skin1004-madagascar-centella-tone-brightening-capsule-ampoule-100ml",
       "path": "/shop/skin1004-madagascar-centella-tone-brightening-capsule-ampoule-100ml",
-      "humanizer_priority": 2285.9,
-      "opportunity_score": 1523.9,
-      "impressions": 1018,
-      "clicks": 2,
+      "humanizer_priority": 2261.2,
+      "opportunity_score": 1507.5,
+      "impressions": 1008,
+      "clicks": 3,
       "position": 5.2,
-      "ctr": 0.002,
+      "ctr": 0.003,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
           "query": "centella serum 100ml price in bangladesh",
-          "impressions": 346
+          "impressions": 351
         },
         {
           "query": "centella tone brightening ampoule price in bangladesh",
-          "impressions": 231
+          "impressions": 218
         },
         {
-          "query": "centella ampoule price in bangladesh",
-          "impressions": 27
+          "query": "centella brightening ampoule price in bangladesh",
+          "impressions": 26
         }
       ]
     },
     {
       "slug": "cosrx-advanced-snail-mucin-96-power-essence-100ml",
       "path": "/shop/cosrx-advanced-snail-mucin-96-power-essence-100ml",
-      "humanizer_priority": 1346.2,
-      "opportunity_score": 897.5,
-      "impressions": 360,
+      "humanizer_priority": 1286.2,
+      "opportunity_score": 857.5,
+      "impressions": 344,
       "clicks": 1,
-      "position": 4.8,
-      "ctr": 0.0028,
+      "position": 4.7,
+      "ctr": 0.0029,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
           "query": "snail mucin",
-          "impressions": 103
+          "impressions": 102
         },
         {
           "query": "cosrx snail mucin",
@@ -92,11 +92,11 @@
     {
       "slug": "axis-y-dark-spot-correcting-glow-serum-50ml",
       "path": "/shop/axis-y-dark-spot-correcting-glow-serum-50ml",
-      "humanizer_priority": 985.5,
-      "opportunity_score": 657.0,
-      "impressions": 220,
+      "humanizer_priority": 990.0,
+      "opportunity_score": 660.0,
+      "impressions": 221,
       "clicks": 1,
-      "position": 2.0,
+      "position": 2.1,
       "ctr": 0.0045,
       "is_humanized": false,
       "has_hot_trend": false,
@@ -119,12 +119,12 @@
     {
       "slug": "medicube-deep-vita-c-capsule-cream-55ml",
       "path": "/shop/medicube-deep-vita-c-capsule-cream-55ml",
-      "humanizer_priority": 828.8,
-      "opportunity_score": 552.5,
-      "impressions": 222,
+      "humanizer_priority": 840.0,
+      "opportunity_score": 560.0,
+      "impressions": 225,
       "clicks": 1,
-      "position": 4,
-      "ctr": 0.0045,
+      "position": 4.0,
+      "ctr": 0.0044,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
@@ -144,13 +144,40 @@
       ]
     },
     {
+      "slug": "simple-refreshing-facial-wash-150ml",
+      "path": "/shop/simple-refreshing-facial-wash-150ml",
+      "humanizer_priority": 609.8,
+      "opportunity_score": 406.5,
+      "impressions": 271,
+      "clicks": 0,
+      "position": 6.9,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "simple refreshing face wash",
+          "impressions": 27
+        },
+        {
+          "query": "simple refreshing face wash 150ml price in bangladesh",
+          "impressions": 20
+        },
+        {
+          "query": "simple refreshing facial wash",
+          "impressions": 13
+        }
+      ]
+    },
+    {
       "slug": "beauty-of-joseon-red-bean-water-gel-100ml",
       "path": "/shop/beauty-of-joseon-red-bean-water-gel-100ml",
-      "humanizer_priority": 488.2,
-      "opportunity_score": 325.5,
-      "impressions": 217,
+      "humanizer_priority": 537.8,
+      "opportunity_score": 358.5,
+      "impressions": 239,
       "clicks": 0,
-      "position": 6.5,
+      "position": 6.6,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
@@ -158,11 +185,11 @@
       "top_queries": [
         {
           "query": "beauty of joseon red bean water gel price in bangladesh",
-          "impressions": 167
+          "impressions": 183
         },
         {
           "query": "red bean water gel price in bangladesh",
-          "impressions": 23
+          "impressions": 26
         },
         {
           "query": "price in bangladesh",
@@ -171,41 +198,14 @@
       ]
     },
     {
-      "slug": "simple-refreshing-facial-wash-150ml",
-      "path": "/shop/simple-refreshing-facial-wash-150ml",
-      "humanizer_priority": 488.2,
-      "opportunity_score": 325.5,
-      "impressions": 217,
-      "clicks": 0,
-      "position": 7.6,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "simple refreshing face wash",
-          "impressions": 24
-        },
-        {
-          "query": "simple refreshing face wash 150ml price in bangladesh",
-          "impressions": 20
-        },
-        {
-          "query": "simple face wash 150 ml price in bangladesh",
-          "impressions": 6
-        }
-      ]
-    },
-    {
       "slug": "innisfree-super-volcanic-pore-clay-mask-100ml",
       "path": "/shop/innisfree-super-volcanic-pore-clay-mask-100ml",
-      "humanizer_priority": 472.5,
-      "opportunity_score": 315.0,
-      "impressions": 211,
+      "humanizer_priority": 468.0,
+      "opportunity_score": 312.0,
+      "impressions": 209,
       "clicks": 1,
-      "position": 6.3,
-      "ctr": 0.0047,
+      "position": 6.6,
+      "ctr": 0.0048,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
@@ -220,43 +220,16 @@
         },
         {
           "query": "innisfree clay mask price in bangladesh",
-          "impressions": 23
-        }
-      ]
-    },
-    {
-      "slug": "neutrogena-clear-body-breakout-free-liquid-sunscreen-lotion-147ml",
-      "path": "/shop/neutrogena-clear-body-breakout-free-liquid-sunscreen-lotion-147ml",
-      "humanizer_priority": 427.5,
-      "opportunity_score": 285.0,
-      "impressions": 115,
-      "clicks": 1,
-      "position": 4.4,
-      "ctr": 0.0087,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "neutrogena clear face sunscreen price in bangladesh",
-          "impressions": 66
-        },
-        {
-          "query": "neutrogena body sunscreen",
-          "impressions": 8
-        },
-        {
-          "query": "body sunscreen neutrogena",
-          "impressions": 1
+          "impressions": 20
         }
       ]
     },
     {
       "slug": "cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml",
       "path": "/shop/cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml",
-      "humanizer_priority": 400.5,
-      "opportunity_score": 267.0,
-      "impressions": 178,
+      "humanizer_priority": 441.0,
+      "opportunity_score": 294.0,
+      "impressions": 196,
       "clicks": 0,
       "position": 6.9,
       "ctr": 0,
@@ -266,7 +239,7 @@
       "top_queries": [
         {
           "query": "cerave moisturizing cream 50ml price in bangladesh",
-          "impressions": 151
+          "impressions": 169
         },
         {
           "query": "cerave moisturising cream",
@@ -279,13 +252,40 @@
       ]
     },
     {
+      "slug": "neutrogena-clear-body-breakout-free-liquid-sunscreen-lotion-147ml",
+      "path": "/shop/neutrogena-clear-body-breakout-free-liquid-sunscreen-lotion-147ml",
+      "humanizer_priority": 435.0,
+      "opportunity_score": 290.0,
+      "impressions": 117,
+      "clicks": 1,
+      "position": 4.1,
+      "ctr": 0.0085,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "neutrogena clear face sunscreen price in bangladesh",
+          "impressions": 70
+        },
+        {
+          "query": "neutrogena body sunscreen",
+          "impressions": 7
+        },
+        {
+          "query": "body sunscreen neutrogena",
+          "impressions": 1
+        }
+      ]
+    },
+    {
       "slug": "cerave-resurfacing-retinol-serum-30ml-usa-version",
       "path": "/shop/cerave-resurfacing-retinol-serum-30ml-usa-version",
-      "humanizer_priority": 277.5,
-      "opportunity_score": 185.0,
-      "impressions": 74,
+      "humanizer_priority": 292.5,
+      "opportunity_score": 195.0,
+      "impressions": 78,
       "clicks": 0,
-      "position": 3.2,
+      "position": 3.1,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
@@ -293,11 +293,11 @@
       "top_queries": [
         {
           "query": "cerave retinol serum price in bangladesh",
-          "impressions": 41
+          "impressions": 45
         },
         {
           "query": "cerave resurfacing retinol serum price in bangladesh",
-          "impressions": 14
+          "impressions": 15
         },
         {
           "query": "cerave retinol price in bangladesh",
@@ -308,12 +308,12 @@
     {
       "slug": "3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml",
       "path": "/shop/3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml",
-      "humanizer_priority": 273.8,
-      "opportunity_score": 182.5,
-      "impressions": 74,
+      "humanizer_priority": 288.8,
+      "opportunity_score": 192.5,
+      "impressions": 78,
       "clicks": 1,
-      "position": 4.0,
-      "ctr": 0.0135,
+      "position": 3.9,
+      "ctr": 0.0128,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
@@ -325,25 +325,29 @@
         {
           "query": "brown rice cleansing foam price in bangladesh",
           "impressions": 17
+        },
+        {
+          "query": "3w clinic face wash price in bangladesh",
+          "impressions": 1
         }
       ]
     },
     {
       "slug": "cosrx-the-6-peptide-skin-booster-serum-150ml",
       "path": "/shop/cosrx-the-6-peptide-skin-booster-serum-150ml",
-      "humanizer_priority": 272.2,
-      "opportunity_score": 181.5,
-      "impressions": 122,
+      "humanizer_priority": 276.8,
+      "opportunity_score": 184.5,
+      "impressions": 124,
       "clicks": 1,
-      "position": 9.1,
-      "ctr": 0.0082,
+      "position": 8.7,
+      "ctr": 0.0081,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
           "query": "cosrx peptide serum price in bangladesh",
-          "impressions": 29
+          "impressions": 32
         },
         {
           "query": "cosrx the 6 peptide skin booster serum price in bangladesh",
@@ -358,11 +362,11 @@
     {
       "slug": "tirtir-milk-skin-toner-light-20ml",
       "path": "/shop/tirtir-milk-skin-toner-light-20ml",
-      "humanizer_priority": 258.8,
-      "opportunity_score": 172.5,
-      "impressions": 115,
+      "humanizer_priority": 274.5,
+      "opportunity_score": 183.0,
+      "impressions": 122,
       "clicks": 0,
-      "position": 6.9,
+      "position": 6.8,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
@@ -370,11 +374,11 @@
       "top_queries": [
         {
           "query": "tirtir milk skin toner price in bangladesh",
-          "impressions": 54
+          "impressions": 56
         },
         {
           "query": "tirtir toner price in bangladesh",
-          "impressions": 16
+          "impressions": 17
         },
         {
           "query": "milk toner price in bangladesh",
@@ -385,12 +389,12 @@
     {
       "slug": "skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml",
       "path": "/shop/skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml",
-      "humanizer_priority": 227.2,
-      "opportunity_score": 151.5,
-      "impressions": 103,
+      "humanizer_priority": 234.0,
+      "opportunity_score": 156.0,
+      "impressions": 106,
       "clicks": 2,
-      "position": 9.0,
-      "ctr": 0.0194,
+      "position": 8.7,
+      "ctr": 0.0189,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
@@ -406,6 +410,79 @@
         {
           "query": "atar price",
           "impressions": 1
+        }
+      ]
+    },
+    {
+      "slug": "ponds-super-light-gel-oil-free-moisturiser",
+      "path": "/shop/ponds-super-light-gel-oil-free-moisturiser",
+      "humanizer_priority": 220.5,
+      "opportunity_score": 147.0,
+      "impressions": 98,
+      "clicks": 0,
+      "position": 8.2,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "ponds oil free moisturizer",
+          "impressions": 4
+        },
+        {
+          "query": "oily skin ponds super light gel",
+          "impressions": 3
+        },
+        {
+          "query": "pond's super light gel oil free face moisturizer",
+          "impressions": 3
+        }
+      ]
+    },
+    {
+      "slug": "tiam-b3-niacin-sunscreen-spf-50-pa-50ml",
+      "path": "/shop/tiam-b3-niacin-sunscreen-spf-50-pa-50ml",
+      "humanizer_priority": 220.5,
+      "opportunity_score": 147.0,
+      "impressions": 51,
+      "clicks": 2,
+      "position": 2.2,
+      "ctr": 0.0392,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "tiam b3 niacin sunscreen price in bangladesh",
+          "impressions": 40
+        }
+      ]
+    },
+    {
+      "slug": "confume-argan-hair-shampoo-750-ml",
+      "path": "/shop/confume-argan-hair-shampoo-750-ml",
+      "humanizer_priority": 218.2,
+      "opportunity_score": 145.5,
+      "impressions": 98,
+      "clicks": 1,
+      "position": 5.1,
+      "ctr": 0.0102,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "welcos confume argan hair shampoo",
+          "impressions": 6
+        },
+        {
+          "query": "argan hair shampoo",
+          "impressions": 3
+        },
+        {
+          "query": "confume argan hair shampoo",
+          "impressions": 3
         }
       ]
     },
@@ -437,21 +514,29 @@
       ]
     },
     {
-      "slug": "tiam-b3-niacin-sunscreen-spf-50-pa-50ml",
-      "path": "/shop/tiam-b3-niacin-sunscreen-spf-50-pa-50ml",
-      "humanizer_priority": 207.0,
-      "opportunity_score": 138.0,
-      "impressions": 48,
-      "clicks": 2,
-      "position": 2.3,
-      "ctr": 0.0417,
+      "slug": "cerave-acne-foaming-cream-cleanser",
+      "path": "/shop/cerave-acne-foaming-cream-cleanser",
+      "humanizer_priority": 209.2,
+      "opportunity_score": 139.5,
+      "impressions": 93,
+      "clicks": 0,
+      "position": 6.6,
+      "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
-          "query": "tiam b3 niacin sunscreen price in bangladesh",
-          "impressions": 37
+          "query": "cerave acne foaming cream cleanser price in bangladesh",
+          "impressions": 42
+        },
+        {
+          "query": "cerave acne foaming cream cleanser price in bd",
+          "impressions": 7
+        },
+        {
+          "query": "cerave acne face wash price in bangladesh",
+          "impressions": 5
         }
       ]
     },
@@ -475,94 +560,94 @@
       ]
     },
     {
-      "slug": "confume-argan-hair-shampoo-750-ml",
-      "path": "/shop/confume-argan-hair-shampoo-750-ml",
-      "humanizer_priority": 202.5,
-      "opportunity_score": 135.0,
-      "impressions": 91,
+      "slug": "cos-de-baha-glycolic-acid-10-aha-serum-g-30ml",
+      "path": "/shop/cos-de-baha-glycolic-acid-10-aha-serum-g-30ml",
+      "humanizer_priority": 182.2,
+      "opportunity_score": 121.5,
+      "impressions": 81,
+      "clicks": 0,
+      "position": 6.9,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "glycolic acid serum",
+          "impressions": 23
+        },
+        {
+          "query": "glycolic acid serum price in bangladesh",
+          "impressions": 9
+        },
+        {
+          "query": "aha serum",
+          "impressions": 5
+        }
+      ]
+    },
+    {
+      "slug": "retina-belly-care-stretch-mark-lotion-70ml",
+      "path": "/shop/retina-belly-care-stretch-mark-lotion-70ml",
+      "humanizer_priority": 180.0,
+      "opportunity_score": 120.0,
+      "impressions": 82,
+      "clicks": 2,
+      "position": 5.8,
+      "ctr": 0.0244,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "retina belly care",
+          "impressions": 14
+        },
+        {
+          "query": "belly care stretch mark lotion",
+          "impressions": 11
+        },
+        {
+          "query": "belly care",
+          "impressions": 6
+        }
+      ]
+    },
+    {
+      "slug": "innisfree-the-green-tea-seed-cream-50ml",
+      "path": "/shop/innisfree-the-green-tea-seed-cream-50ml",
+      "humanizer_priority": 173.2,
+      "opportunity_score": 115.5,
+      "impressions": 78,
       "clicks": 1,
-      "position": 5.2,
-      "ctr": 0.011,
+      "position": 5.7,
+      "ctr": 0.0128,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
-          "query": "welcos confume argan hair shampoo",
-          "impressions": 5
+          "query": "innisfree green tea seed hyaluronic cream",
+          "impressions": 6
         },
         {
-          "query": "confume shampoo",
+          "query": "innisfree green tea",
+          "impressions": 6
+        },
+        {
+          "query": "innisfree hyaluronic cream",
           "impressions": 4
-        },
-        {
-          "query": "argan hair shampoo",
-          "impressions": 3
-        }
-      ]
-    },
-    {
-      "slug": "cerave-acne-foaming-cream-cleanser",
-      "path": "/shop/cerave-acne-foaming-cream-cleanser",
-      "humanizer_priority": 202.5,
-      "opportunity_score": 135.0,
-      "impressions": 90,
-      "clicks": 0,
-      "position": 6.6,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "cerave acne foaming cream cleanser price in bangladesh",
-          "impressions": 42
-        },
-        {
-          "query": "cerave acne foaming cream cleanser price in bd",
-          "impressions": 7
-        },
-        {
-          "query": "cerave acne face wash price in bangladesh",
-          "impressions": 5
-        }
-      ]
-    },
-    {
-      "slug": "ponds-super-light-gel-oil-free-moisturiser",
-      "path": "/shop/ponds-super-light-gel-oil-free-moisturiser",
-      "humanizer_priority": 195.8,
-      "opportunity_score": 130.5,
-      "impressions": 87,
-      "clicks": 0,
-      "position": 8.6,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "ponds oil free moisturizer",
-          "impressions": 4
-        },
-        {
-          "query": "oily skin ponds super light gel",
-          "impressions": 3
-        },
-        {
-          "query": "pond's super light gel oil free face moisturizer",
-          "impressions": 3
         }
       ]
     },
     {
       "slug": "m-a-c-matte-lipstick-please-me-3gm",
       "path": "/shop/m-a-c-matte-lipstick-please-me-3gm",
-      "humanizer_priority": 187.5,
-      "opportunity_score": 125.0,
-      "impressions": 50,
+      "humanizer_priority": 168.8,
+      "opportunity_score": 112.5,
+      "impressions": 45,
       "clicks": 0,
-      "position": 4.2,
+      "position": 4.1,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
@@ -583,94 +668,13 @@
       ]
     },
     {
-      "slug": "cos-de-baha-glycolic-acid-10-aha-serum-g-30ml",
-      "path": "/shop/cos-de-baha-glycolic-acid-10-aha-serum-g-30ml",
-      "humanizer_priority": 186.8,
-      "opportunity_score": 124.5,
-      "impressions": 83,
-      "clicks": 0,
-      "position": 6.9,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "glycolic acid serum",
-          "impressions": 23
-        },
-        {
-          "query": "glycolic acid serum price in bangladesh",
-          "impressions": 10
-        },
-        {
-          "query": "aha serum",
-          "impressions": 5
-        }
-      ]
-    },
-    {
-      "slug": "innisfree-the-green-tea-seed-cream-50ml",
-      "path": "/shop/innisfree-the-green-tea-seed-cream-50ml",
-      "humanizer_priority": 184.5,
-      "opportunity_score": 123.0,
-      "impressions": 83,
-      "clicks": 1,
-      "position": 5.7,
-      "ctr": 0.012,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "innisfree green tea seed hyaluronic cream",
-          "impressions": 6
-        },
-        {
-          "query": "innisfree green tea",
-          "impressions": 6
-        },
-        {
-          "query": "innisfree hyaluronic cream",
-          "impressions": 4
-        }
-      ]
-    },
-    {
-      "slug": "isntree-hyaluronic-acid-moist-cream-100ml-3-38-fl-oz",
-      "path": "/shop/isntree-hyaluronic-acid-moist-cream-100ml-3-38-fl-oz",
-      "humanizer_priority": 172.5,
-      "opportunity_score": 115.0,
-      "impressions": 46,
-      "clicks": 0,
-      "position": 3.9,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "isntree hyaluronic acid moist cream",
-          "impressions": 26
-        },
-        {
-          "query": "isntree hyaluronic acid moist cream price in bangladesh",
-          "impressions": 6
-        },
-        {
-          "query": "isntree moisturizer price in bangladesh",
-          "impressions": 2
-        }
-      ]
-    },
-    {
       "slug": "maybelline-fit-me-matteporeless-pressed-powder",
       "path": "/shop/maybelline-fit-me-matteporeless-pressed-powder",
-      "humanizer_priority": 171.0,
-      "opportunity_score": 114.0,
-      "impressions": 76,
+      "humanizer_priority": 164.2,
+      "opportunity_score": 109.5,
+      "impressions": 73,
       "clicks": 0,
-      "position": 9.6,
+      "position": 9.8,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
@@ -691,67 +695,40 @@
       ]
     },
     {
-      "slug": "retina-belly-care-stretch-mark-lotion-70ml",
-      "path": "/shop/retina-belly-care-stretch-mark-lotion-70ml",
-      "humanizer_priority": 166.5,
-      "opportunity_score": 111.0,
-      "impressions": 76,
-      "clicks": 2,
-      "position": 5.9,
-      "ctr": 0.0263,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "retina belly care",
-          "impressions": 13
-        },
-        {
-          "query": "belly care stretch mark lotion",
-          "impressions": 10
-        },
-        {
-          "query": "belly care",
-          "impressions": 6
-        }
-      ]
-    },
-    {
-      "slug": "im-from-rice-cream-50g",
-      "path": "/shop/im-from-rice-cream-50g",
-      "humanizer_priority": 139.5,
-      "opportunity_score": 93.0,
-      "impressions": 62,
+      "slug": "isntree-hyaluronic-acid-moist-cream-100ml-3-38-fl-oz",
+      "path": "/shop/isntree-hyaluronic-acid-moist-cream-100ml-3-38-fl-oz",
+      "humanizer_priority": 157.5,
+      "opportunity_score": 105.0,
+      "impressions": 42,
       "clicks": 0,
-      "position": 8.2,
+      "position": 3.4,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
-          "query": "korean rice cream price in bangladesh",
-          "impressions": 31
+          "query": "isntree hyaluronic acid moist cream",
+          "impressions": 25
         },
         {
-          "query": "rice cream price in bangladesh",
+          "query": "isntree hyaluronic acid moist cream price in bangladesh",
+          "impressions": 6
+        },
+        {
+          "query": "isntree moisturizer price in bangladesh",
           "impressions": 2
-        },
-        {
-          "query": "i am from bangladesh",
-          "impressions": 1
         }
       ]
     },
     {
       "slug": "buy-goodal-green-tangerine-vita-c-dark-spot-serum-40ml",
       "path": "/shop/buy-goodal-green-tangerine-vita-c-dark-spot-serum-40ml",
-      "humanizer_priority": 137.2,
-      "opportunity_score": 91.5,
-      "impressions": 61,
+      "humanizer_priority": 153.0,
+      "opportunity_score": 102.0,
+      "impressions": 68,
       "clicks": 0,
-      "position": 7.6,
+      "position": 7.5,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
@@ -759,7 +736,7 @@
       "top_queries": [
         {
           "query": "goodal vitamin c serum price in bangladesh",
-          "impressions": 20
+          "impressions": 25
         },
         {
           "query": "goodal green tangerine vitamin c serum",
@@ -772,65 +749,38 @@
       ]
     },
     {
-      "slug": "cosrx-ac-collection-acne-patch-26-patches",
-      "path": "/shop/cosrx-ac-collection-acne-patch-26-patches",
-      "humanizer_priority": 137.2,
-      "opportunity_score": 91.5,
-      "impressions": 61,
-      "clicks": 0,
-      "position": 8.2,
-      "ctr": 0,
+      "slug": "3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml",
+      "path": "/shop/3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml",
+      "humanizer_priority": 150.0,
+      "opportunity_score": 100.0,
+      "impressions": 42,
+      "clicks": 2,
+      "position": 5.0,
+      "ctr": 0.0476,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
-          "query": "cosrx ac collection acne patch 26 patches",
-          "impressions": 7
+          "query": "yes",
+          "impressions": 3
         },
         {
-          "query": "cosrx ac collection acne patch",
-          "impressions": 2
-        },
-        {
-          "query": "cosrx ac collection",
+          "query": "eita",
           "impressions": 1
-        }
-      ]
-    },
-    {
-      "slug": "jnh-ultimate-vitamin-c-cream-25g",
-      "path": "/shop/jnh-ultimate-vitamin-c-cream-25g",
-      "humanizer_priority": 137.2,
-      "opportunity_score": 91.5,
-      "impressions": 61,
-      "clicks": 0,
-      "position": 5.6,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "jnh vitamin c cream",
-          "impressions": 17
         },
         {
-          "query": "jnh",
-          "impressions": 9
-        },
-        {
-          "query": "ultimate vitamin c",
-          "impressions": 2
+          "query": "intensive uv sunblock cream",
+          "impressions": 1
         }
       ]
     },
     {
       "slug": "purito-seoul-seoul-best-kit-105ml",
       "path": "/shop/purito-seoul-seoul-best-kit-105ml",
-      "humanizer_priority": 135.0,
-      "opportunity_score": 90.0,
-      "impressions": 36,
+      "humanizer_priority": 138.8,
+      "opportunity_score": 92.5,
+      "impressions": 37,
       "clicks": 0,
       "position": 4.9,
       "ctr": 0,
@@ -853,14 +803,41 @@
       ]
     },
     {
+      "slug": "jnh-ultimate-vitamin-c-cream-25g",
+      "path": "/shop/jnh-ultimate-vitamin-c-cream-25g",
+      "humanizer_priority": 135.0,
+      "opportunity_score": 90.0,
+      "impressions": 60,
+      "clicks": 0,
+      "position": 5.4,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "jnh vitamin c cream",
+          "impressions": 17
+        },
+        {
+          "query": "jnh",
+          "impressions": 9
+        },
+        {
+          "query": "ultimate vitamin c",
+          "impressions": 2
+        }
+      ]
+    },
+    {
       "slug": "la-roche-posay-cicaplast-baume-b5-100ml",
       "path": "/shop/la-roche-posay-cicaplast-baume-b5-100ml",
-      "humanizer_priority": 130.5,
-      "opportunity_score": 87.0,
-      "impressions": 59,
+      "humanizer_priority": 132.8,
+      "opportunity_score": 88.5,
+      "impressions": 60,
       "clicks": 1,
-      "position": 8.0,
-      "ctr": 0.0169,
+      "position": 7.9,
+      "ctr": 0.0167,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
@@ -880,13 +857,67 @@
       ]
     },
     {
+      "slug": "cosrx-ac-collection-acne-patch-26-patches",
+      "path": "/shop/cosrx-ac-collection-acne-patch-26-patches",
+      "humanizer_priority": 132.8,
+      "opportunity_score": 88.5,
+      "impressions": 59,
+      "clicks": 0,
+      "position": 7.9,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "cosrx ac collection acne patch 26 patches",
+          "impressions": 7
+        },
+        {
+          "query": "cosrx ac collection acne patch",
+          "impressions": 2
+        },
+        {
+          "query": "ata kemon",
+          "impressions": 1
+        }
+      ]
+    },
+    {
+      "slug": "im-from-rice-cream-50g",
+      "path": "/shop/im-from-rice-cream-50g",
+      "humanizer_priority": 132.8,
+      "opportunity_score": 88.5,
+      "impressions": 59,
+      "clicks": 0,
+      "position": 8.2,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "korean rice cream price in bangladesh",
+          "impressions": 31
+        },
+        {
+          "query": "rice cream price in bangladesh",
+          "impressions": 2
+        },
+        {
+          "query": "i am from bangladesh",
+          "impressions": 1
+        }
+      ]
+    },
+    {
       "slug": "cos-de-baha-a5-azelaic-acid-5-serum-30-ml",
       "path": "/shop/cos-de-baha-a5-azelaic-acid-5-serum-30-ml",
-      "humanizer_priority": 126.0,
-      "opportunity_score": 84.0,
-      "impressions": 56,
+      "humanizer_priority": 130.5,
+      "opportunity_score": 87.0,
+      "impressions": 58,
       "clicks": 0,
-      "position": 7.1,
+      "position": 7.3,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
@@ -907,59 +938,13 @@
       ]
     },
     {
-      "slug": "cos-de-baha-vitamin-c-15-serum-30ml",
-      "path": "/shop/cos-de-baha-vitamin-c-15-serum-30ml",
-      "humanizer_priority": 126.0,
-      "opportunity_score": 84.0,
-      "impressions": 56,
-      "clicks": 0,
-      "position": 9.5,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "cos de baha vitamin c serum price in bangladesh",
-          "impressions": 45
-        }
-      ]
-    },
-    {
-      "slug": "innisfree-green-tea-amino-hydrating-cleansing-foam-150ml",
-      "path": "/shop/innisfree-green-tea-amino-hydrating-cleansing-foam-150ml",
-      "humanizer_priority": 119.2,
-      "opportunity_score": 79.5,
-      "impressions": 53,
-      "clicks": 0,
-      "position": 5.8,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "innisfree face wash",
-          "impressions": 9
-        },
-        {
-          "query": "innisfree face wash price in bangladesh",
-          "impressions": 8
-        },
-        {
-          "query": "innisfree green tea amino hydrating cleansing foam",
-          "impressions": 4
-        }
-      ]
-    },
-    {
       "slug": "cosrx-low-ph-good-morning-gel-cleanser-150ml",
       "path": "/shop/cosrx-low-ph-good-morning-gel-cleanser-150ml",
-      "humanizer_priority": 116.2,
-      "opportunity_score": 77.5,
-      "impressions": 31,
+      "humanizer_priority": 123.8,
+      "opportunity_score": 82.5,
+      "impressions": 33,
       "clicks": 0,
-      "position": 3.7,
+      "position": 4.4,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
@@ -980,29 +965,102 @@
       ]
     },
     {
-      "slug": "purito-defence-barrier-ph-cleanser-150ml",
-      "path": "/shop/purito-defence-barrier-ph-cleanser-150ml",
-      "humanizer_priority": 112.5,
-      "opportunity_score": 75.0,
-      "impressions": 50,
+      "slug": "cos-de-baha-vitamin-c-15-serum-30ml",
+      "path": "/shop/cos-de-baha-vitamin-c-15-serum-30ml",
+      "humanizer_priority": 119.2,
+      "opportunity_score": 79.5,
+      "impressions": 53,
       "clicks": 0,
-      "position": 7.0,
+      "position": 9.6,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
-          "query": "purito defence barrier ph cleanser price in bangladesh",
-          "impressions": 10
+          "query": "cos de baha vitamin c serum price in bangladesh",
+          "impressions": 42
+        }
+      ]
+    },
+    {
+      "slug": "retina-oroclin-lemon-brightening-cream-facewash-100ml",
+      "path": "/shop/retina-oroclin-lemon-brightening-cream-facewash-100ml",
+      "humanizer_priority": 114.8,
+      "opportunity_score": 76.5,
+      "impressions": 51,
+      "clicks": 0,
+      "position": 8.4,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "oroclin skin cream",
+          "impressions": 7
         },
         {
-          "query": "defence gel face wash",
-          "impressions": 5
-        },
-        {
-          "query": "purito seoul defence barrier ph cleanser",
+          "query": "oroclin whitening skin cream",
           "impressions": 3
+        },
+        {
+          "query": "ওরোক্লিন স্কিন ক্রিম",
+          "impressions": 2
+        }
+      ]
+    },
+    {
+      "slug": "dr-althea-345na-relief-cream-50ml",
+      "path": "/shop/dr-althea-345na-relief-cream-50ml",
+      "humanizer_priority": 112.5,
+      "opportunity_score": 75.0,
+      "impressions": 50,
+      "clicks": 0,
+      "position": 10.0,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "dr althea 345 relief cream price in bangladesh korean mart",
+          "impressions": 8
+        },
+        {
+          "query": "dr althea price in bangladesh",
+          "impressions": 7
+        },
+        {
+          "query": "345 relief cream 15ml price in bangladesh",
+          "impressions": 2
+        }
+      ]
+    },
+    {
+      "slug": "secretday-vegan-certified-organic-fresh-sanitary-pads-medium-16p",
+      "path": "/shop/secretday-vegan-certified-organic-fresh-sanitary-pads-medium-16p",
+      "humanizer_priority": 112.5,
+      "opportunity_score": 75.0,
+      "impressions": 31,
+      "clicks": 1,
+      "position": 4.8,
+      "ctr": 0.0323,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "secretday pads",
+          "impressions": 4
+        },
+        {
+          "query": "secret day pads",
+          "impressions": 2
+        },
+        {
+          "query": "secret day sanitary pad",
+          "impressions": 1
         }
       ]
     },
@@ -1030,56 +1088,83 @@
       ]
     },
     {
-      "slug": "secretday-vegan-certified-organic-fresh-sanitary-pads-medium-16p",
-      "path": "/shop/secretday-vegan-certified-organic-fresh-sanitary-pads-medium-16p",
-      "humanizer_priority": 108.8,
-      "opportunity_score": 72.5,
-      "impressions": 30,
-      "clicks": 1,
-      "position": 4.6,
-      "ctr": 0.0333,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "secretday pads",
-          "impressions": 4
-        },
-        {
-          "query": "secret day pads",
-          "impressions": 2
-        },
-        {
-          "query": "secret day sanitary pad",
-          "impressions": 1
-        }
-      ]
-    },
-    {
-      "slug": "innisfree-intensive-triple-shield-sunscreen-spf50-pa-50ml",
-      "path": "/shop/innisfree-intensive-triple-shield-sunscreen-spf50-pa-50ml",
-      "humanizer_priority": 108.8,
-      "opportunity_score": 72.5,
-      "impressions": 29,
+      "slug": "innisfree-green-tea-amino-hydrating-cleansing-foam-150ml",
+      "path": "/shop/innisfree-green-tea-amino-hydrating-cleansing-foam-150ml",
+      "humanizer_priority": 110.2,
+      "opportunity_score": 73.5,
+      "impressions": 49,
       "clicks": 0,
-      "position": 4.4,
+      "position": 6.0,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
-          "query": "innisfree sunscreen",
+          "query": "innisfree face wash",
+          "impressions": 9
+        },
+        {
+          "query": "innisfree face wash price in bangladesh",
+          "impressions": 7
+        },
+        {
+          "query": "innisfree green tea amino hydrating cleansing foam",
+          "impressions": 4
+        }
+      ]
+    },
+    {
+      "slug": "purito-defence-barrier-ph-cleanser-150ml",
+      "path": "/shop/purito-defence-barrier-ph-cleanser-150ml",
+      "humanizer_priority": 110.2,
+      "opportunity_score": 73.5,
+      "impressions": 49,
+      "clicks": 0,
+      "position": 7.1,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "purito defence barrier ph cleanser price in bangladesh",
+          "impressions": 10
+        },
+        {
+          "query": "defence gel face wash",
           "impressions": 4
         },
         {
-          "query": "innisfree intensive triple shield sunscreen",
-          "impressions": 2
+          "query": "purito seoul defence barrier ph cleanser",
+          "impressions": 3
+        }
+      ]
+    },
+    {
+      "slug": "skin1004-madagascar-centella-light-cleansing-oil-30ml",
+      "path": "/shop/skin1004-madagascar-centella-light-cleansing-oil-30ml",
+      "humanizer_priority": 110.2,
+      "opportunity_score": 73.5,
+      "impressions": 49,
+      "clicks": 0,
+      "position": 7.1,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "centella cleansing oil 100ml price in bangladesh",
+          "impressions": 22
         },
         {
-          "query": "innisfree intensive triple-shield sunscreen",
-          "impressions": 2
+          "query": "centella cleansing oil 50ml price in bangladesh",
+          "impressions": 6
+        },
+        {
+          "query": "skin 004 centella cleansing oil",
+          "impressions": 3
         }
       ]
     },
@@ -1124,57 +1209,11 @@
       "content_tier": "UNSCORED"
     },
     {
-      "slug": "raip-r3-argan-hair-oil-100-ml-elegance",
-      "path": "/shop/raip-r3-argan-hair-oil-100-ml-elegance",
-      "humanizer_priority": 108.0,
-      "opportunity_score": 72.0,
-      "impressions": 24,
-      "clicks": 0,
-      "position": 2.8,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "8809529880115",
-          "impressions": 1
-        }
-      ]
-    },
-    {
-      "slug": "skin1004-madagascar-centella-light-cleansing-oil-30ml",
-      "path": "/shop/skin1004-madagascar-centella-light-cleansing-oil-30ml",
-      "humanizer_priority": 103.5,
-      "opportunity_score": 69.0,
-      "impressions": 46,
-      "clicks": 0,
-      "position": 6.3,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "centella cleansing oil 100ml price in bangladesh",
-          "impressions": 21
-        },
-        {
-          "query": "centella cleansing oil 50ml price in bangladesh",
-          "impressions": 5
-        },
-        {
-          "query": "skin 004 centella cleansing oil",
-          "impressions": 3
-        }
-      ]
-    },
-    {
-      "slug": "the-ordinary-multi-peptide-hair-serum-for-hair-density-60ml",
-      "path": "/shop/the-ordinary-multi-peptide-hair-serum-for-hair-density-60ml",
-      "humanizer_priority": 103.5,
-      "opportunity_score": 69.0,
-      "impressions": 46,
+      "slug": "beauty-of-joseon-matte-sun-stick-mugwortcamelia18g-0-63fl-oz",
+      "path": "/shop/beauty-of-joseon-matte-sun-stick-mugwortcamelia18g-0-63fl-oz",
+      "humanizer_priority": 105.8,
+      "opportunity_score": 70.5,
+      "impressions": 47,
       "clicks": 0,
       "position": 7.5,
       "ctr": 0,
@@ -1183,31 +1222,62 @@
       "content_tier": "UNSCORED",
       "top_queries": [
         {
-          "query": "অর্ডিনারি হেয়ার সিরাম দাম",
-          "impressions": 23
+          "query": "beauty of joseon sunstick price in bangladesh",
+          "impressions": 12
+        },
+        {
+          "query": "beauty of joseon sunscreen stick price in bangladesh",
+          "impressions": 1
+        },
+        {
+          "query": "which one i can buy",
+          "impressions": 1
         }
       ]
     },
     {
-      "slug": "essance-pearl-whitening-cream-50-ml",
-      "path": "/shop/essance-pearl-whitening-cream-50-ml",
-      "humanizer_priority": 101.2,
-      "opportunity_score": 67.5,
-      "impressions": 27,
+      "slug": "innisfree-intensive-triple-shield-sunscreen-spf50-pa-50ml",
+      "path": "/shop/innisfree-intensive-triple-shield-sunscreen-spf50-pa-50ml",
+      "humanizer_priority": 105.0,
+      "opportunity_score": 70.0,
+      "impressions": 28,
       "clicks": 0,
-      "position": 4.7,
+      "position": 4.3,
       "ctr": 0,
       "is_humanized": false,
       "has_hot_trend": false,
       "content_tier": "UNSCORED",
       "top_queries": [
         {
-          "query": "essance pearl whitening cream",
-          "impressions": 8
+          "query": "innisfree sunscreen",
+          "impressions": 4
         },
         {
-          "query": "essence pearl whitening cream",
-          "impressions": 6
+          "query": "innisfree intensive triple shield sunscreen",
+          "impressions": 2
+        },
+        {
+          "query": "innisfree intensive triple-shield sunscreen",
+          "impressions": 2
+        }
+      ]
+    },
+    {
+      "slug": "the-ordinary-multi-peptide-hair-serum-for-hair-density-60ml",
+      "path": "/shop/the-ordinary-multi-peptide-hair-serum-for-hair-density-60ml",
+      "humanizer_priority": 101.2,
+      "opportunity_score": 67.5,
+      "impressions": 45,
+      "clicks": 0,
+      "position": 7.4,
+      "ctr": 0,
+      "is_humanized": false,
+      "has_hot_trend": false,
+      "content_tier": "UNSCORED",
+      "top_queries": [
+        {
+          "query": "অর্ডিনারি হেয়ার সিরাম দাম",
+          "impressions": 23
         }
       ]
     },
@@ -1230,60 +1300,6 @@
         },
         {
           "query": "suggest me some",
-          "impressions": 1
-        }
-      ]
-    },
-    {
-      "slug": "beauty-of-joseon-matte-sun-stick-mugwortcamelia18g-0-63fl-oz",
-      "path": "/shop/beauty-of-joseon-matte-sun-stick-mugwortcamelia18g-0-63fl-oz",
-      "humanizer_priority": 99.0,
-      "opportunity_score": 66.0,
-      "impressions": 44,
-      "clicks": 0,
-      "position": 7.5,
-      "ctr": 0,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "beauty of joseon sunstick price in bangladesh",
-          "impressions": 10
-        },
-        {
-          "query": "beauty of joseon sunscreen stick price in bangladesh",
-          "impressions": 1
-        },
-        {
-          "query": "which one i can buy",
-          "impressions": 1
-        }
-      ]
-    },
-    {
-      "slug": "3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml",
-      "path": "/shop/3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml",
-      "humanizer_priority": 96.8,
-      "opportunity_score": 64.5,
-      "impressions": 46,
-      "clicks": 3,
-      "position": 5.4,
-      "ctr": 0.0652,
-      "is_humanized": false,
-      "has_hot_trend": false,
-      "content_tier": "UNSCORED",
-      "top_queries": [
-        {
-          "query": "yes",
-          "impressions": 2
-        },
-        {
-          "query": "eita",
-          "impressions": 1
-        },
-        {
-          "query": "intensive uv sunblock cream",
           "impressions": 1
         }
       ]

@@ -1,15 +1,15 @@
 {
-  "generated": "2026-06-22",
+  "generated": "2026-06-23",
   "period": {
-    "start": "2026-05-23",
-    "end": "2026-06-19"
+    "start": "2026-05-24",
+    "end": "2026-06-20"
   },
   "total_gaps": 9,
   "candidates": [
     {
       "query": "skincare bd",
       "current_page": "/",
-      "impressions": 171,
+      "impressions": 169,
       "clicks": 0,
       "position": 8.6,
       "suggestion": "informational"
@@ -17,9 +17,9 @@
     {
       "query": "skincare bangladesh",
       "current_page": "/",
-      "impressions": 34,
+      "impressions": 31,
       "clicks": 0,
-      "position": 8.6,
+      "position": 8.7,
       "suggestion": "informational"
     },
     {
@@ -27,7 +27,7 @@
       "current_page": "/category/diapers-wipes",
       "impressions": 18,
       "clicks": 0,
-      "position": 26.2,
+      "position": 26.3,
       "suggestion": "informational"
     },
     {
@@ -39,11 +39,27 @@
       "suggestion": "informational"
     },
     {
+      "query": "sheet mask",
+      "current_page": "/category/face-masks",
+      "impressions": 12,
+      "clicks": 0,
+      "position": 35.1,
+      "suggestion": "informational"
+    },
+    {
       "query": "face mask sheet",
       "current_page": "/category/face-masks",
       "impressions": 11,
       "clicks": 0,
       "position": 9.5,
+      "suggestion": "informational"
+    },
+    {
+      "query": "thailand skin care products in bangladesh",
+      "current_page": "/origins/thailand",
+      "impressions": 11,
+      "clicks": 0,
+      "position": 7.4,
       "suggestion": "informational"
     },
     {
@@ -60,22 +76,6 @@
       "impressions": 10,
       "clicks": 0,
       "position": 8.8,
-      "suggestion": "informational"
-    },
-    {
-      "query": "sheet mask",
-      "current_page": "/category/face-masks",
-      "impressions": 10,
-      "clicks": 0,
-      "position": 31.7,
-      "suggestion": "informational"
-    },
-    {
-      "query": "thailand skin care products in bangladesh",
-      "current_page": "/origins/thailand",
-      "impressions": 10,
-      "clicks": 0,
-      "position": 7,
       "suggestion": "informational"
     }
   ]

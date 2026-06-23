@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-22T00:35:01Z",
+  "generated": "2026-06-23T01:38:23Z",
   "site": {
     "status": 200,
     "ok": true
@@ -11,7 +11,8 @@
       "medimartweb",
       "emartweb",
       "kbazar24web",
-      "emart-embed"
+      "emart-embed",
+      "emart-meta-18-20260623"
     ],
     "stopped_expected": [
       "emart-seo-autoscan",
@@ -22,15 +23,15 @@
       "emart-blog-generator"
     ],
     "stopped_unexpected": [],
-    "total": 12
+    "total": 13
   },
   "agents": {
     "active": [],
     "last_completed": [
       {
         "agent": "Claude",
-        "when": "2026-06-20 16:00",
-        "what": "P1.1-P1.5 (reranker, chat wiring, incremental sync, auto titles), SEO pipeline actions+Telegram, Review schema, CONTENT_STANDARD.md, AI_PLAN.md"
+        "when": "2026-06-23",
+        "what": "PDP nudge fix, WhatsApp escalation link, Recently Viewed move, social_image_gen seed fix, SPF record fix, register 500 fix, checkout/email verification, TikTok API setup guide, Codex work synced"
       },
       {
         "agent": "Codex",
@@ -56,80 +57,80 @@
   },
   "session_log": [
     {
-      "header": "2026-06-20 (Codex — AI/search pending batch except mobile)",
+      "header": "2026-06-23 cont.2 (Claude — full-length top-notch rewrite)",
       "items": [
-        "Completed safe non-mobile AI/search items: typo correction, Bangla query expansion, dynamic search API trending from `se",
-        "Recreated Qdrant sync state with a null watermark so the next scheduled sync runs full; restarted `emart-competitor-pric",
-        "Kept pa_concern/pa_skin_type/pa_ingredient Woo write-backs review-gated per SEO_MASTER; no catalog taxonomy, checkout, p",
-        "Validation: `npm run lint` passed with existing image warnings; `npm run build` passed. PM2 log check found only pre-exi",
-        "Blockers: taxonomy application still needs owner review/approval before Woo writes. Next step: deploy and smoke test thi"
+        "Owner feedback: top-notch human quality, don't make short. Switched to fuller long-form (~480-570 words) with expert voi",
+        "Applied 4 full-length serum/sunscreen/cream: 50673 The Ordinary Glycolic 7% Toner, 51313 Skin Aqua Gel SPF50, 2966 PURIT",
+        "_emart_humanized now 229 (session start 197 → 229 = 32 total: 8 model + 24 hand-written). ISR revalidated.",
+        "Quality standard going forward: full-length only, unique per product, no template, GMC-safe. ~98 serum/sunscreen/cream t"
       ]
     },
     {
-      "header": "2026-06-20 (Codex — meta validator cleanup)",
+      "header": "2026-06-23 cont.3 (Claude — continued full-length, committed per batch)",
       "items": [
-        "Regenerated live full-catalog meta validator report; stale 466-issue board count was no longer current. Fresh result fou",
-        "Backed up old values in `workspace/audit/active/meta-validator-fix-rollback-20260620.json`, updated only `_emart_meta_de",
-        "Re-ran validator after fixes: 0/3,625 flagged. Live HTML confirmed both corrected `<meta name=\"description\">` values.",
-        "No checkout, cart, payment, order, stock, price, or taxonomy writes were made. Next step: continue owner-review-gated co"
+        "Continued hand-writing full-length top-notch serum/sunscreen/cream/toner descriptions, committing+pushing after each bat",
+        "Batches 5-7 applied live (each + ISR revalidate + git push): 51158 BoJ sun stick, 4148 COSRX dual essence, 26933 COSRX c",
+        "_emart_humanized now ~242. Resume state in memory project_humanizer_resume_20260623. ~105 serum/sunscreen/cream top sell"
       ]
     },
     {
-      "header": "2026-06-20 (Codex — system state verification)",
+      "header": "2026-06-23 cont.4 (Claude — continued to limit, priority brands)",
       "items": [
-        "Regenerated `workspace/seo-review/system-state.json` with runtime access: live site health now reports HTTP 200 and PM2 ",
-        "Confirmed `emart-blog-generator` is healthy as a cron-style PM2 job: published posts at 00:00, 08:00, and 16:00 UTC, the",
-        "Closed F3 in `workspace/TASKS.md`. No storefront/catalog/order/checkout/payment/stock/price data was changed."
+        "Owner: do priority brands first (medicube/anua/dr althea/cosrx/numbuzin/skin1004/carenel/3w clinic/dabo/axis-y/the ordin",
+        "Batches 8-14 applied live + revalidated + pushed individually. _emart_humanized now 275 (session start 197 → +78: 8 mode",
+        "Every batch committed+pushed immediately; live site 200; rollback snapshots preserved. Resume logic in project_humanizer"
       ]
     },
     {
-      "header": "2026-06-20 (Codex — chat conversion audit fix)",
+      "header": "2026-06-23 (Codex - 18-post Meta campaign prepared)",
       "items": [
-        "Addressed the live audit's customer-chat friction points: starter chips now expose direct mobile-friendly concerns (`Oil",
-        "Fixed chat markdown rendering for relative internal links like `[Product](/shop/slug)`, matching the agent prompt and pr",
-        "Tightened the assistant prompt to forbid homepage/root placeholder links for specific resources and to avoid raw code/JS",
-        "Validation: `npm run lint` passed with existing image warnings; `npm run build` passed despite transient Woo timeout ret"
+        "Did: Completed 10 unique product-only pipeline creatives with the approved wooden podium and 8 unique Codex model-real-i",
+        "Did: Published all 18 4:5 assets at `/images/social/2026-06-23/meta-18/`, verified the live image endpoint, and built a ",
+        "Finding: Existing credentials were not missing; the repo tool expected different variable names. The real credentials ar",
+        "Blocker: Replace `PAGE_ACCESS_TOKEN` with a fresh Page access token before publishing.",
+        "Next: Start `emart-meta-18-20260623` with `--no-autorestart` immediately after token renewal; if the date has passed, re"
       ]
     },
     {
-      "header": "2026-06-20 (Codex — task board first rule)",
+      "header": "2026-06-23 (Codex - Meta token renewed and campaign queued)",
       "items": [
-        "Added `UX-4` to `workspace/TASKS.md` for the PDP/chat trust CRO plan; implementation remains paused until exact copy and",
-        "Recorded owner workflow preference in agent memory: check/update `workspace/TASKS.md` before any non-trivial work, then ",
-        "No storefront code, catalog data, checkout, cart, payment, order, stock, price, WooCommerce DB, deploy, or live system c"
+        "Did: Validated the securely renewed Page access token against Meta and resolved the linked Instagram Business account.",
+        "Did: Started PM2 process `emart-meta-18-20260623` with automatic restart disabled; confirmed all 18 Facebook + Instagram",
+        "Blockers: none at scheduler startup. Individual publish results and first-comment results will be written to the PM2 log",
+        "Next: Review the PM2 log after the first 09:00 slot and after the final 23:00 slot."
       ]
     }
   ],
   "git_recent": [
     {
-      "hash": "2cc0862",
-      "message": "docs: record task board first workflow",
+      "hash": "8f6862f",
+      "message": "ops: activate 18-post Meta scheduler",
       "author": "Warlord",
-      "ago": "27 hours ago"
+      "ago": "4 minutes ago"
     },
     {
-      "hash": "24092c7",
-      "message": "docs(tasks): record chat audit follow-ups",
+      "hash": "f22e515",
+      "message": "feat: prepare 18-post Meta social campaign",
       "author": "Warlord",
-      "ago": "27 hours ago"
+      "ago": "20 minutes ago"
     },
     {
-      "hash": "70da8e9",
-      "message": "fix(chat): add concern chips and safe product links",
+      "hash": "dac3bf5",
+      "message": "content: humanize batch 16 (5 keyword-rich serum/sunscreen/toner, live)",
       "author": "Warlord",
-      "ago": "27 hours ago"
+      "ago": "74 minutes ago"
     },
     {
-      "hash": "ad41e4d",
-      "message": "chore(ops): refresh post-deploy system state",
+      "hash": "391076c",
+      "message": "content: humanize batch 15 (5 full-length KEYWORD-RICH The Ordinary/Carenel, live)",
       "author": "Warlord",
-      "ago": "27 hours ago"
+      "ago": "76 minutes ago"
     },
     {
-      "hash": "db0d4d0",
-      "message": "chore(ops): refresh system state snapshot",
+      "hash": "976efb9",
+      "message": "docs: humanizer session log + resume count (275 humanized)",
       "author": "Warlord",
-      "ago": "27 hours ago"
+      "ago": "78 minutes ago"
     }
   ],
   "crons": [
@@ -147,15 +148,15 @@
   ],
   "seo_pipeline": {
     "actions": {
-      "generated": "2026-06-22",
+      "generated": "2026-06-23",
       "auto_done": 3,
       "agent_tasks": 13,
       "owner_tasks": 3
     },
     "summary": {
-      "total_clicks": 733,
-      "total_impressions": 27708,
-      "pages_in_search": 2254,
+      "total_clicks": 718,
+      "total_impressions": 27999,
+      "pages_in_search": 2226,
       "risers": 20,
       "fallers": 20,
       "hot_trends": 1,
@@ -164,28 +165,28 @@
     "priority_top5": [
       {
         "slug": "cerave-skin-renewing-night-cream-48g",
-        "score": 2709.9,
+        "score": 2799.9,
         "position": 3.5
       },
       {
         "slug": "skin1004-madagascar-centella-tone-bright",
-        "score": 1523.9,
+        "score": 1507.5,
         "position": 5.2
       },
       {
         "slug": "cosrx-advanced-snail-mucin-96-power-esse",
-        "score": 897.5,
-        "position": 4.8
+        "score": 857.5,
+        "position": 4.7
       },
       {
         "slug": "axis-y-dark-spot-correcting-glow-serum-5",
-        "score": 657.0,
-        "position": 2.0
+        "score": 660.0,
+        "position": 2.1
       },
       {
         "slug": "medicube-deep-vita-c-capsule-cream-55ml",
-        "score": 552.5,
-        "position": 4
+        "score": 560.0,
+        "position": 4.0
       }
     ],
     "hot_queries": [
@@ -195,13 +196,13 @@
       "best face wash for oily skin",
       "axis y dark spot serum"
     ],
-    "gsc_latest": "2026-06-22",
-    "gsc_snapshots": 4
+    "gsc_latest": "2026-06-23",
+    "gsc_snapshots": 5
   },
   "task_counts": {
     "checked": 9,
     "unchecked": 0,
-    "open_markers": 24,
+    "open_markers": 27,
     "warn_markers": 1
   }
 }

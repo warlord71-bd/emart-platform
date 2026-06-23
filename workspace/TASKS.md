@@ -139,6 +139,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 | X2 — Impression-priority humanizer: monitor GSC, generate new JSONL batch | 🔲 |
 | X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⚠️ ADB blocked |
 | X4 — Social publishing: 18 unique approved creatives, SEO captions, first-comment links, public HTTPS assets, and deterministic podium pipeline complete. FB+IG scheduler `emart-meta-18-20260623` active for all 18 slots, 09:00-23:00 BDT, with `--no-autorestart`. | ✅ active |
+| X5 — SEO cron state hygiene: retained the valid 2026-06-23 GSC/state refresh and fixed `system_state.py` treating the em-dash placeholder as an active agent. | ✅ complete |
 | Mobile BFF gaps: `/api/mobile/cart` and `/api/mobile/payment` return 404 | ⏸️ out of scope per owner: "EXCEPT MOBILE APP" |
 
 ### Backlog (post-freeze Jul 3+)

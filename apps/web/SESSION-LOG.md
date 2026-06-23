@@ -2875,3 +2875,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Started PM2 process `emart-meta-18-20260623` with automatic restart disabled; confirmed all 18 Facebook + Instagram slots queued from 09:00 through 23:00 BDT.
 - Blockers: none at scheduler startup. Individual publish results and first-comment results will be written to the PM2 log as each slot runs.
 - Next: Review the PM2 log after the first 09:00 slot and after the final 23:00 slot.
+
+## 2026-06-23 (Codex - SEO cron state review)
+- Did: Reviewed nine uncommitted `workspace/seo-review` files from the 02:30/03:00 automated refresh. Confirmed all are valid JSON, date/period changes are coherent, prior daily snapshots are tracked, and no secrets are present; retained the full June 23 dataset.
+- Fixed: `system_state.py` no longer parses the AGENT_BUS em-dash placeholder row as an active agent. Regenerated state reports live HTTP 200, seven PM2 services online, zero unexpectedly stopped, and no active agents.
+- Blockers: none. Next: allow the normal daily SEO/GSC refresh to continue.

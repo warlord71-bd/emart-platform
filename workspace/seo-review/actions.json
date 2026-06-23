@@ -1,13 +1,13 @@
 {
-  "generated": "2026-06-22",
+  "generated": "2026-06-23",
   "period": {
-    "start": "2026-05-23",
-    "end": "2026-06-19"
+    "start": "2026-05-24",
+    "end": "2026-06-20"
   },
   "summary": {
-    "total_clicks": 733,
-    "total_impressions": 27708,
-    "pages_in_search": 2254,
+    "total_clicks": 718,
+    "total_impressions": 27999,
+    "pages_in_search": 2226,
     "risers": 20,
     "fallers": 20,
     "hot_trends": 1,
@@ -15,8 +15,8 @@
   },
   "auto_executed": [
     "Fed 1 blog topics to generator: skincare bd",
-    "Humanizer queue updated: 437 products prioritized",
-    "20 title fixes proposed — awaiting review"
+    "Humanizer queue updated: 445 products prioritized",
+    "21 title fixes proposed — awaiting review"
   ],
   "agent_tasks": [
     {
@@ -25,12 +25,12 @@
       "slug": "cerave-skin-renewing-night-cream-48g",
       "who": "Claude/Codex",
       "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
-      "why": "Position 3.5 with 1087 impressions but only 0.3% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
+      "why": "Position 3.5 with 1123 impressions but only 0.3% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
       "standard": "Title: '{Product Name} Price in Bangladesh | Emart'. Max 70 chars. Review via: python3 gsc_tracker.py review-titles",
       "data": {
         "position": 3.5,
-        "impressions": 1087,
-        "ctr": 0.0028,
+        "impressions": 1123,
+        "ctr": 0.0027,
         "clicks": 3
       }
     },
@@ -40,12 +40,12 @@
       "slug": "cosrx-advanced-snail-mucin-96-power-essence-100ml",
       "who": "Claude/Codex",
       "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
-      "why": "Position 4.8 with 360 impressions but only 0.3% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
+      "why": "Position 4.7 with 344 impressions but only 0.3% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
       "standard": "Title: '{Product Name} Price in Bangladesh | Emart'. Max 70 chars. Review via: python3 gsc_tracker.py review-titles",
       "data": {
-        "position": 4.8,
-        "impressions": 360,
-        "ctr": 0.0028,
+        "position": 4.7,
+        "impressions": 344,
+        "ctr": 0.0029,
         "clicks": 1
       }
     },
@@ -55,11 +55,11 @@
       "slug": "axis-y-dark-spot-correcting-glow-serum-50ml",
       "who": "Claude/Codex",
       "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
-      "why": "Position 2.0 with 220 impressions but only 0.4% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
+      "why": "Position 2.1 with 221 impressions but only 0.4% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
       "standard": "Title: '{Product Name} Price in Bangladesh | Emart'. Max 70 chars. Review via: python3 gsc_tracker.py review-titles",
       "data": {
-        "position": 2.0,
-        "impressions": 220,
+        "position": 2.1,
+        "impressions": 221,
         "ctr": 0.0045,
         "clicks": 1
       }
@@ -70,12 +70,12 @@
       "slug": "medicube-deep-vita-c-capsule-cream-55ml",
       "who": "Claude/Codex",
       "how": "Edit buildProductSeoTitle() or set _rank_math_title in WooCommerce",
-      "why": "Position 4.0 with 222 impressions but only 0.4% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
+      "why": "Position 4.0 with 225 impressions but only 0.4% CTR — Google shows this product but users don't click because the title/snippet isn't compelling vs competitors",
       "standard": "Title: '{Product Name} Price in Bangladesh | Emart'. Max 70 chars. Review via: python3 gsc_tracker.py review-titles",
       "data": {
-        "position": 4,
-        "impressions": 222,
-        "ctr": 0.0045,
+        "position": 4.0,
+        "impressions": 225,
+        "ctr": 0.0044,
         "clicks": 1
       }
     },
@@ -85,10 +85,10 @@
       "slug": "cerave-skin-renewing-night-cream-48g",
       "who": "Claude/Codex (via humanizer_impression_priority.py)",
       "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
-      "why": "Position 3.5, 1087 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "why": "Position 3.5, 1123 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
       "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
       "data": {
-        "humanizer_priority": 4064.9,
+        "humanizer_priority": 4199.9,
         "content_tier": "UNSCORED",
         "hot_trend": false
       }
@@ -99,10 +99,10 @@
       "slug": "skin1004-madagascar-centella-tone-brightening-capsule-ampoule-100ml",
       "who": "Claude/Codex (via humanizer_impression_priority.py)",
       "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
-      "why": "Position 5.2, 1018 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "why": "Position 5.2, 1008 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
       "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
       "data": {
-        "humanizer_priority": 2285.9,
+        "humanizer_priority": 2261.2,
         "content_tier": "UNSCORED",
         "hot_trend": false
       }
@@ -113,10 +113,10 @@
       "slug": "cosrx-advanced-snail-mucin-96-power-essence-100ml",
       "who": "Claude/Codex (via humanizer_impression_priority.py)",
       "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
-      "why": "Position 4.8, 360 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "why": "Position 4.7, 344 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
       "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
       "data": {
-        "humanizer_priority": 1346.2,
+        "humanizer_priority": 1286.2,
         "content_tier": "UNSCORED",
         "hot_trend": false
       }
@@ -127,10 +127,10 @@
       "slug": "axis-y-dark-spot-correcting-glow-serum-50ml",
       "who": "Claude/Codex (via humanizer_impression_priority.py)",
       "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
-      "why": "Position 2.0, 220 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "why": "Position 2.1, 221 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
       "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
       "data": {
-        "humanizer_priority": 985.5,
+        "humanizer_priority": 990.0,
         "content_tier": "UNSCORED",
         "hot_trend": false
       }
@@ -141,10 +141,10 @@
       "slug": "medicube-deep-vita-c-capsule-cream-55ml",
       "who": "Claude/Codex (via humanizer_impression_priority.py)",
       "how": "Run humanizer on this product — rewrite WooCommerce description with specific ingredients, benefits, localized usage tips for Bangladesh climate",
-      "why": "Position 4.0, 222 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
+      "why": "Position 4.0, 225 impressions, content tier: UNSCORED — generic description hurts CTR and AI citation potential",
       "standard": "150+ words, mention brand + origin + key ingredients + skin type + 'Bangladesh' + 'COD'. No generic AI filler. Must pass humanizer quality check.",
       "data": {
-        "humanizer_priority": 828.8,
+        "humanizer_priority": 840.0,
         "content_tier": "UNSCORED",
         "hot_trend": false
       }
@@ -152,17 +152,36 @@
     {
       "type": "investigate_drop",
       "priority": "HIGH",
-      "slug": "kerasys-propolis-damage-repair-shampoo-1000ml",
+      "slug": "neutrogena-ultra-sheer-dry-touch-sunscreen-lotion-spf-55-147ml",
       "who": "Claude/Codex",
       "how": "Check: (1) page still returns 200, (2) canonical intact, (3) schema valid, (4) competitor content changes, (5) GSC coverage report for errors",
-      "why": "Lost 18.3 positions (38.7 → 57.0) — if this continues, impressions will drop next week",
+      "why": "Lost 53.6 positions (49.1 → 102.7) — if this continues, impressions will drop next week",
       "standard": "Report findings. Only fix if a technical issue is found. Position fluctuations <3 are normal.",
       "data": {
-        "path": "/shop/kerasys-propolis-damage-repair-shampoo-1000ml",
-        "slug": "kerasys-propolis-damage-repair-shampoo-1000ml",
-        "position_now": 57,
-        "position_prev": 38.7,
-        "position_delta": -18.3,
+        "path": "/shop/neutrogena-ultra-sheer-dry-touch-sunscreen-lotion-spf-55-147ml",
+        "slug": "neutrogena-ultra-sheer-dry-touch-sunscreen-lotion-spf-55-147ml",
+        "position_now": 102.7,
+        "position_prev": 49.1,
+        "position_delta": -53.6,
+        "impressions_now": 3,
+        "impressions_delta": -4,
+        "direction": "down"
+      }
+    },
+    {
+      "type": "investigate_drop",
+      "priority": "HIGH",
+      "slug": "cosrx-the-retinol-0-1-cream",
+      "who": "Claude/Codex",
+      "how": "Check: (1) page still returns 200, (2) canonical intact, (3) schema valid, (4) competitor content changes, (5) GSC coverage report for errors",
+      "why": "Lost 23.7 positions (48.3 → 72.0) — if this continues, impressions will drop next week",
+      "standard": "Report findings. Only fix if a technical issue is found. Position fluctuations <3 are normal.",
+      "data": {
+        "path": "/shop/cosrx-the-retinol-0-1-cream",
+        "slug": "cosrx-the-retinol-0-1-cream",
+        "position_now": 72,
+        "position_prev": 48.3,
+        "position_delta": -23.7,
         "impressions_now": 2,
         "impressions_delta": -1,
         "direction": "down"
@@ -171,36 +190,17 @@
     {
       "type": "investigate_drop",
       "priority": "HIGH",
-      "slug": "buy-cerave-hydrating-cleanser-for-normal-to-dry-skin-237ml",
+      "slug": "cerave-hydrating-hyaluronic-acid-serum-30ml",
       "who": "Claude/Codex",
       "how": "Check: (1) page still returns 200, (2) canonical intact, (3) schema valid, (4) competitor content changes, (5) GSC coverage report for errors",
-      "why": "Lost 17.8 positions (4.5 → 22.3) — if this continues, impressions will drop next week",
+      "why": "Lost 20.5 positions (3.5 → 24.0) — if this continues, impressions will drop next week",
       "standard": "Report findings. Only fix if a technical issue is found. Position fluctuations <3 are normal.",
       "data": {
-        "path": "/shop/buy-cerave-hydrating-cleanser-for-normal-to-dry-skin-237ml",
-        "slug": "buy-cerave-hydrating-cleanser-for-normal-to-dry-skin-237ml",
-        "position_now": 22.3,
-        "position_prev": 4.5,
-        "position_delta": -17.8,
-        "impressions_now": 3,
-        "impressions_delta": 1,
-        "direction": "down"
-      }
-    },
-    {
-      "type": "investigate_drop",
-      "priority": "HIGH",
-      "slug": "cerave-baby-moisturizing-cream-226g",
-      "who": "Claude/Codex",
-      "how": "Check: (1) page still returns 200, (2) canonical intact, (3) schema valid, (4) competitor content changes, (5) GSC coverage report for errors",
-      "why": "Lost 13.0 positions (7.0 → 20.0) — if this continues, impressions will drop next week",
-      "standard": "Report findings. Only fix if a technical issue is found. Position fluctuations <3 are normal.",
-      "data": {
-        "path": "/shop/cerave-baby-moisturizing-cream-226g",
-        "slug": "cerave-baby-moisturizing-cream-226g",
-        "position_now": 20,
-        "position_prev": 7,
-        "position_delta": -13,
+        "path": "/shop/cerave-hydrating-hyaluronic-acid-serum-30ml",
+        "slug": "cerave-hydrating-hyaluronic-acid-serum-30ml",
+        "position_now": 24,
+        "position_prev": 3.5,
+        "position_delta": -20.5,
         "impressions_now": 3,
         "impressions_delta": 1,
         "direction": "down"
