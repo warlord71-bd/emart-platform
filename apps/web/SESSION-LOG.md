@@ -2853,3 +2853,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Applied 4 full-length serum/sunscreen/cream: 50673 The Ordinary Glycolic 7% Toner, 51313 Skin Aqua Gel SPF50, 2966 PURITO Centella Unscented Serum, 47846 Missha Aqua Sun SPF50+.
 - _emart_humanized now 229 (session start 197 → 229 = 32 total: 8 model + 24 hand-written). ISR revalidated.
 - Quality standard going forward: full-length only, unique per product, no template, GMC-safe. ~98 serum/sunscreen/cream top sellers still remain.
+
+## 2026-06-23 cont.3 (Claude — continued full-length, committed per batch)
+- Continued hand-writing full-length top-notch serum/sunscreen/cream/toner descriptions, committing+pushing after each batch so nothing is ever uncommitted.
+- Batches 5-7 applied live (each + ISR revalidate + git push): 51158 BoJ sun stick, 4148 COSRX dual essence, 26933 COSRX cica serum, 27208 ISNTREE sun gel, 26942 ThankYouFarmer sun essence, 53311 ANUA toner, 56144 Nivea sun gel, 58268 WSKINLAB sun cream, 26435 Simple rich moisturizer, 2588 SomeByMi Miracle Toner, 2583 SomeByMi Yuja serum, 36232 Bioderma Photoderm M, 50557 COSRX AHA/BHA toner.
+- _emart_humanized now ~242. Resume state in memory project_humanizer_resume_20260623. ~105 serum/sunscreen/cream top sellers remain.
