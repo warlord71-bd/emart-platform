@@ -26,7 +26,7 @@ CLI:
     python3 humanizer_engine.py --dry-run --post-id 51962
 """
 from __future__ import annotations
-import argparse, json, os, re, subprocess, sys, time
+import argparse, json, os, random, re, subprocess, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -39,7 +39,24 @@ import residue_lint as LINT
 import humanizer_impression_priority as DB  # noqa: E402
 
 PROMPT_VERSION = "opus-pdp-v1.0"
-DEFAULT_MODEL  = os.environ.get("OPENROUTER_MODEL", "nousresearch/hermes-4-405b")
+
+# Free-tier fallback chain (rotated on 429; paid models skipped on 402 until funded).
+# Quality-ordered; all verified valid on OpenRouter 2026-06-23.
+FREE_MODELS = [
+    "google/gemma-4-31b-it:free",          # fast + high quality (scores 96-98 in testing)
+    "google/gemma-4-26b-a4b-it:free",
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",  # strong but slow — last-resort fallback
+]
+
+def _model_chain() -> list[str]:
+    """Env OPENROUTER_MODEL (if set) first, then the free fallbacks."""
+    env = os.environ.get("OPENROUTER_MODEL", "").strip()
+    chain = ([env] if env else []) + [m for m in FREE_MODELS if m != env]
+    return chain
+
+DEFAULT_MODEL  = (_model_chain() or ["google/gemma-4-31b-it:free"])[0]
+PACE_SECONDS   = int(os.environ.get("ENGINE_PACE", "8"))  # inter-product wait (free-tier friendly)
 DATE  = datetime.today().strftime("%Y-%m-%d")
 OUT   = HERE / "active"
 JSONL = OUT / f"engine-{DATE}.jsonl"
@@ -173,31 +190,50 @@ def _clean_html(raw: str) -> str:
     s = re.sub(r"</?h[12][^>]*>", "", s, flags=re.IGNORECASE)
     return s.strip()
 
-def generate(product: dict, model: str = DEFAULT_MODEL, attempts: int = 2) -> dict | None:
+def _is_429(e) -> bool:
+    s = str(e).lower(); return "429" in s or "rate-limit" in s or "rate limit" in s
+def _is_402(e) -> bool:
+    s = str(e).lower(); return "402" in s or "insufficient credits" in s
+
+def generate(product: dict, models: list[str] | None = None, rounds: int = 3) -> dict | None:
+    """Try a chain of models over several rounds. On 429 back off + rotate; on 402 skip
+    (paid model, no credits yet); keep the best-scoring draft; return on first PASS."""
     from openai import OpenAI
     key = _api_key()
     if not key:
         print("ERROR: no OpenRouter key (env or credentials file)"); sys.exit(1)
     client = OpenAI(api_key=key, base_url="https://openrouter.ai/api/v1")
-    focus = product.get("focus_kw") or product.get("title", "")
-    best = None
-    for attempt in range(1, attempts + 1):
-        try:
-            resp = client.chat.completions.create(
-                model=model, messages=build_messages(product),
-                temperature=0.6, max_tokens=2400,
-            )
-            html = LINT.scrub(_clean_html(resp.choices[0].message.content))
-            res = LINT.lint(html, focus, product.get("brand", ""), product.get("category", ""))
-            rec = {"content_html": html, "lint": res, "attempt": attempt, "model": model}
-            if best is None or res["score"] > best["lint"]["score"]:
-                best = rec
-            if res["pass"]:
-                return best
-            print(f"    attempt {attempt}: score {res['score']} FAIL -> {res['issues'][:3]}")
-        except Exception as e:
-            print(f"    LLM error (attempt {attempt}): {e}")
-            time.sleep(3)
+    focus  = product.get("focus_kw") or product.get("title", "")
+    models = models or _model_chain()
+    dead   = set()          # models out of credits this run
+    best   = None
+    for rnd in range(rounds):
+        for model in models:
+            if model in dead:
+                continue
+            tag = model.split("/")[-1]
+            try:
+                resp = client.chat.completions.create(
+                    model=model, messages=build_messages(product),
+                    temperature=0.6, max_tokens=2400,
+                )
+                html = LINT.scrub(_clean_html(resp.choices[0].message.content))
+                res  = LINT.lint(html, focus, product.get("brand",""), product.get("category",""))
+                rec  = {"content_html": html, "lint": res, "model": model}
+                if best is None or res["score"] > best["lint"]["score"]:
+                    best = rec
+                if res["pass"]:
+                    return best
+                print(f"    {tag}: {res['score']} FAIL {res['issues'][:2]}")
+            except Exception as e:
+                if _is_402(e):
+                    print(f"    {tag}: 402 no credits — skipping"); dead.add(model); continue
+                if _is_429(e):
+                    wait = min(75, 10 * (rnd + 1)) + random.randint(0, 6)
+                    print(f"    {tag}: 429 rate-limited — wait {wait}s"); time.sleep(wait); continue
+                print(f"    {tag}: error {str(e)[:90]}"); time.sleep(4)
+        if all(m in dead for m in models):
+            print("    all models out of credits"); break
     return best
 
 # ── Target selection (mirrors the manual humanizer's rules) ───────────────────
@@ -270,7 +306,7 @@ def cmd_dry_run(a):
         for l in open(JSONL):
             if l.strip(): done.add(json.loads(l).get("post_id"))
     items = [t for t in items if t["post_id"] not in done]
-    print(f"Generating {len(items)} (model={DEFAULT_MODEL}, prompt={PROMPT_VERSION})")
+    print(f"Generating {len(items)} (chain={_model_chain()}, pace={PACE_SECONDS}s, prompt={PROMPT_VERSION})")
     npass = 0
     for i, p in enumerate(items, 1):
         print(f"[{i}/{len(items)}] {p['post_id']} — {p['title'][:50]} ({p['brand']})")
@@ -288,8 +324,8 @@ def cmd_dry_run(a):
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
         LINT._log({"post_id": p["post_id"], "score": res["score"], "pass": res["pass"],
                    "model": g["model"], "prompt_version": PROMPT_VERSION})
-        print(f"  {'PASS' if res['pass'] else 'FAIL'} {res['score']} ({res['word_count']}w)")
-        time.sleep(1)
+        print(f"  {'PASS' if res['pass'] else 'FAIL'} {res['score']} ({res['word_count']}w) via {g['model'].split('/')[-1]}")
+        time.sleep(PACE_SECONDS)
     print(f"\n{npass}/{len(items)} PASSed -> {JSONL}\nReview FAILs, then --apply")
 
 def cmd_apply(a):
