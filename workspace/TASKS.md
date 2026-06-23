@@ -129,7 +129,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 | O-12 | Reddit/LinkedIn sameAs: provide real profile URLs | 🔲 |
 | O-13 | PDP 404 redirect map: 18 review-only + 52 no-match candidates | 🔲 review |
 | O-14 | Google-Extended bot policy: keep allowed or block? | 🔲 decision |
-| O-15 | Meta Page publishing: Page token securely renewed; Page and linked Instagram Business account validated on 2026-06-23. | ✅ complete |
+| O-15 | Meta Page publishing: replace short-lived user token with the Emart Page `access_token` from `/me/accounts`; require Page publishing permissions and lifetime beyond the campaign window. | 🔴 correct Page token needed |
 | O-16 | TikTok Developer app: pending approval; share Client Key + Client Secret once approved → Claude builds OAuth + publish pipeline | 🔲 pending TikTok review |
 
 ### Codex — Open
@@ -138,7 +138,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 |---|---|
 | X2 — Impression-priority humanizer: monitor GSC, generate new JSONL batch | 🔲 |
 | X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⚠️ ADB blocked |
-| X4 — Social publishing: 18 unique approved creatives, SEO captions, first-comment links, public HTTPS assets, and deterministic podium pipeline complete. FB+IG scheduler `emart-meta-18-20260623` active for all 18 slots, 09:00-23:00 BDT, with `--no-autorestart`. | ✅ active |
+| X4 — Social publishing: assets/captions ready; zero posts succeeded. Scheduler stopped and hardened with Page-identity preflight, validate-only mode, and catch-up scheduling. Renew with a long-lived Page token, validate, then reschedule all 18. | 🔴 Page token needed |
 | X5 — SEO cron state hygiene: retained the valid 2026-06-23 GSC/state refresh and fixed `system_state.py` treating the em-dash placeholder as an active agent. | ✅ complete |
 | Mobile BFF gaps: `/api/mobile/cart` and `/api/mobile/payment` return 404 | ⏸️ out of scope per owner: "EXCEPT MOBILE APP" |
 

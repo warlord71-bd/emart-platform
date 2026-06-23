@@ -2,7 +2,7 @@
 
 Timezone: Asia/Dhaka  
 Platforms: Facebook + Instagram  
-Status: 18 unique creatives, captions, links, and public assets are ready. The renewed Meta Page token was accepted and all 18 Facebook + Instagram slots are active under PM2 process `emart-meta-18-20260623`.
+Status: 18 unique creatives, captions, links, and public assets are ready. Publishing is paused: the replacement credential was a short-lived user token, not a publish-capable Page token. No posts succeeded; the scheduler was stopped after the 14:46 BDT failure.
 
 The authoritative schedule, captions, first-comment links, and publishing status are in `publish-schedule-18-alternating.md`.
 

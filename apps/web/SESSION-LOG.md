@@ -2880,3 +2880,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Reviewed nine uncommitted `workspace/seo-review` files from the 02:30/03:00 automated refresh. Confirmed all are valid JSON, date/period changes are coherent, prior daily snapshots are tracked, and no secrets are present; retained the full June 23 dataset.
 - Fixed: `system_state.py` no longer parses the AGENT_BUS em-dash placeholder row as an active agent. Regenerated state reports live HTTP 200, seven PM2 services online, zero unexpectedly stopped, and no active agents.
 - Blockers: none. Next: allow the normal daily SEO/GSC refresh to continue.
+
+## 2026-06-23 (Codex - Meta publishing failure diagnosis)
+- Did: Inspected the 18-post scheduler state and publish logs without restarting or posting. Confirmed zero posts published: the first 8 scheduled slots all failed and the remaining 10 did not run because PM2 is stopped.
+- Finding: The renewed Meta credential was short-lived and expired at the campaign start. The 09:00 call also returned a missing/deprecated publishing-permission error; subsequent calls returned OAuth 190/subcode 463 (expired token).
+- Did: Hardened the scheduler to require `/me` identity equal to `PAGE_ID`, support `--validate-only`, and redistribute all 18 posts with `--catch-up=25` after validation.
+- Blocker: A long-lived Page access token with Facebook Page and Instagram publishing permissions must be validated before rescheduling all 18 posts to future times.

@@ -168,7 +168,8 @@ Prepared and verified on 2026-06-23:
 
 Live status on 2026-06-23:
 
-- The expired token was replaced securely in `/opt/fb-poster/.env`.
-- Meta accepted the renewed token and resolved the linked Instagram Business account.
-- All 18 slots from 09:00 through 23:00 BDT are queued.
-- PM2 process: `emart-meta-18-20260623`, running with automatic restart disabled.
+- No posts succeeded. The 09:00 BDT Facebook call failed because the supplied credential lacked Page publishing permission.
+- The replacement was a short-lived user token and expired at 09:00 BDT; the 09:49 through 14:46 attempts then failed with OAuth `190/463`.
+- PM2 process `emart-meta-18-20260623` was stopped before the remaining slots.
+- The scheduler now validates that `/me` resolves to `PAGE_ID` before queuing and supports `--validate-only` plus catch-up scheduling.
+- Required next credential: the Emart Page `access_token` returned by `/me/accounts`, derived from a long-lived user or system-user token with Page/Instagram publishing permissions.

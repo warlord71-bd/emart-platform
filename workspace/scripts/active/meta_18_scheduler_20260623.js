@@ -10,6 +10,11 @@ const PAGE_ID = process.env.PAGE_ID;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const APP_SECRET = process.env.APP_SECRET;
 const LOG_PREFIX = '[emart-meta-18]';
+const RUN_STARTED_AT = Date.now();
+const catchUpArg = process.argv.find((arg) => arg.startsWith('--catch-up='));
+const CATCH_UP_INTERVAL_MINUTES = catchUpArg ? Number(catchUpArg.split('=')[1]) : 0;
+const CATCH_UP_START_DELAY_MINUTES = 2;
+const VALIDATE_ONLY = process.argv.includes('--validate-only');
 
 const posts = [
   {
@@ -191,7 +196,21 @@ async function graphPost(pathname, params = {}) {
 }
 
 async function getInstagramUserId() {
-  const page = await graphGet(`/${PAGE_ID}`, { fields: 'instagram_business_account' });
+  const page = await graphGet('/me', { fields: 'id,name,tasks,instagram_business_account' });
+  if (String(page.id) !== String(PAGE_ID)) {
+    throw new Error(
+      `PAGE_ACCESS_TOKEN is not a Page token for PAGE_ID ${PAGE_ID}. ` +
+      `It resolves to ${page.id || 'unknown'} (${page.name || 'unknown'}).`,
+    );
+  }
+
+  if (Array.isArray(page.tasks)) {
+    const canPublish = page.tasks.includes('CREATE_CONTENT') || page.tasks.includes('MANAGE');
+    if (!canPublish) {
+      throw new Error(`Page token lacks CREATE_CONTENT/MANAGE task: ${page.tasks.join(', ') || 'none'}`);
+    }
+  }
+
   const id = page.instagram_business_account && page.instagram_business_account.id;
   if (!id) throw new Error(`No linked Instagram Business account found for Page ${PAGE_ID}`);
   return id;
@@ -225,7 +244,11 @@ async function addComment(targetId, message, platform) {
   }
 }
 
-function dueAt(post) {
+function dueAt(post, index) {
+  if (CATCH_UP_INTERVAL_MINUTES > 0) {
+    const minutes = CATCH_UP_START_DELAY_MINUTES + (index * CATCH_UP_INTERVAL_MINUTES);
+    return new Date(RUN_STARTED_AT + minutes * 60 * 1000);
+  }
   return new Date(`2026-06-23T${post.time}:00+06:00`);
 }
 
@@ -243,19 +266,33 @@ async function publishOne(post, igUserId) {
 
 async function main() {
   requireConfig();
+  if (catchUpArg && (!Number.isFinite(CATCH_UP_INTERVAL_MINUTES) || CATCH_UP_INTERVAL_MINUTES < 10)) {
+    throw new Error('--catch-up interval must be at least 10 minutes');
+  }
   const igUserId = await getInstagramUserId();
-  console.log(`${LOG_PREFIX} scheduler active. Posts: ${posts.length}. IG user: ${igUserId}`);
+  if (VALIDATE_ONLY) {
+    console.log(`${LOG_PREFIX} validation OK. Page token matches PAGE_ID; linked IG user: ${igUserId}`);
+    return;
+  }
+  const mode = CATCH_UP_INTERVAL_MINUTES > 0
+    ? `catch-up every ${CATCH_UP_INTERVAL_MINUTES} minutes`
+    : 'fixed schedule';
+  console.log(`${LOG_PREFIX} scheduler active. Posts: ${posts.length}. IG user: ${igUserId}. Mode: ${mode}`);
 
   let scheduled = 0;
-  for (const post of posts) {
-    const delay = dueAt(post).getTime() - Date.now();
+  for (const [index, post] of posts.entries()) {
+    const publishAt = dueAt(post, index);
+    const delay = publishAt.getTime() - Date.now();
     if (delay <= -10 * 60 * 1000) {
       console.log(`${LOG_PREFIX} skipping old slot ${post.time} ${post.label}`);
       continue;
     }
     const wait = Math.max(0, delay);
     scheduled += 1;
-    console.log(`${LOG_PREFIX} scheduled ${post.time} ${post.label} in ${Math.round(wait / 60000)} min`);
+    console.log(
+      `${LOG_PREFIX} scheduled ${post.label} for ${publishAt.toISOString()} ` +
+      `(in ${Math.round(wait / 60000)} min)`,
+    );
     setTimeout(() => {
       publishOne(post, igUserId).catch((error) => {
         console.error(`${LOG_PREFIX} publish FAILED ${post.time} ${post.label}: ${error.message}`);
@@ -268,7 +305,7 @@ async function main() {
     return;
   }
 
-  const finalDelay = dueAt(posts[posts.length - 1]).getTime() - Date.now() + 15 * 60 * 1000;
+  const finalDelay = dueAt(posts[posts.length - 1], posts.length - 1).getTime() - Date.now() + 15 * 60 * 1000;
   setTimeout(() => {
     console.log(`${LOG_PREFIX} scheduler finished window`);
     process.exit(0);
