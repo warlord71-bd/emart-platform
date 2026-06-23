@@ -2,7 +2,7 @@
 
 Timezone: Asia/Dhaka  
 Platforms: Facebook + Instagram  
-Status: One-shot posting plan. Pipeline product assets are ready. Codex model-real-item composites are generated with exact real Woo/Emart product foregrounds; manual visual review still recommended before publishing.
+Status: Pipeline product assets are ready. Rejected model/dummy/replacement assets were moved out of workspace to `/root/.attic-2026-06-23/emart-rejected-social-model-assets/`.
 
 ## Creative Rules
 
@@ -17,21 +17,13 @@ Status: One-shot posting plan. Pipeline product assets are ready. Codex model-re
 | Time BDT | Type | Product/Theme | Asset | First Comment Link |
 |---:|---|---|---|---|
 | 09:00 | Pipeline | COSRX Advanced Snail Mucin 96 Power Essence 100ml | `pipeline/01-cosrx-snail-1x1.png` + `variants/01-cosrx-snail-4x5.png` | https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-96-power-essence-100ml |
-| 09:45 | Codex model | Beauty of Joseon Relief Sun Aqua-fresh Rice + B5 50ml | `model-real-item/01-boj-relief-sun-model-real-1x1.png` + `variants/01-boj-relief-sun-model-real-4x5.png` | https://e-mart.com.bd/shop/beauty-of-joseon-relief-sun-aqua-fresh-rice-b5-50ml |
 | 10:30 | Pipeline | Beauty of Joseon Relief Sun Aqua-fresh Rice + B5 50ml | `pipeline/02-boj-relief-sun-1x1.png` + `variants/02-boj-relief-sun-4x5.png` | https://e-mart.com.bd/shop/beauty-of-joseon-relief-sun-aqua-fresh-rice-b5-50ml |
-| 11:15 | Codex model | Anua Niacinamide 10% + TXA 4% Serum 30ml | `model-real-item/02-anua-niacinamide-model-real-1x1.png` + `variants/02-anua-niacinamide-model-real-4x5.png` | https://e-mart.com.bd/shop/anua-niacinamide-10-txa-4-serum-30ml |
 | 12:00 | Pipeline | Anua Niacinamide 10% + TXA 4% Serum 30ml | `pipeline/03-anua-niacinamide-txa-1x1.png` + `variants/03-anua-niacinamide-txa-4x5.png` | https://e-mart.com.bd/shop/anua-niacinamide-10-txa-4-serum-30ml |
-| 12:45 | Codex model | CeraVe Hydrating Cleanser Normal To Dry Skin 355ml | `model-real-item/03-cerave-cleanser-model-real-1x1.png` + `variants/03-cerave-cleanser-model-real-4x5.png` | https://e-mart.com.bd/shop/cerave-hydrating-cleanser-normal-to-dry-skin-355ml-usa-version |
 | 13:30 | Pipeline | CeraVe Hydrating Cleanser Normal To Dry Skin 355ml | `pipeline/04-cerave-hydrating-cleanser-1x1.png` + `variants/04-cerave-hydrating-cleanser-4x5.png` | https://e-mart.com.bd/shop/cerave-hydrating-cleanser-normal-to-dry-skin-355ml-usa-version |
-| 14:15 | Codex model | Anua Heartleaf Pore Control Cleansing Oil 200ml | `model-real-item/04-anua-cleansing-oil-model-real-1x1.png` + `variants/04-anua-cleansing-oil-model-real-4x5.png` | https://e-mart.com.bd/shop/anua-heartleaf-pore-control-cleansing-oil-200ml |
 | 15:00 | Pipeline | The Ordinary Glycolic Acid 7% Exfoliating Toner 240ml | `pipeline/05-the-ordinary-glycolic-toner-1x1.png` + `variants/05-the-ordinary-glycolic-toner-4x5.png` | https://e-mart.com.bd/shop/the-ordinary-glycolic-acid-7-exfoliating-toner-240ml |
-| 15:45 | Codex model | COSRX Advanced Snail Mucin 96 Power Essence 100ml | `model-real-item/05-cosrx-snail-model-real-1x1.png` + `variants/05-cosrx-snail-model-real-4x5.png` | https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-96-power-essence-100ml |
 | 16:30 | Pipeline | COSRX BHA Blackhead Power Liquid 100ml | `pipeline/06-cosrx-bha-1x1.png` + `variants/06-cosrx-bha-4x5.png` | https://e-mart.com.bd/shop/cosrx-bha-blackhead-power-liquid-100ml |
-| 17:15 | Codex model | Axis-Y Dark Spot Correcting Glow Serum 50ml | `model-real-item/06-axis-y-dark-spot-model-real-1x1.png` + `variants/06-axis-y-dark-spot-model-real-4x5.png` | https://e-mart.com.bd/shop/axis-y-dark-spot-correcting-glow-serum-50ml |
 | 18:00 | Pipeline | COSRX Hydrium Watery Toner 150ml | `pipeline/07-cosrx-hydrium-toner-1x1.png` + `variants/07-cosrx-hydrium-toner-4x5.png` | https://e-mart.com.bd/shop/cosrx-hydrium-watery-toner-150ml |
-| 18:45 | Codex model | SKIN1004 Centella Hyalu-Cica Water-Fit Sun Serum 100ml | `model-real-item/07-skin1004-sun-serum-model-real-1x1.png` + `variants/07-skin1004-sun-serum-model-real-4x5.png` | https://e-mart.com.bd/shop/skin1004-centella-hyalu-cica-water-fit-sun-serum-100ml |
 | 19:30 | Pipeline | Anua Heartleaf Pore Control Cleansing Oil 200ml | `pipeline/08-anua-cleansing-oil-1x1.png` + `variants/08-anua-cleansing-oil-4x5.png` | https://e-mart.com.bd/shop/anua-heartleaf-pore-control-cleansing-oil-200ml |
-| 20:15 | Codex model | The Ordinary Glycolic Acid 7% Exfoliating Toner 240ml | `model-real-item/08-the-ordinary-glycolic-model-real-1x1.png` + `variants/08-the-ordinary-glycolic-model-real-4x5.png` | https://e-mart.com.bd/shop/the-ordinary-glycolic-acid-7-exfoliating-toner-240ml |
 | 21:00 | Pipeline | SKIN1004 Centella Hyalu-Cica Water-Fit Sun Serum 100ml | `pipeline/09-skin1004-hyalu-cica-sun-serum-1x1.png` + `variants/09-skin1004-hyalu-cica-sun-serum-4x5.png` | https://e-mart.com.bd/shop/skin1004-centella-hyalu-cica-water-fit-sun-serum-100ml |
 | 21:45 | Pipeline | Axis-Y Dark Spot Correcting Glow Serum 50ml | `pipeline/10-axis-y-dark-spot-serum-1x1.png` + `variants/10-axis-y-dark-spot-serum-4x5.png` | https://e-mart.com.bd/shop/axis-y-dark-spot-correcting-glow-serum-50ml |
 
@@ -48,9 +40,9 @@ Status: One-shot posting plan. Pipeline product assets are ready. Codex model-re
 9. SKIN1004 Sun Serum: `Centella sunscreen pick for daily Bangladesh weather. SKIN1004 Hyalu-Cica Sun Serum is ready at Emart.`
 10. Axis-Y Dark Spot: `Brightening routine favorite: Axis-Y Dark Spot Correcting Glow Serum, authentic and available at Emart.`
 
-## Codex Model-Real-Item Production Rule
+## Future Codex Model-Real-Item Production Rule
 
-For each pending model post:
+Rejected draft model assets are not active. For future model posts:
 
 1. Use the real product image from Woo/Emart as the item reference.
 2. Generate or edit a modest hijabi model scene where the model is holding that exact product.
