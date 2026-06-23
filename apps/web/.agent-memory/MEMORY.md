@@ -70,3 +70,8 @@
 - [AI customer agent briefing 2026-06-19](project_ai_agent_briefing.md) — Qdrant/OpenRouter/architecture/safety rules for building the on-site chat agent
 - [Social publishing system 2026-06-23](project_social_publishing_20260623.md) — unified Meta FB+IG publishing; creds in `apps/web/.env.local`; scripts in `workspace/scripts/active/meta_*.js`; reference doc at `workspace/docs/claude-reference/social-publishing.md`
 - [AI video engine state 2026-06-23](project_ai_video_engine_20260623.md) — Phase 0 local reel engine; inline/OpenRouter-free-Gemma script fallback; local ffprobe QA by default; direct Google/Gemini is explicit-only
+- [Social image sizes preference](feedback_social_image_sizes.md) — future Meta campaigns should generate separate IG 4:5 and FB 1:1 assets
+- [AI video influencer plan](project_ai_video_influencer_plan_20260623.md) — original tier-swappable AI video/persona plan and Phase 0 scaffold history
+- [Humanizer engine handoff](project_humanizer_engine_20260623.md) — reusable Opus-style PDP humanizer package for Hermes/OpenRouter model runs
+- [Humanizer resume state](project_humanizer_resume_20260623.md) — top-seller PDP humanizer counts, priorities, rollback, and resume workflow
+- [Unified social publishing memory](project_social_publishing_20260623_unified.md) — expanded Meta FB+IG publishing memory, token type, script/env migration
