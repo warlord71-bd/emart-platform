@@ -2,7 +2,7 @@
 
 Timezone: Asia/Dhaka  
 Platforms: Facebook + Instagram  
-Status: 18 unique creatives, captions, links, public assets, and the publishing scheduler are ready. Meta publishing is blocked only by the expired Page access token in `/opt/fb-poster/.env`.
+Status: 18 unique creatives, captions, links, and public assets are ready. The renewed Meta Page token was accepted and all 18 Facebook + Instagram slots are active under PM2 process `emart-meta-18-20260623`.
 
 The authoritative schedule, captions, first-comment links, and publishing status are in `publish-schedule-18-alternating.md`.
 

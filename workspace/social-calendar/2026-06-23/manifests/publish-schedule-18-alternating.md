@@ -166,10 +166,9 @@ Prepared and verified on 2026-06-23:
 - It publishes each platform post and then adds the product URL as the first comment.
 - It loads the existing `PAGE_ID`, `PAGE_ACCESS_TOKEN`, and `APP_SECRET` from `/opt/fb-poster/.env`.
 
-Current blocker: Meta rejected the existing Page access token with OAuth error `190`, subcode `463`. The token expired on 2026-06-21. The scheduler was stopped to prevent a restart loop and must be launched after replacing `PAGE_ACCESS_TOKEN` with a fresh Page token.
+Live status on 2026-06-23:
 
-Launch after token renewal:
-
-```bash
-pm2 start workspace/scripts/active/meta_18_scheduler_20260623.js --name emart-meta-18-20260623 --no-autorestart
-```
+- The expired token was replaced securely in `/opt/fb-poster/.env`.
+- Meta accepted the renewed token and resolved the linked Instagram Business account.
+- All 18 slots from 09:00 through 23:00 BDT are queued.
+- PM2 process: `emart-meta-18-20260623`, running with automatic restart disabled.

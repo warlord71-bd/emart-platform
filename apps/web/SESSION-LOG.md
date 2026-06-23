@@ -2869,3 +2869,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Finding: Existing credentials were not missing; the repo tool expected different variable names. The real credentials are in `/opt/fb-poster/.env`, but Meta reports the Page token expired on 2026-06-21 (OAuth 190, subcode 463). Stopped the failed PM2 restart loop.
 - Blocker: Replace `PAGE_ACCESS_TOKEN` with a fresh Page access token before publishing.
 - Next: Start `emart-meta-18-20260623` with `--no-autorestart` immediately after token renewal; if the date has passed, regenerate schedule times first.
+
+## 2026-06-23 (Codex - Meta token renewed and campaign queued)
+- Did: Validated the securely renewed Page access token against Meta and resolved the linked Instagram Business account.
+- Did: Started PM2 process `emart-meta-18-20260623` with automatic restart disabled; confirmed all 18 Facebook + Instagram slots queued from 09:00 through 23:00 BDT.
+- Blockers: none at scheduler startup. Individual publish results and first-comment results will be written to the PM2 log as each slot runs.
+- Next: Review the PM2 log after the first 09:00 slot and after the final 23:00 slot.
