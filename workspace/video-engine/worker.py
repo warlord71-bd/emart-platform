@@ -32,6 +32,14 @@ META_REEL = ROOT.parent / "scripts" / "active" / "meta_reel_publish.js"
 SOCIAL_IMG = ROOT.parent / "scripts" / "active" / "social_image_gen.py"
 SCRIPT_GEN = ROOT / "stages" / "script_gen.py"
 REEL_QA = ROOT / "stages" / "reel_qa_gemini.py"
+REEL_QA_OR = ROOT / "stages" / "reel_qa_openrouter.py"
+CAPTION_OVERLAY = ROOT / "stages" / "caption_overlay.py"
+VOICE_GEN = ROOT / "stages" / "voice_gen.py"
+MUSIC_BED = ROOT / "assets" / "music" / "ambient-soft.mp3"
+REEL_QA_MASTER = ROOT / "stages" / "reel_qa_master.py"
+BRAND_CARD = ROOT / "stages" / "brand_card.py"
+LIST_CARD = ROOT / "stages" / "list_card.py"
+CODEX_BRIDGE = ROOT / "stages" / "codex_bridge.py"
 
 
 def today() -> str:
@@ -62,13 +70,89 @@ def set_stage(job, name, **data):
     job.setdefault("stages", {})[name] = {"status": "done", **data}
 
 
+def persona_stills(job) -> list[str]:
+    """pull consistent persona stills from the free persona library (personas/<id>/library)."""
+    pid = job.get("persona_library")
+    if not pid:
+        return []
+    lib = ROOT / "personas" / pid / "library"
+    if not lib.exists():
+        raise SystemExit(f"persona library not found: {lib} (run persona_gen.py --persona {pid})")
+    wanted = job.get("persona_scenes")
+    files = sorted(lib.glob("*.png"))
+    if wanted:
+        files = [f for f in files if any(f.name.startswith(s) for s in wanted)]
+    if not files:
+        raise SystemExit(f"no persona stills in {lib} for scenes={wanted}")
+    return [str(f) for f in files]
+
+
+def brand_card_image(job) -> list[str]:
+    """branded closing frame so the reel reads as a finished ad (opt-in: job.brand_card)."""
+    if not job.get("brand_card"):
+        return []
+    card = OUTPUT / f"card-{job['id']}.png"
+    subprocess.run([sys.executable, str(BRAND_CARD),
+                    "--product", job.get("product") or job.get("headline", "Emart Skincare"),
+                    "--price", str(job.get("price", "")),
+                    "--bangla", job.get("brand_card_bangla", ""),
+                    "--out", str(card)], check=True, timeout=120)
+    return [str(card)]
+
+
+def list_card_images(job) -> list[str]:
+    """value/bullet template cards — the 'reason to keep watching' frames (job.list_cards)."""
+    out = []
+    for i, spec in enumerate(job.get("list_cards") or []):
+        card = OUTPUT / f"listcard-{job['id']}-{i}.png"
+        cmd = [sys.executable, str(LIST_CARD), "--out", str(card),
+               "--title", spec["title"], "--kicker", spec.get("kicker", "জেনে নিন"),
+               "--style", spec.get("style", "numbered"), "--footer", spec.get("footer", "e-mart.com.bd · COD")]
+        for b in spec.get("bullets", []):
+            cmd += ["--bullet", b]
+        subprocess.run(cmd, check=True, timeout=120)
+        out.append(str(card))
+    return out
+
+
+def holding_request_images(job) -> list[str]:
+    """auto-handoff: emit a Codex work order for a 'model holding the real product' shot, and consume
+    it once Codex has fulfilled it. If not yet fulfilled, return [] (engine proceeds persona-only and
+    reuses the asset on a later run). Triggered by job `holding_request: true`."""
+    if not job.get("holding_request"):
+        return []
+    product = job.get("product") or job.get("headline", "")
+    persona = job.get("persona_library") or job.get("persona", "dr-rumana")
+    ref = (job.get("images") or [None])[0]
+    cmd = [sys.executable, str(CODEX_BRIDGE), "--emit", "--product", product, "--persona", persona]
+    if ref:
+        cmd += ["--product-image", str(Path(ref).resolve())]
+    out = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+    path = out.stdout.strip()
+    if path and Path(path).exists():
+        return [path]                       # Codex already fulfilled -> use it (cover-pan)
+    print(f"[worker] holding shot requested from Codex (pending): {path}")
+    return []                               # not yet fulfilled -> proceed without
+
+
 def resolve_images(job, cfg) -> list[str]:
-    """image is a SHARED upstream capability (same source as static posts)."""
-    if job.get("images"):
-        return job["images"]
+    """image is a SHARED upstream capability (same source as static posts).
+
+    Retention-first order:
+      persona hook -> model-holding-REAL-product (Codex-generated) -> value cards -> product -> CTA card.
+
+    `holding_images`: paths to Codex-generated "model holding the actual product" shots (Codex's
+    image-gen does product-in-hand far better than free Pollinations). These are people shots, so they
+    get cover-pan motion like persona stills (NOT blurred-fill). Drop them in workspace/video-engine/
+    codex-assets/ and reference here. See README "Codex handoff".
+    """
+    imgs = (persona_stills(job) + (job.get("holding_images") or []) + holding_request_images(job)
+            + list_card_images(job) + (job.get("images") or []))
+    if imgs:
+        return imgs + brand_card_image(job)
     pid = job.get("product_id")
     if not pid:
-        raise SystemExit("job needs 'images' or 'product_id'")
+        raise SystemExit("job needs 'images', 'persona_library', or 'product_id'")
     prov = router.pick("image", job.get("tier_target", "free"), 999, cfg=cfg)
     # free/branded path -> social_image_gen.py
     out_dir = OUTPUT / f"frames-{job['id']}"
@@ -78,7 +162,7 @@ def resolve_images(job, cfg) -> list[str]:
     frames = sorted(str(p) for p in Path("workspace/audit/active/social").glob(f"product-{pid}-*.png"))
     if not frames:
         raise SystemExit("image stage produced no frames")
-    return frames[-1:]
+    return frames[-1:] + brand_card_image(job)
 
 
 def run_job(job_path: Path, allow_publish: bool):
@@ -123,53 +207,128 @@ def run_job(job_path: Path, allow_publish: bool):
         checkpoint(job_path, job)
     script_path = job.get("stages", {}).get("script", {}).get("path")
 
-    # 3. reel (free ffmpeg) — uses timed script captions when available
+    # 2a. voice — free bn-BD/en narration from the script's voiceover (edge-tts). Was being thrown away.
+    if script_path and job.get("voiceover", True) and not stage_done(job, "voice"):
+        sc = json.loads(Path(script_path).read_text())
+        vtext = (sc.get("voiceover") or sc.get("caption") or "").strip()
+        vpath = str(OUTPUT / f"vo-{jid}.mp3")
+        vdur = 0.0
+        if vtext:
+            r = subprocess.run([sys.executable, str(VOICE_GEN), "--text", vtext,
+                                "--language", job.get("language", "bn"),
+                                "--gender", job.get("voice_gender", "female"),
+                                "--out", vpath], capture_output=True, text=True, timeout=120)
+            if r.returncode == 0 and Path(vpath).exists():
+                try:
+                    vdur = float(r.stdout.strip())
+                except ValueError:
+                    vdur = 0.0
+            else:
+                # offline / failed -> silent fallback (never blocks the free pipeline)
+                vpath = ""
+                sys.stderr.write(r.stderr.strip()[-300:] + "\n")
+        else:
+            vpath = ""
+        set_stage(job, "voice", audio=vpath, duration=round(vdur, 2))
+        checkpoint(job_path, job)
+    voice = job.get("stages", {}).get("voice", {})
+    audio_path = voice.get("audio") or ""
+    vo_dur = float(voice.get("duration") or 0)
+
+    # effective per-image seconds: span the voiceover so narration fully plays (with a 0.4s tail)
+    base_seconds = float(job.get("seconds", 6))
+    n_imgs = max(1, len(imgs))
+    seconds = max(base_seconds, (vo_dur + 0.4) / n_imgs) if vo_dur > 0 else base_seconds
+    total = round(seconds * n_imgs, 2)
+
+    # 2b. captions — browser-rendered overlays (proper Bangla/English; drawtext can't shape Bangla)
+    if script_path and not stage_done(job, "captions"):
+        capdir = str(OUTPUT / f"caps-{jid}")
+        opath = str(OUTPUT / f"overlays-{jid}.json")
+        subprocess.run([sys.executable, str(CAPTION_OVERLAY), "--script", script_path,
+                        "--total", str(total), "--outdir", capdir, "--out", opath],
+                       check=True, timeout=180)
+        set_stage(job, "captions", overlays=opath, total=total)
+        checkpoint(job_path, job)
+    overlays_path = job.get("stages", {}).get("captions", {}).get("overlays")
+
+    # 3. reel (free ffmpeg) — voiceover audio + browser caption overlays
     if not stage_done(job, "reel"):
         out_mp4 = str(OUTPUT / f"{jid}.mp4")
         cmd = [sys.executable, str(REEL)]
         for im in imgs:
             cmd += ["--image", im]
         cmd += ["--headline", job.get("headline", ""), "--sub", job.get("sub", ""),
-                "--out", out_mp4, "--seconds", str(job.get("seconds", 6))]
-        if script_path:
+                "--out", out_mp4, "--seconds", str(seconds)]
+        if overlays_path:
+            cmd += ["--overlays-json", overlays_path]
+        elif script_path:
             cmd += ["--script-json", script_path]
+        if audio_path:
+            cmd += ["--audio", audio_path]
+        # explicit product/branded images get blurred-fill (no crop of heading/price); persona+card stay cover-pan
+        for fim in (job.get("images") or []):
+            cmd += ["--fit-image", str(Path(fim).resolve())]
+        # music bed: job "music" path, or default ambient (set "music": false to disable)
+        music = job.get("music", str(MUSIC_BED))
+        if music and music is not False and Path(str(music)).exists():
+            cmd += ["--music", str(music)]
         subprocess.run(cmd, check=True, timeout=400)
-        set_stage(job, "reel", mp4=out_mp4)
+        set_stage(job, "reel", mp4=out_mp4, audio=bool(audio_path))
         checkpoint(job_path, job)
     mp4 = job["stages"]["reel"]["mp4"]
 
-    # 3. quality gate — local ffprobe QA by default. Direct Gemini video QA is opt-in only.
+    # 3. quality gate — ffprobe is the HARD gate (always; blocks on broken render). A vision provider
+    #    (free OpenRouter by default; gemini opt-in) is a SOFT gate: it records content issues / warns
+    #    but never blocks unless the job opts in with "qa_block_on_vision": true.
     if not stage_done(job, "qa") and job.get("qa", True):
-        qpath = str(OUTPUT / f"qa-{jid}.json")
-        caption = job.get("caption", job.get("headline", ""))
-        qa_provider = job.get("qa_provider", "local")
-        if qa_provider == "gemini":
-            qa_cmd = [sys.executable, str(REEL_QA),
-                      "--video", mp4,
-                      "--product", job.get("product") or job.get("headline", ""),
-                      "--caption", caption,
-                      "--out", qpath]
-            timeout = 300
-        else:
-            qa_cmd = [sys.executable, str(REEL_QA_LOCAL), "--video", mp4, "--out", qpath]
-            timeout = 60
-        r = subprocess.run(qa_cmd, capture_output=True, text=True, timeout=timeout)
-        if r.returncode != 0 and not Path(qpath).exists():
-            set_stage(job, "qa", status_note="failed", stderr=r.stderr.strip()[-500:])
-            job["status"] = "failed"
-            checkpoint(job_path, job)
-            print(r.stderr.strip(), file=sys.stderr)
-            return
-        qa = json.loads(Path(qpath).read_text())
-        set_stage(job, "qa", path=qpath, provider=qa.get("_provider", qa_provider),
-                  score=qa.get("score"), qa_status=qa.get("status"),
-                  publishable=qa.get("publishable"))
+        product = job.get("product") or job.get("headline", "")
+        # -- hard gate: ffprobe container/stream/dimension check --
+        hpath = str(OUTPUT / f"qa-{jid}.json")
+        r = subprocess.run([sys.executable, str(REEL_QA_LOCAL), "--video", mp4, "--out", hpath],
+                           capture_output=True, text=True, timeout=60)
+        if r.returncode != 0 and not Path(hpath).exists():
+            set_stage(job, "qa", status_note="ffprobe_failed", stderr=r.stderr.strip()[-400:])
+            job["status"] = "failed"; checkpoint(job_path, job)
+            print(r.stderr.strip(), file=sys.stderr); return
+        hard = json.loads(Path(hpath).read_text())
+        if hard.get("status") == "fail" or hard.get("publishable") is False:
+            set_stage(job, "qa", hard=hard, gate="ffprobe")
+            job["status"] = "failed"; checkpoint(job_path, job)
+            print(f"[worker] HARD QA failed for {jid}: {hard.get('issues')}"); return
+        # -- soft gate: vision QA (default free OpenRouter), best-effort, warn-only --
+        # only the vision providers trigger the soft gate; "local"/"off" = ffprobe hard gate only
+        soft = None
+        provider = job.get("qa_provider", "openrouter")
+        if provider in ("openrouter", "gemini", "master"):
+            spath = str(OUTPUT / f"qa-vision-{jid}.json")
+            if provider == "gemini":
+                vcmd = [sys.executable, str(REEL_QA), "--video", mp4, "--product", product,
+                        "--caption", job.get("caption", ""), "--out", spath]; vt = 300
+            elif provider == "master":
+                # full production sign-off: technical + loudness + multi-frame visual + caption timing
+                vcmd = [sys.executable, str(REEL_QA_MASTER), "--video", mp4, "--product", product,
+                        "--out", spath, "--report", str(OUTPUT / f"qa-card-{jid}.md")]
+                if overlays_path:
+                    vcmd += ["--overlays", overlays_path]
+                vt = 300
+            else:
+                vcmd = [sys.executable, str(REEL_QA_OR), "--video", mp4, "--product", product,
+                        "--out", spath]; vt = 180
+            try:
+                subprocess.run(vcmd, capture_output=True, text=True, timeout=vt)
+                if Path(spath).exists():
+                    soft = json.loads(Path(spath).read_text())
+            except Exception as e:
+                sys.stderr.write(f"soft QA skipped: {e}\n")
+        # master QA reports "verdict" (PASS/REVIEW/FAIL); single-frame reports "status" — normalize
+        soft_status = (soft or {}).get("status") or str((soft or {}).get("verdict", "")).lower() or None
+        set_stage(job, "qa", hard=hard, soft=soft, score=(soft or {}).get("score") or hard.get("score"),
+                  vision_status=soft_status, vision_issues=(soft or {}).get("issues") or (soft or {}).get("fixes"))
         checkpoint(job_path, job)
-        if qa.get("status") == "fail" or qa.get("publishable") is False:
-            job["status"] = "failed"
-            checkpoint(job_path, job)
-            print(f"[worker] QA failed for {jid}: {qa.get('summary')}")
-            return
+        if job.get("qa_block_on_vision") and soft_status == "fail":
+            job["status"] = "failed"; checkpoint(job_path, job)
+            print(f"[worker] vision QA failed (opted-in block) for {jid}: {soft.get('issues')}"); return
 
     # 4. store (free local public dir -> public URL; swap to R2 later)
     if not stage_done(job, "store"):

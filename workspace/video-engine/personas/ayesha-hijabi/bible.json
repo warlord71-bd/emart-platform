@@ -1,0 +1,17 @@
+{
+  "id": "ayesha-hijabi",
+  "name": "Ayesha",
+  "archetype": "modest hijabi creator",
+  "seed": 905512,
+  "age": 25,
+  "identity": "a 25 year old Bangladeshi woman wearing a neatly draped warm rose-beige hijab framing her face, warm medium natural skin tone, soft oval face, calm dark brown eyes, gentle warm smile, subtle natural makeup, modest elegant styling",
+  "scenes": {
+    "portrait": "soft modest beauty portrait, gentle warm lighting, plain pale studio background",
+    "explaining": "looking warmly at camera as if sharing a tip, hand softly near cheek, soft pale background",
+    "holding_product": "holding a plain blank unbranded white skincare bottle beside her cheek, modest respectful framing, soft pale background"
+  },
+  "voice": { "language_default": "banglish", "tone": "warm, gentle, respectful, down-to-earth" },
+  "format_fit": ["gentle routine", "modest-friendly skincare", "family-trusted picks", "Eid prep"],
+  "rules": "modest respectful styling; authentic Bangladeshi medium skin tone, NEVER whitened; no medical claims; no extra people",
+  "negative": "no text, no watermark, no logo, no brand, no extra people, no distorted hands, not over-whitened skin"
+}

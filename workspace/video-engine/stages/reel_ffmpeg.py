@@ -20,7 +20,9 @@ from __future__ import annotations
 import argparse, json, os, subprocess, sys
 from pathlib import Path
 
-W, H, FPS = 1080, 1920, 30
+W, H, FPS = 1080, 1920, 24
+# loudness normalize to the ~-14 LUFS target IG Reels / YT Shorts / TikTok expect (true peak -1.5)
+LOUDNORM = "loudnorm=I=-14:TP=-1.5:LRA=11"
 DEFAULT_FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 BENGALI_FONT_CANDIDATES = [
     "/usr/share/fonts/truetype/noto/NotoSansBengali-Bold.ttf",
@@ -44,16 +46,39 @@ def _esc(text: str) -> str:
     return text.replace("\\", "\\\\").replace(":", "\\:").replace("'", "’").replace("%", "\\%")
 
 
-def build_segment(image: str, seconds: float, idx: int) -> str:
-    """filter chain producing one zoompan segment scaled to WxH."""
-    frames = int(seconds * FPS)
-    # scale-cover to 2x then zoompan for smooth motion; alternate zoom-in / zoom-out
-    zexpr = "min(zoom+0.0009,1.18)" if idx % 2 == 0 else "if(eq(on,0),1.18,max(zoom-0.0009,1.0))"
+def build_segment(image: str, seconds: float, idx: int, fit: bool = False) -> str:
+    """one motion segment.
+
+    CROP-PAN mode (default): scale ONCE to a slightly larger canvas, then animate a 1080x1920 crop
+    window across it. crop does no per-frame resampling -> near-static encode cost (zoompan was
+    pathologically slow on this GPU-less box). Direction alternates per clip for variety.
+
+    FIT mode (fit=True): for images whose edges carry content (e.g. branded product cards with a
+    heading/price at the margins) — show the WHOLE image centered (contain) over a darkened blurred
+    fill of itself, so nothing is cropped off. Used for non-9:16 product imagery.
+    """
+    if fit:
+        return (
+            f"[{idx}:v]split=2[bg{idx}][fg{idx}];"
+            f"[bg{idx}]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
+            f"boxblur=26:2,eq=brightness=-0.07[bgb{idx}];"
+            f"[fg{idx}]scale={W}:{H}:force_original_aspect_ratio=decrease[fgs{idx}];"
+            f"[bgb{idx}][fgs{idx}]overlay=(W-w)/2:(H-h)/2,setsar=1,fps={FPS}[v{idx}]"
+        )
+    cw = (int(W * 1.12) // 2) * 2
+    ch = (int(H * 1.12) // 2) * 2
+    d = idx % 4
+    if d == 0:      # pan left -> right
+        x, y = f"(iw-ow)*t/{seconds}", "(ih-oh)/2"
+    elif d == 1:    # pan top -> bottom
+        x, y = "(iw-ow)/2", f"(ih-oh)*t/{seconds}"
+    elif d == 2:    # pan right -> left
+        x, y = f"(iw-ow)*(1-t/{seconds})", "(ih-oh)/2"
+    else:           # pan bottom -> top
+        x, y = "(iw-ow)/2", f"(ih-oh)*(1-t/{seconds})"
     return (
-        f"[{idx}:v]scale={W*2}:{H*2}:force_original_aspect_ratio=increase,"
-        f"crop={W*2}:{H*2},"
-        f"zoompan=z='{zexpr}':d={frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
-        f"s={W}x{H}:fps={FPS},setsar=1[v{idx}]"
+        f"[{idx}:v]scale={cw}:{ch}:force_original_aspect_ratio=increase,crop={cw}:{ch},"
+        f"crop={W}:{H}:x='{x}':y='{y}',setsar=1,fps={FPS}[v{idx}]"
     )
 
 
@@ -85,20 +110,36 @@ def timed_captions(script: dict, total: float, font: str) -> list[str]:
     return d
 
 
-def run(images, headline, sub, out, seconds, font, script=None):
+def run(images, headline, sub, out, seconds, font, script=None, overlays=None, audio=None, music=None,
+        fit_images=None):
     images = [str(Path(i).resolve()) for i in images]
+    fit_set = {str(Path(p).resolve()) for p in (fit_images or [])}
     for i in images:
         if not Path(i).exists():
             raise SystemExit(f"Image not found: {i}")
     Path(out).parent.mkdir(parents=True, exist_ok=True)
 
+    total = seconds * len(images)
     inputs = []
     for img in images:
         inputs += ["-loop", "1", "-t", str(seconds), "-i", img]
-    # silent audio source
-    inputs += ["-f", "lavfi", "-t", str(seconds * len(images)), "-i", "anullsrc=r=44100:cl=stereo"]
+    # audio: real voiceover when provided (padded/trimmed to total), else silence
+    if audio:
+        inputs += ["-i", audio]
+    else:
+        inputs += ["-f", "lavfi", "-t", str(total), "-i", "anullsrc=r=44100:cl=stereo"]
+    audio_idx = len(images)
+    # browser-rendered caption PNGs (proper Bangla/English) as looped inputs after audio
+    if overlays:
+        for ov in overlays:
+            inputs += ["-loop", "1", "-t", str(total), "-i", ov["png"]]
+    # music bed (looped) as the last input
+    music_idx = None
+    if music and Path(music).exists():
+        music_idx = len(images) + 1 + (len(overlays) if overlays else 0)
+        inputs += ["-stream_loop", "-1", "-i", music]
 
-    fc = [build_segment(img, seconds, i) for i, img in enumerate(images)]
+    fc = [build_segment(img, seconds, i, fit=(img in fit_set)) for i, img in enumerate(images)]
 
     # chain segments with xfade, or single passthrough
     if len(images) == 1:
@@ -112,38 +153,73 @@ def run(images, headline, sub, out, seconds, font, script=None):
             prev = lbl
         vlabel = prev
 
-    # captions: timed script (hook->benefits->cta) if provided, else static headline/sub
-    total = seconds * len(images)
-    if script:
-        draw = timed_captions(script, total, font)
-    else:
-        draw = []
-        if headline:
-            draw.append(
-                f"drawtext=fontfile={font}:text='{_esc(headline)}':fontcolor=white:fontsize=64:"
-                f"box=1:boxcolor=black@0.45:boxborderw=24:x=(w-text_w)/2:y=h*0.74:"
-                f"shadowcolor=black@0.8:shadowx=2:shadowy=2"
-            )
-        if sub:
-            draw.append(
-                f"drawtext=fontfile={font}:text='{_esc(sub)}':fontcolor=0xF5D060:fontsize=40:"
-                f"x=(w-text_w)/2:y=h*0.82:shadowcolor=black@0.8:shadowx=2:shadowy=2"
-            )
-    if draw:
-        fc.append(f"{vlabel}{','.join(draw)}[vout]")
+    # captions: browser PNG overlays (proper Bangla/English) > drawtext script > static headline/sub
+    if overlays:
+        # subtle grade + vignette on the BASE so captions stay crisp on top
+        fc.append(f"{vlabel}eq=saturation=1.08:contrast=1.03:brightness=0.01,"
+                  f"vignette=PI/4.6[graded]")
+        prev = "[graded]"
+        FADE = 0.35
+        for k, ov in enumerate(overlays):
+            in_idx = audio_idx + 1 + k
+            t0, t1 = float(ov["t0"]), float(ov["t1"])
+            fo = max(t0 + 0.1, t1 - FADE)  # fade-out start
+            # fade caption alpha in/out -> alpha 0 outside its window, so overlay can run full-time
+            fc.append(f"[{in_idx}:v]format=rgba,fade=t=in:st={t0:.2f}:d={FADE}:alpha=1,"
+                      f"fade=t=out:st={fo:.2f}:d={FADE}:alpha=1[cap{k}]")
+            lbl = f"[ov{k}]"
+            fc.append(f"{prev}[cap{k}]overlay=0:0{lbl}")
+            prev = lbl
+        fc.append(f"{prev}null[vout]")
         final_v = "[vout]"
     else:
-        # ensure a labeled output
-        fc.append(f"{vlabel}null[vout]")
+        if script:
+            draw = timed_captions(script, total, font)
+        else:
+            draw = []
+            if headline:
+                draw.append(
+                    f"drawtext=fontfile={font}:text='{_esc(headline)}':fontcolor=white:fontsize=64:"
+                    f"box=1:boxcolor=black@0.45:boxborderw=24:x=(w-text_w)/2:y=h*0.74:"
+                    f"shadowcolor=black@0.8:shadowx=2:shadowy=2"
+                )
+            if sub:
+                draw.append(
+                    f"drawtext=fontfile={font}:text='{_esc(sub)}':fontcolor=0xF5D060:fontsize=40:"
+                    f"x=(w-text_w)/2:y=h*0.82:shadowcolor=black@0.8:shadowx=2:shadowy=2"
+                )
+        if draw:
+            fc.append(f"{vlabel}{','.join(draw)}[vout]")
+        else:
+            fc.append(f"{vlabel}null[vout]")
         final_v = "[vout]"
 
+    # audio map: voiceover (padded to total) + optional ducked music bed under it
+    if audio:
+        if music_idx is not None:
+            # split VO: one copy drives the ducking sidechain, one copy is mixed in
+            fc.append(f"[{audio_idx}:a]apad=whole_dur={total},atrim=0:{total},asetpts=N/SR/TB,"
+                      f"asplit=2[vo1][vo2]")
+            fc.append(f"[{music_idx}:a]atrim=0:{total},asetpts=N/SR/TB,volume=0.22[mraw]")
+            fc.append(f"[mraw][vo1]sidechaincompress=threshold=0.02:ratio=6:attack=20:release=350[mduck]")
+            fc.append(f"[vo2][mduck]amix=inputs=2:duration=first:dropout_transition=0,"
+                      f"{LOUDNORM}[aout]")
+        else:
+            fc.append(f"[{audio_idx}:a]apad=whole_dur={total},atrim=0:{total},asetpts=N/SR/TB,"
+                      f"{LOUDNORM}[aout]")
+        amap = "[aout]"
+    elif music_idx is not None:
+        fc.append(f"[{music_idx}:a]atrim=0:{total},asetpts=N/SR/TB,volume=0.5,{LOUDNORM}[aout]")
+        amap = "[aout]"
+    else:
+        amap = f"{audio_idx}:a"
+
     filtergraph = ";".join(fc)
-    audio_idx = len(images)
     cmd = [
         "ffmpeg", "-y", *inputs,
         "-filter_complex", filtergraph,
-        "-map", final_v, "-map", f"{audio_idx}:a",
-        "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+        "-map", final_v, "-map", amap,
+        "-c:v", "libx264", "-preset", "ultrafast", "-crf", "24",
         "-pix_fmt", "yuv420p", "-r", str(FPS),
         "-c:a", "aac", "-b:a", "128k", "-shortest",
         "-movflags", "+faststart",
@@ -165,16 +241,25 @@ def main():
     ap.add_argument("--seconds", type=float, default=6.0)
     ap.add_argument("--font", default=None)
     ap.add_argument("--script-json", default=None, help="reel script (hook/benefits/cta) for timed captions")
+    ap.add_argument("--overlays-json", default=None, help="browser-rendered caption PNGs [{png,t0,t1}]")
+    ap.add_argument("--audio", default=None, help="voiceover audio file (mp3/wav); replaces silence")
+    ap.add_argument("--music", default=None, help="background music loop; ducked under the voiceover")
+    ap.add_argument("--fit-image", action="append", dest="fit_images", default=[],
+                    help="image to show whole (blurred-fill) instead of crop — for branded/product frames")
     a = ap.parse_args()
     script = None
     if a.script_json and Path(a.script_json).exists():
         script = json.loads(Path(a.script_json).read_text())
+    overlays = None
+    if a.overlays_json and Path(a.overlays_json).exists():
+        overlays = json.loads(Path(a.overlays_json).read_text())
     caption_text = a.headline + a.sub
     if script:
         caption_text = (script.get("hook", "") + " " + " ".join(script.get("benefits") or [])
                         + " " + script.get("cta", ""))
     font = pick_font(caption_text, a.font)
-    out = run(a.images, a.headline, a.sub, a.out, a.seconds, font, script=script)
+    out = run(a.images, a.headline, a.sub, a.out, a.seconds, font, script=script, overlays=overlays,
+              audio=a.audio, music=a.music, fit_images=a.fit_images)
     print(out)
 
 

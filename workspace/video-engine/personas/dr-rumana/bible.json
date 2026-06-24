@@ -1,0 +1,17 @@
+{
+  "id": "dr-rumana",
+  "name": "Dr. Rumana",
+  "archetype": "skin expert / educator",
+  "seed": 778001,
+  "age": 32,
+  "identity": "a 32 year old Bangladeshi woman, warm medium-tan natural skin tone, oval face, soft defined eyebrows, dark brown almond-shaped eyes, straight nose, gentle confident closed-lip smile, sleek low bun of dark black hair, minimal natural makeup, wearing a soft sage-green modest high-neck blouse",
+  "scenes": {
+    "portrait": "clean professional beauty headshot, soft even studio lighting, plain warm beige seamless background",
+    "explaining": "looking directly at camera as if explaining skincare, one hand gently raised near chin, soft blurred clinical background",
+    "holding_product": "holding a plain blank unbranded white skincare bottle beside her cheek, soft blurred warm background"
+  },
+  "voice": { "language_default": "banglish", "tone": "warm, credible, simple, reassuring" },
+  "format_fit": ["Dr ingredient analysis", "routine order", "what does X ingredient do"],
+  "rules": "modest styling; authentic Bangladeshi medium skin tone, NEVER whitened; no medical/curative claims; no extra people",
+  "negative": "no text, no watermark, no logo, no brand, no extra people, no distorted hands, not over-whitened skin"
+}

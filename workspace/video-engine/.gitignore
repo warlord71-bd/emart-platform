@@ -4,3 +4,8 @@ queue/*.json
 *.wav
 *.mp3
 __pycache__/
+personas/*/library/
+assets/music/*.mp3
+codex-assets/holding/
+codex-assets/*.png
+codex-assets/requests/

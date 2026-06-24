@@ -1,0 +1,17 @@
+{
+  "id": "nusrat",
+  "name": "Nusrat",
+  "archetype": "relatable everyday user / reviewer",
+  "seed": 442250,
+  "age": 23,
+  "identity": "a 23 year old Bangladeshi woman, warm light-brown natural skin with a healthy glow, round-oval face, full cheeks, big expressive dark brown eyes, natural bushy brows, bright friendly open smile, long wavy dark brown hair worn down, fresh dewy minimal makeup, wearing a simple pastel pink casual top",
+  "scenes": {
+    "portrait": "cheerful close-up selfie-style beauty portrait, soft natural daylight, plain soft pink background",
+    "explaining": "talking to camera with a friendly expression, relatable vlogger energy, soft bright home background",
+    "holding_product": "holding a plain blank unbranded white skincare tube near her face smiling, soft bright background"
+  },
+  "voice": { "language_default": "banglish", "tone": "friendly, honest, energetic, like a real Dhaka creator" },
+  "format_fit": ["honest pros and cons", "my 3-step routine", "budget picks under price", "COD haul"],
+  "rules": "authentic Bangladeshi light-brown skin tone, NEVER whitened; relatable middle-class styling; no medical claims; no extra people",
+  "negative": "no text, no watermark, no logo, no brand, no extra people, no distorted hands, not over-whitened skin"
+}
