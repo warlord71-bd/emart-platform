@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import datetime as dt
 import hashlib
 import json
 import re
 from pathlib import Path
 from typing import Any
+
+from social_engine import vision_qa
 
 try:
     from PIL import Image
@@ -177,7 +180,75 @@ def normalize_campaign(campaign: dict[str, Any], config: dict[str, Any]) -> dict
     }
 
 
-def qa_campaign(campaign: dict[str, Any], config: dict[str, Any], history: dict[str, Any]) -> dict[str, Any]:
+def run_campaign_vision_qa(campaign: dict[str, Any]) -> dict[str, Any]:
+    results: dict[str, Any] = {
+        "items": {},
+        "summary": {"pass": 0, "warn": 0, "fail": 0, "unavailable": 0, "platform_checks": 0, "unique_images": 0},
+    }
+    tasks: dict[tuple[str, str, str], tuple[Path, str, str]] = {}
+    for item in campaign["items"]:
+        for post in item["platform_posts"].values():
+            local = public_url_to_local(post.get("image_url") or "")
+            if not local:
+                continue
+            creative_type = item.get("creative_type", "static")
+            key = (str(local), item["title"], creative_type)
+            tasks[key] = (local, item["title"], creative_type)
+
+    workers = max(1, min(4, len(tasks)))
+    cache: dict[tuple[str, str, str], dict[str, Any]] = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
+        future_keys = {
+            pool.submit(vision_qa.inspect_image, local, title, creative_type): key
+            for key, (local, title, creative_type) in tasks.items()
+        }
+        for future in concurrent.futures.as_completed(future_keys):
+            key = future_keys[future]
+            try:
+                cache[key] = future.result()
+            except Exception as exc:
+                cache[key] = {
+                    "status": "unavailable",
+                    "score": 0,
+                    "issues": ["vision_qa_worker_error"],
+                    "errors": [str(exc)[:240]],
+                    "_provider": "openrouter-vision",
+                }
+
+    results["summary"]["unique_images"] = len(tasks)
+    for item in campaign["items"]:
+        ref = f"{item['index']:02d} {item['title']}"
+        item_results: dict[str, Any] = {}
+        for platform, post in item["platform_posts"].items():
+            image_url = post.get("image_url") or ""
+            local = public_url_to_local(image_url)
+            if not local:
+                result = {
+                    "status": "fail",
+                    "score": 0,
+                    "issues": ["vision_qa_requires_local_public_asset"],
+                    "image_url": image_url,
+                    "_provider": "openrouter-vision",
+                }
+            else:
+                key = (str(local), item["title"], item.get("creative_type", "static"))
+                result = cache[key]
+            result = {**result, "image_url": image_url}
+            item_results[platform] = result
+            status = result.get("status", "unavailable")
+            results["summary"][status] = results["summary"].get(status, 0) + 1
+            results["summary"]["platform_checks"] += 1
+        results["items"][ref] = item_results
+    return results
+
+
+def qa_campaign(
+    campaign: dict[str, Any],
+    config: dict[str, Any],
+    history: dict[str, Any],
+    vision_report: dict[str, Any] | None = None,
+    vision_required: bool = False,
+) -> dict[str, Any]:
     lookback_dates = history.get("dates", [])
     blocked_ids = history.get("blocked_product_ids", set())
     blocked_slugs = history.get("blocked_slugs", set())
@@ -232,6 +303,27 @@ def qa_campaign(campaign: dict[str, Any], config: dict[str, Any], history: dict[
                     want = expected.get(platform, {}).get("image")
                     if want and tuple(want) != tuple(dims):
                         warnings.append({"item": ref, "platform": platform, "code": "non_preferred_image_size", "actual": dims, "preferred": want})
+            vision_result = (vision_report or {}).get("items", {}).get(ref, {}).get(platform)
+            if vision_required and not vision_result:
+                errors.append({"item": ref, "platform": platform, "code": "vision_qa_missing"})
+            if vision_result:
+                vision_status = vision_result.get("status")
+                if vision_status in ("fail", "unavailable"):
+                    errors.append({
+                        "item": ref,
+                        "platform": platform,
+                        "code": f"vision_qa_{vision_status}",
+                        "issues": vision_result.get("issues", []),
+                        "blockers": vision_result.get("blockers", []),
+                    })
+                elif vision_status == "warn":
+                    warnings.append({
+                        "item": ref,
+                        "platform": platform,
+                        "code": "vision_qa_warn",
+                        "issues": vision_result.get("issues", []),
+                        "score": vision_result.get("score"),
+                    })
             if platform == "facebook":
                 if link and "first comment" not in caption.lower():
                     warnings.append({"item": ref, "platform": platform, "code": "fb_caption_missing_first_comment_hint"})
@@ -255,6 +347,7 @@ def qa_campaign(campaign: dict[str, Any], config: dict[str, Any], history: dict[
         "summary": f"{len(errors)} error(s), {len(warnings)} warning(s)",
         "errors": errors,
         "warnings": warnings,
+        "vision_qa": vision_report,
         "approval_required": True,
     }
 
@@ -271,6 +364,11 @@ def markdown_review(campaign: dict[str, Any], qa: dict[str, Any]) -> str:
         "## Posts",
         "",
     ]
+    if qa.get("vision_qa"):
+        lines.extend([
+            f"- Vision QA: {json.dumps(qa['vision_qa'].get('summary', {}), ensure_ascii=False)}",
+            "",
+        ])
     for item in campaign["items"]:
         lines.extend([
             f"### {item['index']:02d}. {item['title']}",
@@ -364,10 +462,16 @@ def plan(args: argparse.Namespace) -> int:
     raw = read_json(args.campaign)
     campaign = normalize_campaign(raw, config)
     history = load_history(args.history, campaign["date"], config.get("defaults", {}).get("repeat_lookback_days", 2))
-    qa = qa_campaign(campaign, config, history)
 
     out_dir = args.out or ROOT / "output" / campaign["date"] / campaign["id"]
     out_dir.mkdir(parents=True, exist_ok=True)
+    vision_report = None
+    if args.vision_qa:
+        print("[social-engine] running OpenRouter vision QA for campaign images...")
+        vision_report = run_campaign_vision_qa(campaign)
+        write_json(out_dir / "vision-qa-report.json", vision_report)
+    qa = qa_campaign(campaign, config, history, vision_report=vision_report, vision_required=args.vision_qa)
+
     write_json(out_dir / "campaign-plan.json", campaign)
     write_json(out_dir / "qa-report.json", qa)
     (out_dir / "review.md").write_text(markdown_review(campaign, qa))
@@ -395,6 +499,8 @@ def main() -> int:
     plan_parser.add_argument("--config", type=Path, default=ROOT / "config" / "defaults.json")
     plan_parser.add_argument("--history", type=Path, default=ROOT / "history" / "published-products.json")
     plan_parser.add_argument("--out", type=Path)
+    plan_parser.add_argument("--vision-qa", action="store_true",
+                             help="Run free OpenRouter vision QA and block on unavailable/failing image inspection")
     plan_parser.set_defaults(func=plan)
     args = parser.parse_args()
     return args.func(args)

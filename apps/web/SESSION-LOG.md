@@ -2952,3 +2952,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Seeded the engine with the approved 2026-06-24 v3 campaign manifest and recent campaign history so tomorrow's product picker can avoid repeats.
 - Verified: `python3 -m unittest discover -s workspace/social-engine/tests` passes; `python3 workspace/social-engine/social_engine.py plan --campaign workspace/social-engine/campaigns/2026-06-24-v3.json` produces QA `pass` with 18 warnings only for IG using square assets instead of preferred 4:5.
 - Next: Build product-picker/performance-loop adapters and convert scheduler previews into production data-driven Meta jobs after owner approval.
+
+## 2026-06-24 (Codex - Social Engine real vision QA gate)
+- Did: Added opt-in `--vision-qa` using free OpenRouter vision models to inspect each unique campaign image for expected product/package, readable Bangladesh-style price, dummy products, model-hand placement, and broken/overlapping layout.
+- Did: Made model verdicts fail closed when fields are false, null, missing, unavailable, or uncertain; reused FB/IG assets are cached and up to four unique images are inspected concurrently. Added hard curl transport/process timeouts while preserving the manual-attestation path when the flag is omitted.
+- Verified: Six Social Engine tests pass, including vision fail/unavailable and incomplete-verdict gates. Offline 2026-06-24 v3 planning still passes with only the known 18 Instagram 4:5 warnings. A live free-model check correctly passed the COSRX creative after the rubric was taught `TAKA` and crossed-price presentation.
+- Risk: A full 18-image free-provider smoke was terminated after excessive upstream latency; free OpenRouter availability remains variable and strict runs intentionally block rather than bypass unavailable vision QA.
+- Next: Add free caption generation/review, then automatic Instagram 1080x1350 asset generation.

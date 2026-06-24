@@ -12,6 +12,10 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
   - price area clear
   - no dummy/generated product props
   - model-hand/product placement checked for model creatives
+- Optionally runs actual image inspection through free OpenRouter vision models; failures or provider
+  unavailability block the review pack instead of trusting the manifest checkboxes.
+- Deduplicates reused FB/IG assets and checks up to four unique images concurrently. Each free-model
+  request has a hard transport timeout; the provider can still make a full campaign preflight slow.
 - Checks platform caption rules:
   - Facebook: buying URL belongs in the first comment, not caption body.
   - Instagram: no raw product URLs; use DM / link in bio language.
@@ -27,7 +31,8 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
 
 ```bash
 python3 workspace/social-engine/social_engine.py plan \
-  --campaign workspace/social-engine/campaigns/2026-06-24-v3.json
+  --campaign workspace/social-engine/campaigns/2026-06-24-v3.json \
+  --vision-qa
 ```
 
 Output defaults to:
@@ -68,6 +73,9 @@ dry-run by default unless `--allow-publish` is explicitly used there.
 - No Meta token is read by Social Engine v1.
 - No product, price, stock, customer, order, cart, or Woo DB data is written.
 - Publish gate is always owner-review-first.
+- `--vision-qa` is strict: missing credentials, exhausted free models, uncertain product identity,
+  obscured prices, dummy products, or broken layouts block publishing.
+- Omitting `--vision-qa` preserves the existing manual-attestation fallback for offline planning.
 - Scheduler JS files are previews, not live PM2 jobs.
 - Active publishing still uses the existing tested Meta adapters after approval.
 

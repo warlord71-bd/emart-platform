@@ -1,11 +1,14 @@
 from pathlib import Path
 import sys
+import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from social_engine.engine import normalize_campaign, qa_campaign  # noqa: E402
+from social_engine import vision_qa  # noqa: E402
 
 
 def base_config():
@@ -86,6 +89,65 @@ class SocialEngineTests(unittest.TestCase):
         )
         self.assertEqual(qa["status"], "blocked")
         self.assertTrue(any(error["code"] == "visual_qa_missing_model_hand_checked" for error in qa["errors"]))
+
+    def test_vision_failure_blocks_campaign(self):
+        campaign = normalize_campaign(campaign_with_item(), base_config())
+        ref = "01 COSRX Test Serum"
+        vision = {
+            "items": {
+                ref: {
+                    "facebook": {"status": "fail", "issues": ["wrong package"], "blockers": ["product_match"]},
+                    "instagram": {"status": "pass", "issues": [], "blockers": []},
+                }
+            }
+        }
+        qa = qa_campaign(
+            campaign,
+            base_config(),
+            {"blocked_product_ids": set(), "blocked_slugs": set(), "dates": []},
+            vision_report=vision,
+            vision_required=True,
+        )
+        self.assertEqual(qa["status"], "blocked")
+        self.assertTrue(any(error["code"] == "vision_qa_fail" for error in qa["errors"]))
+
+    def test_unavailable_vision_blocks_only_when_required(self):
+        campaign = normalize_campaign(campaign_with_item(), base_config())
+        ref = "01 COSRX Test Serum"
+        vision = {
+            "items": {
+                ref: {
+                    platform: {"status": "unavailable", "issues": ["vision_qa_unavailable"]}
+                    for platform in ("facebook", "instagram")
+                }
+            }
+        }
+        history = {"blocked_product_ids": set(), "blocked_slugs": set(), "dates": []}
+        strict = qa_campaign(campaign, base_config(), history, vision_report=vision, vision_required=True)
+        fallback = qa_campaign(campaign, base_config(), history)
+        self.assertEqual(strict["status"], "blocked")
+        self.assertEqual(fallback["status"], "pass")
+
+    def test_incomplete_model_verdict_fails_closed(self):
+        model_result = {
+            "product_match": True,
+            "price_clear": None,
+            "no_dummy_product": True,
+            "model_hand_ok": None,
+            "layout_ok": True,
+            "issues": [],
+            "score": 90,
+        }
+        with tempfile.NamedTemporaryFile(suffix=".jpg") as image:
+            image.write(b"test-image")
+            image.flush()
+            with mock.patch.object(vision_qa, "models", return_value=["free-test"]), mock.patch.object(
+                vision_qa, "ask_model", return_value=model_result
+            ):
+                result = vision_qa.inspect_image(Path(image.name), "Test Product", "model")
+        self.assertEqual(result["status"], "fail")
+        self.assertIn("price_clear", result["blockers"])
+        self.assertIn("model_hand_ok", result["blockers"])
 
 
 if __name__ == "__main__":
