@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-24 (Facebook + Instagram 18-post v3 campaign scheduled)
+Last updated: 2026-06-24 (Social Engine v1 scaffolded)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -159,6 +159,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 | X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⚠️ ADB blocked |
 | X4 — Social publishing: 2026-06-24 Facebook + Instagram 18-post v3 campaign scheduled 09:00-23:00 BDT via separate PM2 runs `emart-fb-18-20260624` and `emart-ig-18-20260624`; final assets live under `/images/social/2026-06-24/fb-18-v3/`. Instagram captions use "DM to order / link in bio". Buying-link comment worker `emart-fb-comment-20260624` is online and queues full product URLs after each Facebook post publishes; comment permission still must be watched on first post. | 🟡 active today |
 | X7 — AI video engine: Phase 0 local reel engine built; direct Google dropped from default path. Scripts now use OpenRouter free Gemma fallback (`google/gemma-4-31b-it:free` proven), QA defaults to local ffprobe; sample reel live at `/public/videos/reels/20260624-gemma-boj-relief-sun-sample.mp4`; live publish remains owner-gated. | 🟡 publish gated |
+| X8 — Social Engine v1: `workspace/social-engine/` now creates review-gated FB/IG campaign plans, duplicate/yesterday guards, visual-QA gates, caption policy checks, scheduler previews, and optional video-engine queue JSON for `make_reel:true` items. Seeded with the approved 2026-06-24 v3 campaign; planner QA passes with IG 4:5-size warnings only. | 🟡 v1 scaffold complete; product picker/performance loop next |
 | X5 — SEO cron state hygiene: retained the valid 2026-06-23 GSC/state refresh and fixed `system_state.py` treating the em-dash placeholder as an active agent. | ✅ complete |
 | Mobile BFF gaps: `/api/mobile/cart` and `/api/mobile/payment` return 404 | ⏸️ out of scope per owner: "EXCEPT MOBILE APP" |
 

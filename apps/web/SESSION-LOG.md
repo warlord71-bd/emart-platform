@@ -2946,3 +2946,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Synced the scheduler to the runtime tree and started PM2 process `emart-ig-18-20260624` with autorestart disabled.
 - Verified: Meta validation resolved Page `Emart Skincare Bangladesh` and linked Instagram user `17841426400472288`; the W.SKIN final creative returned HTTP 200 publicly; IG log shows all 18 slots queued from 09:00 through 23:00 BDT.
 - Watch: First Instagram publish at 09:00 BDT should be checked once live; Facebook first-comment permission still needs watching separately.
+
+## 2026-06-24 (Codex - Social Engine v1 scaffold)
+- Did: Created `workspace/social-engine/` as an approval-first social campaign engine: manifest planner, duplicate/recent-product guard, platform caption checks, visual QA gates, review Markdown/JSON output, scheduler previews, and optional video-engine queue generation for items marked `make_reel:true`.
+- Did: Seeded the engine with the approved 2026-06-24 v3 campaign manifest and recent campaign history so tomorrow's product picker can avoid repeats.
+- Verified: `python3 -m unittest discover -s workspace/social-engine/tests` passes; `python3 workspace/social-engine/social_engine.py plan --campaign workspace/social-engine/campaigns/2026-06-24-v3.json` produces QA `pass` with 18 warnings only for IG using square assets instead of preferred 4:5.
+- Next: Build product-picker/performance-loop adapters and convert scheduler previews into production data-driven Meta jobs after owner approval.

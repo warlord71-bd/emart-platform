@@ -1,0 +1,260 @@
+{
+  "id": "2026-06-24-v3",
+  "name": "June 24 K-beauty fast-seller v3",
+  "date": "2026-06-24",
+  "approval_status": "approved_for_scheduled_run",
+  "platforms": ["facebook", "instagram"],
+  "schedule": {
+    "start": "09:00",
+    "end": "23:00",
+    "timezone": "+06:00"
+  },
+  "items": [
+    {
+      "product_id": 18095,
+      "title": "COSRX Acne Pimple Master Patch",
+      "slug": "cosrx-acne-pimple-master-patch",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/cosrx-acne-pimple-master-patch-24-patch",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/01-cosrx-acne-pimple-master-patch-1x1.jpg",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/01-cosrx-acne-pimple-master-patch-1x1.jpg",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/01-cosrx-acne-pimple-master-patch-1x1.jpg"
+      },
+      "angle": "Tiny patch, big rescue energy.",
+      "hashtags": "#COSRXBangladesh #AcnePatch #KBeautyBD #SkincareBangladesh #EmartSkincare",
+      "captions": {
+        "facebook": "Tiny patch, big rescue energy.\n\nSudden breakout before office, class, or an outing? Keep COSRX Acne Pimple Master Patch in your routine drawer and thank yourself later.\n\nWould you keep this in your emergency skincare kit?\n\nBuy link in first comment.\n\n#COSRXBangladesh #AcnePatch #KBeautyBD #SkincareBangladesh #EmartSkincare",
+        "instagram": "Tiny patch, big rescue energy.\n\nSudden breakout before office, class, or an outing? Keep this in your emergency skincare kit.\n\nDM to order or tap the link in bio.\n\n#COSRXBangladesh #AcnePatch #KBeautyBD #SkincareBangladesh #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    },
+    {
+      "product_id": 2611,
+      "title": "Innisfree Super Volcanic Clay Mask",
+      "slug": "innisfree-super-volcanic-clay-mask",
+      "creative_type": "model",
+      "link": "https://e-mart.com.bd/shop/innisfree-super-volcanic-pore-clay-mask-100ml",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/02-innisfree-super-volcanic-clay-mask-1x1.jpg",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/02-innisfree-super-volcanic-clay-mask-1x1.jpg",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/02-innisfree-super-volcanic-clay-mask-1x1.jpg"
+      },
+      "angle": "Pore-care night, but make it K-beauty.",
+      "hashtags": "#InnisfreeBangladesh #ClayMask #PoreCare #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "Pore-care night, but make it K-beauty.\n\nInnisfree Super Volcanic Pore Clay Mask 2X is the kind of wash-off mask people save for that “skin feels heavy today” moment.\n\nMask night tonight, or weekend self-care?\n\nBuy link in first comment.\n\n#InnisfreeBangladesh #ClayMask #PoreCare #KBeautyBD #EmartSkincare",
+        "instagram": "Pore-care night, but make it K-beauty.\n\nA wash-off mask moment for oily, congested, or texture-focused routines.\n\nDM to order or tap the link in bio.\n\n#InnisfreeBangladesh #ClayMask #PoreCare #KBeautyBD #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true, "model_hand_checked": true}
+    },
+    {
+      "product_id": 26653,
+      "title": "3W Clinic Intensive UV Sunblock",
+      "slug": "3w-clinic-intensive-uv-sunblock",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/03-3w-clinic-intensive-uv-sunblock-1x1.jpg"},
+      "captions": {
+        "facebook": "SPF ta daily habit, not occasional luxury.\n\n3W Clinic Intensive UV Sunblock Cream SPF50 PA+++ is an easy Korean sunscreen pick for Bangladesh heat, commute, and daylight routines.\n\nSave this if you keep forgetting sunscreen.\n\nBuy link in first comment.\n\n#SunscreenBangladesh #3WClinic #KBeautyBD #SPFRoutine #EmartSkincare",
+        "instagram": "SPF ta daily habit, not occasional luxury.\n\nAn easy Korean sunscreen pick for Bangladesh heat, commute, and daylight routines.\n\nDM to order or tap the link in bio.\n\n#SunscreenBangladesh #3WClinic #KBeautyBD #SPFRoutine #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    },
+    {
+      "product_id": 58162,
+      "title": "Dr Althea 345NA Relief Cream",
+      "slug": "dr-althea-345na-relief-cream",
+      "creative_type": "model",
+      "link": "https://e-mart.com.bd/shop/dr-althea-345na-relief-cream-50ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/04-dr-althea-345na-relief-cream-1x1.jpg"},
+      "captions": {
+        "facebook": "Some days your skin just wants peace.\n\nDr. Althea 345NA Relief Cream brings that calm, clean K-beauty cream vibe for a softer-feeling moisture step.\n\nWho needs a “skin reset” product like this?\n\nBuy link in first comment.\n\n#DrAltheaBangladesh #ReliefCream #KBeautyBD #BarrierCare #EmartSkincare",
+        "instagram": "Some days your skin just wants peace.\n\nA calm, clean K-beauty cream vibe for a softer-feeling moisture step.\n\nDM to order or tap the link in bio.\n\n#DrAltheaBangladesh #ReliefCream #KBeautyBD #BarrierCare #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true, "model_hand_checked": true}
+    },
+    {
+      "product_id": 26327,
+      "title": "Welcos Confume Argan Shampoo",
+      "slug": "welcos-confume-argan-hair-shampoo",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/confume-argan-hair-shampoo-750-ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/05-welcos-confume-argan-hair-shampoo-1x1.jpg"},
+      "captions": {
+        "facebook": "Hair-care deserves K-beauty energy too.\n\nWelcos Confume Argan Hair Shampoo is a big-bottle Korean hair-care pick for smoother, fresher wash days.\n\nTeam skincare only, or hair-care also?\n\nBuy link in first comment.\n\n#KoreanHairCare #ConfumeBangladesh #HairShampoo #KBeautyBD #EmartSkincare",
+        "instagram": "Hair-care deserves K-beauty energy too.\n\nA big-bottle Korean hair-care pick for smoother, fresher wash days.\n\nDM to order or tap the link in bio.\n\n#KoreanHairCare #ConfumeBangladesh #HairShampoo #KBeautyBD #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    },
+    {
+      "product_id": 4324,
+      "title": "COSRX Aloe Soothing Sun Cream",
+      "slug": "cosrx-aloe-soothing-sun-cream",
+      "creative_type": "model",
+      "link": "https://e-mart.com.bd/shop/cosrx-aloe-soothing-spf50-pa-sun-cream-50ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/06-cosrx-aloe-soothing-sun-cream-1x1.jpg"},
+      "captions": {
+        "facebook": "Aloe + SPF is always a good idea.\n\nCOSRX Aloe Soothing Sun Cream SPF50 PA+++ is for people who want sunscreen that feels like part of skincare, not a punishment.\n\nWould you wear this every morning?\n\nBuy link in first comment.\n\n#COSRXBangladesh #AloeSunscreen #SunscreenBangladesh #KBeautyBD #EmartSkincare",
+        "instagram": "Aloe + SPF is always a good idea.\n\nFor people who want sunscreen that feels like skincare, not a punishment.\n\nDM to order or tap the link in bio.\n\n#COSRXBangladesh #AloeSunscreen #SunscreenBangladesh #KBeautyBD #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true, "model_hand_checked": true}
+    },
+    {
+      "product_id": 3018,
+      "title": "Missha Airy Fit Sheet Mask Rice",
+      "slug": "missha-airy-fit-sheet-mask-rice",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/missha-airy-fit-sheet-mask-rice",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/07-missha-airy-fit-sheet-mask-rice-1x1.jpg"},
+      "captions": {
+        "facebook": "One sheet mask, ten minutes, softer mood.\n\nMissha Airy Fit Sheet Mask Rice is an easy little K-beauty treat for nights when you want the routine to feel special without doing too much.\n\nTag someone who loves sheet masks.\n\nBuy link in first comment.\n\n#MisshaBangladesh #SheetMask #RiceMask #KBeautyBangladesh #EmartSkincare",
+        "instagram": "One sheet mask, ten minutes, softer mood.\n\nA quick K-beauty treat for nights when you want the routine to feel special.\n\nDM to order or tap the link in bio.\n\n#MisshaBangladesh #SheetMask #RiceMask #KBeautyBangladesh #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    },
+    {
+      "product_id": 57130,
+      "title": "Dr Althea Vitamin C Boosting Serum",
+      "slug": "dr-althea-vitamin-c-boosting-serum",
+      "creative_type": "model",
+      "link": "https://e-mart.com.bd/shop/dr-althea-vitamin-c-boosting-serum-30ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/08-dr-althea-vitamin-c-boosting-serum-1x1.jpg"},
+      "captions": {
+        "facebook": "Glow routine people, this one is pretty.\n\nDr. Althea Vitamin C Boosting Serum has that bright, premium K-beauty shelf look and fits a simple glow-focused routine.\n\nVitamin C fan, or still thinking?\n\nBuy link in first comment.\n\n#DrAltheaBangladesh #VitaminCSerum #GlowRoutine #KBeautyBD #EmartSkincare",
+        "instagram": "Glow routine people, this one is pretty.\n\nA bright, premium K-beauty serum look for simple glow-focused routines.\n\nDM to order or tap the link in bio.\n\n#DrAltheaBangladesh #VitaminCSerum #GlowRoutine #KBeautyBD #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true, "model_hand_checked": true}
+    },
+    {
+      "product_id": 26933,
+      "title": "COSRX Pure Fit Cica Serum",
+      "slug": "cosrx-pure-fit-cica-serum",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/cosrx-pure-fit-cica-serum-30ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/09-cosrx-pure-fit-cica-serum-1x1.jpg"},
+      "captions": {
+        "facebook": "Cica serum has a loyal fan club for a reason.\n\nCOSRX Pure Fit Cica Serum is a simple Korean serum step for routines that want a calmer, softer-feeling finish.\n\nWould you add cica to your routine?\n\nBuy link in first comment.\n\n#COSRXBangladesh #CicaSerum #KBeautyBD #CalmingSkincare #EmartSkincare",
+        "instagram": "Cica serum has a loyal fan club for a reason.\n\nA simple Korean serum step for a calmer, softer-feeling routine.\n\nDM to order or tap the link in bio.\n\n#COSRXBangladesh #CicaSerum #KBeautyBD #CalmingSkincare #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    },
+    {
+      "product_id": 47846,
+      "title": "Missha Aqua Sun SPF",
+      "slug": "missha-aqua-sun-spf",
+      "creative_type": "model",
+      "link": "https://e-mart.com.bd/shop/missha-all-around-safe-block-aqua-sun-spf50-pa-50ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/10-missha-aqua-sun-spf-1x1.jpg"},
+      "captions": {
+        "facebook": "For people who want SPF without the heavy feeling.\n\nMissha Aqua Sun SPF50+ PA++++ is a fresh sunscreen pick for hot days, quick mornings, and “I need something light” routines.\n\nLight SPF or creamy SPF, which one are you?\n\nBuy link in first comment.\n\n#MisshaBangladesh #AquaSun #SunscreenBangladesh #KBeautyBD #EmartSkincare",
+        "instagram": "For people who want SPF without the heavy feeling.\n\nA fresh sunscreen pick for hot days, quick mornings, and lightweight routines.\n\nDM to order or tap the link in bio.\n\n#MisshaBangladesh #AquaSun #SunscreenBangladesh #KBeautyBD #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true, "model_hand_checked": true}
+    },
+    {
+      "product_id": 56475,
+      "title": "A'pieu Raspberry Hair Vinegar",
+      "slug": "apieu-raspberry-hair-vinegar",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/apieu-raspberry-hair-vinegar-200ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/11-apieu-raspberry-hair-vinegar-1x1.jpg"},
+      "captions": {
+        "facebook": "This is the fun hair-care step your shelf is missing.\n\nA’pieu Raspberry Hair Vinegar brings a fresh Korean routine twist for smoother-feeling, shinier-looking hair days.\n\nWould you try hair vinegar?\n\nBuy link in first comment.\n\n#ApieuBangladesh #KoreanHairCare #HairVinegar #KBeautyBD #EmartSkincare",
+        "instagram": "This is the fun hair-care step your shelf is missing.\n\nA fresh Korean routine twist for smoother-feeling, shinier-looking hair days.\n\nDM to order or tap the link in bio.\n\n#ApieuBangladesh #KoreanHairCare #HairVinegar #KBeautyBD #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    },
+    {
+      "product_id": 4092,
+      "title": "iUNIK Centella Calming Gel Cream",
+      "slug": "iunik-centella-calming-gel-cream",
+      "creative_type": "model",
+      "link": "https://e-mart.com.bd/shop/iunik-centella-calming-gel-cream-60ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/12-iunik-centella-calming-gel-cream-1x1.jpg"},
+      "captions": {
+        "facebook": "Gel cream lovers, this is your lane.\n\niUNIK Centella Calming Gel Cream is lightweight, clean, and easy to fit into a Bangladesh-friendly routine.\n\nWould you use this morning, night, or both?\n\nBuy link in first comment.\n\n#iUNIKBangladesh #CentellaCream #KBeautyBangladesh #CalmingSkincare #EmartSkincare",
+        "instagram": "Gel cream lovers, this is your lane.\n\nLightweight, clean, and easy to fit into a Bangladesh-friendly routine.\n\nDM to order or tap the link in bio.\n\n#iUNIKBangladesh #CentellaCream #KBeautyBangladesh #CalmingSkincare #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true, "model_hand_checked": true}
+    },
+    {
+      "product_id": 4140,
+      "title": "Mise En Scene Perfect Hair Serum",
+      "slug": "mise-en-scene-perfect-hair-serum",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/mise-en-scene-perfect-hair-serum-70ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/13-mise-en-scene-perfect-hair-serum-1x1.jpg"},
+      "captions": {
+        "facebook": "K-beauty, but for hair.\n\nMise-En-Scene Perfect Hair Serum is one of those Korean hair-care picks people remember after one smooth-hair day.\n\nFrizz control or shine, what do you need more?\n\nBuy link in first comment.\n\n#MiseEnScene #KoreanHairCare #HairSerumBangladesh #KBeautyBD #EmartSkincare",
+        "instagram": "K-beauty, but for hair.\n\nA Korean hair serum pick for smoother-looking, shinier-feeling hair days.\n\nDM to order or tap the link in bio.\n\n#MiseEnScene #KoreanHairCare #HairSerumBangladesh #KBeautyBD #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    },
+    {
+      "product_id": 2972,
+      "title": "PURITO Pure Vitamin C Serum",
+      "slug": "purito-pure-vitamin-c-serum",
+      "creative_type": "model",
+      "link": "https://e-mart.com.bd/shop/purito-pure-vitamin-c-serum-60ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/14-purito-pure-vitamin-c-serum-1x1.jpg"},
+      "captions": {
+        "facebook": "A clean little glow step from PURITO.\n\nPure Vitamin C Serum is for skincare people who like ingredient-led routines without making the shelf feel complicated.\n\nWould this be your morning serum?\n\nBuy link in first comment.\n\n#PuritoBangladesh #VitaminCSerum #KBeautyBD #GlowSkincare #EmartSkincare",
+        "instagram": "A clean little glow step from PURITO.\n\nFor skincare people who like ingredient-led routines without making the shelf complicated.\n\nDM to order or tap the link in bio.\n\n#PuritoBangladesh #VitaminCSerum #KBeautyBD #GlowSkincare #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true, "model_hand_checked": true}
+    },
+    {
+      "product_id": 26400,
+      "title": "Tiam Anti-Blemish Body Lotion",
+      "slug": "tiam-anti-blemish-body-lotion",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/tiam-anti-blemish-body-lotion-200ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/15-tiam-anti-blemish-body-lotion-1x1.jpg"},
+      "captions": {
+        "facebook": "Skincare does not stop at the face.\n\nTiam Anti-Blemish Body Lotion is a Korean body-care pick for anyone trying to make body skincare feel like an actual routine.\n\nBody-care routine ache, or not yet?\n\nBuy link in first comment.\n\n#TiamBangladesh #BodyCare #KBeautyBD #BlemishRoutine #EmartSkincare",
+        "instagram": "Skincare does not stop at the face.\n\nA Korean body-care pick for anyone trying to make body skincare feel like a real routine.\n\nDM to order or tap the link in bio.\n\n#TiamBangladesh #BodyCare #KBeautyBD #BlemishRoutine #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    },
+    {
+      "product_id": 3106,
+      "title": "COXIR Ultra Hyaluronic Cleansing Oil",
+      "slug": "coxir-ultra-hyaluronic-cleansing-oil",
+      "creative_type": "model",
+      "link": "https://e-mart.com.bd/shop/coxir-ultra-hyaluronic-cleansing-oil-150ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/16-coxir-ultra-hyaluronic-cleansing-oil-1x1.jpg"},
+      "captions": {
+        "facebook": "If you wear sunscreen, double cleansing starts making sense.\n\nCOXIR Ultra Hyaluronic Cleansing Oil is a Korean first-cleanse pick for soft, clean-feeling evenings.\n\nAre you already double cleansing?\n\nBuy link in first comment.\n\n#CoxirBangladesh #CleansingOil #DoubleCleansing #KBeautyBD #EmartSkincare",
+        "instagram": "If you wear sunscreen, double cleansing starts making sense.\n\nA Korean first-cleanse pick for soft, clean-feeling evenings.\n\nDM to order or tap the link in bio.\n\n#CoxirBangladesh #CleansingOil #DoubleCleansing #KBeautyBD #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true, "model_hand_checked": true}
+    },
+    {
+      "product_id": 43841,
+      "title": "COSRX AC Collection Acne Patch",
+      "slug": "cosrx-ac-collection-acne-patch",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/cosrx-ac-collection-acne-patch-26-patches",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/17-cosrx-ac-collection-acne-patch-1x1.jpg"},
+      "captions": {
+        "facebook": "Patch people know the comfort of having backups.\n\nCOSRX AC Collection Acne Patch is a handy Korean spot-care option to keep around for surprise breakout days.\n\nKeep one pack at home, one in your bag?\n\nBuy link in first comment.\n\n#COSRXBangladesh #AcnePatch #SpotCare #KBeautyBangladesh #EmartSkincare",
+        "instagram": "Patch people know the comfort of having backups.\n\nA handy Korean spot-care option for surprise breakout days.\n\nDM to order or tap the link in bio.\n\n#COSRXBangladesh #AcnePatch #SpotCare #KBeautyBangladesh #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    },
+    {
+      "product_id": 58268,
+      "title": "W.SKIN LAB Triple Care Sun Cream",
+      "slug": "wskin-lab-triple-care-sun-cream",
+      "creative_type": "pipeline",
+      "link": "https://e-mart.com.bd/shop/wskin-lab-triple-care-sun-cream-spf50-pa-60ml",
+      "images": {"default": "https://e-mart.com.bd/images/social/2026-06-24/fb-18-v3/18-wskin-lab-triple-care-sun-cream-1x1.jpg"},
+      "captions": {
+        "facebook": "Tomorrow’s SPF decision can be made tonight.\n\nW.SKIN LAB Triple Care Sun Cream SPF50+ PA++++ is a Korean sunscreen pick for everyday protection routines in Bangladesh weather.\n\nSave this for your next sunscreen restock.\n\nBuy link in first comment.\n\n#WSKINLAB #SunscreenBangladesh #KBeautyBD #SPF50 #EmartSkincare",
+        "instagram": "Tomorrow’s SPF decision can be made tonight.\n\nA Korean sunscreen pick for everyday protection routines in Bangladesh weather.\n\nDM to order or tap the link in bio.\n\n#WSKINLAB #SunscreenBangladesh #KBeautyBD #SPF50 #EmartSkincare"
+      },
+      "visual_qa": {"product_match_checked": true, "price_clear": true, "no_dummy_product": true}
+    }
+  ]
+}

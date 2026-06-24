@@ -1,0 +1,27 @@
+{
+  "defaults": {
+    "platforms": ["facebook", "instagram"],
+    "start_time": "09:00",
+    "end_time": "23:00",
+    "timezone": "+06:00",
+    "repeat_lookback_days": 2,
+    "approval_required": true
+  },
+  "platform_rules": {
+    "facebook": {
+      "image": [1080, 1080],
+      "caption_link_policy": "buy_link_in_first_comment"
+    },
+    "instagram": {
+      "image": [1080, 1350],
+      "caption_link_policy": "dm_or_link_in_bio"
+    }
+  },
+  "qa_required_flags": [
+    "product_match_checked",
+    "price_clear",
+    "no_dummy_product",
+    "model_hand_checked_when_model"
+  ]
+}
+
