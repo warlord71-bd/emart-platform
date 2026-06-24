@@ -2933,3 +2933,16 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Sample: `https://e-mart.com.bd/public/videos/reels/20260624-gemma-boj-relief-sun-sample.mp4?v=1782255312` returned HTTP 206 range response; QA score 96 and publishable=true.
 - Verified: `npm run build` passed locally; only existing `<img>` lint warnings in chat/recently viewed components.
 - Security: The Google service-account key pasted in chat remains compromised and must be revoked; default video path no longer needs direct Google/Gemini.
+
+## 2026-06-24 (Codex - Facebook v3 18-post campaign)
+- Did: Built final v3 Facebook campaign with 18 non-yesterday Korean fast-seller items: 10 product-only pipeline creatives and 8 Codex model-real creatives. Replaced weak/repeated items per owner feedback; final public assets are under `/images/social/2026-06-24/fb-18-v3/`.
+- Did: Removed Canva badge strip from pipeline creatives so price/old-price/save areas remain visible; kept the trust strip on model-real creatives only. Rewrote captions for more Facebook-native engagement and moved buying URLs out of captions.
+- Did: Added Facebook-only scheduler `emart-fb-18-20260624` and buying-link comment worker `emart-fb-comment-20260624`; old 2026-06-23 scheduler stopped. Schedule is active for 09:00-23:00 BDT.
+- Verified: Final image public URL returned HTTP 200 after emartweb restart; homepage returned HTTP 200; Meta Page token validates as Emart Skincare Bangladesh; scheduler log shows all 18 slots queued.
+- Watch: First-comment worker will attempt `Buy now from here: <full URL>` after each post publishes; if the Page token still lacks `pages_manage_engagement`, the queue will mark comments blocked and needs permission refresh.
+
+## 2026-06-24 (Codex - Instagram clone of v3 campaign)
+- Did: Added separate Instagram scheduler `workspace/scripts/active/meta_18_scheduler_20260624_ig.js` using the same approved v3 creatives and Instagram-specific captions that say "DM to order" / "link in bio" instead of product URLs.
+- Did: Synced the scheduler to the runtime tree and started PM2 process `emart-ig-18-20260624` with autorestart disabled.
+- Verified: Meta validation resolved Page `Emart Skincare Bangladesh` and linked Instagram user `17841426400472288`; the W.SKIN final creative returned HTTP 200 publicly; IG log shows all 18 slots queued from 09:00 through 23:00 BDT.
+- Watch: First Instagram publish at 09:00 BDT should be checked once live; Facebook first-comment permission still needs watching separately.

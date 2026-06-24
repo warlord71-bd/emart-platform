@@ -121,12 +121,12 @@ CATEGORY_BG_GRADIENT = {
 }
 
 HIJABI_LIFESTYLE_BG_PROMPTS = {
-    "sunscreen": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, holding a plain blank white cosmetic tube beside her cheek with her left hand, tube angled slightly, natural fingers visible around the tube, respectful modern Muslim styling, clean bright skincare campaign photo, pale soft studio background, no readable text no watermark no logo no branded packaging",
-    "face-cleansers": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, holding a plain blank white cosmetic tube beside her cheek with her left hand, tube angled slightly, natural fingers visible around the tube, respectful modern Muslim styling, fresh cleanser skincare campaign photo, pale soft studio background, no readable text no watermark no logo no branded packaging",
-    "serums-ampoules-essences": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, holding a plain blank white serum bottle beside her cheek with her left hand, natural fingers visible around the bottle, respectful modern Muslim styling, premium skincare campaign photo, pale soft studio background, no readable text no watermark no logo no branded packaging",
-    "toners-mists": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, holding a plain blank white skincare bottle beside her cheek with her left hand, natural fingers visible around the bottle, respectful modern Muslim styling, fresh toner skincare campaign photo, pale soft studio background, no readable text no watermark no logo no branded packaging",
-    "night-cream": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, holding a plain blank white cream tube beside her cheek with her left hand, natural fingers visible around the tube, respectful modern Muslim styling, warm skincare campaign photo, pale soft studio background, no readable text no watermark no logo no branded packaging",
-    "_default": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, holding a plain blank white cosmetic product beside her cheek with her left hand, natural fingers visible around it, respectful modern Muslim styling, premium skincare campaign photo, pale soft studio background, no readable text no watermark no logo no branded packaging",
+    "sunscreen": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, clean bright skincare campaign photo, relaxed hands away from face, no product in hands, no bottles, no jars, no tubes, no packaging, pale soft studio background, no readable text no watermark no logo",
+    "face-cleansers": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, fresh cleanser skincare campaign photo, relaxed hands away from face, no product in hands, no bottles, no jars, no tubes, no packaging, pale soft studio background, no readable text no watermark no logo",
+    "serums-ampoules-essences": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, premium skincare campaign photo, relaxed hands away from face, no product in hands, no bottles, no jars, no tubes, no packaging, pale soft studio background, no readable text no watermark no logo",
+    "toners-mists": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, fresh toner skincare campaign photo, relaxed hands away from face, no product in hands, no bottles, no jars, no tubes, no packaging, pale soft studio background, no readable text no watermark no logo",
+    "night-cream": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, warm skincare campaign photo, relaxed hands away from face, no product in hands, no bottles, no jars, no tubes, no packaging, pale soft studio background, no readable text no watermark no logo",
+    "_default": "close-up modest Bangladeshi hijabi young woman in a warm rose-beige hijab and modest dress, smiling softly, premium skincare campaign photo, relaxed hands away from face, no product in hands, no bottles, no jars, no tubes, no packaging, pale soft studio background, no readable text no watermark no logo",
 }
 
 def _get_bg_prompt(cat_slugs, creative_style="studio"):
@@ -413,7 +413,8 @@ body {
 
 def screenshot_html(html_content, output_path):
     import subprocess
-    temp = Path("/tmp/social_post_temp.html")
+    temp_id = f"{os.getpid()}_{Path(output_path).stem}"
+    temp = Path(f"/tmp/social_post_temp_{temp_id}.html")
     temp.write_text(html_content, encoding="utf-8")
     script = f"""
 const pw = require('/usr/lib/node_modules/playwright');
@@ -466,7 +467,7 @@ const pw = require('/usr/lib/node_modules/playwright');
     await browser.close();
 }})().catch(e => {{ console.error(e); process.exit(1); }});
 """
-    sf = Path("/tmp/social_screenshot.js")
+    sf = Path(f"/tmp/social_screenshot_{temp_id}.js")
     sf.write_text(script)
     result = subprocess.run(["node", str(sf)], capture_output=True, text=True, timeout=30)
     if result.returncode != 0:

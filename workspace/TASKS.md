@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-23 (UI fixes, email/checkout verification, TikTok API setup)
+Last updated: 2026-06-24 (Facebook + Instagram 18-post v3 campaign scheduled)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -157,7 +157,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 | X6 — VPS disk cleanup: Claude completed cleanup after Codex audit; disk now 63/96 GB used (66%, 34 GB free). | ✅ complete |
 | X2 — Impression-priority humanizer: monitor GSC, generate new JSONL batch | 🔲 |
 | X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⚠️ ADB blocked |
-| X4 — Social publishing: item 1 published successfully to FB+IG with JPEG delivery assets; first comments failed due missing comment scopes. Items 2-18 paused; resume from `--start-index=1` after permission update. | 🔴 comment permissions needed |
+| X4 — Social publishing: 2026-06-24 Facebook + Instagram 18-post v3 campaign scheduled 09:00-23:00 BDT via separate PM2 runs `emart-fb-18-20260624` and `emart-ig-18-20260624`; final assets live under `/images/social/2026-06-24/fb-18-v3/`. Instagram captions use "DM to order / link in bio". Buying-link comment worker `emart-fb-comment-20260624` is online and queues full product URLs after each Facebook post publishes; comment permission still must be watched on first post. | 🟡 active today |
 | X7 — AI video engine: Phase 0 local reel engine built; direct Google dropped from default path. Scripts now use OpenRouter free Gemma fallback (`google/gemma-4-31b-it:free` proven), QA defaults to local ffprobe; sample reel live at `/public/videos/reels/20260624-gemma-boj-relief-sun-sample.mp4`; live publish remains owner-gated. | 🟡 publish gated |
 | X5 — SEO cron state hygiene: retained the valid 2026-06-23 GSC/state refresh and fixed `system_state.py` treating the em-dash placeholder as an active agent. | ✅ complete |
 | Mobile BFF gaps: `/api/mobile/cart` and `/api/mobile/payment` return 404 | ⏸️ out of scope per owner: "EXCEPT MOBILE APP" |
