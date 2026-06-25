@@ -3065,3 +3065,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Decisions: Approval surface = Telegram ONLY (owner dropped the `/admin` web page). Codex merit rule = auto-escalate to premium image on vision-QA FAIL.
 - Blockers: VID-1 — bot needs owner's BotFather `REELS_BOT_TOKEN` (owner will provide later). Until then the builder cron stacks drafts in `jobs/review/`, posting nothing.
 - Next: on token → add to `apps/web/.env.local` (VPS), `pm2 start reels_bot.py --name emart-reels-bot`, owner sends /start. Then VID-2 (daily auto-enqueue producer) and VID-3 (WA-D archival, now unblocked).
+
+## 2026-06-25 (Codex - logical cluster commits and safety backup)
+- Did: Created a recovery snapshot before committing at `workspace/agent-safety-backups/20260624-222852/` containing `git-status-short.txt`, tracked/staged diffs, and an untracked-file tarball. The backup directory is ignored and not committed.
+- Did: Preserved finished Codex work in logical commits instead of using `git add -A`: humanizer lint/tests (`847baf2`), social Meta publisher workflow (`961fc7a`), memory preferences (`c88b84c`), and GSC striking-distance command (`20a1c50`). Agent Brain/governance and generated SEO-state cleanup were already preserved in `dcd17af` when HEAD advanced during concurrent Claude/video work.
+- Verified: Humanizer unittest suite passed (4 tests); Social Engine unittest suite passed (6 tests); Meta JS syntax checks passed; `gsc_tracker.py` Python compile passed. No staged files remain.
+- Guardrail: No push, deploy, PM2 restart, live publish, WordPress/Woo write, checkout/cart/payment/order/customer/stock/price change, route, metadata, or sitemap change by Codex.
+- Remaining dirty state: only Claude/video files remain uncommitted: `workspace/video-engine/README.md` and `workspace/video-engine/worker.py`. Leave them for Claude's active/video continuation.
