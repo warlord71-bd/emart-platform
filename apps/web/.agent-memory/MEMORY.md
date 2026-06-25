@@ -71,6 +71,8 @@
 - [Social publishing system 2026-06-23](project_social_publishing_20260623.md) — unified Meta FB+IG publishing; creds in `apps/web/.env.local`; scripts in `workspace/scripts/active/meta_*.js`; reference doc at `workspace/docs/claude-reference/social-publishing.md`
 - [AI video engine state 2026-06-23](project_ai_video_engine_20260623.md) — Phase 0 local reel engine; inline/OpenRouter-free-Gemma script fallback; local ffprobe QA by default; direct Google/Gemini is explicit-only
 - [Social image sizes preference](feedback_social_image_sizes.md) — future Meta campaigns should generate separate IG 4:5 and FB 1:1 assets
+- [Bangla content language preference](feedback_bangla_content_language.md) — use simple natural Bangla; retain familiar English skincare terms only when Bangla sounds forced, with minimal mixing
+- [Business outcome first](feedback_business_outcome_first.md) — every job must connect to sales, qualified product discovery, trust, retention, measurable savings, or risk reduction; writing alone is not completion
 - [AI video influencer plan](project_ai_video_influencer_plan_20260623.md) — original tier-swappable AI video/persona plan and Phase 0 scaffold history
 - [Humanizer engine handoff](project_humanizer_engine_20260623.md) — reusable Opus-style PDP humanizer package for Hermes/OpenRouter model runs
 - [Humanizer resume state](project_humanizer_resume_20260623.md) — top-seller PDP humanizer counts, priorities, rollback, and resume workflow
