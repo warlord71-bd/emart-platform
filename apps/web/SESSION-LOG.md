@@ -3138,3 +3138,22 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Updated `workspace/TASKS.md` because `emart-reels-bot` is now online in PM2 and `jobs/.bot_state.json` has a registered chat; VID-1 is no longer blocked on token.
 - Verified: `emartweb`, `emart-presence`, `emart-embed`, June 25 FB/IG schedulers, and `emart-reels-bot` are online. Today's FB comment worker remains stopped due Meta permission failure; blog generator is stopped in PM2 and remains unsafe for new pilots until WA-H.
 - Guardrail: Documentation/state update only; did not touch Claude's dirty `workspace/video-engine/enqueue.py`, commerce data, deploy, WordPress/Woo, route, metadata, sitemap, or live publishing.
+
+## 2026-06-25 (Codex - UX-ORCH-1 trust-data contract)
+- Did: Picked Main Priority 4 / UX-ORCH-1 from the pending board and created `workspace/docs/audits/storefront-trust-data-contract-20260625.md`.
+- Findings: Category-page live/viewing/trending/sold/left/review-count surfaces use deterministic fallback values in `liveData.ts` but customer-facing copy can read as live/verified/real; PDP stock and Woo review data are mostly real, with aggregate review wording still too broad.
+- Updated: Marked UX-ORCH-1 as contract done / visible relabeling pending in `workspace/TASKS.md`.
+- Next: Add source flags to `ProductSummary`/`CategoryPulse`/`ConcernSummary`, then relabel fallback counters with owner-approved wording.
+- Guardrail: Audit/docs only; no UI code changes, deploy, PM2 restart, WordPress/Woo write, protected commerce-data change, route, metadata, sitemap, or live publishing.
+
+## 2026-06-25 (Codex - video model clean portrait)
+- Did: Fulfilled Codex bridge request `emart-model__clean-portrait-reusable` by generating a product-free portrait from `workspace/video-engine/personas/emart-model/reference-holding.png`.
+- Output: Saved final 1080x1920 PNG to `workspace/video-engine/personas/emart-model/clean-portrait.png`.
+- Verified: `codex_bridge.py --list` now returns `[]`; visual check confirmed no product/text/logo and hands clear for future compositor use.
+- Guardrail: Asset generation only; no deploy, PM2 restart, WordPress/Woo write, protected commerce-data change, route, metadata, sitemap, or live publishing.
+
+
+## 2026-06-25 · Claude · Reel quality + reusable-persona overhaul (session close)
+- Did: Iterated reels to owner spec — brand-themed cards (real logo.png + rose/gold + dual price/মূল্য logic); orchestrator loudness hard-gate; enqueue forces fresh build + preserves holding_request; caption window confined to photo frames; voiceover uses Bangla-phonetic spelling for correct TTS ("ডক্টর আলথিয়া থ্রি ফোর ফাইভ"); built free `presenter_card.py` (model+real-product composite, no Codex/no dummy); established **canonical reusable Emart model** (`personas/emart-model/clean-portrait.png`, Codex face-matched, wired as worker.CANONICAL_MODEL); standard 5-frame layout. Delivered COSRX + Dr.Althea reels to @Emart_vid_bot (msgs up to #14).
+- Commits: `724704a` `d303cf4` `b1faf96` `6d54990` `bc2b48f` `0bbd1f1` `0958ddf` (+ shared worker.py/cards). Local=Git=VPS reconciled.
+- Next: owner verdict on #14 → lock 5-frame layout as default; build VID-2 daily auto-enqueue producer; reuse canonical model for all future product reels.
