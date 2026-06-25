@@ -24,10 +24,19 @@ FONT_STACK = "'Noto Sans Bengali','Hind Siliguri','Inter','Segoe UI',sans-serif"
 # or they get clipped on mobile. Values are `top:` for hook/benefit/cta.
 #   wide = intersection that's safe on BOTH platforms (default, single-version safe)
 #   fb   = tuned for Facebook Reels   |   ig = tuned for Instagram Reels (taller bottom UI)
+# Platform-specific caption safe zones (% from top of 1080x1920).
+# Each platform overlays its own UI chrome:
+#   FB Reels:  top ~13% (profile), bottom ~25% (caption/actions)
+#   IG Reels:  top ~12% (profile), bottom ~30% (caption/actions/audio — tallest)
+#   YT Shorts: top ~10% (search), bottom ~22% (title/subscribe/actions)
+#   TikTok:    top ~10% (FYP tabs), bottom ~28% (caption/buttons/music)
+#   wide:      intersection safe on ALL platforms (conservative default)
 SAFE_ZONES = {
-    "wide": {"hook": "17%", "benefit": "56%", "cta": "66%"},
-    "fb":   {"hook": "17%", "benefit": "58%", "cta": "68%"},
-    "ig":   {"hook": "16%", "benefit": "54%", "cta": "63%"},
+    "wide":    {"hook": "17%", "benefit": "50%", "cta": "60%"},
+    "fb":      {"hook": "17%", "benefit": "56%", "cta": "66%"},
+    "ig":      {"hook": "16%", "benefit": "48%", "cta": "58%"},
+    "youtube": {"hook": "14%", "benefit": "54%", "cta": "66%"},
+    "tiktok":  {"hook": "14%", "benefit": "50%", "cta": "60%"},
 }
 # wider side margins keep lower captions clear of the right-edge action buttons
 SIDE = 80

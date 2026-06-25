@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parent
 QUEUE = ROOT / "jobs" / "queue"
 
 
-PLATFORM_SAFE_ZONES = {"facebook": "fb", "instagram": "ig"}
+PLATFORM_SAFE_ZONES = {"facebook": "fb", "instagram": "ig", "youtube": "youtube", "tiktok": "tiktok"}
 
 
 def _clean_spec(spec: dict) -> dict:
