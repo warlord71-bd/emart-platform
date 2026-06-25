@@ -47,14 +47,16 @@ def html(product, price, original, tagline, bangla, url):
     logo_block = (f'<img class="logo" src="{logo}">' if logo
                   else '<div class="logotext"><span class="e">e</span>Mart</div>')
     if price:
-        orig = f'<span class="orig">৳{esc(str(original))}</span>' if original else ""
-        save = ""
+        has_offer = False
         try:
-            if original and int(float(original)) > int(float(price)):
-                save = f'<div class="save">৳{int(float(original))-int(float(price))} সাশ্রয়</div>'
+            has_offer = bool(original and int(float(original)) > int(float(price)))
         except ValueError:
             pass
-        price_block = (f'<div class="offerlabel">অফার মূল্য</div>'
+        orig = f'<span class="orig">৳{esc(str(original))}</span>' if has_offer else ""
+        save = (f'<div class="save">৳{int(float(original))-int(float(price))} সাশ্রয়</div>'
+                if has_offer else "")
+        label = "অফার মূল্য" if has_offer else "মূল্য"
+        price_block = (f'<div class="offerlabel">{label}</div>'
                        f'<div class="pricerow"><span class="offer">৳{esc(str(price))}</span>{orig}'
                        f'<span class="cod">COD</span></div>{save}')
     else:

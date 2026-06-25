@@ -16,7 +16,7 @@ add the API key env to switch a tier on — no code change.
 - ✅ `worker.py` — drains `queue/*.json`; stages images→reel→store→publish; checkpoints every stage
       (resumable, never re-runs a done stage); guardrails (max/day, budget cap, dry-run default).
 - ✅ store stage → nginx `/public/` alias serves reels at a range-capable HTTPS URL (no Next restart). PROVEN HTTP 206.
-- ✅ `../scripts/active/meta_reel_publish.js` — FB video + IG Reels publisher (unified META_* creds). Dry-run verified.
+- ✅ `../scripts/active/meta_publish.js` — the single FB/IG image + reel publisher; worker passes its checkpointed queue job directly. Dry-run verified.
 - ✅ `stages/script_gen.py` — OpenRouter reel script (hook/benefits/cta/caption/hashtags/voiceover)
       in en/bn/banglish (language = per-job dial). Default autonomous path is OpenRouter free
       Google-family Gemma (`google/gemma-4-31b-it:free` → `google/gemma-4-26b-a4b-it:free`) then

@@ -28,7 +28,7 @@ REEL_QA_LOCAL = ROOT / "stages" / "reel_qa_local.py"
 PUBLIC_REELS = Path("/var/www/emart-platform/apps/web/public/videos/reels")
 # nginx serves the public dir directly via /public/ alias (range-request capable, no Next restart needed)
 PUBLIC_BASE = "https://e-mart.com.bd/public/videos/reels"
-META_REEL = ROOT.parent / "scripts" / "active" / "meta_reel_publish.js"
+META_PUBLISH = ROOT.parent / "scripts" / "active" / "meta_publish.js"
 SOCIAL_IMG = ROOT.parent / "scripts" / "active" / "social_image_gen.py"
 SCRIPT_GEN = ROOT / "stages" / "script_gen.py"
 REEL_QA = ROOT / "stages" / "reel_qa_gemini.py"
@@ -95,6 +95,7 @@ def brand_card_image(job) -> list[str]:
     subprocess.run([sys.executable, str(BRAND_CARD),
                     "--product", job.get("product") or job.get("headline", "Emart Skincare"),
                     "--price", str(job.get("price", "")),
+                    "--original-price", str(job.get("original_price", "")),
                     "--bangla", job.get("brand_card_bangla", ""),
                     "--out", str(card)], check=True, timeout=120)
     return [str(card)]
@@ -138,8 +139,9 @@ def holding_request_images(job) -> list[str]:
 def resolve_images(job, cfg) -> list[str]:
     """image is a SHARED upstream capability (same source as static posts).
 
-    Retention-first order:
-      persona hook -> model-holding-REAL-product (Codex-generated) -> value cards -> product -> CTA card.
+    Retention-first order (PHOTOS first, then text cards):
+      persona hook -> model-holding-REAL-product -> real product photo -> value cards -> CTA card.
+    Photos lead so captions (confined to the photo window) never paint over the value/brand cards.
 
     `holding_images`: paths to Codex-generated "model holding the actual product" shots (Codex's
     image-gen does product-in-hand far better than free Pollinations). These are people shots, so they
@@ -147,7 +149,7 @@ def resolve_images(job, cfg) -> list[str]:
     codex-assets/ and reference here. See README "Codex handoff".
     """
     imgs = (persona_stills(job) + (job.get("holding_images") or []) + holding_request_images(job)
-            + list_card_images(job) + (job.get("images") or []))
+            + (job.get("images") or []) + list_card_images(job))
     if imgs:
         return imgs + brand_card_image(job)
     pid = job.get("product_id")
@@ -241,14 +243,20 @@ def run_job(job_path: Path, allow_publish: bool):
     seconds = max(base_seconds, (vo_dur + 0.4) / n_imgs) if vo_dur > 0 else base_seconds
     total = round(seconds * n_imgs, 2)
 
-    # 2b. captions — browser-rendered overlays (proper Bangla/English; drawtext can't shape Bangla)
+    # 2b. captions — browser-rendered overlays (proper Bangla/English; drawtext can't shape Bangla).
+    #     Confine captions to the PHOTO frames (persona + product). The value/brand cards already carry
+    #     their own text, so sequencing captions across the full reel painted text-on-text over the cards.
+    #     caption_window = seconds * (#non-card frames); captions live only in that opening window.
     if script_path and not stage_done(job, "captions"):
+        card_frames = len(job.get("list_cards") or []) + (1 if job.get("brand_card") else 0)
+        photo_frames = max(1, n_imgs - card_frames)
+        caption_window = round(seconds * photo_frames, 2) if card_frames else total
         capdir = str(OUTPUT / f"caps-{jid}")
         opath = str(OUTPUT / f"overlays-{jid}.json")
         subprocess.run([sys.executable, str(CAPTION_OVERLAY), "--script", script_path,
-                        "--total", str(total), "--outdir", capdir, "--out", opath],
+                        "--total", str(caption_window), "--outdir", capdir, "--out", opath],
                        check=True, timeout=180)
-        set_stage(job, "captions", overlays=opath, total=total)
+        set_stage(job, "captions", overlays=opath, total=caption_window)
         checkpoint(job_path, job)
     overlays_path = job.get("stages", {}).get("captions", {}).get("overlays")
 
@@ -348,10 +356,9 @@ def run_job(job_path: Path, allow_publish: bool):
         if not dry and led["videos_published"] >= g.get("max_videos_per_day", 6):
             print(f"[worker] daily cap reached ({led['videos_published']}); forcing dry-run")
             dry = True
-        caption = job.get("caption", job.get("headline", ""))
-        platform = "both" if set(job.get("platforms", [])) >= {"instagram", "facebook"} else \
-                   ("instagram" if "instagram" in job.get("platforms", []) else "facebook")
-        cmd = ["node", str(META_REEL), "--video-url", url, "--caption", caption, "--platform", platform]
+        # The checkpointed queue job is the publisher's source of truth for URL,
+        # caption, media type, and platforms. Avoid reconstructing a second payload here.
+        cmd = ["node", str(META_PUBLISH), "--job", str(job_path.resolve())]
         if not dry:
             cmd.append("--publish")
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
