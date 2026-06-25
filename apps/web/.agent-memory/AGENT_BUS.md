@@ -23,6 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-25 | Captured untracked `workspace/video-engine/hyperframes/` as VID-6/WSC-9: classify before staging/cleanup because it is a large local video/prototype tree with `node_modules`. | local commit |
 | Codex | 2026-06-25 | Closed X8a Social Engine performance loop: added read-only GA4 product landing-page exporter, generated ignored 28-day GA4 product JSONL, merged GA4 with GSC/GMC into ignored `performance/latest.json`, and picker smoke passed with `performance_weighted` selections. | local commit |
 | Codex | 2026-06-25 | Closed X8c Social Engine approval-status semantics by verification: unit test confirms approved campaigns set `publish_allowed`, approved/review plan dry-runs show the right publish gate, and `meta_schedule.js --publish` fails closed on `review_required` before any Meta call. | local commit |
 | Codex | 2026-06-25 | Priority 7 read-only visual safety audit for UX-ORCH-3/4/8: created `workspace/docs/audits/storefront-visual-safety-audit-20260625.md` with overlay/dialog, design-system drift, product-card/PDP control, and a11y-gate findings; accounted for `.playwright-mcp/` historical artifacts and noted no repeatable app-owned harness/package is present. TASKS marks Priority 7 audit/spec partial. | pending |

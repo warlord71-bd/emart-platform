@@ -73,6 +73,7 @@ the Approve-button handler; verified the bot is the sole writer to `jobs/approve
 | VID-5 | **Platform-split reels fully wired.** `enqueue.py` auto-splits multi-platform specs into per-platform jobs with tuned safe zones; `worker.py` passes `safe_zone` to caption_overlay; `meta_publish.js` publishes to the correct platform per job. `daily_producer.py` enqueues `platforms: ["facebook", "instagram"]` by default. | [C] | ✅ 2026-06-25 |
 | VID-2 | **Daily auto-enqueue producer live.** `daily_producer.py` runs via crontab at 5 AM, picks 2 products/day, resource-aware (skips if RAM < 1.5GB). Committed in `e9d9c0b`. | [C] | ✅ 2026-06-25 |
 | VID-3 | **WA-D archival done.** Dated scripts rotated, dated PM2 campaign processes deleted. | [C] | ✅ 2026-06-25 |
+| VID-6 | **Classify untracked `workspace/video-engine/hyperframes/` before any staging/cleanup.** Current local tree is ~655 MB and includes `node_modules`, so do not commit it as-is. Decide whether it is a real video prototype to formalize with minimal tracked source + ignored deps, generated runtime output to ignore, or disposable scratch to archive under `/root/.attic-YYYY-MM-DD/`. | [C] | 🔲 open |
 
 ### Audit Remediation Priority Lane — Freeze-Safe Order (2026-06-25)
 
@@ -159,6 +160,7 @@ WordPress/Woo writes, protected commerce-data changes, or broad cleanup while th
 | WSC-6 | ORCH/SEO/UX priority-lane IDs are repeated by design: once as execution order and once as source task rows. | Not a duplicate-task conflict. The source rows remain authoritative; the priority lane is only sequencing. |
 | WSC-7 | `workspace/seo-review/*` generated files are removed from tracking but still exist as runtime/generated state. | Treat generated SEO JSON/JSONL/GSC snapshots as runtime state, not source of truth for commits. Keep human approval queues tracked. |
 | WSC-8 | Agents assumed another agent would commit shared work, leaving “pending” memory after the actual commits landed. | Editor owns closure: commit it, or write an explicit HANDOFF with exact files and next action. Never leave “someone else will commit” as the state. |
+| WSC-9 | Untracked `workspace/video-engine/hyperframes/` exists locally with installed dependencies (~655 MB). | Do not stage or delete blindly. Close via VID-6: formalize minimal source with dependency ignores, mark as generated/runtime state, or archive to attic after owner/Claude confirmation. |
 
 ### Token-Efficient Session Batches — Work by Cluster, Not by Whole Board
 

@@ -3215,3 +3215,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: Python compile; Social Engine unit tests; exporter helper assertions; GA4 export via approved read-only network call; `import-performance`; picker smoke with performance model selected 6 products using `performance_weighted` basis.
 - Updated: `workspace/TASKS.md` marks WA-F/X8/X8a/9d complete while Priority 9 remains partial for broader SEO/UX ledger and RUM work.
 - Guardrail: No live publish, deploy, push, PM2 restart, WordPress/Woo write, protected commerce-data change, route, metadata, sitemap, or storefront visual change. Left unrelated `workspace/video-engine/hyperframes/` untracked.
+
+## 2026-06-25 (Codex - hyperframes task-board capture)
+- Did: Audited the remaining untracked `workspace/video-engine/hyperframes/` tree enough to classify it as a large local video/prototype/dependency directory (~655 MB, includes `node_modules`).
+- Updated: Added `VID-6` and `WSC-9` to `workspace/TASKS.md` so agents do not stage or delete it casually; next action is to formalize minimal source + ignores, mark it generated/runtime, or archive to `/root/.attic-YYYY-MM-DD/` after owner/Claude confirmation.
+- Guardrail: Task-board/log only; did not stage, delete, archive, deploy, push, restart PM2, publish, or touch Woo/WordPress/protected commerce data.
