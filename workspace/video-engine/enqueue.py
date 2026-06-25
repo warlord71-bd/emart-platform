@@ -23,8 +23,10 @@ def enqueue(spec_path: Path, prio: int) -> Path:
     spec.setdefault("id", jid)
     # force a CLEAN build: strip any stale per-stage checkpoints + bot/escalation markers so a
     # re-enqueued spec never reuses an old (e.g. silent) reel. The pipeline is idempotent only
-    # WITHIN a run; across enqueues we always rebuild from the spec.
-    for k in ("stages", "_tg_sent", "_tg_msg_id", "_codex_escalated", "holding_request"):
+    # WITHIN a run; across enqueues we always rebuild from the spec. NOTE: keep an intentional
+    # `holding_request` from the source spec (it asks Codex for a model-holding shot) — only the
+    # runtime auto-escalation marker `_codex_escalated` is transient.
+    for k in ("stages", "_tg_sent", "_tg_msg_id", "_codex_escalated"):
         spec.pop(k, None)
     spec["status"] = "pending"
     QUEUE.mkdir(parents=True, exist_ok=True)
