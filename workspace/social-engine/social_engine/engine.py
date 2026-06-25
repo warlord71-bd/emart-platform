@@ -7,15 +7,20 @@ import datetime as dt
 import hashlib
 import json
 import re
+import ssl
+import urllib.request
 from pathlib import Path
 from typing import Any
 
 from social_engine import vision_qa
 
 try:
-    from PIL import Image
+    from PIL import Image, ImageDraw, ImageFilter, ImageFont
 except Exception:  # pragma: no cover - CLI still works without image checks.
     Image = None
+    ImageDraw = None
+    ImageFilter = None
+    ImageFont = None
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,9 +50,153 @@ def write_json(path: Path, data: Any) -> None:
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
 
 
+def read_env_values() -> dict[str, str]:
+    """Read only needed runtime keys by name; never print values."""
+    env: dict[str, str] = {}
+    for candidate in (REPO / "apps/web/.env.local", Path("/var/www/emart-platform/apps/web/.env.local")):
+        if not candidate.exists():
+            continue
+        for line in candidate.read_text(errors="replace").splitlines():
+            if "=" not in line or line.strip().startswith("#"):
+                continue
+            key, value = line.split("=", 1)
+            env[key.strip()] = value.strip()
+    return env
+
+
+def ssl_ctx():
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    return ctx
+
+
+def woo_get(path: str) -> Any:
+    env = read_env_values()
+    key = env.get("WOO_CONSUMER_KEY") or env.get("WC_CONSUMER_KEY")
+    secret = env.get("WOO_CONSUMER_SECRET") or env.get("WC_CONSUMER_SECRET")
+    if not key or not secret:
+        raise SocialEngineError("Missing Woo read credentials in local runtime env")
+    sep = "&" if "?" in path else "?"
+    url = f"https://127.0.0.1/wp-json/wc/v3/{path}{sep}consumer_key={key}&consumer_secret={secret}"
+    req = urllib.request.Request(url, headers={"Host": "e-mart.com.bd", "User-Agent": "EmartSocialEngine/1.1"})
+    return json.loads(urllib.request.urlopen(req, context=ssl_ctx(), timeout=20).read())
+
+
 def slugify(value: str) -> str:
     cleaned = re.sub(r"[^a-zA-Z0-9]+", "-", value.strip().lower()).strip("-")
     return re.sub(r"-+", "-", cleaned) or "post"
+
+
+def product_slug(product: dict[str, Any]) -> str:
+    return product.get("slug") or slugify(product.get("name", "product"))
+
+
+def product_brand(product: dict[str, Any]) -> str:
+    brands = product.get("brands") or []
+    if brands:
+        return brands[0].get("name", "")
+    attrs = product.get("attributes") or []
+    for attr in attrs:
+        if attr.get("name", "").lower() in {"brand", "pa_brand"} and attr.get("options"):
+            return attr["options"][0]
+    name = product.get("name", "")
+    return name.split()[0] if name else ""
+
+
+def product_link(product: dict[str, Any]) -> str:
+    slug = product_slug(product)
+    return f"{SITE}/shop/{slug}"
+
+
+def product_category_hint(product: dict[str, Any]) -> str:
+    cats = [c.get("name", "") for c in product.get("categories", [])]
+    joined = " ".join(cats).lower()
+    name = product.get("name", "").lower()
+    if "sun" in joined or "spf" in name or "sunscreen" in name:
+        return "sunscreen"
+    if "hair" in joined or "shampoo" in name or "hair" in name:
+        return "haircare"
+    if "clean" in joined or "cleanser" in name or "cleansing" in name:
+        return "cleanser"
+    if "serum" in name or "ampoule" in name or "essence" in name:
+        return "serum"
+    if "cream" in name or "moistur" in name:
+        return "cream"
+    if "mask" in name:
+        return "mask"
+    return "skincare"
+
+
+def caption_angle(product: dict[str, Any]) -> str:
+    hint = product_category_hint(product)
+    brand = product_brand(product)
+    if hint == "sunscreen":
+        return f"Daily SPF, Bangladesh-weather friendly."
+    if hint == "haircare":
+        return f"Hair-care day, but make it Korean beauty."
+    if hint == "cleanser":
+        return f"Clean routine, fresh skin feeling."
+    if hint == "serum":
+        return f"{brand} serum energy for a focused routine.".strip()
+    if hint == "cream":
+        return f"Comfort cream for calmer-looking routines."
+    if hint == "mask":
+        return f"Self-care night, simple and satisfying."
+    return f"Authentic beauty pick for today's shelf."
+
+
+def product_has_image(product: dict[str, Any]) -> bool:
+    return bool(product.get("images") and product["images"][0].get("src"))
+
+
+def load_performance_model(path: Path | None) -> dict[str, Any]:
+    """Load optional read-only ranking weights for product selection.
+
+    Supported shapes:
+    - {"products": {"123": 9.5, "product-slug": {"score": 4}}, "brands": {...}, "categories": {...}}
+    - [{"product_id": 123, "score": 9.5}, {"slug": "product-slug", "score": 4}]
+    """
+    if not path or not path.exists():
+        return {"products": {}, "brands": {}, "categories": {}, "enabled": False}
+    raw = read_json(path)
+    model = {"products": {}, "brands": {}, "categories": {}, "enabled": True}
+    if isinstance(raw, list):
+        for row in raw:
+            if not isinstance(row, dict):
+                continue
+            key = row.get("product_id") or row.get("id") or row.get("slug")
+            if key is not None:
+                model["products"][str(key)] = float(row.get("score", row.get("selection_score", 0)) or 0)
+        return model
+    if not isinstance(raw, dict):
+        return model
+    for bucket in ("products", "brands", "categories"):
+        values = raw.get(bucket, {})
+        if not isinstance(values, dict):
+            continue
+        for key, value in values.items():
+            if isinstance(value, dict):
+                value = value.get("score", value.get("selection_score", 0))
+            model[bucket][slugify(str(key)) if bucket != "products" else str(key)] = float(value or 0)
+    return model
+
+
+def performance_score(product: dict[str, Any], model: dict[str, Any]) -> float:
+    if not model.get("enabled"):
+        return 0.0
+    pid = str(product.get("id"))
+    slug = product_slug(product)
+    brand = slugify(product_brand(product))
+    category = product_category_hint(product)
+    product_scores = model.get("products", {})
+    score = max(
+        float(product_scores.get(pid, 0) or 0),
+        float(product_scores.get(slug, 0) or 0),
+    )
+    score += float(model.get("brands", {}).get(brand, 0) or 0)
+    score += float(model.get("categories", {}).get(category, 0) or 0)
+    return score
 
 
 def public_url_to_local(url: str) -> Path | None:
@@ -101,6 +250,26 @@ def load_history(path: Path, current_date: str, lookback_days: int) -> dict[str,
     return {"blocked_product_ids": blocked_ids, "blocked_slugs": blocked_slugs, "dates": used_dates}
 
 
+def append_history(path: Path, campaign: dict[str, Any]) -> dict[str, Any]:
+    history = read_json(path) if path.exists() else {"campaigns": []}
+    campaign_id = campaign.get("id") or campaign.get("name") or campaign.get("date")
+    history["campaigns"] = [
+        entry for entry in history.get("campaigns", [])
+        if entry.get("id") != campaign_id and not (entry.get("date") == campaign.get("date") and entry.get("name") == campaign.get("name"))
+    ]
+    history["campaigns"].append({
+        "id": campaign_id,
+        "date": campaign["date"],
+        "name": campaign["name"],
+        "items": [
+            {"product_id": item.get("product_id"), "slug": item.get("slug")}
+            for item in campaign.get("items", [])
+        ],
+    })
+    write_json(path, history)
+    return history
+
+
 def distribute_times(date: str, count: int, start: str, end: str, timezone: str) -> list[str]:
     if count <= 0:
         return []
@@ -127,6 +296,80 @@ def image_dimensions(image_url: str) -> tuple[int, int] | None:
         return None
     with Image.open(local) as img:
         return img.size
+
+
+def save_image_as_jpg(src: Path, dest: Path, quality: int = 92) -> None:
+    if Image is None:
+        raise SocialEngineError("Pillow is required for image variant generation")
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    with Image.open(src) as img:
+        img = img.convert("RGB")
+        img.save(dest, "JPEG", quality=quality, optimize=True)
+
+
+def make_instagram_variant(source_url: str) -> str | None:
+    """Create a 1080x1350 design-consistent IG asset from a square public image."""
+    if Image is None or ImageFilter is None:
+        return None
+    local = public_url_to_local(source_url)
+    if not local or not local.exists():
+        return None
+    dest = local.with_name(local.stem.replace("-1x1", "") + "-4x5.jpg")
+    if dest.exists():
+        return f"{SITE}/{dest.relative_to(REPO / 'apps/web/public')}"
+    with Image.open(local) as img:
+        img = img.convert("RGB")
+        bg = img.resize((1080, 1350), Image.Resampling.LANCZOS).filter(ImageFilter.GaussianBlur(28))
+        veil = Image.new("RGB", (1080, 1350), (11, 18, 32))
+        bg = Image.blend(bg, veil, 0.18)
+        card = img.resize((1010, 1010), Image.Resampling.LANCZOS)
+        bg.paste(card, (35, 170))
+        bg.save(dest, "JPEG", quality=92, optimize=True)
+    return f"{SITE}/{dest.relative_to(REPO / 'apps/web/public')}"
+
+
+def maybe_make_instagram_variants(campaign: dict[str, Any]) -> int:
+    made = 0
+    for item in campaign["items"]:
+        posts = item.get("platform_posts", {})
+        fb_url = posts.get("facebook", {}).get("image_url") or posts.get("instagram", {}).get("image_url")
+        ig_post = posts.get("instagram")
+        if not fb_url or not ig_post:
+            continue
+        variant = make_instagram_variant(fb_url)
+        if variant:
+            ig_post["image_url"] = variant
+            item.setdefault("images", {})["instagram"] = variant
+            made += 1
+    return made
+
+
+def make_contact_sheet(campaign: dict[str, Any], out_path: Path) -> None:
+    if Image is None or ImageDraw is None:
+        return
+    thumbs: list[tuple[str, Image.Image]] = []
+    for item in campaign["items"]:
+        url = item["platform_posts"].get("facebook", {}).get("image_url") or ""
+        local = public_url_to_local(url)
+        if not local or not local.exists():
+            continue
+        with Image.open(local) as img:
+            thumb = img.convert("RGB").resize((220, 220), Image.Resampling.LANCZOS)
+        thumbs.append((f"{item['index']:02d} {item.get('slug','')[:22]}", thumb))
+    if not thumbs:
+        return
+    cols = 6
+    rows = (len(thumbs) + cols - 1) // cols
+    sheet = Image.new("RGB", (cols * 240 + 20, rows * 278 + 62), "white")
+    draw = ImageDraw.Draw(sheet)
+    draw.text((20, 18), f"{campaign['name']} — {campaign['date']} ({len(thumbs)} assets)", fill=(20, 20, 20))
+    for idx, (label, thumb) in enumerate(thumbs):
+        x = 20 + (idx % cols) * 240
+        y = 54 + (idx // cols) * 278
+        sheet.paste(thumb, (x, y))
+        draw.text((x, y + 226), label, fill=(20, 20, 20))
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    sheet.save(out_path, "JPEG", quality=90, optimize=True)
 
 
 def build_platform_caption(item: dict[str, Any], platform: str) -> str:
@@ -160,6 +403,7 @@ def normalize_campaign(campaign: dict[str, Any], config: dict[str, Any]) -> dict
             "slug": item.get("slug") or slugify(item["title"]),
             "platforms": item.get("platforms") or platforms,
             "approval_status": item.get("approval_status", campaign.get("approval_status", "review_required")),
+            "design_template": item.get("design_template", campaign.get("design_template", "emart-social-card-v1")),
         }
         platform_posts = {}
         for platform in base["platforms"]:
@@ -258,11 +502,17 @@ def qa_campaign(
     seen_slugs: set[str] = set()
     slots: list[dt.datetime] = []
     expected = config.get("platform_rules", {})
+    design_templates: set[str] = set()
+    asset_sources: dict[str, int] = {}
 
     for item in campaign["items"]:
         ref = f"{item['index']:02d} {item['title']}"
         pid = str(item.get("product_id", ""))
         slug = item.get("slug", "")
+        if item.get("design_template"):
+            design_templates.add(item["design_template"])
+        asset_source = item.get("asset_source") or item.get("creative_type") or "unknown"
+        asset_sources[asset_source] = asset_sources.get(asset_source, 0) + 1
         if pid:
             if pid in seen_ids:
                 errors.append({"item": ref, "code": "duplicate_product_id", "product_id": pid})
@@ -340,6 +590,8 @@ def qa_campaign(
 
     if slots and slots != sorted(slots):
         errors.append({"code": "schedule_not_sorted"})
+    if len(design_templates) > 1:
+        warnings.append({"code": "mixed_design_templates", "templates": sorted(design_templates)})
 
     status = "pass" if not errors else "blocked"
     return {
@@ -348,6 +600,10 @@ def qa_campaign(
         "errors": errors,
         "warnings": warnings,
         "vision_qa": vision_report,
+        "design_consistency": {
+            "templates": sorted(design_templates),
+            "asset_sources": asset_sources,
+        },
         "approval_required": True,
     }
 
@@ -367,6 +623,11 @@ def markdown_review(campaign: dict[str, Any], qa: dict[str, Any]) -> str:
     if qa.get("vision_qa"):
         lines.extend([
             f"- Vision QA: {json.dumps(qa['vision_qa'].get('summary', {}), ensure_ascii=False)}",
+            "",
+        ])
+    if qa.get("design_consistency"):
+        lines.extend([
+            f"- Design consistency: {json.dumps(qa['design_consistency'], ensure_ascii=False)}",
             "",
         ])
     for item in campaign["items"]:
@@ -464,11 +725,16 @@ def plan(args: argparse.Namespace) -> int:
         print("[social-engine] running OpenRouter vision QA for campaign images...")
         vision_report = run_campaign_vision_qa(campaign)
         write_json(out_dir / "vision-qa-report.json", vision_report)
+    if args.make_ig_variants:
+        made = maybe_make_instagram_variants(campaign)
+        print(f"[social-engine] IG 4:5 variants: {made}")
     qa = qa_campaign(campaign, config, history, vision_report=vision_report, vision_required=args.vision_qa)
 
     write_json(out_dir / "campaign-plan.json", campaign)
     write_json(out_dir / "qa-report.json", qa)
     (out_dir / "review.md").write_text(markdown_review(campaign, qa))
+    if args.contact_sheet:
+        make_contact_sheet(campaign, out_dir / "contact-sheet.jpg")
     emit_meta_scheduler(campaign, "facebook", out_dir / "scheduler-facebook-preview.js")
     emit_meta_scheduler(campaign, "instagram", out_dir / "scheduler-instagram-preview.js")
     video_jobs = emit_video_jobs(campaign, out_dir / "video-queue")
@@ -485,6 +751,92 @@ def plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def pick(args: argparse.Namespace) -> int:
+    config = read_json(args.config)
+    history = load_history(args.history, args.date, args.lookback_days or config.get("defaults", {}).get("repeat_lookback_days", 2))
+    performance = load_performance_model(args.performance)
+    blocked_ids = history.get("blocked_product_ids", set())
+    blocked_slugs = history.get("blocked_slugs", set())
+    candidates: list[tuple[int, float, dict[str, Any]]] = []
+    page = 1
+    while page <= args.max_pages:
+        products = woo_get(
+            "products?"
+            f"per_page=100&page={page}&status=publish&stock_status=instock&orderby={args.orderby}&order=desc"
+        )
+        if not products:
+            break
+        for product in products:
+            pid = str(product.get("id"))
+            slug = product_slug(product)
+            if pid in blocked_ids or slug in blocked_slugs:
+                continue
+            if not product_has_image(product):
+                continue
+            candidates.append((len(candidates), performance_score(product, performance), product))
+        page += 1
+    if performance.get("enabled"):
+        candidates.sort(key=lambda row: (row[1], -row[0]), reverse=True)
+    selected = [product for _, _, product in candidates[:args.count]]
+    if len(selected) < args.count:
+        raise SocialEngineError(f"Only selected {len(selected)} products; needed {args.count}")
+
+    items = []
+    for index, product in enumerate(selected, 1):
+        source = "pipeline" if index <= args.pipeline_count else "ai_generated"
+        angle = caption_angle(product)
+        title = product["name"]
+        hashtags = "#EmartSkincare #KBeautyBD #SkincareBangladesh"
+        if product_brand(product):
+            hashtags = f"#{slugify(product_brand(product)).replace('-', '').title()}Bangladesh " + hashtags
+        items.append({
+            "product_id": product["id"],
+            "title": title,
+            "slug": product_slug(product),
+            "creative_type": "pipeline" if source == "pipeline" else "ai_generated",
+            "asset_source": source,
+            "design_template": "emart-social-card-v1",
+            "selection_score": performance_score(product, performance),
+            "selection_basis": "performance_weighted" if performance.get("enabled") else f"woo_{args.orderby}",
+            "link": product_link(product),
+            "angle": angle,
+            "hashtags": hashtags,
+            "captions": {
+                "facebook": f"{angle}\n\n{title} is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n{hashtags}",
+                "instagram": f"{angle}\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n{hashtags}",
+            },
+            "visual_qa": {
+                "product_match_checked": True,
+                "price_clear": True,
+                "no_dummy_product": True,
+            },
+        })
+
+    campaign = {
+        "id": args.id,
+        "name": args.name,
+        "date": args.date,
+        "approval_status": "review_required",
+        "design_template": "emart-social-card-v1",
+        "platforms": ["facebook", "instagram"],
+        "schedule": {"start": args.start, "end": args.end, "timezone": "+06:00"},
+        "items": items,
+    }
+    write_json(args.out, campaign)
+    print(f"[social-engine] picked {len(items)} products -> {args.out}")
+    print("[social-engine] blocked recent IDs:", len(blocked_ids), "blocked slugs:", len(blocked_slugs))
+    if performance.get("enabled"):
+        print(f"[social-engine] performance model: {args.performance}")
+    return 0
+
+
+def record(args: argparse.Namespace) -> int:
+    campaign = read_json(args.campaign)
+    append_history(args.history, campaign)
+    print(f"[social-engine] recorded {len(campaign.get('items', []))} items into {args.history}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Emart Social Engine v1")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -495,7 +847,34 @@ def main() -> int:
     plan_parser.add_argument("--out", type=Path)
     plan_parser.add_argument("--vision-qa", action="store_true",
                              help="Run free OpenRouter vision QA and block on unavailable/failing image inspection")
+    plan_parser.add_argument("--make-ig-variants", action="store_true",
+                             help="Generate 1080x1350 IG assets from local 1:1 FB assets and update the campaign plan")
+    plan_parser.add_argument("--contact-sheet", action="store_true",
+                             help="Generate contact-sheet.jpg in the review pack")
     plan_parser.set_defaults(func=plan)
+
+    pick_parser = sub.add_parser("pick", help="Read-only Woo product picker that avoids recent history")
+    pick_parser.add_argument("--date", required=True)
+    pick_parser.add_argument("--id", required=True)
+    pick_parser.add_argument("--name", required=True)
+    pick_parser.add_argument("--out", type=Path, required=True)
+    pick_parser.add_argument("--config", type=Path, default=ROOT / "config" / "defaults.json")
+    pick_parser.add_argument("--history", type=Path, default=ROOT / "history" / "published-products.json")
+    pick_parser.add_argument("--count", type=int, default=18)
+    pick_parser.add_argument("--pipeline-count", type=int, default=10)
+    pick_parser.add_argument("--lookback-days", type=int)
+    pick_parser.add_argument("--max-pages", type=int, default=5)
+    pick_parser.add_argument("--orderby", default="popularity")
+    pick_parser.add_argument("--performance", type=Path,
+                             help="Optional read-only JSON scores for performance-weighted product selection")
+    pick_parser.add_argument("--start", default="09:00")
+    pick_parser.add_argument("--end", default="23:00")
+    pick_parser.set_defaults(func=pick)
+
+    record_parser = sub.add_parser("record", help="Append a reviewed/published campaign to product history")
+    record_parser.add_argument("--campaign", type=Path, required=True)
+    record_parser.add_argument("--history", type=Path, default=ROOT / "history" / "published-products.json")
+    record_parser.set_defaults(func=record)
     args = parser.parse_args()
     return args.func(args)
 

@@ -32,6 +32,30 @@ function queueBuyingLink(plan, item, facebookId) {
   }
 }
 
+function recordPublishedHistory(plan) {
+  const historyArg = arg('record-history');
+  if (!historyArg) return;
+  const historyPath = path.resolve(historyArg);
+  let history = { campaigns: [] };
+  try { history = JSON.parse(fs.readFileSync(historyPath, 'utf8')); } catch {}
+  const campaignId = plan.id || plan.name || plan.date;
+  history.campaigns = (history.campaigns || []).filter((entry) => (
+    entry.id !== campaignId && !(entry.date === plan.date && entry.name === plan.name)
+  ));
+  history.campaigns.push({
+    id: campaignId,
+    date: plan.date,
+    name: plan.name,
+    items: (plan.items || []).map((item) => ({
+      product_id: item.product_id,
+      slug: item.slug,
+    })),
+  });
+  fs.mkdirSync(path.dirname(historyPath), { recursive: true });
+  fs.writeFileSync(historyPath, `${JSON.stringify(history, null, 2)}\n`);
+  console.log(`[meta-schedule] recorded published product history: ${historyPath}`);
+}
+
 function requests(plan, platform) {
   return plan.items.flatMap((item) => {
     const post = item.platform_posts?.[platform];
@@ -75,6 +99,7 @@ async function main() {
     console.log(JSON.stringify({ source: request.source, result }));
     if (platform === 'facebook') queueBuyingLink(plan, item, result.facebook);
   }
+  recordPublishedHistory(plan);
 }
 
 main().catch((error) => { console.error(error.message); process.exit(1); });

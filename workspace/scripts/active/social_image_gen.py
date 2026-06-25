@@ -11,9 +11,10 @@ Both: Emart branding overlay (logo, price, product name, badge, COD)
 Usage:
   python3 social_image_gen.py --product-id 2591
   python3 social_image_gen.py --product-id 2591 --badge "BESTSELLER"
+  python3 social_image_gen.py --product-id 2591 --out apps/web/public/images/social/2026-06-25/foo.jpg
   python3 social_image_gen.py --product-id 50630 --badge "NIGHT CARE"
 
-Output: workspace/audit/active/social/product-{id}-{timestamp}.png (1080x1080)
+Output default: workspace/audit/active/social/product-{id}-{timestamp}.png (1080x1080)
 """
 
 import argparse, base64, html, json, os, re, sys, urllib.request, urllib.parse, ssl
@@ -252,7 +253,7 @@ body.hijabi-lifestyle .overlay {
   font-size:66px; font-weight:900; color:#F5D060; line-height:1.06;
   text-shadow: 0 3px 12px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.9);
   text-transform:uppercase; margin-bottom:8px;
-  overflow-wrap:normal;
+  overflow-wrap:anywhere; word-break:break-word;
 }
 .sub-text {
   font-size:26px; font-weight:700; color:white; letter-spacing:0;
@@ -527,7 +528,7 @@ def _extract_product_data(product):
 
 # ── Main generation ───────────────────────────────────────────────────────────
 
-def generate(product, badge_text="SHOP NOW", force_composite=False, creative_style="studio"):
+def generate(product, badge_text="SHOP NOW", force_composite=False, creative_style="studio", background_file=None):
     d = _extract_product_data(product)
     is_small = False if force_composite else _is_small_product(d["name"], d["cat_slugs"])
 
@@ -567,16 +568,22 @@ def generate(product, badge_text="SHOP NOW", force_composite=False, creative_sty
             except Exception as e:
                 print(f"  BG removal failed ({e}), using original")
 
-        # Generate muted AI background
+        # Generate or load muted AI background
         bg_path = f"/tmp/social_bg_{product['id']}.png"
         try:
-            print("  Generating muted AI background...")
-            prompt_style = "studio" if creative_style == "podium" else creative_style
-            generate_ai_image(_get_bg_prompt(d["cat_slugs"], prompt_style), bg_path, seed=product["id"])
-            with open(bg_path, "rb") as f:
-                bg_b64 = base64.b64encode(f.read()).decode()
-            bg_css = f"url(data:image/png;base64,{bg_b64}) center/cover no-repeat"
-            Path(bg_path).unlink(missing_ok=True)
+            if background_file:
+                print(f"  Using external AI background: {background_file}")
+                with open(background_file, "rb") as f:
+                    bg_b64 = base64.b64encode(f.read()).decode()
+                bg_css = f"url(data:image/png;base64,{bg_b64}) center/cover no-repeat"
+            else:
+                print("  Generating muted AI background...")
+                prompt_style = "studio" if creative_style == "podium" else creative_style
+                generate_ai_image(_get_bg_prompt(d["cat_slugs"], prompt_style), bg_path, seed=product["id"])
+                with open(bg_path, "rb") as f:
+                    bg_b64 = base64.b64encode(f.read()).decode()
+                bg_css = f"url(data:image/png;base64,{bg_b64}) center/cover no-repeat"
+                Path(bg_path).unlink(missing_ok=True)
         except Exception as e:
             print(f"  AI bg failed ({e}), gradient fallback")
             bg_css = _get_gradient_fallback(d["cat_slugs"])
@@ -610,6 +617,8 @@ def main():
     parser.add_argument("--badge", default="SHOP NOW")
     parser.add_argument("--allow-model-scene", action="store_true", help="Allow AI model scenes for small products. Default is real product composite only.")
     parser.add_argument("--creative-style", choices=("studio", "hijabi-lifestyle", "podium"), default="studio")
+    parser.add_argument("--background-file", type=Path, help="Optional AI/background image file to use behind the real product.")
+    parser.add_argument("--out", type=Path, help="Optional final output path (.png/.jpg). Parent directory is created.")
     args = parser.parse_args()
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -617,8 +626,9 @@ def main():
     product = fetch_product(args.product_id)
     print(f"  {product['name']}")
 
-    html = generate(product, args.badge, force_composite=not args.allow_model_scene, creative_style=args.creative_style)
-    output_file = OUTPUT_DIR / f"product-{args.product_id}-{TIMESTAMP}.png"
+    html = generate(product, args.badge, force_composite=not args.allow_model_scene, creative_style=args.creative_style, background_file=args.background_file)
+    output_file = args.out or (OUTPUT_DIR / f"product-{args.product_id}-{TIMESTAMP}.png")
+    output_file.parent.mkdir(parents=True, exist_ok=True)
     print("  Rendering screenshot...")
     screenshot_html(html, output_file)
     print(f"Done: {output_file} (1080x1080)")

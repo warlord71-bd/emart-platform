@@ -16,7 +16,6 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
-| — | — | — | — |
 
 ---
 
@@ -24,6 +23,8 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-25 | Social Engine upgrade + June 25 review pack: product picker/history hook/performance-score input/IG 4:5 variants/contact sheet/design-source QA plus 18 generated assets (10 pipeline + 8 Codex AI-background composites). No publish/deploy. | `3886d06` |
+| Claude | 2026-06-25 | VA-3 quality fixes (owner rejected a reel: silent + dummy product, yet scored 96). Root cause: enqueue reused a stale checkpointed silent reel + only ffprobe gated. Fixes: `enqueue.py` strips stale stages → always fresh build; `orchestrator.py` API-free loudness HARD-gate (<-40 LUFS auto-reject) + forces qa_provider=master. **`worker.py` caption-window fix (captions confined to photo frames, no longer painting over value/brand cards) is LIVE but LEFT UNCOMMITTED in the shared dirty tree — `worker.py` also carries Codex's uncommitted publisher edit (`META_PUBLISH`/`--job`); @Codex please fold both hunks into your worker.py commit.** Rebuilt clean COSRX demo (real model+product via Codex social-calendar asset, -14.5 LUFS, clean cards) → delivered to owner Telegram for judgement. | `724704a` |
 | Claude | 2026-06-25 | VA-1+VA-2 DONE: autonomous video orchestrator + Telegram see-and-approve gate. NEW files only (no worker.py/meta_* edits): `orchestrator.py`, `publish_approved.py`, `enqueue.py`, `reels_bot.py`. queue→building→review(gate)→approved→published; merit-based Codex escalation on QA fail; `--status` dashboard. E2E tick verified → review gate. **`reels_bot.py`** = dedicated-token Telegram bot (NOT OpenClaw's bot — two pollers conflict): posts each reel as a playable video w/ ✅Approve/❌Reject buttons. **AIRTIGHT no-auto-publish:** background publish cron REMOVED; only live cron is `orchestrator --tick */15` (builds only); the ONLY `--live` publish call is inside the Approve handler. Verified bot is the sole writer to `approved/`; worker never posts. **PENDING OWNER (to provide later): BotFather `REELS_BOT_TOKEN` → `apps/web/.env.local` (VPS) → `pm2 start reels_bot.py --name emart-reels-bot --interpreter python3` → send `/start`.** Web `/admin` page dropped (owner wants Telegram only). | `dcd17af` `3e9a7fe` |
 | Codex | 2026-06-25 | Committed finished Codex clusters and left only Claude/video files dirty; safety backup saved under `workspace/agent-safety-backups/20260624-222852/` | `dcd17af`, `847baf2`, `961fc7a`, `c88b84c`, `20a1c50` |
 | Codex | 2026-06-25 | Built Agent Brain v1: `agent_brain.py`, `agent_start.py`, `agent_close.py`, generated `workspace/AGENT_BRAIN.md`, and wired B0 to the quick-start command; read-only/no-secret/no-live-service design | pending (shared dirty tree) |

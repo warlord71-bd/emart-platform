@@ -7,7 +7,7 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from social_engine.engine import normalize_campaign, qa_campaign  # noqa: E402
+from social_engine.engine import normalize_campaign, performance_score, qa_campaign  # noqa: E402
 from social_engine import vision_qa  # noqa: E402
 
 
@@ -148,6 +148,22 @@ class SocialEngineTests(unittest.TestCase):
         self.assertEqual(result["status"], "fail")
         self.assertIn("price_clear", result["blockers"])
         self.assertIn("model_hand_ok", result["blockers"])
+
+    def test_performance_score_combines_product_brand_and_category(self):
+        product = {
+            "id": 123,
+            "name": "COSRX Daily SPF 50ml",
+            "slug": "cosrx-daily-spf",
+            "brands": [{"name": "COSRX"}],
+            "categories": [{"name": "Sunscreen"}],
+        }
+        model = {
+            "enabled": True,
+            "products": {"123": 4, "cosrx-daily-spf": 2},
+            "brands": {"cosrx": 1.5},
+            "categories": {"sunscreen": 3},
+        }
+        self.assertEqual(performance_score(product, model), 8.5)
 
 
 if __name__ == "__main__":

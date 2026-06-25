@@ -1,0 +1,14 @@
+{
+  "products": {
+    "123": 8.5,
+    "product-slug": {
+      "score": 5
+    }
+  },
+  "brands": {
+    "cosrx": 1.5
+  },
+  "categories": {
+    "sunscreen": 3
+  }
+}

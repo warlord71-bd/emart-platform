@@ -5,8 +5,14 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
 
 ## What v1 Does
 
+- Picks a campaign from read-only Woo product data while avoiding recent history.
+- Can weight product picking with optional read-only performance scores by product, brand, or category.
 - Normalizes a campaign manifest into scheduled platform posts.
 - Applies duplicate guards against recent campaigns.
+- Can record completed campaigns back into `history/published-products.json`.
+- Generates 1080×1350 Instagram variants from 1080×1080 Facebook assets.
+- Emits a contact sheet in the review pack for fast visual comparison.
+- Reports design-template and asset-source consistency in QA.
 - Checks visual QA flags before publishing is allowed:
   - real product identity checked
   - price area clear
@@ -32,6 +38,8 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
 ```bash
 python3 workspace/social-engine/social_engine.py plan \
   --campaign workspace/social-engine/campaigns/2026-06-24-v3.json \
+  --make-ig-variants \
+  --contact-sheet \
   --vision-qa
 ```
 
@@ -50,6 +58,56 @@ workspace/social-engine/output/<date>/<campaign-id>/
 5. Owner approves the review pack.
 6. Meta scheduler/comment worker runs from the approved plan.
 7. Performance data goes back into the next product/caption selection pass.
+
+## Pick and Record
+
+```bash
+python3 workspace/social-engine/social_engine.py pick \
+  --date 2026-06-25 \
+  --id 2026-06-25-daily \
+  --name "June 25 Daily Social" \
+  --out workspace/social-engine/campaigns/2026-06-25-daily.json \
+  --count 18 \
+  --pipeline-count 10 \
+  --performance workspace/social-engine/performance/latest.json
+
+python3 workspace/social-engine/social_engine.py record \
+  --campaign workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json
+```
+
+`record` should be run after a campaign is actually published or intentionally locked as used.
+The live scheduler can also append history automatically after a completed publish loop:
+
+```bash
+node workspace/scripts/active/meta_schedule.js \
+  --plan workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
+  --platform facebook \
+  --publish \
+  --record-history workspace/social-engine/history/published-products.json
+```
+
+Dry-runs never record history. Re-running FB/IG with the same campaign ID safely replaces the same
+history row instead of duplicating it.
+
+`--performance` is optional. When present, the picker ranks eligible non-repeated Woo products by
+the score file format shown in `performance/example.json`:
+
+```json
+{
+  "products": {
+    "123": 8.5,
+    "product-slug": {"score": 5}
+  },
+  "brands": {
+    "cosrx": 1.5
+  },
+  "categories": {
+    "sunscreen": 3
+  }
+}
+```
+
+If no performance file is supplied, selection falls back to the Woo order, usually `popularity`.
 
 ## Video Engine Bridge
 
@@ -81,8 +139,5 @@ dry-run by default unless `--allow-publish` is explicitly used there.
 
 ## Next Build Steps
 
-- Add product-picker adapters from Woo/GA4/GSC/GMC signals.
-- Add image-contact-sheet generation directly into the review pack.
-- Convert preview schedulers into data-driven production adapters.
 - Add post-performance import: reactions, comments, clicks, sales proxy.
-- Add separate 1:1 Facebook and 4:5 Instagram asset generation.
+- Add native 4:5 creative generation instead of derived IG variants when source images support it.
