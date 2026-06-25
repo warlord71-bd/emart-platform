@@ -1275,6 +1275,58 @@ def cmd_apply_titles():
 
     print(f"Applied: {applied}/{len(approved)}")
 
+# ── Striking-distance command ────────────────────────────────────────────────
+
+STRIKING_FILE = OUTPUT_DIR / "striking-distance.json"
+
+def cmd_striking_distance():
+    """Pages ranking 11-20 sorted by impressions — lowest-hanging page-1 candidates."""
+    snapshot = load_latest_snapshot()
+
+    pages = [p for p in snapshot["pages"] if 11 <= p["position"] <= 20]
+    pages.sort(key=lambda x: -x["impressions"])
+
+    pq_map = {}
+    for pq in snapshot.get("page_queries", []):
+        path = pq["page"]
+        if path not in pq_map:
+            pq_map[path] = []
+        pq_map[path].append(pq)
+
+    results = []
+    for page in pages:
+        queries = sorted(pq_map.get(page["path"], []), key=lambda x: -x["impressions"])
+        top_query = queries[0] if queries else None
+        results.append({
+            "path": page["path"],
+            "position": page["position"],
+            "impressions": page["impressions"],
+            "clicks": page["clicks"],
+            "ctr": page["ctr"],
+            "top_query": top_query["query"] if top_query else None,
+            "top_query_position": top_query["position"] if top_query else None,
+            "top_queries": [
+                {"query": q["query"], "impressions": q["impressions"], "position": q["position"]}
+                for q in queries[:5]
+            ],
+        })
+
+    output = {
+        "generated": today_str(),
+        "period": snapshot["period"],
+        "total_pages_11_to_20": len(results),
+        "pages": results,
+    }
+
+    STRIKING_FILE.write_text(json.dumps(output, indent=2, ensure_ascii=False))
+    print(f"Striking distance: {STRIKING_FILE}")
+    print(f"  Pages in position 11-20: {len(results)}")
+    print(f"\n  Top 10 by impressions:")
+    for i, item in enumerate(results[:10], 1):
+        q = f'  ← "{item["top_query"]}"' if item["top_query"] else ""
+        print(f"    {i}. pos={item['position']:.1f} impr={item['impressions']} "
+              f"clicks={item['clicks']} — {item['path']}{q}")
+
 # ── Full command ──────────────────────────────────────────────────────────────
 
 def cmd_full():
@@ -1307,6 +1359,7 @@ COMMANDS = {
     "propose-titles": cmd_propose_titles,
     "review-titles": cmd_review_titles,
     "apply-titles": cmd_apply_titles,
+    "striking-distance": cmd_striking_distance,
 }
 
 if __name__ == "__main__":
