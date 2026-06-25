@@ -19,6 +19,19 @@ from pathlib import Path
 W, H = 1080, 1920
 FONT_STACK = "'Noto Sans Bengali','Hind Siliguri','Inter','Segoe UI',sans-serif"
 
+# Platform UI safe zones — FB/IG Reels overlay their own chrome on the top ~13% (profile/name) and
+# bottom ~22-30% (caption, like/comment/share, audio). Captions MUST sit inside the safe middle band
+# or they get clipped on mobile. Values are `top:` for hook/benefit/cta.
+#   wide = intersection that's safe on BOTH platforms (default, single-version safe)
+#   fb   = tuned for Facebook Reels   |   ig = tuned for Instagram Reels (taller bottom UI)
+SAFE_ZONES = {
+    "wide": {"hook": "17%", "benefit": "56%", "cta": "66%"},
+    "fb":   {"hook": "17%", "benefit": "58%", "cta": "68%"},
+    "ig":   {"hook": "16%", "benefit": "54%", "cta": "63%"},
+}
+# wider side margins keep lower captions clear of the right-edge action buttons
+SIDE = 80
+
 
 def find_chromium() -> str:
     cands = sorted(glob.glob("/root/.cache/ms-playwright/chromium-*/chrome-linux64/chrome"))
@@ -27,18 +40,19 @@ def find_chromium() -> str:
     return cands[-1]
 
 
-def css() -> str:
+def css(zone: str = "wide") -> str:
+    z = SAFE_ZONES.get(zone, SAFE_ZONES["wide"])
     return f"""
 *{{margin:0;padding:0;box-sizing:border-box;}}
 html,body{{width:{W}px;height:{H}px;background:transparent;font-family:{FONT_STACK};}}
 .wrap{{position:absolute;inset:0;}}
-.cap{{position:absolute;left:60px;right:60px;text-align:center;line-height:1.25;
+.cap{{position:absolute;left:{SIDE}px;right:{SIDE}px;text-align:center;line-height:1.25;
   font-weight:800;text-shadow:0 3px 12px rgba(0,0,0,.55);}}
 .pill{{display:inline-block;padding:14px 30px;border-radius:22px;
   background:rgba(0,0,0,.46);backdrop-filter:blur(2px);}}
-.hook   {{top:9%;}}   .hook .pill  {{font-size:74px;color:#fff;}}
-.benefit{{top:68%;}}  .benefit .pill{{font-size:60px;color:#F5D060;}}
-.cta    {{top:83%;}}  .cta .pill   {{font-size:62px;color:#fff;background:rgba(20,20,30,.62);
+.hook   {{top:{z['hook']};}}   .hook .pill  {{font-size:72px;color:#fff;}}
+.benefit{{top:{z['benefit']};}}  .benefit .pill{{font-size:58px;color:#F5D060;}}
+.cta    {{top:{z['cta']};}}  .cta .pill   {{font-size:60px;color:#fff;background:rgba(20,20,30,.62);
   border:2px solid #F5D060;}}
 """
 
@@ -61,20 +75,20 @@ def build_elements(script: dict, total: float) -> list[dict]:
     return els
 
 
-def html_for(text: str, cls: str) -> str:
+def html_for(text: str, cls: str, zone: str = "wide") -> str:
     safe = (text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
-    return (f"<!DOCTYPE html><html><head><meta charset='utf-8'><style>{css()}</style></head>"
+    return (f"<!DOCTYPE html><html><head><meta charset='utf-8'><style>{css(zone)}</style></head>"
             f"<body><div class='wrap'><div class='cap {cls}'><span class='pill'>{safe}</span>"
             f"</div></div></body></html>")
 
 
-def render(elements: list[dict], outdir: Path) -> list[dict]:
+def render(elements: list[dict], outdir: Path, zone: str = "wide") -> list[dict]:
     outdir.mkdir(parents=True, exist_ok=True)
     manifest = []
     for i, el in enumerate(elements):
         hp = outdir / f"cap-{i}.html"
         pp = outdir / f"cap-{i}.png"
-        hp.write_text(html_for(el["text"], el["cls"]), encoding="utf-8")
+        hp.write_text(html_for(el["text"], el["cls"], zone), encoding="utf-8")
         manifest.append({"html": str(hp), "png": str(pp), "t0": el["t0"], "t1": el["t1"]})
     # one browser launch renders all caption PNGs (transparent)
     job = {"chromium": find_chromium(), "w": W, "h": H,
@@ -114,10 +128,11 @@ def main():
     ap.add_argument("--total", type=float, required=True)
     ap.add_argument("--outdir", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--safe-zone", dest="safe_zone", default="wide", choices=list(SAFE_ZONES))
     a = ap.parse_args()
     script = json.loads(Path(a.script).read_text())
     els = build_elements(script, a.total)
-    overlays = render(els, Path(a.outdir))
+    overlays = render(els, Path(a.outdir), a.safe_zone)
     Path(a.out).write_text(json.dumps(overlays, indent=2))
     print(a.out)
 
