@@ -12,7 +12,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emartweb` (PM2, :3000) | ✅ online | Next.js 14, v0.39.0 |
 | `emart-presence` (PM2, :3011) | ✅ online | WebSocket, 49d uptime |
 | `emart-embed` (PM2, :8077) | ✅ online | all-mpnet-base-v2 + bge-reranker-v2-m3, 2.2GB RAM |
-| `emart-blog-generator` (PM2 cron) | ✅ stopped | PM2 stopped; last known publish 2026-06-20. Unsafe for new pilots until WA-H draft/review gate exists. |
+| `emart-blog-generator` (PM2 cron) | ✅ stopped | PM2 stopped; last known publish 2026-06-20. Draft gate (`--draft`/`--generate-only`) now exists in live OpenClaw version. |
 | `emart-checkout-monitor` (PM2 cron) | ✅ stopped | All 8 steps pass; intentionally stopped |
 | `emart-competitor-prices` (crontab, weekly Sun 3AM) | ✅ stopped in PM2 | Runs via crontab, not PM2. Last manual run 2026-06-20; Google Sheets updated |
 | `emart-revenue-health` (PM2 cron) | ✅ stopped | Intentionally stopped |
@@ -46,11 +46,11 @@ inline (don't mark ✅). Before starting any WA item, check AGENT_BUS ACTIVE WOR
 | WA-A | 🔴 | **Publishing source of truth unified.** `meta_publish.js` is the sole FB/IG image+reel implementation; legacy entry points are wrappers. Video worker passes its checkpointed queue job via `--job`. Social Engine previews now pass `campaign-plan.json` directly to `meta_schedule.js`, which enforces campaign approval and queues FB buying-link comments. | [X]+[C] | ✅ complete; dry-run default |
 | WA-B | 🔴 | **`/opt/fb-poster` coupling removed.** Active Meta scripts load Axios/dotenv only from `apps/web/node_modules` and credentials only from `apps/web/.env.local` (local or VPS repo). FB and IG read-only Graph validation passed against the live accounts. | [X] | ✅ complete |
 | WA-C | 🟠 | **Generated SEO state removed from tracking.** Reproducible JSON/JSONL outputs and daily GSC snapshots are ignored and removed from the git index while remaining on disk. Human approval queues remain tracked. | [C] | ✅ complete |
-| WA-D | 🟡 | **One-shot dated scripts accumulate in `scripts/active/`.** `meta_18_scheduler_20260623.js`, `_20260624_fb.js`, `_20260624_ig.js`, `meta_fb_comment_worker_20260624.js`, `prepare_fb_campaign_20260624.py` are single-run artifacts living permanently in active/ with no archival. Fix: rotate spent one-shots to `/root/.attic-*` per cleanup rule. | [C] | 🔲 open |
+| WA-D | 🟡 | **One-shot dated scripts archived.** Dated scripts rotated to `/root/.attic-*` in prior session; 3 dated PM2 campaign processes (`emart-fb-18-20260625`, `emart-ig-18-20260625`, `emart-fb-comment-20260625`) deleted after confirming all slots expired. | [C] | ✅ 2026-06-25 |
 | WA-E | 🟠 | **Video-engine free-output gaps resolved by Claude.** Free bn-BD voiceover, ducked music, browser-shaped captions, populated persona libraries, branded/value cards, and master QA are implemented and verified. | [C] | ✅ complete |
 | WA-F | 🟠 | **social-engine gaps** — tracked as X8a (performance loop), X8b (IG 4:5 generation), X8c (dead `approval_status`) in the Codex — Open block below. F1 (real vision QA) already ✅ in `f01c602`; product picker/history hook/IG variants/contact sheet now implemented. Meta/GSC/GMC performance import now writes the picker score file; GA4 product export remains the only X8a input gap. | [X] | 🟡 X8a mostly complete; X8b complete; X8c open |
 | WA-G | 🔴 | **Embedded credentials removed from all OpenClaw scripts.** 12 scripts migrated to shared `creds.py` loader reading from `openclaw.env`. `IDENTITY.md` scrubbed. WC key updated to live BFF key_id 34; WC localhost access fixed (Host + X-Forwarded-Proto headers). All cron scripts verified working. **Owner actions remain:** (1) revoke old WP app password `mrVDk8iq...` in WordPress; (2) revoke old WC keys `ck_9d9f...` and `ck_53d4...` if not already; (3) set valid `META_ACCESS_TOKEN` in `openclaw.env` if ads_briefing.py is needed. | [C]+[O] | ✅ 2026-06-25 scripts fixed; owner rotation pending |
-| WA-H | 🟠 | **Hermes blog generator is publish-only.** Its sole `main()` path generates, uploads media, publishes a WordPress post, updates state, and sends Telegram; there is no draft/review/validate mode. Add generate-to-file/draft status plus explicit reviewed publish action before using it for new Bangla or experimental content. | [C] | 🔲 open; do not run for pilots |
+| WA-H | 🟠 | **Blog generator draft/review gate implemented.** Live OpenClaw `blog_generator.py` now supports `--draft` (generate + WP draft status) and `--generate-only` (save to file, no WP). Drafts saved to `blog_drafts/` for review. Archived copy hardcoded creds removed. | [C] | ✅ 2026-06-25 |
 
 ### Video Pipeline (VID) — autonomous build + Telegram approval (2026-06-25)
 
@@ -64,9 +64,9 @@ the Approve-button handler; verified the bot is the sole writer to `jobs/approve
 |---|---|---|---|
 | VID-1 | **Start the Telegram approval bot.** @BotFather token is now present, `emart-reels-bot` is online in PM2, and a Telegram chat is registered. Reels still only publish when the owner taps Approve; the builder cron parks drafts in `jobs/review/`. | [O]→[C] | ✅ online 2026-06-25 |
 | VID-4 | **Reel standard established (2026-06-25):** brand cards (real logo + rose/gold + dual price), loudness gate, caption-window, Bangla-phonetic voiceover, **canonical reusable Emart model** (`personas/emart-model/clean-portrait.png`) + free `presenter_card.py` fallback, 5-frame layout. Reels delivered to owner Telegram for verdict. | [C] | 🟡 awaiting owner sign-off on #14 |
-| VID-5 | **NEXT SESSION — separate FB + IG reel versions + publish both.** Owner screenshot: the top caption was clipped by FB Reels mobile UI (top-cut). Safe-zone FOUNDATION landed in `caption_overlay.py` (`5923883`): default 'wide' band is FB/IG-safe; `fb`/`ig` tuned profiles + `--safe-zone` exist but worker does NOT pass them yet. TODO: (1) wire worker to take `safe_zone` from job + build a tuned FB version and IG version; (2) make 2 jobs (platforms:[facebook] / [instagram]); (3) deliver both to @Emart_vid_bot for approval → publish each to its platform. Note: the already-published FB Althea reel has the old top-cut — owner may want to replace it. | [C] | 🔲 next session |
-| VID-2 | **Daily auto-enqueue producer not built.** Nothing auto-fills `jobs/queue/`; reels are enqueued manually via `enqueue.py spec.json --priority NN`. Build a daily product/topic picker that drops 1–N specs/day when the approval loop is proven. | [C] | 🔲 open (after VID-1) |
-| VID-3 | **WA-D archival now unblocked.** Codex finished the `meta_*` publishers, so the dated one-shot scripts in `scripts/active/` can be rotated to `/root/.attic-*` (this is WA-D). | [C] | 🔲 open |
+| VID-5 | **Platform-split reels fully wired.** `enqueue.py` auto-splits multi-platform specs into per-platform jobs with tuned safe zones; `worker.py` passes `safe_zone` to caption_overlay; `meta_publish.js` publishes to the correct platform per job. `daily_producer.py` enqueues `platforms: ["facebook", "instagram"]` by default. | [C] | ✅ 2026-06-25 |
+| VID-2 | **Daily auto-enqueue producer live.** `daily_producer.py` runs via crontab at 5 AM, picks 2 products/day, resource-aware (skips if RAM < 1.5GB). Committed in `e9d9c0b`. | [C] | ✅ 2026-06-25 |
+| VID-3 | **WA-D archival done.** Dated scripts rotated, dated PM2 campaign processes deleted. | [C] | ✅ 2026-06-25 |
 
 ### Audit Remediation Priority Lane — Freeze-Safe Order (2026-06-25)
 
@@ -103,7 +103,7 @@ Batch labels (`B1`, `B2`) and legacy AI numbers are helper labels only, not comp
 | 5 | Runtime / state map | 5a ORCH-2, 5b ORCH-4, 5c ORCH-8 | ✅ docs/spec complete | Versioned manifest, freshness/SLO spec, and shared durable queue/state contract exist for PM2/crons/workers/engines in `328572a`; runtime implementation/monitors remain future work. |
 | 6 | Work / event ledgers | 6a SEO-ORCH-2, 6b UX-ORCH-2 | 🟡 schema designed | SEO/UX action-event schema exists in `328572a`; ledger file instantiation and automation integration pending. |
 | 7 | Visual safety | 7a UX-ORCH-3, 7b UX-ORCH-4, 7c UX-ORCH-8 | 🔲 open | Screenshot/a11y/design-system audits produce owner-visible evidence before broad visual/UI changes. |
-| 8 | Content / campaign safety | 8a WA-H, 8b SEO-ORCH-5, 8c UX-ORCH-6 | 🔲 open | Blog/content/campaign paths use draft/review/approval/expiry gates; no experimental direct-publish or automatic price/discount action. |
+| 8 | Content / campaign safety | 8a WA-H, 8b SEO-ORCH-5, 8c UX-ORCH-6 | 🟡 partial | WA-H blog draft gate done; SEO-ORCH-5 and UX-ORCH-6 campaign/content approval contracts pending. |
 | 9 | Measurement loop | 9a SEO-ORCH-4, 9b UX-ORCH-5, 9c UX-ORCH-7, 9d X8a | 🟡 partial | GA4/GSC/GMC/Meta/RUM outcomes attach to change ledgers with baseline, review windows, and keep/iterate/revert decisions. Social picker now consumes Meta/GSC/GMC performance; GA4 product export still pending. |
 | 10 | Recovery / ops maturity | 10a ORCH-6, 10b ORCH-7, 10c SEO-ORCH-3, 10d SEO-ORCH-6, 10e SEO-ORCH-7, 10f UX-ORCH-9 | 🔲 open | Backups/restore drill, CI/control-loop tests, technical SEO loop, URL registry, off-page/entity ledger, and feedback taxonomy exist. |
 
@@ -112,7 +112,7 @@ Batch labels (`B1`, `B2`) and legacy AI numbers are helper labels only, not comp
 | Sub-issue | Source row | Status | Definition of done |
 |---|---|---|---|
 | 1a | WA-G | 🟡 owner action pending | Embedded credentials removed from OpenClaw scripts; owner revokes old WP/WC keys and supplies/fixes any needed Meta token. |
-| 1b | ORCH-5 | 🟡 partial | PM2 processes stop inheriting interactive shell secrets; sensitive jobs have explicit env/filtering or scoped runtime config. |
+| 1b | ORCH-5 | 🟡 config ready | `ecosystem.config.cjs` created with env-isolated process definitions; 3 crash-looping dated campaign processes deleted; apply clean restart at next maintenance via `pm2 delete <name> && pm2 start ecosystem.config.cjs --only <name>`. |
 | 2a | ORCH-1 | ✅ done | `deploy.sh` is hardened with lock, selective staging, lockfile-before-rsync, runtime-state exclusions, and build rollback. |
 | 3a | SEO-ORCH-1 | ✅ done | Full-catalog agentic scoring and aligned tier contracts now run after canonical merge + completed-content registry; latest run scored 3,625 products. |
 | 4a | UX-ORCH-1 | ✅ done | Inventory/source/fallback contract created 2026-06-25; source flags and fallback-counter relabeling implemented before CRO/social-proof expansion. |
