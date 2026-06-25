@@ -3202,3 +3202,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Added: BLOG-1 task (owner wants generated featured images for blog posts, spec TBD).
 - Commits: `97f9618`
 - Next: BLOG-1 blog image generation. ORCH-5 ecosystem config apply at next maintenance restart. 3 commits unpushed (2 Codex docs + 1 mine).
+
+## 2026-06-25 (Codex - X8c approval-status closure)
+- Did: Picked the next Codex-owned B6 Social Engine task instead of Claude-owned video/blog work. Audited X8c and confirmed the code already honors `approval_status` through `approval_gate()` and `meta_schedule.js` live gate.
+- Verified: `python3 -m unittest workspace/social-engine/tests/test_engine.py`; approved campaign plan dry-run prints `publish gate: approved_for_scheduled_run`; review-required campaign plan dry-run prints `publish gate: review_required`; `meta_schedule.js --publish` on the review-required plan fails before any Meta call with `Campaign publish gate is not approved_for_scheduled_run`.
+- Updated: `workspace/TASKS.md` marks X8c complete and leaves X8a GA4 product-level export as the remaining Social Engine performance gap.
+- Guardrail: No live publish, deploy, push, PM2 restart, WordPress/Woo write, protected commerce-data change, route, metadata, sitemap, or visual storefront change.
