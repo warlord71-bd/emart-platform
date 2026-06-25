@@ -3220,3 +3220,46 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Audited the remaining untracked `workspace/video-engine/hyperframes/` tree enough to classify it as a large local video/prototype/dependency directory (~655 MB, includes `node_modules`).
 - Updated: Added `VID-6` and `WSC-9` to `workspace/TASKS.md` so agents do not stage or delete it casually; next action is to formalize minimal source + ignores, mark it generated/runtime, or archive to `/root/.attic-YYYY-MM-DD/` after owner/Claude confirmation.
 - Guardrail: Task-board/log only; did not stage, delete, archive, deploy, push, restart PM2, publish, or touch Woo/WordPress/protected commerce data.
+
+## 2026-06-25 (Codex - fresh SEO data-gap audit runner)
+- Did: Implemented `workspace/scripts/active/seo_gap_audit.py`, a read-only audit runner for 90-day same-period YoY GSC, brand/non-brand and URL-type segmentation, GA4 landing-page engagement joins, click-gap and decay analysis, Google core/spam update windows, sitemap/static crawl, Playwright rendered DOM sampling, index-performance proxies, content-usefulness flags, and review-batched task proposals.
+- Ran: `python3 workspace/scripts/active/seo_gap_audit.py --crawl-limit-per-segment 4 --render-limit 14` with read-only network approval. Output files: `workspace/audit/active/seo-gap-audit-20260626.json`, `workspace/audit/active/seo-gap-audit-20260626.md`, `workspace/audit/active/seo-gap-taskboard-proposals-20260626.md`.
+- Incorporated: Owner-provided GSC Page Indexing screenshot counts, including 32,584 Crawled-currently-not-indexed URLs, 5,641 redirects, 3,195 404s, 2,264 robots-blocked URLs, 1,732 alternate canonicals, 225 noindex, 106 soft 404, 57 5xx, 23 duplicate canonical, and 5 403s.
+- Verified: Python compile passes; JSON output parses; live GSC source is `searchconsole_api`; GA4 source is `ga4_api`; sitemap has 4,205 URLs; static crawl checked 66 pages; Playwright render checked 14 pages; generated 3 review proposals. `TASKS.md` intentionally not edited per plan; proposals are in the generated proposal file.
+- Guardrail: No WordPress/Woo writes, no protected commerce-data changes, no deploy, no PM2 restart, no route/metadata/sitemap edits, and unrelated video-engine dirty files were left untouched.
+
+## 2026-06-26 (Codex - SEO gap task-board prioritization)
+- Did: Verified `SEO-GAP-1`, `SEO-GAP-3`, and `SEO-GAP-4` against `workspace/audit/active/seo-gap-audit-20260626.json` and added them logically to `workspace/TASKS.md`.
+- Updated: Added `Fresh SEO Gap Action Queue — 2026-06-26` ranked as: 1) `SEO-GAP-4` highest SEO technical/index drift, 2) `SEO-GAP-1` commercial CTR/click gap, 3) `SEO-GAP-3` content usefulness/measurement signal. Cross-linked them into the Audit Remediation Priority Lane, Main Priority rows 9/10, and sub-issues `9a SEO-ORCH-4` and `10c SEO-ORCH-3`.
+- Guardrail: Task-board/session coordination only; no task was marked complete, no route/robots/canonical/title/content changes, no WordPress/Woo writes, no deploy, no PM2 restart. Preserved Claude's active HyperFrames AGENT_BUS row and left unrelated video-engine dirty files untouched.
+
+## 2026-06-26 (Codex - SEO-GAP-4 technical control-loop classifier)
+- Did: Added `workspace/scripts/active/seo_technical_control_loop.py`, a read-only classifier that consumes `workspace/audit/active/seo-gap-audit-20260626.json` and groups sitemap/GSC/crawl drift into reviewable action classes.
+- Output: Wrote `workspace/audit/active/seo-technical-control-loop-20260626.json`, `.csv`, and `.md`. Classified 201 sample rows: 1 P0 product 404 (`/shop/skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml`), 98 P1 URL-policy/canonical-coverage rows, 1 P2 status-review row, and 101 P3 expected/low-demand rows.
+- Verified: `python3 -m py_compile workspace/scripts/active/seo_technical_control_loop.py`; `python3 workspace/scripts/active/seo_technical_control_loop.py --stamp 20260626`.
+- Updated: `workspace/TASKS.md` marks SEO-GAP-4 / SEO-ORCH-3 as first classifier done, with live verification and SEO-ORCH-6 URL-policy registry integration still pending.
+- Guardrail: Read-only analysis/reporting only; no route, robots, canonical, sitemap, WordPress/Woo, protected commerce-data, deploy, PM2, or live publishing changes. Preserved Claude's active HyperFrames AGENT_BUS row and did not touch active video files.
+
+## 2026-06-26 (Codex - SEO-GAP-4 live verification sample)
+- Did: Extended `workspace/scripts/active/seo_technical_control_loop.py` with bounded `--verify-live` mode for P0/P1 rows, including live status, final URL, canonical, robots, schema types, and interpretation.
+- Output: Refreshed `workspace/audit/active/seo-technical-control-loop-live-20260626.json`, `.csv`, and `.md` from a 20-row read-only live sample.
+- Findings: 1 confirmed commercial product 404 (`/shop/skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml`); 6 query URLs already redirect to canonicals (`add-to-cart` root and `brands?brand=*`); 12 category pagination query URLs return 200/indexable with self-canonical query URLs; 1 out-of-range pagination URL returns 404/noindex.
+- Verified: `python3 -m py_compile workspace/scripts/active/seo_technical_control_loop.py`; `python3 workspace/scripts/active/seo_technical_control_loop.py --stamp 20260626 --verify-live --verify-limit 20 --timeout 15` with read-only network approval.
+- Updated: `workspace/TASKS.md` marks SEO-GAP-4 / SEO-ORCH-3 as classifier + live sample done. Next is SEO-ORCH-6 URL-policy registry rows for verified pagination/query behavior, not immediate route/robots/canonical changes.
+- Guardrail: Read-only HTTP fetches and report/task-board updates only; no route, robots, canonical, sitemap, WordPress/Woo, protected commerce-data, deploy, PM2, or live publishing changes. Preserved Claude's active HyperFrames AGENT_BUS row and did not touch active video files.
+
+## 2026-06-26 (Codex - SEO-ORCH-6 URL-policy registry)
+- Did: Added initial versioned URL-policy registry at `workspace/seo/url-policy-registry.json` covering add-to-cart stripping, brand query redirects, concern/origin query redirects, valid collection pagination, out-of-range pagination, and filter/tracking query variants.
+- Added: `workspace/scripts/seo_url_policy_registry.py`, a read-only validator that consumes the registry plus saved SEO control-loop classification/live artifacts and writes JSON/CSV/Markdown validation outputs.
+- Output: Wrote `workspace/audit/active/seo-url-policy-registry-validation-20260626.json`, `.csv`, and `.md`. Assessed 38 query-policy rows: 19 match target policy, 19 need live verification, 0 unmatched, 0 live drift.
+- Proposal: No route/canonical/noindex change for valid paginated collections; keep out-of-range pagination as 404/noindex; treat live-verified add-to-cart and brand query redirects as compliant. Next safe step is bounded live verification for remaining concern/origin and unverified pagination rows before any class-specific fix.
+- Verified: `python3 -m py_compile workspace/scripts/seo_url_policy_registry.py workspace/scripts/active/seo_technical_control_loop.py`; `python3 workspace/scripts/seo_url_policy_registry.py --stamp 20260626`.
+- Guardrail: Registry/reporting/task-board only; no middleware, route, canonical, robots, sitemap, WordPress/Woo, protected commerce-data, deploy, PM2, or live publishing changes. Left unrelated HyperFrames/video dirty files untouched.
+
+## 2026-06-26 · Claude · HyperFrames video engine integration
+- Did: Integrated HyperFrames (heygen-com/hyperframes, Apache 2.0) as default reel renderer. Built `hyperframes/render.js` (HTML composition + GSAP animations → MP4 via HyperFrames CLI), `stages/reel_hyperframes.py` (Python wrapper), wired into `worker.py` with ffmpeg fallback. Full Phase 3 validation pipeline: lint (0 errors), validate/inspect (0 errors), draft render, final HQ render. Post-render ffmpeg loudnorm to -14 LUFS. Fixed owner feedback from Telegram screenshots: caption text moved to lower third (face clear), E-MART.COM.BD uppercase, compact single-line CTA, all 6 bullets matching "৬টি কারণ" title, value card vertically centered, no ghost scene bleed.
+- Final output: `emart-cosrx-promo.mp4` — 1080×1920, 24fps, H.264 High yuv420p, 18.6s, 5.27MB, -14.0 LUFS, CRF 18, AAC 128kbps stereo. All 8 Meta/IG checks + 7 Emart pipeline checks pass.
+- Render flags: `--quality high --fps 24 --crf 18 --format mp4 --low-memory-mode` (no --gpu: AMD EPYC VPS, no NVIDIA; no --docker: unnecessary overhead).
+- VPS install: `cd workspace/video-engine/hyperframes && npm install`
+- Commits: pending
+- Next: Deploy to VPS (`npm install` on VPS), owner approval on Telegram reel quality, then HyperFrames becomes the production renderer for daily_producer → orchestrator → worker pipeline.

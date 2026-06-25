@@ -10,3 +10,4 @@ assets/music/*.mp3
 codex-assets/holding/
 codex-assets/*.png
 codex-assets/requests/
+hyperframes/node_modules/

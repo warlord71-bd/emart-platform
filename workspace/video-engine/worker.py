@@ -24,6 +24,7 @@ QUEUE = ROOT / "queue"
 OUTPUT = ROOT / "output"
 STATE = ROOT / "state"
 REEL = ROOT / "stages" / "reel_ffmpeg.py"
+REEL_HF = ROOT / "stages" / "reel_hyperframes.py"
 REEL_QA_LOCAL = ROOT / "stages" / "reel_qa_local.py"
 PUBLIC_REELS = Path("/var/www/emart-platform/apps/web/public/videos/reels")
 # nginx serves the public dir directly via /public/ alias (range-request capable, no Next restart needed)
@@ -285,29 +286,42 @@ def run_job(job_path: Path, allow_publish: bool):
         checkpoint(job_path, job)
     overlays_path = job.get("stages", {}).get("captions", {}).get("overlays")
 
-    # 3. reel (free ffmpeg) — voiceover audio + browser caption overlays
+    # 3. reel — HyperFrames (HTML composition + GSAP animations) or ffmpeg fallback
     if not stage_done(job, "reel"):
         out_mp4 = str(OUTPUT / f"{jid}.mp4")
-        cmd = [sys.executable, str(REEL)]
-        for im in imgs:
-            cmd += ["--image", im]
-        cmd += ["--headline", job.get("headline", ""), "--sub", job.get("sub", ""),
-                "--out", out_mp4, "--seconds", str(seconds)]
-        if overlays_path:
-            cmd += ["--overlays-json", overlays_path]
-        elif script_path:
-            cmd += ["--script-json", script_path]
-        if audio_path:
-            cmd += ["--audio", audio_path]
-        # explicit product/branded images get blurred-fill (no crop of heading/price); persona+card stay cover-pan
-        for fim in (job.get("images") or []):
-            cmd += ["--fit-image", str(Path(fim).resolve())]
-        # music bed: job "music" path, or default ambient (set "music": false to disable)
+        renderer = job.get("renderer", "hyperframes")
         music = job.get("music", str(MUSIC_BED))
-        if music and music is not False and Path(str(music)).exists():
-            cmd += ["--music", str(music)]
-        subprocess.run(cmd, check=True, timeout=400)
-        set_stage(job, "reel", mp4=out_mp4, audio=bool(audio_path))
+        if music is False or (music and not Path(str(music)).exists()):
+            music = None
+        if renderer == "hyperframes" and REEL_HF.exists():
+            cmd = [sys.executable, str(REEL_HF), "--job", str(job_path.resolve()), "--out", out_mp4]
+            if audio_path:
+                cmd += ["--audio", audio_path]
+            if music:
+                cmd += ["--music", str(music)]
+            try:
+                subprocess.run(cmd, check=True, timeout=600)
+            except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
+                print(f"[worker] hyperframes failed, falling back to ffmpeg: {e}")
+                renderer = "ffmpeg"
+        if renderer != "hyperframes" or not Path(out_mp4).exists():
+            cmd = [sys.executable, str(REEL)]
+            for im in imgs:
+                cmd += ["--image", im]
+            cmd += ["--headline", job.get("headline", ""), "--sub", job.get("sub", ""),
+                    "--out", out_mp4, "--seconds", str(seconds)]
+            if overlays_path:
+                cmd += ["--overlays-json", overlays_path]
+            elif script_path:
+                cmd += ["--script-json", script_path]
+            if audio_path:
+                cmd += ["--audio", audio_path]
+            for fim in (job.get("images") or []):
+                cmd += ["--fit-image", str(Path(fim).resolve())]
+            if music:
+                cmd += ["--music", str(music)]
+            subprocess.run(cmd, check=True, timeout=400)
+        set_stage(job, "reel", mp4=out_mp4, audio=bool(audio_path), renderer=renderer)
         checkpoint(job_path, job)
     mp4 = job["stages"]["reel"]["mp4"]
 

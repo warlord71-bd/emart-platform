@@ -337,6 +337,8 @@ workspace/scripts/active/*
 !workspace/scripts/active/meta_runtime.js
 !workspace/scripts/active/meta_schedule.js
 !workspace/scripts/active/ga4_product_export.py
+!workspace/scripts/active/seo_gap_audit.py
+!workspace/scripts/active/seo_technical_control_loop.py
 !workspace/scripts/active/agent_brain.py
 !workspace/scripts/active/agent_start.py
 !workspace/scripts/active/agent_close.py
