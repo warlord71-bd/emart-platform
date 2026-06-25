@@ -276,9 +276,11 @@ def run_job(job_path: Path, allow_publish: bool):
         caption_window = round(seconds * photo_frames, 2) if card_frames else total
         capdir = str(OUTPUT / f"caps-{jid}")
         opath = str(OUTPUT / f"overlays-{jid}.json")
-        subprocess.run([sys.executable, str(CAPTION_OVERLAY), "--script", script_path,
-                        "--total", str(caption_window), "--outdir", capdir, "--out", opath],
-                       check=True, timeout=180)
+        safe_zone = job.get("safe_zone", "wide")
+        cmd_cap = [sys.executable, str(CAPTION_OVERLAY), "--script", script_path,
+                   "--total", str(caption_window), "--outdir", capdir, "--out", opath,
+                   "--safe-zone", safe_zone]
+        subprocess.run(cmd_cap, check=True, timeout=180)
         set_stage(job, "captions", overlays=opath, total=caption_window)
         checkpoint(job_path, job)
     overlays_path = job.get("stages", {}).get("captions", {}).get("overlays")

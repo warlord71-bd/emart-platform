@@ -17,22 +17,43 @@ ROOT = Path(__file__).resolve().parent
 QUEUE = ROOT / "jobs" / "queue"
 
 
-def enqueue(spec_path: Path, prio: int) -> Path:
-    spec = json.loads(spec_path.read_text())  # validate it parses
-    jid = spec.get("id") or spec_path.stem
-    spec.setdefault("id", jid)
-    # force a CLEAN build: strip any stale per-stage checkpoints + bot/escalation markers so a
-    # re-enqueued spec never reuses an old (e.g. silent) reel. The pipeline is idempotent only
-    # WITHIN a run; across enqueues we always rebuild from the spec. NOTE: keep an intentional
-    # `holding_request` from the source spec (it asks Codex for a model-holding shot) — only the
-    # runtime auto-escalation marker `_codex_escalated` is transient.
+PLATFORM_SAFE_ZONES = {"facebook": "fb", "instagram": "ig"}
+
+
+def _clean_spec(spec: dict) -> dict:
+    """strip stale per-stage checkpoints + bot/escalation markers for a fresh build."""
     for k in ("stages", "_tg_sent", "_tg_msg_id", "_codex_escalated"):
         spec.pop(k, None)
     spec["status"] = "pending"
+    return spec
+
+
+def enqueue(spec_path: Path, prio: int) -> list[Path]:
+    spec = json.loads(spec_path.read_text())
+    jid = spec.get("id") or spec_path.stem
+    spec.setdefault("id", jid)
     QUEUE.mkdir(parents=True, exist_ok=True)
-    dest = QUEUE / f"{prio:02d}-{jid}.json"
-    dest.write_text(json.dumps(spec, ensure_ascii=False, indent=2))
-    return dest
+
+    platforms = spec.get("platforms") or ["facebook"]
+    # single-platform or explicit safe_zone → one job as before
+    if len(platforms) <= 1 or spec.get("safe_zone"):
+        spec = _clean_spec(spec)
+        dest = QUEUE / f"{prio:02d}-{jid}.json"
+        dest.write_text(json.dumps(spec, ensure_ascii=False, indent=2))
+        return [dest]
+
+    # multi-platform → split into one tuned job per platform (separate FB + IG safe zones)
+    results = []
+    for plat in platforms:
+        pj = dict(spec)
+        pj["id"] = f"{jid}-{plat[:2]}"
+        pj["platforms"] = [plat]
+        pj["safe_zone"] = PLATFORM_SAFE_ZONES.get(plat, "wide")
+        pj = _clean_spec(pj)
+        dest = QUEUE / f"{prio:02d}-{pj['id']}.json"
+        dest.write_text(json.dumps(pj, ensure_ascii=False, indent=2))
+        results.append(dest)
+    return results
 
 
 def main():
@@ -46,8 +67,9 @@ def main():
         return
     if not a.spec:
         ap.error("pass a job spec path, or --status")
-    dest = enqueue(Path(a.spec), a.priority)
-    print(f"queued -> {dest}")
+    dests = enqueue(Path(a.spec), a.priority)
+    for d in dests:
+        print(f"queued -> {d}")
 
 
 if __name__ == "__main__":
