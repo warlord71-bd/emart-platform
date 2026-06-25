@@ -3177,3 +3177,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Closed the session handoff after recording the concise-response preference and committing completed Codex work.
 - Verified: AGENT_BUS active work is `(none)`; TASKS already reflects completed/remaining work; only unrelated dated script deletions remain dirty.
 - Next: Next agent should start from AGENT_BUS, MEMORY, TASKS, SESSION-LOG tail, and `git log`.
+
+## 2026-06-25 · Claude · Autonomous video loop + task board cleanup (session 2)
+- Did: WA-D closed (6 dated scripts archived, 4 stale PM2 deleted). VID-5 coded+tested (4-platform safe zones, auto-split enqueue for FB/IG/YT/TikTok). WA-H closed (blog_generator --draft/--generate-only modes). ORCH-2 process manifest drafted. VID-2 daily_producer.py live (cron 5AM, 2 products/day, resource-aware). Orchestrator slowed to */2h (anti-spam). Canonical reusable model committed. Reels bot restarted. Terse-output + posting-cadence + commit-closure rules saved to memory.
+- Commits: `3ee7728` `cd27804` `e9d9c0b` + WA-D deletions
+- Next: VID-4 owner sign-off on reel #14. ORCH-5 PM2 env leak. Priority 5-10 serious work.
