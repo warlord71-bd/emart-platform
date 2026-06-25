@@ -101,7 +101,7 @@ def main():
     ap.add_argument("--footer", default="e-mart.com.bd · COD")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
-    print(render(a.kicker, a.title, a.bullets[:5], a.style, a.footer, a.out))
+    print(render(a.kicker, a.title, a.bullets[:6], a.style, a.footer, a.out))
 
 
 if __name__ == "__main__":
