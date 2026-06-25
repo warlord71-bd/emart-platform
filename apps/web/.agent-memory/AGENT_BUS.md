@@ -16,7 +16,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
-| Claude | 2026-06-24 | VA-1: autonomous video orchestration + human-approval gate. NEW files only — does NOT edit worker.py or any meta_* (calls them). File-queue lifecycle queue→building→review→approved→published; auto-escalate to Codex image on QA fail; outbound TG notify; cron-driven. | `workspace/video-engine/orchestrator.py`, `publish_approved.py`, `enqueue.py`, `jobs/**`, `workspace/video-engine/.gitignore`, user crontab |
+| — | — | — | — |
 
 ---
 
@@ -24,6 +24,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Claude | 2026-06-25 | VA-1+VA-2 DONE: autonomous video orchestrator + Telegram see-and-approve gate. NEW files only (no worker.py/meta_* edits): `orchestrator.py`, `publish_approved.py`, `enqueue.py`, `reels_bot.py`. queue→building→review(gate)→approved→published; merit-based Codex escalation on QA fail; `--status` dashboard. E2E tick verified → review gate. **`reels_bot.py`** = dedicated-token Telegram bot (NOT OpenClaw's bot — two pollers conflict): posts each reel as a playable video w/ ✅Approve/❌Reject buttons. **AIRTIGHT no-auto-publish:** background publish cron REMOVED; only live cron is `orchestrator --tick */15` (builds only); the ONLY `--live` publish call is inside the Approve handler. Verified bot is the sole writer to `approved/`; worker never posts. **PENDING OWNER (to provide later): BotFather `REELS_BOT_TOKEN` → `apps/web/.env.local` (VPS) → `pm2 start reels_bot.py --name emart-reels-bot --interpreter python3` → send `/start`.** Web `/admin` page dropped (owner wants Telegram only). | `dcd17af` `3e9a7fe` |
 | Codex | 2026-06-25 | Built Agent Brain v1: `agent_brain.py`, `agent_start.py`, `agent_close.py`, generated `workspace/AGENT_BRAIN.md`, and wired B0 to the quick-start command; read-only/no-secret/no-live-service design | pending (shared dirty tree) |
 | Codex | 2026-06-25 | Closed audit-governance session: added freeze-safe ORCH/SEO/UX priority lane, UX-ORCH tasks, ORCH-8, workspace conflict audit WSC-1–WSC-7, and token-efficient session batches B0–B8; no code/live/protected-commerce changes | pending (task-board/session-log only; shared dirty tree) |
 | Codex | 2026-06-24 | Fulfilled 1/1 Codex image order; completed WA-B/A/C: local-only Meta dependencies and unified token source, one queue/plan-driven dry-run publisher, generated SEO state untracked; VPS read-only Meta validation passed | pending (shared dirty tree) |

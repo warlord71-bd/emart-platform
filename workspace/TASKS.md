@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-25 (workspace conflict audit + clustered session batches)
+Last updated: 2026-06-25 (video pipeline: autonomous builder + Telegram approval gate; VID-1 awaits owner token)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -19,6 +19,8 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emart-seo-autoscan` (PM2 cron) | ✅ stopped | Intentionally stopped |
 | `emart-meta-gen` (PM2) | ✅ stopped | Job complete (1,360/1,360 metas done Jun 15) |
 | Opus Humanizer Engine (detached, free OpenRouter) | 🟢 ongoing | `workspace/humanizer/engine/` — generates PDP descriptions on free models (gemma-4-31b chain), gated GMC+AI-residue, auto-applies PASS + revalidates + Telegram ping. Run: `bash workspace/humanizer/engine/run_detached.sh N`. 122 humanized as of 2026-06-23. Awaiting owner OpenRouter funds for Hermes handoff. |
+| Video orchestrator (crontab, `*/15`) | 🟢 running | `orchestrator.py --tick` — builds+QAs reels to `jobs/review/`, parks at human-approval gate. **Builds only; never posts.** `--status` = pipeline dashboard. |
+| Reels approval bot (`reels_bot.py`) | 🟡 ready, not started | Telegram see-and-approve (dedicated token). Posts reel as video + ✅Approve/❌Reject; Approve = the ONLY thing that publishes. **Blocked on owner `REELS_BOT_TOKEN` — see VID-1.** No auto-publish cron exists. |
 | GSC tracker (crontab, `30 2 * * *`) | ✅ running | `gsc_tracker.py full` — propose-only, no WC writes |
 | system_state.py (crontab, `35 2 * * *`) | 🟡 patched | Health UA + expected-stopped classification fixed locally; verify next cron/live run |
 | GMC sync (crontab, `0 */6 * * *`) | ✅ running | 3,600/3,631 approved; 7 dead entries removed 2026-06-22 |
@@ -49,6 +51,20 @@ inline (don't mark ✅). Before starting any WA item, check AGENT_BUS ACTIVE WOR
 | WA-F | 🟠 | **social-engine gaps** — tracked as X8a (performance loop), X8b (IG 4:5 generation), X8c (dead `approval_status`) in the Codex — Open block below. F1 (real vision QA) already ✅ in `f01c602`. | [X] | 🔲 see X8a–X8c |
 | WA-G | 🔴 | **Hermes blog generator has embedded live credentials.** `/root/.openclaw/workspace-emart/blog_generator.py` contains WordPress, WooCommerce, and Telegram secrets in source instead of loading secured environment/credential files. Do not copy values into chat/logs. Rotate affected credentials, move them to protected runtime config, and verify the cron after rotation. | [C]+[O] | 🔲 security remediation required |
 | WA-H | 🟠 | **Hermes blog generator is publish-only.** Its sole `main()` path generates, uploads media, publishes a WordPress post, updates state, and sends Telegram; there is no draft/review/validate mode. Add generate-to-file/draft status plus explicit reviewed publish action before using it for new Bangla or experimental content. | [C] | 🔲 open; do not run for pilots |
+
+### Video Pipeline (VID) — autonomous build + Telegram approval (2026-06-25)
+
+Autonomous reel engine is live and building drafts; nothing posts without an owner Telegram tap.
+Built this session (commits `dcd17af`, `3e9a7fe`): `orchestrator.py` (builder/gate/`--status` dashboard),
+`reels_bot.py` (Telegram see-and-approve), `publish_approved.py` (only publishes on Approve), `enqueue.py`.
+No worker.py / meta_* edits. **No background auto-publish cron exists** — the only `--live` call is inside
+the Approve-button handler; verified the bot is the sole writer to `jobs/approved/`.
+
+| ID | Finding / action | Owner | Status |
+|---|---|---|---|
+| VID-1 | **Start the Telegram approval bot (owner one-time, to provide token later).** @BotFather `/newbot` → add `REELS_BOT_TOKEN=<token>` to `apps/web/.env.local` (VPS) → `cd workspace/video-engine && pm2 start reels_bot.py --name emart-reels-bot --interpreter python3 && pm2 save` → open the bot, send `/start`. Until then the builder cron just stacks drafts in `jobs/review/`. | [O]→[C] | 🔲 awaiting owner token |
+| VID-2 | **Daily auto-enqueue producer not built.** Nothing auto-fills `jobs/queue/`; reels are enqueued manually via `enqueue.py spec.json --priority NN`. Build a daily product/topic picker that drops 1–N specs/day when the approval loop is proven. | [C] | 🔲 open (after VID-1) |
+| VID-3 | **WA-D archival now unblocked.** Codex finished the `meta_*` publishers, so the dated one-shot scripts in `scripts/active/` can be rotated to `/root/.attic-*` (this is WA-D). | [C] | 🔲 open |
 
 ### Audit Remediation Priority Lane — Freeze-Safe Order (2026-06-25)
 
