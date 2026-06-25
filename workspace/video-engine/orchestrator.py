@@ -42,6 +42,8 @@ OPENCLAW_ENV = Path("/root/.openclaw/openclaw.env")
 BUILDING_STALE_S = 60 * 60  # a building/ job older than this is assumed crashed -> reclaim
 # render stages cleared when re-queuing for a Codex premium re-render
 ESCALATE_CLEAR = ("images", "reel", "qa", "store", "publish")
+SILENCE_LUFS = -40.0   # integrated loudness below this = effectively silent -> hard reject
+DEFAULT_QA = "master"  # force the full gate (loudness + multi-frame vision) unless the job overrides
 
 
 def ensure_dirs():
@@ -78,6 +80,25 @@ def notify(text: str):
         urllib.request.urlopen(f"https://api.telegram.org/bot{tok}/sendMessage", data=data, timeout=15)
     except Exception as e:
         sys.stderr.write(f"[orchestrator] telegram notify failed: {e}\n")
+
+
+def integrated_lufs(mp4: str) -> float:
+    """API-free loudness probe (ffmpeg ebur128). Returns integrated LUFS, or -99 if unreadable.
+    The cheap, always-available backstop that catches a silent reel even when vision QA is offline."""
+    try:
+        r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", mp4, "-af", "ebur128",
+                            "-f", "null", "-"], capture_output=True, text=True, timeout=120)
+        val = None
+        for line in r.stderr.splitlines():
+            line = line.strip()
+            if line.startswith("I:") and "LUFS" in line:   # last "I:" wins = integrated
+                try:
+                    val = float(line.split()[1])
+                except (ValueError, IndexError):
+                    pass
+        return val if val is not None else -99.0
+    except Exception:
+        return -99.0
 
 
 def qa_summary(job: dict) -> str:
@@ -124,6 +145,13 @@ def tick():
     src.rename(job_path)
     print(f"[orchestrator] building {job_path.name} (priority {priority(job_path)[0]})")
 
+    # force the full quality gate (loudness + multi-frame vision) unless the job explicitly overrides,
+    # so dummy product / silent audio / bad frames are CAUGHT, not waved through on ffprobe alone.
+    pre = json.loads(job_path.read_text())
+    if not pre.get("qa_provider"):
+        pre["qa_provider"] = DEFAULT_QA
+        job_path.write_text(json.dumps(pre, indent=2))
+
     # run the existing engine in DRY-RUN (no --allow-publish). It builds reel + hosts URL + QA,
     # and stops at status 'ready' — it never posts. That 'ready' artifact IS the review draft.
     r = subprocess.run([sys.executable, str(WORKER), "--job", str(job_path)],
@@ -136,6 +164,19 @@ def tick():
     qa = job.get("stages", {}).get("qa", {})
     vis = qa.get("vision_status")
     jid = job.get("id", job_path.stem)
+
+    # loudness hard-gate (API-free): a silent/near-silent reel must NEVER reach review.
+    mp4 = job.get("stages", {}).get("reel", {}).get("mp4")
+    if mp4 and Path(mp4).exists():
+        lufs = integrated_lufs(mp4)
+        job.setdefault("stages", {}).setdefault("qa", {})["lufs"] = lufs
+        if lufs < SILENCE_LUFS:
+            job["status"] = "failed"
+            job_path.write_text(json.dumps(job, indent=2))
+            job_path.rename(REJECTED / job_path.name)
+            notify(f"❌ Reel auto-failed (SILENT audio {lufs:.1f} LUFS): {jid}")
+            print(f"[orchestrator] {jid} -> rejected (silent audio {lufs:.1f} LUFS)")
+            return
 
     # hard failure (ffprobe / broken render) or opted-in vision block -> auto-reject, notify
     if job.get("status") == "failed":
