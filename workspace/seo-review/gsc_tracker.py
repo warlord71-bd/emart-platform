@@ -14,6 +14,7 @@ Usage:
   python3 workspace/seo-review/gsc_tracker.py trends          # 7-day position deltas
   python3 workspace/seo-review/gsc_tracker.py blog-gaps       # content gaps → blog topics
   python3 workspace/seo-review/gsc_tracker.py search-trends   # Google+YouTube trend signals
+  python3 workspace/seo-review/gsc_tracker.py completed-registry # refresh completed humanizer registry
   python3 workspace/seo-review/gsc_tracker.py humanizer-queue # prioritized humanizer targets
   python3 workspace/seo-review/gsc_tracker.py propose-titles  # propose title fixes (read-only)
   python3 workspace/seo-review/gsc_tracker.py review-titles   # print pending title queue
@@ -25,6 +26,7 @@ Outputs:
   position-trends.json              — 7-day movers (up/down)
   blog-topic-candidates.json        — queries with impressions but no matching page
   search-trends.json                — Google Trends + YouTube trend data for top queries
+  ../humanizer/completed-content-registry.json — products already humanized
   humanizer-queue.json              — products needing description humanization, by priority
   title_fixes_pending.json          — proposed title changes awaiting review
 
@@ -40,6 +42,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -68,12 +71,14 @@ HUMANIZER_FILE    = OUTPUT_DIR / "humanizer-queue.json"
 AGENTIC_FILE      = OUTPUT_DIR / "agentic-score.jsonl"
 
 HUMANIZER_DIR     = Path("workspace/humanizer")
+COMPLETED_REGISTRY_FILE = HUMANIZER_DIR / "completed-content-registry.json"
 HUMANIZER_BATCHES = [
     HUMANIZER_DIR / "face-cleansers/active/current-batch.jsonl",
     HUMANIZER_DIR / "face-cleansers/archive/batches/batch-2026-06-01.jsonl",
     HUMANIZER_DIR / "face-cleansers/archive/batches/batch-2026-05-31.jsonl",
     HUMANIZER_DIR / "impression-priority/active/impression-priority-2026-06-05.jsonl",
 ]
+WP_PATH           = os.environ.get("WP_PATH", "/var/www/wordpress")
 
 PRODUCT_PREFIX = "/shop/"
 BLOG_PREFIX    = "/blog/"
@@ -152,6 +157,9 @@ def normalize_page_path(page: str) -> str:
     for host in ("https://e-mart.com.bd", "http://www.e-mart.com.bd", "https://www.e-mart.com.bd"):
         if page.startswith(host):
             page = page[len(host):] or "/"
+    # GSC still reports legacy /product/slug — canonicalize to /shop/slug
+    if page.startswith("/product/"):
+        page = "/shop/" + page[len("/product/"):]
     return page
 
 # ── GSC API calls ─────────────────────────────────────────────────────────────
@@ -208,39 +216,92 @@ def cmd_pull():
     page_queries = fetch_page_query_data(svc, site, start, end)
     queries = fetch_query_data(svc, site, start, end)
 
+    # Merge pages that share the same canonical path (e.g. /product/slug → /shop/slug)
+    merged_pages = {}
+    for r in pages:
+        path = normalize_page_path(r["keys"][0])
+        if path in merged_pages:
+            m = merged_pages[path]
+            m["clicks"] += r["clicks"]
+            m["impressions"] += r["impressions"]
+            # Weighted average position by impressions
+            total_impr = m["impressions"]
+            if total_impr > 0:
+                m["position"] = (m["_pos_sum"] + r["position"] * r["impressions"]) / total_impr
+                m["_pos_sum"] += r["position"] * r["impressions"]
+        else:
+            merged_pages[path] = {
+                "path": path,
+                "clicks": r["clicks"],
+                "impressions": r["impressions"],
+                "position": r["position"],
+                "_pos_sum": r["position"] * r["impressions"],
+            }
+    page_list = []
+    for p in merged_pages.values():
+        total_impr = max(p["impressions"], 1)
+        page_list.append({
+            "url": SITE_URL + p["path"],
+            "path": p["path"],
+            "clicks": p["clicks"],
+            "impressions": p["impressions"],
+            "ctr": round(p["clicks"] / total_impr, 4),
+            "position": round(p["position"], 1),
+        })
+    page_list.sort(key=lambda x: -x["impressions"])
+
+    # Merge page_queries with canonical paths
+    merged_pq = {}
+    for r in page_queries:
+        path = normalize_page_path(r["keys"][0])
+        query = r["keys"][1]
+        key = (path, query)
+        if key in merged_pq:
+            m = merged_pq[key]
+            m["clicks"] += r["clicks"]
+            m["impressions"] += r["impressions"]
+            total_impr = m["impressions"]
+            if total_impr > 0:
+                m["position"] = (m["_pos_sum"] + r["position"] * r["impressions"]) / total_impr
+                m["_pos_sum"] += r["position"] * r["impressions"]
+        else:
+            merged_pq[key] = {
+                "page": path,
+                "query": query,
+                "clicks": r["clicks"],
+                "impressions": r["impressions"],
+                "position": r["position"],
+                "_pos_sum": r["position"] * r["impressions"],
+            }
+    pq_list = []
+    for m in merged_pq.values():
+        total_impr = max(m["impressions"], 1)
+        pq_list.append({
+            "page": m["page"],
+            "query": m["query"],
+            "clicks": m["clicks"],
+            "impressions": m["impressions"],
+            "ctr": round(m["clicks"] / total_impr, 4),
+            "position": round(m["position"], 1),
+        })
+    pq_list.sort(key=lambda x: -x["impressions"])
+
+    total_clicks = sum(p["clicks"] for p in page_list)
+    total_impressions = sum(p["impressions"] for p in page_list)
+
     snapshot = {
         "date": today_str(),
         "period": {"start": start, "end": end},
         "site": site,
         "summary": {
-            "total_clicks": sum(r["clicks"] for r in pages),
-            "total_impressions": sum(r["impressions"] for r in pages),
-            "avg_ctr": sum(r["clicks"] for r in pages) / max(sum(r["impressions"] for r in pages), 1),
-            "page_count": len(pages),
+            "total_clicks": total_clicks,
+            "total_impressions": total_impressions,
+            "avg_ctr": total_clicks / max(total_impressions, 1),
+            "page_count": len(page_list),
             "query_count": len(queries),
         },
-        "pages": [
-            {
-                "url": r["keys"][0],
-                "path": r["keys"][0].replace(SITE_URL, ""),
-                "clicks": r["clicks"],
-                "impressions": r["impressions"],
-                "ctr": round(r["ctr"], 4),
-                "position": round(r["position"], 1),
-            }
-            for r in sorted(pages, key=lambda x: -x["impressions"])
-        ],
-        "page_queries": [
-            {
-                "page": r["keys"][0].replace(SITE_URL, ""),
-                "query": r["keys"][1],
-                "clicks": r["clicks"],
-                "impressions": r["impressions"],
-                "ctr": round(r["ctr"], 4),
-                "position": round(r["position"], 1),
-            }
-            for r in sorted(page_queries, key=lambda x: -x["impressions"])
-        ],
+        "pages": page_list,
+        "page_queries": pq_list,
         "queries": [
             {
                 "query": r["keys"][0],
@@ -677,20 +738,93 @@ def cmd_search_trends():
           f"COOLING: {len(output['cooling_queries'])} | "
           f"STEADY: {len(results) - len(output['hot_queries']) - len(output['cooling_queries'])}")
 
-# ── Humanizer Queue command ──────────────────────────────────────────────────
+# ── Completed content registry + Humanizer Queue command ─────────────────────
 
-def load_humanized_ids() -> set[str]:
-    """Load product IDs that have already been humanized."""
-    ids = set()
-    for f in HUMANIZER_BATCHES:
-        if f.exists():
-            for line in f.read_text().strip().split("\n"):
-                if line.strip():
-                    d = json.loads(line)
-                    pid = d.get("post_id", "")
-                    if pid:
-                        ids.add(str(pid))
-    return ids
+def wp_db_prefix() -> str:
+    result = subprocess.run(
+        ["wp", f"--path={WP_PATH}", "--allow-root", "db", "prefix"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return result.stdout.strip()
+
+def refresh_completed_content_registry() -> dict:
+    """Refresh the durable registry from the read-only _emart_humanized marker."""
+    prefix = wp_db_prefix()
+    sql = """
+        SELECT p.ID, p.post_name, MAX(pm.meta_value)
+        FROM {prefix}posts p
+        JOIN {prefix}postmeta pm
+          ON pm.post_id=p.ID AND pm.meta_key='_emart_humanized'
+        WHERE p.post_type='product'
+          AND p.post_status='publish'
+          AND pm.meta_value<>''
+        GROUP BY p.ID, p.post_name
+        ORDER BY p.ID
+    """.format(prefix=prefix)
+    cmd = [
+        "wp", f"--path={WP_PATH}", "--allow-root", "db", "query",
+        sql, "--skip-column-names",
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+
+    entries = []
+    for line in result.stdout.splitlines():
+        if not line.strip():
+            continue
+        post_id, slug, marker = line.split("\t", 2)
+        entries.append({
+            "post_id": int(post_id),
+            "slug": slug,
+            "path": f"{PRODUCT_PREFIX}{slug}",
+            "completed_marker": marker,
+            "source": "wp_postmeta:_emart_humanized",
+        })
+
+    registry = {
+        "generated": today_str(),
+        "source": "read-only WordPress _emart_humanized postmeta",
+        "total_completed": len(entries),
+        "entries": entries,
+    }
+    COMPLETED_REGISTRY_FILE.write_text(json.dumps(registry, indent=2, ensure_ascii=False))
+    return registry
+
+def load_completed_content_registry(refresh_if_missing: bool = False) -> dict:
+    """Load completed products by canonical path/slug/id."""
+    if refresh_if_missing and not COMPLETED_REGISTRY_FILE.exists():
+        try:
+            refresh_completed_content_registry()
+        except Exception as e:
+            print(f"  Registry refresh skipped: {e}")
+
+    registry = {"total_completed": 0, "entries": []}
+    if COMPLETED_REGISTRY_FILE.exists():
+        try:
+            registry = json.loads(COMPLETED_REGISTRY_FILE.read_text())
+        except Exception as e:
+            print(f"  Registry read skipped: {e}")
+
+    entries = registry.get("entries", [])
+    registry["ids"] = {str(e.get("post_id")) for e in entries if e.get("post_id")}
+    registry["slugs"] = {e.get("slug") for e in entries if e.get("slug")}
+    registry["paths"] = {normalize_page_path(e.get("path", "")) for e in entries if e.get("path")}
+    return registry
+
+def cmd_completed_registry():
+    """Refresh the completed-content registry from read-only live product metadata."""
+    try:
+        registry = refresh_completed_content_registry()
+    except Exception as e:
+        if not COMPLETED_REGISTRY_FILE.exists():
+            raise
+        registry = load_completed_content_registry()
+        print(f"Completed-content registry refresh skipped: {e}")
+        print("  Using existing registry file.")
+    print(f"Completed-content registry: {COMPLETED_REGISTRY_FILE}")
+    print(f"  Products marked humanized: {registry['total_completed']}")
+    print(f"  Source: {registry['source']}")
 
 def cmd_humanizer_queue():
     """
@@ -702,7 +836,9 @@ def cmd_humanizer_queue():
     """
     snapshot = load_latest_snapshot()
     agentic = load_agentic_scores()
-    humanized = load_humanized_ids()
+    completed = load_completed_content_registry(refresh_if_missing=True)
+    completed_paths = completed.get("paths", set())
+    completed_slugs = completed.get("slugs", set())
 
     # Load trend signals if available
     trend_signals = {}
@@ -733,11 +869,7 @@ def cmd_humanizer_queue():
         a = agentic.get(slug)
         scored = score_opportunity(page, a)
 
-        # Check if already humanized (by matching slug patterns in humanized IDs)
-        # We can't perfectly match slug→ID without WC API, so track by agentic data
-        is_humanized = False
-        if a and a.get("tier") in ("GOOD", "EXCELLENT"):
-            is_humanized = True  # good agentic score suggests content is done
+        is_humanized = page["path"] in completed_paths or slug in completed_slugs
 
         # Check queries for trend signals
         page_queries = pq_map.get(page["path"], [])
@@ -776,6 +908,7 @@ def cmd_humanizer_queue():
             "position": page["position"],
             "ctr": page["ctr"],
             "is_humanized": is_humanized,
+            "completed_source": "completed-content-registry" if is_humanized else None,
             "has_hot_trend": has_hot_query,
             "content_tier": a.get("tier", "UNKNOWN") if a else "UNSCORED",
         }
@@ -797,6 +930,7 @@ def cmd_humanizer_queue():
         "generated": today_str(),
         "period": snapshot["period"],
         "total_products_in_search": len(product_pages),
+        "completed_registry_total": completed.get("total_completed", len(completed_paths)),
         "already_humanized": len(done),
         "needs_humanization": len(todo),
         "queue": todo[:50],
@@ -805,6 +939,7 @@ def cmd_humanizer_queue():
     HUMANIZER_FILE.write_text(json.dumps(output, indent=2, ensure_ascii=False))
     print(f"Humanizer queue: {HUMANIZER_FILE}")
     print(f"  Products in search: {len(product_pages)}")
+    print(f"  Completed registry: {completed.get('total_completed', len(completed_paths))}")
     print(f"  Already humanized:  {len(done)}")
     print(f"  Needs work:         {len(todo)}")
     print(f"  Top 5 humanizer targets:")
@@ -1330,7 +1465,7 @@ def cmd_striking_distance():
 # ── Full command ──────────────────────────────────────────────────────────────
 
 def cmd_full():
-    """Run pull + score + trends + blog-gaps + humanizer-queue + propose-titles + actions."""
+    """Run pull + score + trends + blog-gaps + completed-registry + humanizer-queue + propose-titles + actions."""
     cmd_pull()
     print()
     cmd_score()
@@ -1338,6 +1473,11 @@ def cmd_full():
     cmd_trends()
     print()
     cmd_blog_gaps()
+    print()
+    try:
+        cmd_completed_registry()
+    except Exception as e:
+        print(f"  completed-registry refresh skipped: {e}")
     print()
     cmd_humanizer_queue()
     print()
@@ -1354,6 +1494,7 @@ COMMANDS = {
     "trends": cmd_trends,
     "blog-gaps": cmd_blog_gaps,
     "search-trends": cmd_search_trends,
+    "completed-registry": cmd_completed_registry,
     "humanizer-queue": cmd_humanizer_queue,
     "actions": cmd_actions,
     "propose-titles": cmd_propose_titles,
