@@ -16,7 +16,6 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
-| Codex | 2026-06-25 | Priority 7 read-only visual safety audit (UX-ORCH-3/4/8) | `workspace/docs/audits/storefront-visual-safety-audit-20260625.md`, `apps/web/.agent-memory/AGENT_BUS.md`, `apps/web/SESSION-LOG.md` |
 
 ---
 
@@ -24,6 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-25 | Priority 7 read-only visual safety audit for UX-ORCH-3/4/8: created `workspace/docs/audits/storefront-visual-safety-audit-20260625.md` with overlay/dialog, design-system drift, product-card/PDP control, and a11y-gate findings; accounted for `.playwright-mcp/` historical artifacts and noted no repeatable app-owned harness/package is present. TASKS marks Priority 7 audit/spec partial. | pending |
 | Claude | 2026-06-25 | ORCH-5 `ecosystem.config.cjs` (env-isolated PM2 defs), deleted 3 crash-looping dated campaign processes, archived blog_generator cred cleanup, closed WA-D/WA-H/VID-2/VID-3/VID-5 in TASKS.md. | pending |
 | Codex | 2026-06-25 | Priority 5+6 docs/specs: updated versioned PM2/cron/detached/worker process manifest with freshness SLOs, created durable queue/state contract, and designed unified SEO/UX action-event ledger schema. TASKS marks ORCH-2/4/8 docs complete and SEO-ORCH-2/UX-ORCH-2 schema designed with ledger instantiation pending. | `328572a` |
 | Codex | 2026-06-25 | Closed owner-assigned Codex leg: SEO-ORCH-1 full-catalog deterministic agentic scoring (3,625 products, aligned tiers), X8a Social Engine Meta/GSC/GMC performance import with picker smoke, and UX-ORCH-1 visible trust-source/fallback relabeling. GA4 product-level export remains the only X8a input gap. | `d7dc9c0` |

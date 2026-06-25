@@ -3188,3 +3188,17 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Sources: filtered `pm2 jlist`, `crontab -l`, TASKS autonomous/runtime rows, log mtimes/tails, Social Engine/SEO/video/humanizer readmes and state surfaces. No env values recorded.
 - Updated: `workspace/TASKS.md` marks ORCH-2/4/8 docs/spec complete in `328572a`; SEO-ORCH-2 and UX-ORCH-2 are schema designed with ledger instantiation pending. Moved the Codex AGENT_BUS entry to LAST COMPLETED while preserving Claude's active row.
 - Guardrail: Docs/specs only; did not touch `workspace/scripts/active/`, `workspace/video-engine/`, `workspace/humanizer/`, `apps/web/src/`, PM2 config, deploy, WordPress/Woo writes, protected commerce data, routes, metadata, sitemap, or live publishing.
+
+## 2026-06-25 (Codex - Priority 7 visual safety audit)
+- Did: Started from AGENT_BUS/MEMORY/SESSION-LOG/TASKS/git log and picked the next freeze-safe Codex job: Priority 7 / UX-ORCH-3, UX-ORCH-4, UX-ORCH-8.
+- Output: Created `workspace/docs/audits/storefront-visual-safety-audit-20260625.md` covering mobile overlay/z-index risks, drawer/dialog focus semantics, design-system drift, product-card/PDP CTA parity, and the proposed route/viewport/state screenshot + a11y matrix.
+- Clarified: User pointed out `.playwright-mcp/`; verified it contains historical MCP browser artifacts through 2026-06-23, not a reusable app-owned Playwright/axe harness. Report updated accordingly.
+- Updated: `workspace/TASKS.md` marks Priority 7 as audit/spec partial; 7a matrix specified, 7b drift measured, 7c gate specified. Moved Codex AGENT_BUS row to LAST COMPLETED.
+- Guardrail: Audit/docs only; no storefront code changes, deploy, push, PM2 restart, WordPress/Woo write, protected commerce-data change, route, metadata, sitemap, live publishing, or browser dependency install.
+
+## 2026-06-25 · Claude · Ops cleanup + task board reconciliation (session 3)
+- Did: Created `ecosystem.config.cjs` with env-isolated PM2 process definitions (ORCH-5). Deleted 3 crash-looping dated campaign PM2 processes (emart-fb/ig-18-20260625, emart-fb-comment-20260625). Removed n8n from Emart config (it's Medimart's). Cleaned hardcoded creds from archived blog_generator.py.
+- Verified: WA-D (scripts already archived), WA-H (draft/generate-only gate already in live OpenClaw blog_generator.py), VID-5 (platform-split fully wired end-to-end), VID-2 (daily_producer live via crontab), VID-3 (depends on WA-D, done). All marked ✅ in TASKS.md.
+- Added: BLOG-1 task (owner wants generated featured images for blog posts, spec TBD).
+- Commits: `97f9618`
+- Next: BLOG-1 blog image generation. ORCH-5 ecosystem config apply at next maintenance restart. 3 commits unpushed (2 Codex docs + 1 mine).
