@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-24 (Social Engine v1 scaffolded)
+Last updated: 2026-06-25 (workspace conflict audit + clustered session batches)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -12,7 +12,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emartweb` (PM2, :3000) | ✅ online | Next.js 14, v0.39.0 |
 | `emart-presence` (PM2, :3011) | ✅ online | WebSocket, 49d uptime |
 | `emart-embed` (PM2, :8077) | ✅ online | all-mpnet-base-v2 + bge-reranker-v2-m3, 2.2GB RAM |
-| `emart-blog-generator` (PM2 cron) | ✅ scheduled | 3x/day via OpenRouter; stops between cron runs, last published 2026-06-20 16:00 UTC |
+| `emart-blog-generator` (PM2 cron) | ⚠️ scheduled / unsafe for new pilots | 3x/day via OpenRouter; last known publish 2026-06-20 16:00 UTC. Conflicts with WA-G/WA-H until secrets are externalized and draft/review mode exists; owner/Claude should decide pause vs current-topic-only continuation. |
 | `emart-checkout-monitor` (PM2 cron) | ✅ stopped | All 8 steps pass; intentionally stopped |
 | `emart-competitor-prices` (PM2 cron) | ✅ restarted | Manual run completed 2026-06-20; Google Sheets updated |
 | `emart-revenue-health` (PM2 cron) | ✅ stopped | Intentionally stopped |
@@ -27,6 +27,104 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 ---
 
 ## 🔴 OPEN WORK — Prioritized
+
+### Workspace Audit — Inconsistencies & Logical Gaps (2026-06-24)
+
+Cross-system audit of the live automation surface (publishing, generated state, engines). A and B
+carry live-posting risk (🔴). No code changed by the audit — findings only.
+
+**Close-out rule (any agent — [C]/[X]/[A]):** these WA items must be actively closed, not left open.
+When you finish one, flip its Status to ✅ with the date + commit ref (or PR), state how it was verified,
+and move your AGENT_BUS entry from ACTIVE to LAST COMPLETED. Partial work → keep 🔲 and note progress
+inline (don't mark ✅). Before starting any WA item, check AGENT_BUS ACTIVE WORK to avoid collisions
+(WA-A/WA-B/WA-G touch live publishing + secrets — coordinate first).
+
+| ID | Sev | Finding | Owner | Status |
+|---|---|---|---|---|
+| WA-A | 🔴 | **Publishing source of truth unified.** `meta_publish.js` is the sole FB/IG image+reel implementation; legacy entry points are wrappers. Video worker passes its checkpointed queue job via `--job`. Social Engine previews now pass `campaign-plan.json` directly to `meta_schedule.js`, which enforces campaign approval and queues FB buying-link comments. | [X]+[C] | ✅ complete; dry-run default |
+| WA-B | 🔴 | **`/opt/fb-poster` coupling removed.** Active Meta scripts load Axios/dotenv only from `apps/web/node_modules` and credentials only from `apps/web/.env.local` (local or VPS repo). FB and IG read-only Graph validation passed against the live accounts. | [X] | ✅ complete |
+| WA-C | 🟠 | **Generated SEO state removed from tracking.** Reproducible JSON/JSONL outputs and daily GSC snapshots are ignored and removed from the git index while remaining on disk. Human approval queues remain tracked. | [C] | ✅ complete |
+| WA-D | 🟡 | **One-shot dated scripts accumulate in `scripts/active/`.** `meta_18_scheduler_20260623.js`, `_20260624_fb.js`, `_20260624_ig.js`, `meta_fb_comment_worker_20260624.js`, `prepare_fb_campaign_20260624.py` are single-run artifacts living permanently in active/ with no archival. Fix: rotate spent one-shots to `/root/.attic-*` per cleanup rule. | [C] | 🔲 open |
+| WA-E | 🟠 | **Video-engine free-output gaps resolved by Claude.** Free bn-BD voiceover, ducked music, browser-shaped captions, populated persona libraries, branded/value cards, and master QA are implemented and verified. | [C] | ✅ complete |
+| WA-F | 🟠 | **social-engine gaps** — tracked as X8a (performance loop), X8b (IG 4:5 generation), X8c (dead `approval_status`) in the Codex — Open block below. F1 (real vision QA) already ✅ in `f01c602`. | [X] | 🔲 see X8a–X8c |
+| WA-G | 🔴 | **Hermes blog generator has embedded live credentials.** `/root/.openclaw/workspace-emart/blog_generator.py` contains WordPress, WooCommerce, and Telegram secrets in source instead of loading secured environment/credential files. Do not copy values into chat/logs. Rotate affected credentials, move them to protected runtime config, and verify the cron after rotation. | [C]+[O] | 🔲 security remediation required |
+| WA-H | 🟠 | **Hermes blog generator is publish-only.** Its sole `main()` path generates, uploads media, publishes a WordPress post, updates state, and sends Telegram; there is no draft/review/validate mode. Add generate-to-file/draft status plus explicit reviewed publish action before using it for new Bangla or experimental content. | [C] | 🔲 open; do not run for pilots |
+
+### Audit Remediation Priority Lane — Freeze-Safe Order (2026-06-25)
+
+Purpose: serialize the 360° system, SEO, and UI/UX orchestration audit findings without creating duplicate work
+or disturbing the July 3 freeze. Existing task IDs remain authoritative; this lane is the recommended execution order.
+Before 2026-07-03, prefer read-only audits, contracts, ledgers, config/spec work, and non-visual/non-commerce fixes.
+Defer structural/nav/UI refactors, checkout/cart/payment/order/customer/stock/price changes, and broad deploy changes unless
+the owner explicitly approves the exact scope.
+
+| Order | Priority | IDs | Safe next action | Freeze / owner guard |
+|---|---|---|---|---|
+| 1 | 🔴 Critical security | WA-G, ORCH-5 | Inventory embedded/source/process-exposed credentials, prepare rotation/config plan, then rotate only with owner coordination. | Owner/token actions required; never print secrets. |
+| 2 | 🔴 Critical release safety | ORCH-1 | Fix deploy design on paper first: lockfile/install gate, deploy lock, non-blanket staging, release/rollback model, runtime-state exclusions. | Do before any dependency-changing deploy; avoid broad rsync/live mutation while tree is dirty. |
+| 3 | 🔴 Critical SEO data contract | SEO-ORCH-1 | Rebuild canonical URL aggregation + agentic/full-catalog scoring contract; prove counts before any humanizer/SEO priority automation trusts it. | Read-only/rescore first; no content/Woo writes from broken priority inputs. |
+| 4 | 🔴 Critical UX trust contract | UX-ORCH-1 | Inventory every “live/verified/review/stock/activity” UI claim and map it to a real source or fallback label. | No fake-live counters; no stock/price/Woo data writes without explicit request. |
+| 5 | 🟠 High runtime/state map | ORCH-2, ORCH-4, ORCH-8 | Create one versioned process/job manifest plus last-success/freshness SLO list and durable queue/state contract for PM2/crons/engines. | Config/docs first; restart only from known source state. |
+| 6 | 🟠 High work ledger | SEO-ORCH-2, UX-ORCH-2 | Create durable action/event schemas so SEO and UX recommendations have stable IDs, evidence, owner, status, and outcome. | Ledgers first; approval gates before publish/apply. |
+| 7 | 🟠 High visual safety | UX-ORCH-3, UX-ORCH-4, UX-ORCH-8 | Add screenshot/a11y/design-system audits and proposal reports for mobile home/shop/PDP/component drift. | No broad visual refactor before Jul 3; owner approval for visible UI changes. |
+| 8 | 🟠 High content/campaign safety | WA-H, SEO-ORCH-5, UX-ORCH-6 | Convert direct-publish/blog/campaign paths to draft/review/approval/expiry contracts. | No experimental content direct-publish. No automatic discounts/prices. |
+| 9 | 🟠 High measurement loop | SEO-ORCH-4, UX-ORCH-5, UX-ORCH-7, X8a | Join GA4/GSC/GMC/Meta/RUM outcomes to change ledgers; add keep/iterate/revert review cadence. | Measurement/reporting first; no auto-optimization without owner gate. |
+| 10 | 🟡 Medium recovery/ops maturity | ORCH-6, ORCH-7, SEO-ORCH-3, SEO-ORCH-6, SEO-ORCH-7, UX-ORCH-9 | Add DR drill, CI/control-loop tests, URL-policy registry, off-page/entity ledger, and customer-feedback taxonomy. | Mostly post-critical; keep outreach/personal-data workflows approval-first. |
+
+### Workspace Conflict Audit — 2026-06-25
+
+Scope: task-board/workspace governance only. This does not authorize implementation, deploys, live service restarts,
+WordPress/Woo writes, protected commerce-data changes, or broad cleanup while the shared tree is dirty.
+
+| ID | Conflict / friction | Decision for future sessions |
+|---|---|---|
+| WSC-1 | Shared worktree is dirty with concurrent Codex/Claude changes across docs, social publishing, video engine, humanizer, package files, and generated SEO state removals. | Do not deploy/commit/push from this state without reviewing `git status`, `git diff --stat`, staged files, and AGENT_BUS. Prefer task-board/doc-only work until owners of active files are clear. |
+| WSC-2 | AGENT_BUS shows Claude actively owns video orchestration files (`orchestrator.py`, `publish_approved.py`, `enqueue.py`, `jobs/**`, video `.gitignore`, crontab). | Codex/other agents must avoid video-engine edits unless owner explicitly transfers/coordinates the work. ORCH-3 can be audited, not implemented, while this is active. |
+| WSC-3 | `emart-blog-generator` is listed as scheduled, but WA-G says it has embedded live credentials and WA-H says it is publish-only. | Treat blog automation as unsafe for new/experimental content until WA-G/WA-H are closed. Add draft/review and secret rotation before using GSC topics or pilots. |
+| WSC-4 | Social campaign row `X4` still said “active today” for 2026-06-24 after the date passed. | Verify final post/comment results, archive/close stale campaign state, then keep only reusable Social Engine tasks (`X8a`–`X8c`) open. |
+| WSC-5 | Mobile work appears both as open (`X3`) and explicitly out-of-scope for mobile BFF gaps (“EXCEPT MOBILE APP”). | Park mobile app work unless owner reopens it. Do not let mobile tasks consume current web/SEO/orchestration sessions. |
+| WSC-6 | ORCH/SEO/UX priority-lane IDs are repeated by design: once as execution order and once as source task rows. | Not a duplicate-task conflict. The source rows remain authoritative; the priority lane is only sequencing. |
+| WSC-7 | `workspace/seo-review/*` generated files are removed from tracking but still exist as runtime/generated state. | Treat generated SEO JSON/JSONL/GSC snapshots as runtime state, not source of truth for commits. Keep human approval queues tracked. |
+
+### Token-Efficient Session Batches — Work by Cluster, Not by Whole Board
+
+Use these batches to reduce context cost. In each session, read only the batch's files plus AGENT_BUS, TASKS, and
+the exact source files being changed. Do not mix batches unless the task explicitly depends on another batch.
+
+| Batch | Type | Task IDs | Read first | Output expected | Hard stop / guard |
+|---|---|---|---|---|---|
+| B0 | Coordination + source-state check | WSC-1, AGENT_BUS, dirty tree | `python3 workspace/scripts/active/agent_start.py`, `apps/web/.agent-memory/AGENT_BUS.md`, `workspace/TASKS.md`, `git status --short`, relevant `git diff -- <file>` | Decide whether work is safe; claim/avoid overlap; refresh `workspace/AGENT_BRAIN.md` with `agent_brain.py --write` when needed. | Stop if another active agent owns the same files. |
+| B1 | Security + release foundation | WA-G, ORCH-5, ORCH-1 | `AGENTS.md`, `CLAUDE.md`, `deploy.sh`, relevant PM2/cron docs, no secret values | Rotation plan, deploy-safety design, or small reviewed patch. | Never print secrets; no dependency-changing deploy until ORCH-1 is safe. |
+| B2 | Runtime/job orchestration | ORCH-2, ORCH-4, ORCH-8 | `VPS_RESOURCE_MAP.md`, AGENT_BUS, PM2/cron docs, specific worker README | Versioned manifest/SLO/queue-state proposal or implementation. | No restarts from unknown source state; coordinate with active video work. |
+| B3 | SEO data-control system | SEO-ORCH-1, SEO-ORCH-2, SEO-ORCH-3, SEO-ORCH-6 | `workspace/SEO_MASTER.md`, `workspace/seo-review/README.md`, `gsc_tracker.py`, latest GSC/state outputs | Canonical aggregation, scoring, action-ledger, URL-policy, or audit-loop fix. | Do not apply content/Woo writes from untrusted priority data. |
+| B4 | Content lifecycle + humanizer/blog | WA-H, SEO-ORCH-5, SEO-7, X2, M4, M6 | `CONTENT_STANDARD.md`, humanizer README, SEO_MASTER relevant section, exact draft/report file | Draft/review gates, report-only QA, reviewed JSONL batches. | No direct publish; no bulk Woo meta writes without owner-reviewed sample. |
+| B5 | UI/UX trust + visual systems | UX-ORCH-1–UX-ORCH-9, UX-4 | `BRAND_GUIDE.md`, design-change brief(s), exact UI files/routes, screenshot evidence | Trust-data contract, event schema, visual/a11y audit, owner-reviewed UI proposal. | No broad visible UI/nav/structural refactor before 2026-07-03. |
+| B6 | Social/video automation | ORCH-3, WA-D, X7, X8a–X8c, O-15 | AGENT_BUS, social/video README, exact campaign JSON, Meta docs already in workspace | Close stale one-shots, record/performance loop, IG 4:5 assets, approval-state fix. | Do not publish live posts without explicit approval/token permissions; avoid Claude-owned video files. |
+| B7 | Growth/off-page/entity | GROW-1–GROW-5, D8, O-8–O-12, SEO-ORCH-7 | SEO_MASTER, TASKS GROW section, owner profile/link docs | Outreach/entity/content map, ledger, proposal list. | No fake profiles, bought links, doorway/satellite sites, or mass posting. |
+| B8 | Parked/post-freeze structural work | L2, L3, post-freeze backlog, mobile X3 | DEV_MASTER, relevant route/component docs only when reopened | Post-Jul 3 plan or owner decision request. | Park until freeze ends or owner gives exact approval. |
+
+### Authority & Distribution Growth (audit 2026-06-24)
+
+Technical SEO is already strong; the remaining opportunity is legitimate off-site authority, topical
+coverage, and community distribution. Do **not** build AI WordPress satellite sites, public WordPress
+template-kit sites, deceptive/paid link schemes, or other doorway/link-network tactics. The public SEO
+surface remains the Next.js storefront only.
+
+| ID | Item | Owner | Status |
+|---|---|---|---|
+| GROW-1 | Build a GSC-led topical-authority map connecting journal articles, `/best`, `/compare`, concerns, ingredients, brands, and commercial landing pages; include an internal-link proposal workflow and coverage reporting. | [X]+[C] | 🔲 highest priority |
+| GROW-2 | Create a legitimate backlink/digital-PR pipeline: Bangladesh beauty publications, brand/supplier partner pages, blogger reviews, expert contributions, and unlinked-brand-mention outreach. Track target, contact, placement, URL, and outcome; no bought or disguised links. | [O]+[C] | 🔲 open |
+| GROW-3 | Build an approval-first cross-platform syndication workflow that repurposes owned content for Meta, TikTok (after app approval), LinkedIn, YouTube Shorts, and other suitable channels without duplicate spam. | [X]+[C] | 🔲 open; Meta partial, TikTok gated |
+| GROW-4 | Reddit community marketing: establish the real Emart profile, identify relevant Bangladesh/beauty communities and rules, monitor questions, and draft disclosure-safe helpful responses. No vote manipulation, sockpuppets, mass posting, or link drops. | [O]+[C] | 🔲 open; Pixel only today |
+| GROW-5 | Add optional trend/news ingestion to blog topic discovery (Google Trends/approved news source), with relevance, freshness, Bangladesh intent, duplication, and editorial-review gates. Google News-specific sitemap/API work only if Emart develops a genuine news publishing cadence. | [A]+[C] | 🟦 optional after GROW-1–4 |
+
+### SEO — Striking-Distance Command (2026-06-24)
+
+**Why:** Pages ranking 11-20 have the highest ROI for page-1 promotion — Google already trusts them enough to show on page 2, so small on-page improvements (H1 alignment, inbound internal links, content depth on the answering section) consistently push them to page 1. The GSC tracker scores position 11-20 at only 0.8 weight because the system was built for CTR optimization on existing top-10 winners, not for page-2→page-1 promotion. A dedicated `striking-distance` command surfaces these pages sorted by impressions with their top queries, so the team can act on them without manual JSON filtering. Today: 185 pages sit in position 11-20.
+
+| ID | Item | Owner | Status |
+|---|---|---|---|
+| SD-1 | Add `striking-distance` subcommand to `gsc_tracker.py` — filter pos 11-20, sort by impressions, show top query per page | [C] | ✅ 2026-06-24 — 185 pages surfaced; run `python3 gsc_tracker.py striking-distance` |
 
 ### 🟢 ONGOING — Product Description Humanization via Opus Humanizer Engine (2026-06-23)
 
@@ -105,6 +203,11 @@ Counts reconciled: MySQL/WC REST/Qdrant/Sitemap all 3,625. URL prefix `/shop/` c
 | UX-4 | PDP + chat trust CRO plan: add compact post-ATC trust microcopy and strengthen AI authenticity/in-stock recommendation rules | [X] | 🔲 plan first; no code changes until owner approves exact copy/placement |
 | SEO-1 | Product title cleanup for raw/lowercase catalog titles | [O]+[X] | 🟡 propose/review/apply only; no blind Woo title writes |
 | SEO-2 | Journal internal-link cluster proposals from articles to product/category pages | [X] | 🔲 next safe automation batch |
+| SEO-3 | Category-page target map and coverage audit: list only canonical, indexable categories; assign one primary query plus supporting intent from GSC; verify title, meta description, H1, slug, intro, guide word count, H2s, FAQ usefulness, and internal links. Flag slug/H1 mismatch for review—do not rename URLs automatically. | [X]+[C] | 🔲 audit first; coordinate with GROW-1 |
+| SEO-4 | Expand buying guides only for high-value categories selected by GSC impressions, revenue relevance, catalog depth, and content gap. Aim for enough original buyer-helpful coverage—not a blanket 400–500-word quota. First candidates from the audit: Body Wash and other thin active categories; preserve Face Cleansers/Sunscreen unless evidence shows a gap. | [C]+[O] | 🔲 proposal/review before content changes |
+| SEO-5 | Add contextual links from approved category guides to genuinely related canonical categories, concerns, ingredients, routines, `/best`, and `/compare` pages; add visible FAQs only where real category-specific questions exist, with matching schema only when eligible. No boilerplate or mass link blocks. | [C] | 🔲 staged after SEO-3 |
+| SEO-6 | Education-content scanability subtask under existing M6: split the 15 ingredient and 9 concern pages' oversized single-paragraph H2 bodies into answer-first 2–4-line paragraphs and useful lists where natural, preserving facts, links, headings, visible FAQs, and matching schema. Audit the first four priority pages before proposing bulk changes. | [C]+[O] | 🔲 audit/proposal; extends M6 without duplicating it |
+| SEO-7 | Add a read-only structural QA report for imported Woo PDP descriptions and WordPress blog HTML: one meaningful H1 at template level, logical H2/H3 order, direct first answer, paragraph-length outliers, list opportunities, broken/irrelevant internal links, and FAQ duplication. Produce proposals only; never auto-rewrite published content. | [X]+[C] | 🔲 open; report-only first pass |
 
 ### Content Pipeline (spec: `workspace/CONTENT_STANDARD.md`)
 
@@ -156,12 +259,62 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 |---|---|
 | X6 — VPS disk cleanup: Claude completed cleanup after Codex audit; disk now 63/96 GB used (66%, 34 GB free). | ✅ complete |
 | X2 — Impression-priority humanizer: monitor GSC, generate new JSONL batch | 🔲 |
-| X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⚠️ ADB blocked |
-| X4 — Social publishing: 2026-06-24 Facebook + Instagram 18-post v3 campaign scheduled 09:00-23:00 BDT via separate PM2 runs `emart-fb-18-20260624` and `emart-ig-18-20260624`; final assets live under `/images/social/2026-06-24/fb-18-v3/`. Instagram captions use "DM to order / link in bio". Buying-link comment worker `emart-fb-comment-20260624` is online and queues full product URLs after each Facebook post publishes; comment permission still must be watched on first post. | 🟡 active today |
+| X3 — Mobile M0: real device checkout smoke → EAS production AAB → Play Store | ⏸️ parked unless owner reopens mobile; ADB blocked |
+| X4 — Social publishing: 2026-06-24 Facebook + Instagram 18-post v3 campaign scheduled 09:00-23:00 BDT via separate PM2 runs `emart-fb-18-20260624` and `emart-ig-18-20260624`; final assets live under `/images/social/2026-06-24/fb-18-v3/`. Instagram captions use "DM to order / link in bio". Buying-link comment worker `emart-fb-comment-20260624` queued full product URLs after each Facebook post publishes. | 🟡 stale campaign state; verify final results/comment permissions, then close/archive reusable learnings into X8a |
 | X7 — AI video engine: Phase 0 local reel engine built; direct Google dropped from default path. Scripts now use OpenRouter free Gemma fallback (`google/gemma-4-31b-it:free` proven), QA defaults to local ffprobe; sample reel live at `/public/videos/reels/20260624-gemma-boj-relief-sun-sample.mp4`; live publish remains owner-gated. | 🟡 publish gated |
-| X8 — Social Engine v1: `workspace/social-engine/` creates review-gated FB/IG plans, duplicate/yesterday guards, caption checks, scheduler previews, and optional video jobs. `--vision-qa` now performs real free OpenRouter image inspection for product identity, visible price, dummy products, model-hand placement, and layout; it deduplicates reused assets, runs four checks concurrently, and blocks on fail/unavailable. Manual attestation remains the explicit offline fallback. | 🟡 real vision gate complete; caption generation, IG 4:5 generation, and performance loop next |
+| X8 — Social Engine v1: `workspace/social-engine/` creates review-gated FB/IG plans, duplicate/yesterday guards, caption checks, scheduler previews, and optional video jobs. `--vision-qa` now performs real free OpenRouter image inspection for product identity, visible price, dummy products, model-hand placement, and layout; it deduplicates reused assets, runs four checks concurrently, and blocks on fail/unavailable. Manual attestation remains the explicit offline fallback. | 🟡 real vision gate complete; sub-tasks X8a–X8c open |
+| X8a — Social Engine performance loop (audit F2): `load_history` is read-only — no `record` subcommand to auto-append a published campaign to `history/published-products.json`, and no Meta Graph insights import (reactions/comments/clicks). Dedup currently depends on manual history upkeep; product/caption selection has no performance signal feeding back. Free fix: add `record` subcommand + free Graph insights pull via existing Meta adapters. | 🔲 open |
+| X8b — Social Engine IG 4:5 asset generation (audit F3): all 18 IG posts reuse the 1080×1080 FB image; `qa_campaign` only emits `non_preferred_image_size` warnings (want 1080×1350) and there is no generator to produce the 4:5 crop. Contradicts the owner preference for separate IG 4:5 / FB 1:1 assets. Free fix: call `social_image_gen.py` to emit 1080×1350 IG variants. | 🔲 open |
+| X8c — Social Engine `approval_status` is dead (audit F4): the campaign's `approval_status` (e.g. `approved_for_scheduled_run`) is normalized onto items but the publish gate hardcodes `approval_required: True` and always prints `review_required`. Field is misleading — either honor it (with safe guardrails) or drop it. | 🔲 open |
+| X9 — Selective `stop-slop` adoption: `emart-stop-slop-v1` adds soft warnings for throat-clearing, vague claims, jargon, meta-commentary, formulaic contrast, and staccato rhythm. Preserves AEO questions, useful adverbs, limited em dashes, and GMC gates. Four tests pass; gold exemplars remain mean 94.0; fixed JSONL summaries to count hard-gate failures correctly. Humanizer only—blog/social require separate review. | ✅ complete |
+| X10 — Bangla blog anti-slop capacity pilot: review-only sunscreen guide saved at `workspace/audit/active/bangla-blog-stop-slop-pilot-20260624.md`. QA: 862 words, H1 1, H2 6, FAQ 3, internal links 3 (all live 200), bullets 8, numbered steps 4, maximum paragraph 59 words, zero banned-residue/medical-claim hits. No WordPress action. | ✅ complete; awaiting owner content review |
+| X11 — Plain-English blog capacity pilot: initial readable draft passed prose QA but failed full business/SEO readiness due duplicate intent, no product-body links, and incomplete schema coverage. Now being converted into a rewrite/conversion package for existing post ID 94840 using current GSC and verified in-stock products; never publish as a new URL. | 🟡 revision in progress |
 | X5 — SEO cron state hygiene: retained the valid 2026-06-23 GSC/state refresh and fixed `system_state.py` treating the em-dash placeholder as an active agent. | ✅ complete |
 | Mobile BFF gaps: `/api/mobile/cart` and `/api/mobile/payment` return 404 | ⏸️ out of scope per owner: "EXCEPT MOBILE APP" |
+
+### System Orchestration Audit — 2026-06-24
+
+| ID | Priority | Item | Status |
+|---|---|---|---|
+| ORCH-1 | Critical | Make deploy transactional: fix the post-rsync lockfile comparison, remove blanket `git add -A`, add a deploy lock, build/release atomically, and automatically restore the last known-good release when smoke/SEO gates fail. Protect runtime queues/state from `rsync --delete`. | 🔲 verified gaps; fix before next dependency-changing deploy |
+| ORCH-2 | High | Create one versioned runtime manifest for every Emart PM2 process and scheduled job, including cwd, timezone, owner, restart policy, resource limits, expected lifecycle, and install/reconcile commands. Current Git manifest covers only `emartweb`; root crontab and most PM2 jobs are ad hoc. | 🔲 open |
+| ORCH-3 | High | Repair and finish video orchestration: cron must use an absolute path/cwd; add a real review→approval action; decide whether approved jobs require an explicit live publisher; add a global worker lock, retry budget/dead-letter state, atomic checkpoints, and publish idempotency. | 🔲 current orchestrator/publisher logs absent; approval adapters not implemented |
+| ORCH-4 | High | Replace presence-only monitoring with freshness/SLO monitoring: last successful run, duration, queue age, retry count, error class, commercial endpoint health, and alert recovery. Stop maintaining a hard-coded expected-stopped PM2 list. | 🔲 open |
+| ORCH-5 | High | Reduce credential and privilege blast radius: stop inheriting interactive shell secrets into PM2 metadata, move plaintext script credentials to restricted runtime secret files, run Emart services/jobs as a dedicated user, and rotate any credential exposed through process metadata or source. | 🔲 verified exposure surface; values intentionally omitted |
+| ORCH-6 | High | Complete disaster recovery: keep encrypted off-server DB/uploads backups, fail closed on dump/tar errors, verify checksums, document RPO/RTO, and perform a periodic isolated restore drill. Current archives pass gzip/tar integrity but remain on the same VPS and no restore drill was found. | 🔲 open |
+| ORCH-7 | Medium | Add CI for typecheck, lint, unit/integration tests, build, dependency/security checks, deploy-script tests, and orchestration state-machine tests. Keep production deployment owner-controlled until a safer release mechanism exists. | 🔲 no GitHub workflow; storefront test coverage minimal |
+| ORCH-8 | High | Standardize durable automation queue/state handling across video, social, blog, humanizer, GSC/SEO, Qdrant and future workers: one lock per worker/domain, atomic state writes, idempotency keys, retry budgets, dead-letter queues, manual replay, checkpoint schema, and append-only audit trail. ORCH-3 remains the video-specific fix; this is the shared engine contract. | 🔲 verified gap: current workers mix file queues, checkpoints, cron/PM2 state and approval files without one global state-machine standard |
+
+### SEO System Orchestration Audit — 2026-06-24
+
+| ID | Priority | Item | Status |
+|---|---|---|---|
+| SEO-ORCH-1 | Critical | Repair SEO prioritization inputs before acting on them: run/maintain complete catalog-wide agentic scores, align tier contracts (`THIN/PARTIAL/STRONG/GOLDEN`), use a durable completed-content registry instead of inferred tiers, and normalize legacy `/product/` plus query URLs into their canonical URL before aggregating GSC metrics. | 🔲 verified: 20 agentic rows for 3,625 products; top-50 all unscored; humanizer reports 0 completed |
+| SEO-ORCH-2 | High | Replace daily overwritten `actions.json` with a durable SEO work ledger: stable action ID, canonical URL/entity, evidence snapshot, proposed change, owner, approval state, dependency, due/SLA, execution record, rollback pointer, verification state, and final outcome. Deduplicate recurring findings and escalate stale approvals such as the 21 pending title proposals. | 🔲 open |
+| SEO-ORCH-3 | High | Schedule one read-only technical SEO control loop: catalog↔sitemap↔Qdrant parity and historical count deltas, representative plus rotating URL samples, metadata/schema/canonical/404/redirect-chain/query-policy/news-sitemap checks, internal-link/orphan crawl, GSC index/URL-inspection coverage, Core Web Vitals/CrUX, and last-success freshness alerts. | 🔲 current deploy gate passes but samples only one URL/type; deeper audits are unscheduled; `emart-seo-autoscan` is stopped/report-only and the nightly `full` run excludes the separate on-page/live technical audit |
+| SEO-ORCH-4 | High | Build a closed-loop measurement layer joining GSC with GA4 organic landing-page engagement/conversions, order/revenue value, availability/catalog depth, GMC health, and change annotations. Use pre-change baselines, holdouts where practical, 7/28-day reviews, confidence thresholds, and keep/iterate/revert decisions. | 🔲 GA4 reporter exists separately; no SEO change ledger or experiment/outcome loop |
+| SEO-ORCH-5 | High | Unify content lifecycle: demand/intent and cannibalization check → brief → draft → factual/brand/claim/link/schema QA → human approval → publish → cache revalidation → sitemap/index verification → performance review. The GSC topic feed must create drafts, never hand topics to a direct-publish blog path. Include imported Woo PDP/blog HTML structural QA before rewrite proposals. | 🔲 current external blog generator publishes with `status=publish`; review gate absent; overlaps WA-H and SEO-7 report-only QA |
+| SEO-ORCH-6 | Medium | Establish one versioned URL-policy registry consumed/tested by middleware, metadata, robots, sitemap, redirects and audit tools. Decide crawl/index/canonical behavior for every supported query parameter and detect drift; Googlebot currently bypasses generic robots query disallows while representative filter URLs return `index, follow` with a clean canonical. | 🔲 42 parameter URLs present in latest GSC page rows |
+| SEO-ORCH-7 | Medium | Add governed off-page/entity/AEO operations: backlink and mention inventory, outreach/GBP/social-profile/review workflow with ownership and proof, toxic/spam review, AI citation/referral monitoring, and conversion attribution. Keep all external publishing/outreach approval-first. | 🔲 tasks exist, but no operating ledger or measurement loop |
+
+### UI/UX System Orchestration Audit — 2026-06-25
+
+Audit-only origin: mobile screenshots/static scans showed a polished storefront with weak experience-control systems.
+These tasks do not authorize protected commerce-data changes. Before 2026-07-03, keep work to audits, contracts,
+instrumentation specs, non-invasive monitoring, and owner-reviewed proposals unless the owner explicitly approves
+the exact visible change.
+
+| ID | Priority | Item | Status |
+|---|---|---|---|
+| UX-ORCH-1 | Critical | Create a storefront trust-data contract for all UI claims that imply “live”, “verified”, “stock”, “reviews”, “sold”, “active viewers”, or social proof. Each claim must map to a real data source, explicit fallback label, cache age, and owner-approved wording. Remove or relabel synthetic/fallback counters before scaling CRO. | 🔲 verified risk: deterministic fallback values and hardcoded social-proof/testimonial surfaces exist; no stock/price/Woo writes without explicit request |
+| UX-ORCH-2 | High | Define a UX event schema and tracking ledger for product-list view/select, search query/no-result, filter/sort use, PDP gallery/sticky CTA, wishlist/back-in-stock, chat/WhatsApp, quiz/routine, coupon/shipping/payment validation errors, and mobile overlay interactions. | 🔲 current commerce analytics cover core purchase funnel only; checkout/cart/payment instrumentation requires owner-approved exact scope |
+| UX-ORCH-3 | High | Add a read-only visual QA matrix for mobile and desktop home, shop/category, PDP, search, journal, and key campaign slots: screenshot capture, overlay collision checks, first-screen content visibility, sticky CTA/bottom-nav/chat conflicts, and before/after diff evidence. | 🔲 audit/proposal first; no broad visual refactor during freeze |
+| UX-ORCH-4 | High | Enforce design-system governance: measure and reduce raw buttons/inputs, hardcoded colors, arbitrary color classes, typography drift, and duplicated product-card/CTA patterns; prefer shared tokens/components with visual parity checks. | 🔲 verified drift: design-system exists but is weakly adopted; defer mass component refactor until post-freeze unless no visible change |
+| UX-ORCH-5 | High | Add frontend experience health monitoring: web-vitals/RUM, route error reporting, unhandled promise/window errors, API failure rates, hydration/runtime exceptions, and route-level last-good health. | 🔲 current error boundaries mostly log locally; choose provider/config without exposing secrets |
+| UX-ORCH-6 | High | Build campaign/promotion orchestration for hero, offer rails, flash messaging, social campaign assets, and expiry: owner, source data, start/end, preview, approval, rollback, linked metric, and stale-content alerts. | 🔲 current campaign surfaces are partly hardcoded/rolling; no price/discount automation without explicit request |
+| UX-ORCH-7 | Medium | Create an experiment/feature-flag registry for UX changes: hypothesis, audience, variant, holdout, metric, minimum runtime, rollback condition, owner approval, and outcome. | 🔲 no auto-randomized UI or self-optimizing changes until measurement and approval gates exist |
+| UX-ORCH-8 | Medium | Add automated accessibility gates: axe/keyboard/focus/contrast checks on representative mobile/desktop journeys, with issue severity, owner-visible screenshots, and route/component ownership. | 🔲 some ARIA/skeleton/focus care exists, but no systematic CI/audit gate |
+| UX-ORCH-9 | Medium | Close the customer-feedback loop: taxonomy for UX complaints, search failures, chat misses, review/support themes, “could not find product” signals, and post-purchase friction; feed prioritized issues into the UX/SEO/action ledgers. | 🔲 approval-first for any new customer-data collection or support workflow changes |
 
 ### Backlog (post-freeze Jul 3+)
 

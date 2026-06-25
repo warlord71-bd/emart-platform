@@ -16,7 +16,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
-| — | — | — | — |
+| Claude | 2026-06-24 | VA-1: autonomous video orchestration + human-approval gate. NEW files only — does NOT edit worker.py or any meta_* (calls them). File-queue lifecycle queue→building→review→approved→published; auto-escalate to Codex image on QA fail; outbound TG notify; cron-driven. | `workspace/video-engine/orchestrator.py`, `publish_approved.py`, `enqueue.py`, `jobs/**`, `workspace/video-engine/.gitignore`, user crontab |
 
 ---
 
@@ -24,6 +24,16 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-25 | Built Agent Brain v1: `agent_brain.py`, `agent_start.py`, `agent_close.py`, generated `workspace/AGENT_BRAIN.md`, and wired B0 to the quick-start command; read-only/no-secret/no-live-service design | pending (shared dirty tree) |
+| Codex | 2026-06-25 | Closed audit-governance session: added freeze-safe ORCH/SEO/UX priority lane, UX-ORCH tasks, ORCH-8, workspace conflict audit WSC-1–WSC-7, and token-efficient session batches B0–B8; no code/live/protected-commerce changes | pending (task-board/session-log only; shared dirty tree) |
+| Codex | 2026-06-24 | Fulfilled 1/1 Codex image order; completed WA-B/A/C: local-only Meta dependencies and unified token source, one queue/plan-driven dry-run publisher, generated SEO state untracked; VPS read-only Meta validation passed | pending (shared dirty tree) |
+| Codex | 2026-06-24 | Produced QA-checked 827-word plain-English blog pilot and recorded minimal English-in-Bangla language preference | pending |
+| Codex | 2026-06-24 | Produced and QA-checked unpublished 862-word Bangla blog pilot; recorded Hermes credential and publish-gate blockers as WA-G/WA-H | pending |
+| Codex | 2026-06-24 | Added tested `emart-stop-slop-v1` soft humanizer lint layer; preserved Emart AEO voice; fixed hard-gate pass summary | pending |
+| Codex | 2026-06-24 | Deduplicated page-structure audit; added only SEO-6 education scanability and SEO-7 imported-content structural QA | pending |
+| Codex | 2026-06-24 | Added SEO-3–SEO-5 category coverage, buying-guide, internal-link, and useful-FAQ tasks from live/source audit | pending |
+| Codex | 2026-06-24 | Added GROW-1–GROW-5 authority/distribution backlog with safe SEO and community-marketing guardrails | pending |
+| Claude | 2026-06-24 | Video engine: bn-BD voiceover (edge-tts) + ducked music + −14 LUFS loudnorm; native-Bangla browser caption overlays w/ fades; ALL 3 persona libraries populated; value/bullet + branded end cards; blurred-fill for branded frames; master QA (technical+loudness+multi-frame vision+captions) report card; crop-pan motion fix; automated Codex image handoff (codex_bridge: emit→list→fulfill→consume, idempotent). **WA-E (silent reels + empty persona libs) VERIFIED RESOLVED — close it.** Staying OUT of WA-A/B/C (Codex/live-publishing). WA-D (scripts/active archival) is mine but DEFERRED until Codex finishes the meta_* publishers there. | `workspace/video-engine/**` (untouched by Codex) |
 | Codex | 2026-06-24 | Built Phase 0 video engine, switched default scripts to OpenRouter free Gemma, added local reel QA, generated Beauty of Joseon sample reel | pending |
 | Claude | 2026-06-23 | PDP nudge fix, WhatsApp escalation link, Recently Viewed move, social_image_gen seed fix, SPF record fix, register 500 fix, checkout/email verification, TikTok API setup guide, Codex work synced | `5b5461d`, `c3dd2f6` |
 | Codex | 2026-06-20 14:34 | C5 deploy gate closed, pa_concern 57 applied, whole-catalog concern audit (124 critical) | `7742191`, `6057a58`, `2876565` |
@@ -43,6 +53,7 @@ apps/web/.agent-memory/MEMORY.md ← all agents read/write
 workspace/seo-review/*.json     ← gsc_tracker writes, agents read
 apps/web/src/lib/seo/product.ts ← SEO schema changes
 apps/web/src/app/shop/[slug]/page.tsx ← PDP changes
+workspace/scripts/active/meta_*  ← HOT (2026-06-24): Codex fixing WA-B/A publishers + scheduler; Claude holds WA-D archival here until done
 ```
 
 **Before editing a conflict zone file:**

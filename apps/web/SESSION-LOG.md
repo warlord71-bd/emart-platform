@@ -2959,3 +2959,98 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: Six Social Engine tests pass, including vision fail/unavailable and incomplete-verdict gates. Offline 2026-06-24 v3 planning still passes with only the known 18 Instagram 4:5 warnings. A live free-model check correctly passed the COSRX creative after the rubric was taught `TAKA` and crossed-price presentation.
 - Risk: A full 18-image free-provider smoke was terminated after excessive upstream latency; free OpenRouter availability remains variable and strict runs intentionally block rather than bypass unavailable vision QA.
 - Next: Add free caption generation/review, then automatic Instagram 1080x1350 asset generation.
+
+## 2026-06-24 (Codex - authority and distribution task audit)
+- Did: Audited AI WordPress satellites/template kits, topical authority, social syndication, backlinks, news ingestion, and Reddit marketing against the current Next.js/WordPress architecture and SEO plan.
+- Did: Added task-board items GROW-1–GROW-5 for topical mapping/internal links, legitimate digital PR, approval-first syndication, disclosure-safe Reddit participation, and optional trend/news ingestion.
+- Guardrail: Explicitly excluded public WordPress satellite/template sites, doorway networks, deceptive backlinks, vote manipulation, sockpuppets, and mass link posting.
+- Next: Start GROW-1 with a GSC-led topic/URL coverage map; keep GROW-2–4 approval-first where external accounts or outreach are involved.
+
+## 2026-06-24 (Codex - category-page SEO audit task handoff)
+- Did: Cross-checked category metadata, H1/slug handling, intro and below-grid buying-guide content, H2/FAQ coverage, and contextual links in source and representative live pages.
+- Finding: Face Cleansers and Sunscreen have roughly 400+ total editorial words; generic categories such as Body Wash remain thin. All three sampled below-grid guides had zero contextual links, and FAQ/H2 coverage is inconsistent.
+- Did: Added SEO-3–SEO-5 to the task board: canonical category/query coverage audit, evidence-prioritized buying-guide proposals, and staged contextual links/useful FAQs.
+- Guardrail: No blanket word-count target, automatic slug changes, boilerplate FAQ generation, mass link blocks, or ranking guarantee.
+
+## 2026-06-24 (Codex - page-structure task deduplication)
+- Did: Cross-checked the eight-point page-structure audit against existing GROW-1, D8, M6, SEO-2, and SEO-3–SEO-5 work instead of creating duplicate jobs.
+- Existing coverage retained: category H1/query mapping, buying guides, internal links/useful FAQs, rich brand content, topical linking, and education refinement.
+- Did: Added only two uncovered tasks: SEO-6 for answer-first, scannable ingredient/concern section formatting under M6; SEO-7 for read-only structural QA of imported Woo PDP and WordPress blog HTML.
+- Guardrail: Both start as audits/proposals; no automatic published-content rewrites.
+
+## 2026-06-24 (Codex - selective stop-slop humanizer adoption)
+- Did: Reviewed `hardikpandya/stop-slop` and adapted only defensible patterns into `workspace/humanizer/engine/residue_lint.py` as the soft profile `emart-stop-slop-v1`: throat-clearing, empty emphasis, business jargon, meta-commentary, vague declaratives, formulaic contrast, and three-sentence staccato runs.
+- Guardrail: Deliberately rejected blanket bans on all adverbs, Wh-questions, passive voice, three-item lists, and em dashes. The new signals reduce the AI-residue category score but cannot trip the hard residue gate alone. Scope is PDP humanizer only; blog/social reuse needs separate corpus calibration.
+- Did: Added four unit tests and documented the scope in `README.md` + `OPUS_STYLE_SPEC.md`. Also fixed an existing JSONL summary bug that counted score≥80 GMC failures as passes, and closed file handles used by the CLI.
+- Verified: 4/4 tests pass; Python compile passes; all three gold exemplars retain their exact scores (96/95/91, mean 94.0); the 15-row real batch now truthfully reports 14/15 because its `miracle` GMC failure is excluded.
+- Next: Claude/Hermes can use the updated linter immediately for future humanizer runs. Do not copy these rules into blog/social gates without a separate benchmark.
+
+## 2026-06-24 (Codex - Bangla blog anti-slop capacity pilot)
+- Did: Created one unpublished Bangla sunscreen guide at `workspace/audit/active/bangla-blog-stop-slop-pilot-20260624.md` to test directness, scanability, Bangladesh context, and natural internal linking. WordPress was not touched.
+- Verified: 862 words; 1 H1, 6 H2s, 3 FAQ questions, 3 contextual internal links, 8 bullets, 4 ordered steps, 19 prose paragraphs, maximum paragraph 59 words, no paragraph over 80 words, no em dashes, and no targeted AI-residue or unsafe medical-claim hits. All three internal URLs return HTTP 200.
+- Pipeline finding: the current `/root/.openclaw/workspace-emart/blog_generator.py` is unsuitable for a pilot because its only path publishes immediately and advances state; it also embeds live WordPress/WooCommerce/Telegram credentials in source. Added WA-G/WA-H without exposing credential values.
+- Next: Owner reviews language/content quality. Claude should secure/rotate blog credentials and add a generate-to-file or WordPress-draft review gate before Hermes produces experimental Bangla posts.
+
+## 2026-06-24 (Codex - plain-English blog capacity pilot)
+- Did: Produced a review-only English version of the Bangla sunscreen guide at `workspace/audit/active/english-blog-stop-slop-pilot-20260624.md`, written for mass readers with common vocabulary, short sentences, direct definitions, and the same safe SEO/internal-link structure. WordPress was not touched.
+- Verified: 827 words; Flesch Reading Ease 73.3; average sentence 12.7 words; 1 H1, 6 H2s, 3 FAQ questions, 3 internal links, 8 bullets, 4 ordered steps, maximum paragraph 52 words, no paragraph over 80 words, no em dashes, and no targeted AI-residue or medical-claim hits.
+- Preference recorded: natural simple Bangla may retain familiar English skincare terms when Bangla translations sound forced, but mixing must remain minimal and clarity-led. Added `feedback_bangla_content_language.md` to shared agent memory for Claude/Hermes.
+- Next: Owner compares the Bangla and English drafts. Publishing remains blocked until the Hermes blog pipeline gets secured credentials and a draft/review mode.
+
+## 2026-06-24 (Codex - image queue + WA-B/A/C)
+- Did: Fulfilled the pending Codex bridge order for Dr. Rumana holding COSRX Advanced Snail 96 Power Essence. Saved the clean product-in-hand PNG at the exact engine path and normalized it to 1080x1920; bridge reports 1 fulfilled, 0 pending.
+- WA-B: Added project-local dotenv metadata (Axios was already local), introduced `meta_runtime.js`, and removed every `/opt/fb-poster` require from active Meta scripts. Credentials load only from the repo/VPS `apps/web/.env.local`.
+- WA-A: Added dry-run-by-default `meta_publish.js` as the single FB/IG image+reel implementation; legacy image/reel entry points are wrappers. Video worker now passes its checkpointed queue job via `--job`. Social Engine previews pass `campaign-plan.json` directly to approval-gated `meta_schedule.js`, which preserves FB buying-link queue creation.
+- WA-C: Ignored reproducible SEO JSON/JSONL state and GSC daily snapshots and removed tracked copies from the git index without deleting working files. Human title-review queues remain tracked.
+- Verified: Node/Python syntax checks, npm dependency resolution, image/reel wrapper dry-runs, 18-post Facebook/Instagram plan dry-runs, local and VPS publisher validation, and read-only live Graph validation for the Emart Facebook Page and linked Instagram account all passed. No post was sent.
+- Deploy: Exact publisher/scheduler files, package metadata, and dotenv runtime package were synced to `/var/www/emart-platform`; no web restart was needed. The existing buying-comment worker was not restarted because its token still lacks `pages_manage_engagement`; permission error #200 remains an owner token-regeneration blocker.
+- Coordination: Preserved Claude's uncommitted video-engine work, changing only the publisher constant/call in `worker.py`. No commit/push was made because the shared tree contains concurrent uncommitted work.
+
+## 2026-06-24 (Codex - 360-degree system orchestration audit)
+- Did: Read-only audit of deployment, PM2, root cron/systemd timers, file queues, approval gates, monitoring, state/checkpoint handling, secrets exposure, backups/restore readiness, CI/tests, resource use, and live health. Added ORCH-1–ORCH-7 to `workspace/TASKS.md`; no production behavior or protected commerce data changed.
+- Critical finding: `deploy.sh` compares Local/VPS lockfiles after rsync has made them equal, so a dependency-changing deploy can skip `npm install`; deploy also stages the whole dirty tree, mutates the live tree in place, and has no automatic rollback after a failed live gate.
+- High findings: runtime control is split across unversioned root cron, ad-hoc PM2 entries, scripts, and docs; only `emartweb` has a tracked PM2 manifest. Video cron lacks cwd/absolute path, review approval adapters are only described, publisher cron is dry-run, file queues lack a global lock/atomic durable state, and monitoring lacks consistent last-success/freshness semantics.
+- Security/recovery: PM2 process metadata inherits broad interactive environments including credentials; root runs the jobs. Daily DB and weekly uploads backups exist and current gzip/tar archives passed integrity checks, but backups are same-VPS, the script does not fail closed, and no isolated restore drill/RPO/RTO was found.
+- Verified healthy now: live `/`, `/shop`, and `/presence-healthz` return HTTP 200; `emartweb`, presence, and embedding service are online; Qdrant nightly sync has recent successful output. Disk is 69% used; embed service uses about 2 GB RAM and host swap use is about 4.9/8 GB.
+- Next: ORCH-1 first, then ORCH-2/ORCH-5. Do not attempt a dependency-changing deploy until the lockfile/install gate is corrected or dependencies are installed explicitly and verified.
+
+## 2026-06-24 (Codex - 360-degree SEO system orchestration audit)
+- Did: Audited the SEO control system across GSC ingestion/scoring, canonical normalization, technical crawl/index controls, sitemap/robots/redirects, metadata/schema deploy gates, content/humanizer/blog pipelines, approval state, scheduling, monitoring, testing, GA4/business measurement, off-page/entity work, AEO, and recovery. Added SEO-ORCH-1–SEO-ORCH-7 to `workspace/TASKS.md`; no live SEO, WordPress/Woo data, routes, metadata, sitemap, or deployment state changed.
+- Current health: Existing live SEO/AEO deploy gate passed 10/10. Live sitemap returned 4,205 clean unique URLs with 3,625 product URLs, zero duplicates/query URLs/wrong hosts; sampled query pages returned clean `/shop` canonicals, legacy PDP redirected to `/shop`, and fake PDP returned 404.
+- Critical data-contract finding: `agentic-score.jsonl` has only 20 products for a 3,625-product catalog; none of the current GSC priority top 50 has an agentic tier. Humanizer completion logic checks impossible `GOOD/EXCELLENT` tiers while scorer emits `THIN/PARTIAL/STRONG/GOLDEN`, and its loaded humanized-ID registry is unused; nightly output therefore reports 0 completed / 460 needing work despite completed batches.
+- Workflow findings: 225 legacy `/product/` GSC rows (467 impressions/12 clicks) are excluded rather than folded into canonical PDPs. `actions.json` is overwritten daily without stable IDs/acknowledgement/completion/outcome history; all 21 title proposals from June 21–23 remain pending without SLA/escalation. The nightly `full` pipeline excludes trend refresh and the separate on-page/live technical audit; the latter is not scheduled and `emart-seo-autoscan` is stopped/report-only.
+- Publish/measurement findings: GSC topics feed an external blog generator whose only write path uses WordPress `status=publish`, not draft/review. GA4 reporting exists but is not joined to SEO prioritization, revenue, availability, GMC, or a change/experiment ledger; there is no automated 7/28-day keep/iterate/revert loop.
+- Crawl-policy finding: Googlebot's explicit allow-all bypasses generic query disallows; sampled faceted URLs are `index, follow` with clean canonicals. Latest GSC snapshot contains 42 parameter rows. Current state is controlled but the policy is duplicated across robots, middleware and metadata with no shared contract test.
+- Next: SEO-ORCH-1 first. Do not use the current humanizer queue or agentic multiplier as authoritative until tier/completion/canonical aggregation is fixed and the full catalog is rescored.
+
+## 2026-06-25 (Codex - audit task-board prioritization)
+- Did: Updated `workspace/TASKS.md` only: added a freeze-safe Audit Remediation Priority Lane that serializes existing WA/ORCH/SEO-ORCH work plus the new UX-ORCH work without duplicating old task IDs.
+- Did: Added `UX-ORCH-1`–`UX-ORCH-9` for UI/UX orchestration gaps: trust-data contract, UX event schema, visual QA matrix, design-system governance, frontend RUM/errors, campaign orchestration, experiment registry, accessibility gates, and customer-feedback loop.
+- Guardrails: Marked pre-Jul 3 work as audits/contracts/ledgers/specs/non-invasive monitoring unless owner approves exact visible/protected-commerce scope. Protected checkout/cart/payment/order/customer/stock/price/Woo data remains untouched.
+- Verified: No code, live service, deploy, PM2, WordPress, WooCommerce, price, stock, order, customer, or route changes were made.
+- Next: Start with priority-lane item 1 (WA-G/ORCH-5 credential blast-radius plan) or item 2 (ORCH-1 deploy safety design) before lower-priority UX polish.
+
+## 2026-06-25 (Codex - ORCH/SEO-ORCH coverage verification)
+- Did: Re-checked existing `ORCH-*` and `SEO-ORCH-*` task-board items against the 360° audit findings and `SEO_MASTER.md`.
+- Update: Added `ORCH-8` for the missing cross-worker durable queue/state-machine contract across video, social, blog, humanizer, GSC/SEO, Qdrant, and future automations. Linked it into the priority lane with ORCH-2/ORCH-4.
+- Update: Tightened `SEO-ORCH-3` status to mention the stopped/report-only `emart-seo-autoscan` and missing on-page/live technical audit in nightly `full`; tightened `SEO-ORCH-5` to include imported Woo PDP/blog HTML structural QA and its overlap with WA-H/SEO-7.
+- Verification: No new SEO task was needed beyond status/detail updates because SEO-ORCH-1 through SEO-ORCH-7 already cover scoring/canonical aggregation, durable action ledger, technical control loop, measurement, content lifecycle, URL policy, and off-page/AEO operations.
+- Guardrail: Documentation/task-board only; no live SEO, route, metadata, sitemap, robots, WordPress/Woo, deploy, or service changes.
+
+## 2026-06-25 (Codex - workspace conflict audit + clustered batches)
+- Did: Audited the task board, AGENT_BUS, dirty worktree status, and workspace task references for cross-agent/session conflicts and token-wasting duplication.
+- Findings recorded in `workspace/TASKS.md` as `WSC-1`–`WSC-7`: shared dirty tree, active Claude video ownership, blog generator scheduled vs WA-G/WA-H unsafe state, stale June 24 social campaign row, mobile work parked by owner scope, intentional priority-lane ID repeats, and generated SEO state treated as runtime not source.
+- Did: Added `Token-Efficient Session Batches` (`B0`–`B8`) so future agents can work by cluster: coordination, security/release, runtime orchestration, SEO data-control, content lifecycle, UI/UX systems, social/video, growth/off-page, and parked/post-freeze work.
+- Did: Marked `emart-blog-generator` as scheduled but unsafe for new pilots until WA-G/WA-H close; parked `X3` mobile unless owner reopens it; marked `X4` social campaign as stale state needing final verification/archival rather than “active today.”
+- Guardrail: Task-board/session-log only. No code, deploy, PM2, WordPress/Woo, route, metadata, sitemap, price, stock, order, customer, checkout, or live publishing changes.
+- Next: Future sessions should start with batch `B0`, then pick one cluster only; highest value remains `B1` security/release foundation or `B3` SEO data-control, not broad UI/social cleanup.
+- Session close: Codex has no active task left from this audit/governance session. Claude's active VA-1 video orchestration entry remains untouched in AGENT_BUS for its mid-session continuation.
+
+## 2026-06-25 (Codex - Agent Brain v1 automation)
+- Did: Built read-only Agent Brain/session-start/session-close automation under `workspace/scripts/active/`: `agent_brain.py`, `agent_start.py`, and `agent_close.py`. Added `.gitignore` exceptions so these maintained scripts are trackable despite generated one-shot active-script ignores.
+- Did: Generated `workspace/AGENT_BRAIN.md`, a compact shared-brain handoff summarizing guardrails, active work, dirty git state, WSC conflicts, priority lane, token-efficient batches, critical rows, recent completions, and recent session-log tail.
+- Did: Updated B0 in `workspace/TASKS.md` so future sessions can begin with `python3 workspace/scripts/active/agent_start.py` instead of rereading the full memory/task/session stack.
+- Verified: Python compile passed for all three scripts; `agent_brain.py --write`, `agent_start.py`, and `agent_close.py` smoke tests passed. Final regenerated brain leaves only Claude's VA-1 video orchestration in ACTIVE WORK.
+- Guardrail: V1 reads only repo coordination/task files plus `git status --short`; it intentionally does not read `.env`, credential stores, external services, WordPress/Woo config, or live endpoints. It does not auto-edit AGENT_BUS/TASKS/SESSION-LOG except when a human/agent explicitly applies proposed text.
+- Guardrail: No live service, deploy, PM2, WordPress/Woo, checkout/cart/payment/order/customer/stock/price, route, metadata, sitemap, or publishing changes.
+- Next: New sessions should run `python3 workspace/scripts/active/agent_start.py`; use `--show` for full compact brain or `agent_brain.py --write` to refresh `workspace/AGENT_BRAIN.md`.
