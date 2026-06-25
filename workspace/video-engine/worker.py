@@ -40,6 +40,9 @@ REEL_QA_MASTER = ROOT / "stages" / "reel_qa_master.py"
 BRAND_CARD = ROOT / "stages" / "brand_card.py"
 LIST_CARD = ROOT / "stages" / "list_card.py"
 CODEX_BRIDGE = ROOT / "stages" / "codex_bridge.py"
+PRESENTER_CARD = ROOT / "stages" / "presenter_card.py"
+# canonical reusable Emart model (Codex-generated once, reused free in every reel for one consistent face)
+CANONICAL_MODEL = ROOT / "personas" / "emart-model" / "clean-portrait.png"
 
 
 def today() -> str:
@@ -132,8 +135,28 @@ def holding_request_images(job) -> list[str]:
     path = out.stdout.strip()
     if path and Path(path).exists():
         return [path]                       # Codex already fulfilled -> use it (cover-pan)
-    print(f"[worker] holding shot requested from Codex (pending): {path}")
-    return []                               # not yet fulfilled -> proceed without
+    # Codex pending (it only runs when a human invokes it) -> FREE, automatic fallback: composite the
+    # REAL product photo onto a persona still (presenter_card). Deterministic, $0, real product (never a
+    # Pollinations dummy). Upgrades to the Codex hand-held shot automatically once it's fulfilled.
+    if ref and Path(ref).exists():
+        try:
+            stills = persona_stills(job)
+        except SystemExit:
+            stills = []
+        # reuse the canonical Emart model by default (one consistent face across every reel)
+        base = stills[0] if stills else (str(CANONICAL_MODEL) if CANONICAL_MODEL.exists() else None)
+        if base:
+            comp = OUTPUT / f"presenter-{job['id']}.png"
+            r = subprocess.run([sys.executable, str(PRESENTER_CARD), "--persona", base,
+                                "--product", str(Path(ref).resolve()),
+                                "--label", job.get("presenter_label", ""), "--out", str(comp)],
+                               capture_output=True, text=True, timeout=150)
+            if r.returncode == 0 and comp.exists():
+                print("[worker] free presenter composite generated (Codex pending)")
+                return [str(comp)]
+            sys.stderr.write(r.stderr[-300:] + "\n")
+    print(f"[worker] holding shot requested from Codex (pending); no free fallback: {path}")
+    return []
 
 
 def resolve_images(job, cfg) -> list[str]:
