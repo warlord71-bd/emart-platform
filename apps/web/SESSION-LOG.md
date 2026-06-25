@@ -3092,3 +3092,37 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: `qa-report.json` is `pass` with 0 errors and 0 warnings; assets are still review-gated (`approval_status=review_required`, `publish_allowed=false`); visually opened the contact sheet at `workspace/social-engine/output/2026-06-25/2026-06-25-daily-18/contact-sheet.jpg`.
 - Output: Final assets remain under `apps/web/public/images/social/2026-06-25/daily-18/` with 18 Facebook square images and 18 Instagram 4:5 variants.
 - Guardrail: Inspection/documentation only; no publish, deploy, PM2 restart, WordPress/Woo write, protected commerce data change, route, metadata, sitemap, or live Meta action.
+
+## 2026-06-25 (Codex - social model replacement pass)
+- Did: Replaced weak-quality slots 11-18 in the June 25 social pack with Ayesha-style model-held product portraits, using Claude's persona bible/library direction and web product references.
+- Output: Updated public scheduled asset filenames under `apps/web/public/images/social/2026-06-25/daily-18/`; originals backed up at `workspace/social-calendar/2026-06-25/daily-18-original-backup-before-model-replacements/`; generated review set at `workspace/social-calendar/2026-06-25/model-replacements/`.
+- Verified: Rebuilt the full contact sheet at `workspace/social-engine/output/2026-06-25/2026-06-25-daily-18/contact-sheet.jpg`; checked dimensions for replacement examples (FB 1080x1080, IG 1080x1350); Python compile passed for social/video helper packages.
+- Note: Older 8 Codex model-real-item images remain at `workspace/social-calendar/2026-06-23/codex-model-variants/` with contact sheet `workspace/social-calendar/2026-06-23/codex-model-samples/contact-sheet-8-model-real-items.png`.
+- Guardrail: No publish, deploy, PM2 restart, WordPress/Woo write, protected commerce data change, route, metadata, sitemap, or live Meta action.
+
+## 2026-06-25 (Codex - June 25 social campaign approved + scheduled)
+- Did: Regenerated slot 16 CeraVe Acne Foaming Cream Cleanser using the owner's tall-tube reference, replacing both FB 1:1 and IG 4:5 assets.
+- Did: Approved `2026-06-25-daily-18` for scheduled run and shifted slots to 2026-06-25 10:15-23:00 BDT at 45-minute intervals.
+- Did: Synced finalized social image assets to the live runtime public folder; restarted `emartweb` so `/images/social/2026-06-25/daily-18/*` returns public 200s.
+- Did: Started and saved PM2 jobs `emart-fb-18-20260625`, `emart-ig-18-20260625`, and `emart-fb-comment-20260625`.
+- Verified: Homepage `https://e-mart.com.bd/` returned 200 after restart; slot 16 public image URL returned 200; scheduler dry-runs passed for 18 Facebook and 18 Instagram posts; read-only Meta Graph check reached Page `Emart Skincare Bangladesh` and confirmed linked Instagram account.
+- Guardrail: No WordPress/Woo write, protected commerce data change, route, metadata, sitemap, or origin push. Live Meta publishing is now intentionally running via PM2 per owner approval.
+
+## 2026-06-25 (Codex - CeraVe acne cleanser tube correction)
+- Did: Regenerated slot 16 after owner noted the CeraVe Acne Foaming Cream Cleanser should look like the original long tube.
+- Output: Replaced `16-cerave-acne-foaming-cream-cleanser` public 1x1 and 4x5 assets; kept the replacement review copies under `workspace/social-calendar/2026-06-25/model-replacements/`.
+- Verified: Rebuilt the full campaign contact sheet and the model-replacement contact sheet; visually confirmed the corrected long tube shape.
+- Guardrail: No publish, deploy, PM2 restart, WordPress/Woo write, protected commerce data change, route, metadata, sitemap, or live Meta action.
+
+## 2026-06-25 (Codex - SEO-ORCH-1 completed-content registry)
+- Did: Added a durable humanizer completed-content registry at `workspace/humanizer/completed-content-registry.json`, sourced from read-only `_emart_humanized` product meta with canonical `/shop/{slug}` paths.
+- Did: Updated `workspace/seo-review/gsc_tracker.py` so `humanizer-queue` excludes completed products by registry path/slug instead of inferring completion from agentic tiers. Added `completed-registry` command for runtime refresh.
+- Verified: `python3 -m py_compile workspace/seo-review/gsc_tracker.py`; JSON validation passed for the registry and queue outputs; `humanizer-queue` now reports 317 completed registry products, 97 GSC-visible already humanized, and 402 needing work; `striking-distance` still reports 195 pages in positions 11-20 with the same top 10.
+- Guardrail: Read-only WordPress DB query only; no WordPress/Woo writes, no protected commerce data changes, no deploy, no PM2 restart, no route/metadata/sitemap change, no push.
+
+## 2026-06-25 (Claude - Priority Lane 1-3)
+- Did: **WA-G+ORCH-5** — migrated 12 OpenClaw scripts from hardcoded credentials to shared `creds.py` loader reading `openclaw.env`. Scrubbed IDENTITY.md. Updated WC key to live BFF key_id 34. Fixed WC localhost 403 (Host + X-Forwarded-Proto headers). All crons verified working (site_health, blog_check, low_stock, daily_report).
+- Did: **ORCH-1** — rewrote `deploy.sh` with deploy lock (PID-based, stale-safe), `git add -u` + explicit subdirs (not `-A`), lockfile diff before rsync, `.next` rollback on VPS build failure, workspace rsync excludes `jobs/`/state/checkpoint files, removed `git clean -fd`.
+- Did: **SEO-ORCH-1** — added `/product/`→`/shop/` canonical URL normalization in `gsc_tracker.py` `normalize_page_path()`. Built weighted-metric merge in `cmd_pull()` (clicks+impressions sum, position weighted-avg). Wired `completed-registry` refresh into nightly `cmd_full()`. Result: 0 /product/ pages remain, 1,828 product pages scored, humanizer queue correct (317 registry / 97 excluded / 402 needs work).
+- Owner actions pending: revoke old WP app password + old WC keys; fix PM2 n8n env leakage at next restart; set META_ACCESS_TOKEN in openclaw.env if ads_briefing needed.
+- Next: Task 4 UX-ORCH-1 (storefront trust-data contract audit) in new session.
