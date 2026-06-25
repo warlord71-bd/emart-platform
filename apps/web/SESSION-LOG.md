@@ -3079,3 +3079,16 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: Social Engine review pack at `workspace/social-engine/output/2026-06-25/2026-06-25-daily-18/` passed QA with 0 errors and 0 warnings; contact sheet visually inspected; 18 square assets, 18 IG 4:5 assets, and 8 AI backgrounds present. Python compile passed; Social Engine unittest suite passed (7 tests); `meta_schedule.js` syntax check and dry-run verified no history write.
 - Guardrail: No publish, deploy, PM2 restart, WordPress/Woo write, price/stock/order/customer/checkout/cart/payment change, route, metadata, sitemap, or live Meta action. Claude/video dirty files were not staged or modified by Codex.
 - Next: Owner reviews the pack/contact sheet. X8a still needs automated real performance import from Meta/GA4/GSC/GMC; X8c approval-status semantics remain open.
+
+## 2026-06-25 (Codex - Social Engine performance import + approval gate)
+- Did: Resumed X8a/X8c. Added `import-performance` to turn publish ledgers into `performance/latest.json`, with optional explicit Meta Graph insights fetch for reactions/comments/shares/clicks/reach/impressions/likes/saves. Added scheduler `--result-ledger` rows after live publish results, while dry-runs write nothing.
+- Did: Made approval status real in Social Engine output: `qa-report.json` and `campaign-plan.json` now carry `approval_status`, `qa_status`, `publish_gate`, `publish_allowed`, and `approval_required`. `meta_schedule.js --publish` now refuses plans whose embedded QA/publish gate is not approved/pass.
+- Verified: Python compile passed; Social Engine tests passed (9 tests); `meta_schedule.js` syntax passed; `import-performance` dry-run imported the example ledger; scheduler dry-run wrote no ledger/history; no-post live-gate simulation blocked `review_required` as expected.
+- Guardrail: No publish, deploy, PM2 restart, WordPress/Woo write, price/stock/order/customer/checkout/cart/payment change, route, metadata, sitemap, or live Meta action. Claude-owned dirty `deploy.sh`, `workspace/TASKS.md`, AGENT_BUS active row, and video files were left uncommitted/untouched beyond removing Codex's active row.
+- Next: Optional future improvement is to join GA4/GSC/GMC/sales-proxy data into the same score file. Meta performance import and X8c approval semantics are now implemented.
+
+## 2026-06-25 (Codex - social pack location check)
+- Did: Rechecked today's Social Engine output on owner request and confirmed the June 25 daily 18-image pack exists.
+- Verified: `qa-report.json` is `pass` with 0 errors and 0 warnings; assets are still review-gated (`approval_status=review_required`, `publish_allowed=false`); visually opened the contact sheet at `workspace/social-engine/output/2026-06-25/2026-06-25-daily-18/contact-sheet.jpg`.
+- Output: Final assets remain under `apps/web/public/images/social/2026-06-25/daily-18/` with 18 Facebook square images and 18 Instagram 4:5 variants.
+- Guardrail: Inspection/documentation only; no publish, deploy, PM2 restart, WordPress/Woo write, protected commerce data change, route, metadata, sitemap, or live Meta action.

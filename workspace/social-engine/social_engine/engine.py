@@ -4,10 +4,12 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import datetime as dt
+import hmac
 import hashlib
 import json
 import re
 import ssl
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any
@@ -26,6 +28,8 @@ except Exception:  # pragma: no cover - CLI still works without image checks.
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parents[1]
 SITE = "https://e-mart.com.bd"
+APPROVED_STATUS = "approved_for_scheduled_run"
+REVIEW_STATUS = "review_required"
 FORBIDDEN_CAPTION_PATTERNS = [
     r"\bcure\b",
     r"\bguarantee(d)?\b",
@@ -48,6 +52,18 @@ def read_json(path: Path) -> Any:
 def write_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+
+
+def read_json_or_jsonl(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    text = path.read_text().strip()
+    if not text:
+        return []
+    if text.startswith("["):
+        data = json.loads(text)
+        return [row for row in data if isinstance(row, dict)]
+    return [json.loads(line) for line in text.splitlines() if line.strip()]
 
 
 def read_env_values() -> dict[str, str]:
@@ -197,6 +213,118 @@ def performance_score(product: dict[str, Any], model: dict[str, Any]) -> float:
     score += float(model.get("brands", {}).get(brand, 0) or 0)
     score += float(model.get("categories", {}).get(category, 0) or 0)
     return score
+
+
+def social_metric_score(metrics: dict[str, Any]) -> float:
+    """Convert engagement/performance metrics into a picker score.
+
+    The weights intentionally favor actions that imply shopping intent while still giving
+    light credit for reach/impressions. Values are small enough to combine with manual
+    product/brand/category weights.
+    """
+    def n(*names: str) -> float:
+        for name in names:
+            value = metrics.get(name)
+            if isinstance(value, (int, float)):
+                return float(value)
+            if isinstance(value, str) and value.replace(".", "", 1).isdigit():
+                return float(value)
+        return 0.0
+
+    score = 0.0
+    score += n("reactions", "likes") * 1.0
+    score += n("comments") * 4.0
+    score += n("shares") * 5.0
+    score += n("saves", "saved") * 4.0
+    score += n("clicks", "post_clicks", "link_clicks") * 3.0
+    score += n("reach") * 0.01
+    score += n("impressions") * 0.005
+    return round(score, 3)
+
+
+def merge_product_score(model: dict[str, Any], key: str, score: float, metrics: dict[str, Any], source: str) -> None:
+    products = model.setdefault("products", {})
+    existing = products.get(str(key), {})
+    if not isinstance(existing, dict):
+        existing = {"score": float(existing or 0)}
+    existing_score = float(existing.get("score", 0) or 0)
+    existing["score"] = round(max(existing_score, score), 3)
+    existing.setdefault("sources", [])
+    if source not in existing["sources"]:
+        existing["sources"].append(source)
+    if metrics:
+        existing.setdefault("metrics", {}).update(metrics)
+    products[str(key)] = existing
+
+
+def meta_appsecret_proof(token: str, secret: str | None) -> str | None:
+    if not token or not secret:
+        return None
+    return hmac.new(secret.encode(), token.encode(), hashlib.sha256).hexdigest()
+
+
+def meta_graph_get(path: str, params: dict[str, Any]) -> dict[str, Any]:
+    env = read_env_values()
+    token = env.get("META_PAGE_ACCESS_TOKEN") or env.get("PAGE_ACCESS_TOKEN")
+    secret = env.get("META_APP_SECRET") or env.get("APP_SECRET")
+    version = env.get("META_GRAPH_API_VERSION") or "v25.0"
+    if not token:
+        raise SocialEngineError("Missing META_PAGE_ACCESS_TOKEN/PAGE_ACCESS_TOKEN for Meta performance import")
+    query = {**params, "access_token": token}
+    proof = meta_appsecret_proof(token, secret)
+    if proof:
+        query["appsecret_proof"] = proof
+    url = f"https://graph.facebook.com/{version}/{path.lstrip('/')}?{urllib.parse.urlencode(query)}"
+    req = urllib.request.Request(url, headers={"User-Agent": "EmartSocialEngine/1.1"})
+    try:
+        return json.loads(urllib.request.urlopen(req, timeout=30).read())
+    except Exception as exc:
+        raise SocialEngineError("Meta Graph request failed; token/details redacted") from exc
+
+
+def metric_value_from_graph(data: dict[str, Any], metric_name: str) -> float:
+    for entry in data.get("data", []):
+        if entry.get("name") != metric_name:
+            continue
+        values = entry.get("values") or []
+        if not values:
+            return 0.0
+        value = values[-1].get("value", 0)
+        if isinstance(value, dict):
+            return float(sum(v for v in value.values() if isinstance(v, (int, float))))
+        if isinstance(value, (int, float)):
+            return float(value)
+    return 0.0
+
+
+def fetch_meta_metrics(platform: str, social_id: str) -> dict[str, Any]:
+    """Best-effort Meta insights fetch. Returns numeric metrics or raises redacted errors."""
+    if platform == "facebook":
+        fields = meta_graph_get(f"/{social_id}", {
+            "fields": "shares,comments.summary(true),reactions.summary(true),insights.metric(post_impressions,post_impressions_unique,post_clicks)",
+        })
+        insights = fields.get("insights", {})
+        return {
+            "shares": (fields.get("shares") or {}).get("count", 0),
+            "comments": ((fields.get("comments") or {}).get("summary") or {}).get("total_count", 0),
+            "reactions": ((fields.get("reactions") or {}).get("summary") or {}).get("total_count", 0),
+            "impressions": metric_value_from_graph(insights, "post_impressions"),
+            "reach": metric_value_from_graph(insights, "post_impressions_unique"),
+            "clicks": metric_value_from_graph(insights, "post_clicks"),
+        }
+    if platform == "instagram":
+        insights = meta_graph_get(f"/{social_id}/insights", {
+            "metric": "impressions,reach,likes,comments,saved,shares",
+        })
+        return {
+            "impressions": metric_value_from_graph(insights, "impressions"),
+            "reach": metric_value_from_graph(insights, "reach"),
+            "likes": metric_value_from_graph(insights, "likes"),
+            "comments": metric_value_from_graph(insights, "comments"),
+            "saves": metric_value_from_graph(insights, "saved"),
+            "shares": metric_value_from_graph(insights, "shares"),
+        }
+    raise SocialEngineError(f"Unsupported performance platform: {platform}")
 
 
 def public_url_to_local(url: str) -> Path | None:
@@ -419,8 +547,27 @@ def normalize_campaign(campaign: dict[str, Any], config: dict[str, Any]) -> dict
     return {
         **campaign,
         "platforms": platforms,
+        "approval_status": campaign.get("approval_status", REVIEW_STATUS),
         "items": normalized_items,
         "engine": {"name": "emart-social-engine", "version": 1},
+    }
+
+
+def approval_gate(campaign: dict[str, Any], qa_status: str) -> dict[str, Any]:
+    approval_status = campaign.get("approval_status", REVIEW_STATUS)
+    approved = approval_status == APPROVED_STATUS
+    if qa_status != "pass":
+        gate = "blocked_by_qa"
+    elif approved:
+        gate = APPROVED_STATUS
+    else:
+        gate = REVIEW_STATUS
+    return {
+        "approval_status": approval_status,
+        "approval_required": not approved,
+        "publish_allowed": qa_status == "pass" and approved,
+        "publish_gate": gate,
+        "scheduler_required_status": APPROVED_STATUS,
     }
 
 
@@ -594,6 +741,7 @@ def qa_campaign(
         warnings.append({"code": "mixed_design_templates", "templates": sorted(design_templates)})
 
     status = "pass" if not errors else "blocked"
+    gate = approval_gate(campaign, status)
     return {
         "status": status,
         "summary": f"{len(errors)} error(s), {len(warnings)} warning(s)",
@@ -604,7 +752,7 @@ def qa_campaign(
             "templates": sorted(design_templates),
             "asset_sources": asset_sources,
         },
-        "approval_required": True,
+        **gate,
     }
 
 
@@ -615,7 +763,9 @@ def markdown_review(campaign: dict[str, Any], qa: dict[str, Any]) -> str:
         f"- Date: {campaign['date']}",
         f"- Platforms: {', '.join(campaign['platforms'])}",
         f"- QA: {qa['status']} ({qa['summary']})",
-        "- Approval: required before live publishing",
+        f"- Approval status: {qa.get('approval_status', REVIEW_STATUS)}",
+        f"- Publish gate: {qa.get('publish_gate', REVIEW_STATUS)}",
+        f"- Publish allowed: {str(qa.get('publish_allowed', False)).lower()}",
         "",
         "## Posts",
         "",
@@ -729,6 +879,9 @@ def plan(args: argparse.Namespace) -> int:
         made = maybe_make_instagram_variants(campaign)
         print(f"[social-engine] IG 4:5 variants: {made}")
     qa = qa_campaign(campaign, config, history, vision_report=vision_report, vision_required=args.vision_qa)
+    campaign["qa_status"] = qa["status"]
+    campaign["publish_gate"] = qa["publish_gate"]
+    campaign["publish_allowed"] = qa["publish_allowed"]
 
     write_json(out_dir / "campaign-plan.json", campaign)
     write_json(out_dir / "qa-report.json", qa)
@@ -746,6 +899,8 @@ def plan(args: argparse.Namespace) -> int:
     print(f"[social-engine] qa: {qa['status']} ({qa['summary']})")
     if qa["status"] != "pass":
         print("[social-engine] publish gate: BLOCKED until QA errors are fixed")
+    elif qa["publish_allowed"]:
+        print("[social-engine] publish gate: approved_for_scheduled_run")
     else:
         print("[social-engine] publish gate: review_required")
     return 0
@@ -837,6 +992,81 @@ def record(args: argparse.Namespace) -> int:
     return 0
 
 
+def import_performance(args: argparse.Namespace) -> int:
+    campaign = read_json(args.campaign) if args.campaign else {"items": []}
+    by_index = {str(item.get("index") or idx): item for idx, item in enumerate(campaign.get("items", []), 1)}
+    by_slug = {item.get("slug"): item for item in campaign.get("items", []) if item.get("slug")}
+    ledger_rows = read_json_or_jsonl(args.ledger) if args.ledger else []
+    model = read_json(args.base) if args.base and args.base.exists() else {
+        "generated_at": None,
+        "source": "social-engine import-performance",
+        "products": {},
+        "brands": {},
+        "categories": {},
+    }
+    model.setdefault("products", {})
+    imported: list[dict[str, Any]] = []
+    errors: list[dict[str, Any]] = []
+
+    for row in ledger_rows:
+        platform = row.get("platform")
+        social_id = row.get("social_id") or row.get("facebookId") or row.get("instagramId") or row.get("id")
+        item = (
+            by_index.get(str(row.get("item_index") or row.get("index") or ""))
+            or by_slug.get(row.get("slug"))
+            or row
+        )
+        product_id = item.get("product_id") or row.get("product_id")
+        slug = item.get("slug") or row.get("slug")
+        metrics = row.get("metrics") or {}
+        source = row.get("source") or args.source
+        if args.fetch_meta and social_id and platform:
+            try:
+                metrics = {**metrics, **fetch_meta_metrics(platform, str(social_id))}
+                source = f"meta_graph:{platform}"
+            except SocialEngineError as exc:
+                errors.append({
+                    "platform": platform,
+                    "social_id": str(social_id),
+                    "error": str(exc),
+                })
+                if not metrics:
+                    continue
+        score = social_metric_score(metrics)
+        if product_id is not None:
+            merge_product_score(model, str(product_id), score, metrics, source)
+        if slug:
+            merge_product_score(model, str(slug), score, metrics, source)
+        imported.append({
+            "platform": platform,
+            "social_id": social_id,
+            "product_id": product_id,
+            "slug": slug,
+            "score": score,
+            "metrics": metrics,
+        })
+
+    model["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
+    model["last_import"] = {
+        "ledger": str(args.ledger) if args.ledger else None,
+        "campaign": str(args.campaign) if args.campaign else None,
+        "fetch_meta": args.fetch_meta,
+        "items": len(imported),
+        "errors": errors,
+    }
+    if not args.dry_run:
+        write_json(args.out, model)
+    print(json.dumps({
+        "dry_run": args.dry_run,
+        "out": str(args.out),
+        "imported": len(imported),
+        "errors": len(errors),
+    }, indent=2))
+    if errors:
+        print("[social-engine] performance import had redacted fetch errors; see output last_import.errors")
+    return 0 if not errors or args.allow_partial else 1
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Emart Social Engine v1")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -875,6 +1105,22 @@ def main() -> int:
     record_parser.add_argument("--campaign", type=Path, required=True)
     record_parser.add_argument("--history", type=Path, default=ROOT / "history" / "published-products.json")
     record_parser.set_defaults(func=record)
+
+    perf_parser = sub.add_parser("import-performance", help="Import social post performance into picker score JSON")
+    perf_parser.add_argument("--campaign", type=Path,
+                             help="Optional campaign-plan.json used to map item index/slug to product IDs")
+    perf_parser.add_argument("--ledger", type=Path,
+                             help="JSON/JSONL publish ledger with platform, social_id, item_index/product_id/slug and optional metrics")
+    perf_parser.add_argument("--base", type=Path,
+                             help="Optional existing score JSON to merge into")
+    perf_parser.add_argument("--out", type=Path, default=ROOT / "performance" / "latest.json")
+    perf_parser.add_argument("--source", default="local_ledger")
+    perf_parser.add_argument("--fetch-meta", action="store_true",
+                             help="Fetch Meta Graph insights for ledger social IDs; requires Meta page token")
+    perf_parser.add_argument("--dry-run", action="store_true")
+    perf_parser.add_argument("--allow-partial", action="store_true",
+                             help="Exit 0 even if some Meta insight fetches fail")
+    perf_parser.set_defaults(func=import_performance)
     args = parser.parse_args()
     return args.func(args)
 

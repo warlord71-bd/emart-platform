@@ -11,6 +11,13 @@ function arg(name, fallback) {
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+function appendJsonl(filePath, row) {
+  if (!filePath) return;
+  const resolved = path.resolve(filePath);
+  fs.mkdirSync(path.dirname(resolved), { recursive: true });
+  fs.appendFileSync(resolved, `${JSON.stringify(row)}\n`);
+}
+
 function queueBuyingLink(plan, item, facebookId) {
   const link = item.platform_posts?.facebook?.link || item.link;
   if (!link || !facebookId) return;
@@ -71,6 +78,18 @@ function requests(plan, platform) {
   });
 }
 
+function assertLiveGate(plan) {
+  if (plan.qa_status && plan.qa_status !== 'pass') {
+    throw new Error(`Campaign QA is not pass: ${plan.qa_status}`);
+  }
+  if (plan.publish_gate && plan.publish_gate !== 'approved_for_scheduled_run') {
+    throw new Error(`Campaign publish gate is not approved_for_scheduled_run: ${plan.publish_gate}`);
+  }
+  if (plan.approval_status !== 'approved_for_scheduled_run') {
+    throw new Error(`Campaign is not approved_for_scheduled_run: ${plan.approval_status || 'missing'}`);
+  }
+}
+
 async function main() {
   const planPath = arg('plan');
   const platform = arg('platform');
@@ -85,9 +104,8 @@ async function main() {
       approvalStatus: plan.approval_status, platform, posts: jobs.length }, null, 2));
     return;
   }
-  if (plan.approval_status !== 'approved_for_scheduled_run') {
-    throw new Error(`Campaign is not approved_for_scheduled_run: ${plan.approval_status || 'missing'}`);
-  }
+  assertLiveGate(plan);
+  const resultLedger = arg('result-ledger');
   for (const { item, request } of jobs) {
     const delay = new Date(item.slot).getTime() - Date.now();
     if (delay < -10 * 60 * 1000) {
@@ -97,6 +115,16 @@ async function main() {
     if (delay > 0) await wait(delay);
     const result = await publish(request);
     console.log(JSON.stringify({ source: request.source, result }));
+    appendJsonl(resultLedger, {
+      published_at: new Date().toISOString(),
+      campaign_id: plan.id,
+      platform,
+      item_index: item.index,
+      product_id: item.product_id,
+      slug: item.slug,
+      social_id: result[platform],
+      result,
+    });
     if (platform === 'facebook') queueBuyingLink(plan, item, result.facebook);
   }
   recordPublishedHistory(plan);

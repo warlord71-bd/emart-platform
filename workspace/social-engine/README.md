@@ -7,6 +7,7 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
 
 - Picks a campaign from read-only Woo product data while avoiding recent history.
 - Can weight product picking with optional read-only performance scores by product, brand, or category.
+- Imports post performance from a publish ledger, with optional explicit Meta Graph insights fetch.
 - Normalizes a campaign manifest into scheduled platform posts.
 - Applies duplicate guards against recent campaigns.
 - Can record completed campaigns back into `history/published-products.json`.
@@ -83,7 +84,8 @@ node workspace/scripts/active/meta_schedule.js \
   --plan workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
   --platform facebook \
   --publish \
-  --record-history workspace/social-engine/history/published-products.json
+  --record-history workspace/social-engine/history/published-products.json \
+  --result-ledger workspace/social-engine/performance/published-results.jsonl
 ```
 
 Dry-runs never record history. Re-running FB/IG with the same campaign ID safely replaces the same
@@ -109,6 +111,34 @@ the score file format shown in `performance/example.json`:
 
 If no performance file is supplied, selection falls back to the Woo order, usually `popularity`.
 
+## Performance Import
+
+After approved live publishing, the scheduler can append one JSONL row per post through
+`--result-ledger`. Then import those results into the score file used by the next picker run:
+
+```bash
+python3 workspace/social-engine/social_engine.py import-performance \
+  --campaign workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
+  --ledger workspace/social-engine/performance/published-results.jsonl \
+  --out workspace/social-engine/performance/latest.json
+```
+
+If the ledger has social post IDs and the runtime Meta token is configured, add `--fetch-meta` to
+pull reactions, comments, shares, clicks, reach, impressions, likes, and saves where Meta exposes
+them:
+
+```bash
+python3 workspace/social-engine/social_engine.py import-performance \
+  --campaign workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
+  --ledger workspace/social-engine/performance/published-results.jsonl \
+  --fetch-meta \
+  --allow-partial \
+  --out workspace/social-engine/performance/latest.json
+```
+
+The command writes only local JSON. It never publishes, never changes Woo data, and redacts Meta
+token/error details.
+
 ## Video Engine Bridge
 
 For any campaign item with:
@@ -128,7 +158,8 @@ dry-run by default unless `--allow-publish` is explicitly used there.
 
 ## Safety Defaults
 
-- No Meta token is read by Social Engine v1.
+- No Meta token is read by normal planning/picking. Only `import-performance --fetch-meta` reads the
+  configured Meta page token, and only to fetch post insights.
 - No product, price, stock, customer, order, cart, or Woo DB data is written.
 - Publish gate is always owner-review-first.
 - `--vision-qa` is strict: missing credentials, exhausted free models, uncertain product identity,
@@ -139,5 +170,5 @@ dry-run by default unless `--allow-publish` is explicitly used there.
 
 ## Next Build Steps
 
-- Add post-performance import: reactions, comments, clicks, sales proxy.
+- Add GA4/GSC/GMC or sales-proxy joins into `performance/latest.json`.
 - Add native 4:5 creative generation instead of derived IG variants when source images support it.

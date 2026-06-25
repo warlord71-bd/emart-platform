@@ -7,7 +7,7 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from social_engine.engine import normalize_campaign, performance_score, qa_campaign  # noqa: E402
+from social_engine.engine import normalize_campaign, performance_score, qa_campaign, social_metric_score  # noqa: E402
 from social_engine import vision_qa  # noqa: E402
 
 
@@ -164,6 +164,25 @@ class SocialEngineTests(unittest.TestCase):
             "categories": {"sunscreen": 3},
         }
         self.assertEqual(performance_score(product, model), 8.5)
+
+    def test_approval_gate_respects_campaign_status(self):
+        raw = campaign_with_item()
+        raw["approval_status"] = "approved_for_scheduled_run"
+        campaign = normalize_campaign(raw, base_config())
+        qa = qa_campaign(
+            campaign,
+            base_config(),
+            {"blocked_product_ids": set(), "blocked_slugs": set(), "dates": []},
+        )
+        self.assertFalse(qa["approval_required"])
+        self.assertTrue(qa["publish_allowed"])
+        self.assertEqual(qa["publish_gate"], "approved_for_scheduled_run")
+
+    def test_social_metric_score_weights_intent_metrics(self):
+        self.assertEqual(
+            social_metric_score({"reactions": 10, "comments": 2, "shares": 1, "clicks": 3, "reach": 100}),
+            33.0,
+        )
 
 
 if __name__ == "__main__":
