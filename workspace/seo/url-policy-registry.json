@@ -1,0 +1,276 @@
+{
+  "version": "2026-06-26.seo-orch-6.initial",
+  "owner": "SEO-ORCH-6",
+  "site": "https://e-mart.com.bd",
+  "status": "registry_first_no_route_changes",
+  "source_artifacts": [
+    "workspace/audit/active/seo-technical-control-loop-20260626.json",
+    "workspace/audit/active/seo-technical-control-loop-live-20260626.json"
+  ],
+  "rules": [
+    {
+      "id": "wc-add-to-cart-strip",
+      "priority": 10,
+      "match": {
+        "route_families": ["home", "shop", "category", "product", "other"],
+        "params_any": ["add-to-cart", "add_to_cart"],
+        "params_exact": false
+      },
+      "target_policy": {
+        "route_action": "301_strip_param_to_clean_url",
+        "canonical": "clean_final_url",
+        "robots": "index_follow_on_clean_final_url",
+        "sitemap": "exclude_query_variant"
+      },
+      "current_implementation": [
+        "apps/web/src/middleware.ts STRIP_PARAMS",
+        "apps/web/src/app/robots.ts generic disallow for non-Googlebot"
+      ],
+      "evidence": {
+        "live_verified": true,
+        "observed_rows": ["/?add-to-cart=36365", "/?add-to-cart=4264"],
+        "observed_interpretation": "query_url_redirects_to_canonical"
+      },
+      "recommended_change": "none"
+    },
+    {
+      "id": "brand-query-to-clean-brand",
+      "priority": 20,
+      "match": {
+        "base_paths": ["/brands"],
+        "params_any": ["brand"],
+        "params_exact": false
+      },
+      "target_policy": {
+        "route_action": "301_redirect_to_clean_entity_path",
+        "canonical": "clean_final_url",
+        "robots": "index_follow_on_clean_final_url",
+        "sitemap": "exclude_query_variant_include_clean_entity_when_indexable"
+      },
+      "current_implementation": [
+        "apps/web/src/app/brands/page.tsx permanentRedirect"
+      ],
+      "evidence": {
+        "live_verified": true,
+        "observed_rows": [
+          "/brands?brand=gillette",
+          "/brands?brand=lucido-l",
+          "/brands?brand=p-calm",
+          "/brands?brand=rohto-mentholatum"
+        ],
+        "observed_interpretation": "query_url_redirects_to_canonical"
+      },
+      "recommended_change": "none"
+    },
+    {
+      "id": "concern-query-to-clean-concern",
+      "priority": 30,
+      "match": {
+        "base_paths": ["/concerns"],
+        "params_any": ["concern"],
+        "params_exact": false
+      },
+      "target_policy": {
+        "route_action": "301_redirect_to_clean_entity_path_preserve_valid_page",
+        "canonical": "clean_final_url",
+        "robots": "index_follow_on_clean_final_url",
+        "sitemap": "exclude_query_variant_include_clean_entity_when_indexable"
+      },
+      "current_implementation": [
+        "apps/web/src/middleware.ts handleConcernRedirect"
+      ],
+      "evidence": {
+        "live_verified": false,
+        "observed_rows": [
+          "/concerns?concern=acne-blemish-care",
+          "/concerns?concern=acne-blemish-care&page=2",
+          "/concerns?concern=acne-blemish-care&page=3",
+          "/concerns?concern=anti-aging-repair",
+          "/concerns?concern=brightening",
+          "/concerns?concern=melasma",
+          "/concerns?concern=melasma&page=2"
+        ],
+        "observed_interpretation": "classified_not_live_verified"
+      },
+      "recommended_change": "verify_live_before_editing"
+    },
+    {
+      "id": "origin-country-query-to-clean-origin",
+      "priority": 40,
+      "match": {
+        "base_paths": ["/origins"],
+        "params_any": ["country"],
+        "params_exact": false
+      },
+      "target_policy": {
+        "route_action": "301_redirect_to_clean_entity_path",
+        "canonical": "clean_final_url",
+        "robots": "index_follow_on_clean_final_url",
+        "sitemap": "exclude_query_variant_include_clean_entity_when_indexable"
+      },
+      "current_implementation": [
+        "apps/web/next.config.js /origins?country redirect"
+      ],
+      "evidence": {
+        "live_verified": false,
+        "observed_rows": [
+          "/origins?country=bangladesh",
+          "/origins?country=canada",
+          "/origins?country=china"
+        ],
+        "observed_interpretation": "classified_not_live_verified"
+      },
+      "recommended_change": "verify_live_before_editing"
+    },
+    {
+      "id": "collection-valid-pagination",
+      "priority": 50,
+      "match": {
+        "route_families": ["shop", "category", "brand", "concern", "ingredient", "origin", "routine"],
+        "params_any": ["page"],
+        "params_exact": true,
+        "live_status": [200]
+      },
+      "target_policy": {
+        "route_action": "serve_paginated_collection",
+        "canonical": "self_canonical_with_page_query",
+        "robots": "index_follow",
+        "sitemap": "exclude_paginated_pages_unless_owner_approves_expansion"
+      },
+      "current_implementation": [
+        "apps/web/src/lib/paginationSeo.ts getPaginatedCanonical",
+        "apps/web/src/app/shop/page.tsx",
+        "apps/web/src/app/category/[slug]/page.tsx",
+        "apps/web/src/app/brands/[slug]/page.tsx",
+        "apps/web/src/app/concerns/[slug]/page.tsx",
+        "apps/web/src/app/ingredients/[slug]/page.tsx",
+        "apps/web/src/app/origins/[country]/page.tsx",
+        "apps/web/src/app/routine/[step]/page.tsx"
+      ],
+      "evidence": {
+        "live_verified": true,
+        "observed_rows": [
+          "/category/bath-body?page=3",
+          "/category/face-makeup?page=2",
+          "/category/health-wellbeing?page=3",
+          "/category/korean-beauty?page=2",
+          "/category/korean-beauty?page=3",
+          "/category/korean-beauty?page=4",
+          "/category/korean-beauty?page=88",
+          "/category/lips?page=2",
+          "/category/lips?page=4",
+          "/category/lips?page=5",
+          "/category/lips?page=6",
+          "/category/night-cream?page=2"
+        ],
+        "observed_interpretation": "query_url_returns_200_indexable_policy_gap"
+      },
+      "recommended_change": "reclassify_as_intentional_indexable_pagination_not_generic_query_noise"
+    },
+    {
+      "id": "collection-out-of-range-pagination",
+      "priority": 60,
+      "match": {
+        "route_families": ["shop", "category", "brand", "concern", "ingredient", "origin", "routine"],
+        "params_any": ["page"],
+        "params_exact": true,
+        "live_status": [404]
+      },
+      "target_policy": {
+        "route_action": "404_not_found",
+        "canonical": "none_or_not_found_page",
+        "robots": "noindex_follow_or_noindex",
+        "sitemap": "exclude"
+      },
+      "current_implementation": [
+        "page component notFound when page > totalPages"
+      ],
+      "evidence": {
+        "live_verified": true,
+        "observed_rows": ["/category/korean-beauty?page=89"],
+        "observed_interpretation": "404_review_redirect_or_leave_intentional"
+      },
+      "recommended_change": "none_keep_404_noindex"
+    },
+    {
+      "id": "collection-pagination-needs-live-verification",
+      "priority": 70,
+      "match": {
+        "route_families": ["shop", "category", "brand", "concern", "ingredient", "origin", "routine"],
+        "params_any": ["page"],
+        "params_exact": true
+      },
+      "target_policy": {
+        "route_action": "verify_then_classify_as_valid_or_out_of_range_pagination",
+        "canonical": "self_canonical_only_when_status_200",
+        "robots": "index_follow_when_valid_noindex_when_not_found",
+        "sitemap": "exclude_paginated_pages_unless_owner_approves_expansion"
+      },
+      "current_implementation": [
+        "apps/web/src/lib/paginationSeo.ts getPaginatedCanonical",
+        "page component notFound when page > totalPages"
+      ],
+      "evidence": {
+        "live_verified": false,
+        "observed_rows": [
+          "/category/night-cream?page=4",
+          "/category/night-cream?page=5",
+          "/category/night-cream?page=7",
+          "/category/sunscreen?page=14",
+          "/category/sunscreen?page=4",
+          "/category/sunscreen?page=5",
+          "/concerns/acne-blemish-care?page=2",
+          "/concerns/anti-aging-repair?page=2",
+          "/concerns/melasma?page=2"
+        ],
+        "observed_interpretation": "classified_not_live_verified"
+      },
+      "recommended_change": "verify_live_before_editing"
+    },
+    {
+      "id": "filter-sort-tracking-query-variants",
+      "priority": 80,
+      "match": {
+        "route_families": ["shop", "category", "brand", "concern", "ingredient", "origin", "routine", "search", "other"],
+        "params_any": [
+          "orderby",
+          "order",
+          "per_page",
+          "paged",
+          "shop_view",
+          "srsltid",
+          "utm_campaign",
+          "utm_medium",
+          "utm_source",
+          "filter_brand",
+          "filter_concern",
+          "sort",
+          "price",
+          "price_min",
+          "price_max",
+          "in_stock",
+          "skin_type",
+          "ingredient"
+        ],
+        "params_exact": false
+      },
+      "target_policy": {
+        "route_action": "strip_redirect_when_param_is_legacy_or_tracking_otherwise_serve_clean_canonical_variant",
+        "canonical": "clean_collection_or_entity_url",
+        "robots": "noindex_or_clean_canonical_for_filter_ui_variants",
+        "sitemap": "exclude_query_variant"
+      },
+      "current_implementation": [
+        "apps/web/src/middleware.ts partial strip list",
+        "apps/web/src/lib/canonicalUrl.ts canonical stripping for metadata callers",
+        "apps/web/src/app/robots.ts generic disallow for non-Googlebot"
+      ],
+      "evidence": {
+        "live_verified": false,
+        "observed_rows": [],
+        "observed_interpretation": "supported_policy_class_not_in_20260626_live_sample"
+      },
+      "recommended_change": "audit_specific_rows_before_route_changes"
+    }
+  ]
+}
