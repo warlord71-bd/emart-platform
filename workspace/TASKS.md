@@ -316,6 +316,17 @@ the exact visible change.
 | UX-ORCH-8 | Medium | Add automated accessibility gates: axe/keyboard/focus/contrast checks on representative mobile/desktop journeys, with issue severity, owner-visible screenshots, and route/component ownership. | 🔲 some ARIA/skeleton/focus care exists, but no systematic CI/audit gate |
 | UX-ORCH-9 | Medium | Close the customer-feedback loop: taxonomy for UX complaints, search failures, chat misses, review/support themes, “could not find product” signals, and post-purchase friction; feed prioritized issues into the UX/SEO/action ledgers. | 🔲 approval-first for any new customer-data collection or support workflow changes |
 
+### Design System Reference (2026-06-25)
+
+Standalone design system package saved at `workspace/design-system/` — tokens, Tailwind theme, CSS custom properties, and component markup patterns (buttons, badges, chips, product cards, stock bars, breadcrumbs, typography scale). Already integrated into the live codebase (`tailwind.config.js`, `globals.css`, `layout.tsx`); kept as canonical reference for future UI work under UX-ORCH-4.
+
+| File | Purpose |
+|---|---|
+| `CLAUDE.md` | Design philosophy, core rules, font links |
+| `tailwind.config.js` | Drop-in `theme.extend` block |
+| `tokens.css` | CSS custom properties + base resets |
+| `components.md` | Copy-paste markup patterns for all UI primitives |
+
 ### Backlog (post-freeze Jul 3+)
 
 - UCP/MCP commerce endpoint (gated: reviews > 200, currently ~16)

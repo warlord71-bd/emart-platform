@@ -1,0 +1,50 @@
+/* Emart Design System — CSS custom properties.
+   Import this once globally for non-Tailwind stacks. */
+:root {
+  /* Surfaces */
+  --bg:        #FAFAF8;
+  --bg-alt:    #F3F1EC;
+  --bg-stone:  #EDEAE3;
+  --white:     #FFFFFF;
+
+  /* Text */
+  --ink:       #111111;
+  --ink-2:     #2A2A2A;
+  --muted:     #6B6B6B;
+  --muted-2:   #5F5F5F;
+
+  /* Brand */
+  --accent:        #9f1239;  /* deep rose — sale / secondary action */
+  --accent-soft:   #FCE7F0;
+  --accent-deep:   #83122f;
+  --brass:         #d4a248;  /* brand label / stars */
+  --brass-soft:    #F5ECD4;
+
+  /* Status */
+  --success: #2E7D5B; --success-soft: #E4F0EA;
+  --warning: #C88A2E; --warning-soft: #F8ECD6;
+  --danger:  #B23B3B; --danger-soft:  #F5E1E1;
+
+  /* Lines & radius */
+  --hairline:   rgba(17,17,17,0.10);
+  --radius-pill: 999px;
+  --radius-card: 12px;
+  --radius-badge: 4px;
+
+  /* Elevation */
+  --shadow-card: 0 1px 2px rgba(17,17,17,0.04), 0 8px 24px rgba(17,17,17,0.06);
+  --shadow-pop:  0 20px 48px rgba(17,17,17,0.12);
+
+  /* Type */
+  --font-sans:    "DM Sans", system-ui, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--ink);
+}
+h1, h2, .display { font-family: var(--font-display); }
+.price, code, .mono { font-family: var(--font-mono); }
