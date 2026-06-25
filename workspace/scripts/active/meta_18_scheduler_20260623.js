@@ -1,15 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const ENV_PATHS = [
-  path.resolve(__dirname, '../../..', 'apps/web/.env.local'),
-  '/var/www/emart-platform/apps/web/.env.local',
-];
-for (const p of ENV_PATHS) {
-  try { require('/opt/fb-poster/node_modules/dotenv').config({ path: p }); break; } catch {}
-}
-
-const axios = require('/opt/fb-poster/node_modules/axios');
+const { axios } = require('./meta_runtime');
 const crypto = require('crypto');
 
 const API_VERSION = process.env.META_GRAPH_API_VERSION || 'v25.0';
