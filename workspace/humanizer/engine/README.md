@@ -63,5 +63,10 @@ python3 workspace/humanizer/engine/humanizer_engine.py --apply --post-id 51962
 - Improving the prompt: edit `SYSTEM_PROMPT`, bump `PROMPT_VERSION`, run a batch, confirm mean score rises.
 - Promote any new PASS scoring ≥ 92 into `exemplars.jsonl` so few-shot quality compounds over time.
 - Calibration baseline (Opus-4.8 hand-written): exemplars score 89–96.
+- `emart-stop-slop-v1` is a **soft** PDP-only style layer inside `residue_lint.py`. It catches
+  formulaic prose without adopting blanket bans that conflict with Emart's AEO/product voice.
+- Run linter tests with:
+  `python3 -m unittest discover -s workspace/humanizer/engine/tests`
+- Do not copy this layer into blog/social gates without a separate corpus benchmark and review.
 
 See `OPUS_STYLE_SPEC.md` for the full rationale behind every rule.

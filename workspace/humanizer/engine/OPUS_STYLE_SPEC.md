@@ -84,6 +84,20 @@ cutting-edge, look no further, say goodbye to, "your skin will thank you", "in t
 "once you try". **No exclamation marks. Em-dashes ≤ ~2 per 100 words.** Vary sentence length and
 section openers.
 
+### Selective `stop-slop` layer
+
+`residue_lint.py` also applies the soft scoring profile `emart-stop-slop-v1`, adapted from
+[`hardikpandya/stop-slop`](https://github.com/hardikpandya/stop-slop) (MIT). It flags
+throat-clearing, empty emphasis, business jargon, meta-commentary, vague importance claims,
+formulaic contrast, and runs of three very short sentences. These findings reduce the AI-residue
+score but **never** trip the hard residue gate by themselves.
+
+Emart intentionally rejects the upstream blanket bans on all adverbs, Wh-question openings,
+passive voice, three-item lists, and em dashes. Useful words such as "gently" and "gradually",
+question-style AEO headings, factual formulation language, and limited natural punctuation remain
+valid. This selective layer currently applies only to PDP humanizer output. Blog and social copy
+need separate calibration before sharing the rules.
+
 ## 9. The scoring gate (0–100)
 
 `residue_lint.lint()` scores 7 categories and enforces two **hard gates**. A row is `PASS` only when

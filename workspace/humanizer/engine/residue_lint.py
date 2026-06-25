@@ -65,6 +65,38 @@ INTENSIFIERS = [r"\btruly\b", r"\bsimply\b", r"\bliterally\b", r"\bincredibly\b"
 # Vague quantifiers
 VAGUE = [r"\bvarious\b", r"\bnumerous\b", r"\ba variety of\b", r"\bcountless\b"]
 
+# Selective patterns adapted from hardikpandya/stop-slop (MIT). These are
+# deliberately SOFT signals. Emart does not adopt that project's blanket bans
+# on adverbs, Wh-questions, passive voice, three-item lists, or all em dashes;
+# those would damage useful PDP/AEO copy and conflict with the calibrated spec.
+STYLE_SLOP_VERSION = "emart-stop-slop-v1"
+STYLE_SLOP = {
+    "throat_clearing": [
+        r"\bhere(?:'|’)s (?:the thing|what|why|the problem)\b",
+        r"\b(?:the uncomfortable truth is|it turns out|let me be clear|the truth is)\b",
+    ],
+    "empty_emphasis": [
+        r"\b(?:let that sink in|make no mistake|full stop)\b",
+        r"\bhere(?:'|’)s why (?:that|this) matters\b",
+    ],
+    "business_jargon": [
+        r"\b(?:lean into|circle back|moving forward|take a step back)\b",
+        r"\bnavigate (?:the )?(?:challenge|challenges|landscape)\b",
+    ],
+    "meta_commentary": [
+        r"\b(?:let me walk you through|the rest of this (?:article|section|guide))\b",
+        r"\b(?:in this section|as (?:we|you)(?:'|’)?ll see)\b",
+    ],
+    "vague_declarative": [
+        r"\bthe (?:reasons? (?:are|is) structural|implications? (?:are|is) significant)\b",
+        r"\b(?:the stakes are high|the consequences are real|this is the deepest problem)\b",
+    ],
+    "formulaic_contrast": [
+        r"\bnot because\b[^.]{1,120}\bbecause\b",
+        r"\b(?:the answer|the question|the problem) (?:isn(?:'|’)t|is not)\b[^.]{1,120}\.\s*(?:it(?:'|’)s|it is)\b",
+    ],
+}
+
 
 def _text(html: str) -> str:
     """Strip tags to plain text for prose-level checks."""
@@ -77,6 +109,20 @@ def _find(patterns: list[str], hay: str) -> list[str]:
     for p in patterns:
         for m in re.finditer(p, hay, re.IGNORECASE):
             hits.append(m.group(0).lower())
+    return hits
+
+
+def _style_slop_hits(text: str) -> list[str]:
+    """Return stable category labels for formulaic prose; never a hard gate."""
+    hits = [label for label, patterns in STYLE_SLOP.items() if _find(patterns, text)]
+    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if s.strip()]
+    short_run = 0
+    for sentence in sentences:
+        word_count = len(re.findall(r"[A-Za-z']+", sentence))
+        short_run = short_run + 1 if word_count <= 4 else 0
+        if short_run >= 3:
+            hits.append("staccato_run")
+            break
     return hits
 
 
@@ -93,6 +139,7 @@ def lint(html: str, focus: str = "", brand: str = "", product_type: str = "") ->
     # ── HARD GATES ────────────────────────────────────────────────────────────
     gmc_hard = _find(GMC_HARD, low)
     residue  = _find(AI_RESIDUE, low)
+    style_slop = _style_slop_hits(text)
     em_dashes = body.count("—") + body.count("–")
     em_per_100 = (em_dashes / wc * 100) if wc else 0
     bangs = body.count("!")
@@ -133,6 +180,10 @@ def lint(html: str, focus: str = "", brand: str = "", product_type: str = "") ->
     distinct = set(residue)
     s -= min(18, len(distinct) * 3)
     if distinct: issues.append(f"AI-residue phrases: {sorted(distinct)}")
+    style_distinct = set(style_slop)
+    s -= min(8, len(style_distinct) * 1.5)
+    if style_distinct:
+        issues.append(f"formulaic prose ({STYLE_SLOP_VERSION}): {sorted(style_distinct)}")
     if em_per_100 > 1.5: s -= 3
     if bangs: s -= 4
     # repeated sentence openers (e.g. every section starts "The <product>")
@@ -195,6 +246,10 @@ def lint(html: str, focus: str = "", brand: str = "", product_type: str = "") ->
     return {
         "score": total, "pass": passed, "word_count": wc,
         "gates": gates, "categories": cat, "issues": issues,
+        "hits": {
+            "ai_residue": sorted(set(residue)),
+            "style_slop": sorted(set(style_slop)),
+        },
     }
 
 
@@ -234,22 +289,29 @@ def main():
     a = ap.parse_args()
 
     if a.jsonl:
-        rows = [json.loads(l) for l in open(a.jsonl) if l.strip()]
+        with open(a.jsonl) as source:
+            rows = [json.loads(l) for l in source if l.strip()]
         scores = []
+        pass_flags = []
         for r in rows:
             res = lint(r.get("content_html",""), r.get("focus_kw") or r.get("title",""),
                        r.get("brand",""), r.get("product_type",""))
             scores.append(res["score"])
+            pass_flags.append(res["pass"])
             flag = "PASS" if res["pass"] else "FAIL"
             print(f"  [{flag}] {res['score']:5.1f}  {str(r.get('post_id','?')):>6}  {r.get('title','')[:48]}")
             if not res["pass"]:
                 for i in res["issues"][:6]: print(f"           - {i}")
         if scores:
             print(f"\nMean {sum(scores)/len(scores):.1f} | min {min(scores):.1f} | "
-                  f"pass {sum(1 for s in scores if s>=80)}/{len(scores)}")
+                  f"pass {sum(pass_flags)}/{len(scores)}")
         return
 
-    html = open(a.file).read() if a.file else sys.stdin.read()
+    if a.file:
+        with open(a.file) as source:
+            html = source.read()
+    else:
+        html = sys.stdin.read()
     res = lint(html, a.focus, a.brand, a.type)
     print(json.dumps(res, indent=2, ensure_ascii=False))
     if not a.no_log:
