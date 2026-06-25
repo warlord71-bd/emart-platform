@@ -87,6 +87,55 @@ the owner explicitly approves the exact scope.
 | 9 | 🟠 High measurement loop | SEO-ORCH-4, UX-ORCH-5, UX-ORCH-7, X8a | Join GA4/GSC/GMC/Meta/RUM outcomes to change ledgers; add keep/iterate/revert review cadence. | Measurement/reporting first; no auto-optimization without owner gate. |
 | 10 | 🟡 Medium recovery/ops maturity | ORCH-6, ORCH-7, SEO-ORCH-3, SEO-ORCH-6, SEO-ORCH-7, UX-ORCH-9 | Add DR drill, CI/control-loop tests, URL-policy registry, off-page/entity ledger, and customer-feedback taxonomy. | Mostly post-critical; keep outreach/personal-data workflows approval-first. |
 
+### Main Priority Parent List — Authoritative 1-10
+
+These are the only authoritative numbered priorities. Each main number holds its source rows as sub-issues.
+Batch labels (`B1`, `B2`) and legacy AI numbers are helper labels only, not competing priority numbers.
+
+| Main | Parent | Sub-issues | Status | Definition of done |
+|---|---|---|---|---|
+| 1 | Security | 1a WA-G, 1b ORCH-5 | 🟡 partial | Script credentials externalized, exposed old keys revoked by owner, PM2 env leakage fixed at next maintenance restart. |
+| 2 | Release safety | 2a ORCH-1 | ✅ done | Deploy path avoids blanket staging, uses lock/install gates, protects runtime state, and has rollback behavior. |
+| 3 | SEO data contract | 3a SEO-ORCH-1 | 🟡 partial | Canonical GSC aggregation, completed-content registry, full-catalog agentic scoring, and tier contract alignment are all trusted before priority automation acts. |
+| 4 | UX trust contract | 4a UX-ORCH-1 | 🔲 open | Every live/verified/stock/review/sold/viewer/social-proof claim maps to real source, fallback wording, cache age, and owner-approved wording. |
+| 5 | Runtime / state map | 5a ORCH-2, 5b ORCH-4, 5c ORCH-8 | 🔲 open | Versioned manifest, freshness/SLO monitor, and shared durable queue/state contract exist for PM2/crons/workers/engines. |
+| 6 | Work / event ledgers | 6a SEO-ORCH-2, 6b UX-ORCH-2 | 🔲 open | SEO and UX recommendations/events have stable IDs, evidence, owner, approval state, execution record, rollback, verification, and outcome. |
+| 7 | Visual safety | 7a UX-ORCH-3, 7b UX-ORCH-4, 7c UX-ORCH-8 | 🔲 open | Screenshot/a11y/design-system audits produce owner-visible evidence before broad visual/UI changes. |
+| 8 | Content / campaign safety | 8a WA-H, 8b SEO-ORCH-5, 8c UX-ORCH-6 | 🔲 open | Blog/content/campaign paths use draft/review/approval/expiry gates; no experimental direct-publish or automatic price/discount action. |
+| 9 | Measurement loop | 9a SEO-ORCH-4, 9b UX-ORCH-5, 9c UX-ORCH-7, 9d X8a | 🔲 open | GA4/GSC/GMC/Meta/RUM outcomes attach to change ledgers with baseline, review windows, and keep/iterate/revert decisions. |
+| 10 | Recovery / ops maturity | 10a ORCH-6, 10b ORCH-7, 10c SEO-ORCH-3, 10d SEO-ORCH-6, 10e SEO-ORCH-7, 10f UX-ORCH-9 | 🔲 open | Backups/restore drill, CI/control-loop tests, technical SEO loop, URL registry, off-page/entity ledger, and feedback taxonomy exist. |
+
+#### Main Priority Sub-Issues
+
+| Sub-issue | Source row | Status | Definition of done |
+|---|---|---|---|
+| 1a | WA-G | 🟡 owner action pending | Embedded credentials removed from OpenClaw scripts; owner revokes old WP/WC keys and supplies/fixes any needed Meta token. |
+| 1b | ORCH-5 | 🟡 partial | PM2 processes stop inheriting interactive shell secrets; sensitive jobs have explicit env/filtering or scoped runtime config. |
+| 2a | ORCH-1 | ✅ done | `deploy.sh` is hardened with lock, selective staging, lockfile-before-rsync, runtime-state exclusions, and build rollback. |
+| 3a | SEO-ORCH-1 | 🟡 partial | Finish full-catalog agentic scoring and align tier contracts after canonical merge + completed-content registry. |
+| 4a | UX-ORCH-1 | 🔲 open | Inventory and source/fallback map all trust claims before CRO/social-proof expansion. |
+| 5a | ORCH-2 | 🔲 open | Versioned manifest for every PM2 process, cron, queue worker, script runner, cwd, timezone, owner, lifecycle, restart policy, and reconcile command. |
+| 5b | ORCH-4 | 🔲 open | Freshness/SLO monitoring for last success, run duration, queue age, retries, error class, commercial endpoint health, and recovery alert. |
+| 5c | ORCH-8 | 🔲 open | Shared durable queue/state contract: locks, atomic writes, idempotency keys, retry budgets, dead letters, manual replay, checkpoint schema, audit trail. |
+| 6a | SEO-ORCH-2 | 🔲 open | Durable SEO work ledger with stable action ID, canonical URL/entity, evidence, proposed change, owner, approval, execution, rollback, verification, outcome. |
+| 6b | UX-ORCH-2 | 🔲 open | UX event/action ledger for product-list, search, filter/sort, PDP, wishlist/back-in-stock, chat/WhatsApp, quiz/routine, errors, and overlays. |
+| 7a | UX-ORCH-3 | 🔲 open | Read-only screenshot matrix with collision/visibility/sticky-overlay checks for home/shop/PDP/search/journal/campaign slots. |
+| 7b | UX-ORCH-4 | 🔲 open | Design-system drift report for raw controls, hardcoded colors, typography, and duplicate CTA/product-card patterns. |
+| 7c | UX-ORCH-8 | 🔲 open | Automated a11y gates for axe, keyboard, focus, and contrast on representative journeys. |
+| 8a | WA-H | 🔲 open | Blog generator can draft/review/validate before publish; no new pilots use direct publish. |
+| 8b | SEO-ORCH-5 | 🔲 open | Content lifecycle runs demand check, brief, draft, factual/brand/claim/link/schema QA, approval, publish, revalidation, verification, review. |
+| 8c | UX-ORCH-6 | 🔲 open | Campaign/promo surfaces have owner, source data, start/end, preview, approval, rollback, linked metric, stale-content alert. |
+| 9a | SEO-ORCH-4 | 🔲 open | SEO changes join to GA4/GSC/order/GMC baselines and 7/28-day outcomes. |
+| 9b | UX-ORCH-5 | 🔲 open | Frontend health monitoring covers RUM/web-vitals, route errors, API failure rates, hydration/runtime exceptions. |
+| 9c | UX-ORCH-7 | 🔲 open | UX experiment/feature-flag registry has hypothesis, audience, variant, holdout, metric, runtime, rollback, owner, outcome. |
+| 9d | X8a | 🟡 partial | Social Engine imports real Meta/GA4/GSC/GMC performance into product/brand/category score inputs automatically. |
+| 10a | ORCH-6 | 🔲 open | Off-server encrypted backups, fail-closed dumps, checksums, RPO/RTO, and isolated restore drill. |
+| 10b | ORCH-7 | 🔲 open | CI covers typecheck, lint, tests, build, dependency/security checks, deploy-script tests, orchestration tests. |
+| 10c | SEO-ORCH-3 | 🔲 open | Read-only technical SEO control loop runs catalog/sitemap/Qdrant parity, samples, schema/canonical/404/redirect/query/news/internal-link/CWV checks. |
+| 10d | SEO-ORCH-6 | 🔲 open | Versioned URL-policy registry is consumed/tested by middleware, metadata, robots, sitemap, redirects, and audit tools. |
+| 10e | SEO-ORCH-7 | 🔲 open | Governed off-page/entity/AEO ledger covers mentions, outreach, GBP/social/reviews, spam review, AI citation/referral monitoring. |
+| 10f | UX-ORCH-9 | 🔲 open | Customer-feedback taxonomy feeds UX/SEO/action ledgers without unsafe customer-data collection. |
+
 ### Workspace Conflict Audit — 2026-06-25
 
 Scope: task-board/workspace governance only. This does not authorize implementation, deploys, live service restarts,
@@ -195,7 +244,9 @@ Counts reconciled: MySQL/WC REST/Qdrant/Sitemap all 3,625. URL prefix `/shop/` c
 
 ### AI Plan — Open Items
 
-| # | ID | Item | Owner | Status | Effort |
+Numbering here is legacy AI-plan ordering, not the main priority lane. Use `AI #` to avoid confusing it with Main Priority 5/6.
+
+| AI # | ID | Item | Owner | Status | Effort |
 |---|---|---|---|---|---|
 | 1 | AI-6 / P3b | Search: dynamic trending + typo correction | [X] | ✅ dynamic `search-trends.json` API fallback + typo/Bangla query expansion | Medium |
 | 2 | AI-7 / P3d | Back-in-stock notification (PDP "Notify me" → MailPoet) | [X] | ✅ PDP UI + `/api/back-in-stock` → MailPoet subscribe path | Medium |

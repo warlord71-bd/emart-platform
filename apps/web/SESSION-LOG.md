@@ -3114,6 +3114,12 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: Rebuilt the full campaign contact sheet and the model-replacement contact sheet; visually confirmed the corrected long tube shape.
 - Guardrail: No publish, deploy, PM2 restart, WordPress/Woo write, protected commerce data change, route, metadata, sitemap, or live Meta action.
 
+## 2026-06-25 (Codex - task board priority hierarchy cleanup)
+- Did: Reworked the task-board priority lane so `Main Priority 1-10` is the only authoritative numbered system.
+- Did: Added parent rows and sub-issue rows for all ten main priorities, mapping each to source rows such as WA-G, ORCH-*, SEO-ORCH-*, UX-ORCH-*, and X8a.
+- Did: Clarified that batch labels (`B1`, `B2`, etc.) and legacy AI-plan numbers are helper labels, not competing priority numbers.
+- Guardrail: Documentation only; no code, deploy, PM2, WordPress/Woo, protected commerce data, route, metadata, sitemap, or live Meta action.
+
 ## 2026-06-25 (Codex - SEO-ORCH-1 completed-content registry)
 - Did: Added a durable humanizer completed-content registry at `workspace/humanizer/completed-content-registry.json`, sourced from read-only `_emart_humanized` product meta with canonical `/shop/{slug}` paths.
 - Did: Updated `workspace/seo-review/gsc_tracker.py` so `humanizer-queue` excludes completed products by registry path/slug instead of inferring completion from agentic tiers. Added `completed-registry` command for runtime refresh.
