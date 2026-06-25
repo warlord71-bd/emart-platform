@@ -3132,3 +3132,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: **SEO-ORCH-1** — added `/product/`→`/shop/` canonical URL normalization in `gsc_tracker.py` `normalize_page_path()`. Built weighted-metric merge in `cmd_pull()` (clicks+impressions sum, position weighted-avg). Wired `completed-registry` refresh into nightly `cmd_full()`. Result: 0 /product/ pages remain, 1,828 product pages scored, humanizer queue correct (317 registry / 97 excluded / 402 needs work).
 - Owner actions pending: revoke old WP app password + old WC keys; fix PM2 n8n env leakage at next restart; set META_ACCESS_TOKEN in openclaw.env if ads_briefing needed.
 - Next: Task 4 UX-ORCH-1 (storefront trust-data contract audit) in new session.
+
+## 2026-06-25 (Codex - live state reconciliation)
+- Did: Reconciled owner-reported status differences against current `AGENT_BUS`, `TASKS.md`, PM2, and video bot state. Confirmed `AGENT_BUS` active work is empty.
+- Did: Updated `workspace/TASKS.md` because `emart-reels-bot` is now online in PM2 and `jobs/.bot_state.json` has a registered chat; VID-1 is no longer blocked on token.
+- Verified: `emartweb`, `emart-presence`, `emart-embed`, June 25 FB/IG schedulers, and `emart-reels-bot` are online. Today's FB comment worker remains stopped due Meta permission failure; blog generator is stopped in PM2 and remains unsafe for new pilots until WA-H.
+- Guardrail: Documentation/state update only; did not touch Claude's dirty `workspace/video-engine/enqueue.py`, commerce data, deploy, WordPress/Woo, route, metadata, sitemap, or live publishing.

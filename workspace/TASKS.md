@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-25 (video pipeline: autonomous builder + Telegram approval gate; VID-1 awaits owner token)
+Last updated: 2026-06-25 (video pipeline: autonomous builder + Telegram approval bot online)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -20,7 +20,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emart-meta-gen` (PM2) | ✅ stopped | Job complete (1,360/1,360 metas done Jun 15) |
 | Opus Humanizer Engine (detached, free OpenRouter) | 🟢 ongoing | `workspace/humanizer/engine/` — generates PDP descriptions on free models (gemma-4-31b chain), gated GMC+AI-residue, auto-applies PASS + revalidates + Telegram ping. Run: `bash workspace/humanizer/engine/run_detached.sh N`. 122 humanized as of 2026-06-23. Awaiting owner OpenRouter funds for Hermes handoff. |
 | Video orchestrator (crontab, `*/15`) | 🟢 running | `orchestrator.py --tick` — builds+QAs reels to `jobs/review/`, parks at human-approval gate. **Builds only; never posts.** `--status` = pipeline dashboard. |
-| Reels approval bot (`reels_bot.py`) | 🟡 ready, not started | Telegram see-and-approve (dedicated token). Posts reel as video + ✅Approve/❌Reject; Approve = the ONLY thing that publishes. **Blocked on owner `REELS_BOT_TOKEN` — see VID-1.** No auto-publish cron exists. |
+| Reels approval bot (`reels_bot.py`) | ✅ online | Telegram see-and-approve bot is polling with a registered chat. Posts reel as video + ✅Approve/❌Reject; Approve = the ONLY thing that publishes. No auto-publish cron exists. |
 | GSC tracker (crontab, `30 2 * * *`) | ✅ running | `gsc_tracker.py full` — propose-only, no WC writes |
 | system_state.py (crontab, `35 2 * * *`) | 🟡 patched | Health UA + expected-stopped classification fixed locally; verify next cron/live run |
 | GMC sync (crontab, `0 */6 * * *`) | ✅ running | 3,600/3,631 approved; 7 dead entries removed 2026-06-22 |
@@ -62,7 +62,7 @@ the Approve-button handler; verified the bot is the sole writer to `jobs/approve
 
 | ID | Finding / action | Owner | Status |
 |---|---|---|---|
-| VID-1 | **Start the Telegram approval bot (owner one-time, to provide token later).** @BotFather `/newbot` → add `REELS_BOT_TOKEN=<token>` to `apps/web/.env.local` (VPS) → `cd workspace/video-engine && pm2 start reels_bot.py --name emart-reels-bot --interpreter python3 && pm2 save` → open the bot, send `/start`. Until then the builder cron just stacks drafts in `jobs/review/`. | [O]→[C] | 🔲 awaiting owner token |
+| VID-1 | **Start the Telegram approval bot.** @BotFather token is now present, `emart-reels-bot` is online in PM2, and a Telegram chat is registered. Reels still only publish when the owner taps Approve; the builder cron parks drafts in `jobs/review/`. | [O]→[C] | ✅ online 2026-06-25 |
 | VID-2 | **Daily auto-enqueue producer not built.** Nothing auto-fills `jobs/queue/`; reels are enqueued manually via `enqueue.py spec.json --priority NN`. Build a daily product/topic picker that drops 1–N specs/day when the approval loop is proven. | [C] | 🔲 open (after VID-1) |
 | VID-3 | **WA-D archival now unblocked.** Codex finished the `meta_*` publishers, so the dated one-shot scripts in `scripts/active/` can be rotated to `/root/.attic-*` (this is WA-D). | [C] | 🔲 open |
 
