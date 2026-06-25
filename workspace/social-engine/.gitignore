@@ -1,4 +1,5 @@
 output/
+state/
 __pycache__/
 social_engine/__pycache__/
 tests/__pycache__/

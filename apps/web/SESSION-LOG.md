@@ -3157,3 +3157,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Iterated reels to owner spec — brand-themed cards (real logo.png + rose/gold + dual price/মূল্য logic); orchestrator loudness hard-gate; enqueue forces fresh build + preserves holding_request; caption window confined to photo frames; voiceover uses Bangla-phonetic spelling for correct TTS ("ডক্টর আলথিয়া থ্রি ফোর ফাইভ"); built free `presenter_card.py` (model+real-product composite, no Codex/no dummy); established **canonical reusable Emart model** (`personas/emart-model/clean-portrait.png`, Codex face-matched, wired as worker.CANONICAL_MODEL); standard 5-frame layout. Delivered COSRX + Dr.Althea reels to @Emart_vid_bot (msgs up to #14).
 - Commits: `724704a` `d303cf4` `b1faf96` `6d54990` `bc2b48f` `0bbd1f1` `0958ddf` (+ shared worker.py/cards). Local=Git=VPS reconciled.
 - Next: owner verdict on #14 → lock 5-frame layout as default; build VID-2 daily auto-enqueue producer; reuse canonical model for all future product reels.
+
+## 2026-06-25 (Codex - multi-agent hanging-work cleanup)
+- Did: Reconciled the owner-reported Claude/Codex “someone else will commit” issue against current git state, AGENT_BUS, and task board.
+- Finding: No tracked code/docs were hanging before this cleanup; the only untracked item was generated Social Engine runtime state at `workspace/social-engine/state/published-history.json`.
+- Updated: Added `workspace/social-engine/state/` to its local `.gitignore`, corrected stale AGENT_BUS rows for known landed commits (`673cadf`, `818065b`, `b6f4836`, `0bbd1f1`), and clarified WSC rules in `workspace/TASKS.md`.
+- Rule now: the editing agent owns closure; end each task as DONE, HANDOFF with exact files, or ABANDONED. Old `pending` memory is historical unless it matches ACTIVE WORK plus `git status --short`.
+- Guardrail: Governance/docs/ignore cleanup only; no deploy, PM2 restart, WordPress/Woo write, protected commerce data, route, metadata, sitemap, or live publishing.

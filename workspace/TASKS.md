@@ -145,13 +145,14 @@ WordPress/Woo writes, protected commerce-data changes, or broad cleanup while th
 
 | ID | Conflict / friction | Decision for future sessions |
 |---|---|---|
-| WSC-1 | Shared worktree is dirty with concurrent Codex/Claude changes across docs, social publishing, video engine, humanizer, package files, and generated SEO state removals. | Do not deploy/commit/push from this state without reviewing `git status`, `git diff --stat`, staged files, and AGENT_BUS. Prefer task-board/doc-only work until owners of active files are clear. |
-| WSC-2 | AGENT_BUS shows Claude actively owns video orchestration files (`orchestrator.py`, `publish_approved.py`, `enqueue.py`, `jobs/**`, video `.gitignore`, crontab). | Codex/other agents must avoid video-engine edits unless owner explicitly transfers/coordinates the work. ORCH-3 can be audited, not implemented, while this is active. |
+| WSC-1 | Shared worktree dirty-state was reconciled 2026-06-25: tracked code/docs were already committed; the only untracked item was generated Social Engine runtime state under `workspace/social-engine/state/`. | `workspace/social-engine/state/` is ignored. Before deploy/commit/push still review `git status --short`, `git diff --stat`, staged files, and AGENT_BUS; old `pending` rows are historical unless they match current `git status`. |
+| WSC-2 | AGENT_BUS can contain stale historical ownership notes after multi-agent sessions. | Live ownership is only the ACTIVE WORK table plus current `git status --short`. Any active file owner must be added before editing and moved to LAST COMPLETED/HANDOFF/ABANDONED before ending. |
 | WSC-3 | `emart-blog-generator` is listed as scheduled, but WA-G says it has embedded live credentials and WA-H says it is publish-only. | Treat blog automation as unsafe for new/experimental content until WA-G/WA-H are closed. Add draft/review and secret rotation before using GSC topics or pilots. |
 | WSC-4 | Social campaign row `X4` still said “active today” for 2026-06-24 after the date passed. | Verify final post/comment results, archive/close stale campaign state, then keep only reusable Social Engine tasks (`X8a`–`X8c`) open. |
 | WSC-5 | Mobile work appears both as open (`X3`) and explicitly out-of-scope for mobile BFF gaps (“EXCEPT MOBILE APP”). | Park mobile app work unless owner reopens it. Do not let mobile tasks consume current web/SEO/orchestration sessions. |
 | WSC-6 | ORCH/SEO/UX priority-lane IDs are repeated by design: once as execution order and once as source task rows. | Not a duplicate-task conflict. The source rows remain authoritative; the priority lane is only sequencing. |
 | WSC-7 | `workspace/seo-review/*` generated files are removed from tracking but still exist as runtime/generated state. | Treat generated SEO JSON/JSONL/GSC snapshots as runtime state, not source of truth for commits. Keep human approval queues tracked. |
+| WSC-8 | Agents assumed another agent would commit shared work, leaving “pending” memory after the actual commits landed. | Editor owns closure: commit it, or write an explicit HANDOFF with exact files and next action. Never leave “someone else will commit” as the state. |
 
 ### Token-Efficient Session Batches — Work by Cluster, Not by Whole Board
 
