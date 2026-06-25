@@ -1,6 +1,7 @@
 output/
 state/
 performance/latest.json
+performance/ga4-product-*.jsonl
 __pycache__/
 social_engine/__pycache__/
 tests/__pycache__/

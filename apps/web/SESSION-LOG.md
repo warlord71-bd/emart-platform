@@ -3208,3 +3208,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: `python3 -m unittest workspace/social-engine/tests/test_engine.py`; approved campaign plan dry-run prints `publish gate: approved_for_scheduled_run`; review-required campaign plan dry-run prints `publish gate: review_required`; `meta_schedule.js --publish` on the review-required plan fails before any Meta call with `Campaign publish gate is not approved_for_scheduled_run`.
 - Updated: `workspace/TASKS.md` marks X8c complete and leaves X8a GA4 product-level export as the remaining Social Engine performance gap.
 - Guardrail: No live publish, deploy, push, PM2 restart, WordPress/Woo write, protected commerce-data change, route, metadata, sitemap, or visual storefront change.
+
+## 2026-06-25 (Codex - X8a GA4 product export closure)
+- Did: Added `workspace/scripts/active/ga4_product_export.py`, a read-only GA4 Analytics Data API exporter for `/shop/*` landing pages that writes Social Engine-compatible JSONL rows with slug/path, sessions, views, conversions, and revenue. Documented the GA4 export/import flow in `workspace/social-engine/README.md` and ignored generated GA4 performance snapshots.
+- Data run: Exported 870 product landing-page rows for 2026-05-28 through 2026-06-24 to ignored runtime file `workspace/social-engine/performance/ga4-product-latest.jsonl`; merged GA4 with latest local GSC and GMC into ignored `workspace/social-engine/performance/latest.json` (GSC 1,828 rows, GMC 448 rows, GA4 870 rows).
+- Verified: Python compile; Social Engine unit tests; exporter helper assertions; GA4 export via approved read-only network call; `import-performance`; picker smoke with performance model selected 6 products using `performance_weighted` basis.
+- Updated: `workspace/TASKS.md` marks WA-F/X8/X8a/9d complete while Priority 9 remains partial for broader SEO/UX ledger and RUM work.
+- Guardrail: No live publish, deploy, push, PM2 restart, WordPress/Woo write, protected commerce-data change, route, metadata, sitemap, or storefront visual change. Left unrelated `workspace/video-engine/hyperframes/` untracked.

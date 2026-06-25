@@ -143,6 +143,24 @@ metrics. `--include-gmc` imports `/root/.gmc/issues_detail.json` as product pena
 with feed issues are less likely to be picked until fixed. `--ga4 path.jsonl` can import a local
 GA4 export with `slug`/`path`/`product_id` plus sessions, views, conversions, or revenue.
 
+Create that GA4 product export with:
+
+```bash
+python3 workspace/scripts/active/ga4_product_export.py \
+  --days 28 \
+  --out workspace/social-engine/performance/ga4-product-latest.jsonl
+```
+
+Then merge it into the picker score model:
+
+```bash
+python3 workspace/social-engine/social_engine.py import-performance \
+  --include-gsc \
+  --include-gmc \
+  --ga4 workspace/social-engine/performance/ga4-product-latest.jsonl \
+  --out workspace/social-engine/performance/latest.json
+```
+
 The command writes only local JSON. It never publishes, never changes Woo data, and redacts Meta
 token/error details.
 
@@ -177,5 +195,5 @@ dry-run by default unless `--allow-publish` is explicitly used there.
 
 ## Next Build Steps
 
-- Add GA4/GSC/GMC or sales-proxy joins into `performance/latest.json`.
+- Add sales-proxy joins into `performance/latest.json`.
 - Add native 4:5 creative generation instead of derived IG variants when source images support it.
