@@ -3172,3 +3172,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Updated: Added `workspace/social-engine/state/` to its local `.gitignore`, corrected stale AGENT_BUS rows for known landed commits (`673cadf`, `818065b`, `b6f4836`, `0bbd1f1`), and clarified WSC rules in `workspace/TASKS.md`.
 - Rule now: the editing agent owns closure; end each task as DONE, HANDOFF with exact files, or ABANDONED. Old `pending` memory is historical unless it matches ACTIVE WORK plus `git status --short`.
 - Guardrail: Governance/docs/ignore cleanup only; no deploy, PM2 restart, WordPress/Woo write, protected commerce data, route, metadata, sitemap, or live publishing.
+
+## 2026-06-25 (Codex - session close)
+- Did: Closed the session handoff after recording the concise-response preference and committing completed Codex work.
+- Verified: AGENT_BUS active work is `(none)`; TASKS already reflects completed/remaining work; only unrelated dated script deletions remain dirty.
+- Next: Next agent should start from AGENT_BUS, MEMORY, TASKS, SESSION-LOG tail, and `git log`.
