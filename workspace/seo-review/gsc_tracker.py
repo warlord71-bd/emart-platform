@@ -15,6 +15,7 @@ Usage:
   python3 workspace/seo-review/gsc_tracker.py blog-gaps       # content gaps → blog topics
   python3 workspace/seo-review/gsc_tracker.py search-trends   # Google+YouTube trend signals
   python3 workspace/seo-review/gsc_tracker.py completed-registry # refresh completed humanizer registry
+  python3 workspace/seo-review/gsc_tracker.py agentic-score # full-catalog deterministic product scoring
   python3 workspace/seo-review/gsc_tracker.py humanizer-queue # prioritized humanizer targets
   python3 workspace/seo-review/gsc_tracker.py propose-titles  # propose title fixes (read-only)
   python3 workspace/seo-review/gsc_tracker.py review-titles   # print pending title queue
@@ -42,6 +43,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
@@ -104,6 +106,23 @@ BRAND_QUERY_PATTERNS = (
     "emarrt",
     "dhaka e mart",
 )
+
+AGENTIC_WEIGHTS = {
+    "locked_title": 8,
+    "description_150_words_not_templated": 8,
+    "gtin_or_identifier_exists_false": 12,
+    "mpn_or_brand_product_id": 6,
+    "offer_price_valid_until": 6,
+    "concern_tags": 8,
+    "key_ingredients": 6,
+    "skin_type_or_use_case": 5,
+    "size_volume": 4,
+    "origin_country": 4,
+    "brand": 3,
+    "real_qna": 12,
+    "related_substitute_links": 10,
+    "routine_compatibility_care": 8,
+}
 
 # ── GSC Auth ──────────────────────────────────────────────────────────────────
 
@@ -748,6 +767,198 @@ def wp_db_prefix() -> str:
         check=True,
     )
     return result.stdout.strip()
+
+def wp_db_query(sql: str) -> str:
+    result = subprocess.run(
+        ["wp", f"--path={WP_PATH}", "--allow-root", "db", "query", sql],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    lines = [line for line in result.stdout.splitlines() if not line.startswith("Success:")]
+    return "\n".join(lines[1:] if lines else [])
+
+def strip_html(value: str) -> str:
+    value = re.sub(r"<[^>]+>", " ", value or "")
+    value = value.replace("&nbsp;", " ")
+    return re.sub(r"\s+", " ", value).strip()
+
+def word_count(text: str) -> int:
+    return len(re.findall(r"\b[\w'-]+\b", strip_html(text)))
+
+def looks_templated(text: str) -> bool:
+    lowered = strip_html(text).lower()
+    if not lowered:
+        return True
+    template_bits = (
+        "apply as directed",
+        "this product type",
+        "premium quality",
+        "original product",
+        "buy online in bangladesh",
+        "cash on delivery",
+        "suitable for all skin types",
+    )
+    return any(bit in lowered for bit in template_bits)
+
+def agentic_tier(score: int) -> str:
+    if score >= 95:
+        return "GOLDEN"
+    if score >= 75:
+        return "STRONG"
+    if score >= 50:
+        return "PARTIAL"
+    return "THIN"
+
+def split_terms(value: str) -> list[str]:
+    return [part.strip() for part in re.split(r"[,|;]", value or "") if part.strip()]
+
+def has_size(name: str, meta: dict[str, str], terms: dict[str, list[str]]) -> bool:
+    if meta.get("_product_size") or terms.get("pa_size"):
+        return True
+    return bool(re.search(r"\b\d+(?:\.\d+)?\s?(ml|g|gm|gram|kg|oz|fl oz|pcs|pads|sheets|tablets|capsules)\b", name.lower()))
+
+def has_use_case(meta: dict[str, str], terms: dict[str, list[str]], content: str) -> bool:
+    if terms.get("pa_skin_type") or meta.get("_emart_how_to_use"):
+        return True
+    joined = " ".join(terms.get("product_cat", []) + [content]).lower()
+    return any(word in joined for word in ("dry", "oily", "sensitive", "acne", "baby", "hair", "lip", "eye", "routine", "cleanser"))
+
+def has_routine_info(meta: dict[str, str], content: str) -> bool:
+    text = " ".join([meta.get("_emart_how_to_use", ""), content]).lower()
+    return any(word in text for word in ("routine", "after cleansing", "before moisturizer", "use with", "pair", "compatible", "how to use", "apply"))
+
+def has_real_qna(meta: dict[str, str]) -> bool:
+    faq = meta.get("_emart_product_faq", "")
+    if not faq:
+        return False
+    lowered = faq.lower()
+    if "apply as directed" in lowered or "this product type" in lowered:
+        return False
+    return lowered.count("?") >= 3 or len(faq) > 400
+
+def has_identifier(meta: dict[str, str]) -> bool:
+    return bool(meta.get("_global_unique_id") or meta.get("_gtin") or meta.get("_ean") or meta.get("_mpn") or meta.get("_sku"))
+
+def title_locked(name: str, meta: dict[str, str]) -> bool:
+    title = meta.get("_rank_math_title", "")
+    expected = f"{name} Price in Bangladesh | Emart"
+    return title == expected or (not title and len(expected) <= 70)
+
+def agentic_score_for_product(product: dict, meta: dict[str, str], terms: dict[str, list[str]], related_counts: dict[str, int]) -> dict:
+    name = product["name"]
+    content = " ".join([product.get("content", ""), product.get("excerpt", ""), meta.get("_rank_math_description", "")])
+    checks = {
+        "locked_title": title_locked(name, meta),
+        "description_150_words_not_templated": word_count(content) > 150 and not looks_templated(content),
+        "gtin_or_identifier_exists_false": has_identifier(meta),
+        "mpn_or_brand_product_id": bool(meta.get("_mpn") or meta.get("_sku") or terms.get("product_brand")),
+        "offer_price_valid_until": True,
+        "concern_tags": bool(terms.get("pa_concern")),
+        "key_ingredients": bool(terms.get("pa_ingredient") or meta.get("_emart_ingredients")),
+        "skin_type_or_use_case": has_use_case(meta, terms, content),
+        "size_volume": has_size(name, meta, terms),
+        "origin_country": bool(terms.get("pa_origin") or meta.get("Origin")),
+        "brand": bool(terms.get("product_brand")),
+        "real_qna": has_real_qna(meta),
+        "related_substitute_links": related_counts.get(str(product["id"]), 0) >= 4,
+        "routine_compatibility_care": has_routine_info(meta, content),
+    }
+    missing = [field for field, present in checks.items() if not present]
+    score = sum(AGENTIC_WEIGHTS[field] for field, present in checks.items() if present)
+    highest = max(missing, key=lambda field: AGENTIC_WEIGHTS.get(field, 0), default="")
+    notes = []
+    if "description_150_words_not_templated" in missing:
+        notes.append("Description is short or templated.")
+    if "real_qna" in missing:
+        notes.append("Product FAQ/Q&A is missing or generic.")
+    if "gtin_or_identifier_exists_false" in missing:
+        notes.append("Identifier/SKU signal is missing.")
+    return {
+        "slug": product["slug"],
+        "score": score,
+        "tier": agentic_tier(score),
+        "missing_fields": missing,
+        "highest_value_fix": highest,
+        "llm_note": " ".join(notes) or "Core Woo fields look usable; review missing structured fields before marking golden.",
+        "source": "deterministic_wp_catalog",
+        "product_id": product["id"],
+    }
+
+def cmd_agentic_score():
+    """Run deterministic full-catalog agentic scoring from read-only WordPress/Woo data."""
+    prefix = wp_db_prefix()
+    products_sql = (
+        "SELECT ID, post_name, HEX(post_title), HEX(post_content), HEX(post_excerpt) "
+        f"FROM {prefix}posts WHERE post_type='product' AND post_status='publish' ORDER BY ID"
+    )
+    products = []
+    for line in wp_db_query(products_sql).splitlines():
+        if not line.strip():
+            continue
+        post_id, slug, name_hex, content_hex, excerpt_hex = (line.split("\t") + ["", "", "", "", ""])[:5]
+        if not post_id.isdigit():
+            continue
+        name = bytes.fromhex(name_hex).decode("utf-8", errors="replace") if name_hex else ""
+        content = bytes.fromhex(content_hex).decode("utf-8", errors="replace") if content_hex else ""
+        excerpt = bytes.fromhex(excerpt_hex).decode("utf-8", errors="replace") if excerpt_hex else ""
+        products.append({"id": int(post_id), "slug": slug, "name": name, "content": content, "excerpt": excerpt})
+
+    ids = ",".join(str(p["id"]) for p in products)
+    meta_by_id = {str(p["id"]): {} for p in products}
+    terms_by_id = {str(p["id"]): {} for p in products}
+    related_counts = {str(p["id"]): 0 for p in products}
+    if ids:
+        meta_sql = (
+            "SELECT post_id, meta_key, HEX(meta_value) "
+            f"FROM {prefix}postmeta WHERE post_id IN ({ids}) "
+            "AND meta_key IN ("
+            "'_rank_math_title','_rank_math_description','_sku','_mpn','_global_unique_id',"
+            "'_gtin','_ean','_emart_product_faq','_emart_ingredients','_emart_how_to_use',"
+            "'_product_size','Origin','_crosssell_ids','_upsell_ids')"
+        )
+        for line in wp_db_query(meta_sql).splitlines():
+            if not line.strip():
+                continue
+            post_id, key, value_hex = (line.split("\t", 2) + [""])[:3]
+            if not post_id.isdigit():
+                continue
+            value = bytes.fromhex(value_hex).decode("utf-8", errors="replace") if value_hex else ""
+            if key in {"_crosssell_ids", "_upsell_ids"}:
+                related_counts[post_id] = related_counts.get(post_id, 0) + len(re.findall(r"\d+", value or ""))
+            else:
+                meta_by_id.setdefault(post_id, {})[key] = value
+
+        terms_sql = (
+            "SELECT tr.object_id, tt.taxonomy, GROUP_CONCAT(t.name SEPARATOR '|') "
+            f"FROM {prefix}term_relationships tr "
+            f"JOIN {prefix}term_taxonomy tt ON tt.term_taxonomy_id=tr.term_taxonomy_id "
+            f"JOIN {prefix}terms t ON t.term_id=tt.term_id "
+            f"WHERE tr.object_id IN ({ids}) "
+            "AND tt.taxonomy IN ('product_cat','product_brand','pa_brand','pa_concern','pa_ingredient','pa_skin_type','pa_origin','pa_size') "
+            "GROUP BY tr.object_id, tt.taxonomy"
+        )
+        for line in wp_db_query(terms_sql).splitlines():
+            if not line.strip():
+                continue
+            post_id, taxonomy, value = (line.split("\t", 2) + [""])[:3]
+            terms_by_id.setdefault(post_id, {})[taxonomy] = split_terms(value)
+
+    rows = [
+        agentic_score_for_product(product, meta_by_id.get(str(product["id"]), {}), terms_by_id.get(str(product["id"]), {}), related_counts)
+        for product in products
+    ]
+    rows.sort(key=lambda row: (row["score"], row["slug"]))
+    with AGENTIC_FILE.open("w", encoding="utf-8") as handle:
+        for row in rows:
+            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+
+    tiers = {}
+    for row in rows:
+        tiers[row["tier"]] = tiers.get(row["tier"], 0) + 1
+    print(f"Agentic score: {AGENTIC_FILE}")
+    print(f"  Products scored: {len(rows)}")
+    print(f"  Tiers: {json.dumps(tiers, sort_keys=True)}")
 
 def refresh_completed_content_registry() -> dict:
     """Refresh the durable registry from the read-only _emart_humanized marker."""
@@ -1465,8 +1676,13 @@ def cmd_striking_distance():
 # ── Full command ──────────────────────────────────────────────────────────────
 
 def cmd_full():
-    """Run pull + score + trends + blog-gaps + completed-registry + humanizer-queue + propose-titles + actions."""
+    """Run pull + agentic-score + score + trends + blog-gaps + completed-registry + humanizer-queue + propose-titles + actions."""
     cmd_pull()
+    print()
+    try:
+        cmd_agentic_score()
+    except Exception as e:
+        print(f"  agentic-score refresh skipped: {e}")
     print()
     cmd_score()
     print()
@@ -1494,6 +1710,7 @@ COMMANDS = {
     "trends": cmd_trends,
     "blog-gaps": cmd_blog_gaps,
     "search-trends": cmd_search_trends,
+    "agentic-score": cmd_agentic_score,
     "completed-registry": cmd_completed_registry,
     "humanizer-queue": cmd_humanizer_queue,
     "actions": cmd_actions,

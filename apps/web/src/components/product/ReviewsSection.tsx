@@ -176,7 +176,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
           Rating & Reviews ({totalReviews})
         </h2>
         <p className="mt-2 text-sm text-muted">
-          Real reviews from customers who bought this product through Emart.
+          Customer reviews for this product. Verified purchase badges appear on eligible individual reviews.
         </p>
       </div>
 
@@ -189,7 +189,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ product, initial
                 <StarRating rating={average} />
               </div>
               <p className="mt-2 text-sm text-muted">
-                {totalReviews} verified review{totalReviews === 1 ? '' : 's'}
+                {totalReviews} customer review{totalReviews === 1 ? '' : 's'}
               </p>
             </div>
 

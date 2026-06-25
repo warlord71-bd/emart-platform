@@ -5,9 +5,11 @@ import { useCategoryPageI18n } from '@/components/categories/categoryPageI18n';
 export default function StockBar({
   sold,
   total,
+  source = 'fallback',
 }: {
   sold: number;
   total: number;
+  source?: 'woo_sales' | 'fallback';
 }) {
   const { t, n } = useCategoryPageI18n();
   const safeTotal = Math.max(1, total);
@@ -20,8 +22,17 @@ export default function StockBar({
   return (
     <div className={urgent ? 'mb-stock-pulse rounded-[var(--mb-radius-sm)]' : ''}>
       <div className="mb-1.5 flex items-center justify-between text-[11px] font-semibold text-[var(--mb-ink-2)]">
-        <span>🔥 {n(safeSold)} {t('sold')}</span>
-        <span className={urgent ? 'text-[var(--mb-danger)]' : ''}>{n(remaining)} {t('left')}</span>
+        {source === 'woo_sales' ? (
+          <>
+            <span>{n(safeSold)} {t('sold')}</span>
+            <span className={urgent ? 'text-[var(--mb-danger)]' : ''}>{n(remaining)} {t('left')}</span>
+          </>
+        ) : (
+          <>
+            <span>Popular deal</span>
+            <span className="text-[var(--mb-ink-3)]">Limited availability</span>
+          </>
+        )}
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-[var(--mb-line)]">
         <div

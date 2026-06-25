@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import glob
 import datetime as dt
 import hmac
 import hashlib
@@ -248,13 +249,102 @@ def merge_product_score(model: dict[str, Any], key: str, score: float, metrics: 
     if not isinstance(existing, dict):
         existing = {"score": float(existing or 0)}
     existing_score = float(existing.get("score", 0) or 0)
-    existing["score"] = round(max(existing_score, score), 3)
+    existing["score"] = round(existing_score + score if score < 0 else max(existing_score, score), 3)
     existing.setdefault("sources", [])
     if source not in existing["sources"]:
         existing["sources"].append(source)
     if metrics:
         existing.setdefault("metrics", {}).update(metrics)
     products[str(key)] = existing
+
+
+def latest_file(pattern: str) -> Path | None:
+    matches = sorted(glob.glob(pattern), reverse=True)
+    return Path(matches[0]) if matches else None
+
+
+def slug_from_path(value: str) -> str:
+    path = urllib.parse.urlparse(value).path if value.startswith("http") else value
+    if path.startswith("/product/"):
+        path = "/shop/" + path.removeprefix("/product/")
+    if path.startswith("/shop/"):
+        return path.removeprefix("/shop/").strip("/")
+    return ""
+
+
+def import_gsc_scores(model: dict[str, Any], path: Path | None) -> int:
+    if not path or not path.exists():
+        return 0
+    data = read_json(path)
+    imported = 0
+    for page in data.get("pages", []):
+        slug = slug_from_path(page.get("path") or page.get("url") or "")
+        if not slug:
+            continue
+        impressions = float(page.get("impressions", 0) or 0)
+        clicks = float(page.get("clicks", 0) or 0)
+        position = float(page.get("position", 99) or 99)
+        ctr = float(page.get("ctr", 0) or 0)
+        score = clicks * 4 + impressions * 0.03 + max(0, 20 - position) * 1.2 + ctr * 30
+        merge_product_score(model, slug, round(score, 3), {
+            "gsc_impressions": impressions,
+            "gsc_clicks": clicks,
+            "gsc_position": position,
+            "gsc_ctr": ctr,
+        }, "gsc")
+        imported += 1
+    return imported
+
+
+def import_gmc_scores(model: dict[str, Any], path: Path | None) -> int:
+    if not path or not path.exists():
+        return 0
+    data = read_json(path)
+    imported = 0
+    for issue, rows in data.items():
+        if not isinstance(rows, list):
+            continue
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            key = row.get("wc_id") or row.get("product_id") or row.get("id")
+            if not key:
+                continue
+            penalty = -8.0 if issue in {"image_link_broken", "restricted_gtin", "illegal_drugs_policy_violation"} else -3.0
+            merge_product_score(model, str(key), penalty, {
+                "gmc_issue": issue,
+                "gmc_title": row.get("title", ""),
+            }, "gmc")
+            imported += 1
+    return imported
+
+
+def import_ga4_scores(model: dict[str, Any], path: Path | None) -> int:
+    rows = read_json_or_jsonl(path) if path and path.exists() else []
+    imported = 0
+    for row in rows:
+        slug = row.get("slug") or slug_from_path(row.get("path") or row.get("page") or row.get("landing_page") or row.get("url") or "")
+        product_id = row.get("product_id") or row.get("id")
+        if not slug and product_id is None:
+            continue
+        metrics = {
+            "ga4_sessions": row.get("sessions", 0),
+            "ga4_views": row.get("views", row.get("screenPageViews", 0)),
+            "ga4_conversions": row.get("conversions", row.get("keyEvents", 0)),
+            "ga4_revenue": row.get("revenue", row.get("purchaseRevenue", 0)),
+        }
+        score = (
+            float(metrics["ga4_sessions"] or 0) * 0.08
+            + float(metrics["ga4_views"] or 0) * 0.03
+            + float(metrics["ga4_conversions"] or 0) * 8
+            + float(metrics["ga4_revenue"] or 0) * 0.01
+        )
+        key = str(product_id) if product_id is not None else slug
+        merge_product_score(model, key, round(score, 3), metrics, "ga4")
+        if slug:
+            merge_product_score(model, slug, round(score, 3), metrics, "ga4")
+        imported += 1
+    return imported
 
 
 def meta_appsecret_proof(token: str, secret: str | None) -> str | None:
@@ -1007,6 +1097,7 @@ def import_performance(args: argparse.Namespace) -> int:
     model.setdefault("products", {})
     imported: list[dict[str, Any]] = []
     errors: list[dict[str, Any]] = []
+    external_imports: dict[str, int] = {}
 
     for row in ledger_rows:
         platform = row.get("platform")
@@ -1046,12 +1137,22 @@ def import_performance(args: argparse.Namespace) -> int:
             "metrics": metrics,
         })
 
+    if args.include_gsc:
+        gsc_path = args.gsc or latest_file(str(REPO / "workspace/seo-review/gsc-daily/*.json"))
+        external_imports["gsc"] = import_gsc_scores(model, gsc_path)
+    if args.include_gmc:
+        gmc_path = args.gmc or Path("/root/.gmc/issues_detail.json")
+        external_imports["gmc"] = import_gmc_scores(model, gmc_path)
+    if args.ga4:
+        external_imports["ga4"] = import_ga4_scores(model, args.ga4)
+
     model["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     model["last_import"] = {
         "ledger": str(args.ledger) if args.ledger else None,
         "campaign": str(args.campaign) if args.campaign else None,
         "fetch_meta": args.fetch_meta,
         "items": len(imported),
+        "external_imports": external_imports,
         "errors": errors,
     }
     if not args.dry_run:
@@ -1060,6 +1161,7 @@ def import_performance(args: argparse.Namespace) -> int:
         "dry_run": args.dry_run,
         "out": str(args.out),
         "imported": len(imported),
+        "external_imports": external_imports,
         "errors": len(errors),
     }, indent=2))
     if errors:
@@ -1106,7 +1208,7 @@ def main() -> int:
     record_parser.add_argument("--history", type=Path, default=ROOT / "history" / "published-products.json")
     record_parser.set_defaults(func=record)
 
-    perf_parser = sub.add_parser("import-performance", help="Import social post performance into picker score JSON")
+    perf_parser = sub.add_parser("import-performance", help="Import social/GSC/GMC/GA4 performance into picker score JSON")
     perf_parser.add_argument("--campaign", type=Path,
                              help="Optional campaign-plan.json used to map item index/slug to product IDs")
     perf_parser.add_argument("--ledger", type=Path,
@@ -1115,6 +1217,16 @@ def main() -> int:
                              help="Optional existing score JSON to merge into")
     perf_parser.add_argument("--out", type=Path, default=ROOT / "performance" / "latest.json")
     perf_parser.add_argument("--source", default="local_ledger")
+    perf_parser.add_argument("--include-gsc", action="store_true",
+                             help="Import latest local GSC product page metrics into product scores")
+    perf_parser.add_argument("--gsc", type=Path,
+                             help="Specific GSC snapshot JSON; defaults to latest workspace/seo-review/gsc-daily/*.json")
+    perf_parser.add_argument("--include-gmc", action="store_true",
+                             help="Import local GMC issue file as product-score penalties")
+    perf_parser.add_argument("--gmc", type=Path,
+                             help="Specific GMC issues JSON; defaults to /root/.gmc/issues_detail.json")
+    perf_parser.add_argument("--ga4", type=Path,
+                             help="Optional GA4 JSON/JSONL with slug/path/product_id and sessions/views/conversions/revenue")
     perf_parser.add_argument("--fetch-meta", action="store_true",
                              help="Fetch Meta Graph insights for ledger social IDs; requires Meta page token")
     perf_parser.add_argument("--dry-run", action="store_true")

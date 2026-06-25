@@ -3152,6 +3152,14 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: `codex_bridge.py --list` now returns `[]`; visual check confirmed no product/text/logo and hands clear for future compositor use.
 - Guardrail: Asset generation only; no deploy, PM2 restart, WordPress/Woo write, protected commerce-data change, route, metadata, sitemap, or live publishing.
 
+## 2026-06-25 (Codex - SEO/social performance + UX trust closure)
+- Did: Closed the owner-assigned Codex leg for 3a SEO-ORCH-1, 9d/X8a, and 4a UX-ORCH-1.
+- SEO: Added deterministic full-catalog `agentic-score` support to `workspace/seo-review/gsc_tracker.py` and ran it across 3,625 published products; latest tiers are 350 GOLDEN / 2,499 STRONG / 761 PARTIAL / 15 THIN. Refreshed priority and humanizer queues after the canonical merge + completed-content registry.
+- Social: Extended Social Engine `import-performance` so Meta publish ledgers merge with latest local GSC and GMC signals into the performance score file used by the product picker; added GA4 JSON/JSONL import support, with product-level GA4 export still pending. Picker smoke passed with the generated performance file.
+- UX: Added source flags and visible fallback relabeling for category pulses, trending products, stock/sold bars, concern review summaries, and PDP review wording so deterministic fallback counters no longer read as fake live/verified/stock/sales facts.
+- Verified: Python compile for SEO/social files; Social Engine unit tests; `agentic-score`, `score`, and `humanizer-queue`; dry-run and real Meta/GSC/GMC performance imports; picker smoke; `apps/web` lint; `apps/web` production build. Build completed after transient Woo timeout retries.
+- Guardrail: No deploy, push, PM2 restart, WordPress/Woo write, protected commerce-data change, stock/price/order/customer/checkout/cart/payment change, route, metadata, or sitemap change. Left unrelated Claude/video-engine and dated one-shot script deletions untouched.
+
 
 ## 2026-06-25 · Claude · Reel quality + reusable-persona overhaul (session close)
 - Did: Iterated reels to owner spec — brand-themed cards (real logo.png + rose/gold + dual price/মূল্য logic); orchestrator loudness hard-gate; enqueue forces fresh build + preserves holding_request; caption window confined to photo frames; voiceover uses Bangla-phonetic spelling for correct TTS ("ডক্টর আলথিয়া থ্রি ফোর ফাইভ"); built free `presenter_card.py` (model+real-product composite, no Codex/no dummy); established **canonical reusable Emart model** (`personas/emart-model/clean-portrait.png`, Codex face-matched, wired as worker.CANONICAL_MODEL); standard 5-frame layout. Delivered COSRX + Dr.Althea reels to @Emart_vid_bot (msgs up to #14).

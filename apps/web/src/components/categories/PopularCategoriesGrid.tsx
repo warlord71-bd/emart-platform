@@ -14,6 +14,8 @@ interface CategoryPulse {
   product_count: number;
   trend_pct: number;
   active_viewers: number;
+  active_viewers_source?: 'fallback';
+  trend_source?: 'fallback';
   is_hot: boolean;
   icon_url?: string;
 }
@@ -70,8 +72,8 @@ export default function PopularCategoriesGrid({ initialCategories = [] }: { init
                 <div className="h-full rounded-full bg-gradient-to-r from-[var(--mb-pink)] to-[var(--mb-gold)]" style={{ width: `${Math.min(100, Math.max(0, category.trend_pct))}%` }} />
               </div>
               <div className="mt-3 flex items-center justify-between gap-2 text-xs font-bold">
-                <span className={category.trend_pct >= 0 ? 'text-[var(--mb-success)]' : 'text-[var(--mb-danger)]'}>↑ {n(category.trend_pct)}% this week</span>
-                <span className="text-[var(--mb-ink-3)]">🟢 {n(category.active_viewers)} {t('viewing')}</span>
+                <span className={category.trend_pct >= 0 ? 'text-[var(--mb-success)]' : 'text-[var(--mb-danger)]'}>{category.trend_source === 'fallback' ? 'Popular pick' : `↑ ${n(category.trend_pct)}% this week`}</span>
+                <span className="text-[var(--mb-ink-3)]">{category.active_viewers_source === 'fallback' ? t('viewing') : `${n(category.active_viewers)} ${t('viewing')}`}</span>
               </div>
             </Link>
           ))}

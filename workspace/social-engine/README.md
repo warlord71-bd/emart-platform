@@ -120,6 +120,8 @@ After approved live publishing, the scheduler can append one JSONL row per post 
 python3 workspace/social-engine/social_engine.py import-performance \
   --campaign workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
   --ledger workspace/social-engine/performance/published-results.jsonl \
+  --include-gsc \
+  --include-gmc \
   --out workspace/social-engine/performance/latest.json
 ```
 
@@ -135,6 +137,11 @@ python3 workspace/social-engine/social_engine.py import-performance \
   --allow-partial \
   --out workspace/social-engine/performance/latest.json
 ```
+
+`--include-gsc` imports the latest local `workspace/seo-review/gsc-daily/*.json` product-page
+metrics. `--include-gmc` imports `/root/.gmc/issues_detail.json` as product penalties so products
+with feed issues are less likely to be picked until fixed. `--ga4 path.jsonl` can import a local
+GA4 export with `slug`/`path`/`product_id` plus sessions, views, conversions, or revenue.
 
 The command writes only local JSON. It never publishes, never changes Woo data, and redacts Meta
 token/error details.

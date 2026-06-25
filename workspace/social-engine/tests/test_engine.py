@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import sys
 import tempfile
 import unittest
@@ -7,7 +8,7 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from social_engine.engine import normalize_campaign, performance_score, qa_campaign, social_metric_score  # noqa: E402
+from social_engine.engine import import_ga4_scores, import_gmc_scores, import_gsc_scores, normalize_campaign, performance_score, qa_campaign, social_metric_score  # noqa: E402
 from social_engine import vision_qa  # noqa: E402
 
 
@@ -183,6 +184,34 @@ class SocialEngineTests(unittest.TestCase):
             social_metric_score({"reactions": 10, "comments": 2, "shares": 1, "clicks": 3, "reach": 100}),
             33.0,
         )
+
+    def test_import_gsc_scores_adds_slug_score(self):
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json") as handle:
+            json.dump({"pages": [{"path": "/shop/test-product", "impressions": 100, "clicks": 4, "position": 8, "ctr": 0.04}]}, handle)
+            handle.flush()
+            model = {"products": {}}
+            imported = import_gsc_scores(model, Path(handle.name))
+        self.assertEqual(imported, 1)
+        self.assertIn("test-product", model["products"])
+        self.assertIn("gsc", model["products"]["test-product"]["sources"])
+
+    def test_import_gmc_scores_penalizes_issue_id(self):
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json") as handle:
+            json.dump({"image_link_broken": [{"wc_id": "123", "title": "Broken Image"}]}, handle)
+            handle.flush()
+            model = {"products": {}}
+            imported = import_gmc_scores(model, Path(handle.name))
+        self.assertEqual(imported, 1)
+        self.assertLess(model["products"]["123"]["score"], 0)
+
+    def test_import_ga4_scores_accepts_landing_page_path(self):
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json") as handle:
+            json.dump([{"landing_page": "/shop/ga4-product", "sessions": 10, "views": 20, "conversions": 1}], handle)
+            handle.flush()
+            model = {"products": {}}
+            imported = import_ga4_scores(model, Path(handle.name))
+        self.assertEqual(imported, 1)
+        self.assertIn("ga4-product", model["products"])
 
 
 if __name__ == "__main__":

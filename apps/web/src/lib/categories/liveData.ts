@@ -27,6 +27,8 @@ export interface CategoryPulse {
   product_count: number;
   trend_pct: number;
   active_viewers: number;
+  active_viewers_source: 'fallback';
+  trend_source: 'fallback';
   is_hot: boolean;
   display_order: number;
   is_trending: boolean;
@@ -54,6 +56,9 @@ export interface ProductSummary {
   stock_remaining: number;
   stock_sold: number;
   stock_total: number;
+  stock_source: 'woo_stock' | 'fallback';
+  sales_source: 'fallback';
+  growth_source: 'fallback';
 }
 
 export interface ConcernSummary {
@@ -63,6 +68,7 @@ export interface ConcernSummary {
   product_count: number;
   review_count: number;
   avg_rating: number;
+  review_source: 'woo_review' | 'fallback';
   top_product?: { name: string; slug: string };
 }
 
@@ -106,7 +112,8 @@ function getBrand(product: WooProduct) {
 export function mapProductSummary(product: WooProduct): ProductSummary {
   const original = parsePrice(product.regular_price || product.price);
   const sale = parsePrice(product.sale_price || product.price || product.regular_price);
-  const stockRemaining = Math.max(0, product.stock_quantity ?? stableNumber(product.id, 7, 46));
+  const hasManagedStockQuantity = typeof product.stock_quantity === 'number' && Number.isFinite(product.stock_quantity);
+  const stockRemaining = Math.max(0, hasManagedStockQuantity ? product.stock_quantity || 0 : stableNumber(product.id, 7, 46));
   const stockTotal = Math.max(stockRemaining + stableNumber(product.slug, 12, 70), stockRemaining || 1);
   const stockSold = Math.max(0, stockTotal - stockRemaining);
 
@@ -123,6 +130,9 @@ export function mapProductSummary(product: WooProduct): ProductSummary {
     stock_remaining: stockRemaining,
     stock_sold: stockSold,
     stock_total: stockTotal,
+    stock_source: hasManagedStockQuantity ? 'woo_stock' : 'fallback',
+    sales_source: 'fallback',
+    growth_source: 'fallback',
   };
 }
 
@@ -174,6 +184,8 @@ export async function getCategoryPulses(limit = 8): Promise<CategoryPulse[]> {
         product_count: category.count || 0,
         trend_pct: trend,
         active_viewers: stableNumber(`${category.slug}-viewers`, 8, 68),
+        active_viewers_source: 'fallback',
+        trend_source: 'fallback',
         is_hot: trend > 60 || index < 2,
         display_order: index + 1,
         is_trending: trend > 55,
@@ -237,13 +249,15 @@ export async function getConcernSummaries(limit = 4): Promise<ConcernSummary[]> 
     });
     const topProduct = products[0];
     const rating = topProduct ? Number.parseFloat(topProduct.average_rating || '0') : 0;
+    const hasRealReviews = Boolean(topProduct && topProduct.rating_count > 0 && rating > 0);
     return {
       id: category.id,
       name: category.name,
       slug: category.slug,
       product_count: category.count || 0,
-      review_count: topProduct?.rating_count || stableNumber(category.slug, 18, 180),
-      avg_rating: rating > 0 ? rating : 4.8,
+      review_count: hasRealReviews ? topProduct.rating_count : 0,
+      avg_rating: hasRealReviews ? rating : 0,
+      review_source: hasRealReviews ? 'woo_review' as const : 'fallback' as const,
       top_product: topProduct ? { name: topProduct.name, slug: topProduct.slug } : undefined,
     };
   }));

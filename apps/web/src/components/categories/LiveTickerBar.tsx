@@ -79,7 +79,7 @@ export default function LiveTickerBar({
     <section className="bg-[var(--mb-navy)] text-white">
       <div className="mb-container flex min-h-11 items-center gap-3 overflow-hidden py-2">
         <div className="flex shrink-0 items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-[var(--mb-gold-soft)]">
-          <Zap size={14} /> LIVE
+          <Zap size={14} /> Activity
         </div>
         <div className="hidden min-w-0 flex-1 overflow-hidden sm:block">
           <div className="mb-ticker-track">

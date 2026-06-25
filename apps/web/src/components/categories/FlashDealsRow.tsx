@@ -71,7 +71,7 @@ export default function FlashDealsRow({ initialProducts = [] }: { initialProduct
                     {product.original_price > product.sale_price ? <span className="text-xs text-[var(--mb-ink-3)] line-through">{currency(product.original_price)}</span> : null}
                   </div>
                   <div className="mt-4">
-                    <StockBar sold={product.stock_sold} total={product.stock_total} />
+                    <StockBar sold={product.stock_sold} total={product.stock_total} source="fallback" />
                   </div>
                 </div>
               </Link>

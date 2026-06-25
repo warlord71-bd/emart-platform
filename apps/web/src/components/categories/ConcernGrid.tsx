@@ -12,6 +12,7 @@ interface Concern {
   product_count: number;
   review_count: number;
   avg_rating: number;
+  review_source?: 'woo_review' | 'fallback';
   top_product?: { name: string; slug: string };
 }
 
@@ -56,10 +57,14 @@ export default function ConcernGrid({ initialConcerns = [] }: { initialConcerns?
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3 className="text-xl font-semibold text-[var(--mb-ink)]">{concern.name}</h3>
-                  <div className="mt-2 flex items-center gap-2">
-                    <StarRating value={concern.avg_rating} />
-                    <span className="text-xs font-bold text-[var(--mb-ink-3)]">{n(concern.review_count)} {t('reviews')}</span>
-                  </div>
+                  {concern.review_source === 'woo_review' ? (
+                    <div className="mt-2 flex items-center gap-2">
+                      <StarRating value={concern.avg_rating} />
+                      <span className="text-xs font-bold text-[var(--mb-ink-3)]">{n(concern.review_count)} {t('reviews')}</span>
+                    </div>
+                  ) : (
+                    <p className="mt-2 text-xs font-bold text-[var(--mb-ink-3)]">Popular concern</p>
+                  )}
                 </div>
                 <ArrowRight className="h-5 w-5 text-[var(--mb-ink-3)] group-hover:text-[var(--mb-pink)]" />
               </div>

@@ -11,6 +11,8 @@ interface TrendingProduct {
   brand: string;
   growth_rate: number;
   stock_remaining: number;
+  growth_source?: 'fallback';
+  stock_source?: 'woo_stock' | 'fallback';
 }
 
 async function fetchTrending() {
@@ -33,7 +35,7 @@ export default function TrendingLeaderboard({ initialProducts = [] }: { initialP
     <div className="h-full rounded-[var(--mb-radius)] border border-white/10 bg-white/[0.06] p-4 text-white sm:p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/70">{t('trendingNow')}</p>
-        <span className="rounded-md bg-[#FFE5E5] px-2 py-1 text-[10px] font-bold text-[var(--mb-danger)]">LIVE</span>
+        <span className="rounded-md bg-[#FFE5E5] px-2 py-1 text-[10px] font-bold text-[var(--mb-danger)]">Popular</span>
       </div>
       {isError ? <p className="text-sm text-white/60">Trending products are unavailable right now.</p> : null}
       {isLoading && products.length === 0 ? <div className="h-48 animate-pulse rounded-[var(--mb-radius)] bg-[var(--mb-pink-bg)]" /> : null}
@@ -50,9 +52,11 @@ export default function TrendingLeaderboard({ initialProducts = [] }: { initialP
               <span className="block truncate text-[10px] uppercase tracking-[0.08em] text-white/55">{product.brand}</span>
             </span>
             <span className="text-right text-xs font-bold">
-              <span className={product.stock_remaining < 15 ? 'block text-[#FF8B8B]' : 'block text-[var(--mb-pink-soft)]'}>↑ {n(product.growth_rate)}%</span>
+              <span className={product.stock_remaining < 15 ? 'block text-[#FF8B8B]' : 'block text-[var(--mb-pink-soft)]'}>
+                {product.growth_source === 'fallback' ? 'Popular pick' : `↑ ${n(product.growth_rate)}%`}
+              </span>
               <span className="text-white/50">
-                {n(product.stock_remaining)} left
+                {product.stock_source === 'woo_stock' ? `${n(product.stock_remaining)} available` : 'In stock'}
               </span>
             </span>
           </Link>
