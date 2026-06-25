@@ -19,6 +19,8 @@ from pathlib import Path
 
 W, H = 1080, 1920
 FONT = "'Noto Sans Bengali','Inter','Segoe UI',sans-serif"
+# Emart brand palette (source of truth: apps/web/tailwind.config.js)
+ROSE, WINE, INK, GOLD = "#9f1239", "#5e1130", "#2a0a18", "#e7b24a"
 
 
 def find_chromium() -> str:
@@ -26,6 +28,16 @@ def find_chromium() -> str:
     if not c:
         raise SystemExit("no playwright chromium found")
     return c[-1]
+
+
+def logo_data_uri() -> str:
+    import base64
+    for p in (Path(__file__).resolve().parents[3] / "apps/web/public/logo.png",
+              Path("/root/emart-platform/apps/web/public/logo.png"),
+              Path("/var/www/emart-platform/apps/web/public/logo.png")):
+        if p.exists():
+            return "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode()
+    return ""
 
 
 def esc(t: str) -> str:
@@ -42,30 +54,34 @@ def bullet_html(bullets, style):
 
 
 def html(kicker, title, bullets, style, footer):
+    logo = logo_data_uri()
+    logo_block = (f'<img class="logoimg" src="{logo}">' if logo
+                  else '<span class="logo"><span class="e">e</span>Mart</span>')
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 *{{margin:0;padding:0;box-sizing:border-box;}}
 html,body{{width:{W}px;height:{H}px;font-family:{FONT};color:#fff;overflow:hidden;
-  background:linear-gradient(160deg,#10222b 0%,#1b3946 50%,#244b5c 100%);}}
+  background:linear-gradient(160deg,{ROSE} 0%,{WINE} 52%,{INK} 100%);}}
 .wrap{{position:absolute;inset:0;padding:130px 86px;display:flex;flex-direction:column;}}
-.kicker{{align-self:flex-start;font-size:32px;font-weight:800;letter-spacing:3px;color:#10222b;
-  background:#F5D060;border-radius:14px;padding:10px 26px;margin-bottom:40px;}}
-.title{{font-size:74px;font-weight:900;line-height:1.22;margin-bottom:64px;}}
-.title .hl{{color:#F5D060;}}
-.row{{display:flex;align-items:center;gap:30px;margin-bottom:38px;
-  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
-  border-radius:22px;padding:30px 34px;}}
-.mark{{flex:0 0 84px;height:84px;border-radius:50%;background:#F5D060;color:#10222b;
+.kicker{{align-self:flex-start;font-size:32px;font-weight:800;letter-spacing:3px;color:{INK};
+  background:{GOLD};border-radius:14px;padding:10px 26px;margin-bottom:40px;}}
+.title{{font-size:74px;font-weight:900;line-height:1.22;margin-bottom:60px;}}
+.title .hl{{color:{GOLD};}}
+.row{{display:flex;align-items:center;gap:30px;margin-bottom:34px;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);
+  border-radius:22px;padding:28px 34px;}}
+.mark{{flex:0 0 84px;height:84px;border-radius:50%;background:{GOLD};color:{INK};
   font-size:44px;font-weight:900;display:flex;align-items:center;justify-content:center;}}
 .txt{{font-size:50px;font-weight:700;line-height:1.3;}}
 .foot{{margin-top:auto;display:flex;align-items:center;justify-content:space-between;
-  font-size:30px;color:#aac3d0;}}
-.foot .logo{{font-weight:900;letter-spacing:4px;color:#fff;}}
-.foot .logo .e{{color:#F5D060;}}
+  font-size:30px;color:#f3c9d6;}}
+.foot .logoimg{{width:120px;height:120px;border-radius:24px;}}
+.foot .logo{{font-weight:900;letter-spacing:2px;color:#fff;font-size:40px;}}
+.foot .logo .e{{color:{GOLD};}}
 </style></head><body><div class="wrap">
 <div class="kicker">{esc(kicker)}</div>
 <div class="title">{esc(title)}</div>
 {bullet_html(bullets, style)}
-<div class="foot"><span class="logo"><span class="e">E</span>MART</span><span>{esc(footer)}</span></div>
+<div class="foot">{logo_block}<span>{esc(footer)}</span></div>
 </div></body></html>"""
 
 
