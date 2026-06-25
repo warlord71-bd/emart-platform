@@ -16,7 +16,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
-| (none) | - | - | - |
+| Claude | 2026-06-25 | WA-H blog draft gate, ORCH-5 PM2 env leak, WA-D/VID-5 status closure | `workspace/scripts/archive/2026-06/blog_generator.py`, `ecosystem.config.cjs`, `workspace/TASKS.md` |
 
 ---
 
@@ -24,6 +24,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-25 | Priority 5+6 docs/specs: updated versioned PM2/cron/detached/worker process manifest with freshness SLOs, created durable queue/state contract, and designed unified SEO/UX action-event ledger schema. TASKS marks ORCH-2/4/8 docs complete and SEO-ORCH-2/UX-ORCH-2 schema designed with ledger instantiation pending. | `328572a` |
 | Codex | 2026-06-25 | Closed owner-assigned Codex leg: SEO-ORCH-1 full-catalog deterministic agentic scoring (3,625 products, aligned tiers), X8a Social Engine Meta/GSC/GMC performance import with picker smoke, and UX-ORCH-1 visible trust-source/fallback relabeling. GA4 product-level export remains the only X8a input gap. | `d7dc9c0` |
 | Codex | 2026-06-25 | B0 coordination reconciliation: current tracked tree checked; only generated Social Engine runtime state was hanging, now ignored via `workspace/social-engine/.gitignore`. Rule clarified: old `pending` rows are historical only; live ownership comes from ACTIVE WORK + `git status --short`. | reconciliation commit |
 | Claude | 2026-06-25 | Reel quality + consistency overhaul (owner iterations): brand-themed cards w/ real logo + dual price; loudness hard-gate + fresh-build enqueue; caption-window fix; voiceover Bangla-phonetic pronunciation; **canonical reusable Emart model** (`personas/emart-model/clean-portrait.png`, Codex face-matched) + free `presenter_card.py` composite fallback; standard 5-frame layout (clean model→model+product→product→value→brand, ONE face). COSRX + Dr.Althea reels delivered to Telegram. Local=Git=VPS reconciled, session closed. | `0bbd1f1` `0958ddf` |

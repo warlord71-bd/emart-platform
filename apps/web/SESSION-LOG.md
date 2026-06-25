@@ -3182,3 +3182,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: WA-D closed (6 dated scripts archived, 4 stale PM2 deleted). VID-5 coded+tested (4-platform safe zones, auto-split enqueue for FB/IG/YT/TikTok). WA-H closed (blog_generator --draft/--generate-only modes). ORCH-2 process manifest drafted. VID-2 daily_producer.py live (cron 5AM, 2 products/day, resource-aware). Orchestrator slowed to */2h (anti-spam). Canonical reusable model committed. Reels bot restarted. Terse-output + posting-cadence + commit-closure rules saved to memory.
 - Commits: `3ee7728` `cd27804` `e9d9c0b` + WA-D deletions
 - Next: VID-4 owner sign-off on reel #14. ORCH-5 PM2 env leak. Priority 5-10 serious work.
+
+## 2026-06-25 (Codex - Priority 5+6 runtime docs and ledger schema)
+- Did: Completed docs/spec lane for ORCH-2, ORCH-4, ORCH-8, SEO-ORCH-2, and UX-ORCH-2. Updated `workspace/docs/process-manifest.md` with filtered PM2/crontab/detached-engine inventory plus freshness/SLO rules; created `workspace/docs/queue-state-contract.md`; created `workspace/docs/action-ledger-schema.md`.
+- Sources: filtered `pm2 jlist`, `crontab -l`, TASKS autonomous/runtime rows, log mtimes/tails, Social Engine/SEO/video/humanizer readmes and state surfaces. No env values recorded.
+- Updated: `workspace/TASKS.md` marks ORCH-2/4/8 docs/spec complete in `328572a`; SEO-ORCH-2 and UX-ORCH-2 are schema designed with ledger instantiation pending. Moved the Codex AGENT_BUS entry to LAST COMPLETED while preserving Claude's active row.
+- Guardrail: Docs/specs only; did not touch `workspace/scripts/active/`, `workspace/video-engine/`, `workspace/humanizer/`, `apps/web/src/`, PM2 config, deploy, WordPress/Woo writes, protected commerce data, routes, metadata, sitemap, or live publishing.
