@@ -296,6 +296,15 @@ const CATEGORY_GUIDE_FAQS: Record<string, { q: string; a: string }[]> = {
     { q: 'কোরিয়ান স্কিনকেয়ার কি সব স্কিন টাইপে কাজ করে?', a: 'হ্যাঁ। K-beauty-তে প্রতিটি স্কিন টাইপের জন্য product আছে। ব্র্যান্ড নয়, concern অনুযায়ী বেছে নেওয়াই আসল কৌশল — acne, hydration, না anti-aging।' },
     { q: '10-step routine কি বাংলাদেশে দরকার?', a: 'দরকার নেই। cleanser, toner, moisturiser আর sunscreen দিয়ে শুরু করুন। ত্বকের প্রয়োজন অনুযায়ী পরে serum বা treatment যোগ করুন।' },
   ],
+  'bath-body': [
+    { q: 'বাংলাদেশের আবহাওয়ায় body care কেমন হওয়া উচিত?', a: 'গরম ও আর্দ্র আবহাওয়ায় গোসলের পর হালকা ময়েশ্চারাইজিং body lotion ব্যবহার করুন। ঘাম ও রোদ থেকে ত্বক রক্ষায় মৃদু body wash আর পর্যাপ্ত hydration গুরুত্বপূর্ণ।' },
+    { q: 'Body wash না সাবান — কোনটা ভালো?', a: 'Body wash সাধারণত ত্বকের pH-এর কাছাকাছি ও বেশি ময়েশ্চারাইজিং, তাই শুষ্ক বা সংবেদনশীল ত্বকের জন্য সাবানের চেয়ে ভালো। তৈলাক্ত ত্বকে clarifying body wash উপযোগী।' },
+    { q: 'Body lotion কখন লাগাব?', a: 'গোসলের পরপরই, ত্বক হালকা ভেজা থাকতে লাগালে আর্দ্রতা ভালোভাবে আটকে থাকে। শুষ্ক ত্বকে দিনে দুইবারও ব্যবহার করা যায়।' },
+  ],
+  lips: [
+    { q: 'Lip care না lip color — কোনটা দিয়ে শুরু করব?', a: 'শুরুটা lip care দিয়েই — একটি ভালো lip balm ঠোঁট নরম ও আর্দ্র রাখে। এরপর lipstick বা tint ব্যবহার করলে রঙ সুন্দরভাবে বসে ও ঠোঁট ফাটে না।' },
+    { q: 'ঠোঁট বারবার ফাটে কেন, কী করব?', a: 'পানি কম খাওয়া, ঠোঁট চাটা ও শুষ্ক আবহাওয়া মূল কারণ। নিয়মিত hydrating lip balm লাগান, রাতে lip mask ব্যবহার করুন এবং পর্যাপ্ত পানি পান করুন।' },
+  ],
 };
 
 function getCategoryOgImage(slug: string, name: string) {
@@ -719,10 +728,14 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                         <h3 className="mb-2 text-sm font-semibold text-ink">What to look for</h3>
                         <p>
                           A pH around 5-6 is usually kinder to the skin barrier. If your face feels tight after
-                          washing, the cleanser is probably too stripping. For clogged pores, salicylic acid (BHA)
-                          can help. For easily irritated skin, centella and panthenol are calmer choices. Texture is
-                          personal: gel feels lighter in humidity, foam feels fresh, and oil or balm is better for
-                          removing sunscreen and makeup.
+                          washing, the cleanser is probably too stripping. For clogged pores,{' '}
+                          <Link href="/ingredients/bha-salicylic-acid" className="text-accent hover:underline">salicylic acid (BHA)</Link>{' '}
+                          can help. For easily irritated skin,{' '}
+                          <Link href="/ingredients/centella" className="text-accent hover:underline">centella</Link>{' '}
+                          and panthenol are calmer choices. Texture is personal: gel feels lighter in humidity, foam
+                          feels fresh, and an{' '}
+                          <Link href="/routine/oil-cleanser" className="text-accent hover:underline">oil or balm cleanser</Link>{' '}
+                          is better for removing sunscreen and makeup.
                         </p>
                       </section>
 
@@ -939,6 +952,73 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                         <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
                         <div className="space-y-3">
                           {(CATEGORY_GUIDE_FAQS['korean-beauty'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'bath-body' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">Body care basics for Bangladesh&apos;s climate</h2>
+                        <p>
+                          Heat, humidity, and sun exposure are hard on skin below the neck too. A gentle wash plus
+                          regular hydration keeps the body&apos;s skin barrier comfortable through monsoon and dry season
+                          alike.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">Body wash vs body lotion</h3>
+                        <p>
+                          A mild{' '}
+                          <Link href="/category/body-wash" className="text-accent hover:underline">body wash</Link>{' '}
+                          cleans without stripping; a{' '}
+                          <Link href="/category/body-lotion" className="text-accent hover:underline">body lotion</Link>{' '}
+                          locks in moisture afterwards. Dry skin benefits from both — wash gently, then moisturise while
+                          skin is still slightly damp. See{' '}
+                          <Link href="/concerns/dryness-hydration" className="text-accent hover:underline">dryness &amp; hydration</Link>.
+                        </p>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['bath-body'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'lips' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">Choosing lip products</h2>
+                        <p>
+                          Start with care, then colour. A nourishing{' '}
+                          <Link href="/category/lip-balm-care" className="text-accent hover:underline">lip balm</Link>{' '}
+                          keeps lips soft so a{' '}
+                          <Link href="/category/lipstick-tint" className="text-accent hover:underline">lipstick or tint</Link>{' '}
+                          applies smoothly without flaking. Build a simple{' '}
+                          <Link href="/routine/lip-care" className="text-accent hover:underline">lip care routine</Link>{' '}
+                          first.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">Lips in Bangladesh&apos;s climate</h3>
+                        <p>
+                          Dry air, dehydration, and lip-licking are the usual causes of chapped lips. Use a hydrating
+                          balm through the day and a richer mask at night.
+                        </p>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['lips'] ?? []).map((f) => (
                             <div key={f.q}>
                               <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
                               <p>{f.a}</p>
