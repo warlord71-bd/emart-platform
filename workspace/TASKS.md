@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-26 (Creative Asset Engine migrated + 2x high-density render path)
+Last updated: 2026-06-26 (Creative use-case samples + persona standard drafted)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -75,6 +75,23 @@ the Approve-button handler; verified the bot is the sole writer to `jobs/approve
 | VID-3 | **WA-D archival done.** Dated scripts rotated, dated PM2 campaign processes deleted. | [C] | ✅ 2026-06-25 |
 | VID-6 | **HyperFrames integrated as default reel renderer.** `hyperframes/render.js` builds HTML compositions with GSAP animations (Ken Burns, crossfades, staggered reveals) and renders via HyperFrames CLI. `stages/reel_hyperframes.py` wraps for worker. `worker.py` defaults to HyperFrames, falls back to ffmpeg. `node_modules/` ignored. Post-render ffmpeg loudnorm to -14 LUFS. Verified: COSRX test reel passes QA (1080×1920, 24fps, audio, -14 LUFS). **VPS install needed:** `cd workspace/video-engine/hyperframes && npm install`. | [C] | ✅ 2026-06-26 |
 | VID-7 | **Post-HyperFrames output-quality gaps resolved into shared Creative Asset Engine.** Product hero, value cards, brand end cards, FB/IG posts, and blog OG heroes now render through `workspace/creative-engine/`. `worker.py` calls Creative Engine directly; legacy `product_hero_card.py`, `list_card.py`, and `brand_card.py` are compatibility shims. HyperFrames no longer builds product/value/brand HTML; it animates pre-rendered frames + captions/audio only. Product container-shape layout and default 2x high-density render/downsample are implemented. Smoke output: `workspace/video-engine/output/creative-migration-smoke.mp4` (1080x1920, local QA score 96). | [X] | ✅ 2026-06-26 |
+| VID-8 | **Persona/product-hand standard.** Sample pack created at `workspace/audit/active/creative-usecase-samples-20260626/` covering blog OG → FB/IG → reel frames → local reel. Persona standard documented at `workspace/docs/claude-reference/creative-persona-standard.md`: product-first by default; best persona frame = exact real product in hand or beside face; model-only fallback is allowed only when Codex holding-shot generation is pending; white/tile product overlays are rejected as production standard. | [X] | 🟡 standard drafted; product-hand generation/QA pending |
+
+### Content Orchestration (CO) — strategy brain over the engines (2026-06-26)
+
+The merchandising brain above Creative/Social/Video/blog/SEO. Maps the owner's selling themes to
+demand signals and dispatches native, gated job specs. Dry-run; never publishes, never writes Woo.
+Code: `workspace/content-orchestrator/`. Model: `docs/claude-reference/content-orchestrator.md`.
+
+| ID | Item | Owner | Status |
+|---|---|---|---|
+| CO-1 | **Content Orchestrator core built.** `themes.json` (12 selling themes), `orchestrator.py` (`themes`/`plan`/`dispatch`/`manual`/`learn`/`status`). Reads real demand from `social-engine/performance/latest.json` + GSC striking-distance; emits social/video/brief job specs parked at campaign/content/owner gates. Smoke passed. | [C] | ✅ 2026-06-26 |
+| CO-6 | **Self-improving loop + LLM brain built.** `learn` scores themes from action-ledger outcomes → `theme_weights.json` (per_run multiplier, planner consumes; cadence stays owner-gated). `brain.py` optional LLM angle/caption + tuning reflection, reusing humanizer's OpenRouter free chain (no new secret); Hermes via `OPENROUTER_MODEL`, OpenClaw via `OPENCLAW_BASE_URL`. `--llm` verified live (real hook generated). | [C] | ✅ 2026-06-26 |
+| CO-2 | **4 live read-only Woo resolvers built** in `woo.py` (reuses Social Engine `woo_get`): new-arrivals (orderby=date), clearance (`on_sale=true` — reflects REAL Woo sale prices, not fabricated), category pick (slug→id, makeup/skincare filters), concern pick (pa_concern attribute/term). Verified live: 8/8 real candidates; clearance items confirmed genuinely on-sale. | [C] | ✅ 2026-06-26 |
+| CO-3 | **Slug→product_id resolution done.** `--live-signals` resolves perf-file slug candidates via Woo `products?slug=`; live resolvers return numeric ids natively. | [C] | ✅ 2026-06-26 |
+| CO-4 | **Auto-ledger done.** `dispatch --ledger` writes one action-ledger entry per item with `sub_category=theme` + `related=theme`; verified `learn` groups by it ("1 themed outcome"). Weight moves only when entries reach keep/revert outcome status (by design). | [C] | ✅ 2026-06-26 |
+| CO-5 | After owner approves cadence, add a build-only gated `--tick` cron (no publish). | [O]→[C] | 🔲 owner decision |
+| CO-7 | Wire Judge.me reviews export + pa_ingredient resolver (remaining placeholder demand signals). | [C] | 🔲 open |
 
 ### Audit Remediation Priority Lane — Freeze-Safe Order (2026-06-25)
 
@@ -120,12 +137,12 @@ technical hygiene. SEO-1 closed (propose-titles returns no targets). Proposals o
 
 | Pri | ID | Action | Root cause | Source | Gate | Status |
 |---|---|---|---|---|---|---|
-| P0-1 | USEO-1 | Fix `toners-mists` guide conditional (`page.tsx` ~L638) | RC-3 | SEO-4 | freeze-safe code; owner OK before merge | 🔲 ready |
-| P0-2 | USEO-2 | Resolve 6 duplicate blog URL `-2` pairs → keep + 301 | RC-3 | SEO-7 F6 | owner picks keeper per pair | 🔲 owner decision |
-| P1-1 | USEO-3 | Add 3–5 in-body links per blog post (150–250 total, WP edits, no code) | RC-1 | SEO-2, SEO-7 F5 | owner approves targets/anchors | 🔲 highest ROI |
-| P2-1 | USEO-4 | Build Tier-1 category guides (korean-beauty, serums, toners-mists, bath-body, lips) | RC-2 | SEO-4 | owner reviews copy before JSX | 🔲 proposal ready |
-| P2-2 | USEO-5 | Add links + FAQPage schema to existing face-cleansers & sunscreen guides | RC-1+RC-3 | SEO-5 | freeze-safe; owner OK | 🔲 proposal ready |
-| P2-3 | USEO-6 | Tier-1 brand editorial (15 brands) via static `brand-editorial` data file | RC-2+RC-1 | D8 | owner writes/reviews copy; confirm Option A | 🔲 proposal ready |
+| P0-1 | USEO-1 | Fix `toners-mists` guide conditional (`page.tsx` ~L638) | RC-3 | SEO-4 | freeze-safe code; owner OK before merge | ✅ 2026-06-26 `85b15ad` (full guide + FAQ live) |
+| P0-2 | USEO-2 | Resolve 6 duplicate blog URL `-2` pairs → keep + 301 | RC-3 | SEO-7 F6 | owner picks keeper per pair | 🟠 BLOCKED — root cause found 2026-06-26: an active process is still minting `-2` posts (ids 95801-95976, dated Jun 24-26, several TODAY; longer than the May 20-22 originals ids 93373-93423). Both sets published/live. Blind 301 risks de-indexing month-old originals. Needs: (1) identify+stop the `-2`-creating process (violates X11 "never new URL"); (2) owner decision: consolidate richer `-2` content into original slug then 301 `-2`→original, vs keep `-2`. Do NOT redirect blind. |
+| P1-1 | USEO-3 | Add 3–5 in-body links per blog post (150–250 total, WP edits, no code) | RC-1 | SEO-2, SEO-7 F5 | owner approves targets/anchors | 🟠 DEFERRED behind USEO-2: blog posts are being actively rewritten/duplicated (modified today) — adding links now would be overwritten. Also needs confirmed WP write auth (old app password mid-rotation per WA-G). Resume once blog content state is stable + auth confirmed. |
+| P2-1 | USEO-4 | Build Tier-1 category guides (korean-beauty, serums, toners-mists, bath-body, lips) | RC-2 | SEO-4 | owner reviews copy before JSX | ✅ 5/5 live `85b15ad`+`a580709` (all Tier-1 guides + FAQ) |
+| P2-2 | USEO-5 | Add links + FAQPage schema to existing face-cleansers & sunscreen guides | RC-1+RC-3 | SEO-5 | freeze-safe; owner OK | ✅ live `85b15ad`+`a580709` (FAQPage schema 7 cats + contextual links on face-cleansers/sunscreen + new guides) |
+| P2-3 | USEO-6 | Tier-1 brand editorial (15 brands) via static `brand-editorial` data file | RC-2+RC-1 | D8 | owner writes/reviews copy; confirm Option A | ✅ 2026-06-26 `40b58df` (Option A: `brandEditorial.ts`, 15 brands live + FAQ schema; 372 keep generic fallback) — owner may refine copy |
 | P3-1 | USEO-7 | Fold 2–3 in-body links into humanizer Routine-Fit output | RC-1 | SEO-7 F2 | ride humanizer pipeline, GSC order | 🔲 |
 | P3-2 | USEO-8 | Tier-2 category guides (body-wash, shampoos, +5) | RC-2 | SEO-4 | after P2-1 validated | 🔲 |
 | P3-3 | USEO-9 | Tier-2 brand editorial (15) via AI-gen + review | RC-2 | D8 | after Tier-1 validated | 🔲 |

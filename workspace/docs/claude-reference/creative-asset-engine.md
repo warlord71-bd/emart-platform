@@ -247,6 +247,13 @@ Rule of thumb: if a change is about *how it looks* → creative engine. *How it
 moves* → HyperFrames. *How it's encoded/normalized* → ffmpeg. A change should never
 touch two of these.
 
+Persona/model-photo rules live in
+`workspace/docs/claude-reference/creative-persona-standard.md`. Short version:
+product-first is the default; best persona frames show the exact real product in
+hand or beside the face; a model-only reel frame is allowed as fallback when the
+Codex-generated holding shot is pending; white/tile product overlays are not the
+standard.
+
 ---
 
 ## 10. AI presenter roadmap (social reviews + YouTube)

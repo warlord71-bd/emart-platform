@@ -1,0 +1,5 @@
+# generated runtime state — not source of truth
+plans/
+dispatch/
+theme_weights.json
+__pycache__/

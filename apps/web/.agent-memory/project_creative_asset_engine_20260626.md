@@ -28,6 +28,7 @@ Owner requested full migration after the audit. Completed:
 - Smoke verified real poster-to-video path: `workspace/video-engine/output/creative-migration-smoke.mp4`, 1080x1920, local QA score 96/pass.
 - Follow-up refinement: product normalization now classifies container shape (`tall_bottle`, `dropper`, `tube`, `jar`, `compact`, `sheet_pack`, `box`, `pouch`, `general`) and the renderer uses shape-aware image sizing for hero, social, and blog frames. Explicit `container_type` in a product payload overrides the heuristic.
 - Follow-up refinement: Creative Engine now defaults to 2x internal Chromium rendering with downsampling back to official platform dimensions, improving text/logo/product edge quality for AMOLED and iPhone-class high-density displays. `render_scale` can be set to 1, 2, or 3.
+- Follow-up refinement: persona standard is product-first. Best model frame is Codex-reviewed exact product in hand or beside face; if that generation is pending/unavailable, one model-only fallback frame is allowed in reels. White/tile product overlays are rejected as the production standard.
 
 ## Current State
 

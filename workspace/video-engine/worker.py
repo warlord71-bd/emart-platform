@@ -168,13 +168,13 @@ def product_hero_images(job) -> list[str]:
 
 def holding_request_images(job) -> list[str]:
     """auto-handoff: emit a Codex work order for a 'model holding the real product' shot, and consume
-    it once Codex has fulfilled it. If not yet fulfilled, return [] (engine proceeds persona-only and
-    reuses the asset on a later run). Triggered by job `holding_request: true`."""
+    it once Codex has fulfilled it. If not yet fulfilled, fall back to one model-only frame when
+    allowed. Triggered by job `holding_request: true`."""
     if not job.get("holding_request"):
         return []
     product = job.get("product") or job.get("headline", "")
     persona = job.get("persona_library") or job.get("persona", "dr-rumana")
-    ref = (job.get("images") or [None])[0]
+    ref = job.get("product_image") or job.get("product_image_url") or (job.get("images") or [None])[0]
     cmd = [sys.executable, str(CODEX_BRIDGE), "--emit", "--product", product, "--persona", persona]
     if ref:
         cmd += ["--product-image", str(Path(ref).resolve())]
@@ -182,43 +182,31 @@ def holding_request_images(job) -> list[str]:
     path = out.stdout.strip()
     if path and Path(path).exists():
         return [path]                       # Codex already fulfilled -> use it (cover-pan)
-    # Codex pending (it only runs when a human invokes it) -> FREE, automatic fallback: composite the
-    # REAL product photo onto a persona still (presenter_card). Deterministic, $0, real product (never a
-    # Pollinations dummy). Upgrades to the Codex hand-held shot automatically once it's fulfilled.
-    if ref and Path(ref).exists():
+    if job.get("model_fallback", True):
         try:
             stills = persona_stills(job)
         except SystemExit:
             stills = []
-        # reuse the canonical Emart model by default (one consistent face across every reel)
-        base = stills[0] if stills else (str(CANONICAL_MODEL) if CANONICAL_MODEL.exists() else None)
-        if base:
-            comp = OUTPUT / f"presenter-{job['id']}.png"
-            r = subprocess.run([sys.executable, str(PRESENTER_CARD), "--persona", base,
-                                "--product", str(Path(ref).resolve()),
-                                "--label", job.get("presenter_label", ""), "--out", str(comp)],
-                               capture_output=True, text=True, timeout=150)
-            if r.returncode == 0 and comp.exists():
-                print("[worker] free presenter composite generated (Codex pending)")
-                return [str(comp)]
-            sys.stderr.write(r.stderr[-300:] + "\n")
-    print(f"[worker] holding shot requested from Codex (pending); no free fallback: {path}")
+        fallback = stills[0] if stills else (str(CANONICAL_MODEL) if CANONICAL_MODEL.exists() else "")
+        if fallback:
+            print(f"[worker] holding shot pending; using model-only fallback frame: {fallback}")
+            return [fallback]
+    print(f"[worker] holding shot requested from Codex (pending); no model fallback: {path}")
     return []
 
 
 def resolve_images(job, cfg) -> list[str]:
     """image is a SHARED upstream capability (same source as static posts).
 
-    Retention-first order (PHOTOS first, then text cards):
-      persona hook -> model-holding-REAL-product -> real product photo -> value cards -> CTA card.
-    Photos lead so captions (confined to the photo window) never paint over the value/brand cards.
+    Product-first order:
+      real product hero -> approved model-with-real-product shot -> supplied product frames
+      -> value cards -> CTA card.
 
-    `holding_images`: paths to Codex-generated "model holding the actual product" shots (Codex's
-    image-gen does product-in-hand far better than free Pollinations). These are people shots, so they
-    get cover-pan motion like persona stills (NOT blurred-fill). Drop them in workspace/video-engine/
-    codex-assets/ and reference here. See README "Codex handoff".
+    `holding_images`: paths to Codex-reviewed "model holding / product beside face" shots that use
+    the exact product reference. If `holding_request: true` is pending and `model_fallback` is not
+    false, one model-only frame is allowed. White/tile product overlays are not auto-inserted.
     """
-    imgs = (product_hero_images(job) + persona_stills(job) + (job.get("holding_images") or []) + holding_request_images(job)
+    imgs = (product_hero_images(job) + (job.get("holding_images") or []) + holding_request_images(job)
             + (job.get("images") or []) + list_card_images(job))
     if imgs:
         return imgs + brand_card_image(job)
