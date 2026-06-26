@@ -161,6 +161,7 @@ def product_hero_images(job) -> list[str]:
         image_override=str(src),
         locale=job.get("language", "bn") if job.get("language") in ("bn", "en") else "bn",
         value_spec={"bangla": job.get("product_card_bangla", "")},
+        product_cutout=job.get("product_cutout", True),
         out=str(card),
     ))
     return [str(card)]
@@ -305,7 +306,10 @@ def run_job(job_path: Path, allow_publish: bool):
     #     Confine captions to the PHOTO frames (persona + product). The value/brand cards already carry
     #     their own text, so sequencing captions across the full reel painted text-on-text over the cards.
     #     caption_window = seconds * (#non-card frames); captions live only in that opening window.
-    if script_path and not stage_done(job, "captions"):
+    visual_captions = job.get("visual_captions", True)
+    if job.get("product_card") and job.get("visual_captions") is not True:
+        visual_captions = False
+    if script_path and visual_captions and not stage_done(job, "captions"):
         card_frames = len(job.get("list_cards") or []) + (1 if job.get("brand_card") else 0)
         photo_frames = max(1, n_imgs - card_frames)
         caption_window = round(seconds * photo_frames, 2) if card_frames else total
@@ -318,6 +322,9 @@ def run_job(job_path: Path, allow_publish: bool):
                    "--safe-zone", safe_zone, "--max-benefits", max_benefits]
         subprocess.run(cmd_cap, check=True, timeout=180)
         set_stage(job, "captions", overlays=opath, total=caption_window)
+        checkpoint(job_path, job)
+    elif script_path and not visual_captions and not stage_done(job, "captions"):
+        set_stage(job, "captions", skipped=True, reason="visual_captions_disabled")
         checkpoint(job_path, job)
     overlays_path = job.get("stages", {}).get("captions", {}).get("overlays")
 

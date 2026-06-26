@@ -41,6 +41,7 @@ class CreativeRequest:
     qa: bool = True
     render_scale: int = 2
     out: str | None = None
+    product_cutout: bool = False
 
 
 @dataclass
@@ -80,8 +81,19 @@ def _taka(value: str) -> str:
     return f"{CURRENCY_SYMBOL}{amount}" if amount is not None else esc(value)
 
 
-def _product_image_data_uri(d: ProductData) -> str:
-    return image_to_data_uri(d.image_url) if d.image_url else ""
+def _product_image_data_uri(d: ProductData, cutout: bool = False) -> str:
+    if not d.image_url:
+        return ""
+    if cutout:
+        try:
+            local_path = remove_bg(d.image_url)
+            try:
+                return image_to_data_uri(local_path)
+            finally:
+                Path(local_path).unlink(missing_ok=True)
+        except Exception:
+            pass
+    return image_to_data_uri(d.image_url)
 
 
 def _shape_class(d: ProductData) -> str:
@@ -103,7 +115,7 @@ html,body{{width:{w}px;height:{h}px;overflow:hidden;font-family:{FONT};color:#ff
 def _compose_hero_vertical(d: ProductData, fmt: dict, req: CreativeRequest) -> str:
     w, h = fmt["width"], fmt["height"]
     logo = logo_data_uri()
-    product_img = _product_image_data_uri(d)
+    product_img = _product_image_data_uri(d, cutout=req.product_cutout)
     shape_class = _shape_class(d)
     logo_block = f'<img class="logo-img" src="{logo}" alt="{BRAND_NAME} logo">' if logo else f'<div class="logo-text">{BRAND_NAME}</div>'
     title = d.title_line1 or d.name

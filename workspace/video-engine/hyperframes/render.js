@@ -261,8 +261,15 @@ function buildComposition(job, images, script, audioPath, musicPath) {
   const captionWindow = cardFrames ? secondsPerScene * photoFrames : totalDuration;
 
   const benefitLimit = Number(job.caption_benefit_limit ?? (job.product_card ? 1 : 3));
-  const captions = captionElements(script, captionWindow, safeZone, benefitLimit);
-  const timeline = buildTimeline(scenesMeta, script, captionWindow, secondsPerScene, benefitLimit);
+  const visualCaptions = job.visual_captions !== false && !(job.product_card && job.visual_captions !== true);
+  const captions = visualCaptions ? captionElements(script, captionWindow, safeZone, benefitLimit) : "";
+  const timeline = buildTimeline(
+    scenesMeta,
+    visualCaptions ? script : null,
+    captionWindow,
+    secondsPerScene,
+    benefitLimit,
+  );
 
   // Audio: copy files into project dir and use relative paths
   let audioHtml = "";
@@ -273,7 +280,7 @@ function buildComposition(job, images, script, audioPath, musicPath) {
       data-start="0" data-duration="${totalDuration}" data-track-index="5" data-volume="1"></audio>`;
   }
   if (musicPath && fs.existsSync(musicPath)) {
-    const musicVol = audioPath ? 0.22 : 0.5;
+    const musicVol = Number(job.music_volume ?? (audioPath ? 0.14 : 0.42));
     audioFiles.push({ src: musicPath, dest: "music" + path.extname(musicPath) });
     audioHtml += `\n    <audio id="music" src="music${path.extname(musicPath)}"
       data-start="0" data-duration="${totalDuration}" data-track-index="6" data-volume="${musicVol}"></audio>`;
