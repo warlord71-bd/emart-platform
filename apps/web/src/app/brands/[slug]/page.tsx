@@ -13,6 +13,7 @@ import { absoluteUrl } from '@/lib/siteUrl';
 import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { STORE_POLICIES } from '@/config/storePolicies';
 import { findCanonicalBrand } from '@/lib/brandWhitelist';
+import { BRAND_EDITORIAL } from '@/lib/brandEditorial';
 import {
   getPaginatedCanonical,
   getPaginatedTitle,
@@ -112,6 +113,17 @@ export default async function BrandPage({ params, searchParams }: Props) {
     mainEntityOfPage: canonicalUrl,
   };
 
+  const editorial = BRAND_EDITORIAL[brand.slug];
+  const brandFaqJsonLd = (editorial?.faqs && page === 1) ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: editorial.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  } : null;
+
   const logoIcon = logo ? (
     <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-hairline bg-white p-1.5 shadow-sm">
       <Image src={logo} alt={brand.name} fill sizes="56px" className="object-contain" />
@@ -126,6 +138,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListJsonLd) }} />
       )}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(brandJsonLd) }} />
+      {brandFaqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(brandFaqJsonLd) }} />}
 
       <div className="mx-auto max-w-7xl px-4 py-8">
         <CollectionPageHeader
@@ -211,13 +224,46 @@ export default async function BrandPage({ params, searchParams }: Props) {
                     About {brand.name} in Bangladesh
                     <span className="ml-2 text-accent">Read more</span>
                   </summary>
-                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
-                    Emart is Bangladesh&apos;s trusted source for authentic {brand.name} products. Every item is imported
-                    directly from the brand or authorised distributors — no counterfeits, no grey market. We offer Cash
-                    on Delivery (COD) across Bangladesh. {STORE_POLICIES.shipping.pdpDeliveryText}.
-                    {' '}{STORE_POLICIES.shipping.checkoutFeeText}
-                    {originLabel ? ` Origin: ${originLabel}.` : ''}
-                  </p>
+                  {editorial ? (
+                    <div className="mt-3 max-w-3xl space-y-4 text-sm leading-relaxed text-muted">
+                      <p>{editorial.about}</p>
+                      {editorial.links && editorial.links.length > 0 && (
+                        <p>
+                          Explore {brand.name} for:{' '}
+                          {editorial.links.map((l, i) => (
+                            <span key={l.href}>
+                              {i > 0 ? ', ' : ''}
+                              <Link href={l.href} className="text-accent hover:underline">{l.label}</Link>
+                            </span>
+                          ))}
+                          .
+                        </p>
+                      )}
+                      <p>
+                        We offer Cash on Delivery (COD) across Bangladesh. {STORE_POLICIES.shipping.pdpDeliveryText}.
+                        {' '}{STORE_POLICIES.shipping.checkoutFeeText}
+                      </p>
+                      {editorial.faqs && editorial.faqs.length > 0 && (
+                        <div className="space-y-3">
+                          <h2 className="text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                          {editorial.faqs.map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
+                      Emart is Bangladesh&apos;s trusted source for authentic {brand.name} products. Every item is imported
+                      directly from the brand or authorised distributors — no counterfeits, no grey market. We offer Cash
+                      on Delivery (COD) across Bangladesh. {STORE_POLICIES.shipping.pdpDeliveryText}.
+                      {' '}{STORE_POLICIES.shipping.checkoutFeeText}
+                      {originLabel ? ` Origin: ${originLabel}.` : ''}
+                    </p>
+                  )}
                 </details>
               </>
             )}
