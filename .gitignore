@@ -269,6 +269,9 @@ workspace/scripts/archive/*
 *.tsbuildinfo
 .next/
 
+# Claude Code local overrides (never commit)
+CLAUDE.local.md
+
 # Local-only docs / handoffs / session logs
 AGENTS.*.md
 TASK_SUMMARY.md

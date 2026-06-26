@@ -4,48 +4,235 @@
       "date": "2026-06-23",
       "name": "Meta 18-post campaign",
       "items": [
-        {"product_id": 2591, "slug": "cosrx-salicylic-cleanser"},
-        {"product_id": 50630, "slug": "some-by-mi-miracle-serum"},
-        {"product_id": 2588, "slug": "numbuzin-no5-toner"},
-        {"product_id": 43702, "slug": "haruharu-black-rice-toner"},
-        {"product_id": 53339, "slug": "isntree-green-tea-toner"},
-        {"product_id": 59052, "slug": "torriden-dive-in-serum"},
-        {"product_id": 62937, "slug": "iunik-beta-glucan-serum"},
-        {"product_id": 92824, "slug": "boj-apricot-peeling-gel"},
-        {"product_id": 59553, "slug": "cos-de-baha-azelaic-serum"},
-        {"product_id": 57150, "slug": "the-ordinary-aha-bha-peeling"},
-        {"product_id": 43702, "slug": "boj-relief-sun"},
-        {"product_id": 2597, "slug": "cosrx-snail"},
-        {"product_id": 50673, "slug": "anua-niacinamide-txa"},
-        {"product_id": 4328, "slug": "cosrx-bha"},
-        {"product_id": 57150, "slug": "cosrx-hydrium-toner"},
-        {"product_id": 53339, "slug": "anua-cleansing-oil"},
-        {"product_id": 94593, "slug": "skin1004-hyalu-cica-sun-serum"},
-        {"product_id": 62664, "slug": "axis-y-dark-spot-serum"}
+        {
+          "product_id": 2591,
+          "slug": "cosrx-salicylic-cleanser"
+        },
+        {
+          "product_id": 50630,
+          "slug": "some-by-mi-miracle-serum"
+        },
+        {
+          "product_id": 2588,
+          "slug": "numbuzin-no5-toner"
+        },
+        {
+          "product_id": 43702,
+          "slug": "haruharu-black-rice-toner"
+        },
+        {
+          "product_id": 53339,
+          "slug": "isntree-green-tea-toner"
+        },
+        {
+          "product_id": 59052,
+          "slug": "torriden-dive-in-serum"
+        },
+        {
+          "product_id": 62937,
+          "slug": "iunik-beta-glucan-serum"
+        },
+        {
+          "product_id": 92824,
+          "slug": "boj-apricot-peeling-gel"
+        },
+        {
+          "product_id": 59553,
+          "slug": "cos-de-baha-azelaic-serum"
+        },
+        {
+          "product_id": 57150,
+          "slug": "the-ordinary-aha-bha-peeling"
+        },
+        {
+          "product_id": 43702,
+          "slug": "boj-relief-sun"
+        },
+        {
+          "product_id": 2597,
+          "slug": "cosrx-snail"
+        },
+        {
+          "product_id": 50673,
+          "slug": "anua-niacinamide-txa"
+        },
+        {
+          "product_id": 4328,
+          "slug": "cosrx-bha"
+        },
+        {
+          "product_id": 57150,
+          "slug": "cosrx-hydrium-toner"
+        },
+        {
+          "product_id": 53339,
+          "slug": "anua-cleansing-oil"
+        },
+        {
+          "product_id": 94593,
+          "slug": "skin1004-hyalu-cica-sun-serum"
+        },
+        {
+          "product_id": 62664,
+          "slug": "axis-y-dark-spot-serum"
+        }
       ]
     },
     {
       "date": "2026-06-24",
       "name": "Facebook + Instagram 18-post v3 campaign",
       "items": [
-        {"product_id": 18095, "slug": "cosrx-acne-pimple-master-patch"},
-        {"product_id": 2611, "slug": "innisfree-super-volcanic-clay-mask"},
-        {"product_id": 26653, "slug": "3w-clinic-intensive-uv-sunblock"},
-        {"product_id": 58162, "slug": "dr-althea-345na-relief-cream"},
-        {"product_id": 26327, "slug": "welcos-confume-argan-hair-shampoo"},
-        {"product_id": 4324, "slug": "cosrx-aloe-soothing-sun-cream"},
-        {"product_id": 3018, "slug": "missha-airy-fit-sheet-mask-rice"},
-        {"product_id": 57130, "slug": "dr-althea-vitamin-c-boosting-serum"},
-        {"product_id": 26933, "slug": "cosrx-pure-fit-cica-serum"},
-        {"product_id": 47846, "slug": "missha-aqua-sun-spf"},
-        {"product_id": 56475, "slug": "apieu-raspberry-hair-vinegar"},
-        {"product_id": 4092, "slug": "iunik-centella-calming-gel-cream"},
-        {"product_id": 4140, "slug": "mise-en-scene-perfect-hair-serum"},
-        {"product_id": 2972, "slug": "purito-pure-vitamin-c-serum"},
-        {"product_id": 26400, "slug": "tiam-anti-blemish-body-lotion"},
-        {"product_id": 3106, "slug": "coxir-ultra-hyaluronic-cleansing-oil"},
-        {"product_id": 43841, "slug": "cosrx-ac-collection-acne-patch"},
-        {"product_id": 58268, "slug": "wskin-lab-triple-care-sun-cream"}
+        {
+          "product_id": 18095,
+          "slug": "cosrx-acne-pimple-master-patch"
+        },
+        {
+          "product_id": 2611,
+          "slug": "innisfree-super-volcanic-clay-mask"
+        },
+        {
+          "product_id": 26653,
+          "slug": "3w-clinic-intensive-uv-sunblock"
+        },
+        {
+          "product_id": 58162,
+          "slug": "dr-althea-345na-relief-cream"
+        },
+        {
+          "product_id": 26327,
+          "slug": "welcos-confume-argan-hair-shampoo"
+        },
+        {
+          "product_id": 4324,
+          "slug": "cosrx-aloe-soothing-sun-cream"
+        },
+        {
+          "product_id": 3018,
+          "slug": "missha-airy-fit-sheet-mask-rice"
+        },
+        {
+          "product_id": 57130,
+          "slug": "dr-althea-vitamin-c-boosting-serum"
+        },
+        {
+          "product_id": 26933,
+          "slug": "cosrx-pure-fit-cica-serum"
+        },
+        {
+          "product_id": 47846,
+          "slug": "missha-aqua-sun-spf"
+        },
+        {
+          "product_id": 56475,
+          "slug": "apieu-raspberry-hair-vinegar"
+        },
+        {
+          "product_id": 4092,
+          "slug": "iunik-centella-calming-gel-cream"
+        },
+        {
+          "product_id": 4140,
+          "slug": "mise-en-scene-perfect-hair-serum"
+        },
+        {
+          "product_id": 2972,
+          "slug": "purito-pure-vitamin-c-serum"
+        },
+        {
+          "product_id": 26400,
+          "slug": "tiam-anti-blemish-body-lotion"
+        },
+        {
+          "product_id": 3106,
+          "slug": "coxir-ultra-hyaluronic-cleansing-oil"
+        },
+        {
+          "product_id": 43841,
+          "slug": "cosrx-ac-collection-acne-patch"
+        },
+        {
+          "product_id": 58268,
+          "slug": "wskin-lab-triple-care-sun-cream"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-25-daily-18",
+      "date": "2026-06-25",
+      "name": "June 25 Daily Social 18",
+      "items": [
+        {
+          "product_id": 3700,
+          "slug": "cosrx-advanced-snail-92-all-in-one-cream100g"
+        },
+        {
+          "product_id": 50566,
+          "slug": "cosrx-advanced-snail-mucin-96-power-essence-30ml"
+        },
+        {
+          "product_id": 26163,
+          "slug": "jnh-sseng-eol-whipping-cleansing-foam-150ml"
+        },
+        {
+          "product_id": 23486,
+          "slug": "cerave-skin-renewing-retinol-serum-30ml"
+        },
+        {
+          "product_id": 4320,
+          "slug": "beauty-of-joseon-sunscreen-rice-probiotics-spf-50-50ml"
+        },
+        {
+          "product_id": 48655,
+          "slug": "vaseline-lip-therapy-rosy-lips"
+        },
+        {
+          "product_id": 43290,
+          "slug": "3w-clinic-herbal-greenteabeauty-soap-120g"
+        },
+        {
+          "product_id": 2595,
+          "slug": "cosrx-low-ph-good-morning-gel-cleanser-150ml"
+        },
+        {
+          "product_id": 56975,
+          "slug": "skin1004-madagascar-centella-tone-brightening-capsule-ampoule-100ml"
+        },
+        {
+          "product_id": 50639,
+          "slug": "kose-suncut-uv-perfect-gel-super-water-proof-spf-50-pa-100-ml"
+        },
+        {
+          "product_id": 26366,
+          "slug": "simple-micellar-gel-wash-150ml"
+        },
+        {
+          "product_id": 26169,
+          "slug": "cerave-resurfacing-retinol-serum-30ml"
+        },
+        {
+          "product_id": 23083,
+          "slug": "the-ordinary-aha-30bha-2-peeling-solution-30ml"
+        },
+        {
+          "product_id": 4287,
+          "slug": "some-by-mi-cica-peptide-anti-hair-loss-derma-scalp-tonic-150ml"
+        },
+        {
+          "product_id": 26660,
+          "slug": "cos-de-baha-azelaic-acid-10-serum-30ml-3"
+        },
+        {
+          "product_id": 24437,
+          "slug": "cerave-acne-foaming-cream-cleanser"
+        },
+        {
+          "product_id": 3008,
+          "slug": "missha-all-around-safe-block-soft-finish-sun-milk-spf50-pa-70ml"
+        },
+        {
+          "product_id": 42224,
+          "slug": "neutrogena-hydro-boost-water-gel"
+        }
       ]
     }
   ]

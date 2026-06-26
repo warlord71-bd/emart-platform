@@ -3263,3 +3263,17 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - VPS install: `cd workspace/video-engine/hyperframes && npm install`
 - Commits: pending
 - Next: Deploy to VPS (`npm install` on VPS), owner approval on Telegram reel quality, then HyperFrames becomes the production renderer for daily_producer → orchestrator → worker pipeline.
+
+## 2026-06-26 · Codex · Social campaign unified design review
+- Did: Stopped the June 26 FB/IG random schedulers after the first Simple face wash slot had already published, then regenerated the remaining 17 assets as `2026-06-26-random-24h-rescheduled` with one consistent Emart design system: real logo image, frosted/stone base, readable footer, uppercase `E-MART.COM.BD`, and larger COD/brand trust text.
+- Updated: Campaign item for La Roche-Posay Cicaplast Baume B5+ 40ml now points to product `63245`, slug `la-roche-posay-cicaplast-baume-b5-40ml-2__trashed`, and visual price 2100; avoided the already-published Simple face wash and maintained the 7-day recent-post exclusion.
+- Output: Generated 17 square creatives + 17 Instagram 4:5 variants and a contact sheet at `apps/web/public/images/social/2026-06-26/random-24h-rescheduled/contact-sheet.jpg`; synced preview assets to live public path after restarting only `emartweb` to expose the new static folder.
+- Verified: Social Engine plan QA passed with 0 errors/0 warnings; Facebook and Instagram schedulers dry-run only returned 17 posts each; live homepage/contact-sheet/sample images return HTTP 200; old PM2 schedulers `emart-fb-random-20260626` and `emart-ig-random-20260626` remain stopped.
+- Guardrail: No new posts were scheduled or published after the owner review request. Do not resume/reschedule until owner approves the preview, and regenerate future slots from current time before publishing.
+
+## 2026-06-26 · Codex · Facebook Hydro Boost duplicate cleanup
+- Did: Investigated owner-reported repeated Neutrogena Hydro Boost Facebook post from the 2026-06-25 daily campaign. Read-only Graph query found 71 live Facebook matches for `Neutrogena Hydro Boost`; deleted duplicates and kept the original scheduled post `106908734057777_1326993822890913`.
+- Cause: PM2 one-shot campaign process had default autorestart behavior. After slot 18 posted at 2026-06-25T17:00:00Z / 23:00 BDT, PM2 restarted the scheduler repeatedly while the slot was still inside the script's 10-minute grace window, causing repeated publishes.
+- Fixed: Added result-ledger idempotency to `workspace/scripts/active/meta_schedule.js`; if a campaign/platform/item already exists in the result ledger, restarted schedulers skip it instead of publishing again. Added `workspace/scripts/active/meta_post_cleanup.js` for dry-run-first Facebook duplicate inspection/removal.
+- Verified: Final Graph query returned exactly 1 Hydro Boost Facebook match; `node --check` passed for `meta_schedule.js` and `meta_post_cleanup.js`; June 26 rescheduled campaign dry-runs still return 17 FB and 17 IG posts; current June 26 random PM2 schedulers remain stopped.
+- Note: The June 25 Instagram result ledger also shows repeated slot-18 publishes from the same autorestart incident; Instagram deletion was not performed in this step because the owner request named Facebook.

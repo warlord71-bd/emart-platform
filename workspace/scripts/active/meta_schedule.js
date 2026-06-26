@@ -18,6 +18,24 @@ function appendJsonl(filePath, row) {
   fs.appendFileSync(resolved, `${JSON.stringify(row)}\n`);
 }
 
+function publishedKeys(filePath) {
+  const keys = new Set();
+  if (!filePath) return keys;
+  const resolved = path.resolve(filePath);
+  let content = '';
+  try { content = fs.readFileSync(resolved, 'utf8'); } catch { return keys; }
+  for (const line of content.split(/\r?\n/)) {
+    if (!line.trim()) continue;
+    try {
+      const row = JSON.parse(line);
+      if (row.campaign_id && row.platform && row.item_index) {
+        keys.add(`${row.campaign_id}:${row.platform}:${row.item_index}`);
+      }
+    } catch {}
+  }
+  return keys;
+}
+
 function queueBuyingLink(plan, item, facebookId) {
   const link = item.platform_posts?.facebook?.link || item.link;
   if (!link || !facebookId) return;
@@ -106,7 +124,13 @@ async function main() {
   }
   assertLiveGate(plan);
   const resultLedger = arg('result-ledger');
+  const alreadyPublished = publishedKeys(resultLedger);
   for (const { item, request } of jobs) {
+    const idempotencyKey = `${plan.id}:${platform}:${item.index}`;
+    if (alreadyPublished.has(idempotencyKey)) {
+      console.log(`[meta-schedule] skip already-published ${idempotencyKey} ${item.title}`);
+      continue;
+    }
     const delay = new Date(item.slot).getTime() - Date.now();
     if (delay < -10 * 60 * 1000) {
       console.log(`[meta-schedule] skip expired slot ${item.slot} ${item.title}`);
@@ -125,6 +149,7 @@ async function main() {
       social_id: result[platform],
       result,
     });
+    alreadyPublished.add(idempotencyKey);
     if (platform === 'facebook') queueBuyingLink(plan, item, result.facebook);
   }
   recordPublishedHistory(plan);

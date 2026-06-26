@@ -24,6 +24,10 @@ from pathlib import Path
 TEMPLATE_DIR = Path(__file__).parent / "social-templates"
 OUTPUT_DIR = Path("workspace/audit/active/social")
 TIMESTAMP = datetime.now().strftime("%Y%m%d-%H%M%S")
+LOGO_PATHS = [
+    Path("apps/web/public/logo.png"),
+    Path("/var/www/emart-platform/apps/web/public/logo.png"),
+]
 
 # ── SSL + WC helpers ─────────────────────────────────────────────────────────
 
@@ -66,6 +70,13 @@ def generate_ai_image(prompt, output_path, seed=42):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     resp = urllib.request.urlopen(req, context=_ssl_ctx(), timeout=120)
     Path(output_path).write_bytes(resp.read())
+
+def logo_data_uri():
+    for path in LOGO_PATHS:
+        if path.exists():
+            encoded = base64.b64encode(path.read_bytes()).decode()
+            return f"data:image/png;base64,{encoded}"
+    return ""
 
 # ── Small product detection (→ model holding product) ─────────────────────────
 
@@ -203,16 +214,23 @@ body {
 .podium-base { display:none; }
 body.podium .podium-base {
   display:block;
-  position:absolute; left:172px; right:172px; bottom:148px; height:112px;
+  position:absolute; left:146px; right:146px; bottom:134px; height:126px;
   border-radius:50%;
   background:
-    radial-gradient(ellipse at 50% 34%, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0) 42%),
-    repeating-linear-gradient(92deg, rgba(139,88,46,0.11) 0 8px, rgba(255,255,255,0.08) 8px 16px),
-    linear-gradient(180deg, #d9a46f 0%, #b97c43 55%, #8b582f 100%);
+    radial-gradient(ellipse at 50% 24%, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.42) 38%, rgba(255,255,255,0) 68%),
+    linear-gradient(180deg, rgba(248,249,247,0.76) 0%, rgba(201,212,209,0.64) 58%, rgba(115,132,133,0.30) 100%);
+  border:1px solid rgba(255,255,255,0.56);
   box-shadow:
-    inset 0 8px 18px rgba(255,255,255,0.34),
-    inset 0 -9px 16px rgba(95,52,24,0.22),
-    0 34px 46px rgba(0,0,0,0.18);
+    inset 0 9px 18px rgba(255,255,255,0.50),
+    inset 0 -10px 22px rgba(60,74,76,0.12),
+    0 30px 54px rgba(0,0,0,0.20);
+}
+body.podium .podium-base::before {
+  content:"";
+  position:absolute; left:12%; right:12%; top:18%; height:24%;
+  border-radius:50%;
+  background:rgba(255,255,255,0.46);
+  filter:blur(8px);
 }
 body.podium .product-img {
   top:auto; bottom:176px; transform:translateX(-50%);
@@ -237,9 +255,30 @@ body.hijabi-lifestyle .overlay {
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.0) 45%, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.55) 100%);
 }
 .brand-logo {
-  position:absolute; top:38px; left:42px;
-  font-size:30px; font-weight:900; color:white; letter-spacing:3px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.7), 0 1px 2px rgba(0,0,0,0.9);
+  position:absolute; top:34px; left:38px;
+  display:flex; align-items:center; gap:12px;
+  padding:8px 14px 8px 8px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.18);
+  border:1px solid rgba(255,255,255,0.28);
+  backdrop-filter:blur(8px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.22);
+}
+.brand-logo img {
+  width:58px; height:58px; border-radius:16px; display:block;
+  box-shadow:0 4px 14px rgba(0,0,0,0.22);
+}
+.brand-lockup {
+  display:flex; flex-direction:column; gap:2px;
+}
+.brand-lockup strong {
+  font-size:24px; line-height:1; font-weight:900; color:white; letter-spacing:0;
+  text-shadow:0 2px 8px rgba(0,0,0,0.72);
+}
+.brand-lockup span {
+  font-size:10px; line-height:1.1; font-weight:800; color:rgba(255,255,255,0.82);
+  text-transform:uppercase; letter-spacing:0.8px;
+  text-shadow:0 2px 6px rgba(0,0,0,0.65);
 }
 .info-right {
   position:absolute; top:38px; right:42px; text-align:right; width:480px;
@@ -295,18 +334,29 @@ body.hijabi-lifestyle .overlay {
 }
 .bottom-bar {
   position:absolute; bottom:0; left:0; right:0;
-  background:rgba(0,0,0,0.4); backdrop-filter:blur(6px);
-  padding:14px 42px; display:flex; justify-content:space-between; align-items:center;
+  background:rgba(0,0,0,0.58); backdrop-filter:blur(8px);
+  padding:16px 42px; display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid rgba(255,255,255,0.12);
 }
-.bottom-left { font-size:15px; color:rgba(255,255,255,0.7); font-style:italic; }
-.bottom-url { font-size:18px; font-weight:700; color:white; }
-.bottom-cod { font-size:14px; color:#F5D060; font-weight:600; margin-left:16px; }
+.bottom-left {
+  font-size:18px; color:rgba(255,255,255,0.92); font-weight:700;
+  text-shadow:0 2px 8px rgba(0,0,0,0.55);
+}
+.bottom-right { display:flex; align-items:center; gap:20px; }
+.bottom-url {
+  font-size:24px; font-weight:900; color:white; letter-spacing:0.6px;
+  text-shadow:0 2px 8px rgba(0,0,0,0.62);
+}
+.bottom-cod {
+  font-size:18px; color:#F5D060; font-weight:900;
+  text-shadow:0 2px 8px rgba(0,0,0,0.62);
+}
 </style></head>
 <body class="{{BODY_CLASS}}">
 <div class="overlay"></div>
 <div class="podium-base"></div>
 <div class="product-img"><img src="{{IMAGE_DATA}}" alt="product"></div>
-<div class="brand-logo">EMART</div>
+<div class="brand-logo"><img src="{{LOGO_DATA}}" alt="Emart logo"><span class="brand-lockup"><strong>Emart</strong><span>Skincare Bangladesh</span></span></div>
 <div class="info-right">
   <div class="brand-name">{{BRAND}}</div>
   <div class="highlight">{{HIGHLIGHT}}</div>
@@ -323,7 +373,7 @@ body.hijabi-lifestyle .overlay {
 <div class="origin">{{FLAG}} {{ORIGIN}}</div>
 <div class="bottom-bar">
   <span class="bottom-left">Global Beauty. Local Trust.</span>
-  <span><span class="bottom-url">e-mart.com.bd</span><span class="bottom-cod">COD Available</span></span>
+  <span class="bottom-right"><span class="bottom-url">E-MART.COM.BD</span><span class="bottom-cod">COD Available</span></span>
 </div>
 </body></html>"""
 
@@ -345,9 +395,30 @@ body {
   background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.0) 30%, rgba(0,0,0,0.0) 60%, rgba(0,0,0,0.3) 80%, rgba(0,0,0,0.6) 100%);
 }
 .brand-logo {
-  position:absolute; top:38px; left:42px;
-  font-size:30px; font-weight:900; color:white; letter-spacing:3px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  position:absolute; top:34px; left:38px;
+  display:flex; align-items:center; gap:12px;
+  padding:8px 14px 8px 8px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.18);
+  border:1px solid rgba(255,255,255,0.28);
+  backdrop-filter:blur(8px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.26);
+}
+.brand-logo img {
+  width:58px; height:58px; border-radius:16px; display:block;
+  box-shadow:0 4px 14px rgba(0,0,0,0.24);
+}
+.brand-lockup {
+  display:flex; flex-direction:column; gap:2px;
+}
+.brand-lockup strong {
+  font-size:24px; line-height:1; font-weight:900; color:white; letter-spacing:0;
+  text-shadow:0 2px 9px rgba(0,0,0,0.78);
+}
+.brand-lockup span {
+  font-size:10px; line-height:1.1; font-weight:800; color:rgba(255,255,255,0.84);
+  text-transform:uppercase; letter-spacing:0.8px;
+  text-shadow:0 2px 6px rgba(0,0,0,0.68);
 }
 .product-name {
   position:absolute; top:38px; right:42px; text-align:right; max-width:500px;
@@ -385,16 +456,27 @@ body {
 }
 .bottom-bar {
   position:absolute; bottom:0; left:0; right:0;
-  background:rgba(0,0,0,0.45); backdrop-filter:blur(6px);
-  padding:14px 42px; display:flex; justify-content:space-between; align-items:center;
+  background:rgba(0,0,0,0.58); backdrop-filter:blur(8px);
+  padding:16px 42px; display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid rgba(255,255,255,0.12);
 }
-.bottom-left { font-size:15px; color:rgba(255,255,255,0.7); font-style:italic; }
-.bottom-url { font-size:18px; font-weight:700; color:white; }
-.bottom-cod { font-size:14px; color:#F5D060; font-weight:600; margin-left:16px; }
+.bottom-left {
+  font-size:18px; color:rgba(255,255,255,0.92); font-weight:700;
+  text-shadow:0 2px 8px rgba(0,0,0,0.55);
+}
+.bottom-right { display:flex; align-items:center; gap:20px; }
+.bottom-url {
+  font-size:24px; font-weight:900; color:white; letter-spacing:0.6px;
+  text-shadow:0 2px 8px rgba(0,0,0,0.62);
+}
+.bottom-cod {
+  font-size:18px; color:#F5D060; font-weight:900;
+  text-shadow:0 2px 8px rgba(0,0,0,0.62);
+}
 </style></head>
 <body>
 <div class="overlay"></div>
-<div class="brand-logo">EMART</div>
+<div class="brand-logo"><img src="{{LOGO_DATA}}" alt="Emart logo"><span class="brand-lockup"><strong>Emart</strong><span>Skincare Bangladesh</span></span></div>
 <div class="product-name">{{PRODUCT_NAME}}</div>
 <div class="price-area">
   {{OLD_PRICE_HTML}}
@@ -406,7 +488,7 @@ body {
 <div class="origin">{{FLAG}} {{ORIGIN}}</div>
 <div class="bottom-bar">
   <span class="bottom-left">Global Beauty. Local Trust.</span>
-  <span><span class="bottom-url">e-mart.com.bd</span><span class="bottom-cod">COD Available</span></span>
+  <span class="bottom-right"><span class="bottom-url">E-MART.COM.BD</span><span class="bottom-cod">COD Available</span></span>
 </div>
 </body></html>"""
 
@@ -530,6 +612,7 @@ def _extract_product_data(product):
 
 def generate(product, badge_text="SHOP NOW", force_composite=False, creative_style="studio", background_file=None):
     d = _extract_product_data(product)
+    logo_uri = logo_data_uri()
     is_small = False if force_composite else _is_small_product(d["name"], d["cat_slugs"])
 
     if is_small:
@@ -544,6 +627,7 @@ def generate(product, badge_text="SHOP NOW", force_composite=False, creative_sty
 
         html = MODEL_OVERLAY_HTML
         html = html.replace("{{BG}}", f"url(data:image/png;base64,{bg_b64}) center/cover no-repeat")
+        html = html.replace("{{LOGO_DATA}}", logo_uri)
         html = html.replace("{{PRODUCT_NAME}}", _h(d["name"]))
         html = html.replace("{{PRICE}}", d["price"])
         html = html.replace("{{OLD_PRICE_HTML}}", d["old_html"])
@@ -597,6 +681,7 @@ def generate(product, badge_text="SHOP NOW", force_composite=False, creative_sty
         html = OVERLAY_HTML
         html = html.replace("{{BODY_CLASS}}", _h(creative_style))
         html = html.replace("{{BG}}", bg_css)
+        html = html.replace("{{LOGO_DATA}}", logo_uri)
         html = html.replace("{{IMAGE_DATA}}", img_src)
         html = html.replace("{{BRAND}}", _h(d["brand"].upper()))
         html = html.replace("{{HIGHLIGHT}}", _h(highlight))
