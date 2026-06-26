@@ -1,0 +1,12 @@
+{
+  "status": "pass",
+  "score": 96,
+  "summary": "Local media QA pass: 1080x1920, 6.30s, 1508400 bytes.",
+  "strengths": [
+    "Valid vertical MP4 with video and audio streams."
+  ],
+  "issues": [],
+  "fixes": [],
+  "publishable": true,
+  "_provider": "local-ffprobe"
+}
