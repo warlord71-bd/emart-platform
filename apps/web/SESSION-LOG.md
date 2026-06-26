@@ -3291,6 +3291,12 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: Final Graph query returned exactly 1 Hydro Boost Facebook match; `node --check` passed for `meta_schedule.js` and `meta_post_cleanup.js`; June 26 rescheduled campaign dry-runs still return 17 FB and 17 IG posts; current June 26 random PM2 schedulers remain stopped.
 - Note: The June 25 Instagram result ledger also shows repeated slot-18 publishes from the same autorestart incident; Instagram deletion was not performed in this step because the owner request named Facebook.
 
+## 2026-06-26 · Codex · USEO-8 Tier-2 category guide closure
+- Did: Verified `USEO-8` was already implemented in source by commit `b294337`: Tier-2 category buying guides + visible FAQs + FAQPage JSON-LD for 7 categories (`shampoos`, `face-masks`, `eye-care`, `cream-moisturizer`, `makeup-remover`, `body-wash`, `foundation`).
+- Updated: Reconciled `workspace/TASKS.md` so `USEO-8`, `SEO-4`, `SEO-5`, and SEO-22 Wave 2 no longer show Tier-2 category guides as pending. Updated `workspace/SEO_MASTER.md` mirror/schema map to say Tier-1 + Tier-2 category guide sets are done in source; remaining Wave 2 work is `D8/USEO-9`, `USEO-7`, and `USEO-10`.
+- Verified: `npm run lint` passed with existing unrelated `<img>` warnings in `ChatProductCard.tsx` and `RecentlyViewedRail.tsx`; `npm run build` passed.
+- Guardrail: No Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no route/redirect/sitemap/nav changes, no deploy, no PM2 restart, no push.
+
 ## 2026-06-26 · Codex · SEO master/task-board source-of-truth reconciliation
 - Did: Audited `workspace/SEO_MASTER.md` against `workspace/TASKS.md` and reconciled stale SEO statuses both ways.
 - Updated: Added an explicit source-of-truth standard to both files: `SEO_MASTER.md` owns durable verified SEO facts and gates; `TASKS.md` owns sequencing/status/next action; durable SEO status changes must update both in the same commit.

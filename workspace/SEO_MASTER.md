@@ -26,7 +26,7 @@ This compact mirror keeps the SEO source of truth aligned with the task board. F
 | Measurement loop | `SEO-ORCH-4` | ✅ Operational for SEO ledger entries via `measurement_loop.py` with GSC+GA4 baselines and review windows. Order/revenue joins remain excluded unless explicitly approved because order data is protected. |
 | Content lifecycle | `SEO-ORCH-5`, `WA-H` | ✅ Contract/gate done. Blog generator supports draft/generate-only; `content-lifecycle-contract.md` defines demand→brief→draft→QA→approve→publish→verify→measure. Runtime adoption remains approval-first. |
 | Off-page/entity/AEO | `SEO-ORCH-7` | 🟡 Spec done only. Outreach/entity execution remains owner-gated. |
-| Internal links + content depth | `USEO-*`, `SEO-2/4/5/6/7`, `D8` | 🟡 Tier-1 category and Tier-1 brand work is live; Wave 1 SEO-22 structure fixes are code-complete; Tier-2 category/brand, humanizer links, and product FAQ sample batch remain. |
+| Internal links + content depth | `USEO-*`, `SEO-2/4/5/6/7`, `D8` | 🟡 Tier-1 + Tier-2 category work is in source; Tier-1 brand work is live; Wave 1 SEO-22 structure fixes are code-complete; Tier-2 brand, humanizer links, and product FAQ sample batch remain. |
 | Revenue recovery | `D6`, `O-13`, `M9/O-6/E3` | 🟡 Owner/data-gated. GMC disapprovals, PDP 404 redirect candidates, and top-product gallery expansion need reviewed item-level action. |
 
 ### SEO-22 Wave Status
@@ -34,7 +34,7 @@ This compact mirror keeps the SEO source of truth aligned with the task board. F
 | Wave | IDs | Truth |
 |---|---|---|
 | 1 | `USEO-12`, `L4`, `SEO-6`, `M6` | ✅ Code complete 2026-06-26; build passed. Blog guide labels, H2 coverage, education rendering, and FAQ JSON-LD cleanup are done locally. |
-| 2 | `USEO-8`, `D8/USEO-9`, `USEO-7`, `USEO-10` | 🔲 Next content-depth sprint. Owner/copy review required; top-10 FAQ sample before any Woo meta writes. |
+| 2 | `USEO-8`, `D8/USEO-9`, `USEO-7`, `USEO-10` | 🟡 `USEO-8` is done in source (`b294337`); remaining Wave 2 work is Tier-2 brand editorial, humanizer links, and product FAQ sample batch. Owner/copy review required; top-10 FAQ sample before any Woo meta writes. |
 | 3 | `SEO-ORCH-2/3/4/5/6`, `QDR-DRIFT` | 🟡 Foundation mostly done; remaining work is Qdrant parity cleanup/report, rotating verification, CWV/CrUX, and registry consumption tests. |
 | 4 | `D6`, `O-13`, `M9/O-6/E3` | 🔲 Owner/data-gated revenue recovery. |
 | 5 | `L6`, `O-2`, `O-3`, `O-4`, `SEO-ORCH-7` | 🔲 Owner-decision growth roadmap. |
@@ -338,7 +338,7 @@ This cannot be solved in a sprint — requires a sustained content calendar.
 |---|---|---|
 | Homepage | WebSite, OnlineStore, Organization | — |
 | Product (PDP) | Product, BreadcrumbList, FAQPage, Review (when real approved reviews exist), AggregateRating (when Woo rating_count > 0) | Review volume remains the business gap; schema support added 2026-06-19 |
-| Category | CollectionPage, ItemList, BreadcrumbList; FAQPage on guide-backed categories | Expand Tier-2 guides/FAQs |
+| Category | CollectionPage, ItemList, BreadcrumbList; FAQPage on guide-backed categories | Tier-1 + Tier-2 guide sets done in source; add future guides only when new candidates are approved |
 | Brand | CollectionPage, ItemList, BreadcrumbList; FAQPage on Tier-1 editorial brands | Tier-2/long-tail editorial coverage |
 | Concern | CollectionPage, ItemList, BreadcrumbList, FAQPage | Content specificity/internal links remain M6 |
 | Ingredient | CollectionPage, ItemList, BreadcrumbList, FAQPage | Content specificity/internal links remain M6 |
