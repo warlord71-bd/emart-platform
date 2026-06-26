@@ -1,10 +1,43 @@
 # Emart SEO Master — Source of Truth
 
 **Last verified:** 2026-06-20 (live SEO/AEO deploy gate: sitemap, robots, LLM docs/link freshness, IndexNow, representative PDP/category/concern/ingredient/blog metadata + JSON-LD)
+**Last reconciled with `workspace/TASKS.md`:** 2026-06-26 (document/status audit only; no new live crawl implied)
 **Owner:** Claude (code) + Warlord (content/business decisions)
-**Rule:** This file is the single SEO source of truth. Update it when items close or new gaps are confirmed live. Do not update based on AI analysis alone — verify with curl before changing status.
+**Rule:** This file is the durable SEO source of truth. `workspace/TASKS.md` is the execution board. Update both in the same commit whenever a task-board change creates, closes, reprioritizes, or materially changes an SEO fact. Do not mark live SEO complete from AI analysis alone — verify with build/test for local code completion and live/API/curl evidence for live-status claims.
+
+### Source-Of-Truth Standard
+
+- **SEO_MASTER owns:** verified SEO facts, open SEO gaps, owner-decision gates, "do not revisit" decisions, schema/content policy, and canonical rules.
+- **TASKS owns:** sequencing, current owner, status movement, wave plans, and next action.
+- **Conflict rule:** prefer the most specific verified row over older summary rows; then patch the stale row instead of adding a duplicate.
+- **Safety rule:** no automatic title/content rewrites, route/redirect/sitemap changes, WordPress/Woo writes, or protected commerce-data access unless the task explicitly authorizes that exact action.
 
 ---
+
+## Current SEO Execution Mirror — Reconciled 2026-06-26
+
+This compact mirror keeps the SEO source of truth aligned with the task board. Full execution detail remains in `workspace/TASKS.md`.
+
+| Area | Canonical task IDs | Current truth |
+|---|---|---|
+| SEO data contract | `SEO-ORCH-1` | ✅ Complete. Canonical GSC merge, durable completed-content registry, humanizer queue correction, and full-catalog agentic scoring are trusted inputs. |
+| SEO work ledger | `SEO-ORCH-2` | ✅ Instantiated. Durable JSONL ledger at `workspace/ledgers/action-events.jsonl`; 30 SEO entries seeded with GSC+GA4 baselines. |
+| Technical control loop | `SEO-ORCH-3`, `SEO-ORCH-6`, `SEO-GAP-4` | 🟡 Partial. Classifier, bounded live sample, and URL-policy registry validation exist; rotating coverage, Qdrant/catalog parity, CWV/CrUX, and scheduled freshness alerts remain. |
+| Measurement loop | `SEO-ORCH-4` | ✅ Operational for SEO ledger entries via `measurement_loop.py` with GSC+GA4 baselines and review windows. Order/revenue joins remain excluded unless explicitly approved because order data is protected. |
+| Content lifecycle | `SEO-ORCH-5`, `WA-H` | ✅ Contract/gate done. Blog generator supports draft/generate-only; `content-lifecycle-contract.md` defines demand→brief→draft→QA→approve→publish→verify→measure. Runtime adoption remains approval-first. |
+| Off-page/entity/AEO | `SEO-ORCH-7` | 🟡 Spec done only. Outreach/entity execution remains owner-gated. |
+| Internal links + content depth | `USEO-*`, `SEO-2/4/5/6/7`, `D8` | 🟡 Tier-1 category and Tier-1 brand work is live; Wave 1 SEO-22 structure fixes are code-complete; Tier-2 category/brand, humanizer links, and product FAQ sample batch remain. |
+| Revenue recovery | `D6`, `O-13`, `M9/O-6/E3` | 🟡 Owner/data-gated. GMC disapprovals, PDP 404 redirect candidates, and top-product gallery expansion need reviewed item-level action. |
+
+### SEO-22 Wave Status
+
+| Wave | IDs | Truth |
+|---|---|---|
+| 1 | `USEO-12`, `L4`, `SEO-6`, `M6` | ✅ Code complete 2026-06-26; build passed. Blog guide labels, H2 coverage, education rendering, and FAQ JSON-LD cleanup are done locally. |
+| 2 | `USEO-8`, `D8/USEO-9`, `USEO-7`, `USEO-10` | 🔲 Next content-depth sprint. Owner/copy review required; top-10 FAQ sample before any Woo meta writes. |
+| 3 | `SEO-ORCH-2/3/4/5/6`, `QDR-DRIFT` | 🟡 Foundation mostly done; remaining work is Qdrant parity cleanup/report, rotating verification, CWV/CrUX, and registry consumption tests. |
+| 4 | `D6`, `O-13`, `M9/O-6/E3` | 🔲 Owner/data-gated revenue recovery. |
+| 5 | `L6`, `O-2`, `O-3`, `O-4`, `SEO-ORCH-7` | 🔲 Owner-decision growth roadmap. |
 
 ## 🧭 STANDING CONSIDERATION — GEO & AEO (added 2026-06-10)
 
@@ -169,7 +202,7 @@ on-page.ai scan was wrong. Live HTML has "korean" 27×, "bangladesh" 107×, "aut
 - Content is too templated across pages; it needs more ingredient/concern-specific detail and safer factual nuance.
 - Ingredient pages currently have 0 internal links in the education copy.
 - Concern pages currently have only ~3 ingredient links and 0 routine links; target is at least 5 ingredient links + 3 routine-step links where natural.
-**Fix:** Refinement sprint, not a fresh build. First update `niacinamide`, `hyaluronic-acid`, `acne-blemish-care`, and `dryness-hydration`; add FAQPage JSON-LD; improve internal links and reduce templated phrasing. Review live before bulk-updating the remaining pages.
+**Fix:** Refinement sprint, not a fresh build. First update `niacinamide`, `hyaluronic-acid`, `acne-blemish-care`, and `dryness-hydration`; improve internal links, reduce templated phrasing, and use the existing FAQPage JSON-LD/education renderer. Review live before bulk-updating the remaining pages.
 **Effort:** Medium-large — content + small schema render patch.
 **Owner:** Warlord review required after first 4 pages before bulk.
 
@@ -177,26 +210,26 @@ on-page.ai scan was wrong. Live HTML has "korean" 27×, "bangladesh" 107×, "aut
 
 ## 🔵 OPEN — Needs Owner Decision Before Starting
 
-### O1: `/origins/[country]` editorial content
+### O1 / TASKS `O-2`: `/origins/[country]` editorial content
 Routes/indexing are already handled: `/origins/[country]` pages are live, sitemap includes origin URLs, and `/origins?country=X` redirects to `/origins/X` per 2026-05-21 verification.
 **Current content state:** only `south-korea`, `japan`, and `usa` have editorial content in `apps/web/src/lib/origin-editorial.ts`.
 **Remaining gap:** Other origin pages are product grids with minimal story/header copy. Add 600+ word country-specific editorial content where the country has meaningful catalog depth.
 **Priority:** South Korea/Japan/USA exist; next candidates should be chosen by product count and search value, not a blind 20-country bulk run.
 **Owner must:** Confirm final country list before generation.
 
-### O2: Product comparison pages (`/compare/[slug1]-vs-[slug2]`)
-**What:** Programmatic comparison pages for high-intent queries ("COSRX vs The Ordinary niacinamide")
+### O2 / TASKS `O-3`: Product comparison pages (`/compare/[slug1]-vs-[slug2]`)
+**What:** Curated comparison pages for high-intent queries ("COSRX vs The Ordinary niacinamide"). A small scaffold/sample set exists; broad expansion still needs curation.
 **Why:** Bottom-of-funnel intent, Google AI Mode fan-out, internal cross-linking
 **Risk:** Mass-generated thin pages can trigger quality penalties. Must be human-reviewed.
-**Owner must:** Provide a curated list of 20–30 pairs before any code is written. Verify first 2 before bulk.
+**Owner must:** Provide a curated list of 20–30 pairs before expanding. Verify first 2 before bulk.
 
-### O3: "Best [X] in Bangladesh" listicle pages (`/best/[slug]`)
-**What:** 20 high-intent editorial pages ("best sunscreen for oily skin in Bangladesh")
+### O3 / TASKS `O-4`: "Best [X] in Bangladesh" listicle pages (`/best/[slug]`)
+**What:** 20 high-intent editorial pages ("best sunscreen for oily skin in Bangladesh"). A small scaffold/sample set exists; broad expansion still needs topic approval.
 **Why:** Captures informational + commercial queries Shajgoj currently owns
 **Risk:** Same as O2 — needs curation and review, not mass generation
 **Owner must:** Approve final topic list. Verify first 2 before bulk.
 
-### O4: Skin-type pages (`/skin-type/[slug]`)
+### O4 / TASKS `O-5`: Skin-type pages (`/skin-type/[slug]`)
 **What:** Curated pages for oily / dry / sensitive / combination skin
 **Why:** Current skin-type handling lives as `/shop?skin_type=` filter → canonicalizes away
 **Risk:** Doorway-page risk if thin. Only build if each page has genuine buying guidance.
@@ -229,6 +262,25 @@ Currently allowed. Keep if LLM discoverability is wanted; block in robots.ts if 
 **The real Shajgoj gap.** They have 400+ Bangla articles; we have 31.
 This cannot be solved in a sprint — requires a sustained content calendar.
 **Owner:** Content roadmap decision. Claude can assist with outlines and drafts on request.
+
+### D8 / USEO-9: Brand editorial depth
+**Current state:** Tier-1 brand editorial is live for 15 brands via static `brandEditorial.ts`, including visible copy and FAQ schema. 372 long-tail brand pages still use the generic fallback description.
+**Remaining gap:** Tier-2 brand editorial for the next 15 brands, then a repeatable review pipeline for long-tail brands with meaningful search/session value.
+**Gate:** Owner/copy review before expansion. Do not mass-generate thin brand text.
+
+### D6: GMC disapproved product cleanup
+**Current state:** 83 GMC disapprovals remain after 7 unavailable entries were removed. Categories include healthcare claims, identity/belief shade names, personal hardships, illegal drugs, and other policy issues. Source: `workspace/audit/active/gmc-disapproved-20260622.md`.
+**Fix:** Work item-by-item by sales/search potential. Keep changes policy-safe and reversible.
+**Gate:** No stock/price/order/customer changes. Avoid broad product-copy rewrites without reviewed evidence.
+
+### O13: PDP 404 redirect review
+**Current state:** Review-only PDP 404 redirect map remains in `workspace/audit/active/pdp-404-redirect-map-20260615.csv` with no-match candidates intentionally not auto-redirected.
+**Fix:** Owner reviews candidates; apply only high-confidence replacements that preserve user intent.
+**Gate:** No blanket redirects for ambiguous or random-token paths.
+
+### QDR-DRIFT: Qdrant/catalog parity
+**Current state:** Track under `SEO-ORCH-3` technical control loop. Remaining work is a read-only parity report/cleanup proposal before any vector deletion or resync action.
+**Gate:** Report first; no destructive vector cleanup without exact evidence.
 
 ---
 
@@ -286,10 +338,10 @@ This cannot be solved in a sprint — requires a sustained content calendar.
 |---|---|---|
 | Homepage | WebSite, OnlineStore, Organization | — |
 | Product (PDP) | Product, BreadcrumbList, FAQPage, Review (when real approved reviews exist), AggregateRating (when Woo rating_count > 0) | Review volume remains the business gap; schema support added 2026-06-19 |
-| Category | CollectionPage, ItemList, BreadcrumbList | — |
-| Brand | CollectionPage, ItemList, BreadcrumbList | — |
-| Concern | CollectionPage, ItemList, BreadcrumbList | — |
-| Ingredient | CollectionPage, ItemList, BreadcrumbList | — |
+| Category | CollectionPage, ItemList, BreadcrumbList; FAQPage on guide-backed categories | Expand Tier-2 guides/FAQs |
+| Brand | CollectionPage, ItemList, BreadcrumbList; FAQPage on Tier-1 editorial brands | Tier-2/long-tail editorial coverage |
+| Concern | CollectionPage, ItemList, BreadcrumbList, FAQPage | Content specificity/internal links remain M6 |
+| Ingredient | CollectionPage, ItemList, BreadcrumbList, FAQPage | Content specificity/internal links remain M6 |
 | Routine step | CollectionPage, ItemList, BreadcrumbList | — |
 | /faq | FAQPage | — |
 | /about-us | Organization, Person | — |

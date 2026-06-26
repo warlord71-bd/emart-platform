@@ -3291,6 +3291,13 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: Final Graph query returned exactly 1 Hydro Boost Facebook match; `node --check` passed for `meta_schedule.js` and `meta_post_cleanup.js`; June 26 rescheduled campaign dry-runs still return 17 FB and 17 IG posts; current June 26 random PM2 schedulers remain stopped.
 - Note: The June 25 Instagram result ledger also shows repeated slot-18 publishes from the same autorestart incident; Instagram deletion was not performed in this step because the owner request named Facebook.
 
+## 2026-06-26 · Codex · SEO master/task-board source-of-truth reconciliation
+- Did: Audited `workspace/SEO_MASTER.md` against `workspace/TASKS.md` and reconciled stale SEO statuses both ways.
+- Updated: Added an explicit source-of-truth standard to both files: `SEO_MASTER.md` owns durable verified SEO facts and gates; `TASKS.md` owns sequencing/status/next action; durable SEO status changes must update both in the same commit.
+- Reconciled: `SEO-ORCH-2` is instantiated, `SEO-ORCH-4` is operational for SEO ledger measurement, `SEO-ORCH-5` has contract/gates done, `SEO-ORCH-7` has a spec, `D8` Tier-1 brand editorial is live with Tier-2 remaining, `SEO-2` blog internal links were applied via `USEO-3`, and `SEO-4/5` Tier-1 category guide work is live with Tier-2 remaining.
+- Updated SEO master: Added a compact current execution mirror, SEO-22 wave mirror, aliases for owner-decision rows (`O-2`/`O-3`/`O-4`/`O-5`), D6/D8/O13/QDR-DRIFT entries, and schema map corrections for category/brand/concern/ingredient FAQ coverage.
+- Verified: Targeted stale-phrase search returned no matches; `git diff --check` passed. Docs/status only; no code, live SEO, Woo/WordPress writes, deploy, PM2 restart, or push.
+
 ## 2026-06-26 · Codex · SEO-22 plan + Wave 1 execution
 - Did: Added `SEO-22 Execution Plan — 2026-06-26` to `workspace/TASKS.md`, sequencing the requested bundle into five safe waves. Wave 1 is now complete.
 - Changed: Blog posts no longer show a blanket "Skincare Guide" eyebrow; `apps/web/src/app/blog/[slug]/page.tsx` derives guide labels such as Sunscreen, Acne, Hydration, Brightening, Routine, Ingredient, or K-Beauty from title/content signals.
