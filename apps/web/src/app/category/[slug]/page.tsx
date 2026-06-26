@@ -305,6 +305,41 @@ const CATEGORY_GUIDE_FAQS: Record<string, { q: string; a: string }[]> = {
     { q: 'Lip care না lip color — কোনটা দিয়ে শুরু করব?', a: 'শুরুটা lip care দিয়েই — একটি ভালো lip balm ঠোঁট নরম ও আর্দ্র রাখে। এরপর lipstick বা tint ব্যবহার করলে রঙ সুন্দরভাবে বসে ও ঠোঁট ফাটে না।' },
     { q: 'ঠোঁট বারবার ফাটে কেন, কী করব?', a: 'পানি কম খাওয়া, ঠোঁট চাটা ও শুষ্ক আবহাওয়া মূল কারণ। নিয়মিত hydrating lip balm লাগান, রাতে lip mask ব্যবহার করুন এবং পর্যাপ্ত পানি পান করুন।' },
   ],
+  shampoos: [
+    { q: 'বাংলাদেশের আবহাওয়ায় কোন ধরনের শ্যাম্পু ভালো?', a: 'গরম ও আর্দ্র আবহাওয়ায় মাথার তালু ঘামে ও তেল বেশি হয়, তাই clarifying বা oil-control শ্যাম্পু সপ্তাহে ১–২ বার ব্যবহার করতে পারেন। বাকি দিন মৃদু ও hydrating শ্যাম্পু ব্যবহার করুন।' },
+    { q: 'Sulfate-free শ্যাম্পু কি সত্যিই ভালো?', a: 'রঙ করা, কেমিক্যাল ট্রিটমেন্ট করা বা শুষ্ক চুলে sulfate-free ভালো — ফেনা কম হয় কিন্তু চুলের moisture ও রঙ বেশিদিন টেকে। তৈলাক্ত মাথার তালুতে মাঝে মাঝে sulfate শ্যাম্পু ব্যবহারে সমস্যা নেই।' },
+    { q: 'শ্যাম্পু কতদিন পর পর পাল্টানো দরকার?', a: 'দরকার নেই — চুলের ধরন ও সমস্যা অনুযায়ী একটি ভালো শ্যাম্পু দীর্ঘদিন ব্যবহার করা যায়। তবে মাথার তালু বা চুলের অবস্থা বদলালে শ্যাম্পু বদলানো যুক্তিসঙ্গত।' },
+  ],
+  'face-masks': [
+    { q: 'Sheet mask আর wash-off mask-এর পার্থক্য কী?', a: 'Sheet mask হলো সিরাম-ভেজানো কাপড় যা ১৫–২০ মিনিট রেখে সরিয়ে ফেলতে হয় — ধোয়ার দরকার নেই। Wash-off mask ক্রিম বা clay যা লাগিয়ে শুকালে পানি দিয়ে ধুয়ে ফেলতে হয়। Sheet mask বেশি hydrating, wash-off mask বেশি deep-cleansing।' },
+    { q: 'সপ্তাহে কতবার ফেস মাস্ক ব্যবহার করব?', a: 'Hydrating sheet mask প্রতিদিন বা ১ দিন পর পর ব্যবহার করা যায়। Clay বা exfoliating wash-off mask সপ্তাহে ১–২ বার যথেষ্ট — বেশি ব্যবহারে ত্বক শুষ্ক হতে পারে।' },
+    { q: 'ফেস মাস্কের পর কি ময়েশ্চারাইজার লাগাতে হয়?', a: 'হ্যাঁ। Sheet mask সরানোর পর অবশিষ্ট সিরাম থাপ দিয়ে মাখিয়ে নিন, তারপর ময়েশ্চারাইজার দিয়ে সিল করুন। Wash-off mask ধোয়ার পর toner ও moisturiser দিন।' },
+  ],
+  'eye-care': [
+    { q: 'চোখের নিচে কালো দাগ কমাতে কী ব্যবহার করব?', a: 'Vitamin C, niacinamide, বা caffeine যুক্ত eye cream বা serum কালো দাগ হালকা করতে সাহায্য করে। নিয়মিত ব্যবহার ও পর্যাপ্ত ঘুম দুটোই গুরুত্বপূর্ণ।' },
+    { q: 'Eye cream আর সাধারণ moisturiser-এর মধ্যে পার্থক্য কী?', a: 'চোখের চারপাশের ত্বক অনেক পাতলা ও সংবেদনশীল। Eye cream-এ কম fragrance ও হালকা formula থাকে যাতে জ্বালাপোড়া না হয়। সাধারণ moisturiser-এর heavy ingredients চোখে milia বা ফোলাভাব তৈরি করতে পারে।' },
+    { q: 'Eye cream কখন লাগাব?', a: 'সকালে sunscreen-এর আগে এবং রাতে moisturiser-এর আগে। আঙুলের ডগা দিয়ে অল্প পরিমাণ নিয়ে আলতোভাবে চোখের চারপাশে থাপ দিয়ে লাগান — টানবেন না।' },
+  ],
+  'cream-moisturizer': [
+    { q: 'ময়েশ্চারাইজার কি তৈলাক্ত ত্বকেও দরকার?', a: 'হ্যাঁ, অবশ্যই। তৈলাক্ত ত্বকে হালকা gel বা water-based moisturiser ব্যবহার করুন। ময়েশ্চারাইজার না দিলে ত্বক আরও বেশি তেল তৈরি করে ভারসাম্য রাখার চেষ্টা করে।' },
+    { q: 'Day cream আর night cream-এর পার্থক্য কী?', a: 'Day cream সাধারণত হালকা, দ্রুত absorb হয় এবং কখনো কখনো SPF থাকে। Night cream ভারী, বেশি nourishing — রাতে ত্বকের repair cycle-এ সাহায্য করে। দুটো আলাদা রাখলে ত্বক দিন-রাত দুই সময়েই সঠিক যত্ন পায়।' },
+    { q: 'ময়েশ্চারাইজার কতটুকু লাগাব?', a: 'মুখের জন্য মটরশুটি পরিমাণ যথেষ্ট। বেশি লাগালে ত্বক চটচটে লাগে এবং pore বন্ধ হতে পারে। ঘাড়েও অল্প মাখিয়ে নিন।' },
+  ],
+  'makeup-remover': [
+    { q: 'Micellar water না cleansing oil — কোনটা ভালো?', a: 'হালকা মেকআপ ও sunscreen-এর জন্য micellar water যথেষ্ট এবং সহজ। ভারী মেকআপ, waterproof mascara বা heavy sunscreen-এর জন্য cleansing oil বা balm বেশি কার্যকর। দুটোই ত্বকের জন্য নিরাপদ।' },
+    { q: 'মেকআপ না করলেও কি রিমুভার দরকার?', a: 'Sunscreen ব্যবহার করলে অবশ্যই দরকার — sunscreen সাধারণ face wash-এ পুরোপুরি ওঠে না। Micellar water বা oil cleanser দিয়ে আগে sunscreen তুলুন, তারপর regular cleanser দিন।' },
+    { q: 'চোখের মেকআপ তোলার আলাদা রিমুভার কেন দরকার?', a: 'চোখের চারপাশের ত্বক খুব পাতলা ও সংবেদনশীল। আলাদা eye makeup remover জেন্টলি waterproof mascara ও eyeliner তোলে যাতে ঘষাঘষির দরকার না হয় এবং চোখ জ্বালা না করে।' },
+  ],
+  'body-wash': [
+    { q: 'Body wash না সাবান — কোনটা ত্বকের জন্য ভালো?', a: 'Body wash সাধারণত ত্বকের pH-এর কাছাকাছি এবং বেশি moisturising। সাবান ত্বক বেশি শুষ্ক করতে পারে, বিশেষত বাংলাদেশের গরমে। সংবেদনশীল বা শুষ্ক ত্বকে body wash নিরাপদ পছন্দ।' },
+    { q: 'Body wash কি shower gel থেকে আলাদা?', a: 'Body wash সাধারণত ক্রিমি ও বেশি moisturising। Shower gel বেশি জেলি-ঘন ও ফেনাদায়ক। শুষ্ক ত্বকে body wash, তৈলাক্ত ত্বকে shower gel ভালো কাজ করে। দুটোই সাবানের চেয়ে মৃদু।' },
+    { q: 'বাচ্চাদের জন্য কি আলাদা body wash দরকার?', a: 'হ্যাঁ — বাচ্চাদের ত্বক পাতলা ও সংবেদনশীল, তাই fragrance-free ও hypoallergenic baby wash ব্যবহার করুন। বড়দের body wash-এ থাকা fragrance ও harsh surfactant বাচ্চাদের ত্বকে জ্বালা করতে পারে।' },
+  ],
+  foundation: [
+    { q: 'বাংলাদেশের আবহাওয়ায় ফাউন্ডেশন কীভাবে টেকে?', a: 'গরম ও আর্দ্র আবহাওয়ায় oil-free, matte বা semi-matte foundation ভালো টেকে। আগে primer লাগান এবং setting spray দিয়ে সেট করুন। ঘাম হলে blotting paper ব্যবহার করুন।' },
+    { q: 'ফাউন্ডেশনের সঠিক shade কীভাবে বাছব?', a: 'চোয়ালের (jawline) কাছে ২–৩টি shade পরীক্ষা করুন — যেটি ত্বকের সাথে মিশে যায় সেটি সঠিক। অনলাইনে কেনার সময় ব্র্যান্ডের shade guide দেখুন এবং আপনার undertone (warm/cool/neutral) জানুন।' },
+    { q: 'BB cream, CC cream আর foundation-এর মধ্যে পার্থক্য কী?', a: 'BB cream হালকা coverage + moisturiser + SPF একসাথে — দৈনিক হালকা মেকআপে ভালো। CC cream colour correction-এ বেশি কার্যকর। Foundation সবচেয়ে বেশি coverage দেয় এবং বিভিন্ন finish-এ (matte, dewy, satin) পাওয়া যায়।' },
+  ],
 };
 
 function getCategoryOgImage(slug: string, name: string) {
@@ -1019,6 +1054,259 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                         <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
                         <div className="space-y-3">
                           {(CATEGORY_GUIDE_FAQS['lips'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'shampoos' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">How to choose a shampoo in Bangladesh</h2>
+                        <p>
+                          In Dhaka&apos;s heat and humidity, the scalp sweats more and produces extra oil. A shampoo that
+                          cleans well without over-stripping is the goal. Match the shampoo to your scalp condition, not
+                          just your hair type — oily scalp with dry ends is common and needs a balanced formula.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">By hair concern</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li><strong className="text-ink">Oily scalp:</strong> clarifying or tea-tree shampoo 1–2 times a week, gentle shampoo on other days.</li>
+                          <li><strong className="text-ink">Dry / damaged:</strong> sulfate-free, keratin, or argan-oil shampoo to retain moisture and reduce breakage.</li>
+                          <li><strong className="text-ink">Dandruff:</strong> look for zinc pyrithione, salicylic acid, or ketoconazole. Use consistently for 4–6 weeks before judging results.</li>
+                          <li><strong className="text-ink">Colour-treated:</strong> sulfate-free shampoo preserves colour vibrancy. Wash less frequently — every other day is enough.</li>
+                          <li><strong className="text-ink">Hair fall:</strong> a gentle shampoo with biotin, caffeine, or{' '}
+                            <Link href="/ingredients/centella" className="text-accent hover:underline">centella</Link>{' '}
+                            can help support scalp health. Pair with a{' '}
+                            <Link href="/category/hair-treatments" className="text-accent hover:underline">scalp treatment</Link>.
+                          </li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['shampoos'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'face-masks' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">Face mask guide for Bangladesh</h2>
+                        <p>
+                          Face masks give your skin an extra boost that daily cleanser and moisturiser alone cannot.
+                          Korean{' '}
+                          <Link href="/category/korean-beauty" className="text-accent hover:underline">K-beauty</Link>{' '}
+                          popularised sheet masks, but wash-off and overnight masks are equally useful. The key is
+                          choosing the right type for your concern and not over-using.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">By type</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li><strong className="text-ink">Sheet mask:</strong> serum-soaked fabric for 15–20 minutes. Hydration, brightening, or calming — choose by ingredient. No rinsing needed.</li>
+                          <li><strong className="text-ink">Clay / mud mask:</strong> deep-cleanses pores and absorbs excess oil. Best for oily and combination skin, 1–2 times a week.</li>
+                          <li><strong className="text-ink">Wash-off cream mask:</strong> gentler than clay, often nourishing. Good for dry or sensitive skin.</li>
+                          <li><strong className="text-ink">Sleeping mask:</strong> a richer overnight treatment — apply as the last step of your PM routine and wash off in the morning.</li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">When to mask</h3>
+                        <p>
+                          After cleansing and{' '}
+                          <Link href="/category/toners-mists" className="text-accent hover:underline">toner</Link>,
+                          before moisturiser. In Bangladesh&apos;s humid months, a cooling sheet mask or lightweight gel
+                          mask feels comfortable. In drier months, try a cream or sleeping mask for extra moisture.
+                        </p>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['face-masks'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'eye-care' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">Eye care guide</h2>
+                        <p>
+                          The skin around the eyes is thinner than the rest of the face and shows fatigue, ageing, and
+                          dehydration first. Dark circles, puffiness, and fine lines are the most common concerns. A
+                          dedicated eye product addresses these without irritating the delicate area.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">By concern</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li><strong className="text-ink">Dark circles:</strong> vitamin C, niacinamide, or caffeine-based eye creams help brighten gradually. Consistency matters more than intensity.</li>
+                          <li><strong className="text-ink">Puffiness:</strong> caffeine-infused eye serums reduce morning puffiness. Keep your eye cream in the fridge for an extra de-puffing effect.</li>
+                          <li><strong className="text-ink">Fine lines:</strong> retinol eye creams (low strength) or peptide-rich formulas improve texture over weeks. Always use{' '}
+                            <Link href="/category/sunscreen" className="text-accent hover:underline">sunscreen</Link>{' '}
+                            during the day.</li>
+                          <li><strong className="text-ink">General hydration:</strong>{' '}
+                            <Link href="/ingredients/hyaluronic-acid" className="text-accent hover:underline">hyaluronic acid</Link>{' '}
+                            or ceramide eye creams keep the area plump without heaviness.</li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['eye-care'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'cream-moisturizer' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">How to choose a moisturiser in Bangladesh</h2>
+                        <p>
+                          Moisturiser is the step that locks in everything before it — toner,{' '}
+                          <Link href="/category/serums-ampoules-essences" className="text-accent hover:underline">serum</Link>,
+                          and treatments. In Dhaka&apos;s humid weather, many people skip it, but even oily skin needs
+                          hydration. The trick is matching the texture to your skin and the season.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">By skin type</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li><strong className="text-ink">Oily:</strong> lightweight gel or water-based moisturiser that absorbs fast without shine. Oil-free and non-comedogenic on the label.</li>
+                          <li><strong className="text-ink">Dry:</strong> richer cream with ceramides, shea butter, or squalane. Night creams are typically heavier and repair the skin barrier overnight.</li>
+                          <li><strong className="text-ink">Combination:</strong> a medium-weight lotion or gel-cream that hydrates cheeks without making the T-zone oily.</li>
+                          <li><strong className="text-ink">Sensitive:</strong> fragrance-free, minimal-ingredient formula with ceramides or{' '}
+                            <Link href="/ingredients/centella" className="text-accent hover:underline">centella</Link>.
+                            CeraVe and COSRX are reliable starting points.</li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['cream-moisturizer'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'makeup-remover' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">Makeup remover guide</h2>
+                        <p>
+                          Removing makeup properly is the foundation of healthy skin. Leaving makeup, sunscreen, or
+                          dirt overnight clogs pores, causes breakouts, and dulls the complexion. A good makeup
+                          remover lifts everything gently so your{' '}
+                          <Link href="/category/face-cleansers" className="text-accent hover:underline">face cleanser</Link>{' '}
+                          can do its job effectively — this is the first step of double cleansing.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">By type</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li><strong className="text-ink">Micellar water:</strong> gentle, no-rinse option for light makeup and sunscreen. Swipe with a cotton pad.</li>
+                          <li><strong className="text-ink">Cleansing oil:</strong> dissolves heavy makeup, waterproof mascara, and stubborn sunscreen. Emulsifies with water and rinses clean.</li>
+                          <li><strong className="text-ink">Cleansing balm:</strong> solid-to-oil texture, same power as cleansing oil but less messy. Good for travel.</li>
+                          <li><strong className="text-ink">Cleansing water / toner pads:</strong> pre-soaked pads for quick cleansing on busy nights or while travelling.</li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['makeup-remover'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'body-wash' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">Body wash guide for Bangladesh</h2>
+                        <p>
+                          In Bangladesh&apos;s hot and humid climate, you shower at least once a day. A good body wash
+                          cleans sweat, dirt, and sunscreen without stripping the skin&apos;s natural moisture. It should
+                          leave the body clean but not tight or itchy.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">Choosing the right body wash</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li><strong className="text-ink">Normal / oily skin:</strong> a refreshing gel body wash with a clean finish.</li>
+                          <li><strong className="text-ink">Dry skin:</strong> cream-based body wash with moisturising ingredients like shea butter, ceramides, or glycerin. Follow with{' '}
+                            <Link href="/category/body-lotion" className="text-accent hover:underline">body lotion</Link>{' '}
+                            while skin is still damp.</li>
+                          <li><strong className="text-ink">Sensitive / eczema-prone:</strong> fragrance-free, soap-free formula. CeraVe and Cetaphil body washes are dermatologist-recommended.</li>
+                          <li><strong className="text-ink">Acne on body:</strong> salicylic acid or benzoyl peroxide body wash on affected areas (back, chest), then rinse off. Use only on those zones.</li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['body-wash'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'foundation' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">Foundation guide for Bangladesh</h2>
+                        <p>
+                          Foundation evens out skin tone and gives a polished base for the rest of your makeup. In
+                          Bangladesh&apos;s heat, the right foundation stays put without melting or caking. The two
+                          decisions that matter most: the correct shade and the right finish for your skin type.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">By finish</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li><strong className="text-ink">Matte:</strong> oil-free, controls shine — best for oily skin and hot weather. Set with{' '}
+                            <Link href="/category/setting-spray" className="text-accent hover:underline">setting spray</Link>{' '}
+                            for all-day wear.</li>
+                          <li><strong className="text-ink">Dewy / radiant:</strong> adds a glow — best for dry or mature skin. Can look too shiny on oily skin in humidity.</li>
+                          <li><strong className="text-ink">Satin / natural:</strong> a balanced middle ground that works for most skin types and looks skin-like.</li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">Coverage levels</h3>
+                        <p>
+                          Sheer coverage lets skin show through and feels lightest — good for everyday wear. Medium
+                          coverage hides redness and uneven tone. Full coverage conceals acne scars and
+                          hyperpigmentation but needs careful blending to look natural. Start lighter and build up.
+                        </p>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['foundation'] ?? []).map((f) => (
                             <div key={f.q}>
                               <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
                               <p>{f.a}</p>
