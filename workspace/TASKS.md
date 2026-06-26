@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-26 (USEO-8 Tier-2 category guides reconciled)
+Last updated: 2026-06-27 (codebase audit vs SEO task board — all claimed-complete items verified in source; priority order added)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -118,8 +118,8 @@ the owner explicitly approves the exact scope.
 | 6 | ✅ Work/event ledgers | SEO-ORCH-2, UX-ORCH-2 | ✅ Durable JSONL ledger instantiated at `workspace/ledgers/action-events.jsonl`; 30 SEO entries seeded with GSC+GA4 baselines; `ledger_helper.py` + `measurement_loop.py` operational. | Done 2026-06-26; use ledger for new SEO/UX work instead of daily overwritten files. |
 | 7 | 🟠 High visual safety | UX-ORCH-3, UX-ORCH-4, UX-ORCH-8 | Add screenshot/a11y/design-system audits and proposal reports for mobile home/shop/PDP/component drift. | No broad visual refactor before Jul 3; owner approval for visible UI changes. |
 | 8 | ✅ Content/campaign safety contracts | WA-H, SEO-ORCH-5, UX-ORCH-6 | ✅ Blog draft gate plus content/campaign lifecycle contracts exist; runtime adoption remains approval-first. | No experimental content direct-publish. No automatic discounts/prices. |
-| 9 | 🟡 Measurement loop | SEO-ORCH-4, UX-ORCH-5, UX-ORCH-7, X8a, SEO-GAP-1, SEO-GAP-3 | ✅ SEO measurement loop operational; UX health/experiment specs ready, implementation pending. | Measurement/reporting first; no auto-optimization or mass rewrite without owner gate. |
-| 10 | 🟡 Recovery/ops maturity | ORCH-6, ORCH-7, SEO-ORCH-3, SEO-ORCH-6, SEO-ORCH-7, UX-ORCH-9, SEO-GAP-4 | DR plan/CI/video lock/query-policy/off-page specs exist; remaining SEO work is rotating control-loop coverage, Qdrant parity, CWV, and registry consumption tests. | Mostly post-critical; keep outreach/personal-data workflows approval-first. |
+| 9 | 🟡 Measurement loop | SEO-ORCH-4, UX-ORCH-5, UX-ORCH-7, X8a, SEO-GAP-1, SEO-GAP-3 | ✅ SEO measurement loop operational (`measurement_loop.py` verified); UX health/experiment specs ready, implementation pending. | Measurement/reporting first; no auto-optimization or mass rewrite without owner gate. |
+| 10 | 🟡 Recovery/ops maturity | ORCH-6, ORCH-7, SEO-ORCH-3, SEO-ORCH-6, SEO-ORCH-7, UX-ORCH-9, SEO-GAP-4 | Scripts verified 2026-06-27: `seo_technical_control_loop.py`, `seo_url_policy_registry.py`, registry JSON all exist. Remaining: Qdrant parity report (no script yet), CWV/CrUX, rotating schedule, registry→middleware wiring. | Mostly post-critical; keep outreach/personal-data workflows approval-first. |
 
 ### Fresh SEO Gap Action Queue — 2026-06-26
 
@@ -144,7 +144,7 @@ technical hygiene. SEO-1 closed (propose-titles returns no targets). Proposals o
 
 | Pri | ID | Action | Root cause | Source | Gate | Status |
 |---|---|---|---|---|---|---|
-| P0-1 | USEO-1 | Fix `toners-mists` guide conditional (`page.tsx` ~L638) | RC-3 | SEO-4 | freeze-safe code; owner OK before merge | ✅ 2026-06-26 `85b15ad` (full guide + FAQ live) |
+| P0-1 | USEO-1 | Fix `toners-mists` guide conditional (`page.tsx` ~L638) | RC-3 | SEO-4 | freeze-safe code; owner OK before merge | ✅ 2026-06-26 `85b15ad` (in source; deploy pending) |
 | P0-2 | USEO-2 | Resolve 6 duplicate blog URL `-2` pairs → keep + 301 | RC-3 | SEO-7 F6 | owner picks keeper per pair | ✅ 2026-06-26 — root cause: PM2 `cron_restart` fired 3x/day even when stopped, no slug collision check. Fix: PM2 process deleted + pm2 save; slug collision guard added to `blog_generator.py`. 5 pairs consolidated (richer `-2` content → original post), 6 `-2` posts trashed, ISR+CF cache cleared, `-2` URLs now 404. |
 | P1-1 | USEO-3 | Add 3–5 in-body links per blog post (150–250 total, WP edits, no code) | RC-1 | SEO-2, SEO-7 F5 | owner approves targets/anchors | ✅ 2026-06-26 — 200 internal links added across 45 blog posts (avg 4.4/post). 32 posts skipped (already had links, no anchors, or Bangla-only). Anchors: ingredient/concern/routine/category natural phrases. Blog cache revalidated. |
 | P2-1 | USEO-4 | Build Tier-1 category guides (korean-beauty, serums, toners-mists, bath-body, lips) | RC-2 | SEO-4 | owner reviews copy before JSX | ✅ 5/5 live `85b15ad`+`a580709` (all Tier-1 guides + FAQ) |
@@ -171,14 +171,13 @@ better AI/Google citation surfaces, and measurable change history without mass w
 
 | Wave | IDs | Work package | Gate | Status |
 |---|---|---|---|---|
-| 1 | `USEO-12`, `L4`, `SEO-6`, `M6` | Freeze-safe on-site structure: category-aware blog labels, missing H2s on `/brands`/`/sale`/`/new-arrivals`, scannable education content support, and FAQPage JSON-LD cleanup for ingredient/concern education. | Build/test; no URL/nav/commerce data change. | ✅ 2026-06-26 code done; build passed |
-| 2 | `USEO-8`, `D8/USEO-9`, `USEO-7`, `USEO-10` | Content-depth sprint: Tier-2 category guides, Tier-2 brand editorial, humanizer in-body links, and product-specific FAQ sample batch. | Owner review for generated copy; top-10 FAQ sample before Woo meta writes. | 🟡 `USEO-8` done; next `D8/USEO-9`, `USEO-7`, `USEO-10` |
-| 3 | `SEO-ORCH-2`, `SEO-ORCH-4`, `SEO-ORCH-5`, `SEO-ORCH-3`, `SEO-ORCH-6`, `QDR-DRIFT` | Control-loop hardening: ledger entries for this bundle, measurement baselines, content lifecycle enforcement, rotating technical checks, registry consumption tests, and Qdrant parity cleanup/report. | Read-only first; schedule/automation only after dry-run evidence. | 🔲 after Wave 1 |
-| 4 | `D6`, `O-13`, `M9/O-6/E3` | Revenue recovery: rank GMC disapprovals by sales potential, review PDP 404 redirect candidates, and prioritize top-product gallery gaps. | No stock/price/order/customer changes; owner approval for redirects/images. | 🔲 owner/data gated |
-| 5 | `L6`, `O-2`, `O-3`, `O-4`, `SEO-ORCH-7` | Growth roadmap: blog calendar, origin editorial list, comparison-page pairs, best-page topics, and off-page/entity ledger. | Owner chooses topics/pairs/countries/outreach; no mass programmatic pages. | 🔲 owner-decision |
+| 1 | `USEO-12`, `L4`, `SEO-6`, `M6` | Freeze-safe on-site structure: category-aware blog labels, missing H2s on `/brands`/`/sale`/`/new-arrivals`, scannable education content support, and FAQPage JSON-LD cleanup for ingredient/concern education. | Build/test; no URL/nav/commerce data change. | ✅ 2026-06-26 code done; build passed. **⚠️ Not deployed** — on `docs/post-freeze-board` branch, not merged to `main` or synced to VPS. |
+| 2 | `USEO-8`, `D8/USEO-9`, `USEO-7`, `USEO-10` | Content-depth sprint: Tier-2 category guides, Tier-2 brand editorial, humanizer in-body links, and product-specific FAQ sample batch. | Owner review for generated copy; top-10 FAQ sample before Woo meta writes. | 🟡 `USEO-8` code verified in source (`b294337`, 7 guides). **⚠️ Not deployed.** `USEO-9`: no Tier-2 data file exists. `USEO-7`: no in-body link code in humanizer. `USEO-10`: needs Woo meta pipeline. |
+| 3 | `SEO-ORCH-2`, `SEO-ORCH-4`, `SEO-ORCH-5`, `SEO-ORCH-3`, `SEO-ORCH-6`, `QDR-DRIFT` | Control-loop hardening: ledger entries for this bundle, measurement baselines, content lifecycle enforcement, rotating technical checks, registry consumption tests, and Qdrant parity cleanup/report. | Read-only first; schedule/automation only after dry-run evidence. | 🟡 foundation scripts verified (`seo_technical_control_loop.py`, `seo_url_policy_registry.py`, registry JSON). Remaining: Qdrant parity report (no script yet), CWV/CrUX, rotating schedule, registry→middleware wiring. |
+| 4 | `D6`, `O-13`, `M9/O-6/E3` | Revenue recovery: rank GMC disapprovals by sales potential, review PDP 404 redirect candidates, and prioritize top-product gallery gaps. | No stock/price/order/customer changes; owner approval for redirects/images. | 🔲 owner/data gated. GMC list verified at 83 items. |
+| 5 | `L6`, `O-2`, `O-3`, `O-4`, `SEO-ORCH-7` | Growth roadmap: blog calendar, origin editorial list, comparison-page pairs, best-page topics, and off-page/entity ledger. | Owner chooses topics/pairs/countries/outreach; no mass programmatic pages. | 🔲 owner-decision. Topical authority spec exists, no implementation. |
 
-**Current execution choice:** start Wave 1 only. It is code/content-structure work inside the Next.js SEO surface and avoids
-WooCommerce DB, checkout/cart/payment/order/customer data, stock, price, redirects, sitemap, nav, deploy, PM2, and live publish paths.
+**Current execution priority (2026-06-27):** (1) Merge+deploy Wave 1+2 code-complete items to `main`/VPS — they are stuck on a branch. (2) Continue humanizer (`USEO-11`) for PDP discovery/GMC impact. (3) `USEO-9` Tier-2 brand editorial for AI channel traffic. (4) `D6` GMC disapprovals for Shopping revenue recovery. See `SEO_MASTER.md` "Open SEO Priority Order" for full ranked list.
 
 ### Main Priority Parent List — Authoritative 1-10
 

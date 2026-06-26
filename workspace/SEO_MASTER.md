@@ -1,7 +1,7 @@
 # Emart SEO Master — Source of Truth
 
 **Last verified:** 2026-06-20 (live SEO/AEO deploy gate: sitemap, robots, LLM docs/link freshness, IndexNow, representative PDP/category/concern/ingredient/blog metadata + JSON-LD)
-**Last reconciled with `workspace/TASKS.md`:** 2026-06-26 (document/status audit only; no new live crawl implied)
+**Last reconciled with `workspace/TASKS.md`:** 2026-06-27 (codebase audit against task board — all claimed-complete items verified in source; deployment status noted)
 **Owner:** Claude (code) + Warlord (content/business decisions)
 **Rule:** This file is the durable SEO source of truth. `workspace/TASKS.md` is the execution board. Update both in the same commit whenever a task-board change creates, closes, reprioritizes, or materially changes an SEO fact. Do not mark live SEO complete from AI analysis alone — verify with build/test for local code completion and live/API/curl evidence for live-status claims.
 
@@ -26,18 +26,39 @@ This compact mirror keeps the SEO source of truth aligned with the task board. F
 | Measurement loop | `SEO-ORCH-4` | ✅ Operational for SEO ledger entries via `measurement_loop.py` with GSC+GA4 baselines and review windows. Order/revenue joins remain excluded unless explicitly approved because order data is protected. |
 | Content lifecycle | `SEO-ORCH-5`, `WA-H` | ✅ Contract/gate done. Blog generator supports draft/generate-only; `content-lifecycle-contract.md` defines demand→brief→draft→QA→approve→publish→verify→measure. Runtime adoption remains approval-first. |
 | Off-page/entity/AEO | `SEO-ORCH-7` | 🟡 Spec done only. Outreach/entity execution remains owner-gated. |
-| Internal links + content depth | `USEO-*`, `SEO-2/4/5/6/7`, `D8` | 🟡 Tier-1 + Tier-2 category work is in source; Tier-1 brand work is live; Wave 1 SEO-22 structure fixes are code-complete; Tier-2 brand, humanizer links, and product FAQ sample batch remain. |
+| Internal links + content depth | `USEO-*`, `SEO-2/4/5/6/7`, `D8` | 🟡 Tier-1 + Tier-2 category guides verified in source (`b294337`); Tier-1 brand editorial verified (`40b58df`, 15 brands in `brandEditorial.ts`); Wave 1 structure fixes code-complete; blog guide labels code-complete (`USEO-12`). **Not yet deployed to VPS/live** (branch `docs/post-freeze-board`). Remaining: Tier-2 brand (`USEO-9`), humanizer links (`USEO-7`), product FAQ sample (`USEO-10`). |
 | Revenue recovery | `D6`, `O-13`, `M9/O-6/E3` | 🟡 Owner/data-gated. GMC disapprovals, PDP 404 redirect candidates, and top-product gallery expansion need reviewed item-level action. |
 
-### SEO-22 Wave Status
+### SEO-22 Wave Status — Codebase-Verified 2026-06-27
 
 | Wave | IDs | Truth |
 |---|---|---|
-| 1 | `USEO-12`, `L4`, `SEO-6`, `M6` | ✅ Code complete 2026-06-26; build passed. Blog guide labels, H2 coverage, education rendering, and FAQ JSON-LD cleanup are done locally. |
-| 2 | `USEO-8`, `D8/USEO-9`, `USEO-7`, `USEO-10` | 🟡 `USEO-8` is done in source (`b294337`); remaining Wave 2 work is Tier-2 brand editorial, humanizer links, and product FAQ sample batch. Owner/copy review required; top-10 FAQ sample before any Woo meta writes. |
-| 3 | `SEO-ORCH-2/3/4/5/6`, `QDR-DRIFT` | 🟡 Foundation mostly done; remaining work is Qdrant parity cleanup/report, rotating verification, CWV/CrUX, and registry consumption tests. |
-| 4 | `D6`, `O-13`, `M9/O-6/E3` | 🔲 Owner/data-gated revenue recovery. |
-| 5 | `L6`, `O-2`, `O-3`, `O-4`, `SEO-ORCH-7` | 🔲 Owner-decision growth roadmap. |
+| 1 | `USEO-12`, `L4`, `SEO-6`, `M6` | ✅ Code verified in source 2026-06-27: `getBlogGuideLabel()` in blog `[slug]/page.tsx`, H2s in brands/sale/new-arrivals pages, `EducationContent.tsx` auto-split + `[[LINK:]]` stripping, ingredient/concern FAQ JSON-LD cleanup. **Deployment pending** — changes are on `docs/post-freeze-board`, not yet on `main`/VPS. |
+| 2 | `USEO-8`, `D8/USEO-9`, `USEO-7`, `USEO-10` | 🟡 `USEO-8` verified in source (`b294337`, 7 category guides in `page.tsx`). **Deployment pending.** Remaining: `USEO-9` Tier-2 brand editorial (no data file yet), `USEO-7` humanizer in-body links (no code yet in humanizer engine), `USEO-10` product FAQ sample batch (needs Woo meta write pipeline). Owner/copy review required. |
+| 3 | `SEO-ORCH-2/3/4/5/6`, `QDR-DRIFT` | 🟡 Foundation verified: scripts exist (`seo_technical_control_loop.py`, `seo_url_policy_registry.py`, `url-policy-registry.json`). Remaining: Qdrant parity report (no drift/parity script exists yet), CWV/CrUX, rotating verification schedule, registry→middleware wiring. |
+| 4 | `D6`, `O-13`, `M9/O-6/E3` | 🔲 Owner/data-gated revenue recovery. GMC disapproval list verified at `gmc-disapproved-20260622.md` (83 remaining). |
+| 5 | `L6`, `O-2`, `O-3`, `O-4`, `SEO-ORCH-7` | 🔲 Owner-decision growth roadmap. `topical-authority-map-spec.md` exists (spec only, no implementation). |
+
+### Open SEO Priority Order — Business Outcome Logic (2026-06-27)
+
+Ranked by direct revenue/discovery impact during freeze. Items that can execute without owner gate are prioritized above blocked items.
+
+| Rank | ID | Business case | Blocker | Freeze-safe |
+|---|---|---|---|---|
+| 1 | `USEO-11` | **Humanizer ongoing** — 3,503 thin PDPs directly hurt GMC approval, AI citations, and product discovery. Highest volume impact. | OpenRouter funds for speed | ✅ yes |
+| 2 | Deploy Wave 1+2 | **Merge + deploy** code-complete SEO work (USEO-8/12, L4, SEO-6 + USEO-6). Currently stuck on `docs/post-freeze-board` branch. | Merge to main + deploy sequence | ✅ yes |
+| 3 | `USEO-9` | **Tier-2 brand editorial** — AI Assistant is #2 BD channel; brand pages drive most AI traffic. 372 brands still generic. | Owner copy review | ✅ yes |
+| 4 | `D6` | **GMC disapprovals** — 83 products blocked from Google Shopping = direct lost revenue. | Owner per-item review | ✅ yes |
+| 5 | `M4` | **FAQ quality** — top products use templated FAQs; weak rich results + AI answer quality. | Owner top-10 review before bulk | ✅ yes |
+| 6 | `M6` | **Education content links** — ingredient/concern pages have sparse internal links (<1/entry avg). Affects topical authority + crawl depth. | Owner review of first 4 | ✅ yes |
+| 7 | `USEO-7` | **Humanizer in-body links** — rides the humanizer pipeline to add internal links at scale. Zero code exists yet. | Humanizer engine modification | ✅ yes |
+| 8 | `SEO-ORCH-3` | **Technical control loop** remaining — Qdrant parity, CWV/CrUX, rotating verification. | Read-only; no blocker | ✅ yes |
+| 9 | `QDR-DRIFT` | **Qdrant/catalog parity** report. No parity script exists yet. | Report first, no destructive ops | ✅ yes |
+| 10 | `USEO-10` | **Template FAQ improvement** — overlaps M4; lower priority, needs M4 results first. | M4 completion | ✅ yes |
+| 11 | `O-13` | **PDP 404 redirects** — 18 review-only + 52 no-match candidates. | Owner review | ✅ yes |
+| 12 | `GROW-1` | **Topical authority map** — spec exists, no implementation. Strategic but post-freeze preferred. | Owner direction | ✅ yes |
+| — | `O-2/3/4/5` | Owner-gated content pages (origins, compare, best, skin-type). | Owner decisions | ✅ yes |
+| — | `E1-E6` | External/off-page SEO. All owner-gated. | Owner action | N/A |
 
 ## 🧭 STANDING CONSIDERATION — GEO & AEO (added 2026-06-10)
 
@@ -200,8 +221,8 @@ on-page.ai scan was wrong. Live HTML has "korean" 27×, "bangladesh" 107×, "aut
 - FAQ content is visible and ingredient/concern pages emit FAQPage JSON-LD; 2026-06-26 cleanup strips internal `[[LINK:...]]` markers from schema answers.
 - Education sections now auto-split long paragraphs in `EducationContent.tsx` and support optional `paragraphs` / `listItems` for future hand-edited entries.
 - Content is too templated across pages; it needs more ingredient/concern-specific detail and safer factual nuance.
-- Ingredient pages currently have 0 internal links in the education copy.
-- Concern pages currently have only ~3 ingredient links and 0 routine links; target is at least 5 ingredient links + 3 routine-step links where natural.
+- Ingredient pages have ~12 `[[LINK:...]]` markers across 15 entries (sparse, <1 per entry avg); target is at least 3 per entry.
+- Concern pages have ~13 `[[LINK:...]]` markers across 9 entries (~1.4 per entry); target is at least 5 ingredient links + 3 routine-step links where natural.
 **Fix:** Refinement sprint, not a fresh build. First update `niacinamide`, `hyaluronic-acid`, `acne-blemish-care`, and `dryness-hydration`; improve internal links, reduce templated phrasing, and use the existing FAQPage JSON-LD/education renderer. Review live before bulk-updating the remaining pages.
 **Effort:** Medium-large — content + small schema render patch.
 **Owner:** Warlord review required after first 4 pages before bulk.
