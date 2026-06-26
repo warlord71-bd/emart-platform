@@ -148,11 +148,30 @@ technical hygiene. SEO-1 closed (propose-titles returns no targets). Proposals o
 | P3-3 | USEO-9 | Tier-2 brand editorial (15) via AI-gen + review | RC-2 | D8 | after Tier-1 validated | 🔲 |
 | P3-4 | USEO-10 | Improve thin template FAQ answers | RC-3 | SEO-7 F3 | overlaps M4 | 🔲 |
 | P3-5 | USEO-11 | Continue humanizer for ~3,503 non-humanized PDP sections | RC-2 | SEO-7 F1 | existing engine, GSC order | 🟢 ongoing |
-| P3-6 | USEO-12 | Category-aware blog label (not blanket "Skincare Guide") | RC-3 | SEO-7 F7 | low | 🔲 |
+| P3-6 | USEO-12 | Category-aware blog label (not blanket "Skincare Guide") | RC-3 | SEO-7 F7 | low | ✅ 2026-06-26 code done; blog post eyebrow now derives guide type from title/content signals |
 | — | SEO-1 | Title cleanup | — | SEO-1 | pipeline clean, no targets | ✅ report-complete |
 
 **Owner decisions blocking execution:** (1) USEO-2 keeper URL per duplicate pair; (2) USEO-3 blog link/anchor approach;
 (3) USEO-4/6 copy approval; (4) USEO-6 implementation = Option A static data file (recommended) vs WP brand field vs AI-gen.
+
+### SEO-22 Execution Plan — 2026-06-26
+
+User bundle: `USEO-7`, `USEO-8`, `USEO-10`, `USEO-12`, `SEO-ORCH-2`, `SEO-ORCH-3`,
+`SEO-ORCH-5`, `SEO-ORCH-4`, `SEO-ORCH-6`, `SEO-ORCH-7`, `D6`, `D8/USEO-9`, `L4`, `L6`,
+`M6`, `M9/O-6/E3`, `O-2`, `O-3`, `O-4`, `O-13`, `SEO-6`, `QDR-DRIFT`.
+Goal: convert the mixed SEO/content/off-page list into a safe sequence that creates sales-qualified discovery,
+better AI/Google citation surfaces, and measurable change history without mass writes or doorway-page risk.
+
+| Wave | IDs | Work package | Gate | Status |
+|---|---|---|---|---|
+| 1 | `USEO-12`, `L4`, `SEO-6`, `M6` | Freeze-safe on-site structure: category-aware blog labels, missing H2s on `/brands`/`/sale`/`/new-arrivals`, scannable education content support, and FAQPage JSON-LD cleanup for ingredient/concern education. | Build/test; no URL/nav/commerce data change. | ✅ 2026-06-26 code done; build passed |
+| 2 | `USEO-8`, `D8/USEO-9`, `USEO-7`, `USEO-10` | Content-depth sprint: Tier-2 category guides, Tier-2 brand editorial, humanizer in-body links, and product-specific FAQ sample batch. | Owner review for generated copy; top-10 FAQ sample before Woo meta writes. | 🔲 next |
+| 3 | `SEO-ORCH-2`, `SEO-ORCH-4`, `SEO-ORCH-5`, `SEO-ORCH-3`, `SEO-ORCH-6`, `QDR-DRIFT` | Control-loop hardening: ledger entries for this bundle, measurement baselines, content lifecycle enforcement, rotating technical checks, registry consumption tests, and Qdrant parity cleanup/report. | Read-only first; schedule/automation only after dry-run evidence. | 🔲 after Wave 1 |
+| 4 | `D6`, `O-13`, `M9/O-6/E3` | Revenue recovery: rank GMC disapprovals by sales potential, review PDP 404 redirect candidates, and prioritize top-product gallery gaps. | No stock/price/order/customer changes; owner approval for redirects/images. | 🔲 owner/data gated |
+| 5 | `L6`, `O-2`, `O-3`, `O-4`, `SEO-ORCH-7` | Growth roadmap: blog calendar, origin editorial list, comparison-page pairs, best-page topics, and off-page/entity ledger. | Owner chooses topics/pairs/countries/outreach; no mass programmatic pages. | 🔲 owner-decision |
+
+**Current execution choice:** start Wave 1 only. It is code/content-structure work inside the Next.js SEO surface and avoids
+WooCommerce DB, checkout/cart/payment/order/customer data, stock, price, redirects, sitemap, nav, deploy, PM2, and live publish paths.
 
 ### Main Priority Parent List — Authoritative 1-10
 
@@ -342,7 +361,7 @@ Numbering here is legacy AI-plan ordering, not the main priority lane. Use `AI #
 | SEO-3 | Category-page target map and coverage audit. 50 indexable categories mapped: 2 with custom guides (face-cleansers, sunscreen), 47 generic. 0 slug/H1 mismatches. Bug found: toners-mists has metadata but missing guide conditional. Tier 1-4 buying guide priority matrix created. Full report at `workspace/audit/active/seo3-category-target-map-20260626.md`. | [X]+[C] | ✅ 2026-06-26 audit complete |
 | SEO-4 | Expand buying guides for high-value categories. Proposals for Tier 1 (korean-beauty, serums, toners-mists, bath-body, lips) + Tier 2 (body-wash, shampoos, etc.) with structure, word count, and internal link targets. Toners-mists bug confirmed (guide conditional missing). Face Cleansers/Sunscreen preserved (no gaps found). Full proposals at `workspace/audit/active/seo4-buying-guide-gap-proposals-20260626.md`. | [C]+[O] | 🟡 2026-06-26 proposals done; owner review + code implementation needed |
 | SEO-5 | Add contextual links + FAQs to category guides. Proposals cover existing guides (face-cleansers: 6 links + FAQ schema for 3 existing Bangla Qs; sunscreen: 6 links + 3 new FAQ Qs) and all SEO-4 proposed guides. All link targets verified HTTP 200. Quality guidelines: max 4-6 links per guide, natural anchor text, no mass blocks. Full proposals at `workspace/audit/active/seo5-contextual-link-faq-proposals-20260626.md`. | [C]+[O] | 🟡 2026-06-26 proposals done; owner review + code implementation needed |
-| SEO-6 | Education scanability audit complete: 3/4 priority concern pages graded NEEDS-SPLIT (acne, brightening, anti-aging: 170-192 word single-paragraph blocks), 1 graded GOOD (sunscreen). Root cause: `EducationContent.tsx` renders monolithic `<p>` blocks. Fix: restructure JSON content + add `subsections`/`listItems` support. Full audit at `workspace/audit/active/seo6-education-scanability-audit-20260626.md`. | [C]+[O] | ✅ 2026-06-26 audit done; restructuring proposal ready |
+| SEO-6 | Education scanability audit complete: 3/4 priority concern pages graded NEEDS-SPLIT (acne, brightening, anti-aging: 170-192 word single-paragraph blocks), 1 graded GOOD (sunscreen). Root cause: `EducationContent.tsx` rendered monolithic `<p>` blocks. Full audit at `workspace/audit/active/seo6-education-scanability-audit-20260626.md`. | [C]+[O] | ✅ 2026-06-26 code done; renderer auto-splits long education sections and supports optional `paragraphs`/`listItems`; ingredient/concern FAQ JSON-LD now strips internal link markers |
 | SEO-7 | Structural QA report for PDP descriptions + blog HTML. 10 PDPs + 16 blog posts sampled. Template-level heading hierarchy is clean (1 H1, logical H2/H3). CRITICAL: all 50 blog posts have ZERO internal links. 6 duplicate blog URL pairs found (-2 suffix). Non-humanized PDPs (~3,503) lack structured sections. Full report at `workspace/audit/active/seo7-pdp-blog-structural-qa-20260626.md`. | [C] | ✅ 2026-06-26 report-complete |
 
 ### Content Pipeline (spec: `workspace/CONTENT_STANDARD.md`)

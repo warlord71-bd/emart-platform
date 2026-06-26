@@ -64,6 +64,10 @@ function truncateMetaDescription(text: string, maxLength = 155): string {
   return `${trimmed.slice(0, lastSpace > 120 ? lastSpace : maxLength).trimEnd()}.`;
 }
 
+function plainEducationText(text: string): string {
+  return text.replace(/\[\[LINK:[^|]+\|([^\]]+)\]\]/g, '$1');
+}
+
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const concern = getConcernBySlug(params.slug);
   if (!concern) return { title: 'Concern Not Found' };
@@ -135,8 +139,8 @@ export default async function ConcernDetailPage({ params, searchParams }: Props)
         '@type': 'FAQPage',
         mainEntity: educationContent.faq.map((item: { q: string; a: string }) => ({
           '@type': 'Question',
-          name: item.q,
-          acceptedAnswer: { '@type': 'Answer', text: item.a },
+          name: plainEducationText(item.q),
+          acceptedAnswer: { '@type': 'Answer', text: plainEducationText(item.a) },
         })),
       }
     : null;

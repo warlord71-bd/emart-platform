@@ -64,6 +64,21 @@ function buildBlogDescription(post: { title: string; excerpt: string; seoDescrip
   return `${base}${cta}`;
 }
 
+function getBlogGuideLabel(post: { title: string; content: string }): string {
+  const text = `${post.title} ${post.content}`.toLowerCase();
+  const labels: Array<[string, RegExp]> = [
+    ['Sunscreen Guide', /\b(spf|sunscreen|sun protection|uv|pa\+|sunblock)\b/],
+    ['Acne Guide', /\b(acne|blemish|pimple|breakout|salicylic|bha)\b/],
+    ['Hydration Guide', /\b(hydration|dehydrated|hyaluronic|dry skin|moisturi[sz]er)\b/],
+    ['Brightening Guide', /\b(brightening|dark spot|hyperpigmentation|vitamin c|niacinamide|melasma)\b/],
+    ['Routine Guide', /\b(routine|morning routine|night routine|step by step)\b/],
+    ['Ingredient Guide', /\b(ingredient|retinol|ceramide|peptide|centella|snail mucin)\b/],
+    ['K-Beauty Guide', /\b(k-beauty|korean skincare|cosrx|beauty of joseon|anua|skin1004)\b/],
+  ];
+
+  return labels.find(([, pattern]) => pattern.test(text))?.[0] || 'Beauty Guide';
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getWordPressPostBySlug(params.slug);
   if (!post) return { title: 'Guide Not Found' };
@@ -168,6 +183,7 @@ export default async function BlogPostPage({ params }: Props) {
       },
     },
   };
+  const guideLabel = getBlogGuideLabel(post);
 
   return (
     <div className="bg-bg">
@@ -182,7 +198,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <header className="mb-8 rounded-[28px] bg-ink px-5 py-7 text-white shadow-card">
           <p className="text-xs font-bold uppercase tracking-widest text-brass">
-            Skincare Guide
+            {guideLabel}
           </p>
           <h1 className="mt-3 text-3xl font-bold leading-tight text-white">{post.title}</h1>
           {post.excerpt && (

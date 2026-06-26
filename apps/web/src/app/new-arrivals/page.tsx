@@ -89,6 +89,7 @@ export default async function NewArrivalsPage({ searchParams }: NewArrivalsPageP
         <h1 className="text-2xl font-bold text-ink sm:text-3xl">New Arrivals</h1>
         <h2 className="mt-1 text-sm font-normal text-muted">{total} new Korean, Japanese &amp; global skincare products added in the last 60 days</h2>
       </div>
+      <h2 className="sr-only">Latest skincare arrivals</h2>
       {products.length > 0 ? (
         <>
           <ProductListGrid>

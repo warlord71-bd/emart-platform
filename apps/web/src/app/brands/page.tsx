@@ -132,7 +132,7 @@ export default async function BrandsPage({
           <div className="mx-auto max-w-7xl">
             <div className="mb-3 flex items-center gap-2 text-sm font-black text-ink">
               <Sparkles className="h-4 w-4 text-accent" />
-              Most stocked brands
+              <h2 className="text-sm font-black text-ink">Most stocked brands</h2>
             </div>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
               {featuredBrands.map((brand) => (
@@ -169,6 +169,7 @@ export default async function BrandsPage({
       </div>
 
       <div className="mx-auto max-w-7xl px-4 py-5">
+        <h2 className="mb-4 text-xl font-black text-ink">All beauty brands A-Z</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {letters.map((letter) => (
           <section

@@ -8,6 +8,7 @@ import { ProductListGrid } from '@/components/product/ProductListGrid';
 import { INGREDIENT_DEFINITIONS, getIngredientBySlug, getIngredientListing } from '@/lib/ingredients';
 import { buildCollectionSchema } from '@/lib/collectionSchema';
 import { absoluteUrl } from '@/lib/siteUrl';
+import { safeJsonLd } from '@/lib/sanitizeHtml';
 import { BrowseHubNav } from '@/components/navigation/BrowseHubNav';
 import EducationContent, { type EducationContentEntry } from '@/components/content/EducationContent';
 import ingredientContent from '@/data/ingredient-content.json';
@@ -45,6 +46,10 @@ const SORT_MAP = {
   popularity: { orderby: 'popularity', order: 'desc' },
   rating: { orderby: 'rating', order: 'desc' },
 } satisfies Record<string, { orderby: 'date' | 'price' | 'popularity' | 'rating' | 'title'; order: 'asc' | 'desc' }>;
+
+function plainEducationText(text: string): string {
+  return text.replace(/\[\[LINK:[^|]+\|([^\]]+)\]\]/g, '$1');
+}
 
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const ingredient = getIngredientBySlug(params.slug);
@@ -135,21 +140,21 @@ export default async function IngredientDetailPage({ params, searchParams }: Pro
         '@type': 'FAQPage',
         mainEntity: educationContent.faq.map((item: { q: string; a: string }) => ({
           '@type': 'Question',
-          name: item.q,
-          acceptedAnswer: { '@type': 'Answer', text: item.a },
+          name: plainEducationText(item.q),
+          acceptedAnswer: { '@type': 'Answer', text: plainEducationText(item.a) },
         })),
       }
     : null;
 
   return (
     <div className="min-h-screen bg-bg">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(collectionPageJsonLd) }} />
       {itemListJsonLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListJsonLd) }} />
       )}
       {faqJsonLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
       )}
 
       <BrowseHubNav active="ingredients" />

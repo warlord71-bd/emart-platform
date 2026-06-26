@@ -164,7 +164,8 @@ on-page.ai scan was wrong. Live HTML has "korean" 27×, "bangladesh" 107×, "aut
 - 9 concern pages have `apps/web/src/data/concern-content.json` entries, ~1,500 words each, 6 H2 sections + 5 FAQs.
 - Frontend renders them through `EducationContent` in `apps/web/src/app/ingredients/[slug]/page.tsx` and `apps/web/src/app/concerns/[slug]/page.tsx`.
 **Remaining gaps:**
-- FAQ content is visible but ingredient/concern pages do **not** emit FAQPage JSON-LD for those education FAQs yet.
+- FAQ content is visible and ingredient/concern pages emit FAQPage JSON-LD; 2026-06-26 cleanup strips internal `[[LINK:...]]` markers from schema answers.
+- Education sections now auto-split long paragraphs in `EducationContent.tsx` and support optional `paragraphs` / `listItems` for future hand-edited entries.
 - Content is too templated across pages; it needs more ingredient/concern-specific detail and safer factual nuance.
 - Ingredient pages currently have 0 internal links in the education copy.
 - Concern pages currently have only ~3 ingredient links and 0 routine links; target is at least 5 ingredient links + 3 routine-step links where natural.
@@ -217,8 +218,8 @@ Main CSS (94KB / 16.8KB gzipped) blocks first paint on mobile slow-4G.
 Largest page in crawl. Consider lazy-loading brand logos or paginating.
 **Effort:** Small
 
-### L4: H2s missing on `/brands`, `/sale`, `/new-arrivals`
-Minor structure gap. Adding section headings improves crawler comprehension.
+### ~~L4: H2s missing on `/brands`, `/sale`, `/new-arrivals`~~ ✅ DONE 2026-06-26
+Added section headings for most-stocked/all-brand areas and sr-only collection headings for sale/new-arrivals. No route, nav, sitemap, or commerce-data changes.
 
 ### L5: Google-Extended bot policy
 Currently allowed. Keep if LLM discoverability is wanted; block in robots.ts if not.

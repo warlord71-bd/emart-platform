@@ -3291,6 +3291,14 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: Final Graph query returned exactly 1 Hydro Boost Facebook match; `node --check` passed for `meta_schedule.js` and `meta_post_cleanup.js`; June 26 rescheduled campaign dry-runs still return 17 FB and 17 IG posts; current June 26 random PM2 schedulers remain stopped.
 - Note: The June 25 Instagram result ledger also shows repeated slot-18 publishes from the same autorestart incident; Instagram deletion was not performed in this step because the owner request named Facebook.
 
+## 2026-06-26 · Codex · SEO-22 plan + Wave 1 execution
+- Did: Added `SEO-22 Execution Plan — 2026-06-26` to `workspace/TASKS.md`, sequencing the requested bundle into five safe waves. Wave 1 is now complete.
+- Changed: Blog posts no longer show a blanket "Skincare Guide" eyebrow; `apps/web/src/app/blog/[slug]/page.tsx` derives guide labels such as Sunscreen, Acne, Hydration, Brightening, Routine, Ingredient, or K-Beauty from title/content signals.
+- Changed: Added crawler-friendly H2 coverage for `/brands`, `/sale`, and `/new-arrivals`; updated `EducationContent.tsx` to split long education paragraphs and support future `paragraphs`/`listItems`; cleaned ingredient/concern FAQ JSON-LD so schema answers do not expose internal `[[LINK:...]]` tokens; switched ingredient JSON-LD output to `safeJsonLd`.
+- Docs/tasks: Updated `workspace/TASKS.md` statuses for Wave 1, `USEO-12`, and `SEO-6`; updated `workspace/SEO_MASTER.md` to close L4 and record M6/SEO-6 renderer/schema progress while keeping the broader content-refinement gap open.
+- Verified: `npm run lint` passed with existing unrelated `<img>` warnings in `ChatProductCard.tsx` and `RecentlyViewedRail.tsx`; `npm run build` passed. Build had transient Woo fetch retry logs during static generation but recovered and completed.
+- Guardrail: No Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no route/redirect/sitemap/nav changes, no deploy, no PM2 restart, no push.
+
 ## 2026-06-26 · Codex · Creative Asset Engine full migration
 - Did: Migrated the half-finished creative system into one shared renderer. `workspace/creative-engine/` now renders `post_1x1`, `post_4x5`, `hero_vertical`, `scene_value`, `scene_brand_end`, and `blog_og_1200x630`.
 - Changed: `workspace/video-engine/worker.py` now calls Creative Engine directly for product hero/value/end-card frames. Legacy `product_hero_card.py`, `list_card.py`, and `brand_card.py` are compatibility shims. HyperFrames no longer owns product/value/brand card HTML; it animates pre-rendered frames and handles captions/audio/encoding only.

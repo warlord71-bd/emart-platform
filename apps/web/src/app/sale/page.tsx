@@ -170,6 +170,7 @@ export default async function SalePage({ searchParams }: SalePageProps) {
 
         {/* Product grid */}
         <div className="flex-1">
+          <h2 className="sr-only">All sale products</h2>
           {products.length > 0 ? (
             <>
               <ProductListGrid>
