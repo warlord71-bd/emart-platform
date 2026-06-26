@@ -8,10 +8,12 @@ Every capability (image, face, b-roll video, talking video, voice, storage) is a
 free ↔ mid ↔ premium, chosen per job. Config: `config/providers.json`. Flip `enabled` +
 add the API key env to switch a tier on — no code change.
 
-## Status (2026-06-23)
+## Status (2026-06-26)
 - ✅ `config/providers.json` — tier registry (free tier enabled, mid/premium stubbed). Image layer UNIFIED.
-- ✅ `stages/reel_ffmpeg.py` — FREE vertical reel generator (Ken-Burns + xfade + captions).
-      Real 1080x1920 H.264 MP4 at $0, CPU-only, ~5s per clip. Proven single + multi-image.
+- ✅ `hyperframes/render.js` + `stages/reel_hyperframes.py` — default reel renderer.
+      Creative Engine provides branded frames; HyperFrames owns motion/crossfades/caption timing;
+      ffmpeg remains the encoder/loudness backend and fallback path.
+- ✅ `stages/reel_ffmpeg.py` — fallback FREE vertical reel generator.
 - ✅ `lib/router.py` — picks provider per capability by tier_target + budget; falls back down tiers; free always wins as last resort.
 - ✅ `worker.py` — drains `queue/*.json`; stages images→reel→store→publish; checkpoints every stage
       (resumable, never re-runs a done stage); guardrails (max/day, budget cap, dry-run default).
@@ -29,8 +31,8 @@ add the API key env to switch a tier on — no code change.
 - ✅ `stages/reel_qa_gemini.py` — optional direct-Google video QA only when a job explicitly sets
       `qa_provider:"gemini"`.
 - ⬜ live publish — gated on owner approval (safety rule); flip with `--allow-publish` + guardrails.
-- ⬜ voice stage (piper free [not installed] / google-tts mid bn-BD / elevenlabs premium) + music bed
-      — free tier currently SILENT; voice is the mid-tier dial.
+- ✅ voice + music bed — `voice_gen.py` creates free narration when available; worker spans scene
+      timing to voice duration and HyperFrames normalizes post-render loudness.
 - ⬜ quality: free OpenRouter models can still have minor Bangla/Banglish word-choice slips; inline
       agent-authored scripts remain best quality at $0.
 
@@ -70,7 +72,8 @@ Bangla on-screen text.
 - ⬜ persona stage (Flux + InstantID consistent faces — mid tier)
 - ⬜ talking-avatar stage (D-ID / HeyGen — premium)
 - ⬜ YouTube Shorts + TikTok publishers (need API approvals)
-- ⬜ PM2/cron daily trigger to enqueue + `--drain` the queue; R2 storage offload
+- ✅ daily producer/orchestrator + Telegram approval bot exist; publishing remains owner-approval-only.
+- ⬜ R2 storage offload
 
 ## Run the loop
 ```bash
@@ -81,14 +84,15 @@ python3 worker.py --job ... --allow-publish     # actually post (still gated by 
 Job spec: see `queue/example.json` (id, tier_target, language, platforms, headline/sub/caption,
 images OR product_id, seconds).
 
-## Unified image layer (shared with static social posts)
-The reel engine does NOT have its own image generator — it consumes the **same image sources** as
-the static social system, so nothing is duplicated:
-- `emart-branded` → `workspace/scripts/active/social_image_gen.py` (logo/price/COD branded composite)
+## Unified creative layer (shared with static social posts)
+The reel engine does NOT have its own product/value/brand-card designer. It consumes
+the same Creative Asset Engine as static social posts:
+- `creative-engine` → product hero, value cards, brand end cards, FB 1:1, IG 4:5, blog OG
+- `emart-branded` → compatibility wrapper through `workspace/scripts/active/social_image_gen.py`
 - `codex-imagegen` → Codex's image-gen capacity (plug in when available)
 - `woo-product-photo` → raw WooCommerce image
-Flow: **product → [image provider] → branded frame(s) → reel_ffmpeg.py → vertical reel**.
-The meta-18 campaign frames (already branded) animate directly — proven.
+Flow: **product → Creative Engine frame(s) → HyperFrames motion/captions → ffmpeg encode/QA**.
+Smoke verified 2026-06-26 with `creative-migration-smoke.mp4` (1080×1920, local QA score 96).
 
 ## Free reel generator usage
 ```bash

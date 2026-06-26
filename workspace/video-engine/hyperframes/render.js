@@ -15,12 +15,8 @@ const path = require("path");
 const { execSync } = require("child_process");
 const os = require("os");
 
-// ── Brand palette (source: apps/web/tailwind.config.js) ────────────────
-const ROSE = "#9f1239",
-  WINE = "#5e1130",
-  INK = "#2a0a18";
-const GOLD = "#e7b24a",
-  SOFT_ROSE = "#f3c9d6";
+// ── Caption styling ───────────────────────────────────────────────────
+const GOLD = "#e7b24a";
 const FONT_STACK =
   "'Noto Sans Bengali','Inter','Segoe UI',sans-serif";
 
@@ -53,19 +49,6 @@ function imgToDataUri(filePath) {
   return `data:${mime};base64,${fs.readFileSync(filePath).toString("base64")}`;
 }
 
-function logoDataUri() {
-  const candidates = [
-    path.resolve(__dirname, "../../../apps/web/public/logo.png"),
-    "/root/emart-platform/apps/web/public/logo.png",
-    "/var/www/emart-platform/apps/web/public/logo.png",
-  ];
-  for (const p of candidates) {
-    if (fs.existsSync(p))
-      return `data:image/png;base64,${fs.readFileSync(p).toString("base64")}`;
-  }
-  return "";
-}
-
 // ── Scene HTML generators ──────────────────────────────────────────────
 
 function sceneImage(id, imgSrc, start, duration, trackIndex, fit = false) {
@@ -86,126 +69,13 @@ function sceneImage(id, imgSrc, start, duration, trackIndex, fit = false) {
     </div>`;
 }
 
-function sceneValueCard(id, spec, start, duration, trackIndex, logo) {
-  const style = spec.style || "numbered";
-  const bullets = (spec.bullets || [])
-    .slice(0, 6)
-    .map((b, i) => {
-      const mark =
-        style === "numbered"
-          ? `${i + 1}`
-          : style === "check"
-            ? "✓"
-            : "•";
-      return `
-      <div class="bullet-row" id="${id}-bullet-${i}" style="display:flex;align-items:center;gap:24px;margin-bottom:18px;
-        background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);
-        border-radius:20px;padding:18px 26px;opacity:0;">
-        <div style="flex:0 0 64px;height:64px;border-radius:50%;background:${GOLD};color:${INK};
-          font-size:34px;font-weight:900;display:flex;align-items:center;justify-content:center;">${mark}</div>
-        <div style="font-size:38px;font-weight:700;line-height:1.25;">${esc(b)}</div>
-      </div>`;
-    })
-    .join("");
-
-  const logoImg = logo
-    ? `<img src="${logo}" style="width:100px;height:100px;border-radius:20px;" />`
-    : "";
-
-  return `
-    <div id="${id}" class="clip scene" data-start="${start}" data-duration="${duration}" data-track-index="${trackIndex}"
-         style="position:absolute;inset:0;width:1080px;height:1920px;overflow:hidden;opacity:0;
-         background:linear-gradient(160deg,${ROSE} 0%,${WINE} 52%,${INK} 100%);
-         font-family:${FONT_STACK};color:#fff;">
-      <div style="position:absolute;inset:0;padding:80px 68px;display:flex;flex-direction:column;justify-content:center;">
-        <div id="${id}-kicker" style="align-self:flex-start;font-size:28px;font-weight:800;letter-spacing:3px;
-          color:${INK};background:${GOLD};border-radius:14px;padding:10px 22px;margin-bottom:24px;
-          opacity:0;">${esc(spec.kicker || "জেনে নিন")}</div>
-        <div id="${id}-title" style="font-size:60px;font-weight:900;line-height:1.2;margin-bottom:30px;
-          opacity:0;">${esc(spec.title || "")}</div>
-        ${bullets}
-        <div style="margin-top:40px;display:flex;align-items:center;justify-content:space-between;
-          font-size:28px;color:${SOFT_ROSE};">
-          ${logoImg}
-          <span style="text-transform:uppercase;letter-spacing:1px;">${esc((spec.footer || "E-MART.COM.BD · COD").toUpperCase())}</span>
-        </div>
-      </div>
-    </div>`;
-}
-
-function sceneBrandCard(id, job, start, duration, trackIndex, logo) {
-  const product = job.product || job.headline || "Emart Skincare";
-  const price = job.price || "";
-  const original = job.original_price || "";
-  const bangla = job.brand_card_bangla || "";
-
-  let hasOffer = false;
-  try {
-    hasOffer =
-      original && price && parseInt(original) > parseInt(price);
-  } catch (e) {}
-
-  const priceLabel = hasOffer ? "অফার মূল্য" : "মূল্য";
-  const origBlock = hasOffer
-    ? `<span id="${id}-orig" style="font-size:46px;font-weight:700;color:${SOFT_ROSE};text-decoration:line-through;opacity:0;">৳${esc(original)}</span>`
-    : "";
-  const saveBlock = hasOffer
-    ? `<div id="${id}-save" style="font-size:30px;font-weight:800;color:#fff;background:rgba(255,255,255,0.16);
-        border-radius:30px;padding:8px 24px;margin-bottom:40px;display:inline-block;opacity:0;">
-        ৳${parseInt(original) - parseInt(price)} সাশ্রয়</div>`
-    : "";
-  const banglaBlock = bangla
-    ? `<div style="font-size:38px;font-weight:600;color:${SOFT_ROSE};line-height:1.4;margin-bottom:34px;">${esc(bangla)}</div>`
-    : "";
-
-  const logoImg = logo
-    ? `<img id="${id}-logo" src="${logo}" style="width:260px;height:260px;border-radius:44px;margin-bottom:30px;
-        box-shadow:0 20px 60px rgba(0,0,0,0.5);opacity:0;" />`
-    : "";
-  const priceBlock = price
-    ? `<div id="${id}-pricelabel" style="font-size:28px;font-weight:800;letter-spacing:4px;color:${GOLD};
-        text-transform:uppercase;margin-bottom:8px;opacity:0;">${priceLabel}</div>
-       <div style="display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:12px;">
-         <span id="${id}-price" style="font-size:88px;font-weight:900;color:${GOLD};opacity:0;">৳${esc(price)}</span>
-         ${origBlock}
-         <span id="${id}-cod" style="font-size:28px;font-weight:800;color:${INK};background:${GOLD};
-           border-radius:14px;padding:8px 18px;letter-spacing:1px;opacity:0;">COD</span>
-       </div>
-       ${saveBlock}`
-    : "";
-
-  return `
-    <div id="${id}" class="clip scene" data-start="${start}" data-duration="${duration}" data-track-index="${trackIndex}"
-         style="position:absolute;inset:0;width:1080px;height:1920px;overflow:hidden;opacity:0;
-         background:linear-gradient(160deg,${ROSE} 0%,${WINE} 55%,${INK} 100%);
-         font-family:${FONT_STACK};color:#fff;">
-      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-        justify-content:center;text-align:center;padding:0 80px;">
-        ${logoImg}
-        <div style="width:120px;height:4px;background:${GOLD};border-radius:2px;margin:0 auto 30px;"></div>
-        <div id="${id}-product" style="font-size:62px;font-weight:900;line-height:1.2;margin-bottom:14px;opacity:0;
-          background:linear-gradient(135deg,#fff 60%,${GOLD});-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-          filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">${esc(product)}</div>
-        ${banglaBlock}
-        ${priceBlock}
-        <div id="${id}-url" style="font-size:44px;font-weight:800;letter-spacing:2px;margin:10px 0 12px;opacity:0;
-          color:${GOLD};text-transform:uppercase;">E-MART.COM.BD</div>
-        <div style="font-size:26px;font-style:italic;color:${SOFT_ROSE};">Global Beauty. Local Trust.</div>
-      </div>
-      <div style="position:absolute;bottom:54px;left:0;right:0;font-size:24px;color:${SOFT_ROSE};text-align:center;
-        letter-spacing:0.5px;">
-        সারা বাংলাদেশে ক্যাশ অন ডেলিভারি · অরিজিনাল প্রোডাক্ট
-      </div>
-    </div>`;
-}
-
 // ── Caption overlay elements ───────────────────────────────────────────
 
-function captionElements(script, totalDuration, safeZone) {
+function captionElements(script, totalDuration, safeZone, benefitLimit = 3) {
   if (!script) return "";
   const zone = SAFE_ZONES[safeZone] || SAFE_ZONES.wide;
   const hook = script.hook || "";
-  const benefits = (script.benefits || []).filter(Boolean).slice(0, 3);
+  const benefits = (script.benefits || []).filter(Boolean).slice(0, Math.max(0, benefitLimit));
   const cta = script.cta || "";
 
   const els = [];
@@ -258,7 +128,7 @@ function captionElements(script, totalDuration, safeZone) {
 
 // ── GSAP timeline generator ────────────────────────────────────────────
 
-function buildTimeline(scenes, script, totalDuration, secondsPerScene) {
+function buildTimeline(scenes, script, totalDuration, secondsPerScene, benefitLimit = 3) {
   const lines = [];
   const FADE = 0.6;
   const KEN_BURNS_SCALE = 1.12;
@@ -285,7 +155,7 @@ function buildTimeline(scenes, script, totalDuration, secondsPerScene) {
     }
 
     // Ken Burns on image scenes
-    if (s.type === "image") {
+    if (s.type === "image" && !s.static) {
       const directions = [
         { x: -3, y: 0 }, // pan right
         { x: 0, y: -3 }, // pan down
@@ -301,67 +171,12 @@ function buildTimeline(scenes, script, totalDuration, secondsPerScene) {
       );
     }
 
-    // Value card animated reveals
-    if (s.type === "value") {
-      const revealStart = s.start + 0.3;
-      lines.push(`gsap.set("#${id}-kicker", {y: -20});`);
-      lines.push(
-        `tl.to("#${id}-kicker", {opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.4)"}, ${revealStart.toFixed(2)});`,
-      );
-      lines.push(
-        `tl.to("#${id}-title", {opacity: 1, duration: 0.5, ease: "power2.out"}, ${(revealStart + 0.2).toFixed(2)});`,
-      );
-      const bulletCount = s.bulletCount || 0;
-      for (let b = 0; b < bulletCount; b++) {
-        const bt = revealStart + 0.6 + b * 0.25;
-        lines.push(
-          `tl.to("#${id}-bullet-${b}", {opacity: 1, x: 0, duration: 0.45, ease: "power3.out"}, ${bt.toFixed(2)});`,
-        );
-      }
-    }
-
-    // Brand card animated reveals
-    if (s.type === "brand") {
-      const rs = s.start + 0.3;
-      if (s.hasLogo) {
-        lines.push(
-          `tl.to("#${id}-logo", {opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.7)"}, ${rs.toFixed(2)});`,
-        );
-      }
-      lines.push(
-        `tl.to("#${id}-product", {opacity: 1, duration: 0.5, ease: "power2.out"}, ${(rs + 0.3).toFixed(2)});`,
-      );
-      if (s.hasPrice) {
-        lines.push(
-          `tl.to("#${id}-pricelabel", {opacity: 1, duration: 0.3}, ${(rs + 0.6).toFixed(2)});`,
-        );
-        lines.push(
-          `tl.to("#${id}-price", {opacity: 1, duration: 0.5, ease: "power2.out"}, ${(rs + 0.7).toFixed(2)});`,
-        );
-        if (s.hasOriginal) {
-          lines.push(
-            `tl.to("#${id}-orig", {opacity: 1, duration: 0.3}, ${(rs + 0.9).toFixed(2)});`,
-          );
-        }
-        lines.push(
-          `tl.to("#${id}-cod", {opacity: 1, duration: 0.3, ease: "back.out(2)"}, ${(rs + 1.0).toFixed(2)});`,
-        );
-        if (s.hasSave) {
-          lines.push(
-            `tl.to("#${id}-save", {opacity: 1, duration: 0.4}, ${(rs + 1.2).toFixed(2)});`,
-          );
-        }
-      }
-      lines.push(
-        `tl.to("#${id}-url", {opacity: 1, duration: 0.4}, ${(rs + 1.4).toFixed(2)});`,
-      );
-    }
   });
 
   // Caption animations
   if (script) {
     const hook = script.hook;
-    const benefits = (script.benefits || []).filter(Boolean).slice(0, 3);
+    const benefits = (script.benefits || []).filter(Boolean).slice(0, Math.max(0, benefitLimit));
     const cta = script.cta;
 
     if (hook) {
@@ -411,7 +226,6 @@ function buildComposition(job, images, script, audioPath, musicPath) {
       : secondsPerScene;
 
   const safeZone = job.safe_zone || "wide";
-  const logo = logoDataUri();
   const listCards = job.list_cards || [];
 
   // Build scene metadata + HTML
@@ -424,56 +238,31 @@ function buildComposition(job, images, script, audioPath, musicPath) {
     const dur = secondsPerScene;
     const id = `scene-${i}`;
 
-    // Determine scene type: last image = brand card, value cards, or regular image
-    const isLastImage = i === images.length - 1;
-    const isValueCard = i >= images.length - listCards.length - (job.brand_card ? 1 : 0)
-      && i < images.length - (job.brand_card ? 1 : 0)
-      && listCards[i - (images.length - listCards.length - (job.brand_card ? 1 : 0))];
-    const isBrandCard = job.brand_card && isLastImage;
-
-    if (isBrandCard) {
-      scenesMeta.push({
-        id,
-        start,
-        duration: dur,
-        type: "brand",
-        hasLogo: !!logo,
-        hasPrice: !!job.price,
-        hasOriginal: !!(job.original_price && job.price && parseInt(job.original_price) > parseInt(job.price)),
-        hasSave: !!(job.original_price && job.price && parseInt(job.original_price) > parseInt(job.price)),
-      });
-      scenesHtml.push(sceneBrandCard(id, job, start, dur, i, logo));
-    } else if (isValueCard) {
-      const vcIdx = i - (images.length - listCards.length - (job.brand_card ? 1 : 0));
-      const spec = listCards[vcIdx];
-      scenesMeta.push({
-        id,
-        start,
-        duration: dur,
-        type: "value",
-        bulletCount: (spec.bullets || []).length,
-      });
-      scenesHtml.push(sceneValueCard(id, spec, start, dur, i, logo));
-    } else {
-      const isFit = (job.images || []).map(p => path.resolve(p)).includes(path.resolve(img));
-      const dataUri = imgToDataUri(img);
-      scenesMeta.push({
-        id,
-        start,
-        duration: dur,
-        type: "image",
-      });
-      scenesHtml.push(sceneImage(id, dataUri, start, dur, i, isFit));
-    }
+    const base = path.basename(img);
+    const isStaticFrame =
+      base.startsWith("producthero-") ||
+      base.startsWith("listcard-") ||
+      base.startsWith("card-");
+    const isFit = (job.images || []).map(p => path.resolve(p)).includes(path.resolve(img));
+    const dataUri = imgToDataUri(img);
+    scenesMeta.push({
+      id,
+      start,
+      duration: dur,
+      type: "image",
+      static: isStaticFrame,
+    });
+    scenesHtml.push(sceneImage(id, dataUri, start, dur, i, isFit || isStaticFrame));
   });
 
-  // Confine captions to photo frames only (value/brand cards have their own text)
+  // Confine captions to photo frames only; Creative Engine card frames already carry their own text.
   const cardFrames = listCards.length + (job.brand_card ? 1 : 0);
   const photoFrames = Math.max(1, nScenes - cardFrames);
   const captionWindow = cardFrames ? secondsPerScene * photoFrames : totalDuration;
 
-  const captions = captionElements(script, captionWindow, safeZone);
-  const timeline = buildTimeline(scenesMeta, script, captionWindow, secondsPerScene);
+  const benefitLimit = Number(job.caption_benefit_limit ?? (job.product_card ? 1 : 3));
+  const captions = captionElements(script, captionWindow, safeZone, benefitLimit);
+  const timeline = buildTimeline(scenesMeta, script, captionWindow, secondsPerScene, benefitLimit);
 
   // Audio: copy files into project dir and use relative paths
   let audioHtml = "";

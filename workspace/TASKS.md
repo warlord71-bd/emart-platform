@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-26 (freeze-safe Waves 1-8: SEO gaps verified, ledger instantiated, measurement loop, contracts, ORCH hardened, CI, growth/visual/feedback specs)
+Last updated: 2026-06-26 (Creative Asset Engine migrated + 2x high-density render path)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -74,6 +74,7 @@ the Approve-button handler; verified the bot is the sole writer to `jobs/approve
 | VID-2 | **Daily auto-enqueue producer live.** `daily_producer.py` runs via crontab at 5 AM, picks 2 products/day, resource-aware (skips if RAM < 1.5GB). Committed in `e9d9c0b`. | [C] | ✅ 2026-06-25 |
 | VID-3 | **WA-D archival done.** Dated scripts rotated, dated PM2 campaign processes deleted. | [C] | ✅ 2026-06-25 |
 | VID-6 | **HyperFrames integrated as default reel renderer.** `hyperframes/render.js` builds HTML compositions with GSAP animations (Ken Burns, crossfades, staggered reveals) and renders via HyperFrames CLI. `stages/reel_hyperframes.py` wraps for worker. `worker.py` defaults to HyperFrames, falls back to ffmpeg. `node_modules/` ignored. Post-render ffmpeg loudnorm to -14 LUFS. Verified: COSRX test reel passes QA (1080×1920, 24fps, audio, -14 LUFS). **VPS install needed:** `cd workspace/video-engine/hyperframes && npm install`. | [C] | ✅ 2026-06-26 |
+| VID-7 | **Post-HyperFrames output-quality gaps resolved into shared Creative Asset Engine.** Product hero, value cards, brand end cards, FB/IG posts, and blog OG heroes now render through `workspace/creative-engine/`. `worker.py` calls Creative Engine directly; legacy `product_hero_card.py`, `list_card.py`, and `brand_card.py` are compatibility shims. HyperFrames no longer builds product/value/brand HTML; it animates pre-rendered frames + captions/audio only. Product container-shape layout and default 2x high-density render/downsample are implemented. Smoke output: `workspace/video-engine/output/creative-migration-smoke.mp4` (1080x1920, local QA score 96). | [X] | ✅ 2026-06-26 |
 
 ### Audit Remediation Priority Lane — Freeze-Safe Order (2026-06-25)
 
@@ -108,6 +109,33 @@ authorize automatic title rewrites, content rewrites, route changes, sitemap cha
 | 1 | SEO-GAP-4 | SEO-ORCH-3, SEO-ORCH-6 | 🔴 highest SEO technical | All 38 URL-policy rows now live-verified (2026-06-26): concern query→301 to clean path (page param stripped), origin query→301, pagination→200 with self-canonical. 0 drift, 0 unmatched. Registry updated to `all-verified` version. One finding: concern redirects strip `?page=N`. | No route/canonical changes needed; concern page-param stripping is documented for future review. | ✅ 2026-06-26 all-verified |
 | 2 | SEO-GAP-1 | SEO-ORCH-4, SEO-ORCH-2, SEO-5 | 🟠 high commercial upside | 7 click-gap URLs analyzed with per-page GSC query data + GA4 engagement join. Full proposals at `workspace/audit/active/seo-gap1-ctr-click-gap-proposals-20260626.md`. 3 actionable title/meta candidates (CeraVe, SKIN1004, Medicube), 2 content-depth gaps (SEO-4/5), 2 no-action. All 30 entries (8 fresh + 22 imported stale) in durable ledger with live baselines captured. | Owner reviews 3 title/meta proposals; SEO-4/5 handle content gaps. | ✅ 2026-06-26 proposals + baselines done |
 | 3 | SEO-GAP-3 | SEO-ORCH-2, SEO-ORCH-4, SEO-ORCH-5 | 🟠 high measurement/content quality | 44 usefulness-flagged URLs triaged: 4 genuine concerns (Category A), 10+ false positives (PDP scan behavior, utility pages). Category A routes to existing tasks: SEO-3/4/5 for content depth, brands backlog for `/brands`. Full triage at `workspace/audit/active/seo-gap3-usefulness-triage-20260626.md`. | Category A URLs backfilled into action ledger; no new content rewrites needed. | ✅ 2026-06-26 triage done |
+
+### Unified SEO Internal-Linking & Content-Depth Plan — 2026-06-26
+
+Consolidates Batch-A audits (SEO-1/2/4/5/7, D8) into 3 root causes and one priority order.
+Full plan: `workspace/audit/active/seo-unified-internal-linking-content-plan-20260626.md`.
+Root causes: **RC-1** internal-linking gap (blog/PDP/category/brand all 0 in-body links) · **RC-2** thin/generic
+content (47 generic category guides, 387 identical brand descriptions, 3,503 non-humanized PDPs) · **RC-3** FAQ +
+technical hygiene. SEO-1 closed (propose-titles returns no targets). Proposals only — no writes performed.
+
+| Pri | ID | Action | Root cause | Source | Gate | Status |
+|---|---|---|---|---|---|---|
+| P0-1 | USEO-1 | Fix `toners-mists` guide conditional (`page.tsx` ~L638) | RC-3 | SEO-4 | freeze-safe code; owner OK before merge | 🔲 ready |
+| P0-2 | USEO-2 | Resolve 6 duplicate blog URL `-2` pairs → keep + 301 | RC-3 | SEO-7 F6 | owner picks keeper per pair | 🔲 owner decision |
+| P1-1 | USEO-3 | Add 3–5 in-body links per blog post (150–250 total, WP edits, no code) | RC-1 | SEO-2, SEO-7 F5 | owner approves targets/anchors | 🔲 highest ROI |
+| P2-1 | USEO-4 | Build Tier-1 category guides (korean-beauty, serums, toners-mists, bath-body, lips) | RC-2 | SEO-4 | owner reviews copy before JSX | 🔲 proposal ready |
+| P2-2 | USEO-5 | Add links + FAQPage schema to existing face-cleansers & sunscreen guides | RC-1+RC-3 | SEO-5 | freeze-safe; owner OK | 🔲 proposal ready |
+| P2-3 | USEO-6 | Tier-1 brand editorial (15 brands) via static `brand-editorial` data file | RC-2+RC-1 | D8 | owner writes/reviews copy; confirm Option A | 🔲 proposal ready |
+| P3-1 | USEO-7 | Fold 2–3 in-body links into humanizer Routine-Fit output | RC-1 | SEO-7 F2 | ride humanizer pipeline, GSC order | 🔲 |
+| P3-2 | USEO-8 | Tier-2 category guides (body-wash, shampoos, +5) | RC-2 | SEO-4 | after P2-1 validated | 🔲 |
+| P3-3 | USEO-9 | Tier-2 brand editorial (15) via AI-gen + review | RC-2 | D8 | after Tier-1 validated | 🔲 |
+| P3-4 | USEO-10 | Improve thin template FAQ answers | RC-3 | SEO-7 F3 | overlaps M4 | 🔲 |
+| P3-5 | USEO-11 | Continue humanizer for ~3,503 non-humanized PDP sections | RC-2 | SEO-7 F1 | existing engine, GSC order | 🟢 ongoing |
+| P3-6 | USEO-12 | Category-aware blog label (not blanket "Skincare Guide") | RC-3 | SEO-7 F7 | low | 🔲 |
+| — | SEO-1 | Title cleanup | — | SEO-1 | pipeline clean, no targets | ✅ report-complete |
+
+**Owner decisions blocking execution:** (1) USEO-2 keeper URL per duplicate pair; (2) USEO-3 blog link/anchor approach;
+(3) USEO-4/6 copy approval; (4) USEO-6 implementation = Option A static data file (recommended) vs WP brand field vs AI-gen.
 
 ### Main Priority Parent List — Authoritative 1-10
 
@@ -247,7 +275,7 @@ Full GMC disapproved list: `workspace/audit/active/gmc-disapproved-20260622.md`
 | D5 | ~~Med~~ | ~~GMC 309 small images~~ | [X] | ✅ 2026-06-23 — all 309 mapped products received exact-source enhanced images at ≥1200px; originals preserved; product cache revalidated; GMC full sync completed 3,595 synced / 30 excluded / 0 errors |
 | D6 | Med | **GMC 83 disapproved** — healthcare claims (15), identity/belief shade names (25), personal hardships (38), illegal drugs (2), other (3). Fix 1-by-1 by sales potential | [C]+[O] | 🟡 7 unavailable removed; 83 remain; list at `gmc-disapproved-20260622.md` |
 | D7 | ~~Med~~ | ~~Germany bot traffic~~ — REFRAMED: 1,722 are Safari/iOS Apple Private Relay (REAL Bangladeshi iOS users masked as Germany); only /checkout 0%-eng cluster is synthetic | [O] | ✅ analyzed; DO NOT country-filter; use Bangladesh segment in `ga4_report.py`; see `OWNER-ACTIONS-20260623.md` |
-| D8 | Low | **AI Assistant is #2 BD channel** (334 sessions/14d) — `/brands/*` and `/best/*` pages drive most AI traffic; expand coverage | [C] | 🔲 ensure all active brand pages have rich content |
+| D8 | Low | **AI Assistant is #2 BD channel** (334 sessions/14d) — `/brands/*` and `/best/*` pages drive most AI traffic. Audit complete: all 387 brand pages use identical 1-sentence generic description (`getBrandDescription()`). No brand-specific editorial content exists. Tiered proposal: 15 Tier 1 brands need 150-300 word editorial sections (brand story, best-sellers, concern routing, FAQ). Implementation: static `brand-editorial.ts` data file recommended. Full audit at `workspace/audit/active/d8-brand-page-content-coverage-20260626.md`. | [C]+[O] | 🟡 2026-06-26 audit + proposals done; owner review + implementation needed |
 | D9 | ~~Low~~ | ~~http://www leaking~~ — www→non-www 301 already correct; http://www is a historical 2-hop that resolves to https://non-www | [C] | ✅ verified non-issue; optional CF one-hop rule is owner dashboard |
 
 ### Audit Findings (2026-06-20 reconciliation)
@@ -292,13 +320,13 @@ Numbering here is legacy AI-plan ordering, not the main priority lane. Use `AI #
 | UX-2 | Emart AI Assistant link safety: never use homepage/root placeholders for specific recommendations | [X] | ✅ live via `70da8e9` |
 | UX-3 | Emart AI Assistant "E" logo display | [X] | ✅ already present; keep verified in chat launcher |
 | UX-4 | PDP + chat trust CRO plan: add compact post-ATC trust microcopy and strengthen AI authenticity/in-stock recommendation rules | [X] | 🔲 plan first; no code changes until owner approves exact copy/placement |
-| SEO-1 | Product title cleanup for raw/lowercase catalog titles | [O]+[X] | 🟡 propose/review/apply only; no blind Woo title writes |
-| SEO-2 | Journal internal-link cluster proposals from articles to product/category pages | [X] | 🔲 next safe automation batch |
+| SEO-1 | Product title cleanup for raw/lowercase catalog titles. `gsc_tracker.py propose-titles` returns "No title proposal targets" — pipeline clean as of 2026-06-26. Report at `workspace/audit/active/seo1-title-cleanup-proposals-20260626.md`. | [O]+[X] | ✅ 2026-06-26 report-complete (no targets remaining) |
+| SEO-2 | Journal internal-link cluster proposals from articles to product/category pages. **CRITICAL finding:** ALL 50 blog posts have ZERO internal links to product/category/concern/ingredient/brand/routine pages. Full proposals with verified link targets at `workspace/audit/active/seo2-journal-internal-link-proposals-20260626.md`. | [C]+[O] | 🟡 2026-06-26 proposals done; owner review + WordPress content edits needed to apply |
 | SEO-3 | Category-page target map and coverage audit. 50 indexable categories mapped: 2 with custom guides (face-cleansers, sunscreen), 47 generic. 0 slug/H1 mismatches. Bug found: toners-mists has metadata but missing guide conditional. Tier 1-4 buying guide priority matrix created. Full report at `workspace/audit/active/seo3-category-target-map-20260626.md`. | [X]+[C] | ✅ 2026-06-26 audit complete |
-| SEO-4 | Expand buying guides only for high-value categories selected by GSC impressions, revenue relevance, catalog depth, and content gap. Aim for enough original buyer-helpful coverage—not a blanket 400–500-word quota. First candidates from the audit: Body Wash and other thin active categories; preserve Face Cleansers/Sunscreen unless evidence shows a gap. | [C]+[O] | 🔲 proposal/review before content changes |
-| SEO-5 | Add contextual links from approved category guides to genuinely related canonical categories, concerns, ingredients, routines, `/best`, and `/compare` pages; add visible FAQs only where real category-specific questions exist, with matching schema only when eligible. No boilerplate or mass link blocks. | [C] | 🔲 staged after SEO-3 |
+| SEO-4 | Expand buying guides for high-value categories. Proposals for Tier 1 (korean-beauty, serums, toners-mists, bath-body, lips) + Tier 2 (body-wash, shampoos, etc.) with structure, word count, and internal link targets. Toners-mists bug confirmed (guide conditional missing). Face Cleansers/Sunscreen preserved (no gaps found). Full proposals at `workspace/audit/active/seo4-buying-guide-gap-proposals-20260626.md`. | [C]+[O] | 🟡 2026-06-26 proposals done; owner review + code implementation needed |
+| SEO-5 | Add contextual links + FAQs to category guides. Proposals cover existing guides (face-cleansers: 6 links + FAQ schema for 3 existing Bangla Qs; sunscreen: 6 links + 3 new FAQ Qs) and all SEO-4 proposed guides. All link targets verified HTTP 200. Quality guidelines: max 4-6 links per guide, natural anchor text, no mass blocks. Full proposals at `workspace/audit/active/seo5-contextual-link-faq-proposals-20260626.md`. | [C]+[O] | 🟡 2026-06-26 proposals done; owner review + code implementation needed |
 | SEO-6 | Education scanability audit complete: 3/4 priority concern pages graded NEEDS-SPLIT (acne, brightening, anti-aging: 170-192 word single-paragraph blocks), 1 graded GOOD (sunscreen). Root cause: `EducationContent.tsx` renders monolithic `<p>` blocks. Fix: restructure JSON content + add `subsections`/`listItems` support. Full audit at `workspace/audit/active/seo6-education-scanability-audit-20260626.md`. | [C]+[O] | ✅ 2026-06-26 audit done; restructuring proposal ready |
-| SEO-7 | Add a read-only structural QA report for imported Woo PDP descriptions and WordPress blog HTML: one meaningful H1 at template level, logical H2/H3 order, direct first answer, paragraph-length outliers, list opportunities, broken/irrelevant internal links, and FAQ duplication. Produce proposals only; never auto-rewrite published content. | [X]+[C] | 🔲 open; report-only first pass |
+| SEO-7 | Structural QA report for PDP descriptions + blog HTML. 10 PDPs + 16 blog posts sampled. Template-level heading hierarchy is clean (1 H1, logical H2/H3). CRITICAL: all 50 blog posts have ZERO internal links. 6 duplicate blog URL pairs found (-2 suffix). Non-humanized PDPs (~3,503) lack structured sections. Full report at `workspace/audit/active/seo7-pdp-blog-structural-qa-20260626.md`. | [C] | ✅ 2026-06-26 report-complete |
 
 ### Content Pipeline (spec: `workspace/CONTENT_STANDARD.md`)
 

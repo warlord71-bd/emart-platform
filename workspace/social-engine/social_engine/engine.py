@@ -10,10 +10,15 @@ import hashlib
 import json
 import re
 import ssl
+import sys
 import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any
+
+_WORKSPACE = Path(__file__).resolve().parents[2]
+if str(_WORKSPACE) not in sys.path:
+    sys.path.insert(0, str(_WORKSPACE))
 
 from social_engine import vision_qa
 
@@ -525,8 +530,34 @@ def save_image_as_jpg(src: Path, dest: Path, quality: int = 92) -> None:
         img.save(dest, "JPEG", quality=quality, optimize=True)
 
 
+def _creative_engine_available() -> bool:
+    try:
+        import importlib
+        importlib.import_module("creative-engine.api")
+        return True
+    except Exception:
+        return False
+
+
+def make_instagram_variant_engine(product_id: int, dest: Path, variant: str = "studio") -> str | None:
+    """Generate a proper branded 1080x1350 IG asset via the creative asset engine."""
+    try:
+        import importlib
+        api = importlib.import_module("creative-engine.api")
+        result = api.render(api.CreativeRequest(
+            product_id=product_id,
+            format="post_4x5",
+            variant=variant,
+            out=str(dest),
+        ))
+        return f"{SITE}/{dest.relative_to(REPO / 'apps/web/public')}"
+    except Exception as exc:
+        print(f"[social-engine] creative engine 4x5 failed for product {product_id}: {exc}")
+        return None
+
+
 def make_instagram_variant(source_url: str) -> str | None:
-    """Create a 1080x1350 design-consistent IG asset from a square public image."""
+    """Fallback: create a 1080x1350 IG asset from a square image via PIL blur."""
     if Image is None or ImageFilter is None:
         return None
     local = public_url_to_local(source_url)
@@ -548,13 +579,23 @@ def make_instagram_variant(source_url: str) -> str | None:
 
 def maybe_make_instagram_variants(campaign: dict[str, Any]) -> int:
     made = 0
+    use_engine = _creative_engine_available()
     for item in campaign["items"]:
         posts = item.get("platform_posts", {})
         fb_url = posts.get("facebook", {}).get("image_url") or posts.get("instagram", {}).get("image_url")
         ig_post = posts.get("instagram")
         if not fb_url or not ig_post:
             continue
-        variant = make_instagram_variant(fb_url)
+        product_id = item.get("product_id")
+        variant = None
+        if use_engine and product_id:
+            local_fb = public_url_to_local(fb_url)
+            dest = local_fb.with_name(local_fb.stem.replace("-1x1", "") + "-4x5.png") if local_fb else None
+            if dest and not dest.exists():
+                design_variant = item.get("design_template_variant", "studio")
+                variant = make_instagram_variant_engine(product_id, dest, design_variant)
+        if not variant:
+            variant = make_instagram_variant(fb_url)
         if variant:
             ig_post["image_url"] = variant
             item.setdefault("images", {})["instagram"] = variant

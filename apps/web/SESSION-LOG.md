@@ -3228,6 +3228,19 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Verified: Python compile passes; JSON output parses; live GSC source is `searchconsole_api`; GA4 source is `ga4_api`; sitemap has 4,205 URLs; static crawl checked 66 pages; Playwright render checked 14 pages; generated 3 review proposals. `TASKS.md` intentionally not edited per plan; proposals are in the generated proposal file.
 - Guardrail: No WordPress/Woo writes, no protected commerce-data changes, no deploy, no PM2 restart, no route/metadata/sitemap edits, and unrelated video-engine dirty files were left untouched.
 
+## 2026-06-26 (Codex - video engine product-first HyperFrames preview)
+- Did: Implemented product-first reel logic without Codex image generation: added `workspace/video-engine/stages/product_hero_card.py`, wired `worker.py` to generate product hero frames before other scenes, updated `daily_producer.py` to pass `product_image` and 3-bullet specs, added `store:false`/`publish:false` local preview support, limited product-first captions, and prevented HyperFrames Ken Burns from clipping generated product hero frames.
+- Output: Rendered `workspace/video-engine/output/preview-boj-product-first-hyperframes-v2.mp4` from video-engine/HyperFrames using the existing system-generated BOJ product asset. Specs: 1080x1920, 24fps, 13.5s, 1.94MB, AAC audio. QA: technical pass, audio pass (-14.8 LUFS), captions pass; visual warning `face_distorted` is a false positive because the reel has no face.
+- Opinion: HyperFrames should stay, but behind a product-first creative layer. Social Engine should share the same product/creative asset layer rather than needing a separate image engine; next work is to centralize asset generation so static posts and reels call one "creative engine" contract.
+- Guardrail: Local preview only; no live store copy, no deploy, no PM2 restart, no Meta publish, no WordPress/Woo writes.
+
+## 2026-06-26 (Codex - video engine HyperFrames output diagnosis)
+- Did: Inspected the post-HyperFrames video engine path and the latest generated completed output, `workspace/video-engine/output/2026-06-26-beauty-of-joseon-sunscreen-rice-probioti-in.mp4`, plus its rejected job JSON, script, overlays, QA, and extracted frames.
+- Finding: The BOJ sunscreen reel is technically valid (1080x1920, 24fps, audio, -14.6 LUFS) but commercially weak: it contains generic model portrait + partial list card + brand card, with no actual product pack. `daily_producer.py` fetches product `image` but does not place it into job `images`; `holding_images` contains only the reusable model portrait, so `worker.resolve_images()` never falls through to product imagery.
+- Additional gaps: 6-bullet value card is too dense for 4s HyperFrames scenes, generated script/captions drift English/Banglish despite `language=bn`, and `qa_provider: local` only checks ffprobe/media validity so product absence/readability pass. Latest pipeline status: 1 COSRX FB job still queued; 0 review; 4 rejected.
+- Updated: Added `VID-7` to `workspace/TASKS.md` as an open output-quality remediation item.
+- Guardrail: Diagnosis/reporting only; no video code changes, no rerender, no deploy, no PM2 restart, no publish, no WordPress/Woo writes.
+
 ## 2026-06-26 (Codex - SEO gap task-board prioritization)
 - Did: Verified `SEO-GAP-1`, `SEO-GAP-3`, and `SEO-GAP-4` against `workspace/audit/active/seo-gap-audit-20260626.json` and added them logically to `workspace/TASKS.md`.
 - Updated: Added `Fresh SEO Gap Action Queue — 2026-06-26` ranked as: 1) `SEO-GAP-4` highest SEO technical/index drift, 2) `SEO-GAP-1` commercial CTR/click gap, 3) `SEO-GAP-3` content usefulness/measurement signal. Cross-linked them into the Audit Remediation Priority Lane, Main Priority rows 9/10, and sub-issues `9a SEO-ORCH-4` and `10c SEO-ORCH-3`.
@@ -3277,3 +3290,22 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed: Added result-ledger idempotency to `workspace/scripts/active/meta_schedule.js`; if a campaign/platform/item already exists in the result ledger, restarted schedulers skip it instead of publishing again. Added `workspace/scripts/active/meta_post_cleanup.js` for dry-run-first Facebook duplicate inspection/removal.
 - Verified: Final Graph query returned exactly 1 Hydro Boost Facebook match; `node --check` passed for `meta_schedule.js` and `meta_post_cleanup.js`; June 26 rescheduled campaign dry-runs still return 17 FB and 17 IG posts; current June 26 random PM2 schedulers remain stopped.
 - Note: The June 25 Instagram result ledger also shows repeated slot-18 publishes from the same autorestart incident; Instagram deletion was not performed in this step because the owner request named Facebook.
+
+## 2026-06-26 · Codex · Creative Asset Engine full migration
+- Did: Migrated the half-finished creative system into one shared renderer. `workspace/creative-engine/` now renders `post_1x1`, `post_4x5`, `hero_vertical`, `scene_value`, `scene_brand_end`, and `blog_og_1200x630`.
+- Changed: `workspace/video-engine/worker.py` now calls Creative Engine directly for product hero/value/end-card frames. Legacy `product_hero_card.py`, `list_card.py`, and `brand_card.py` are compatibility shims. HyperFrames no longer owns product/value/brand card HTML; it animates pre-rendered frames and handles captions/audio/encoding only.
+- Docs/tasks: Updated Creative Engine reference, Social Engine README, Video Engine README, provider registry, BLOG-1 spec, task board VID-7, and memory note `project_creative_asset_engine_20260626.md`.
+- Verified: Rendered all new static formats via Chromium QA; smoke-rendered `workspace/video-engine/output/creative-migration-smoke.mp4` through worker + HyperFrames; local video QA passed score 96 (1080x1920, 5.70s). Also passed `python3 -m py_compile ...`, `python3 -m unittest workspace/social-engine/tests/test_engine.py`, and `node --check` for HyperFrames/meta scheduler/meta publisher.
+- Guardrail: No Woo/WordPress data writes, no Meta publish/schedule, no PM2 restart, no deploy, no push. Smoke job used `/tmp/creative-migration-smoke.json`; output files are local review artifacts only.
+
+## 2026-06-26 · Codex · Creative Engine product container-shape layout
+- Did: Added dynamic product container classification in `workspace/creative-engine/data/normalize.py` for `tall_bottle`, `dropper`, `tube`, `jar`, `compact`, `sheet_pack`, `box`, `pouch`, and `general`.
+- Changed: Creative Engine hero/social/blog product image CSS now sizes tall bottles/droppers narrower and taller, tubes medium-tall, jars shorter/wider, compacts flatter, and packs/boxes wider. Product payloads can override with explicit `container_type`.
+- Verified: Classifier smoke mapped toner→`tall_bottle`, SPF/Relief Sun→`tube`, cream→`jar`, palette→`compact`, essence→`dropper`, sheet mask→`sheet_pack`; rendered four shape-specific hero samples via Chromium; `python3 -m py_compile`, Social Engine unit tests, and HyperFrames `node --check` passed.
+- Guardrail: No Woo/WordPress writes, no live publish/schedule, no deploy/PM2.
+
+## 2026-06-26 · Codex · Creative Engine high-density rendering
+- Did: Added `render_scale` to Creative Engine requests/results and defaulted rendering to 2x Chromium device-scale capture with Lanczos downsampling back to native platform dimensions for sharper AMOLED/iPhone output.
+- Changed: `workspace/creative-engine/render.py` now renders to a temporary high-resolution PNG, downsamples/saves final PNG or JPEG correctly, and reports `render_scale` in QA. Creative Engine CLI and `social_image_gen.py` shim expose `--render-scale 1|2|3`.
+- Verified: `python3 -m py_compile` for creative/social/video bridge files; `python3 -m unittest workspace/social-engine/tests/test_engine.py` (12 passed); `node --check workspace/video-engine/hyperframes/render.js`; escalated local Chromium smoke rendered `/tmp/creative-render-scale-2.png` at final 1080x1920 with QA pass and `render_scale: 2`.
+- Guardrail: No Woo/WordPress writes, no live publish/schedule, no deploy, no PM2 restart, no push.

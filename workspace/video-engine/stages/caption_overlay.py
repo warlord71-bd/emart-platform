@@ -66,11 +66,11 @@ html,body{{width:{W}px;height:{H}px;background:transparent;font-family:{FONT_STA
 """
 
 
-def build_elements(script: dict, total: float) -> list[dict]:
+def build_elements(script: dict, total: float, max_benefits: int = 3) -> list[dict]:
     """timed caption elements: hook -> benefits (staggered) -> cta."""
     els = []
     hook = (script.get("hook") or "").strip()
-    benefits = [b.strip() for b in (script.get("benefits") or []) if b and b.strip()][:3]
+    benefits = [b.strip() for b in (script.get("benefits") or []) if b and b.strip()][:max(0, max_benefits)]
     cta = (script.get("cta") or "").strip()
     if hook:
         els.append({"text": hook, "cls": "hook", "t0": 0.2, "t1": round(total * 0.45, 2)})
@@ -138,9 +138,10 @@ def main():
     ap.add_argument("--outdir", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--safe-zone", dest="safe_zone", default="wide", choices=list(SAFE_ZONES))
+    ap.add_argument("--max-benefits", type=int, default=3)
     a = ap.parse_args()
     script = json.loads(Path(a.script).read_text())
-    els = build_elements(script, a.total)
+    els = build_elements(script, a.total, a.max_benefits)
     overlays = render(els, Path(a.outdir), a.safe_zone)
     Path(a.out).write_text(json.dumps(overlays, indent=2))
     print(a.out)

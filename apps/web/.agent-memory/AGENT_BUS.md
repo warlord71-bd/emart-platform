@@ -16,6 +16,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
+| Codex | 2026-06-26 | Build Creative Engine use-case sample pack and persona standardization note | `workspace/audit/active/creative-usecase-samples-20260626/**`, persona/creative docs, session notes |
 
 ---
 
@@ -23,6 +24,10 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-26 | Added Creative Engine high-density rendering: default 2x Chromium capture with Lanczos downsampling to official platform dimensions, `render_scale` request/result contract, CLI/social shim flag, and QA reporting. Verified final 1080x1920 render pass. | uncommitted |
+| Codex | 2026-06-26 | Added Creative Engine product container-shape classification and dynamic product-image framing for tall bottles/droppers, tubes, jars, compacts, sheet packs, boxes, pouches, and general products. Verified classifier and sample renders. | uncommitted |
+| Codex | 2026-06-26 | Full Creative Asset Engine migration: shared renderer now supports FB 1:1, IG 4:5, vertical product hero, value card, brand end card, and blog OG. Video worker calls Creative Engine directly; legacy video card scripts are shims; HyperFrames is frame-only for product/value/brand scenes. Smoke rendered `creative-migration-smoke.mp4` with local QA 96/pass. | uncommitted |
+| Claude | 2026-06-26 | Batch A SEO proposals: SEO-7 structural QA report, SEO-2 journal internal-link cluster proposals (50 blog posts × 0 internal links = critical gap), SEO-4 buying guide gap proposals (5 Tier 1 + 7 Tier 2 categories), SEO-5 contextual link + FAQ proposals for existing and new guides, SEO-1 title cleanup (pipeline clean, no targets), D8 brand page content coverage audit (387 pages × generic 1-sentence description). 6 artifact files created under workspace/audit/active/. | uncommitted artifacts |
 | Claude | 2026-06-26 | Freeze-safe Waves 1-8: SEO-GAP-4 all-verified, SEO-GAP-1/3 proposals+baselines, ledger instantiated (30 entries), measurement loop, content/campaign contracts, ORCH-3 lock/retry/dead-letter, ORCH-6 DR plan+backup integrity, ORCH-7 CI, SEO-3 category map, SEO-6 scanability audit, D6/D8/BLOG-1 proposals, growth/visual/feedback specs. | pending commit |
 | Claude | 2026-06-26 | HyperFrames video engine integration: HTML composition renderer with GSAP animations, Phase 3 validated, final HQ reel sent to Telegram. | `1226833` |
 | Codex | 2026-06-26 | SEO-GAP-4 control-loop classifier + live verifier + URL-policy registry (SEO-ORCH-3/6). SEO-GAP-1/3/4 task board proposals. Fresh read-only SEO data-gap audit runner. | `ea359b5` |

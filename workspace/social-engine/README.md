@@ -11,7 +11,8 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
 - Normalizes a campaign manifest into scheduled platform posts.
 - Applies duplicate guards against recent campaigns.
 - Can record completed campaigns back into `history/published-products.json`.
-- Generates 1080×1350 Instagram variants from 1080×1080 Facebook assets.
+- Generates 1080×1350 Instagram variants. When Creative Engine is available this is a native
+  `post_4x5` render; otherwise it falls back to the older blur-derived crop.
 - Emits a contact sheet in the review pack for fast visual comparison.
 - Reports design-template and asset-source consistency in QA.
 - Checks visual QA flags before publishing is allowed:
@@ -196,4 +197,4 @@ dry-run by default unless `--allow-publish` is explicitly used there.
 ## Next Build Steps
 
 - Add sales-proxy joins into `performance/latest.json`.
-- Add native 4:5 creative generation instead of derived IG variants when source images support it.
+- Add per-creative manifest capture: product snapshot, tokens version, QA result, and final platform URL.

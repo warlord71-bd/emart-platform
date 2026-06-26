@@ -109,9 +109,6 @@ def build_spec(product: dict) -> dict:
     today = date.today().isoformat()
     jid = f"{today}-{re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')[:40]}"
 
-    holding = has_holding_image(name)
-    vo_name = bangla_phonetic(name)
-
     spec = {
         "id": jid,
         "platforms": ["facebook", "instagram"],
@@ -120,21 +117,23 @@ def build_spec(product: dict) -> dict:
         "price": price,
         "original_price": original,
         "language": "bn",
-        "seconds": 4,
-        "holding_images": [str(CANONICAL_MODEL)] if CANONICAL_MODEL.exists() else [],
-        "holding_request": True,
+        "seconds": 4.8,
+        "product_card": True,
+        "product_image": img,
+        "product_card_badge": "Daily SPF",
+        "product_card_bangla": "হালকা ফিনিশ · SPF50+ PA++++ · দৈনিক ব্যবহার",
+        "caption_benefit_limit": 1,
+        "holding_images": [],
+        "holding_request": False,
         "generate_script": True,
         "list_cards": [{
             "kicker": f"কেন {brand or name.split()[0]}?",
-            "title": "৬টি কারণ",
+            "title": "৩টি দ্রুত কারণ",
             "style": "numbered",
             "bullets": [
-                f"{brand or name.split()[0]} — গভীর আর্দ্রতা",
-                "ত্বক হয় নরম, কোমল ও উজ্জ্বল",
-                "সব স্কিন টাইপে ব্যবহারযোগ্য",
-                "হালকা ফর্মুলা — চিটচিটে নয়",
-                "দাগ ও ব্রণের দাগ হালকা করে",
-                "সকাল ও রাতে — দুইবেলা ব্যবহার",
+                "হালকা টেক্সচার, চিটচিটে নয়",
+                "SPF50+ PA++++ দৈনিক সান কেয়ার",
+                "স্কিনকেয়ারের মতো আরামদায়ক ফিনিশ",
             ],
             "footer": "e-mart.com.bd · ক্যাশ অন ডেলিভারি",
         }],
@@ -142,7 +141,7 @@ def build_spec(product: dict) -> dict:
         "brand_card_bangla": f"অরিজিনাল {brand or name.split()[0]} এখন Emart-এ",
         "voiceover": True,
         "voice_gender": "female",
-        "qa_provider": "local",
+        "qa_provider": "master",
     }
     return spec
 

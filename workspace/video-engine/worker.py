@@ -18,7 +18,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "lib"))
+sys.path.insert(0, str(ROOT.parent))
 import router  # noqa: E402
+from workspace_creative_engine import CreativeRequest, render as render_creative  # noqa: E402
 
 QUEUE = ROOT / "queue"
 OUTPUT = ROOT / "output"
@@ -38,8 +40,6 @@ CAPTION_OVERLAY = ROOT / "stages" / "caption_overlay.py"
 VOICE_GEN = ROOT / "stages" / "voice_gen.py"
 MUSIC_BED = ROOT / "assets" / "music" / "ambient-soft.mp3"
 REEL_QA_MASTER = ROOT / "stages" / "reel_qa_master.py"
-BRAND_CARD = ROOT / "stages" / "brand_card.py"
-LIST_CARD = ROOT / "stages" / "list_card.py"
 CODEX_BRIDGE = ROOT / "stages" / "codex_bridge.py"
 PRESENTER_CARD = ROOT / "stages" / "presenter_card.py"
 # canonical reusable Emart model (Codex-generated once, reused free in every reel for one consistent face)
@@ -74,6 +74,22 @@ def set_stage(job, name, **data):
     job.setdefault("stages", {})[name] = {"status": "done", **data}
 
 
+def product_snapshot(job: dict, image: str = "") -> dict:
+    price = str(job.get("price", "") or "")
+    original = str(job.get("original_price", "") or "")
+    return {
+        "id": int(job.get("product_id") or 0),
+        "name": job.get("product") or job.get("headline") or "Emart Skincare",
+        "price": price,
+        "regular_price": original if original else price,
+        "sale_price": price if original and original != price else "",
+        "images": [{"src": image}] if image else [],
+        "brands": [{"name": job.get("brand", "")}] if job.get("brand") else [],
+        "categories": [{"name": job.get("category", "Skincare"), "slug": job.get("category_slug", "skincare")}],
+        "attributes": [],
+    }
+
+
 def persona_stills(job) -> list[str]:
     """pull consistent persona stills from the free persona library (personas/<id>/library)."""
     pid = job.get("persona_library")
@@ -96,12 +112,15 @@ def brand_card_image(job) -> list[str]:
     if not job.get("brand_card"):
         return []
     card = OUTPUT / f"card-{job['id']}.png"
-    subprocess.run([sys.executable, str(BRAND_CARD),
-                    "--product", job.get("product") or job.get("headline", "Emart Skincare"),
-                    "--price", str(job.get("price", "")),
-                    "--original-price", str(job.get("original_price", "")),
-                    "--bangla", job.get("brand_card_bangla", ""),
-                    "--out", str(card)], check=True, timeout=120)
+    render_creative(CreativeRequest(
+        product=product_snapshot(job),
+        format="scene_brand_end",
+        value_spec={
+            "product": job.get("product") or job.get("headline", "Emart Skincare"),
+            "bangla": job.get("brand_card_bangla", ""),
+        },
+        out=str(card),
+    ))
     return [str(card)]
 
 
@@ -110,14 +129,41 @@ def list_card_images(job) -> list[str]:
     out = []
     for i, spec in enumerate(job.get("list_cards") or []):
         card = OUTPUT / f"listcard-{job['id']}-{i}.png"
-        cmd = [sys.executable, str(LIST_CARD), "--out", str(card),
-               "--title", spec["title"], "--kicker", spec.get("kicker", "জেনে নিন"),
-               "--style", spec.get("style", "numbered"), "--footer", spec.get("footer", "e-mart.com.bd · COD")]
-        for b in spec.get("bullets", []):
-            cmd += ["--bullet", b]
-        subprocess.run(cmd, check=True, timeout=120)
+        render_creative(CreativeRequest(
+            product=product_snapshot(job),
+            format="scene_value",
+            value_spec={
+                "title": spec["title"],
+                "kicker": spec.get("kicker", "জেনে নিন"),
+                "style": spec.get("style", "numbered"),
+                "footer": spec.get("footer", f"{'E-MART.COM.BD'} · COD"),
+                "bullets": spec.get("bullets", []),
+            },
+            out=str(card),
+        ))
         out.append(str(card))
     return out
+
+
+def product_hero_images(job) -> list[str]:
+    """Real-product opening frame. This is the commercial truth gate: if a job asks
+    for a product card, the reel starts with the product pack instead of a generic face."""
+    if not job.get("product_card"):
+        return []
+    src = job.get("product_image") or job.get("product_image_url")
+    if not src:
+        return []
+    card = OUTPUT / f"producthero-{job['id']}.png"
+    render_creative(CreativeRequest(
+        product=product_snapshot(job, image=str(src)),
+        format="hero_vertical",
+        badge=job.get("product_card_badge", "Daily Pick"),
+        image_override=str(src),
+        locale=job.get("language", "bn") if job.get("language") in ("bn", "en") else "bn",
+        value_spec={"bangla": job.get("product_card_bangla", "")},
+        out=str(card),
+    ))
+    return [str(card)]
 
 
 def holding_request_images(job) -> list[str]:
@@ -172,7 +218,7 @@ def resolve_images(job, cfg) -> list[str]:
     get cover-pan motion like persona stills (NOT blurred-fill). Drop them in workspace/video-engine/
     codex-assets/ and reference here. See README "Codex handoff".
     """
-    imgs = (persona_stills(job) + (job.get("holding_images") or []) + holding_request_images(job)
+    imgs = (product_hero_images(job) + persona_stills(job) + (job.get("holding_images") or []) + holding_request_images(job)
             + (job.get("images") or []) + list_card_images(job))
     if imgs:
         return imgs + brand_card_image(job)
@@ -278,9 +324,10 @@ def run_job(job_path: Path, allow_publish: bool):
         capdir = str(OUTPUT / f"caps-{jid}")
         opath = str(OUTPUT / f"overlays-{jid}.json")
         safe_zone = job.get("safe_zone", "wide")
+        max_benefits = str(job.get("caption_benefit_limit", 1 if job.get("product_card") else 3))
         cmd_cap = [sys.executable, str(CAPTION_OVERLAY), "--script", script_path,
                    "--total", str(caption_window), "--outdir", capdir, "--out", opath,
-                   "--safe-zone", safe_zone]
+                   "--safe-zone", safe_zone, "--max-benefits", max_benefits]
         subprocess.run(cmd_cap, check=True, timeout=180)
         set_stage(job, "captions", overlays=opath, total=caption_window)
         checkpoint(job_path, job)
@@ -378,7 +425,7 @@ def run_job(job_path: Path, allow_publish: bool):
             print(f"[worker] vision QA failed (opted-in block) for {jid}: {soft.get('issues')}"); return
 
     # 4. store (free local public dir -> public URL; swap to R2 later)
-    if not stage_done(job, "store"):
+    if job.get("store", True) and not stage_done(job, "store"):
         PUBLIC_REELS.mkdir(parents=True, exist_ok=True)
         dest = PUBLIC_REELS / f"{jid}.mp4"
         shutil.copy2(mp4, dest)
@@ -386,10 +433,15 @@ def run_job(job_path: Path, allow_publish: bool):
         url = f"{PUBLIC_BASE}/{jid}.mp4?v={int(dest.stat().st_mtime)}"
         set_stage(job, "store", url=url)
         checkpoint(job_path, job)
-    url = job["stages"]["store"]["url"]
+    if job.get("store", True):
+        url = job["stages"]["store"]["url"]
+    else:
+        url = mp4
+        set_stage(job, "store", url=url, local_preview=True)
+        checkpoint(job_path, job)
 
     # 5. publish (guarded: dry-run default, never auto-post without opt-in + guardrails)
-    if not stage_done(job, "publish"):
+    if job.get("publish", True) and not stage_done(job, "publish"):
         led = load_ledger()
         dry = g.get("dry_run_default", True) or not allow_publish
         if not dry and led["videos_published"] >= g.get("max_videos_per_day", 6):
@@ -412,6 +464,9 @@ def run_job(job_path: Path, allow_publish: bool):
             led["videos_published"] += 1
             save_ledger(led)
         set_stage(job, "publish", dry_run=dry, output=r.stdout.strip()[:300])
+        checkpoint(job_path, job)
+    elif not job.get("publish", True):
+        set_stage(job, "publish", skipped=True, reason="local_preview")
         checkpoint(job_path, job)
 
     job["status"] = "published" if not (g.get("dry_run_default", True) or not allow_publish) else "ready"

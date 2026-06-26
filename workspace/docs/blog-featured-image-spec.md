@@ -18,10 +18,10 @@ Every blog post published on e-mart.com.bd should have a generated featured imag
 - **No:** price, COD badge, or sales language on blog heroes (these are editorial, not promotional)
 
 ## Implementation Plan
-1. **Extend `social_image_gen.py`** with a `--blog-hero` mode:
+1. **Use Creative Asset Engine `blog_og_1200x630` format**:
    - Input: blog title + optional product IDs + category badge text
    - Output: 1200×630 branded blog hero image
-   - Uses same WC product image fetching + PIL/Pillow compositing as existing social mode
+   - Uses same product normalization, logo, palette, Chromium renderer, and QA as social/video frames
 2. **Wire into blog generator:** `blog_generator.py --draft` includes a `featured_image` field pointing to the generated hero
 3. **WordPress upload:** hero image uploaded via WP REST API as media, then set as `featured_media` on the post
 
@@ -31,7 +31,8 @@ Every blog post published on e-mart.com.bd should have a generated featured imag
 - **Variant C:** Centered text over gradient, small product thumbnails below
 
 ## Dependencies
-- `social_image_gen.py` (existing, works)
+- `workspace/creative-engine/` (active shared renderer)
+- `social_image_gen.py` compatibility shim (existing)
 - `Pillow` (already installed for social image gen)
 - Blog generator `--draft` mode (WA-H, ✅ done)
 - WP REST API media upload (existing capability in blog generator)
