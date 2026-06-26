@@ -268,6 +268,36 @@ const SERUMS_AMPOULES_ESSENCES_SEO = {
   ],
 };
 
+// Genuine, category-specific FAQs. Single source for both the visible guide FAQ
+// and FAQPage JSON-LD. Answers are plain text (no markup) so they are schema-safe.
+const CATEGORY_GUIDE_FAQS: Record<string, { q: string; a: string }[]> = {
+  'face-cleansers': [
+    { q: 'অয়েলি ও ব্রণপ্রবণ ত্বকের জন্য কোন ফেসওয়াশ ভালো?', a: 'লো-পিএইচ জেল ক্লিনজার বা মৃদু BHA ক্লিনজার ভালো শুরু। COSRX Low pH Good Morning বা COSRX Salicylic Acid Daily Gentle Cleanser ব্যবহার করতে পারেন। দিনে দুইবারের বেশি ক্লিনজিং সাধারণত দরকার হয় না।' },
+    { q: 'শুষ্ক ত্বকে কি ফোমিং ক্লিনজার ব্যবহার করা যায়?', a: 'যায়, তবে fragrance-free ও hydrating formula বেছে নিন। ধোয়ার পর ত্বক টানটান লাগলে সেটি আপনার জন্য বেশি stripping হতে পারে।' },
+    { q: 'ডাবল ক্লিনজিং কখন দরকার?', a: 'sunscreen, makeup, বা heavy outdoor exposure থাকলে রাতে আগে oil/balm cleanser, এরপর gentle foam বা gel cleanser ব্যবহার করলেই যথেষ্ট।' },
+  ],
+  sunscreen: [
+    { q: 'How often should I reapply sunscreen in Bangladesh’s heat?', a: 'Reapply every 2 hours when outdoors. For indoor or office use, one morning application is usually enough. After swimming or heavy sweating, reapply immediately regardless of time.' },
+    { q: 'Can I use sunscreen on acne-prone skin without breakouts?', a: 'Yes — choose a lightweight gel or fluid formula labelled non-comedogenic. Korean sunscreens from COSRX, Beauty of Joseon, and ISNTREE offer non-greasy options designed for oily skin.' },
+    { q: 'What does PA++++ mean on Korean sunscreen?', a: 'PA measures protection against UVA rays, which cause skin ageing and penetrate clouds. PA++++ is the highest rating. For Bangladesh’s high UV index, choose PA+++ or higher.' },
+  ],
+  'toners-mists': [
+    { q: 'টোনার আসলে কী কাজ করে?', a: 'ক্লিনজিংয়ের পর টোনার ত্বকের pH ভারসাম্য ফেরায় এবং পরের ধাপের serum বা moisturiser আরও ভালোভাবে শোষণে সাহায্য করে। Hydrating toner আর্দ্রতা যোগ করে, exfoliating toner মৃত কোষ তোলে।' },
+    { q: 'Hydrating আর exfoliating toner-এর মধ্যে পার্থক্য কী?', a: 'Hydrating toner (hyaluronic acid, heartleaf, rice) প্রতিদিন ব্যবহারযোগ্য এবং আর্দ্রতা দেয়। Exfoliating toner (AHA/BHA) সপ্তাহে ২–3 দিন ব্যবহার করুন, কারণ এটি ত্বক exfoliate করে।' },
+    { q: 'রুটিনে টোনার কখন ব্যবহার করব?', a: 'ক্লিনজিংয়ের ঠিক পরে, serum-এর আগে। হাতে নিয়ে আলতো করে চেপে নিন বা cotton pad ব্যবহার করুন। Exfoliating toner রাতে ব্যবহার করাই ভালো।' },
+  ],
+  'serums-ampoules-essences': [
+    { q: 'Serum, ampoule আর essence-এর পার্থক্য কী?', a: 'Essence সবচেয়ে পাতলা ও hydration-কেন্দ্রিক, toner-এর পরে ব্যবহার হয়। Serum বেশি ঘন ও targeted active (niacinamide, vitamin C) যুক্ত। Ampoule সবচেয়ে concentrated, অল্প সময়ের intensive care-এর জন্য।' },
+    { q: 'একসাথে কয়টি serum ব্যবহার করা যায়?', a: 'এক রুটিনে ২–3টির বেশি নয়। পাতলা texture আগে দিন। Retinol আর vitamin C একই রুটিনে মেশাবেন না — vitamin C সকালে, retinol রাতে রাখুন।' },
+    { q: 'সিরাম সকালে না রাতে ব্যবহার করব?', a: 'বেশিরভাগ serum সকাল-রাত দুই সময়েই চলে। ব্যতিক্রম: retinol শুধু রাতে, আর vitamin C সকালে sunscreen-এর আগে সবচেয়ে ভালো কাজ করে।' },
+  ],
+  'korean-beauty': [
+    { q: 'বাংলাদেশে অরিজিনাল কোরিয়ান স্কিনকেয়ার কোথায় পাব?', a: 'Emart-এ ২,০০০+ authentic Korean beauty product সরাসরি import করা, COD সহ সারা বাংলাদেশে ডেলিভারি। COSRX, Beauty of Joseon, SKIN1004, Anua, Round Lab-সহ জনপ্রিয় ব্র্যান্ড পাওয়া যায়।' },
+    { q: 'কোরিয়ান স্কিনকেয়ার কি সব স্কিন টাইপে কাজ করে?', a: 'হ্যাঁ। K-beauty-তে প্রতিটি স্কিন টাইপের জন্য product আছে। ব্র্যান্ড নয়, concern অনুযায়ী বেছে নেওয়াই আসল কৌশল — acne, hydration, না anti-aging।' },
+    { q: '10-step routine কি বাংলাদেশে দরকার?', a: 'দরকার নেই। cleanser, toner, moisturiser আর sunscreen দিয়ে শুরু করুন। ত্বকের প্রয়োজন অনুযায়ী পরে serum বা treatment যোগ করুন।' },
+  ],
+};
+
 function getCategoryOgImage(slug: string, name: string) {
   const value = `${slug} ${name}`.toLowerCase();
   const key = Object.keys(CATEGORY_OG_IMAGE_BY_KEY).find((candidate) => value.includes(candidate));
@@ -554,11 +584,23 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     })),
   } : null;
 
+  const guideFaqs = page === 1 ? CATEGORY_GUIDE_FAQS[params.slug] : undefined;
+  const faqJsonLd = guideFaqs ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: guideFaqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  } : null;
+
   return (
     <div className="min-h-screen bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(collectionPageJsonLd) }} />
       {itemListJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListJsonLd) }} />}
+      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />}
 
       <div className="mx-auto max-w-7xl px-4 py-8">
 
@@ -713,7 +755,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                       </section>
                     </div>
                   ) : isSunscreen ? (
-                    <div className="mt-4 grid gap-5 text-sm leading-relaxed text-muted sm:grid-cols-2">
+                    <div className="mt-4 space-y-5">
+                    <div className="grid gap-5 text-sm leading-relaxed text-muted sm:grid-cols-2">
                       <div>
                         <h2 className="mb-1 text-sm font-semibold text-ink">Why You Need Sunscreen Every Day in Bangladesh</h2>
                         <p>Bangladesh sits close to the equator, meaning UV rays are strong year-round — not just in summer. Daily sun exposure without a broad-spectrum SPF 50+ sunscreen accelerates skin ageing, causes dark spots, and raises the risk of sunburn even on cloudy days. Applying sunscreen as the last step of your morning routine takes 30 seconds and is the single most effective anti-ageing step you can take.</p>
@@ -728,8 +771,181 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                       </div>
                       <div>
                         <h2 className="mb-1 text-sm font-semibold text-ink">Choosing the Right Sunscreen for Your Skin Type</h2>
-                        <p>Oily and acne-prone skin does best with lightweight gel or fluid formulas — Korean sunscreens like COSRX, Beauty of Joseon, and ISNTREE offer non-greasy options that don&apos;t clog pores. Dry skin benefits from hydrating cream sunscreens. Sensitive skin can rely on mineral or hybrid formulas with zinc oxide. All sunscreens at Emart are 100% authentic imports — no fakes, no expired stock.</p>
+                        <p>Oily and acne-prone skin does best with lightweight gel or fluid formulas — Korean sunscreens like <Link href="/brands/cosrx" className="text-accent hover:underline">COSRX</Link>, <Link href="/brands/beauty-of-joseon" className="text-accent hover:underline">Beauty of Joseon</Link>, and <Link href="/brands/isntree" className="text-accent hover:underline">ISNTREE</Link> offer non-greasy options that don&apos;t clog pores. Dry skin benefits from hydrating cream sunscreens. Sensitive skin can rely on mineral or hybrid formulas with zinc oxide. All sunscreens at Emart are 100% authentic imports — no fakes, no expired stock.</p>
                       </div>
+                    </div>
+                    <section className="text-sm leading-relaxed text-muted">
+                      <h2 className="mb-2 text-base font-semibold text-ink">Sunscreen FAQ</h2>
+                      <div className="space-y-3">
+                        {(CATEGORY_GUIDE_FAQS['sunscreen'] ?? []).map((f) => (
+                          <div key={f.q}>
+                            <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                            <p>{f.a}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                    </div>
+                  ) : params.slug === 'toners-mists' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">How to choose a toner in Bangladesh</h2>
+                        <p>
+                          A <Link href="/routine/toner" className="text-accent hover:underline">toner</Link> comes
+                          right after cleansing. It rebalances skin pH and preps the next steps so your serum and
+                          moisturiser absorb better. In Dhaka&apos;s humidity, a lightweight hydrating toner is enough
+                          for most days; oily and clog-prone skin can use an exfoliating toner a few nights a week.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">Hydrating vs exfoliating</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li>
+                            <strong className="text-ink">Hydrating:</strong> look for{' '}
+                            <Link href="/ingredients/hyaluronic-acid" className="text-accent hover:underline">hyaluronic acid</Link>,
+                            heartleaf, or rice — safe for daily use on dry and sensitive skin.
+                          </li>
+                          <li>
+                            <strong className="text-ink">Exfoliating:</strong>{' '}
+                            <Link href="/ingredients/aha" className="text-accent hover:underline">AHA</Link> for dullness and{' '}
+                            <Link href="/ingredients/bha-salicylic-acid" className="text-accent hover:underline">BHA (salicylic acid)</Link>{' '}
+                            for clogged pores — use 2–3 nights a week, not daily.
+                          </li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">When to use it</h3>
+                        <p>
+                          Apply straight after your{' '}
+                          <Link href="/routine/cleanser" className="text-accent hover:underline">cleanser</Link>, before serum.
+                          Press into the skin with your hands or a cotton pad. Keep exfoliating toners for the evening.
+                        </p>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['toners-mists'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'serums-ampoules-essences' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">Serum, ampoule or essence — which to pick</h2>
+                        <p>
+                          Essences are the lightest and most hydration-focused; serums are more concentrated and target
+                          a concern; ampoules are the strongest, for short intensive boosts. A{' '}
+                          <Link href="/routine/treatment" className="text-accent hover:underline">treatment step</Link>{' '}
+                          sits after toner and before moisturiser.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">Choose by skin concern</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li>
+                            <strong className="text-ink">Brightening / dark spots:</strong>{' '}
+                            <Link href="/ingredients/vitamin-c" className="text-accent hover:underline">vitamin C</Link> or{' '}
+                            <Link href="/ingredients/niacinamide" className="text-accent hover:underline">niacinamide</Link> — see{' '}
+                            <Link href="/concerns/brightening" className="text-accent hover:underline">brightening</Link>.
+                          </li>
+                          <li>
+                            <strong className="text-ink">Hydration:</strong>{' '}
+                            <Link href="/ingredients/hyaluronic-acid" className="text-accent hover:underline">hyaluronic acid</Link> for
+                            plump, dewy skin in any season.
+                          </li>
+                          <li>
+                            <strong className="text-ink">Anti-ageing:</strong>{' '}
+                            <Link href="/ingredients/retinol" className="text-accent hover:underline">retinol</Link> at night — see{' '}
+                            <Link href="/concerns/anti-aging-repair" className="text-accent hover:underline">anti-ageing &amp; repair</Link>.
+                          </li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">Applying in Bangladesh&apos;s climate</h3>
+                        <p>
+                          In humidity, thinner textures sit better — apply lightest first and wait a moment between
+                          layers. Limit actives to 2–3 per routine and avoid pairing retinol with vitamin C in the same
+                          session.
+                        </p>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['serums-ampoules-essences'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  ) : params.slug === 'korean-beauty' ? (
+                    <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted">
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">What makes Korean skincare different</h2>
+                        <p>
+                          K-beauty focuses on gentle, layered hydration and ingredient innovation rather than harsh
+                          quick fixes. You don&apos;t need ten steps — build around a few well-chosen products and adapt
+                          them to Bangladesh&apos;s heat and humidity.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">How to start a routine</h3>
+                        <p>
+                          Begin with four steps:{' '}
+                          <Link href="/routine/cleanser" className="text-accent hover:underline">cleanser</Link>,{' '}
+                          <Link href="/routine/toner" className="text-accent hover:underline">toner</Link>,{' '}
+                          <Link href="/routine/moisturiser" className="text-accent hover:underline">moisturiser</Link>, and{' '}
+                          <Link href="/routine/sunscreen" className="text-accent hover:underline">sunscreen</Link>. Add a{' '}
+                          <Link href="/routine/treatment" className="text-accent hover:underline">serum</Link> once your skin needs it.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">Popular Korean brands at Emart</h3>
+                        <p>
+                          <Link href="/brands/cosrx" className="text-accent hover:underline">COSRX</Link>,{' '}
+                          <Link href="/brands/beauty-of-joseon" className="text-accent hover:underline">Beauty of Joseon</Link>,{' '}
+                          <Link href="/brands/skin1004" className="text-accent hover:underline">SKIN1004</Link>, and{' '}
+                          <Link href="/brands/anua" className="text-accent hover:underline">Anua</Link> are among the most
+                          asked-for K-beauty names — all imported authentic.
+                        </p>
+                      </section>
+                      <section>
+                        <h3 className="mb-2 text-sm font-semibold text-ink">K-beauty by concern</h3>
+                        <ul className="list-disc space-y-2 pl-5">
+                          <li>
+                            <strong className="text-ink">Acne:</strong> gentle{' '}
+                            <Link href="/ingredients/centella" className="text-accent hover:underline">centella</Link> formulas — see{' '}
+                            <Link href="/concerns/acne-blemish-care" className="text-accent hover:underline">acne &amp; blemish care</Link>.
+                          </li>
+                          <li>
+                            <strong className="text-ink">Hydration:</strong>{' '}
+                            <Link href="/ingredients/snail-mucin" className="text-accent hover:underline">snail mucin</Link> essences — see{' '}
+                            <Link href="/concerns/dryness-hydration" className="text-accent hover:underline">dryness &amp; hydration</Link>.
+                          </li>
+                          <li>
+                            <strong className="text-ink">Anti-ageing:</strong> peptide and retinol serums — see{' '}
+                            <Link href="/concerns/anti-aging-repair" className="text-accent hover:underline">anti-ageing &amp; repair</Link>.
+                          </li>
+                        </ul>
+                      </section>
+                      <section>
+                        <h2 className="mb-2 text-base font-semibold text-ink">সচরাচর জিজ্ঞাসা</h2>
+                        <div className="space-y-3">
+                          {(CATEGORY_GUIDE_FAQS['korean-beauty'] ?? []).map((f) => (
+                            <div key={f.q}>
+                              <h3 className="mb-1 text-sm font-semibold text-ink">{f.q}</h3>
+                              <p>{f.a}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
                     </div>
                   ) : (
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
