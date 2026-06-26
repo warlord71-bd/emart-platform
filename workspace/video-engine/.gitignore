@@ -5,6 +5,7 @@ jobs/
 *.wav
 *.mp3
 __pycache__/
+.orchestrator.lock
 personas/*/library/
 assets/music/*.mp3
 codex-assets/holding/
