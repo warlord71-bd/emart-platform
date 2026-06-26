@@ -1,5 +1,5 @@
 {
-  "version": "2026-06-26.seo-orch-6.initial",
+  "version": "2026-06-26.seo-orch-6.all-verified",
   "owner": "SEO-ORCH-6",
   "site": "https://e-mart.com.bd",
   "status": "registry_first_no_route_changes",
@@ -80,7 +80,8 @@
         "apps/web/src/middleware.ts handleConcernRedirect"
       ],
       "evidence": {
-        "live_verified": false,
+        "live_verified": true,
+        "verified_date": "2026-06-26",
         "observed_rows": [
           "/concerns?concern=acne-blemish-care",
           "/concerns?concern=acne-blemish-care&page=2",
@@ -90,9 +91,10 @@
           "/concerns?concern=melasma",
           "/concerns?concern=melasma&page=2"
         ],
-        "observed_interpretation": "classified_not_live_verified"
+        "observed_interpretation": "all_301_redirect_to_clean_concern_path_page_param_stripped",
+        "note": "page param is stripped during redirect — /concerns?concern=X&page=2 redirects to /concerns/X (page 1). If paginated concern queries are important for GSC, consider preserving ?page in redirect target."
       },
-      "recommended_change": "verify_live_before_editing"
+      "recommended_change": "none_redirects_working_consider_page_preservation"
     },
     {
       "id": "origin-country-query-to-clean-origin",
@@ -112,15 +114,16 @@
         "apps/web/next.config.js /origins?country redirect"
       ],
       "evidence": {
-        "live_verified": false,
+        "live_verified": true,
+        "verified_date": "2026-06-26",
         "observed_rows": [
           "/origins?country=bangladesh",
           "/origins?country=canada",
           "/origins?country=china"
         ],
-        "observed_interpretation": "classified_not_live_verified"
+        "observed_interpretation": "all_301_redirect_to_clean_origin_path"
       },
-      "recommended_change": "verify_live_before_editing"
+      "recommended_change": "none_redirects_working"
     },
     {
       "id": "collection-valid-pagination",
@@ -211,7 +214,8 @@
         "page component notFound when page > totalPages"
       ],
       "evidence": {
-        "live_verified": false,
+        "live_verified": true,
+        "verified_date": "2026-06-26",
         "observed_rows": [
           "/category/night-cream?page=4",
           "/category/night-cream?page=5",
@@ -223,9 +227,9 @@
           "/concerns/anti-aging-repair?page=2",
           "/concerns/melasma?page=2"
         ],
-        "observed_interpretation": "classified_not_live_verified"
+        "observed_interpretation": "all_200_self_canonical_index_follow_valid_paginated_collections"
       },
-      "recommended_change": "verify_live_before_editing"
+      "recommended_change": "reclassify_as_valid_pagination_merge_into_collection_valid_pagination_rule"
     },
     {
       "id": "filter-sort-tracking-query-variants",

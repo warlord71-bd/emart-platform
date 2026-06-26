@@ -29,7 +29,7 @@ work order and consumes the premium "model-holding-real-product" shot on the nex
 only ever pulled in when quality actually demands it — autonomy is preserved.
 """
 from __future__ import annotations
-import argparse, json, re, subprocess, sys, time, urllib.parse, urllib.request
+import argparse, fcntl, json, os, re, subprocess, sys, time, urllib.parse, urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -37,13 +37,36 @@ WORKER = ROOT / "worker.py"
 JOBS = ROOT / "jobs"
 QUEUE, BUILDING, REVIEW = JOBS / "queue", JOBS / "building", JOBS / "review"
 APPROVED, PUBLISHED, REJECTED = JOBS / "approved", JOBS / "published", JOBS / "rejected"
-LANES = [QUEUE, BUILDING, REVIEW, APPROVED, PUBLISHED, REJECTED]
+DEAD_LETTER = JOBS / "dead-letter"
+LANES = [QUEUE, BUILDING, REVIEW, APPROVED, PUBLISHED, REJECTED, DEAD_LETTER]
+LOCK_FILE = ROOT / ".orchestrator.lock"
 OPENCLAW_ENV = Path("/root/.openclaw/openclaw.env")
-BUILDING_STALE_S = 60 * 60  # a building/ job older than this is assumed crashed -> reclaim
-# render stages cleared when re-queuing for a Codex premium re-render
+BUILDING_STALE_S = 60 * 60
 ESCALATE_CLEAR = ("images", "reel", "qa", "store", "publish")
-SILENCE_LUFS = -40.0   # integrated loudness below this = effectively silent -> hard reject
-DEFAULT_QA = "master"  # force the full gate (loudness + multi-frame vision) unless the job overrides
+SILENCE_LUFS = -40.0
+DEFAULT_QA = "master"
+MAX_RETRIES = 3
+
+
+class WorkerLock:
+    """Exclusive flock — prevents overlapping orchestrator ticks."""
+    def __init__(self):
+        self._fd = None
+    def __enter__(self):
+        self._fd = open(LOCK_FILE, "w")
+        try:
+            fcntl.flock(self._fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            self._fd.close()
+            print("[orchestrator] another tick is already running — skipping")
+            sys.exit(0)
+        self._fd.write(str(os.getpid()))
+        self._fd.flush()
+        return self
+    def __exit__(self, *_):
+        if self._fd:
+            fcntl.flock(self._fd, fcntl.LOCK_UN)
+            self._fd.close()
 
 
 def ensure_dirs():
@@ -180,10 +203,18 @@ def tick():
 
     # hard failure (ffprobe / broken render) or opted-in vision block -> auto-reject, notify
     if job.get("status") == "failed":
-        job_path.rename(REJECTED / job_path.name)
+        retries = job.get("_retry_count", 0)
+        if retries < MAX_RETRIES:
+            job["_retry_count"] = retries + 1
+            job["status"] = "pending"
+            job_path.write_text(json.dumps(job, indent=2))
+            job_path.rename(QUEUE / job_path.name)
+            print(f"[orchestrator] {jid} -> requeued (retry {retries + 1}/{MAX_RETRIES})")
+            return
+        job_path.rename(DEAD_LETTER / job_path.name)
         reason = qa.get("status_note") or qa.get("vision_issues") or "render/QA failure"
-        notify(f"❌ Reel auto-failed: {jid}\n{reason}")
-        print(f"[orchestrator] {jid} -> rejected ({reason})")
+        notify(f"☠️ Reel dead-lettered (exhausted {MAX_RETRIES} retries): {jid}\n{reason}")
+        print(f"[orchestrator] {jid} -> dead-letter ({reason})")
         return
 
     # merit-based Codex escalation: free image path produced a reel whose vision QA says FAIL.
@@ -222,7 +253,8 @@ def main():
     elif a.reclaim:
         reclaim_stale()
     elif a.tick:
-        tick()
+        with WorkerLock():
+            tick()
     else:
         ap.error("pass --tick / --status / --reclaim")
 

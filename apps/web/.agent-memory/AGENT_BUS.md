@@ -23,6 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Claude | 2026-06-26 | Freeze-safe Waves 1-8: SEO-GAP-4 all-verified, SEO-GAP-1/3 proposals+baselines, ledger instantiated (30 entries), measurement loop, content/campaign contracts, ORCH-3 lock/retry/dead-letter, ORCH-6 DR plan+backup integrity, ORCH-7 CI, SEO-3 category map, SEO-6 scanability audit, D6/D8/BLOG-1 proposals, growth/visual/feedback specs. | pending commit |
 | Claude | 2026-06-26 | HyperFrames video engine integration: HTML composition renderer with GSAP animations, Phase 3 validated, final HQ reel sent to Telegram. | `1226833` |
 | Codex | 2026-06-26 | SEO-GAP-4 control-loop classifier + live verifier + URL-policy registry (SEO-ORCH-3/6). SEO-GAP-1/3/4 task board proposals. Fresh read-only SEO data-gap audit runner. | `ea359b5` |
 | Codex | 2026-06-25 | X8a GA4 performance loop closed. X8c approval-status verified. VID-6/WSC-9 hyperframes classified (now formalized). Priority 7 visual safety audit. Priority 5+6 runtime docs/ledger schema. | `4a7ef3e` `271bb02` `817f310` |

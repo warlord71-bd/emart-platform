@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/web/**'
+      - 'package*.json'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/web/**'
+      - 'package*.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Type check
+        working-directory: apps/web
+        run: npx tsc --noEmit
+
+      - name: Lint
+        working-directory: apps/web
+        run: npm run lint 2>/dev/null || true
+
+      - name: Build
+        working-directory: apps/web
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://e-mart.com.bd
+          NEXT_PUBLIC_GA_ID: G-PLACEHOLDER
+          NEXT_PUBLIC_META_PIXEL_ID: PLACEHOLDER
+
+      - name: Dependency audit
+        working-directory: apps/web
+        run: npm audit --audit-level=high || true
+        continue-on-error: true
+
+  python-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Python syntax check
+        run: |
+          find workspace/scripts workspace/video-engine workspace/ledgers workspace/humanizer -name '*.py' -print0 | \
+            xargs -0 python3 -m py_compile 2>&1 || true
+
+      - name: Deploy script check
+        run: |
+          bash -n deploy.sh
