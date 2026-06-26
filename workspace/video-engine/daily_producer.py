@@ -128,14 +128,16 @@ def build_spec(product: dict) -> dict:
         "generate_script": True,
         "list_cards": [{
             "kicker": f"কেন {brand or name.split()[0]}?",
-            "title": "৩টি দ্রুত কারণ",
+            "title": "৫টি দ্রুত কারণ",
             "style": "numbered",
             "bullets": [
                 "হালকা টেক্সচার, চিটচিটে নয়",
                 "SPF50+ PA++++ দৈনিক সান কেয়ার",
                 "স্কিনকেয়ারের মতো আরামদায়ক ফিনিশ",
+                "সকালের রুটিনে সহজে ফিট করে",
+                "অরিজিনাল পণ্য, Emart থেকে",
             ],
-            "footer": "e-mart.com.bd · ক্যাশ অন ডেলিভারি",
+            "footer": "ক্যাশ অন ডেলিভারি · সারা বাংলাদেশে",
         }],
         "brand_card": True,
         "brand_card_bangla": f"অরিজিনাল {brand or name.split()[0]} এখন Emart-এ",

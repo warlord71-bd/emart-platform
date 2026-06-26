@@ -199,6 +199,16 @@ def _compose_scene_value(d: ProductData, fmt: dict, req: CreativeRequest) -> str
     footer = spec.get("footer") or f"{BRAND_URL} · COD"
     logo = logo_data_uri()
     logo_block = f'<img class="logoimg" src="{logo}" alt="{BRAND_NAME} logo">' if logo else f'<span class="logo">{BRAND_NAME}</span>'
+    count = len(bullets)
+    compact = count >= 5
+    title_size = 58 if compact else 68
+    title_margin = 34 if compact else 54
+    row_gap = 18 if compact else 34
+    row_pad_y = 20 if compact else 28
+    row_pad_x = 28 if compact else 34
+    mark_size = 68 if compact else 84
+    mark_font = 34 if compact else 44
+    text_size = 38 if compact else 46
     rows = []
     for i, bullet in enumerate(bullets, 1):
         mark = str(i) if style == "numbered" else ("✓" if style == "check" else "•")
@@ -206,25 +216,32 @@ def _compose_scene_value(d: ProductData, fmt: dict, req: CreativeRequest) -> str
 
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 {_vertical_base_css(w, h)}
-.wrap{{position:absolute;inset:0;padding:130px 86px;display:flex;flex-direction:column;}}
+.wrap{{position:absolute;inset:0;padding:112px 78px 76px;display:flex;flex-direction:column;}}
 .kicker{{align-self:flex-start;font-size:32px;font-weight:800;letter-spacing:3px;color:{INK};
-  background:{GOLD};border-radius:14px;padding:10px 26px;margin-bottom:40px;}}
-.title{{font-size:68px;font-weight:900;line-height:1.24;margin-bottom:54px;overflow-wrap:anywhere;word-break:break-word;}}
-.row{{display:flex;align-items:center;gap:30px;margin-bottom:34px;
-  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);
-  border-radius:22px;padding:28px 34px;}}
-.mark{{flex:0 0 84px;height:84px;border-radius:50%;background:{GOLD};color:{INK};
-  font-size:44px;font-weight:900;display:flex;align-items:center;justify-content:center;}}
-.txt{{font-size:46px;font-weight:700;line-height:1.32;overflow-wrap:anywhere;word-break:break-word;}}
-.foot{{margin-top:auto;display:flex;align-items:center;justify-content:space-between;
-  font-size:30px;color:{SOFT_ROSE};}}
-.foot .logoimg{{width:120px;height:120px;border-radius:24px;}}
-.foot .logo{{font-weight:900;letter-spacing:2px;color:#fff;font-size:40px;}}
+  background:{GOLD};border-radius:14px;padding:10px 26px;margin-bottom:30px;}}
+.title{{font-size:{title_size}px;font-weight:900;line-height:1.18;margin-bottom:{title_margin}px;overflow-wrap:anywhere;word-break:break-word;}}
+.rows{{display:flex;flex-direction:column;gap:{row_gap}px;}}
+.row{{display:flex;align-items:center;gap:24px;
+  background:rgba(255,255,255,0.11);border:1px solid rgba(255,255,255,0.22);
+  border-radius:22px;padding:{row_pad_y}px {row_pad_x}px;box-shadow:0 12px 34px rgba(0,0,0,.16);}}
+.mark{{flex:0 0 {mark_size}px;height:{mark_size}px;border-radius:50%;background:{GOLD};color:{INK};
+  font-size:{mark_font}px;font-weight:900;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 24px rgba(0,0,0,.24);}}
+.txt{{font-size:{text_size}px;font-weight:800;line-height:1.25;overflow-wrap:anywhere;word-break:break-word;}}
+.foot{{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:28px;
+  min-height:156px;padding:18px 26px;background:rgba(42,10,24,.72);
+  border:1px solid rgba(255,255,255,.18);border-radius:32px;box-shadow:0 18px 46px rgba(0,0,0,.32);}}
+.foot .logoimg{{width:132px;height:132px;border-radius:28px;box-shadow:0 14px 34px rgba(0,0,0,.36);}}
+.foot .logo{{font-weight:900;letter-spacing:2px;color:#fff;font-size:42px;}}
+.footcopy{{display:flex;flex-direction:column;align-items:flex-end;gap:8px;text-align:right;}}
+.domain{{font-size:46px;line-height:1;font-weight:900;color:{GOLD};letter-spacing:1px;text-transform:uppercase;}}
+.codline{{font-size:30px;line-height:1.2;font-weight:800;color:#fff;}}
+.trust{{font-size:24px;line-height:1.2;font-weight:700;color:{SOFT_ROSE};}}
 </style></head><body><div class="wrap">
 <div class="kicker">{esc(kicker)}</div>
 <div class="title">{esc(title)}</div>
-{''.join(rows)}
-<div class="foot">{logo_block}<span>{esc(footer)}</span></div>
+<div class="rows">{''.join(rows)}</div>
+<div class="foot">{logo_block}<div class="footcopy"><div class="domain">{BRAND_URL}</div><div class="codline">{esc(footer)}</div><div class="trust">{BRAND_FOOTER}</div></div></div>
 </div></body></html>"""
 
 
