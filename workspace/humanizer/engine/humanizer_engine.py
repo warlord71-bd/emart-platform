@@ -190,6 +190,57 @@ def _clean_html(raw: str) -> str:
     s = re.sub(r"</?h[12][^>]*>", "", s, flags=re.IGNORECASE)
     return s.strip()
 
+_INTERNAL_LINK_TARGETS: list[tuple[re.Pattern, str]] = [
+    (re.compile(r'\bniacinamide\b', re.I), '/ingredients/niacinamide'),
+    (re.compile(r'\bhyaluronic\s+acid\b', re.I), '/ingredients/hyaluronic-acid'),
+    (re.compile(r'\bretinol\b', re.I), '/ingredients/retinol'),
+    (re.compile(r'\bvitamin\s+c\b', re.I), '/ingredients/vitamin-c'),
+    (re.compile(r'\bcentella(?:\s+asiatica)?\b', re.I), '/ingredients/centella'),
+    (re.compile(r'\bsnail\s+mucin\b', re.I), '/ingredients/snail-mucin'),
+    (re.compile(r'\bceramide(?:s)?\b', re.I), '/ingredients/ceramide'),
+    (re.compile(r'\bsalicylic\s+acid\b', re.I), '/ingredients/bha-salicylic-acid'),
+    (re.compile(r'\bpropolis\b', re.I), '/ingredients/propolis'),
+    (re.compile(r'\bpeptide(?:s)?\b', re.I), '/ingredients/peptide'),
+    (re.compile(r'\bginseng\b', re.I), '/ingredients/ginseng'),
+    (re.compile(r'\bcollagen\b', re.I), '/ingredients/collagen'),
+    (re.compile(r'\bmugwort\b', re.I), '/ingredients/mugwort'),
+    (re.compile(r'\bbakuchiol\b', re.I), '/ingredients/bakuchiol'),
+    (re.compile(r'\bSPF\b|\bsunscreen\b|\bsun\s+protection\b', re.I), '/concerns/sunscreen'),
+    (re.compile(r'\bacne\b|\bblemish(?:es)?\b|\bbreakout(?:s)?\b', re.I), '/concerns/acne-blemish-care'),
+    (re.compile(r'\bbright(?:ening|en)\b|\bdark\s+spot(?:s)?\b|\bhyperpigmentation\b', re.I), '/concerns/brightening'),
+    (re.compile(r'\bhydrat(?:ion|ing|e)\b|\bdryness\b|\bdehydrat(?:ed|ion)\b', re.I), '/concerns/dryness-hydration'),
+    (re.compile(r'\bpore(?:s)?\b|\boil\s+control\b|\bsebum\b', re.I), '/concerns/pores-oil-control'),
+    (re.compile(r'\bsensitiv(?:e|ity)\b|\breactive\s+skin\b', re.I), '/concerns/sensitivity'),
+    (re.compile(r'\banti[- ]?ag(?:e|ing)\b|\bwrinkle(?:s)?\b|\bfine\s+line(?:s)?\b', re.I), '/concerns/anti-aging-repair'),
+]
+
+def _inject_internal_links(html: str, max_links: int = 3) -> str:
+    """Inject 2-3 contextual <a> links into PDP HTML for internal linking (USEO-7)."""
+    used_hrefs: set[str] = set()
+    count = 0
+
+    for pattern, href in _INTERNAL_LINK_TARGETS:
+        if count >= max_links:
+            break
+        if href in used_hrefs:
+            continue
+        m = pattern.search(html)
+        if not m:
+            continue
+        start, end = m.start(), m.end()
+        before = html[:start]
+        if re.search(r'<a\b[^>]*>[^<]*$', before):
+            continue
+        if re.search(r'<h[3-6][^>]*>[^<]*$', before):
+            continue
+        matched_text = html[start:end]
+        replacement = f'<a href="{href}">{matched_text}</a>'
+        html = html[:start] + replacement + html[end:]
+        used_hrefs.add(href)
+        count += 1
+
+    return html
+
 def _is_429(e) -> bool:
     s = str(e).lower(); return "429" in s or "rate-limit" in s or "rate limit" in s
 def _is_402(e) -> bool:
@@ -217,7 +268,7 @@ def generate(product: dict, models: list[str] | None = None, rounds: int = 3) ->
                     model=model, messages=build_messages(product),
                     temperature=0.6, max_tokens=2400,
                 )
-                html = LINT.scrub(_clean_html(resp.choices[0].message.content))
+                html = _inject_internal_links(LINT.scrub(_clean_html(resp.choices[0].message.content)))
                 res  = LINT.lint(html, focus, product.get("brand",""), product.get("category",""))
                 rec  = {"content_html": html, "lint": res, "model": model}
                 if best is None or res["score"] > best["lint"]["score"]:

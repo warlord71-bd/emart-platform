@@ -1,5 +1,5 @@
 {
-  "version": "2026-06-26.seo-orch-6.all-verified",
+  "version": "2026-06-27.seo-orch-6.all-8-rules-verified",
   "owner": "SEO-ORCH-6",
   "site": "https://e-mart.com.bd",
   "status": "registry_first_no_route_changes",
@@ -270,11 +270,17 @@
         "apps/web/src/app/robots.ts generic disallow for non-Googlebot"
       ],
       "evidence": {
-        "live_verified": false,
-        "observed_rows": [],
-        "observed_interpretation": "supported_policy_class_not_in_20260626_live_sample"
+        "live_verified": true,
+        "verified_date": "2026-06-27",
+        "observed_rows": [
+          "/category/serums?orderby=price → 301 → /category/serums",
+          "/shop?srsltid=abc123 → 301 → /shop",
+          "/category/serums?per_page=24 → 301 → /category/serums",
+          "/category/serums?shop_view=list → 301 → /category/serums"
+        ],
+        "observed_interpretation": "all_filter_sort_tracking_params_301_stripped_to_clean_url"
       },
-      "recommended_change": "audit_specific_rows_before_route_changes"
+      "recommended_change": "none_current_behavior_matches_policy"
     }
   ]
 }
