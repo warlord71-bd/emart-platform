@@ -1,0 +1,25 @@
+{
+  "id": "2026-06-27-six-reels-catchup-boj",
+  "name": "June 27 Reel Catch-up: BOJ Sunscreen",
+  "date": "2026-06-27",
+  "approval_status": "approved_for_scheduled_run",
+  "platforms": [
+    "facebook"
+  ],
+  "schedule_note": "Catch-up for the first six-reel slot that was skipped because scheduler started after 10:16 BDT.",
+  "items": [
+    {
+      "index": 1,
+      "slot": "2026-06-27T19:35:00+06:00",
+      "title": "Beauty of Joseon Relief Sun Rice + Probiotics 50ml",
+      "product_id": 4320,
+      "job_path": "workspace/video-engine/jobs/approved/04-2026-06-26-boj-sunscreen-approval-v3.json",
+      "media_url": "https://e-mart.com.bd/public/videos/reels/2026-06-26-boj-sunscreen-approval-v3.mp4?v=1782501055",
+      "platforms": [
+        "facebook"
+      ],
+      "caption": "Beauty of Joseon Relief Sun Rice + Probiotics SPF50+ PA++++ এখন Emart Skincare Bangladesh-এ। হালকা দৈনিক সান কেয়ার, অরিজিনাল প্রোডাক্ট, সারা বাংলাদেশে COD। দাম ৳1390।\n\n#BeautyOfJoseon #SunscreenBangladesh #KBeautyBD #EmartSkincare",
+      "qa_score": 92
+    }
+  ]
+}

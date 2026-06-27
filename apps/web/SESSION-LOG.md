@@ -3358,3 +3358,11 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Copy fix: Replaced vague retinol wording like “ধীরে শুরু করুন” with clearer natural guidance: “নতুন হলে সপ্তাহে ২-৩ রাত” / “রেটিনল নতুন হলে সপ্তাহে দুই থেকে তিন রাত দিয়ে শুরু করুন.”
 - Verified: `python3 -m py_compile workspace/creative-engine/api.py workspace/video-engine/daily_producer.py`; public v3 MP4 URLs return HTTP 200; audio streams are AAC stereo; transition sheets reviewed at `/tmp/emart-reel-transition-review/boj-v3-transition-sheet.png` and `cerave-v3-transition-sheet.png`.
 - Guardrail: No Woo/WordPress writes, no manual Meta publish command, no PM2 restart, no checkout/cart/payment/order/customer/stock/price changes. `workspace/TASKS.md` had a pre-existing unrelated SEO task-board edit and was left unstaged.
+
+## 2026-06-27 · Codex · Social campaign + six reel schedule
+- Did: Built and launched the June 27 social run: 18 regular FB+IG product posts plus six Facebook reels interleaved between regular slots.
+- Static posts: Picked 18 live in-stock products with Social Engine performance weighting; generated 36 Creative Engine 2x assets under `apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/`; synced to live runtime; restarted only `emartweb` to expose the new public folder; verified FB 1:1 and IG 4:5 sample URLs return HTTP 200. Campaign QA passed with 0 errors/0 warnings.
+- Reels: Reused five built QA-scored reels and built one new Simple Refreshing Facial Wash reel (local QA pass score 96, public MP4 HTTP 200). Added `meta_reel_schedule.js` for timed approved reel jobs with JSONL idempotency.
+- Schedule/live state: Started PM2 jobs `emart-social-fb-20260627`, `emart-social-ig-20260627`, `emart-reels-20260627`, and catch-up `emart-reels-catchup-boj-20260627`. Late start meant the first 3 image slots and first original reel slot were already expired; item 4 published immediately on FB/IG, and the missed BOJ reel was rescheduled to 19:35 BDT.
+- Cleanup: Moved disposable `workspace/audit/active/social` scratch images to `/root/.attic-2026-06-27/social-audit-active-images/`; live public campaign assets and reel MP4s were kept.
+- Guardrail: No Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no broad deploy/push. Only `emartweb` was restarted to expose static assets.

@@ -1,0 +1,123 @@
+{
+  "id": "2026-06-27-simple-refreshing-facial-wash-reel",
+  "tier_target": "free",
+  "platforms": [
+    "facebook"
+  ],
+  "product": "Simple Refreshing Facial Wash 150ml",
+  "product_id": 36319,
+  "brand": "Simple",
+  "category": "cleanser",
+  "price": "590",
+  "original_price": "750",
+  "language": "bn",
+  "seconds": 4.8,
+  "product_card": true,
+  "product_cutout": true,
+  "product_image": "https://e-mart.com.bd/wp-content/uploads/2022/04/Simple-Face-Wash-Kind-to-Skin-Refreshing-Gel-150ml-scaled.webp",
+  "product_card_badge": "Cleanser Pick",
+  "product_card_bangla": "মাইল্ড ফেস ওয়াশ · সকাল/রাত · ফ্রেশ স্কিন ফিল",
+  "visual_captions": false,
+  "music_volume": 0.12,
+  "holding_request": false,
+  "model_fallback": false,
+  "list_cards": [
+    {
+      "kicker": "Simple face wash",
+      "title": "Daily cleanser checklist",
+      "style": "numbered",
+      "bullets": [
+        "মাইল্ড ক্লিনজিং, ডেইলি রুটিনে সহজ",
+        "সকাল ও রাতে ব্যবহার করা যায়",
+        "ত্বক পরিষ্কার, টানটান লাগে না",
+        "সেন্সিটিভ স্কিন রুটিনেও জনপ্রিয় পিক",
+        "অরিজিনাল পণ্য, Emart থেকে"
+      ],
+      "footer": "ক্যাশ অন ডেলিভারি · সারা বাংলাদেশে"
+    }
+  ],
+  "brand_card": true,
+  "brand_card_bangla": "অরিজিনাল Simple এখন Emart-এ",
+  "script": {
+    "hook": "Daily cleanser pick",
+    "benefits": [
+      "মাইল্ড ক্লিনজিং",
+      "সকাল ও রাতের রুটিনে সহজ",
+      "ফ্রেশ স্কিন ফিল"
+    ],
+    "cta": "Order from Emart",
+    "voiceover": "ডেইলি ক্লিনজারের জন্য সিম্পল রিফ্রেশিং ফেসিয়াল ওয়াশ হতে পারে সহজ পিক। মাইল্ড ক্লিনজিং, সকাল আর রাতের রুটিনে ব্যবহার করা যায়, আর স্কিন পরিষ্কার লাগে টানটান ফিল ছাড়াই। অরিজিনাল পণ্য এখন ইমার্টে, ক্যাশ অন ডেলিভারিতে।",
+    "caption": "Simple Refreshing Facial Wash 150ml এখন Emart Skincare Bangladesh-এ। মাইল্ড ডেইলি ক্লিনজার, সকাল ও রাতের রুটিনে সহজ। অরিজিনাল পণ্য, COD available।",
+    "hashtags": [
+      "#SimpleSkincare",
+      "#FaceWashBangladesh",
+      "#SkincareBangladesh",
+      "#EmartSkincare"
+    ]
+  },
+  "voiceover": true,
+  "voice_gender": "female",
+  "qa_provider": "master",
+  "status": "approved",
+  "stages": {
+    "images": {
+      "status": "done",
+      "images": [
+        "/root/emart-platform/workspace/video-engine/output/producthero-2026-06-27-simple-refreshing-facial-wash-reel.png",
+        "/root/emart-platform/workspace/video-engine/output/listcard-2026-06-27-simple-refreshing-facial-wash-reel-0.png",
+        "/root/emart-platform/workspace/video-engine/output/card-2026-06-27-simple-refreshing-facial-wash-reel.png"
+      ]
+    },
+    "script": {
+      "status": "done",
+      "path": "/root/emart-platform/workspace/video-engine/output/script-2026-06-27-simple-refreshing-facial-wash-reel.json",
+      "source": "claude-authored",
+      "model": null
+    },
+    "voice": {
+      "status": "done",
+      "audio": "/root/emart-platform/workspace/video-engine/output/vo-2026-06-27-simple-refreshing-facial-wash-reel.mp3",
+      "duration": 15.46
+    },
+    "captions": {
+      "status": "done",
+      "skipped": true,
+      "reason": "visual_captions_disabled"
+    },
+    "reel": {
+      "status": "done",
+      "mp4": "/root/emart-platform/workspace/video-engine/output/2026-06-27-simple-refreshing-facial-wash-reel.mp4",
+      "audio": true,
+      "renderer": "hyperframes"
+    },
+    "qa": {
+      "status": "done",
+      "hard": {
+        "status": "pass",
+        "score": 96,
+        "summary": "Local media QA pass: 1080x1920, 13.50s, 1691833 bytes.",
+        "strengths": [
+          "Valid vertical MP4 with video and audio streams."
+        ],
+        "issues": [],
+        "fixes": [],
+        "publishable": true,
+        "_provider": "local-ffprobe"
+      },
+      "soft": null,
+      "score": 96,
+      "vision_status": null,
+      "vision_issues": null
+    },
+    "store": {
+      "status": "done",
+      "url": "https://e-mart.com.bd/public/videos/reels/2026-06-27-simple-refreshing-facial-wash-reel.mp4?v=1782514856"
+    },
+    "publish": {
+      "status": "done",
+      "dry_run": true,
+      "output": "manual dry-run checkpoint; scheduled via reel schedule"
+    }
+  },
+  "caption": "Simple Refreshing Facial Wash 150ml এখন Emart Skincare Bangladesh-এ। মাইল্ড ডেইলি ক্লিনজার, সকাল ও রাতের রুটিনে সহজ। অরিজিনাল পণ্য, COD available।\n\n#SimpleSkincare #FaceWashBangladesh #SkincareBangladesh #EmartSkincare"
+}
