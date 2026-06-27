@@ -3366,3 +3366,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Schedule/live state: Started PM2 jobs `emart-social-fb-20260627`, `emart-social-ig-20260627`, `emart-reels-20260627`, and catch-up `emart-reels-catchup-boj-20260627`. Late start meant the first 3 image slots and first original reel slot were already expired; item 4 published immediately on FB/IG, and the missed BOJ reel was rescheduled to 19:35 BDT.
 - Cleanup: Moved disposable `workspace/audit/active/social` scratch images to `/root/.attic-2026-06-27/social-audit-active-images/`; live public campaign assets and reel MP4s were kept.
 - Guardrail: No Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no broad deploy/push. Only `emartweb` was restarted to expose static assets.
+
+## 2026-06-27 · Codex · Social duplicate cleanup + scheduler repair
+- Did: Rechecked the June 27 image plan after owner flagged TIAM/Minimalist/Dr. Althea visual issues. Removed all active repeats found against 2026-06-23..26 plans/history; final active image plan has 17 posts and `repeat_count 0`.
+- Changed: Removed TIAM, Minimalist Vitamin C, Dr. Althea Vitamin C serum, and other recent-repeat assets from local/live public folders into `/root/.attic-2026-06-27/`; added catch-up static posts for TIRTIR Milk Skin Toner Light, TIRTIR Mask Fit Red Cushion, and Neutrogena Hydro Boost Water Gel. The already-published CeraVe item 4 remains only in the Meta/result ledger.
+- Reels: Synced four missing MP4s into live `/public/videos/reels/`, updated stale reel URLs with fresh cache-busting `v=` values, moved reel slot 2 to 12:38 BDT, and restarted `emart-reels-20260627`; BOJ catch-up remains online at 19:35 BDT.
+- Verified: Social FB/IG dry-runs returned 17 posts each; flagged terms are absent from campaign files/assets; catch-up image sample URLs and updated reel MP4 URLs return HTTP 200; PM2 shows `emart-social-fb-20260627`, `emart-social-ig-20260627`, `emart-reels-20260627`, and `emart-reels-catchup-boj-20260627` online.
+- Guardrail: No Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no push.

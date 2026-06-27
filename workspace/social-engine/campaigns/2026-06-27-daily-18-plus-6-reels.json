@@ -11,103 +11,35 @@
   "schedule": {
     "start": "09:00",
     "end": "23:30",
-    "timezone": "+06:00"
+    "timezone": "+06:00",
+    "recent_duplicate_replacements": {
+      "generated_at": "2026-06-27T11:56:09.661725+06:00",
+      "blocked_recent_sources": [
+        "workspace/social-engine/history/published-products.json",
+        "workspace/social-engine/output/2026-06-26/2026-06-26-random-24h-rescheduled/campaign-plan.json",
+        "workspace/social-engine/output/2026-06-26/2026-06-26-random-24h/campaign-plan.json",
+        "workspace/social-engine/output/2026-06-25/2026-06-25-daily-18/campaign-plan.json",
+        "workspace/social-engine/output/2026-06-24/2026-06-24-v3/campaign-plan.json"
+      ],
+      "replaced_count": 13
+    },
+    "recent_duplicate_cleanup": {
+      "generated_at": "2026-06-27T12:05:00+06:00",
+      "removed_recent_repeat_product_ids": [
+        2591,
+        26134,
+        36319
+      ],
+      "catchup_product_ids": [
+        58371,
+        58788,
+        36655
+      ],
+      "note": "Future plan cleared of recent repeats; item 4 had already published before cleanup and remains only in published ledger.",
+      "owner_flagged_bad_or_repeat_images_removed": 3
+    }
   },
   "items": [
-    {
-      "product_id": 2591,
-      "title": "COSRX Advanced Snail Mucin 96 Power Essence 100ml",
-      "slug": "cosrx-advanced-snail-mucin-96-power-essence-100ml",
-      "creative_type": "pipeline",
-      "asset_source": "pipeline",
-      "design_template": "emart-social-card-v1",
-      "selection_score": 1694.66,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-96-power-essence-100ml",
-      "angle": "Cosrx serum energy for a focused routine.",
-      "hashtags": "#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-      "captions": {
-        "facebook": "Cosrx serum energy for a focused routine.\n\nCOSRX Advanced Snail Mucin 96 Power Essence 100ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Cosrx serum energy for a focused routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
-      },
-      "visual_qa": {
-        "product_match_checked": true,
-        "price_clear": true,
-        "no_dummy_product": true,
-        "image_generated": true,
-        "product_image_source": "woocommerce-real-product-cutout",
-        "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
-      },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/01-cosrx-advanced-snail-mucin-96-power-essence-100ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/01-cosrx-advanced-snail-mucin-96-power-essence-100ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/01-cosrx-advanced-snail-mucin-96-power-essence-100ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/01-cosrx-advanced-snail-mucin-96-power-essence-100ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/01-cosrx-advanced-snail-mucin-96-power-essence-100ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Cosrx serum energy for a focused routine.\n\nCOSRX Advanced Snail Mucin 96 Power Essence 100ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/01-cosrx-advanced-snail-mucin-96-power-essence-100ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-96-power-essence-100ml"
-        },
-        "instagram": {
-          "caption": "Cosrx serum energy for a focused routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/01-cosrx-advanced-snail-mucin-96-power-essence-100ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-96-power-essence-100ml"
-        }
-      },
-      "slot": "2026-06-27T09:00:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
-    },
-    {
-      "product_id": 36319,
-      "title": "Simple Refreshing Facial Wash 150ml",
-      "slug": "simple-refreshing-facial-wash-150ml",
-      "creative_type": "pipeline",
-      "asset_source": "pipeline",
-      "design_template": "emart-social-card-v1",
-      "selection_score": 404.53,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/simple-refreshing-facial-wash-150ml",
-      "angle": "Clean routine, fresh skin feeling.",
-      "hashtags": "#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-      "captions": {
-        "facebook": "Clean routine, fresh skin feeling.\n\nSimple Refreshing Facial Wash 150ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
-      },
-      "visual_qa": {
-        "product_match_checked": true,
-        "price_clear": true,
-        "no_dummy_product": true,
-        "image_generated": true,
-        "product_image_source": "woocommerce-real-product-cutout",
-        "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
-      },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/02-simple-refreshing-facial-wash-150ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/02-simple-refreshing-facial-wash-150ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/02-simple-refreshing-facial-wash-150ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/02-simple-refreshing-facial-wash-150ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/02-simple-refreshing-facial-wash-150ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Clean routine, fresh skin feeling.\n\nSimple Refreshing Facial Wash 150ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/02-simple-refreshing-facial-wash-150ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/simple-refreshing-facial-wash-150ml"
-        },
-        "instagram": {
-          "caption": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/02-simple-refreshing-facial-wash-150ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/simple-refreshing-facial-wash-150ml"
-        }
-      },
-      "slot": "2026-06-27T09:51:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
-    },
     {
       "product_id": 59341,
       "title": "Christian Dean Secret Tone Up Sun Cream 70ml",
@@ -131,15 +63,16 @@
         "image_generated": true,
         "product_image_source": "woocommerce-real-product-cutout",
         "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
+        "design_consistency_checked": true,
+        "rescheduled_to_replace_recent_tiam_repeat": true
       },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-4x5.png"
-      },
+      "index": 3,
+      "slot": "2026-06-27T12:25:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
       "platform_posts": {
         "facebook": {
           "caption": "Daily SPF, Bangladesh-weather friendly.\n\nChristian Dean Secret Tone Up Sun Cream 70ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#ChristiandeanBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
@@ -152,24 +85,30 @@
           "link": "https://e-mart.com.bd/shop/christian-dean-secret-tone-up-sun-cream-70ml"
         }
       },
-      "slot": "2026-06-27T10:42:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/03-christian-dean-secret-tone-up-sun-cream-70ml-4x5.png"
+      },
+      "time": "2026-06-27T12:25:00+06:00"
     },
     {
-      "product_id": 26134,
-      "title": "Cerave moisturising cream for dry to very dry skin 50ml",
-      "slug": "cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml",
+      "product_id": 58371,
+      "title": "TIRTIR Milk Skin Toner Light 20ml",
+      "slug": "tirtir-milk-skin-toner-light-20ml",
       "creative_type": "pipeline",
       "asset_source": "pipeline",
       "design_template": "emart-social-card-v1",
-      "selection_score": 218.49,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml",
-      "angle": "Comfort cream for calmer-looking routines.",
-      "hashtags": "#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "selection_score": 245.1,
+      "selection_basis": "recent_duplicate_catchup_replacement",
+      "link": "https://e-mart.com.bd/shop/tirtir-milk-skin-toner-light-20ml",
+      "angle": "Light milky toner for a soft, fresh routine.",
+      "hashtags": "#TirtirBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
       "captions": {
-        "facebook": "Comfort cream for calmer-looking routines.\n\nCerave moisturising cream for dry to very dry skin 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+        "facebook": "Light milky toner for a soft, fresh routine.\n\nTIRTIR Milk Skin Toner Light 20ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TirtirBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Light milky toner for a soft, fresh routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TirtirBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
       },
       "visual_qa": {
         "product_match_checked": true,
@@ -180,371 +119,47 @@
         "background_source": "creative-engine-post-renderer",
         "design_consistency_checked": true
       },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/04-cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/04-cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/04-cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/04-cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/04-cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml-4x5.png"
-      },
+      "index": 19,
+      "slot": "2026-06-27T12:52:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
       "platform_posts": {
         "facebook": {
-          "caption": "Comfort cream for calmer-looking routines.\n\nCerave moisturising cream for dry to very dry skin 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/04-cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml"
+          "caption": "Light milky toner for a soft, fresh routine.\n\nTIRTIR Milk Skin Toner Light 20ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TirtirBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/19-tirtir-milk-skin-toner-light-20ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/tirtir-milk-skin-toner-light-20ml"
         },
         "instagram": {
-          "caption": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/04-cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml"
+          "caption": "Light milky toner for a soft, fresh routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TirtirBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/19-tirtir-milk-skin-toner-light-20ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/tirtir-milk-skin-toner-light-20ml"
         }
       },
-      "slot": "2026-06-27T11:34:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/19-tirtir-milk-skin-toner-light-20ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/19-tirtir-milk-skin-toner-light-20ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/19-tirtir-milk-skin-toner-light-20ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/19-tirtir-milk-skin-toner-light-20ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/19-tirtir-milk-skin-toner-light-20ml-4x5.png"
+      }
     },
     {
-      "product_id": 93078,
-      "title": "Tiam B3 Niacin Sunscreen SPF 50+ PA+++ 50ml",
-      "slug": "tiam-b3-niacin-sunscreen-spf-50-pa-50ml",
+      "product_id": 93117,
+      "title": "CeraVe Hydrating Cream To Foam Cleanser For Normal To Dry Skin 237ml",
+      "slug": "cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml",
       "creative_type": "pipeline",
       "asset_source": "pipeline",
       "design_template": "emart-social-card-v1",
-      "selection_score": 210.13,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/tiam-b3-niacin-sunscreen-spf-50-pa-50ml",
-      "angle": "Daily SPF, Bangladesh-weather friendly.",
-      "hashtags": "#TiamBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-      "captions": {
-        "facebook": "Daily SPF, Bangladesh-weather friendly.\n\nTiam B3 Niacin Sunscreen SPF 50+ PA+++ 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TiamBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Daily SPF, Bangladesh-weather friendly.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TiamBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
-      },
-      "visual_qa": {
-        "product_match_checked": true,
-        "price_clear": true,
-        "no_dummy_product": true,
-        "image_generated": true,
-        "product_image_source": "woocommerce-real-product-cutout",
-        "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
-      },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/05-tiam-b3-niacin-sunscreen-spf-50-pa-50ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/05-tiam-b3-niacin-sunscreen-spf-50-pa-50ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/05-tiam-b3-niacin-sunscreen-spf-50-pa-50ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/05-tiam-b3-niacin-sunscreen-spf-50-pa-50ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/05-tiam-b3-niacin-sunscreen-spf-50-pa-50ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Daily SPF, Bangladesh-weather friendly.\n\nTiam B3 Niacin Sunscreen SPF 50+ PA+++ 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TiamBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/05-tiam-b3-niacin-sunscreen-spf-50-pa-50ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/tiam-b3-niacin-sunscreen-spf-50-pa-50ml"
-        },
-        "instagram": {
-          "caption": "Daily SPF, Bangladesh-weather friendly.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TiamBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/05-tiam-b3-niacin-sunscreen-spf-50-pa-50ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/tiam-b3-niacin-sunscreen-spf-50-pa-50ml"
-        }
-      },
-      "slot": "2026-06-27T12:25:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
-    },
-    {
-      "product_id": 93315,
-      "title": "Kerasys Black Bean Oil Shampoo Anti Hair Loss 1000ml",
-      "slug": "kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml",
-      "creative_type": "pipeline",
-      "asset_source": "pipeline",
-      "design_template": "emart-social-card-v1",
-      "selection_score": 202.62,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml",
-      "angle": "Hair-care day, but make it Korean beauty.",
-      "hashtags": "#KerasysBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-      "captions": {
-        "facebook": "Hair-care day, but make it Korean beauty.\n\nKerasys Black Bean Oil Shampoo Anti Hair Loss 1000ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#KerasysBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#KerasysBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
-      },
-      "visual_qa": {
-        "product_match_checked": true,
-        "price_clear": true,
-        "no_dummy_product": true,
-        "image_generated": true,
-        "product_image_source": "woocommerce-real-product-cutout",
-        "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
-      },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/06-kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/06-kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Hair-care day, but make it Korean beauty.\n\nKerasys Black Bean Oil Shampoo Anti Hair Loss 1000ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#KerasysBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml"
-        },
-        "instagram": {
-          "caption": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#KerasysBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml"
-        }
-      },
-      "slot": "2026-06-27T13:16:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
-    },
-    {
-      "product_id": 63603,
-      "title": "The Ordinary Salicylic Acid 2% Solution 30ml",
-      "slug": "the-ordinary-salicylic-acid-2-solution-30ml",
-      "creative_type": "pipeline",
-      "asset_source": "pipeline",
-      "design_template": "emart-social-card-v1",
-      "selection_score": 161.46,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/the-ordinary-salicylic-acid-2-solution-30ml",
-      "angle": "Authentic beauty pick for today's shelf.",
-      "hashtags": "#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-      "captions": {
-        "facebook": "Authentic beauty pick for today's shelf.\n\nThe Ordinary Salicylic Acid 2% Solution 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Authentic beauty pick for today's shelf.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
-      },
-      "visual_qa": {
-        "product_match_checked": true,
-        "price_clear": true,
-        "no_dummy_product": true,
-        "image_generated": true,
-        "product_image_source": "woocommerce-real-product-cutout",
-        "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
-      },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-the-ordinary-salicylic-acid-2-solution-30ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-the-ordinary-salicylic-acid-2-solution-30ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-the-ordinary-salicylic-acid-2-solution-30ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/07-the-ordinary-salicylic-acid-2-solution-30ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/07-the-ordinary-salicylic-acid-2-solution-30ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Authentic beauty pick for today's shelf.\n\nThe Ordinary Salicylic Acid 2% Solution 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-the-ordinary-salicylic-acid-2-solution-30ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/the-ordinary-salicylic-acid-2-solution-30ml"
-        },
-        "instagram": {
-          "caption": "Authentic beauty pick for today's shelf.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-the-ordinary-salicylic-acid-2-solution-30ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/the-ordinary-salicylic-acid-2-solution-30ml"
-        }
-      },
-      "slot": "2026-06-27T14:07:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
-    },
-    {
-      "product_id": 38103,
-      "title": "PONDS Super Light Gel Oil Free Face Moisturizer 100g",
-      "slug": "ponds-super-light-gel-oil-free-moisturiser",
-      "creative_type": "pipeline",
-      "asset_source": "pipeline",
-      "design_template": "emart-social-card-v1",
-      "selection_score": 137.75,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/ponds-super-light-gel-oil-free-moisturiser",
-      "angle": "Comfort cream for calmer-looking routines.",
-      "hashtags": "#UnileverBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-      "captions": {
-        "facebook": "Comfort cream for calmer-looking routines.\n\nPONDS Super Light Gel Oil Free Face Moisturizer 100g is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#UnileverBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#UnileverBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
-      },
-      "visual_qa": {
-        "product_match_checked": true,
-        "price_clear": true,
-        "no_dummy_product": true,
-        "image_generated": true,
-        "product_image_source": "woocommerce-real-product-cutout",
-        "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
-      },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-ponds-super-light-gel-oil-free-moisturiser-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-ponds-super-light-gel-oil-free-moisturiser-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-ponds-super-light-gel-oil-free-moisturiser-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/08-ponds-super-light-gel-oil-free-moisturiser-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/08-ponds-super-light-gel-oil-free-moisturiser-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Comfort cream for calmer-looking routines.\n\nPONDS Super Light Gel Oil Free Face Moisturizer 100g is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#UnileverBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-ponds-super-light-gel-oil-free-moisturiser-1x1.png",
-          "link": "https://e-mart.com.bd/shop/ponds-super-light-gel-oil-free-moisturiser"
-        },
-        "instagram": {
-          "caption": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#UnileverBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-ponds-super-light-gel-oil-free-moisturiser-4x5.png",
-          "link": "https://e-mart.com.bd/shop/ponds-super-light-gel-oil-free-moisturiser"
-        }
-      },
-      "slot": "2026-06-27T14:58:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
-    },
-    {
-      "product_id": 50630,
-      "title": "CeraVe Skin Renewing Night Cream 48g",
-      "slug": "cerave-skin-renewing-night-cream-48g",
-      "creative_type": "pipeline",
-      "asset_source": "pipeline",
-      "design_template": "emart-social-card-v1",
-      "selection_score": 137.45,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/cerave-skin-renewing-night-cream-48g",
-      "angle": "Comfort cream for calmer-looking routines.",
-      "hashtags": "#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-      "captions": {
-        "facebook": "Comfort cream for calmer-looking routines.\n\nCeraVe Skin Renewing Night Cream 48g is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
-      },
-      "visual_qa": {
-        "product_match_checked": true,
-        "price_clear": true,
-        "no_dummy_product": true,
-        "image_generated": true,
-        "product_image_source": "woocommerce-real-product-cutout",
-        "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
-      },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-cerave-skin-renewing-night-cream-48g-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-cerave-skin-renewing-night-cream-48g-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-cerave-skin-renewing-night-cream-48g-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/09-cerave-skin-renewing-night-cream-48g-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/09-cerave-skin-renewing-night-cream-48g-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Comfort cream for calmer-looking routines.\n\nCeraVe Skin Renewing Night Cream 48g is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-cerave-skin-renewing-night-cream-48g-1x1.png",
-          "link": "https://e-mart.com.bd/shop/cerave-skin-renewing-night-cream-48g"
-        },
-        "instagram": {
-          "caption": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-cerave-skin-renewing-night-cream-48g-4x5.png",
-          "link": "https://e-mart.com.bd/shop/cerave-skin-renewing-night-cream-48g"
-        }
-      },
-      "slot": "2026-06-27T15:49:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
-    },
-    {
-      "product_id": 57150,
-      "title": "Anua Niacinamide 10% + TXA 4% Serum 30ml",
-      "slug": "anua-niacinamide-10-txa-4-serum-30ml",
-      "creative_type": "pipeline",
-      "asset_source": "pipeline",
-      "design_template": "emart-social-card-v1",
-      "selection_score": 129.53,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/anua-niacinamide-10-txa-4-serum-30ml",
-      "angle": "Anua serum energy for a focused routine.",
-      "hashtags": "#AnuaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-      "captions": {
-        "facebook": "Anua serum energy for a focused routine.\n\nAnua Niacinamide 10% + TXA 4% Serum 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#AnuaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Anua serum energy for a focused routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#AnuaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
-      },
-      "visual_qa": {
-        "product_match_checked": true,
-        "price_clear": true,
-        "no_dummy_product": true,
-        "image_generated": true,
-        "product_image_source": "woocommerce-real-product-cutout",
-        "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
-      },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-anua-niacinamide-10-txa-4-serum-30ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-anua-niacinamide-10-txa-4-serum-30ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-anua-niacinamide-10-txa-4-serum-30ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/10-anua-niacinamide-10-txa-4-serum-30ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/10-anua-niacinamide-10-txa-4-serum-30ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Anua serum energy for a focused routine.\n\nAnua Niacinamide 10% + TXA 4% Serum 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#AnuaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-anua-niacinamide-10-txa-4-serum-30ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/anua-niacinamide-10-txa-4-serum-30ml"
-        },
-        "instagram": {
-          "caption": "Anua serum energy for a focused routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#AnuaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-anua-niacinamide-10-txa-4-serum-30ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/anua-niacinamide-10-txa-4-serum-30ml"
-        }
-      },
-      "slot": "2026-06-27T16:41:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
-    },
-    {
-      "product_id": 4149,
-      "title": "CosRx Advanced Snail Mucin Gel Cleanser 150ml",
-      "slug": "cosrx-advanced-snail-mucin-gel-cleanser-150ml",
-      "creative_type": "pipeline",
-      "asset_source": "pipeline",
-      "design_template": "emart-social-card-v1",
-      "selection_score": 121.09,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-gel-cleanser-150ml",
-      "angle": "Clean routine, fresh skin feeling.",
-      "hashtags": "#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-      "captions": {
-        "facebook": "Clean routine, fresh skin feeling.\n\nCosRx Advanced Snail Mucin Gel Cleanser 150ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
-      },
-      "visual_qa": {
-        "product_match_checked": true,
-        "price_clear": true,
-        "no_dummy_product": true,
-        "image_generated": true,
-        "product_image_source": "woocommerce-real-product-cutout",
-        "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
-      },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-advanced-snail-mucin-gel-cleanser-150ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-advanced-snail-mucin-gel-cleanser-150ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-advanced-snail-mucin-gel-cleanser-150ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-advanced-snail-mucin-gel-cleanser-150ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-advanced-snail-mucin-gel-cleanser-150ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Clean routine, fresh skin feeling.\n\nCosRx Advanced Snail Mucin Gel Cleanser 150ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-advanced-snail-mucin-gel-cleanser-150ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-gel-cleanser-150ml"
-        },
-        "instagram": {
-          "caption": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-advanced-snail-mucin-gel-cleanser-150ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-gel-cleanser-150ml"
-        }
-      },
-      "slot": "2026-06-27T17:32:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
-    },
-    {
-      "product_id": 27258,
-      "title": "Cerave Foaming Cleanser for Normal to Oily Skin 236ml (UK Version)",
-      "slug": "cerave-foaming-cleanser-for-normal-to-oily-skin-236ml",
-      "creative_type": "pipeline",
-      "asset_source": "pipeline",
-      "design_template": "emart-social-card-v1",
-      "selection_score": 113.26,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/cerave-foaming-cleanser-for-normal-to-oily-skin-236ml",
+      "selection_score": 88.61,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml",
       "angle": "Clean routine, fresh skin feeling.",
       "hashtags": "#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
       "captions": {
-        "facebook": "Clean routine, fresh skin feeling.\n\nCerave Foaming Cleanser for Normal to Oily Skin 236ml (UK Version) is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "facebook": "Clean routine, fresh skin feeling.\n\nCeraVe Hydrating Cream To Foam Cleanser For Normal To Dry Skin 237ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
         "instagram": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
       },
       "visual_qa": {
@@ -554,45 +169,376 @@
         "image_generated": true,
         "product_image_source": "woocommerce-real-product-cutout",
         "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
       },
+      "index": 6,
+      "slot": "2026-06-27T13:16:00+06:00",
+      "time": "2026-06-27T13:16:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
       "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-cerave-foaming-cleanser-for-normal-to-oily-skin-236ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-cerave-foaming-cleanser-for-normal-to-oily-skin-236ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-cerave-foaming-cleanser-for-normal-to-oily-skin-236ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/12-cerave-foaming-cleanser-for-normal-to-oily-skin-236ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/12-cerave-foaming-cleanser-for-normal-to-oily-skin-236ml-4x5.png"
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/06-cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/06-cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml-4x5.png"
       },
       "platform_posts": {
         "facebook": {
-          "caption": "Clean routine, fresh skin feeling.\n\nCerave Foaming Cleanser for Normal to Oily Skin 236ml (UK Version) is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-cerave-foaming-cleanser-for-normal-to-oily-skin-236ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/cerave-foaming-cleanser-for-normal-to-oily-skin-236ml"
+          "caption": "Clean routine, fresh skin feeling.\n\nCeraVe Hydrating Cream To Foam Cleanser For Normal To Dry Skin 237ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml"
         },
         "instagram": {
           "caption": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-cerave-foaming-cleanser-for-normal-to-oily-skin-236ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/cerave-foaming-cleanser-for-normal-to-oily-skin-236ml"
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/06-cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml"
         }
+      }
+    },
+    {
+      "product_id": 75097,
+      "title": "Melano CC Deep Clear Face Wash 130g",
+      "slug": "melano-cc-deep-clear-face-wash-130g",
+      "creative_type": "pipeline",
+      "asset_source": "pipeline",
+      "design_template": "emart-social-card-v1",
+      "selection_score": 64.64,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/melano-cc-deep-clear-face-wash-130g",
+      "angle": "Clean routine, fresh skin feeling.",
+      "hashtags": "#RohtomentholatumBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "captions": {
+        "facebook": "Clean routine, fresh skin feeling.\n\nMelano CC Deep Clear Face Wash 130g is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#RohtomentholatumBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#RohtomentholatumBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
       },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "image_generated": true,
+        "product_image_source": "woocommerce-real-product-cutout",
+        "background_source": "creative-engine-post-renderer",
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
+      },
+      "index": 7,
+      "slot": "2026-06-27T14:07:00+06:00",
+      "time": "2026-06-27T14:07:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-melano-cc-deep-clear-face-wash-130g-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-melano-cc-deep-clear-face-wash-130g-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-melano-cc-deep-clear-face-wash-130g-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/07-melano-cc-deep-clear-face-wash-130g-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/07-melano-cc-deep-clear-face-wash-130g-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Clean routine, fresh skin feeling.\n\nMelano CC Deep Clear Face Wash 130g is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#RohtomentholatumBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-melano-cc-deep-clear-face-wash-130g-1x1.png",
+          "link": "https://e-mart.com.bd/shop/melano-cc-deep-clear-face-wash-130g"
+        },
+        "instagram": {
+          "caption": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#RohtomentholatumBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/07-melano-cc-deep-clear-face-wash-130g-4x5.png",
+          "link": "https://e-mart.com.bd/shop/melano-cc-deep-clear-face-wash-130g"
+        }
+      }
+    },
+    {
+      "product_id": 36301,
+      "title": "Simple Kind To Skin Hydrating Light Moisturiser 125ml",
+      "slug": "simple-kind-to-skin-hydrating-light-moisturiser-125ml",
+      "creative_type": "pipeline",
+      "asset_source": "pipeline",
+      "design_template": "emart-social-card-v1",
+      "selection_score": 64.61,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/simple-kind-to-skin-hydrating-light-moisturiser-125ml",
+      "angle": "Comfort cream for calmer-looking routines.",
+      "hashtags": "#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "captions": {
+        "facebook": "Comfort cream for calmer-looking routines.\n\nSimple Kind To Skin Hydrating Light Moisturiser 125ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "image_generated": true,
+        "product_image_source": "woocommerce-real-product-cutout",
+        "background_source": "creative-engine-post-renderer",
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
+      },
+      "index": 8,
+      "slot": "2026-06-27T14:58:00+06:00",
+      "time": "2026-06-27T14:58:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-simple-kind-to-skin-hydrating-light-moisturiser-125ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-simple-kind-to-skin-hydrating-light-moisturiser-125ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-simple-kind-to-skin-hydrating-light-moisturiser-125ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/08-simple-kind-to-skin-hydrating-light-moisturiser-125ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/08-simple-kind-to-skin-hydrating-light-moisturiser-125ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Comfort cream for calmer-looking routines.\n\nSimple Kind To Skin Hydrating Light Moisturiser 125ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-simple-kind-to-skin-hydrating-light-moisturiser-125ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/simple-kind-to-skin-hydrating-light-moisturiser-125ml"
+        },
+        "instagram": {
+          "caption": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#SimpleBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/08-simple-kind-to-skin-hydrating-light-moisturiser-125ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/simple-kind-to-skin-hydrating-light-moisturiser-125ml"
+        }
+      }
+    },
+    {
+      "product_id": 4172,
+      "title": "Innisfree Bija Trouble Cleansing Foam 150ml",
+      "slug": "innisfree-jeju-bija-trouble-facial-foam-150ml",
+      "creative_type": "pipeline",
+      "asset_source": "pipeline",
+      "design_template": "emart-social-card-v1",
+      "selection_score": 64.32,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/innisfree-jeju-bija-trouble-facial-foam-150ml",
+      "angle": "Clean routine, fresh skin feeling.",
+      "hashtags": "#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "captions": {
+        "facebook": "Clean routine, fresh skin feeling.\n\nInnisfree Bija Trouble Cleansing Foam 150ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "image_generated": true,
+        "product_image_source": "woocommerce-real-product-cutout",
+        "background_source": "creative-engine-post-renderer",
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
+      },
+      "index": 9,
+      "slot": "2026-06-27T15:49:00+06:00",
+      "time": "2026-06-27T15:49:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-innisfree-jeju-bija-trouble-facial-foam-150ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-innisfree-jeju-bija-trouble-facial-foam-150ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-innisfree-jeju-bija-trouble-facial-foam-150ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/09-innisfree-jeju-bija-trouble-facial-foam-150ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/09-innisfree-jeju-bija-trouble-facial-foam-150ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Clean routine, fresh skin feeling.\n\nInnisfree Bija Trouble Cleansing Foam 150ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-innisfree-jeju-bija-trouble-facial-foam-150ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/innisfree-jeju-bija-trouble-facial-foam-150ml"
+        },
+        "instagram": {
+          "caption": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/09-innisfree-jeju-bija-trouble-facial-foam-150ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/innisfree-jeju-bija-trouble-facial-foam-150ml"
+        }
+      }
+    },
+    {
+      "product_id": 75173,
+      "title": "Shiliya Lavender Fragrance Body Mist 100ml",
+      "slug": "shiliya-lavender-fragrance-body-mist-100ml",
+      "creative_type": "pipeline",
+      "asset_source": "pipeline",
+      "design_template": "emart-social-card-v1",
+      "selection_score": 59.66,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/shiliya-lavender-fragrance-body-mist-100ml",
+      "angle": "Hair-care day, but make it Korean beauty.",
+      "hashtags": "#ShiliyaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "captions": {
+        "facebook": "Hair-care day, but make it Korean beauty.\n\nShiliya Lavender Fragrance Body Mist 100ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#ShiliyaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#ShiliyaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "image_generated": true,
+        "product_image_source": "woocommerce-real-product-cutout",
+        "background_source": "creative-engine-post-renderer",
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
+      },
+      "index": 10,
+      "slot": "2026-06-27T16:41:00+06:00",
+      "time": "2026-06-27T16:41:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-shiliya-lavender-fragrance-body-mist-100ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-shiliya-lavender-fragrance-body-mist-100ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-shiliya-lavender-fragrance-body-mist-100ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/10-shiliya-lavender-fragrance-body-mist-100ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/10-shiliya-lavender-fragrance-body-mist-100ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Hair-care day, but make it Korean beauty.\n\nShiliya Lavender Fragrance Body Mist 100ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#ShiliyaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-shiliya-lavender-fragrance-body-mist-100ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/shiliya-lavender-fragrance-body-mist-100ml"
+        },
+        "instagram": {
+          "caption": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#ShiliyaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/10-shiliya-lavender-fragrance-body-mist-100ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/shiliya-lavender-fragrance-body-mist-100ml"
+        }
+      }
+    },
+    {
+      "product_id": 93160,
+      "title": "COSRX Salicylic Acid Daily Gentle Cleanser 150ml",
+      "slug": "cosrx-salicylic-acid-daily-gentle-cleanser-150ml",
+      "creative_type": "pipeline",
+      "asset_source": "pipeline",
+      "design_template": "emart-social-card-v1",
+      "selection_score": 57.23,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/cosrx-salicylic-acid-daily-gentle-cleanser-150ml",
+      "angle": "Clean routine, fresh skin feeling.",
+      "hashtags": "#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "captions": {
+        "facebook": "Clean routine, fresh skin feeling.\n\nCOSRX Salicylic Acid Daily Gentle Cleanser 150ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "image_generated": true,
+        "product_image_source": "woocommerce-real-product-cutout",
+        "background_source": "creative-engine-post-renderer",
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
+      },
+      "index": 11,
+      "slot": "2026-06-27T17:32:00+06:00",
+      "time": "2026-06-27T17:32:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-salicylic-acid-daily-gentle-cleanser-150ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-salicylic-acid-daily-gentle-cleanser-150ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-salicylic-acid-daily-gentle-cleanser-150ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-salicylic-acid-daily-gentle-cleanser-150ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-salicylic-acid-daily-gentle-cleanser-150ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Clean routine, fresh skin feeling.\n\nCOSRX Salicylic Acid Daily Gentle Cleanser 150ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-salicylic-acid-daily-gentle-cleanser-150ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/cosrx-salicylic-acid-daily-gentle-cleanser-150ml"
+        },
+        "instagram": {
+          "caption": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CosrxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/11-cosrx-salicylic-acid-daily-gentle-cleanser-150ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/cosrx-salicylic-acid-daily-gentle-cleanser-150ml"
+        }
+      }
+    },
+    {
+      "product_id": 2884,
+      "title": "Innisfree The Green Tea Seed Eye Cream 30ml",
+      "slug": "innisfree-the-green-tea-seed-eye-cream-30ml",
+      "creative_type": "pipeline",
+      "asset_source": "pipeline",
+      "design_template": "emart-social-card-v1",
+      "selection_score": 56.97,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/innisfree-the-green-tea-seed-eye-cream-30ml",
+      "angle": "Comfort cream for calmer-looking routines.",
+      "hashtags": "#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "captions": {
+        "facebook": "Comfort cream for calmer-looking routines.\n\nInnisfree The Green Tea Seed Eye Cream 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "image_generated": true,
+        "product_image_source": "woocommerce-real-product-cutout",
+        "background_source": "creative-engine-post-renderer",
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
+      },
+      "index": 12,
       "slot": "2026-06-27T18:23:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
+      "time": "2026-06-27T18:23:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-innisfree-the-green-tea-seed-eye-cream-30ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-innisfree-the-green-tea-seed-eye-cream-30ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-innisfree-the-green-tea-seed-eye-cream-30ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/12-innisfree-the-green-tea-seed-eye-cream-30ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/12-innisfree-the-green-tea-seed-eye-cream-30ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Comfort cream for calmer-looking routines.\n\nInnisfree The Green Tea Seed Eye Cream 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-innisfree-the-green-tea-seed-eye-cream-30ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/innisfree-the-green-tea-seed-eye-cream-30ml"
+        },
+        "instagram": {
+          "caption": "Comfort cream for calmer-looking routines.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#InnisfreeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/12-innisfree-the-green-tea-seed-eye-cream-30ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/innisfree-the-green-tea-seed-eye-cream-30ml"
+        }
+      }
     },
     {
-      "product_id": 50673,
-      "title": "The Ordinary Glycolic Acid 7% Exfoliating Toner 240ml",
-      "slug": "the-ordinary-glycolic-acid-7-exfoliating-toner-240ml",
+      "product_id": 59894,
+      "title": "APLB Glutathione Niacinamide Body Lotion 300ml",
+      "slug": "aplb-glutathione-niacinamide-body-lotion-300ml",
       "creative_type": "pipeline",
       "asset_source": "pipeline",
       "design_template": "emart-social-card-v1",
-      "selection_score": 113.1,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/the-ordinary-glycolic-acid-7-exfoliating-toner-240ml",
-      "angle": "Authentic beauty pick for today's shelf.",
-      "hashtags": "#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "selection_score": 56.83,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/aplb-glutathione-niacinamide-body-lotion-300ml",
+      "angle": "Hair-care day, but make it Korean beauty.",
+      "hashtags": "#AplbBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
       "captions": {
-        "facebook": "Authentic beauty pick for today's shelf.\n\nThe Ordinary Glycolic Acid 7% Exfoliating Toner 240ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Authentic beauty pick for today's shelf.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+        "facebook": "Hair-care day, but make it Korean beauty.\n\nAPLB Glutathione Niacinamide Body Lotion 300ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#AplbBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#AplbBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
       },
       "visual_qa": {
         "product_match_checked": true,
@@ -601,45 +547,52 @@
         "image_generated": true,
         "product_image_source": "woocommerce-real-product-cutout",
         "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
       },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-the-ordinary-glycolic-acid-7-exfoliating-toner-240ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-the-ordinary-glycolic-acid-7-exfoliating-toner-240ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-the-ordinary-glycolic-acid-7-exfoliating-toner-240ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/13-the-ordinary-glycolic-acid-7-exfoliating-toner-240ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/13-the-ordinary-glycolic-acid-7-exfoliating-toner-240ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Authentic beauty pick for today's shelf.\n\nThe Ordinary Glycolic Acid 7% Exfoliating Toner 240ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-the-ordinary-glycolic-acid-7-exfoliating-toner-240ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/the-ordinary-glycolic-acid-7-exfoliating-toner-240ml"
-        },
-        "instagram": {
-          "caption": "Authentic beauty pick for today's shelf.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TheordinaryBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-the-ordinary-glycolic-acid-7-exfoliating-toner-240ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/the-ordinary-glycolic-acid-7-exfoliating-toner-240ml"
-        }
-      },
+      "index": 13,
       "slot": "2026-06-27T19:14:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
+      "time": "2026-06-27T19:14:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-aplb-glutathione-niacinamide-body-lotion-300ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-aplb-glutathione-niacinamide-body-lotion-300ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-aplb-glutathione-niacinamide-body-lotion-300ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/13-aplb-glutathione-niacinamide-body-lotion-300ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/13-aplb-glutathione-niacinamide-body-lotion-300ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Hair-care day, but make it Korean beauty.\n\nAPLB Glutathione Niacinamide Body Lotion 300ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#AplbBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-aplb-glutathione-niacinamide-body-lotion-300ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/aplb-glutathione-niacinamide-body-lotion-300ml"
+        },
+        "instagram": {
+          "caption": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#AplbBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/13-aplb-glutathione-niacinamide-body-lotion-300ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/aplb-glutathione-niacinamide-body-lotion-300ml"
+        }
+      }
     },
     {
-      "product_id": 74885,
-      "title": "Minimalist Vitamin C 10% Face Serum 30ml",
-      "slug": "minimalist-vitamin-c-10-face-serum-30ml",
+      "product_id": 75373,
+      "title": "The Derma Co Tran Zealic Pigmentation Corrector Face Wash 80ml",
+      "slug": "the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml",
       "creative_type": "pipeline",
       "asset_source": "pipeline",
       "design_template": "emart-social-card-v1",
-      "selection_score": 112.97,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/minimalist-vitamin-c-10-face-serum-30ml",
-      "angle": "Minimalist serum energy for a focused routine.",
-      "hashtags": "#MinimalistBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "selection_score": 56.83,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml",
+      "angle": "Clean routine, fresh skin feeling.",
+      "hashtags": "#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
       "captions": {
-        "facebook": "Minimalist serum energy for a focused routine.\n\nMinimalist Vitamin C 10% Face Serum 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#MinimalistBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Minimalist serum energy for a focused routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#MinimalistBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+        "facebook": "Clean routine, fresh skin feeling.\n\nThe Derma Co Tran Zealic Pigmentation Corrector Face Wash 80ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
       },
       "visual_qa": {
         "product_match_checked": true,
@@ -648,45 +601,52 @@
         "image_generated": true,
         "product_image_source": "woocommerce-real-product-cutout",
         "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
       },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-minimalist-vitamin-c-10-face-serum-30ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-minimalist-vitamin-c-10-face-serum-30ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-minimalist-vitamin-c-10-face-serum-30ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/14-minimalist-vitamin-c-10-face-serum-30ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/14-minimalist-vitamin-c-10-face-serum-30ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Minimalist serum energy for a focused routine.\n\nMinimalist Vitamin C 10% Face Serum 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#MinimalistBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-minimalist-vitamin-c-10-face-serum-30ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/minimalist-vitamin-c-10-face-serum-30ml"
-        },
-        "instagram": {
-          "caption": "Minimalist serum energy for a focused routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#MinimalistBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-minimalist-vitamin-c-10-face-serum-30ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/minimalist-vitamin-c-10-face-serum-30ml"
-        }
-      },
+      "index": 14,
       "slot": "2026-06-27T20:05:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
+      "time": "2026-06-27T20:05:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/14-the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/14-the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Clean routine, fresh skin feeling.\n\nThe Derma Co Tran Zealic Pigmentation Corrector Face Wash 80ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml"
+        },
+        "instagram": {
+          "caption": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/14-the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml"
+        }
+      }
     },
     {
-      "product_id": 57130,
-      "title": "Dr. Althea Vitamin C Boosting Serum 30ml",
-      "slug": "dr-althea-vitamin-c-boosting-serum-30ml",
+      "product_id": 75207,
+      "title": "Skin Cafe Silky Tresses Moisturizing Conditioner 120ml",
+      "slug": "skin-cafe-silky-tresses-moisturizing-conditioner-120ml",
       "creative_type": "pipeline",
       "asset_source": "pipeline",
       "design_template": "emart-social-card-v1",
-      "selection_score": 105.79,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/dr-althea-vitamin-c-boosting-serum-30ml",
-      "angle": "Dr. Althea serum energy for a focused routine.",
-      "hashtags": "#DraltheaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "selection_score": 56.83,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/skin-cafe-silky-tresses-moisturizing-conditioner-120ml",
+      "angle": "Hair-care day, but make it Korean beauty.",
+      "hashtags": "#SkincafeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
       "captions": {
-        "facebook": "Dr. Althea serum energy for a focused routine.\n\nDr. Althea Vitamin C Boosting Serum 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#DraltheaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Dr. Althea serum energy for a focused routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#DraltheaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+        "facebook": "Hair-care day, but make it Korean beauty.\n\nSkin Cafe Silky Tresses Moisturizing Conditioner 120ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#SkincafeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#SkincafeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
       },
       "visual_qa": {
         "product_match_checked": true,
@@ -695,45 +655,52 @@
         "image_generated": true,
         "product_image_source": "woocommerce-real-product-cutout",
         "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
       },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-dr-althea-vitamin-c-boosting-serum-30ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-dr-althea-vitamin-c-boosting-serum-30ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-dr-althea-vitamin-c-boosting-serum-30ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/15-dr-althea-vitamin-c-boosting-serum-30ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/15-dr-althea-vitamin-c-boosting-serum-30ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Dr. Althea serum energy for a focused routine.\n\nDr. Althea Vitamin C Boosting Serum 30ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#DraltheaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-dr-althea-vitamin-c-boosting-serum-30ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/dr-althea-vitamin-c-boosting-serum-30ml"
-        },
-        "instagram": {
-          "caption": "Dr. Althea serum energy for a focused routine.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#DraltheaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-dr-althea-vitamin-c-boosting-serum-30ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/dr-althea-vitamin-c-boosting-serum-30ml"
-        }
-      },
+      "index": 15,
       "slot": "2026-06-27T20:56:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
+      "time": "2026-06-27T20:56:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-skin-cafe-silky-tresses-moisturizing-conditioner-120ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-skin-cafe-silky-tresses-moisturizing-conditioner-120ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-skin-cafe-silky-tresses-moisturizing-conditioner-120ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/15-skin-cafe-silky-tresses-moisturizing-conditioner-120ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/15-skin-cafe-silky-tresses-moisturizing-conditioner-120ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Hair-care day, but make it Korean beauty.\n\nSkin Cafe Silky Tresses Moisturizing Conditioner 120ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#SkincafeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-skin-cafe-silky-tresses-moisturizing-conditioner-120ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/skin-cafe-silky-tresses-moisturizing-conditioner-120ml"
+        },
+        "instagram": {
+          "caption": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#SkincafeBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/15-skin-cafe-silky-tresses-moisturizing-conditioner-120ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/skin-cafe-silky-tresses-moisturizing-conditioner-120ml"
+        }
+      }
     },
     {
-      "product_id": 62180,
-      "title": "Celimax The Vita A Retinal Shot Tightening Booster 15ml",
-      "slug": "celimax-the-vita-a-retinal-shot-tightening-booster-15ml",
+      "product_id": 58788,
+      "title": "Tirtir Mask Fit Red Cushion 21N Ivory 18g",
+      "slug": "tirtir-mask-fit-red-cushion-21n-ivory-18g",
       "creative_type": "pipeline",
       "asset_source": "pipeline",
       "design_template": "emart-social-card-v1",
-      "selection_score": 89.08,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/celimax-the-vita-a-retinal-shot-tightening-booster-15ml",
-      "angle": "Authentic beauty pick for today's shelf.",
-      "hashtags": "#CelimaxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "selection_score": 244.8,
+      "selection_basis": "recent_duplicate_catchup_replacement",
+      "link": "https://e-mart.com.bd/shop/tirtir-mask-fit-red-cushion-21n-ivory-18g",
+      "angle": "Cushion coverage with a polished everyday finish.",
+      "hashtags": "#TirtirBangladesh #EmartBeauty #KBeautyBD #SkincareBangladesh",
       "captions": {
-        "facebook": "Authentic beauty pick for today's shelf.\n\nCelimax The Vita A Retinal Shot Tightening Booster 15ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CelimaxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Authentic beauty pick for today's shelf.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+        "facebook": "Cushion coverage with a polished everyday finish.\n\nTirtir Mask Fit Red Cushion 21N Ivory 18g is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TirtirBangladesh #EmartBeauty #KBeautyBD #SkincareBangladesh",
+        "instagram": "Cushion coverage with a polished everyday finish.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TirtirBangladesh #EmartBeauty #KBeautyBD #SkincareBangladesh"
       },
       "visual_qa": {
         "product_match_checked": true,
@@ -744,43 +711,102 @@
         "background_source": "creative-engine-post-renderer",
         "design_consistency_checked": true
       },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/16-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/16-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-4x5.png"
-      },
+      "index": 20,
+      "slot": "2026-06-27T21:25:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
       "platform_posts": {
         "facebook": {
-          "caption": "Authentic beauty pick for today's shelf.\n\nCelimax The Vita A Retinal Shot Tightening Booster 15ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CelimaxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/celimax-the-vita-a-retinal-shot-tightening-booster-15ml"
+          "caption": "Cushion coverage with a polished everyday finish.\n\nTirtir Mask Fit Red Cushion 21N Ivory 18g is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#TirtirBangladesh #EmartBeauty #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/20-tirtir-mask-fit-red-cushion-21n-ivory-18g-1x1.png",
+          "link": "https://e-mart.com.bd/shop/tirtir-mask-fit-red-cushion-21n-ivory-18g"
         },
         "instagram": {
-          "caption": "Authentic beauty pick for today's shelf.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/celimax-the-vita-a-retinal-shot-tightening-booster-15ml"
+          "caption": "Cushion coverage with a polished everyday finish.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#TirtirBangladesh #EmartBeauty #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/20-tirtir-mask-fit-red-cushion-21n-ivory-18g-4x5.png",
+          "link": "https://e-mart.com.bd/shop/tirtir-mask-fit-red-cushion-21n-ivory-18g"
         }
       },
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/20-tirtir-mask-fit-red-cushion-21n-ivory-18g-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/20-tirtir-mask-fit-red-cushion-21n-ivory-18g-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/20-tirtir-mask-fit-red-cushion-21n-ivory-18g-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/20-tirtir-mask-fit-red-cushion-21n-ivory-18g-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/20-tirtir-mask-fit-red-cushion-21n-ivory-18g-4x5.png"
+      }
+    },
+    {
+      "product_id": 75058,
+      "title": "Rajkonna Moisturizing Shower Gel 330ml",
+      "slug": "rajkonna-moisturizing-shower-gel-330ml",
+      "creative_type": "pipeline",
+      "asset_source": "pipeline",
+      "design_template": "emart-social-card-v1",
+      "selection_score": 56.83,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/rajkonna-moisturizing-shower-gel-330ml",
+      "angle": "Hair-care day, but make it Korean beauty.",
+      "hashtags": "#RajkonnaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "captions": {
+        "facebook": "Hair-care day, but make it Korean beauty.\n\nRajkonna Moisturizing Shower Gel 330ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#RajkonnaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#RajkonnaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "image_generated": true,
+        "product_image_source": "woocommerce-real-product-cutout",
+        "background_source": "creative-engine-post-renderer",
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
+      },
+      "index": 16,
       "slot": "2026-06-27T21:48:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
+      "time": "2026-06-27T21:48:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-rajkonna-moisturizing-shower-gel-330ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-rajkonna-moisturizing-shower-gel-330ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-rajkonna-moisturizing-shower-gel-330ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/16-rajkonna-moisturizing-shower-gel-330ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/16-rajkonna-moisturizing-shower-gel-330ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Hair-care day, but make it Korean beauty.\n\nRajkonna Moisturizing Shower Gel 330ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#RajkonnaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-rajkonna-moisturizing-shower-gel-330ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/rajkonna-moisturizing-shower-gel-330ml"
+        },
+        "instagram": {
+          "caption": "Hair-care day, but make it Korean beauty.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#RajkonnaBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/16-rajkonna-moisturizing-shower-gel-330ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/rajkonna-moisturizing-shower-gel-330ml"
+        }
+      }
     },
     {
-      "product_id": 26653,
-      "title": "3w Clinic Intensive Uv Sunblock Cream Spf50 Pa+++ 70ml",
-      "slug": "3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml",
+      "product_id": 57109,
+      "title": "SKIN1004 Centella Hyalu Cica Water Fit Sun Serum 50ml",
+      "slug": "skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml",
       "creative_type": "pipeline",
       "asset_source": "pipeline",
       "design_template": "emart-social-card-v1",
-      "selection_score": 88.97,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml",
+      "selection_score": 56.77,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml",
       "angle": "Daily SPF, Bangladesh-weather friendly.",
-      "hashtags": "#3WclinicBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "hashtags": "#Skin1004Bangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
       "captions": {
-        "facebook": "Daily SPF, Bangladesh-weather friendly.\n\n3w Clinic Intensive Uv Sunblock Cream Spf50 Pa+++ 70ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#3WclinicBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Daily SPF, Bangladesh-weather friendly.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#3WclinicBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+        "facebook": "Daily SPF, Bangladesh-weather friendly.\n\nSKIN1004 Centella Hyalu Cica Water Fit Sun Serum 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#Skin1004Bangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Daily SPF, Bangladesh-weather friendly.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#Skin1004Bangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
       },
       "visual_qa": {
         "product_match_checked": true,
@@ -789,45 +815,106 @@
         "image_generated": true,
         "product_image_source": "woocommerce-real-product-cutout",
         "background_source": "creative-engine-post-renderer",
-        "design_consistency_checked": true
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
       },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/17-3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/17-3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml-4x5.png"
-      },
-      "platform_posts": {
-        "facebook": {
-          "caption": "Daily SPF, Bangladesh-weather friendly.\n\n3w Clinic Intensive Uv Sunblock Cream Spf50 Pa+++ 70ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#3WclinicBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml"
-        },
-        "instagram": {
-          "caption": "Daily SPF, Bangladesh-weather friendly.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#3WclinicBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml"
-        }
-      },
+      "index": 17,
       "slot": "2026-06-27T22:39:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
+      "time": "2026-06-27T22:39:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/17-skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/17-skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Daily SPF, Bangladesh-weather friendly.\n\nSKIN1004 Centella Hyalu Cica Water Fit Sun Serum 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#Skin1004Bangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml"
+        },
+        "instagram": {
+          "caption": "Daily SPF, Bangladesh-weather friendly.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#Skin1004Bangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/17-skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml"
+        }
+      }
     },
     {
-      "product_id": 93108,
-      "title": "CeraVe Hydrating Sunscreen SPF 30 Light Sheer Tint 50ml",
-      "slug": "cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml",
+      "product_id": 75377,
+      "title": "The Derma Co 2% Sali Cinamide Anti Acne Face Wash 80ml",
+      "slug": "the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml",
       "creative_type": "pipeline",
       "asset_source": "pipeline",
       "design_template": "emart-social-card-v1",
-      "selection_score": 88.91,
-      "selection_basis": "performance_weighted",
-      "link": "https://e-mart.com.bd/shop/cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml",
-      "angle": "Daily SPF, Bangladesh-weather friendly.",
-      "hashtags": "#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+      "selection_score": 56.75,
+      "selection_basis": "duplicate_replacement_per_owner",
+      "link": "https://e-mart.com.bd/shop/the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml",
+      "angle": "Clean routine, fresh skin feeling.",
+      "hashtags": "#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
       "captions": {
-        "facebook": "Daily SPF, Bangladesh-weather friendly.\n\nCeraVe Hydrating Sunscreen SPF 30 Light Sheer Tint 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-        "instagram": "Daily SPF, Bangladesh-weather friendly.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+        "facebook": "Clean routine, fresh skin feeling.\n\nThe Derma Co 2% Sali Cinamide Anti Acne Face Wash 80ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+        "instagram": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "image_generated": true,
+        "product_image_source": "woocommerce-real-product-cutout",
+        "background_source": "creative-engine-post-renderer",
+        "design_consistency_checked": true,
+        "duplicate_replacement": true
+      },
+      "index": 18,
+      "slot": "2026-06-27T23:30:00+06:00",
+      "time": "2026-06-27T23:30:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/18-the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/18-the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml-4x5.png"
+      },
+      "platform_posts": {
+        "facebook": {
+          "caption": "Clean routine, fresh skin feeling.\n\nThe Derma Co 2% Sali Cinamide Anti Acne Face Wash 80ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml"
+        },
+        "instagram": {
+          "caption": "Clean routine, fresh skin feeling.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#ThedermacoBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml"
+        }
+      }
+    },
+    {
+      "product_id": 36655,
+      "title": "Neutrogena Hydro Boost Water Gel Moisturiser 50ml",
+      "slug": "neutrogena-hydro-boost-aqua-water-gel-50ml",
+      "creative_type": "pipeline",
+      "asset_source": "pipeline",
+      "design_template": "emart-social-card-v1",
+      "selection_score": 244.5,
+      "selection_basis": "recent_duplicate_catchup_replacement",
+      "link": "https://e-mart.com.bd/shop/neutrogena-hydro-boost-aqua-water-gel-50ml",
+      "angle": "Light hydration for a fresh, non-heavy feel.",
+      "hashtags": "#NeutrogenaBangladesh #EmartSkincare #SkincareBD #SkincareBangladesh",
+      "captions": {
+        "facebook": "Light hydration for a fresh, non-heavy feel.\n\nNeutrogena Hydro Boost Water Gel Moisturiser 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#NeutrogenaBangladesh #EmartSkincare #SkincareBD #SkincareBangladesh",
+        "instagram": "Light hydration for a fresh, non-heavy feel.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#NeutrogenaBangladesh #EmartSkincare #SkincareBD #SkincareBangladesh"
       },
       "visual_qa": {
         "product_match_checked": true,
@@ -838,27 +925,39 @@
         "background_source": "creative-engine-post-renderer",
         "design_consistency_checked": true
       },
-      "images": {
-        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/18-cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/18-cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml-4x5.png"
-      },
+      "index": 21,
+      "slot": "2026-06-27T23:55:00+06:00",
+      "platforms": [
+        "facebook",
+        "instagram"
+      ],
+      "approval_status": "approved_for_scheduled_run",
       "platform_posts": {
         "facebook": {
-          "caption": "Daily SPF, Bangladesh-weather friendly.\n\nCeraVe Hydrating Sunscreen SPF 30 Light Sheer Tint 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml-1x1.png",
-          "link": "https://e-mart.com.bd/shop/cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml"
+          "caption": "Light hydration for a fresh, non-heavy feel.\n\nNeutrogena Hydro Boost Water Gel Moisturiser 50ml is today's Emart pick for a cleaner, smarter beauty routine.\n\nWant this one?\n\nBuy link in first comment.\n\n#NeutrogenaBangladesh #EmartSkincare #SkincareBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/21-neutrogena-hydro-boost-aqua-water-gel-50ml-1x1.png",
+          "link": "https://e-mart.com.bd/shop/neutrogena-hydro-boost-aqua-water-gel-50ml"
         },
         "instagram": {
-          "caption": "Daily SPF, Bangladesh-weather friendly.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#CeraveBangladesh #EmartSkincare #KBeautyBD #SkincareBangladesh",
-          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/18-cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml-4x5.png",
-          "link": "https://e-mart.com.bd/shop/cerave-hydrating-sunscreen-spf-30-light-sheer-tint-50ml"
+          "caption": "Light hydration for a fresh, non-heavy feel.\n\nToday's Emart pick for a cleaner, smarter beauty routine.\n\nDM to order or tap the link in bio.\n\n#NeutrogenaBangladesh #EmartSkincare #SkincareBD #SkincareBangladesh",
+          "image_url": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/21-neutrogena-hydro-boost-aqua-water-gel-50ml-4x5.png",
+          "link": "https://e-mart.com.bd/shop/neutrogena-hydro-boost-aqua-water-gel-50ml"
         }
       },
-      "slot": "2026-06-27T23:30:00+06:00",
-      "approval_status": "approved_for_scheduled_run"
+      "images": {
+        "default": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/21-neutrogena-hydro-boost-aqua-water-gel-50ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/21-neutrogena-hydro-boost-aqua-water-gel-50ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/images/social/2026-06-27/daily-18-plus-6-reels/21-neutrogena-hydro-boost-aqua-water-gel-50ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/21-neutrogena-hydro-boost-aqua-water-gel-50ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-27/daily-18-plus-6-reels/21-neutrogena-hydro-boost-aqua-water-gel-50ml-4x5.png"
+      }
     }
-  ]
+  ],
+  "engine": {
+    "name": "emart-social-engine",
+    "version": 1
+  },
+  "qa_status": "pass",
+  "publish_gate": "approved_for_scheduled_run",
+  "publish_allowed": true
 }

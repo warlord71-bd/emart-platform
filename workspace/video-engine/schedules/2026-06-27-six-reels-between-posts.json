@@ -6,7 +6,7 @@
   "platforms": [
     "facebook"
   ],
-  "schedule_note": "Six reels spaced between the 18 regular image posts for 24 total daily touchpoints.",
+  "schedule_note": "Six reels spaced between the regular image posts; slot 2 moved to 12:38 BDT after live MP4 URL fix, and first BOJ reel is covered by the 19:35 catch-up schedule.",
   "items": [
     {
       "index": 1,
@@ -23,16 +23,17 @@
     },
     {
       "index": 2,
-      "slot": "2026-06-27T12:00:00+06:00",
+      "slot": "2026-06-27T12:38:00+06:00",
       "title": "Dr. Althea 345 Relief Cream",
       "product_id": 58162,
       "job_path": "workspace/video-engine/jobs/approved/05-althea-345-relief-cream.json",
-      "media_url": "https://e-mart.com.bd/public/videos/reels/althea-345-relief-cream.mp4?v=1782392452",
+      "media_url": "https://e-mart.com.bd/public/videos/reels/althea-345-relief-cream.mp4?v=1782540508",
       "platforms": [
         "facebook"
       ],
       "caption": "সংবেদনশীল, লালচে আর জ্বালাভাবযুক্ত ত্বকের জন্য Dr. Althea 345 Relief Cream — Cica, Panthenol আর Niacinamide-এর সুদিং কেয়ার। ত্বক হয় শান্ত, কোমল আর মজবুত। Vegan ও ১০০% অরিজিনাল কোরিয়ান প্রোডাক্ট, এখন Emart-এ সারা বাংলাদেশে ক্যাশ অন ডেলিভারিতে। দাম ৳1999।\n\n#DrAlthea #345ReliefCream #CicaCream #SkincareBangladesh #EmartSkincare",
-      "qa_score": 96
+      "qa_score": 96,
+      "rescheduled_reason": "Original 12:00 slot passed while missing live MP4 URLs were synced and cache-busted."
     },
     {
       "index": 3,
@@ -40,7 +41,7 @@
       "title": "COSRX Advanced Snail 96 Mucin Power Essence",
       "product_id": 2591,
       "job_path": "workspace/video-engine/jobs/approved/05-cosrx-snail-clean-demo.json",
-      "media_url": "https://e-mart.com.bd/public/videos/reels/cosrx-snail-clean-demo.mp4?v=1782359252",
+      "media_url": "https://e-mart.com.bd/public/videos/reels/cosrx-snail-clean-demo.mp4?v=1782540508",
       "platforms": [
         "facebook"
       ],
@@ -66,7 +67,7 @@
       "title": "CosRx Advanced Snail 92 All In One Cream 100g",
       "product_id": 3700,
       "job_path": "workspace/video-engine/jobs/review/30-2026-06-26-cosrx-advanced-snail-92-all-in-one-cream-fa.json",
-      "media_url": "https://e-mart.com.bd/public/videos/reels/2026-06-26-cosrx-advanced-snail-92-all-in-one-cream-fa.mp4?v=1782468092",
+      "media_url": "https://e-mart.com.bd/public/videos/reels/2026-06-26-cosrx-advanced-snail-92-all-in-one-cream-fa.mp4?v=1782540508",
       "platforms": [
         "facebook"
       ],
@@ -79,7 +80,7 @@
       "title": "Simple Refreshing Facial Wash 150ml",
       "product_id": 36319,
       "job_path": "workspace/video-engine/jobs/_manual_2026-06-27-simple-refreshing-facial-wash-reel.json",
-      "media_url": "https://e-mart.com.bd/public/videos/reels/2026-06-27-simple-refreshing-facial-wash-reel.mp4?v=1782514856",
+      "media_url": "https://e-mart.com.bd/public/videos/reels/2026-06-27-simple-refreshing-facial-wash-reel.mp4?v=1782540508",
       "platforms": [
         "facebook"
       ],
