@@ -298,6 +298,8 @@ apps/web/src/app/layout.tsx.backup
 apps/web/ops/
 apps/web/public/audit/
 apps/web/public/images/payment-methods.original-black-bg.png
+# Generated social campaign media; keep source/review data in workspace, not bulky public assets.
+apps/web/public/images/social/20*/
 apps_web_backup/
 apps/web_backup/
 .codex

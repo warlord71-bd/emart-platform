@@ -69,21 +69,28 @@ def prompt(product_title: str, creative_type: str) -> str:
         else ""
     )
     return (
-        "You are a strict social-commerce image QA reviewer for Emart Skincare Bangladesh. "
+        "You are a strict senior art director and social-commerce image QA reviewer for Emart Skincare Bangladesh. "
         f"Expected product: {product_title}. Creative type: {creative_type}. "
-        "Inspect the image for publishing safety. Check: "
+        "Inspect the image like a human buyer would before publishing. Check: "
         "1) the main visible product/package appears to match the expected product title/brand, "
         "2) price and old price are readable if present and not covered by badges/text. Bangladesh price styles such as "
         "'360 TAKA', '৳360', or a crossed-out old number count as clear when the digits are plainly visible; the price may be "
         "in a corner and does not need to be printed on the package. Set price_clear=true when no price is shown, "
         "3) no dummy/wrong extra product package is shown, "
         f"{model_rule}"
-        "4) layout is not obviously broken or overlapping. "
+        "4) layout is not broken, clipped, crowded, or overlapping, "
+        "5) one clear hero product/image is dominant unless the creative is explicitly a bundle/comparison, "
+        "6) visible text looks intentional, readable, correctly spelled, and not machine-garbled, "
+        "7) design feels premium enough for a skincare ecommerce brand, not cheap, random, or copied from another retailer, "
+        "8) design is visually consistent with one theme instead of mixed card styles, "
+        "9) there are no artifacts from old generated social cards, screenshots, watermarks, or reference-brand logos. "
         "Reply ONLY minified JSON with exactly these keys: "
         '{"product_match":true|false,"price_clear":true|false,"no_dummy_product":true|false,'
-        '"model_hand_ok":true|false|null,"layout_ok":true|false,"issues":["short issue"],'
+        '"model_hand_ok":true|false|null,"layout_ok":true|false,"single_clear_hero":true|false,'
+        '"text_quality_ok":true|false,"premium_finish":true|false,"design_consistent":true|false,'
+        '"source_artifact_free":true|false,"issues":["short issue"],'
         '"score":0-100}. '
-        "Use false for uncertain product identity; do not be polite."
+        "Use false for uncertainty, mediocre design, or anything you would not approve for a paid social post. Do not be polite."
     )
 
 
@@ -150,12 +157,25 @@ def inspect_image(image_path: Path, product_title: str, creative_type: str) -> d
             result = ask_model(image_b64, mime_type, product_title, creative_type, model)
             issues = [str(item)[:120] for item in result.get("issues", []) if item]
             blockers = []
-            for key in ("product_match", "price_clear", "no_dummy_product", "layout_ok"):
+            for key in (
+                "product_match",
+                "price_clear",
+                "no_dummy_product",
+                "layout_ok",
+                "single_clear_hero",
+                "text_quality_ok",
+                "premium_finish",
+                "design_consistent",
+                "source_artifact_free",
+            ):
                 if result.get(key) is not True:
                     blockers.append(key)
             if creative_type == "model" and result.get("model_hand_ok") is not True:
                 blockers.append("model_hand_ok")
-            status = "fail" if blockers else ("warn" if issues else "pass")
+            score = int(result.get("score") or 0)
+            if score and score < 72 and "low_art_direction_score" not in blockers:
+                blockers.append("low_art_direction_score")
+            status = "fail" if blockers else ("warn" if issues or (score and score < 82) else "pass")
             return {
                 **result,
                 "status": status,

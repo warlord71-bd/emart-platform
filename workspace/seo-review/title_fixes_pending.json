@@ -196,5 +196,14 @@
     "reason": "pos 8.5, 128 impr, 0.0% CTR",
     "proposed_at": "2026-06-26T00:30:15Z",
     "status": "pending"
+  },
+  {
+    "product_id": 36063,
+    "slug": "m-a-c-matte-lipstick-kinda-sexy",
+    "old_title": "(none — fallback: M.A.C Matte Lipstick – Kinda Sexy Price in Bangladesh | Emart)",
+    "new_title": "M.A.C Matte Lipstick – Kinda Sexy Price in Bangladesh | Emart",
+    "reason": "pos 3.4, 77 impr, 1.3% CTR",
+    "proposed_at": "2026-06-28T00:30:14Z",
+    "status": "pending"
   }
 ]

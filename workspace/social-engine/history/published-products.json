@@ -234,6 +234,81 @@
           "slug": "neutrogena-hydro-boost-water-gel"
         }
       ]
+    },
+    {
+      "id": "2026-06-27-daily-18-plus-6-reels",
+      "date": "2026-06-27",
+      "name": "June 27 Daily Social + Reels",
+      "items": [
+        {
+          "product_id": 59341,
+          "slug": "christian-dean-secret-tone-up-sun-cream-70ml"
+        },
+        {
+          "product_id": 58371,
+          "slug": "tirtir-milk-skin-toner-light-20ml"
+        },
+        {
+          "product_id": 93117,
+          "slug": "cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml"
+        },
+        {
+          "product_id": 75097,
+          "slug": "melano-cc-deep-clear-face-wash-130g"
+        },
+        {
+          "product_id": 36301,
+          "slug": "simple-kind-to-skin-hydrating-light-moisturiser-125ml"
+        },
+        {
+          "product_id": 4172,
+          "slug": "innisfree-jeju-bija-trouble-facial-foam-150ml"
+        },
+        {
+          "product_id": 75173,
+          "slug": "shiliya-lavender-fragrance-body-mist-100ml"
+        },
+        {
+          "product_id": 93160,
+          "slug": "cosrx-salicylic-acid-daily-gentle-cleanser-150ml"
+        },
+        {
+          "product_id": 2884,
+          "slug": "innisfree-the-green-tea-seed-eye-cream-30ml"
+        },
+        {
+          "product_id": 59894,
+          "slug": "aplb-glutathione-niacinamide-body-lotion-300ml"
+        },
+        {
+          "product_id": 75373,
+          "slug": "the-derma-co-tran-zealic-pigmentation-corrector-face-wash-80ml"
+        },
+        {
+          "product_id": 75207,
+          "slug": "skin-cafe-silky-tresses-moisturizing-conditioner-120ml"
+        },
+        {
+          "product_id": 58788,
+          "slug": "tirtir-mask-fit-red-cushion-21n-ivory-18g"
+        },
+        {
+          "product_id": 75058,
+          "slug": "rajkonna-moisturizing-shower-gel-330ml"
+        },
+        {
+          "product_id": 57109,
+          "slug": "skin1004-centella-hyalu-cica-water-fit-sun-serum-50ml"
+        },
+        {
+          "product_id": 75377,
+          "slug": "the-derma-co-2-sali-cinamide-anti-acne-face-wash-80ml"
+        },
+        {
+          "product_id": 36655,
+          "slug": "neutrogena-hydro-boost-aqua-water-gel-50ml"
+        }
+      ]
     }
   ]
 }

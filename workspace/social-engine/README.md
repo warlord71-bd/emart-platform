@@ -11,10 +11,19 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
 - Normalizes a campaign manifest into scheduled platform posts.
 - Applies duplicate guards against recent campaigns.
 - Can record completed campaigns back into `history/published-products.json`.
+- Records owner-rejected plans/lists into `history/rejected-products.json` so rejected products do
+  not return in the next approval pack.
 - Generates 1080×1350 Instagram variants. When Creative Engine is available this is a native
   `post_4x5` render; otherwise it falls back to the older blur-derived crop.
 - Emits a contact sheet in the review pack for fast visual comparison.
 - Reports design-template and asset-source consistency in QA.
+- Runs local Creative QA before approval:
+  - design theme registry checks
+  - image resolution/aspect/detail checks
+  - product image source metadata checks
+  - OCR text scan with Tesseract
+  - rejected visual-design hash matching
+  - theme/category/container mismatch warnings
 - Checks visual QA flags before publishing is allowed:
   - real product identity checked
   - price area clear
@@ -22,6 +31,9 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
   - model-hand/product placement checked for model creatives
 - Optionally runs actual image inspection through free OpenRouter vision models; failures or provider
   unavailability block the review pack instead of trusting the manifest checkboxes.
+- Vision QA now uses a stricter art-director rubric: product identity, one clear hero item, text
+  quality, premium finish, design consistency, model/product match, source artifacts, and layout
+  safety must all pass.
 - Deduplicates reused FB/IG assets and checks up to four unique images concurrently. Each free-model
   request has a hard transport timeout; the provider can still make a full campaign preflight slow.
 - Checks platform caption rules:
@@ -34,6 +46,53 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
   - `review.md`
   - scheduler preview JS files
   - optional video-engine queue jobs for items marked `make_reel: true`
+
+## Product Image Standard
+
+- Use one clear, high-quality exact-product image per post/reel featured item.
+- Do not use confusing multi-product collages unless the campaign is explicitly approved as a bundle,
+  kit, or comparison creative.
+- Image source priority is: existing high-quality local/Woo image, better exact-product Emart asset,
+  then trustworthy web-fetched exact-product image when our system image is missing or too weak.
+- Review packs should note the image source so the owner can approve or reject before scheduling.
+
+## Creative QA Standard
+
+The system should fail before scheduling when a rendered asset looks like something a human would
+reject. The local gate is deterministic and runs by default during `plan`; the model-based gate is
+added with `--vision-qa`.
+
+Review output files:
+
+```text
+qa-report.json
+creative-qa-report.json
+vision-qa-report.json      # only when --vision-qa is used
+review.md
+contact-sheet.jpg          # when --contact-sheet is used
+```
+
+The local gate blocks or warns on:
+
+- low-resolution or wrong-ratio assets
+- OCR-visible reference brands such as Nykaa/Skintastic
+- placeholder text, unsafe visible claims, or garbled text
+- generated-image source metadata without exact-product cutout/source proof
+- repeated visual layouts stored in `history/rejected-designs.json`
+- theme/category/container mismatches, for example SPF sky theme on a haircare item
+
+Approved candidate theme IDs:
+
+```text
+aqua_bubble_hero
+soft_grid_concern
+clinical_note_card
+search_concern_card
+summer_spf_sky
+```
+
+`emart-social-card-v1` remains supported as a legacy fallback, but new campaign work should move to
+one of the approved candidate themes after owner approval.
 
 ## Run
 
@@ -91,6 +150,34 @@ node workspace/scripts/active/meta_schedule.js \
 
 Dry-runs never record history. Re-running FB/IG with the same campaign ID safely replaces the same
 history row instead of duplicating it.
+
+## Rejection Memory
+
+When the owner rejects a campaign or approval table, record it before picking the next batch:
+
+```bash
+python3 workspace/social-engine/social_engine.py reject \
+  --source workspace/audit/active/social-reel-approval-YYYYMMDD/approval-table.csv \
+  --reason "owner rejected creative/list"
+```
+
+Both `pick` and `plan` read `history/published-products.json` and
+`history/rejected-products.json` by default. Published products use the campaign lookback window;
+rejected products default to a 14-day block, adjustable with `--rejected-lookback-days`.
+When the rejected source is a campaign JSON with local assets, `reject` also stores visual image
+signatures in `history/rejected-designs.json`, so similar rejected layouts can be blocked later.
+
+## Generated Asset Cleanup
+
+After a campaign is posted or closed, dry-run asset cleanup first:
+
+```bash
+python3 workspace/social-engine/social_engine.py cleanup-assets \
+  --campaign workspace/social-engine/output/YYYY-MM-DD/CAMPAIGN/campaign-plan.json
+```
+
+If the listed files are safe to clear, rerun with `--apply`. Assets are moved to
+`/root/.attic-YYYY-MM-DD/emart-social-assets/<campaign>/` rather than deleted.
 
 `--performance` is optional. When present, the picker ranks eligible non-repeated Woo products by
 the score file format shown in `performance/example.json`:

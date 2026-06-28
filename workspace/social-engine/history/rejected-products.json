@@ -1,0 +1,314 @@
+{
+  "campaigns": [
+    {
+      "id": "2026-06-28-2026-06-28-owner-rejected-approval-pack",
+      "date": "2026-06-28",
+      "name": "2026-06-28-owner-rejected-approval-pack",
+      "status": "rejected",
+      "reason": "owner rejected repeated approval list",
+      "source": "workspace/audit/active/social-reel-approval-20260628/approval-table.csv",
+      "items": [
+        {
+          "product_id": "74897",
+          "slug": "muuchstac-ocean-facewash-for-man-100ml",
+          "title": "Muuchstac Ocean Facewash For Man 100ml"
+        },
+        {
+          "product_id": "26653",
+          "slug": "3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml",
+          "title": "3w Clinic Intensive Uv Sunblock Cream Spf50 Pa+++ 70ml"
+        },
+        {
+          "product_id": "63749",
+          "slug": "isntree-tw-real-bifida-ampoule-50ml",
+          "title": "Isntree TW-Real Bifida Ampoule 50ml"
+        },
+        {
+          "product_id": "74792",
+          "slug": "mamaearth-onion-hair-fall-control-shampoo-250ml",
+          "title": "Mamaearth Onion Hair Fall Control Shampoo 250ml"
+        },
+        {
+          "product_id": "63801",
+          "slug": "rated-green-cold-press-tamanu-oil-soothing-scalp-pack-50ml",
+          "title": "Rated Green Cold Press Tamanu Oil Soothing Scalp Pack 50ml"
+        },
+        {
+          "product_id": "74078",
+          "slug": "innsaei-lightweight-uv-sunscreen-50ml",
+          "title": "Innsaei Lightweight UV Sunscreen 50ml"
+        },
+        {
+          "product_id": "62819",
+          "slug": "neutrogena-bright-boost-night-cream-50ml",
+          "title": "Neutrogena Bright Boost Night Cream 50ml"
+        },
+        {
+          "product_id": "92836",
+          "slug": "missha-all-around-safe-block-aqua-sun-gel-spf50-pa-50ml",
+          "title": "MISSHA All Around Safe Block Aqua Sun Gel SPF50+ PA++++ 50ml"
+        },
+        {
+          "product_id": "26327",
+          "slug": "confume-argan-hair-shampoo-750-ml",
+          "title": "Welcos Confume Argan Hair Shampoo 750 ml"
+        },
+        {
+          "product_id": "26098",
+          "slug": "cerave-hydrating-facial-cleanser-473ml",
+          "title": "CERAVE Hydrating Facial Cleanser 473ml"
+        },
+        {
+          "product_id": "2811",
+          "slug": "innisfree-jeju-orchid-enriched-cream-50ml",
+          "title": "Innisfree Jeju Orchid Enriched Cream 50ml"
+        },
+        {
+          "product_id": "93139",
+          "slug": "beauty-of-joseon-revive-eye-serum-ginseng-retinal-30ml",
+          "title": "Beauty of Joseon Revive Eye Serum Ginseng Retinal 30ml"
+        },
+        {
+          "product_id": "4147",
+          "slug": "jumiso-lets-go-kit",
+          "title": "Jumiso Let's Go! Kit"
+        },
+        {
+          "product_id": "75211",
+          "slug": "skin-cafe-sunscreen-spf-50-pa-lightweight-non-greasy-60g",
+          "title": "Skin Cafe Sunscreen SPF 50 PA+++ Lightweight & Non-Greasy (60g)"
+        },
+        {
+          "product_id": "63831",
+          "slug": "cerave-foaming-facial-cleanser-87-ml",
+          "title": "Cerave Foaming Facial Cleanser - 87 ml"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-28-2026-06-28-owner-rejected-reschedule-campaign",
+      "date": "2026-06-28",
+      "name": "2026-06-28-owner-rejected-reschedule-campaign",
+      "status": "rejected",
+      "reason": "owner rejected/flagged prior June 28 social list",
+      "source": "workspace/social-engine/campaigns/2026-06-28-daily-18-reschedule.json",
+      "items": [
+        {
+          "product_id": 2591,
+          "slug": "cosrx-advanced-snail-mucin-96-power-essence-100ml",
+          "title": "COSRX Advanced Snail Mucin 96 Power Essence 100ml"
+        },
+        {
+          "product_id": 56975,
+          "slug": "skin1004-madagascar-centella-tone-brightening-capsule-ampoule-100ml",
+          "title": "SKIN1004 Madagascar Centella Tone Brightening Capsule Ampoule 100ml"
+        },
+        {
+          "product_id": 36319,
+          "slug": "simple-refreshing-facial-wash-150ml",
+          "title": "Simple Refreshing Facial Wash 150ml"
+        },
+        {
+          "product_id": 42224,
+          "slug": "neutrogena-hydro-boost-water-gel",
+          "title": "Neutrogena Hydro Boost Water Gel 50ml"
+        },
+        {
+          "product_id": 3700,
+          "slug": "cosrx-advanced-snail-92-all-in-one-cream100g",
+          "title": "CosRx Advanced Snail 92 All In One Cream 100g"
+        },
+        {
+          "product_id": 26134,
+          "slug": "cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml",
+          "title": "Cerave moisturising cream for dry to very dry skin 50ml"
+        },
+        {
+          "product_id": 93078,
+          "slug": "tiam-b3-niacin-sunscreen-spf-50-pa-50ml",
+          "title": "Tiam B3 Niacin Sunscreen SPF 50+ PA+++ 50ml"
+        },
+        {
+          "product_id": 93315,
+          "slug": "kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml",
+          "title": "Kerasys Black Bean Oil Shampoo Anti Hair Loss 1000ml"
+        },
+        {
+          "product_id": 63603,
+          "slug": "the-ordinary-salicylic-acid-2-solution-30ml",
+          "title": "The Ordinary Salicylic Acid 2% Solution 30ml"
+        },
+        {
+          "product_id": 24437,
+          "slug": "cerave-acne-foaming-cream-cleanser",
+          "title": "CeraVe Acne Foaming Cream Cleanser 150ml"
+        },
+        {
+          "product_id": 38103,
+          "slug": "ponds-super-light-gel-oil-free-moisturiser",
+          "title": "PONDS Super Light Gel Oil Free Face Moisturizer 100g"
+        },
+        {
+          "product_id": 50630,
+          "slug": "cerave-skin-renewing-night-cream-48g",
+          "title": "CeraVe Skin Renewing Night Cream 48g"
+        },
+        {
+          "product_id": 57150,
+          "slug": "anua-niacinamide-10-txa-4-serum-30ml",
+          "title": "Anua Niacinamide 10% + TXA 4% Serum 30ml"
+        },
+        {
+          "product_id": 4149,
+          "slug": "cosrx-advanced-snail-mucin-gel-cleanser-150ml",
+          "title": "CosRx Advanced Snail Mucin Gel Cleanser 150ml"
+        },
+        {
+          "product_id": 27258,
+          "slug": "cerave-foaming-cleanser-for-normal-to-oily-skin-236ml",
+          "title": "Cerave Foaming Cleanser for Normal to Oily Skin 236ml (UK Version)"
+        },
+        {
+          "product_id": 50673,
+          "slug": "the-ordinary-glycolic-acid-7-exfoliating-toner-240ml",
+          "title": "The Ordinary Glycolic Acid 7% Exfoliating Toner 240ml"
+        },
+        {
+          "product_id": 74885,
+          "slug": "minimalist-vitamin-c-10-face-serum-30ml",
+          "title": "Minimalist Vitamin C 10% Face Serum 30ml"
+        },
+        {
+          "product_id": 57130,
+          "slug": "dr-althea-vitamin-c-boosting-serum-30ml",
+          "title": "Dr. Althea Vitamin C Boosting Serum 30ml"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-28-2026-06-28-owner-rejected-strict-campaign",
+      "date": "2026-06-28",
+      "name": "2026-06-28-owner-rejected-strict-campaign",
+      "status": "rejected",
+      "reason": "owner rejected repeated June 28 draft list",
+      "source": "workspace/social-engine/campaigns/2026-06-28-daily-18-strict-3day.json",
+      "items": [
+        {
+          "product_id": 74877,
+          "slug": "minimalist-niacinamide-5-face-serum-30ml",
+          "title": "Minimalist Niacinamide 5% Face Serum 30ml"
+        },
+        {
+          "product_id": 74897,
+          "slug": "muuchstac-ocean-facewash-for-man-100ml",
+          "title": "Muuchstac Ocean Facewash For Man 100ml"
+        },
+        {
+          "product_id": 62678,
+          "slug": "w-dressroom-dress-living-clear-perfume-no-97-april-cotton-70ml",
+          "title": "W.DRESSROOM Dress & Living Clear Perfume No.97 April Cotton 70ml"
+        },
+        {
+          "product_id": 26653,
+          "slug": "3w-clinic-intensive-uv-sunblock-cream-spf50-pa-70ml",
+          "title": "3w Clinic Intensive Uv Sunblock Cream Spf50 Pa+++ 70ml"
+        },
+        {
+          "product_id": 63749,
+          "slug": "isntree-tw-real-bifida-ampoule-50ml",
+          "title": "Isntree TW-Real Bifida Ampoule 50ml"
+        },
+        {
+          "product_id": 74792,
+          "slug": "mamaearth-onion-hair-fall-control-shampoo-250ml",
+          "title": "Mamaearth Onion Hair Fall Control Shampoo 250ml"
+        },
+        {
+          "product_id": 63801,
+          "slug": "rated-green-cold-press-tamanu-oil-soothing-scalp-pack-50ml",
+          "title": "Rated Green Cold Press Tamanu Oil Soothing Scalp Pack 50ml"
+        },
+        {
+          "product_id": 74078,
+          "slug": "innsaei-lightweight-uv-sunscreen-50ml",
+          "title": "Innsaei Lightweight UV Sunscreen 50ml"
+        },
+        {
+          "product_id": 62819,
+          "slug": "neutrogena-bright-boost-night-cream-50ml",
+          "title": "Neutrogena Bright Boost Night Cream 50ml"
+        },
+        {
+          "product_id": 92836,
+          "slug": "missha-all-around-safe-block-aqua-sun-gel-spf50-pa-50ml",
+          "title": "MISSHA All Around Safe Block Aqua Sun Gel SPF50+ PA++++ 50ml"
+        },
+        {
+          "product_id": 26327,
+          "slug": "confume-argan-hair-shampoo-750-ml",
+          "title": "Welcos Confume Argan Hair Shampoo 750 ml"
+        },
+        {
+          "product_id": 58671,
+          "slug": "kojie-san-skin-lightening-soap-65gm-x3",
+          "title": "Kojie san skin lightening soap 65gm x3"
+        },
+        {
+          "product_id": 26098,
+          "slug": "cerave-hydrating-facial-cleanser-473ml",
+          "title": "CERAVE Hydrating Facial Cleanser 473ml"
+        },
+        {
+          "product_id": 2811,
+          "slug": "innisfree-jeju-orchid-enriched-cream-50ml",
+          "title": "Innisfree Jeju Orchid Enriched Cream 50ml"
+        },
+        {
+          "product_id": 93139,
+          "slug": "beauty-of-joseon-revive-eye-serum-ginseng-retinal-30ml",
+          "title": "Beauty of Joseon Revive Eye Serum Ginseng Retinal 30ml"
+        },
+        {
+          "product_id": 4147,
+          "slug": "jumiso-lets-go-kit",
+          "title": "Jumiso Let's Go! Kit"
+        },
+        {
+          "product_id": 75211,
+          "slug": "skin-cafe-sunscreen-spf-50-pa-lightweight-non-greasy-60g",
+          "title": "Skin Cafe Sunscreen SPF 50 PA+++ Lightweight & Non-Greasy (60g)"
+        },
+        {
+          "product_id": 63831,
+          "slug": "cerave-foaming-facial-cleanser-87-ml",
+          "title": "Cerave Foaming Facial Cleanser &#8211; 87 ml"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-29-2026-06-29-manual-risk-filtered-products",
+      "date": "2026-06-29",
+      "name": "2026-06-29-manual-risk-filtered-products",
+      "status": "rejected",
+      "reason": "manual filter: non-beauty/risky wording/recent Minimalist rejection pattern",
+      "source": "workspace/social-engine/campaigns/2026-06-29-owner-approval-fresh-22.json",
+      "items": [
+        {
+          "product_id": 58444,
+          "slug": "harada-shizuoka-matcha-powder-100g",
+          "title": "HARADA Shizuoka Matcha Powder 100g"
+        },
+        {
+          "product_id": 60699,
+          "slug": "kerasys-amino-acid-protein-permanent-hair-color-natural-black",
+          "title": "Kerasys Amino Acid & Protein Permanent Hair Color – NATURAL BLACK"
+        },
+        {
+          "product_id": 74887,
+          "slug": "minimalist-2-salicylic-acid-serum-30ml",
+          "title": "Minimalist 2% Salicylic Acid Serum 30ml"
+        }
+      ]
+    }
+  ]
+}

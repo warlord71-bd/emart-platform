@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-26",
+  "generated": "2026-06-28",
   "source": "read-only WordPress _emart_humanized postmeta",
-  "total_completed": 317,
+  "total_completed": 326,
   "entries": [
     {
       "post_id": 2583,
@@ -50,6 +50,13 @@
       "slug": "some-by-mi-snail-truecica-miracle-repair-low-ph-gel-cleanser-100ml",
       "path": "/shop/some-by-mi-snail-truecica-miracle-repair-low-ph-gel-cleanser-100ml",
       "completed_marker": "2026-06-01 12:06:08",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 2627,
+      "slug": "some-by-mi-truecica-mineral-calming-tone-up-suncream-50ml",
+      "path": "/shop/some-by-mi-truecica-mineral-calming-tone-up-suncream-50ml",
+      "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
     {
@@ -207,6 +214,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 3674,
+      "slug": "jumiso-have-a-good-cream-snail-centella",
+      "path": "/shop/jumiso-have-a-good-cream-snail-centella",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 3700,
       "slug": "cosrx-advanced-snail-92-all-in-one-cream100g",
       "path": "/shop/cosrx-advanced-snail-92-all-in-one-cream100g",
@@ -232,6 +246,13 @@
       "slug": "neogen-real-cica-micellar-cleansing-foam",
       "path": "/shop/neogen-real-cica-micellar-cleansing-foam",
       "completed_marker": "2026-06-01 20:43:08",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 4010,
+      "slug": "im-from-rice-toner-30g",
+      "path": "/shop/im-from-rice-toner-30g",
+      "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
     {
@@ -375,6 +396,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 26101,
+      "slug": "cerave-repairing-hand-cream-50ml",
+      "path": "/shop/cerave-repairing-hand-cream-50ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 26134,
       "slug": "cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml",
       "path": "/shop/cerave-moisturising-cream-for-dry-to-very-dry-skin-50ml",
@@ -431,6 +459,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 26362,
+      "slug": "simple-kind-to-skin-soothing-facial-toner-200ml",
+      "path": "/shop/simple-kind-to-skin-soothing-facial-toner-200ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 26368,
       "slug": "simple-daily-detox-purifying-face-wash-150ml",
       "path": "/shop/simple-daily-detox-purifying-face-wash-150ml",
@@ -476,6 +511,20 @@
       "post_id": 26660,
       "slug": "cos-de-baha-azelaic-acid-10-serum-30ml-3",
       "path": "/shop/cos-de-baha-azelaic-acid-10-serum-30ml-3",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 26747,
+      "slug": "cos-de-baha-2-hydroquinone-brightening-serum-30ml",
+      "path": "/shop/cos-de-baha-2-hydroquinone-brightening-serum-30ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 26748,
+      "slug": "buy-cos-de-baha-acne-clearing-serum-acne-treatment-30ml",
+      "path": "/shop/buy-cos-de-baha-acne-clearing-serum-acne-treatment-30ml",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
@@ -735,6 +784,13 @@
       "post_id": 43702,
       "slug": "axis-y-dark-spot-correcting-glow-serum-50ml",
       "path": "/shop/axis-y-dark-spot-correcting-glow-serum-50ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 43709,
+      "slug": "beaute-melasma-x-3d-whitening-clinic-cream-35ml",
+      "path": "/shop/beaute-melasma-x-3d-whitening-clinic-cream-35ml",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
@@ -1204,6 +1260,13 @@
       "post_id": 59894,
       "slug": "aplb-glutathione-niacinamide-body-lotion-300ml",
       "path": "/shop/aplb-glutathione-niacinamide-body-lotion-300ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 60013,
+      "slug": "anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini",
+      "path": "/shop/anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },

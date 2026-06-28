@@ -3,12 +3,14 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import csv
 import glob
 import datetime as dt
 import hmac
 import hashlib
 import json
 import re
+import shutil
 import ssl
 import sys
 import urllib.parse
@@ -20,7 +22,7 @@ _WORKSPACE = Path(__file__).resolve().parents[2]
 if str(_WORKSPACE) not in sys.path:
     sys.path.insert(0, str(_WORKSPACE))
 
-from social_engine import vision_qa
+from social_engine import creative_qa, vision_qa
 
 try:
     from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -449,12 +451,13 @@ def parse_time(value: str) -> dt.datetime:
 
 def load_history(path: Path, current_date: str, lookback_days: int) -> dict[str, Any]:
     if not path.exists():
-        return {"blocked_product_ids": set(), "blocked_slugs": set(), "dates": []}
+        return {"blocked_product_ids": set(), "blocked_slugs": set(), "dates": [], "sources": []}
     history = read_json(path)
     current = dt.date.fromisoformat(current_date)
     blocked_ids: set[str] = set()
     blocked_slugs: set[str] = set()
     used_dates: list[str] = []
+    sources: list[str] = []
     for entry in history.get("campaigns", []):
         date_value = entry.get("date")
         if not date_value:
@@ -465,12 +468,38 @@ def load_history(path: Path, current_date: str, lookback_days: int) -> dict[str,
             continue
         if 0 <= (current - used_date).days <= lookback_days and date_value != current_date:
             used_dates.append(date_value)
+            sources.append(f"{path.name}:{entry.get('id') or entry.get('name') or date_value}")
             for item in entry.get("items", []):
                 if item.get("product_id") is not None:
                     blocked_ids.add(str(item["product_id"]))
                 if item.get("slug"):
                     blocked_slugs.add(item["slug"])
-    return {"blocked_product_ids": blocked_ids, "blocked_slugs": blocked_slugs, "dates": used_dates}
+    return {"blocked_product_ids": blocked_ids, "blocked_slugs": blocked_slugs, "dates": used_dates, "sources": sources}
+
+
+def merge_histories(*histories: dict[str, Any]) -> dict[str, Any]:
+    merged = {"blocked_product_ids": set(), "blocked_slugs": set(), "dates": [], "sources": []}
+    for history in histories:
+        merged["blocked_product_ids"].update(history.get("blocked_product_ids", set()))
+        merged["blocked_slugs"].update(history.get("blocked_slugs", set()))
+        merged["dates"].extend(history.get("dates", []))
+        merged["sources"].extend(history.get("sources", []))
+    merged["dates"] = sorted(set(merged["dates"]))
+    merged["sources"] = sorted(set(merged["sources"]))
+    return merged
+
+
+def load_campaign_memory(
+    published_history: Path,
+    rejected_history: Path | None,
+    current_date: str,
+    published_lookback_days: int,
+    rejected_lookback_days: int,
+) -> dict[str, Any]:
+    histories = [load_history(published_history, current_date, published_lookback_days)]
+    if rejected_history:
+        histories.append(load_history(rejected_history, current_date, rejected_lookback_days))
+    return merge_histories(*histories)
 
 
 def append_history(path: Path, campaign: dict[str, Any]) -> dict[str, Any]:
@@ -491,6 +520,57 @@ def append_history(path: Path, campaign: dict[str, Any]) -> dict[str, Any]:
     })
     write_json(path, history)
     return history
+
+
+def append_rejection(path: Path, source: Path, date: str, name: str, reason: str, items: list[dict[str, Any]]) -> dict[str, Any]:
+    history = read_json(path) if path.exists() else {"campaigns": []}
+    rejection_id = slugify(f"{date}-{name}")
+    history["campaigns"] = [entry for entry in history.get("campaigns", []) if entry.get("id") != rejection_id]
+    history["campaigns"].append({
+        "id": rejection_id,
+        "date": date,
+        "name": name,
+        "status": "rejected",
+        "reason": reason,
+        "source": str(source),
+        "items": [
+            {
+                "product_id": item.get("product_id"),
+                "slug": item.get("slug"),
+                "title": item.get("title") or item.get("product"),
+            }
+            for item in items
+        ],
+    })
+    write_json(path, history)
+    return history
+
+
+def slug_from_link(value: str) -> str:
+    parsed = urllib.parse.urlparse(value or "")
+    path = parsed.path.strip("/")
+    if path.startswith("shop/"):
+        return path.removeprefix("shop/").strip("/")
+    return ""
+
+
+def rejection_items_from_csv(path: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            product_id = row.get("product_id") or row.get("Product ID")
+            title = row.get("product") or row.get("Product") or row.get("title") or row.get("Title")
+            link = row.get("link") or row.get("Link") or ""
+            slug = row.get("slug") or row.get("Slug") or slug_from_link(link)
+            rows.append({"product_id": product_id, "title": title, "slug": slug})
+    return rows
+
+
+def rejection_items_from_source(path: Path) -> tuple[str, str, list[dict[str, Any]]]:
+    if path.suffix.lower() == ".csv":
+        return path.stem, dt.date.today().isoformat(), rejection_items_from_csv(path)
+    campaign = read_json(path)
+    return campaign.get("name") or path.stem, campaign.get("date") or dt.date.today().isoformat(), campaign.get("items", [])
 
 
 def distribute_times(date: str, count: int, start: str, end: str, timezone: str) -> list[str]:
@@ -770,6 +850,8 @@ def qa_campaign(
     history: dict[str, Any],
     vision_report: dict[str, Any] | None = None,
     vision_required: bool = False,
+    rejected_design_hashes: list[dict[str, Any]] | None = None,
+    creative_qa_enabled: bool = True,
 ) -> dict[str, Any]:
     lookback_dates = history.get("dates", [])
     blocked_ids = history.get("blocked_product_ids", set())
@@ -782,6 +864,11 @@ def qa_campaign(
     expected = config.get("platform_rules", {})
     design_templates: set[str] = set()
     asset_sources: dict[str, int] = {}
+    creative_report: dict[str, Any] = {
+        "items": {},
+        "summary": {"pass": 0, "warn": 0, "fail": 0, "unavailable": 0, "platform_checks": 0},
+    }
+    creative_cache: dict[tuple[str, str, str], dict[str, Any]] = {}
 
     for item in campaign["items"]:
         ref = f"{item['index']:02d} {item['title']}"
@@ -831,6 +918,39 @@ def qa_campaign(
                     want = expected.get(platform, {}).get("image")
                     if want and tuple(want) != tuple(dims):
                         warnings.append({"item": ref, "platform": platform, "code": "non_preferred_image_size", "actual": dims, "preferred": want})
+                if creative_qa_enabled and local and local.exists():
+                    key = (str(local), item.get("title", ""), platform)
+                    if key not in creative_cache:
+                        creative_cache[key] = creative_qa.inspect_asset(
+                            local,
+                            item,
+                            platform,
+                            rejected_hashes=rejected_design_hashes,
+                        )
+                    creative_result = creative_cache[key]
+                    creative_report["items"].setdefault(ref, {})[platform] = {
+                        **creative_result,
+                        "image_url": image_url,
+                    }
+                    creative_status = creative_result.get("status", "unavailable")
+                    creative_report["summary"][creative_status] = creative_report["summary"].get(creative_status, 0) + 1
+                    creative_report["summary"]["platform_checks"] += 1
+                    if creative_status == "fail":
+                        errors.append({
+                            "item": ref,
+                            "platform": platform,
+                            "code": "creative_qa_fail",
+                            "issues": creative_result.get("issues", []),
+                            "blockers": creative_result.get("blockers", []),
+                        })
+                    elif creative_status == "warn":
+                        warnings.append({
+                            "item": ref,
+                            "platform": platform,
+                            "code": "creative_qa_warn",
+                            "warnings": creative_result.get("warnings", []),
+                            "score": creative_result.get("score"),
+                        })
             vision_result = (vision_report or {}).get("items", {}).get(ref, {}).get(platform)
             if vision_required and not vision_result:
                 errors.append({"item": ref, "platform": platform, "code": "vision_qa_missing"})
@@ -879,6 +999,7 @@ def qa_campaign(
         "errors": errors,
         "warnings": warnings,
         "vision_qa": vision_report,
+        "creative_qa": creative_report if creative_report["summary"]["platform_checks"] else None,
         "design_consistency": {
             "templates": sorted(design_templates),
             "asset_sources": asset_sources,
@@ -904,6 +1025,11 @@ def markdown_review(campaign: dict[str, Any], qa: dict[str, Any]) -> str:
     if qa.get("vision_qa"):
         lines.extend([
             f"- Vision QA: {json.dumps(qa['vision_qa'].get('summary', {}), ensure_ascii=False)}",
+            "",
+        ])
+    if qa.get("creative_qa"):
+        lines.extend([
+            f"- Creative QA: {json.dumps(qa['creative_qa'].get('summary', {}), ensure_ascii=False)}",
             "",
         ])
     if qa.get("design_consistency"):
@@ -997,7 +1123,13 @@ def plan(args: argparse.Namespace) -> int:
     config = read_json(args.config)
     raw = read_json(args.campaign)
     campaign = normalize_campaign(raw, config)
-    history = load_history(args.history, campaign["date"], config.get("defaults", {}).get("repeat_lookback_days", 2))
+    history = load_campaign_memory(
+        args.history,
+        args.rejected_history,
+        campaign["date"],
+        config.get("defaults", {}).get("repeat_lookback_days", 2),
+        args.rejected_lookback_days,
+    )
 
     out_dir = args.out or ROOT / "output" / campaign["date"] / campaign["id"]
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -1009,13 +1141,24 @@ def plan(args: argparse.Namespace) -> int:
     if args.make_ig_variants:
         made = maybe_make_instagram_variants(campaign)
         print(f"[social-engine] IG 4:5 variants: {made}")
-    qa = qa_campaign(campaign, config, history, vision_report=vision_report, vision_required=args.vision_qa)
+    rejected_design_hashes = creative_qa.load_rejected_design_hashes(args.rejected_design_history)
+    qa = qa_campaign(
+        campaign,
+        config,
+        history,
+        vision_report=vision_report,
+        vision_required=args.vision_qa,
+        rejected_design_hashes=rejected_design_hashes,
+        creative_qa_enabled=not args.no_creative_qa,
+    )
     campaign["qa_status"] = qa["status"]
     campaign["publish_gate"] = qa["publish_gate"]
     campaign["publish_allowed"] = qa["publish_allowed"]
 
     write_json(out_dir / "campaign-plan.json", campaign)
     write_json(out_dir / "qa-report.json", qa)
+    if qa.get("creative_qa"):
+        write_json(out_dir / "creative-qa-report.json", qa["creative_qa"])
     (out_dir / "review.md").write_text(markdown_review(campaign, qa))
     if args.contact_sheet:
         make_contact_sheet(campaign, out_dir / "contact-sheet.jpg")
@@ -1039,7 +1182,13 @@ def plan(args: argparse.Namespace) -> int:
 
 def pick(args: argparse.Namespace) -> int:
     config = read_json(args.config)
-    history = load_history(args.history, args.date, args.lookback_days or config.get("defaults", {}).get("repeat_lookback_days", 2))
+    history = load_campaign_memory(
+        args.history,
+        args.rejected_history,
+        args.date,
+        args.lookback_days or config.get("defaults", {}).get("repeat_lookback_days", 2),
+        args.rejected_lookback_days,
+    )
     performance = load_performance_model(args.performance)
     blocked_ids = history.get("blocked_product_ids", set())
     blocked_slugs = history.get("blocked_slugs", set())
@@ -1111,6 +1260,8 @@ def pick(args: argparse.Namespace) -> int:
     write_json(args.out, campaign)
     print(f"[social-engine] picked {len(items)} products -> {args.out}")
     print("[social-engine] blocked recent IDs:", len(blocked_ids), "blocked slugs:", len(blocked_slugs))
+    if history.get("sources"):
+        print("[social-engine] memory sources:", len(history["sources"]))
     if performance.get("enabled"):
         print(f"[social-engine] performance model: {args.performance}")
     return 0
@@ -1120,6 +1271,70 @@ def record(args: argparse.Namespace) -> int:
     campaign = read_json(args.campaign)
     append_history(args.history, campaign)
     print(f"[social-engine] recorded {len(campaign.get('items', []))} items into {args.history}")
+    return 0
+
+
+def reject(args: argparse.Namespace) -> int:
+    name, source_date, items = rejection_items_from_source(args.source)
+    date = args.date or source_date
+    reason = args.reason or "owner rejected creative/list"
+    append_rejection(args.history, args.source, date, args.name or name, reason, items)
+    design_hashes = 0
+    if args.source.suffix.lower() == ".json":
+        try:
+            campaign = normalize_campaign(read_json(args.source), read_json(ROOT / "config" / "defaults.json"))
+            design_hashes = creative_qa.append_rejected_design_hashes(
+                args.design_history,
+                args.source,
+                collect_asset_paths(campaign),
+                reason,
+            )
+        except Exception:
+            design_hashes = 0
+    print(f"[social-engine] rejected-memory recorded {len(items)} items into {args.history}")
+    if design_hashes:
+        print(f"[social-engine] rejected-design memory recorded {design_hashes} image signature(s) into {args.design_history}")
+    return 0
+
+
+def collect_asset_paths(campaign: dict[str, Any]) -> list[Path]:
+    paths: set[Path] = set()
+    for item in campaign.get("items", []):
+        for value in (item.get("images") or {}).values():
+            if isinstance(value, str):
+                local = public_url_to_local(value)
+                if local:
+                    paths.add(local)
+                elif value and not value.startswith(("http://", "https://")):
+                    paths.add((REPO / value).resolve() if not Path(value).is_absolute() else Path(value))
+        for post in (item.get("platform_posts") or {}).values():
+            value = post.get("image_url")
+            if isinstance(value, str):
+                local = public_url_to_local(value)
+                if local:
+                    paths.add(local)
+    return sorted(path for path in paths if path.exists() and path.is_file())
+
+
+def cleanup_assets(args: argparse.Namespace) -> int:
+    campaign = read_json(args.campaign)
+    paths = collect_asset_paths(campaign)
+    attic = args.attic or Path(f"/root/.attic-{dt.date.today().isoformat()}") / "emart-social-assets" / (campaign.get("id") or args.campaign.stem)
+    print(json.dumps({
+        "apply": args.apply,
+        "campaign": campaign.get("id") or campaign.get("name"),
+        "asset_count": len(paths),
+        "attic": str(attic),
+        "assets": [str(path) for path in paths],
+    }, indent=2, ensure_ascii=False))
+    if not args.apply:
+        return 0
+    attic.mkdir(parents=True, exist_ok=True)
+    for path in paths:
+        rel = path.relative_to(REPO) if path.is_relative_to(REPO) else Path(path.name)
+        dest = attic / rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(path), str(dest))
     return 0
 
 
@@ -1217,9 +1432,17 @@ def main() -> int:
     plan_parser.add_argument("--campaign", type=Path, required=True)
     plan_parser.add_argument("--config", type=Path, default=ROOT / "config" / "defaults.json")
     plan_parser.add_argument("--history", type=Path, default=ROOT / "history" / "published-products.json")
+    plan_parser.add_argument("--rejected-history", type=Path, default=ROOT / "history" / "rejected-products.json",
+                             help="Owner-rejected campaign/list memory; blocks repeats during review planning")
+    plan_parser.add_argument("--rejected-design-history", type=Path, default=ROOT / "history" / "rejected-designs.json",
+                             help="Owner-rejected visual-design signatures; blocks repeated bad layouts")
+    plan_parser.add_argument("--rejected-lookback-days", type=int, default=14,
+                             help="How long to block owner-rejected products from review packs")
     plan_parser.add_argument("--out", type=Path)
     plan_parser.add_argument("--vision-qa", action="store_true",
                              help="Run free OpenRouter vision QA and block on unavailable/failing image inspection")
+    plan_parser.add_argument("--no-creative-qa", action="store_true",
+                             help="Disable local creative QA. Use only for debugging; approval packs should keep it on.")
     plan_parser.add_argument("--make-ig-variants", action="store_true",
                              help="Generate 1080x1350 IG assets from local 1:1 FB assets and update the campaign plan")
     plan_parser.add_argument("--contact-sheet", action="store_true",
@@ -1233,9 +1456,13 @@ def main() -> int:
     pick_parser.add_argument("--out", type=Path, required=True)
     pick_parser.add_argument("--config", type=Path, default=ROOT / "config" / "defaults.json")
     pick_parser.add_argument("--history", type=Path, default=ROOT / "history" / "published-products.json")
+    pick_parser.add_argument("--rejected-history", type=Path, default=ROOT / "history" / "rejected-products.json",
+                             help="Owner-rejected campaign/list memory; blocks repeats during product picking")
     pick_parser.add_argument("--count", type=int, default=18)
     pick_parser.add_argument("--pipeline-count", type=int, default=10)
     pick_parser.add_argument("--lookback-days", type=int)
+    pick_parser.add_argument("--rejected-lookback-days", type=int, default=14,
+                             help="How long to block owner-rejected products from product picking")
     pick_parser.add_argument("--max-pages", type=int, default=5)
     pick_parser.add_argument("--orderby", default="popularity")
     pick_parser.add_argument("--performance", type=Path,
@@ -1248,6 +1475,26 @@ def main() -> int:
     record_parser.add_argument("--campaign", type=Path, required=True)
     record_parser.add_argument("--history", type=Path, default=ROOT / "history" / "published-products.json")
     record_parser.set_defaults(func=record)
+
+    reject_parser = sub.add_parser("reject", help="Record an owner-rejected campaign/list into repeat-avoidance memory")
+    reject_parser.add_argument("--source", type=Path, required=True,
+                               help="Campaign JSON or approval-table CSV that the owner rejected")
+    reject_parser.add_argument("--history", type=Path, default=ROOT / "history" / "rejected-products.json")
+    reject_parser.add_argument("--design-history", type=Path, default=ROOT / "history" / "rejected-designs.json",
+                               help="Store rejected image/layout signatures for future creative QA blocking")
+    reject_parser.add_argument("--date", help="Decision date; defaults to source campaign date or today")
+    reject_parser.add_argument("--name", help="Override memory entry name")
+    reject_parser.add_argument("--reason", default="owner rejected creative/list")
+    reject_parser.set_defaults(func=reject)
+
+    cleanup_parser = sub.add_parser("cleanup-assets", help="Archive generated social assets after a posted/closed campaign")
+    cleanup_parser.add_argument("--campaign", type=Path, required=True,
+                                help="Campaign JSON or campaign-plan.json whose local assets should be archived")
+    cleanup_parser.add_argument("--attic", type=Path,
+                                help="Archive directory; defaults to /root/.attic-YYYY-MM-DD/emart-social-assets/<campaign>")
+    cleanup_parser.add_argument("--apply", action="store_true",
+                                help="Actually move files. Omit for dry-run.")
+    cleanup_parser.set_defaults(func=cleanup_assets)
 
     perf_parser = sub.add_parser("import-performance", help="Import social/GSC/GMC/GA4 performance into picker score JSON")
     perf_parser.add_argument("--campaign", type=Path,

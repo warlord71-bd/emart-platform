@@ -8,8 +8,8 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from social_engine.engine import import_ga4_scores, import_gmc_scores, import_gsc_scores, normalize_campaign, performance_score, qa_campaign, social_metric_score  # noqa: E402
-from social_engine import vision_qa  # noqa: E402
+from social_engine.engine import import_ga4_scores, import_gmc_scores, import_gsc_scores, load_campaign_memory, normalize_campaign, performance_score, qa_campaign, social_metric_score  # noqa: E402
+from social_engine import creative_qa, vision_qa  # noqa: E402
 
 
 def base_config():
@@ -78,6 +78,22 @@ class SocialEngineTests(unittest.TestCase):
         )
         self.assertEqual(qa["status"], "blocked")
         self.assertTrue(any(error["code"] == "recent_product_repeat" for error in qa["errors"]))
+
+    def test_rejected_history_blocks_campaign_memory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            published = Path(tmp) / "published.json"
+            rejected = Path(tmp) / "rejected.json"
+            published.write_text(json.dumps({"campaigns": []}))
+            rejected.write_text(json.dumps({
+                "campaigns": [{
+                    "date": "2026-06-23",
+                    "id": "owner-rejected",
+                    "items": [{"product_id": 100, "slug": "cosrx-test-serum"}],
+                }]
+            }))
+            memory = load_campaign_memory(published, rejected, "2026-06-24", 2, 14)
+        self.assertIn("100", memory["blocked_product_ids"])
+        self.assertIn("cosrx-test-serum", memory["blocked_slugs"])
 
     def test_missing_model_hand_qa_blocks_model_creative(self):
         raw = campaign_with_item()
@@ -149,6 +165,40 @@ class SocialEngineTests(unittest.TestCase):
         self.assertEqual(result["status"], "fail")
         self.assertIn("price_clear", result["blockers"])
         self.assertIn("model_hand_ok", result["blockers"])
+
+    def test_local_creative_qa_blocks_low_resolution(self):
+        if creative_qa.Image is None:
+            self.skipTest("Pillow unavailable")
+        with tempfile.NamedTemporaryFile(suffix=".png") as image:
+            creative_qa.Image.new("RGB", (480, 480), "white").save(image.name)
+            result = creative_qa.inspect_asset(
+                Path(image.name),
+                {"title": "COSRX Test Serum", "design_template": "soft_grid_concern", "product_image_source": "woocommerce-real-product-cutout"},
+                "instagram",
+            )
+        self.assertEqual(result["status"], "fail")
+        self.assertIn("image_resolution_too_low", result["blockers"])
+
+    def test_visible_text_issues_catch_reference_brand(self):
+        issues = creative_qa.visible_text_issues("NYKAA SKINTASTIC SALE lorem ipsum")
+        self.assertIn("competitor_or_reference_brand_visible", issues)
+        self.assertIn("reference_campaign_brand_visible", issues)
+        self.assertIn("placeholder_text_visible", issues)
+
+    def test_rejected_design_hash_blocks_repeat(self):
+        if creative_qa.Image is None:
+            self.skipTest("Pillow unavailable")
+        with tempfile.NamedTemporaryFile(suffix=".png") as image:
+            creative_qa.Image.new("RGB", (1080, 1350), "white").save(image.name)
+            ahash = creative_qa.average_hash(Path(image.name))
+            result = creative_qa.inspect_asset(
+                Path(image.name),
+                {"title": "COSRX Test Serum", "design_template": "soft_grid_concern", "product_image_source": "woocommerce-real-product-cutout"},
+                "instagram",
+                rejected_hashes=[{"ahash": ahash, "reason": "owner rejected same layout"}],
+            )
+        self.assertEqual(result["status"], "fail")
+        self.assertIn("matches_rejected_design_memory", result["blockers"])
 
     def test_performance_score_combines_product_brand_and_category(self):
         product = {
