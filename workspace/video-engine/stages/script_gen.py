@@ -22,6 +22,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "lib"))
 import gemini_client  # noqa: E402
+from quality_gates import validate_script_payload  # noqa: E402
 
 ENV_PATHS = [
     Path("/root/emart-platform/apps/web/.env.local"),
@@ -74,10 +75,12 @@ def build_prompt(product, category, persona, language, price):
         "(Latin letters, e.g. 'Skin thake naram-komol') — Bengali SCRIPT does NOT shape correctly on "
         "video. The 'caption' and 'voiceover' fields SHOULD use natural Bangla script (platforms render "
         "those natively).\n\n"
-        "Return ONLY valid minified JSON, no markdown, with exactly these keys:\n"
-        '{"hook":"<=5 words","benefits":["<=5 words","<=5 words","<=5 words"],'
-        '"cta":"<=5 words","caption":"2-3 sentence platform caption","hashtags":["#tag", "..."],'
-        '"voiceover":"30-40 word spoken script"}'
+        "Return ONLY valid minified JSON, no markdown. Use this exact object shape, but replace "
+        "every value with finished copy, never instructions or placeholders:\n"
+        '{"hook":"short romanized on-screen hook","benefits":["short romanized benefit one",'
+        '"short romanized benefit two","short romanized benefit three"],"cta":"short romanized CTA",'
+        '"caption":"natural Bangla platform caption","hashtags":["#EmartSkincare","#SkincareBD"],'
+        '"voiceover":"natural Bangla spoken reel script"}'
     )
 
 
@@ -204,6 +207,11 @@ def generate(product, category, persona, language, price, provider="auto"):
                 data.setdefault("hashtags", ["#EmartSkincare"])
                 data.setdefault("voiceover", data["caption"])
                 data["benefits"] = (data.get("benefits") or [])[:3] or ["Gentle daily care"]
+                quality = validate_script_payload(data, product=product, category=category)
+                if quality["status"] == "fail":
+                    sys.stderr.write(f"script_gen {name} invalid script: {quality['errors']}\n")
+                    continue
+                data["_quality"] = quality
                 data["_provider"] = name
                 if used_model:
                     data["_model"] = used_model
@@ -213,6 +221,10 @@ def generate(product, category, persona, language, price, provider="auto"):
 
     try:
         data = fallback(product, price)
+        quality = validate_script_payload(data, product=product, category=category)
+        if quality["status"] == "fail":
+            raise RuntimeError(f"template script failed quality gate: {quality['errors']}")
+        data["_quality"] = quality
         data["_provider"] = "template"
         return data
     except Exception as e:
@@ -231,8 +243,15 @@ def main():
     ap.add_argument("--provider", default="auto", choices=("auto", "gemini", "openrouter", "template"))
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
-    data = fallback(a.product, a.price) if a.provider == "template" else \
-        generate(a.product, a.category, a.persona, a.language, a.price, provider=a.provider)
+    if a.provider == "template":
+        data = fallback(a.product, a.price)
+        quality = validate_script_payload(data, product=a.product, category=a.category)
+        if quality["status"] == "fail":
+            raise SystemExit(f"template script failed quality gate: {quality['errors']}")
+        data["_quality"] = quality
+        data["_provider"] = "template"
+    else:
+        data = generate(a.product, a.category, a.persona, a.language, a.price, provider=a.provider)
     Path(a.out).write_text(json.dumps(data, ensure_ascii=False, indent=2))
     print(a.out)
 

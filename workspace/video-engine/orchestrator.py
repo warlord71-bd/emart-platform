@@ -203,6 +203,13 @@ def tick():
 
     # hard failure (ffprobe / broken render) or opted-in vision block -> auto-reject, notify
     if job.get("status") == "failed":
+        if job.get("_non_retryable_failure"):
+            job_path.rename(REJECTED / job_path.name)
+            reason = qa.get("status_note") or job.get("stages", {}).get("content_qa", {}).get("errors") \
+                or job.get("stages", {}).get("script_qa", {}).get("errors") or "non-retryable content failure"
+            notify(f"❌ Reel rejected (content QA): {jid}\n{reason}")
+            print(f"[orchestrator] {jid} -> rejected (content QA)")
+            return
         retries = job.get("_retry_count", 0)
         if retries < MAX_RETRIES:
             job["_retry_count"] = retries + 1

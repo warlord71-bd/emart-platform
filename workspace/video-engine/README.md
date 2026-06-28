@@ -8,11 +8,13 @@ Every capability (image, face, b-roll video, talking video, voice, storage) is a
 free ↔ mid ↔ premium, chosen per job. Config: `config/providers.json`. Flip `enabled` +
 add the API key env to switch a tier on — no code change.
 
-## Status (2026-06-26)
+## Status (2026-06-28)
 - ✅ `config/providers.json` — tier registry (free tier enabled, mid/premium stubbed). Image layer UNIFIED.
 - ✅ `hyperframes/render.js` + `stages/reel_hyperframes.py` — default reel renderer.
       Creative Engine provides branded frames; HyperFrames owns motion/crossfades/caption timing;
-      ffmpeg remains the encoder/loudness backend and fallback path.
+      ffmpeg remains the encoder/loudness backend and fallback path. Default render preset is
+      `standard`; `render_preset:"premium"` switches HyperFrames to `quality=high`, disables
+      forced low-memory mode, and targets a higher bitrate for final rebuilds.
 - ✅ `stages/reel_ffmpeg.py` — fallback FREE vertical reel generator.
 - ✅ `lib/router.py` — picks provider per capability by tier_target + budget; falls back down tiers; free always wins as last resort.
 - ✅ `worker.py` — drains `queue/*.json`; stages images→reel→store→publish; checkpoints every stage
@@ -23,16 +25,22 @@ add the API key env to switch a tier on — no code change.
       in en/bn/banglish (language = per-job dial). Default autonomous path is OpenRouter free
       Google-family Gemma (`google/gemma-4-31b-it:free` → `google/gemma-4-26b-a4b-it:free`) then
       other free models, then template. Direct Google/Vertex is explicit-only. PROVEN on
-      `google/gemma-4-31b-it:free`.
-- ✅ timed captions — `reel_ffmpeg.py` renders hook→benefits→cta sequenced across the clip (Noto Bengali
-      auto-picked for Bangla). Worker `generate_script:true` runs script→caption→reel automatically. PROVEN.
+      `google/gemma-4-31b-it:free`. Deterministic script QA now rejects placeholders, prompt-schema
+      residue, odd CJK characters, too-short voiceover, and unsafe claim mismatches.
+- ✅ text/caption strategy — product-card reels use Creative Engine frame text as the main on-video
+      text system; optional browser-rendered caption overlays are still available for non-card/photo
+      frames. Master QA validates the chosen text system instead of silently skipping it.
 - ✅ `stages/reel_qa_local.py` — default free QA gate using `ffprobe`: validates 1080x1920 MP4,
       duration, file size, audio/video streams, and publishability. PROVEN on snail reel.
 - ✅ `stages/reel_qa_gemini.py` — optional direct-Google video QA only when a job explicitly sets
       `qa_provider:"gemini"`.
 - ⬜ live publish — gated on owner approval (safety rule); flip with `--allow-publish` + guardrails.
-- ✅ voice + music bed — `voice_gen.py` creates free narration when available; worker spans scene
-      timing to voice duration and HyperFrames normalizes post-render loudness.
+- ✅ voice + music bed — `voice_gen.py` uses free `edge-tts` neural voices (`bn-BD-NabanitaNeural`,
+      `bn-BD-PradeepNeural`, English fallbacks). Review reels require narration by default; missing
+      or too-short voice now fails the build instead of producing a music-only draft.
+- ✅ content QA — shared `lib/quality_gates.py` blocks universal SPF copy on non-sunscreens,
+      placeholder scripts, unsafe medical claims, missing product images for product-card reels,
+      and records product-image identity warnings.
 - ⬜ quality: free OpenRouter models can still have minor Bangla/Banglish word-choice slips; inline
       agent-authored scripts remain best quality at $0.
 
@@ -62,13 +70,13 @@ Direct Google setup note:
 
 ### CRITICAL: Bengali text rendering
 This box's ffmpeg `drawtext` AND its `libass` are built WITHOUT HarfBuzz → they do NOT shape Bengali
-conjuncts/vowel-signs (e.g. দিনভর renders as দনিভর). Only the BROWSER shapes Bengali correctly
-(that's why social_image_gen.py's Chromium-rendered static posts are perfect).
-Convention until a Playwright caption-overlay stage is built:
-- **on-screen** lines (hook / benefits / cta) → **romanized Banglish** (Latin) — renders perfectly.
-- **caption / voiceover** → **native Bangla script** — platforms (FB/IG) render natively.
-Future fix: render caption PNGs via Playwright HTML (HarfBuzz shaping) → ffmpeg `overlay` for native
-Bangla on-screen text.
+conjuncts/vowel-signs (e.g. দিনভর renders as দনিভর). Only the browser shapes Bengali correctly
+(that's why Creative Engine / social_image_gen.py Chromium-rendered frames are clean).
+Current convention:
+- Creative Engine cards may use native Bangla because they are browser-rendered into images.
+- Timed overlay captions should use romanized Banglish unless rendered through the browser overlay
+  stage.
+- Platform captions and voiceover should use natural Bangla script.
 - ⬜ persona stage (Flux + InstantID consistent faces — mid tier)
 - ⬜ talking-avatar stage (D-ID / HeyGen — premium)
 - ⬜ YouTube Shorts + TikTok publishers (need API approvals)

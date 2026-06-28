@@ -6,8 +6,9 @@ Uses edge-tts (Microsoft Neural voices): no API key, no cost, native Bangla voic
 (bn-BD-NabanitaNeural female / bn-BD-PradeepNeural male). The pipeline already generates a
 30-40 word voiceover on every job and was throwing it away into silence — this consumes it.
 
-Graceful: if edge-tts can't reach the service (offline), exits non-zero with no file so the
-worker falls back to a silent track (never blocks the free pipeline).
+If edge-tts can't reach the service (offline), exits non-zero with no file. The worker treats
+voice as required by default for review reels, so missing narration fails QA instead of creating
+a music-only draft.
 
 Output: an mp3 at --out. Prints the audio duration (seconds) on success.
 
@@ -63,7 +64,7 @@ def main():
     try:
         asyncio.run(synth(text, voice, a.out, a.rate, a.pitch))
     except Exception as e:
-        sys.stderr.write(f"voice_gen failed (offline?) -> silent fallback: {e}\n")
+        sys.stderr.write(f"voice_gen failed (offline?): {e}\n")
         sys.exit(2)
     if not Path(a.out).exists() or Path(a.out).stat().st_size == 0:
         sys.exit("voice_gen produced no audio")

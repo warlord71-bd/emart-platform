@@ -26,7 +26,7 @@
       "premium": { "provider": "heygen",         "enabled": false, "env": "HEYGEN_API_KEY", "cost_per": 1.00 }
     },
     "voice": {
-      "free":    { "provider": "piper-local",    "enabled": false, "cost_per": 0.0, "note": "needs piper install; falls back to silent" },
+      "free":    { "provider": "edge-tts",       "enabled": true,  "cost_per": 0.0, "langs": ["bn-BD","en-US"], "note": "Microsoft neural voices via edge-tts; review reels fail if required narration is missing" },
       "mid":     { "provider": "google-tts",     "enabled": false, "env": "GOOGLE_TTS_KEY", "cost_per": 0.004, "langs": ["bn-BD","en-US"] },
       "premium": { "provider": "elevenlabs",     "enabled": false, "env": "ELEVENLABS_API_KEY", "cost_per": 0.03, "langs": ["bn","en"] }
     },
@@ -42,7 +42,8 @@
       "direct_google": { "provider": "vertex-or-ai-studio", "enabled": false, "env": "GEMINI_SERVICE_ACCOUNT_FILE", "cost_per": 0.0, "note": "explicit only; blocked if project billing disabled" }
     },
     "qa": {
-      "free":    { "provider": "local-ffprobe",   "enabled": true,  "cost_per": 0.0, "note": "checks MP4 dimensions, duration, audio/video streams, and file size" },
+      "free":    { "provider": "master-local-content", "enabled": true,  "cost_per": 0.0, "note": "ffprobe/loudness plus deterministic script, claim, caption, and product-image metadata gates" },
+      "free_vision": { "provider": "openrouter-free-vision", "enabled": true, "env": "OPENROUTER_API_KEY", "cost_per": 0.0, "note": "best-effort frame inspection when free OpenRouter vision is available" },
       "direct_google":{ "provider": "gemini-video-qa", "enabled": false, "env": "GEMINI_API_KEY", "cost_per": 0.0, "note": "explicit opt-in only via job.qa_provider=gemini" }
     }
   },

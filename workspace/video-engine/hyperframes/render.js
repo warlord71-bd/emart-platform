@@ -349,6 +349,11 @@ function main() {
 
   const job = JSON.parse(fs.readFileSync(jobPath, "utf-8"));
   const jid = job.id || "reel";
+  const preset = getArg("--render-preset") || job.render_preset || job.hyperframes_preset || "standard";
+  const qualityArg = getArg("--quality") || job.hyperframes_quality || (preset === "premium" ? "high" : "standard");
+  const quality = ["draft", "standard", "high"].includes(qualityArg) ? qualityArg : "standard";
+  const lowMemoryFlag = preset === "premium" ? "--no-low-memory-mode" : "--low-memory-mode";
+  const videoBitrate = getArg("--video-bitrate") || job.video_bitrate || (preset === "premium" ? "8M" : null);
 
   // Resolve images from job stages (worker already resolved them)
   const images = (job.stages && job.stages.images && job.stages.images.images) || job.images || [];
@@ -408,18 +413,22 @@ function main() {
     __dirname,
     "node_modules/.bin/hyperframes",
   );
-  const cmd = [
+  const cmdParts = [
     hyperframesCmd,
     "render",
     tmpDir,
     "--fps", "24",
-    "--quality", "standard",
+    "--quality", quality,
     "--output", output,
-    "--low-memory-mode",
+    lowMemoryFlag,
     "--quiet",
-  ].join(" ");
+  ];
+  if (videoBitrate) {
+    cmdParts.push("--video-bitrate", videoBitrate);
+  }
+  const cmd = cmdParts.join(" ");
 
-  console.error(`[hyperframes] rendering ${jid} (${images.length} scenes)...`);
+  console.error(`[hyperframes] rendering ${jid} (${images.length} scenes, preset=${preset}, quality=${quality})...`);
   try {
     execSync(cmd, {
       stdio: ["pipe", "pipe", "pipe"],

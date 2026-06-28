@@ -19,6 +19,10 @@ from __future__ import annotations
 import argparse, base64, json, os, subprocess, sys, urllib.request, time
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "lib"))
+from quality_gates import validate_job_spec, validate_script_payload  # noqa: E402
+
 ENV_PATHS = ["/root/emart-platform/apps/web/.env.local", "/var/www/emart-platform/apps/web/.env.local"]
 FREE_VISION = ["nvidia/nemotron-nano-12b-v2-vl:free", "google/gemma-4-31b-it:free"]
 TARGET_LUFS = -14.0          # IG Reels / YT Shorts / TikTok normalize around here
@@ -105,9 +109,24 @@ def vision_frame(b64: str, product: str) -> dict | None:
     return None
 
 
-def audit(video, overlays, product, n_frames):
+def _load_job_and_script(job_path: str | None) -> tuple[dict | None, dict | None]:
+    if not job_path:
+        return None, None
+    jp = Path(job_path)
+    if not jp.exists():
+        return None, None
+    job = json.loads(jp.read_text())
+    script = job.get("script")
+    sp = (job.get("stages") or {}).get("script", {}).get("path")
+    if sp and Path(sp).exists():
+        script = json.loads(Path(sp).read_text())
+    return job, script
+
+
+def audit(video, overlays, product, n_frames, job_path=None):
     load_env()
     fixes, cats = [], {}
+    job, script = _load_job_and_script(job_path)
 
     # 1. TECHNICAL
     meta = ffprobe(video)
@@ -165,7 +184,30 @@ def audit(video, overlays, product, n_frames):
         cats["visual"] = {"status": "warn", "frames_checked": 0,
                           "issues": ["vision_unavailable"], "note": "free vision rate-limited/offline"}
 
-    # 4. CAPTIONS timing
+    # 4. CONTENT semantics (deterministic): claims, placeholders, product-specific copy.
+    if job or script:
+        content_issues = []
+        content_warnings = []
+        if script:
+            srep = validate_script_payload(
+                script,
+                product=(job or {}).get("product") or product,
+                category=(job or {}).get("category", "skincare"),
+            )
+            content_issues.extend(srep.get("errors") or [])
+            content_warnings.extend(srep.get("warnings") or [])
+        if job:
+            jrep = validate_job_spec(job, script)
+            content_issues.extend(jrep.get("errors") or [])
+            content_warnings.extend(jrep.get("warnings") or [])
+        if content_issues:
+            fixes.append("Regenerate script/card text with product-specific safe claims.")
+        cats["content"] = {
+            "status": "fail" if content_issues else ("warn" if content_warnings else "pass"),
+            "issues": list(dict.fromkeys(content_issues + content_warnings)),
+        }
+
+    # 5. CAPTIONS timing / chosen text system
     if overlays and Path(overlays).exists():
         ov = json.loads(Path(overlays).read_text())
         c_issues = []
@@ -177,6 +219,9 @@ def audit(video, overlays, product, n_frames):
             fixes.append("Lengthen short caption windows or reduce caption count.")
         cats["captions"] = {"status": "warn" if c_issues else "pass",
                             "count": len(ov), "issues": c_issues}
+    elif job and (job.get("product_card") or job.get("list_cards")):
+        cats["captions"] = {"status": "pass", "count": 0, "issues": [],
+                            "note": "frame text handled by Creative Engine product/value cards"}
     else:
         cats["captions"] = {"status": "skip", "note": "no overlays json provided"}
 
@@ -223,8 +268,9 @@ def main():
     ap.add_argument("--frames", type=int, default=4)
     ap.add_argument("--out", required=True)
     ap.add_argument("--report", default=None, help="optional human-readable .md report card")
+    ap.add_argument("--job", default=None, help="optional job JSON for content/script QA")
     a = ap.parse_args()
-    rep = audit(a.video, a.overlays, a.product, a.frames)
+    rep = audit(a.video, a.overlays, a.product, a.frames, a.job)
     Path(a.out).write_text(json.dumps(rep, ensure_ascii=False, indent=2))
     if a.report:
         Path(a.report).write_text(to_markdown(rep, a.video))

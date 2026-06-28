@@ -125,10 +125,21 @@ Do not publish or approve the current COSRX Snail 92 cream reel specs that conta
 
 No automatic publish path was found in the builder cron: orchestrator builds drafts into review, and owner Telegram approval remains the publishing gate.
 
+## Remediation applied - 2026-06-28
+
+- Added shared deterministic gates in `workspace/video-engine/lib/quality_gates.py`.
+- Made `daily_producer.py` product-type aware, replacing universal SPF copy with class-specific templates.
+- Added enqueue, worker, and master-QA gates for product-claim mismatch, placeholder scripts, unsafe medical claims, odd CJK characters, missing product-card images, and product-image identity warnings.
+- Made review-reel voiceover required by default; missing/too-short Edge TTS narration now fails instead of producing a music-only draft.
+- Updated `providers.json`, `README.md`, and `voice_gen.py` to reflect the actual Edge TTS setup.
+- Master QA now validates job/script content and treats Creative Engine card text as the text authority when overlay captions are disabled.
+- Restored default SSL certificate verification for Creative Engine image/background fetches.
+- Added a HyperFrames `render_preset:"premium"` path for final rebuilds.
+- Moved invalid runtime drafts to `jobs/rejected/` and queued corrected COSRX Snail 92 cream FB/IG jobs with moisturizer-safe copy.
+
 ## Verification commands run
 
 - `python3 -m py_compile workspace/creative-engine/api.py workspace/creative-engine/render.py workspace/creative-engine/data/normalize.py workspace/creative-engine/data/backgrounds.py workspace/video-engine/worker.py workspace/video-engine/daily_producer.py workspace/video-engine/stages/script_gen.py workspace/video-engine/stages/voice_gen.py workspace/video-engine/stages/reel_qa_master.py workspace/video-engine/orchestrator.py`
 - `node --check workspace/video-engine/hyperframes/render.js`
 - `ffprobe` sampling of recent rendered MP4 outputs
 - `python3 workspace/video-engine/orchestrator.py --status`
-

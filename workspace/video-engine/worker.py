@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "lib"))
 sys.path.insert(0, str(ROOT.parent))
 import router  # noqa: E402
+from quality_gates import validate_job_spec, validate_script_payload  # noqa: E402
 from workspace_creative_engine import CreativeRequest, render as render_creative  # noqa: E402
 
 QUEUE = ROOT / "queue"
@@ -72,6 +73,15 @@ def stage_done(job, name):
 
 def set_stage(job, name, **data):
     job.setdefault("stages", {})[name] = {"status": "done", **data}
+
+
+def fail_quality(job_path: Path, job: dict, stage: str, report: dict, retryable: bool = False):
+    job.setdefault("stages", {})[stage] = {"status": "fail", **report}
+    job["status"] = "failed"
+    if not retryable:
+        job["_non_retryable_failure"] = True
+    checkpoint(job_path, job)
+    print(f"[worker] {stage} failed for {job.get('id')}: {report.get('errors') or report.get('issues')}")
 
 
 def product_snapshot(job: dict, image: str = "") -> dict:
@@ -234,6 +244,16 @@ def run_job(job_path: Path, allow_publish: bool):
     jid = job["id"]
     print(f"[worker] job {jid} tier={job.get('tier_target','free')} platforms={job.get('platforms')}")
 
+    # 0. deterministic content/spec gate — blocks wrong SPF claims, missing product images,
+    # and other known bad upstream specs before spending render time.
+    if not stage_done(job, "content_qa"):
+        report = validate_job_spec(job)
+        if report["status"] == "fail":
+            fail_quality(job_path, job, "content_qa", report, retryable=False)
+            return
+        set_stage(job, "content_qa", **report)
+        checkpoint(job_path, job)
+
     # 1. images (shared with static social system)
     if not stage_done(job, "images"):
         imgs = resolve_images(job, cfg)
@@ -247,6 +267,14 @@ def run_job(job_path: Path, allow_publish: bool):
         spath = str(OUTPUT / f"script-{jid}.json")
         if job.get("script"):
             sc = job["script"]
+            sreport = validate_script_payload(
+                sc,
+                product=job.get("product") or job.get("headline", ""),
+                category=job.get("category", "skincare"),
+            )
+            if sreport["status"] == "fail":
+                fail_quality(job_path, job, "script_qa", sreport, retryable=False)
+                return
             Path(spath).write_text(json.dumps(sc, ensure_ascii=False, indent=2))
             source = "claude-authored"
         else:
@@ -259,14 +287,40 @@ def run_job(job_path: Path, allow_publish: bool):
                             "--out", spath], check=True, timeout=120)
             sc = json.loads(Path(spath).read_text())
             source = sc.get("_provider", "model")
+        sreport = validate_script_payload(
+            sc,
+            product=job.get("product") or job.get("headline", ""),
+            category=job.get("category", "skincare"),
+        )
+        if sreport["status"] == "fail":
+            fail_quality(job_path, job, "script_qa", sreport, retryable=False)
+            return
+        combined_report = validate_job_spec(job, sc)
+        if combined_report["status"] == "fail":
+            fail_quality(job_path, job, "content_qa", combined_report, retryable=False)
+            return
         # generated caption + hashtags become the publish caption unless job pins its own
         if not job.get("caption_locked"):
             tags = " ".join(sc.get("hashtags", []))
             cap = sc.get("caption", "")
             job["caption"] = (cap + ("\n\n" + tags if tags else "")).strip()
-        set_stage(job, "script", path=spath, source=source, model=sc.get("_model"))
+        set_stage(job, "script", path=spath, source=source, model=sc.get("_model"), quality=sreport)
         checkpoint(job_path, job)
     script_path = job.get("stages", {}).get("script", {}).get("path")
+    if script_path and Path(script_path).exists():
+        sc_existing = json.loads(Path(script_path).read_text())
+        sreport = validate_script_payload(
+            sc_existing,
+            product=job.get("product") or job.get("headline", ""),
+            category=job.get("category", "skincare"),
+        )
+        if sreport["status"] == "fail":
+            fail_quality(job_path, job, "script_qa", sreport, retryable=False)
+            return
+        combined_report = validate_job_spec(job, sc_existing)
+        if combined_report["status"] == "fail":
+            fail_quality(job_path, job, "content_qa", combined_report, retryable=False)
+            return
 
     # 2a. voice — free bn-BD/en narration from the script's voiceover (edge-tts). Was being thrown away.
     if script_path and job.get("voiceover", True) and not stage_done(job, "voice"):
@@ -274,6 +328,7 @@ def run_job(job_path: Path, allow_publish: bool):
         vtext = (sc.get("voiceover") or sc.get("caption") or "").strip()
         vpath = str(OUTPUT / f"vo-{jid}.mp3")
         vdur = 0.0
+        voice_required = bool(job.get("voice_required", True))
         if vtext:
             r = subprocess.run([sys.executable, str(VOICE_GEN), "--text", vtext,
                                 "--language", job.get("language", "bn"),
@@ -285,12 +340,20 @@ def run_job(job_path: Path, allow_publish: bool):
                 except ValueError:
                     vdur = 0.0
             else:
-                # offline / failed -> silent fallback (never blocks the free pipeline)
                 vpath = ""
                 sys.stderr.write(r.stderr.strip()[-300:] + "\n")
         else:
             vpath = ""
-        set_stage(job, "voice", audio=vpath, duration=round(vdur, 2))
+        if voice_required and (not vpath or vdur < 1.0):
+            report = {
+                "errors": ["voice_required_but_missing_or_too_short"],
+                "duration": round(vdur, 2),
+                "provider": "edge-tts",
+            }
+            fail_quality(job_path, job, "voice", report, retryable=True)
+            return
+        set_stage(job, "voice", audio=vpath, duration=round(vdur, 2),
+                  provider="edge-tts", required=voice_required)
         checkpoint(job_path, job)
     voice = job.get("stages", {}).get("voice", {})
     audio_path = voice.get("audio") or ""
@@ -397,7 +460,8 @@ def run_job(job_path: Path, allow_publish: bool):
             elif provider == "master":
                 # full production sign-off: technical + loudness + multi-frame visual + caption timing
                 vcmd = [sys.executable, str(REEL_QA_MASTER), "--video", mp4, "--product", product,
-                        "--out", spath, "--report", str(OUTPUT / f"qa-card-{jid}.md")]
+                        "--out", spath, "--report", str(OUTPUT / f"qa-card-{jid}.md"),
+                        "--job", str(job_path.resolve())]
                 if overlays_path:
                     vcmd += ["--overlays", overlays_path]
                 vt = 300

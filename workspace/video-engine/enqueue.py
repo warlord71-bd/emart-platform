@@ -14,6 +14,9 @@ import argparse, json, shutil, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / "lib"))
+from quality_gates import validate_job_spec, validate_script_payload  # noqa: E402
+
 QUEUE = ROOT / "jobs" / "queue"
 
 
@@ -28,10 +31,27 @@ def _clean_spec(spec: dict) -> dict:
     return spec
 
 
+def _validate_spec(spec: dict):
+    script = spec.get("script")
+    report = validate_job_spec(spec, script)
+    if report["status"] == "fail":
+        raise SystemExit(f"content QA failed: {report['errors']}")
+    if script:
+        sreport = validate_script_payload(
+            script,
+            product=spec.get("product") or spec.get("headline", ""),
+            category=spec.get("category", "skincare"),
+        )
+        if sreport["status"] == "fail":
+            raise SystemExit(f"script QA failed: {sreport['errors']}")
+    spec["_content_quality"] = report
+
+
 def enqueue(spec_path: Path, prio: int) -> list[Path]:
     spec = json.loads(spec_path.read_text())
     jid = spec.get("id") or spec_path.stem
     spec.setdefault("id", jid)
+    _validate_spec(spec)
     QUEUE.mkdir(parents=True, exist_ok=True)
 
     platforms = spec.get("platforms") or ["facebook"]

@@ -19,6 +19,9 @@ from pathlib import Path
 from datetime import date
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / "lib"))
+from quality_gates import classify_product, validate_job_spec  # noqa: E402
+
 QUEUE = ROOT / "jobs" / "queue"
 ENQUEUE = ROOT / "enqueue.py"
 CANONICAL_MODEL = ROOT / "personas" / "emart-model" / "clean-portrait.png"
@@ -99,6 +102,115 @@ def bangla_phonetic(name: str) -> str:
     return " ".join(MAP.get(w.strip("()"), w) for w in words)
 
 
+PRODUCT_TEMPLATES = {
+    "sunscreen": {
+        "badge": "Daily SPF",
+        "bangla": "হালকা ফিনিশ · SPF50+ PA++++ · দৈনিক ব্যবহার",
+        "title": "৫টি দ্রুত কারণ",
+        "bullets": [
+            "হালকা টেক্সচার, চিটচিটে নয়",
+            "SPF50+ PA++++ দৈনিক সান কেয়ার",
+            "স্কিনকেয়ারের মতো আরামদায়ক ফিনিশ",
+            "সকালের রুটিনে সহজে ফিট করে",
+            "অরিজিনাল পণ্য, Emart থেকে",
+        ],
+    },
+    "cleanser": {
+        "badge": "Gentle Cleanse",
+        "bangla": "দৈনিক ক্লিনজ · পরিষ্কার ফিল · স্কিন-ফ্রেন্ডলি",
+        "title": "৫টি ক্লিনজিং কারণ",
+        "bullets": [
+            "দিনের ধুলো-ময়লা পরিষ্কারে সহায়ক",
+            "দৈনিক রুটিনে ব্যবহার সহজ",
+            "স্কিনকে ফ্রেশ ফিল দেয়",
+            "সকালে বা রাতে মানানসই",
+            "অরিজিনাল পণ্য, Emart থেকে",
+        ],
+    },
+    "retinol": {
+        "badge": "Night Serum",
+        "bangla": "রাতের রুটিন · নতুন হলে ২-৩ রাত · ধীরে শুরু",
+        "title": "Retinol night checklist",
+        "bullets": [
+            "রাতে অল্প পরিমাণ ব্যবহার করুন",
+            "নতুন হলে সপ্তাহে ২-৩ রাত",
+            "আগে প্যাচ টেস্ট করে নিন",
+            "চোখের চারপাশ এড়িয়ে লাগান",
+            "দিনে sunscreen ব্যবহার করুন",
+        ],
+    },
+    "serum": {
+        "badge": "Serum Pick",
+        "bangla": "টার্গেটেড কেয়ার · হালকা লেয়ার · রুটিনে সহজ",
+        "title": "৫টি serum reason",
+        "bullets": [
+            "রুটিনে টার্গেটেড কেয়ার যোগ করে",
+            "হালকা লেয়ার হিসেবে ব্যবহার সহজ",
+            "ত্বককে আরামদায়ক ফিল দেয়",
+            "ময়েশ্চারাইজারের আগে মানানসই",
+            "অরিজিনাল পণ্য, Emart থেকে",
+        ],
+    },
+    "toner": {
+        "badge": "Toner Step",
+        "bangla": "ফ্রেশ ফিল · রুটিন prep · দৈনিক ব্যবহার",
+        "title": "৫টি toner reason",
+        "bullets": [
+            "ক্লিনজিংয়ের পর স্কিন prep করে",
+            "হালকা ও ফ্রেশ ফিল দেয়",
+            "পরের skincare step সহজ করে",
+            "দৈনিক রুটিনে দ্রুত ব্যবহার",
+            "অরিজিনাল পণ্য, Emart থেকে",
+        ],
+    },
+    "moisturizer": {
+        "badge": "Moisture Care",
+        "bangla": "আর্দ্রতা সাপোর্ট · নরম ফিনিশ · দৈনিক ব্যবহার",
+        "title": "৫টি moisture reason",
+        "bullets": [
+            "ত্বককে নরম ও আরামদায়ক ফিল দেয়",
+            "দৈনিক ময়েশ্চার রুটিনে সহজ",
+            "চিটচিটে ভাব ছাড়া কমফোর্ট ফিনিশ",
+            "সকাল বা রাতে ব্যবহারযোগ্য",
+            "অরিজিনাল পণ্য, Emart থেকে",
+        ],
+    },
+    "makeup": {
+        "badge": "Beauty Pick",
+        "bangla": "ফিনিশ সুন্দর · সহজ ব্যবহার · daily glam",
+        "title": "৫টি beauty reason",
+        "bullets": [
+            "দৈনিক makeup look-এ সহজ",
+            "ফিনিশকে neat দেখাতে সহায়ক",
+            "ব্যাগে রাখার মতো practical pick",
+            "নিজের shade/need অনুযায়ী ব্যবহার",
+            "অরিজিনাল পণ্য, Emart থেকে",
+        ],
+    },
+    "skincare": {
+        "badge": "Daily Pick",
+        "bangla": "দৈনিক রুটিন · স্কিন-ফ্রেন্ডলি · সহজ ব্যবহার",
+        "title": "৫টি দ্রুত কারণ",
+        "bullets": [
+            "দৈনিক skincare রুটিনে সহজ",
+            "ত্বককে আরামদায়ক ফিল দেয়",
+            "প্রোডাক্ট টাইপ অনুযায়ী ব্যবহার করুন",
+            "আগে প্যাচ টেস্ট করে নিন",
+            "অরিজিনাল পণ্য, Emart থেকে",
+        ],
+    },
+}
+
+
+def template_for(product: dict) -> dict:
+    cls = classify_product(
+        product.get("name", ""),
+        product.get("category", ""),
+        product.get("category_slug", ""),
+    )
+    return PRODUCT_TEMPLATES.get(cls, PRODUCT_TEMPLATES["skincare"]) | {"class": cls}
+
+
 def build_spec(product: dict) -> dict:
     pid = product["id"]
     name = product.get("name", "")
@@ -106,6 +218,7 @@ def build_spec(product: dict) -> dict:
     original = str(product.get("original_price", ""))
     brand = product.get("brand", "")
     img = product.get("image", "")
+    tpl = template_for(product)
     today = date.today().isoformat()
     jid = f"{today}-{re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')[:40]}"
 
@@ -120,23 +233,20 @@ def build_spec(product: dict) -> dict:
         "seconds": 4.8,
         "product_card": True,
         "product_image": img,
-        "product_card_badge": "Daily SPF",
-        "product_card_bangla": "হালকা ফিনিশ · SPF50+ PA++++ · দৈনিক ব্যবহার",
+        "product_class": tpl["class"],
+        "product_card_badge": tpl["badge"],
+        "product_card_bangla": tpl["bangla"],
         "caption_benefit_limit": 1,
         "holding_images": [],
         "holding_request": False,
         "generate_script": True,
+        "voice_required": True,
+        "qa_block_on_vision": True,
         "list_cards": [{
             "kicker": f"কেন {brand or name.split()[0]}?",
-            "title": "৫টি দ্রুত কারণ",
+            "title": tpl["title"],
             "style": "numbered",
-            "bullets": [
-                "হালকা টেক্সচার, চিটচিটে নয়",
-                "SPF50+ PA++++ দৈনিক সান কেয়ার",
-                "স্কিনকেয়ারের মতো আরামদায়ক ফিনিশ",
-                "সকালের রুটিনে সহজে ফিট করে",
-                "অরিজিনাল পণ্য, Emart থেকে",
-            ],
+            "bullets": tpl["bullets"],
             "footer": "ক্যাশ অন ডেলিভারি · সারা বাংলাদেশে",
         }],
         "brand_card": True,
@@ -145,6 +255,9 @@ def build_spec(product: dict) -> dict:
         "voice_gender": "female",
         "qa_provider": "master",
     }
+    report = validate_job_spec(spec)
+    if report["status"] == "fail":
+        raise ValueError(f"producer built invalid spec for {name}: {report['errors']}")
     return spec
 
 
@@ -167,7 +280,11 @@ def main():
     for p in products:
         if built >= slots:
             break
-        spec = build_spec(p)
+        try:
+            spec = build_spec(p)
+        except ValueError as e:
+            print(f"[producer] skipped invalid spec: {e}")
+            continue
         spec_path = ROOT / "jobs" / f"_auto_{spec['id']}.json"
         spec_path.parent.mkdir(parents=True, exist_ok=True)
         spec_path.write_text(json.dumps(spec, ensure_ascii=False, indent=2))
