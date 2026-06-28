@@ -78,6 +78,16 @@ a{color:var(--accent);text-decoration:none;font-size:13px;}
 <input name="limit" type="number" value="10" min="1" max="100" inputmode="numeric">
 <p class="hint">Uses free OpenRouter models. Runs detached — safe to close browser. Telegram pings when done.</p>
 
+{% elif engine_type == "reel_pipeline" %}
+<label>Product ID</label>
+<input name="product_id" type="number" placeholder="e.g. 2591" required inputmode="numeric">
+<label>Product Name</label>
+<input name="product_name" placeholder="COSRX Snail Mucin Essence">
+<label>Platforms</label>
+<input name="platforms" value="facebook,instagram">
+<p class="hint">Builds the reel immediately → shows preview on this page → you approve or reject right here. Also sends to Telegram.</p>
+<p class="hint" style="margin-top:8px;"><a href="/reels">📋 View all pending reels →</a></p>
+
 {% elif engine_type == "video_enqueue" %}
 <label>Product ID</label>
 <input name="product_id" type="number" placeholder="e.g. 2591" required inputmode="numeric">

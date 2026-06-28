@@ -108,6 +108,11 @@ ENGINES = {
         "desc": "Humanize N product descriptions using free OpenRouter models (detached)",
         "params": ["limit"],
     },
+    "reel_pipeline": {
+        "name": "🎬 Create Reel — Full Pipeline",
+        "desc": "Enter product → build reel → preview here + Telegram → approve & publish from either",
+        "params": ["product_id", "product_name", "platforms"],
+    },
     "video_enqueue": {
         "name": "Video — Enqueue Reel",
         "desc": "Queue a product reel for build + Telegram approval",
@@ -256,7 +261,7 @@ ENGINE_CATEGORY_MAP = {
     "orchestrator_plan": "content", "orchestrator_status": "content",
     "humanizer_run": "content", "humanizer_status": "content",
     "blog_generate": "content", "topical_authority": "content",
-    "video_enqueue": "social", "video_status": "social", "video_build": "social",
+    "reel_pipeline": "social", "video_enqueue": "social", "video_status": "social", "video_build": "social",
     "social_plan": "social", "social_pick": "social",
     "cwv_check": "seo", "gsc_tracker": "seo", "seo_check": "seo",
     "gmc_sync": "ops", "revalidate": "ops",
@@ -287,6 +292,7 @@ def _run_engine(job_type: str, params: dict) -> dict:
         "gsc_tracker": lambda p: _run_gsc_tracker(),
         "seo_check": lambda p: _run_seo_check(),
         "revalidate": _run_revalidate,
+        "reel_pipeline": _run_reel_pipeline,
         "ai_ask": _run_ai_ask,
         "ai_plan": _run_ai_plan,
         "ai_write": _run_ai_write,
@@ -581,6 +587,75 @@ def _run_ai_review(params: dict) -> dict:
     return {"log": review_output(check, text)}
 
 
+def _run_reel_pipeline(params: dict) -> dict:
+    """Full pipeline: enqueue → build → return preview URL for web/Telegram approval."""
+    product_id = params.get("product_id", "")
+    name = params.get("product_name", "")
+    platforms = params.get("platforms", "facebook,instagram")
+    if not product_id:
+        return {"error": "product_id required"}
+
+    vid_engine = WORKSPACE / "video-engine"
+    jobs_dir = vid_engine / "jobs"
+
+    spec = {
+        "product_id": int(product_id),
+        "product": name,
+        "platforms": [p.strip() for p in platforms.split(",")],
+        "language": "bn",
+        "tier_target": "free",
+        "status": "pending",
+    }
+    spec_path = jobs_dir / "queue" / f"hermes-{product_id}-{int(time.time())}.json"
+    spec_path.parent.mkdir(parents=True, exist_ok=True)
+    spec_path.write_text(json.dumps(spec, indent=2))
+
+    log_lines = [f"✅ Queued: {spec_path.name}"]
+
+    # Build immediately
+    r = subprocess.run(
+        [sys.executable, str(vid_engine / "orchestrator.py"), "--tick"],
+        capture_output=True, text=True, timeout=300, cwd=str(vid_engine),
+    )
+    log_lines.append(f"🔨 Build: {r.stdout.strip()[-200:]}" if r.stdout else "🔨 Build triggered")
+    if r.returncode != 0 and r.stderr:
+        log_lines.append(f"⚠ {r.stderr.strip()[-200:]}")
+
+    # Find the review job (our job should have moved queue→building→review)
+    review_job = None
+    review_stem = None
+    for jp in sorted((jobs_dir / "review").glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True):
+        try:
+            jd = json.loads(jp.read_text())
+            if jd.get("product_id") == int(product_id):
+                review_job = jd
+                review_stem = jp.stem
+                break
+        except Exception:
+            continue
+
+    if review_job:
+        video_url = review_job.get("stages", {}).get("store", {}).get("url", "")
+        qa = review_job.get("stages", {}).get("master_qa", {})
+        qa_score = qa.get("score", "?")
+        log_lines.append(f"🎬 Reel built! QA score: {qa_score}")
+        return {
+            "log": "\n".join(log_lines),
+            "reel_preview": video_url,
+            "reel_stem": review_stem,
+            "reel_product": name or str(product_id),
+            "reel_qa_score": qa_score,
+        }
+    else:
+        # Check if still building
+        building = list((jobs_dir / "building").glob(f"*{product_id}*"))
+        if building:
+            log_lines.append("⏳ Still building... Refresh this page in 1-2 minutes.")
+        else:
+            log_lines.append("⚠ Reel not found in review queue. Check Video Status.")
+        return {"log": "\n".join(log_lines)}
+
+
 def _run_openclaw_task(params: dict) -> dict:
     task = params.get("task", "")
     agent = params.get("agent", "emart")
@@ -792,6 +867,72 @@ async def engine_form(request: Request, engine_type: str):
     return templates.TemplateResponse(request, "engine.html", {
         "engine_type": engine_type, "engine": engine,
     })
+
+
+@app.post("/reel/approve/{stem}")
+async def reel_approve(stem: str):
+    vid_engine = WORKSPACE / "video-engine"
+    review = vid_engine / "jobs" / "review" / f"{stem}.json"
+    approved = vid_engine / "jobs" / "approved"
+    if not review.exists():
+        raise HTTPException(404, "Reel not found or already handled")
+    approved.mkdir(parents=True, exist_ok=True)
+    review.rename(approved / review.name)
+    # Publish
+    publish_script = vid_engine / "publish_approved.py"
+    r = subprocess.run(
+        [sys.executable, str(publish_script), "--live"],
+        capture_output=True, text=True, timeout=600,
+    )
+    ok = "PUBLISHED" in (r.stdout or "") or not (approved / f"{stem}.json").exists()
+    return JSONResponse({
+        "status": "published" if ok else "approved_publish_pending",
+        "log": r.stdout[-500:] if r.stdout else "",
+        "error": r.stderr[-300:] if r.returncode != 0 else None,
+    })
+
+
+@app.post("/reel/reject/{stem}")
+async def reel_reject(stem: str):
+    vid_engine = WORKSPACE / "video-engine"
+    review = vid_engine / "jobs" / "review" / f"{stem}.json"
+    rejected = vid_engine / "jobs" / "rejected"
+    if not review.exists():
+        raise HTTPException(404, "Reel not found or already handled")
+    rejected.mkdir(parents=True, exist_ok=True)
+    review.rename(rejected / review.name)
+    return JSONResponse({"status": "rejected"})
+
+
+@app.get("/api/reels/review")
+async def api_reels_review():
+    vid_engine = WORKSPACE / "video-engine"
+    review_dir = vid_engine / "jobs" / "review"
+    reels = []
+    if review_dir.exists():
+        for jp in sorted(review_dir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True):
+            try:
+                jd = json.loads(jp.read_text())
+                video_url = jd.get("stages", {}).get("store", {}).get("url", "")
+                qa = jd.get("stages", {}).get("master_qa", {})
+                reels.append({
+                    "stem": jp.stem,
+                    "product": jd.get("product", "?"),
+                    "product_id": jd.get("product_id"),
+                    "platforms": jd.get("platforms", []),
+                    "video_url": video_url,
+                    "qa_score": qa.get("score", "?"),
+                    "status": jd.get("status", "review"),
+                })
+            except Exception:
+                continue
+    return reels
+
+
+@app.get("/reels", response_class=HTMLResponse)
+async def reels_review_page(request: Request):
+    reels = await api_reels_review()
+    return templates.TemplateResponse(request, "reels.html", {"reels": reels})
 
 
 @app.get("/api/status")

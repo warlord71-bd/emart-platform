@@ -45,7 +45,44 @@ a{color:var(--accent);text-decoration:none;font-size:13px;}
 <div class="card">
 <div class="result-title">Result</div>
 
-{% if job.result_parsed.preview %}
+{% if job.result_parsed.reel_preview %}
+<video controls preload="metadata" playsinline style="width:100%;max-height:500px;border-radius:8px;background:#000;margin-bottom:12px;">
+<source src="{{ job.result_parsed.reel_preview }}" type="video/mp4">
+</video>
+<div style="font-size:12px;color:var(--muted);margin-bottom:12px;">
+{{ job.result_parsed.reel_product }} · QA: {{ job.result_parsed.reel_qa_score }}
+</div>
+<div style="display:flex;gap:8px;margin-bottom:12px;">
+<button id="btn-approve" onclick="approveReel('{{ job.result_parsed.reel_stem }}')" style="flex:1;padding:14px;background:#4ade80;color:#000;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;">✅ Approve & Publish</button>
+<button id="btn-reject" onclick="rejectReel('{{ job.result_parsed.reel_stem }}')" style="flex:1;padding:14px;background:#f87171;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;">❌ Reject</button>
+</div>
+<div id="reel-result"></div>
+<script>
+async function approveReel(stem) {
+  const btn = document.getElementById('btn-approve');
+  btn.disabled = true; btn.textContent = '⏳ Publishing...';
+  try {
+    const r = await fetch('/reel/approve/' + stem, {method: 'POST'});
+    const d = await r.json();
+    const el = document.getElementById('reel-result');
+    el.style.cssText = 'padding:10px;border-radius:6px;font-size:13px;background:#064e3b;color:#4ade80;';
+    el.textContent = d.status === 'published' ? '✅ Published!' : '✅ Approved — ' + (d.log||'').slice(0,100);
+    btn.textContent = '✅ Done';
+    document.getElementById('btn-reject').disabled = true;
+  } catch(e) { btn.disabled = false; btn.textContent = '✅ Approve & Publish'; }
+}
+async function rejectReel(stem) {
+  const btn = document.getElementById('btn-reject');
+  btn.disabled = true;
+  await fetch('/reel/reject/' + stem, {method: 'POST'});
+  const el = document.getElementById('reel-result');
+  el.style.cssText = 'padding:10px;border-radius:6px;font-size:13px;background:#450a0a;color:#f87171;';
+  el.textContent = '❌ Rejected';
+  btn.textContent = '❌ Rejected';
+  document.getElementById('btn-approve').disabled = true;
+}
+</script>
+{% elif job.result_parsed.preview %}
 <img src="{{ job.result_parsed.preview }}" class="preview" alt="Output">
 {% endif %}
 

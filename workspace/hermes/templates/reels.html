@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reels Review — Hermes</title>
+<style>
+:root{--bg:#0f0f13;--card:#1a1a24;--accent:#c9a96e;--rose:#e8b4c8;--text:#e8e0d8;--muted:#8a8090;--green:#4ade80;--red:#f87171;--blue:#60a5fa;--border:#2a2a3a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;}
+.wrap{max-width:600px;margin:0 auto;padding:16px;}
+h1{font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px;}
+.sub{color:var(--muted);font-size:13px;margin-bottom:20px;}
+a{color:var(--accent);text-decoration:none;font-size:13px;}
+.back{margin-bottom:14px;display:inline-block;}
+.reel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;}
+.reel h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.reel .meta{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.reel video{width:100%;max-height:400px;border-radius:8px;background:#000;margin-bottom:12px;}
+.actions{display:flex;gap:8px;}
+.btn{flex:1;padding:12px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;}
+.btn-approve{background:var(--green);color:#000;}
+.btn-reject{background:var(--red);color:#fff;}
+.btn:active{transform:scale(.97);}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.result{margin-top:8px;font-size:12px;padding:8px;border-radius:6px;}
+.result.ok{background:#064e3b;color:var(--green);}
+.result.err{background:#450a0a;color:var(--red);}
+.empty{color:var(--muted);text-align:center;padding:40px 20px;}
+@media(max-width:600px){.wrap{padding:12px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a href="/" class="back">← Dashboard</a>
+<h1>🎬 Reels Review</h1>
+<p class="sub">Preview and approve/reject reels. Same reels also appear in Telegram — approve from either.</p>
+
+{% if reels %}
+{% for reel in reels %}
+<div class="reel" id="reel-{{ reel.stem }}">
+<h3>{{ reel.product }}</h3>
+<div class="meta">
+{{ reel.platforms|join(', ') }} · QA: {{ reel.qa_score }}
+</div>
+{% if reel.video_url %}
+<video controls preload="metadata" playsinline>
+<source src="{{ reel.video_url }}" type="video/mp4">
+</video>
+{% else %}
+<p style="color:var(--muted);font-size:12px;">No video URL available</p>
+{% endif %}
+<div class="actions">
+<button class="btn btn-approve" onclick="approveReel('{{ reel.stem }}', this)">✅ Approve & Publish</button>
+<button class="btn btn-reject" onclick="rejectReel('{{ reel.stem }}', this)">❌ Reject</button>
+</div>
+<div id="result-{{ reel.stem }}"></div>
+</div>
+{% endfor %}
+{% else %}
+<div class="empty">
+<p>No reels waiting for review.</p>
+<p style="margin-top:8px;"><a href="/engine/reel_pipeline">Create a new reel →</a></p>
+</div>
+{% endif %}
+</div>
+
+<script>
+async function approveReel(stem, btn) {
+  btn.disabled = true;
+  btn.textContent = '⏳ Publishing...';
+  try {
+    const r = await fetch('/reel/approve/' + stem, {method: 'POST'});
+    const d = await r.json();
+    const el = document.getElementById('result-' + stem);
+    if (d.status === 'published') {
+      el.className = 'result ok';
+      el.textContent = '✅ Published successfully!';
+      btn.textContent = '✅ Published';
+    } else {
+      el.className = 'result ok';
+      el.textContent = '✅ Approved — publish pending: ' + (d.log || '').slice(0, 100);
+      btn.textContent = '✅ Approved';
+    }
+    document.querySelector('#reel-' + stem + ' .btn-reject').disabled = true;
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '✅ Approve & Publish';
+    const el = document.getElementById('result-' + stem);
+    el.className = 'result err';
+    el.textContent = 'Error: ' + e.message;
+  }
+}
+
+async function rejectReel(stem, btn) {
+  btn.disabled = true;
+  try {
+    await fetch('/reel/reject/' + stem, {method: 'POST'});
+    const el = document.getElementById('result-' + stem);
+    el.className = 'result err';
+    el.textContent = '❌ Rejected';
+    btn.textContent = '❌ Rejected';
+    document.querySelector('#reel-' + stem + ' .btn-approve').disabled = true;
+  } catch(e) {
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
