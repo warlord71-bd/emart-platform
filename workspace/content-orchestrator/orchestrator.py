@@ -546,6 +546,33 @@ def cmd_themes(args):
         print(f"  {k:<10}{v}")
 
 
+def cmd_tick(args):
+    """Build-only cron tick: plan today + dispatch (all gated, never publishes)."""
+    import types
+    today = _today()
+    print(f"[tick] {today} — planning + dispatching (build-only, gated)")
+
+    plan_args = types.SimpleNamespace(
+        date=today, days=1, themes=None,
+        live_signals=args.live_signals, llm=False,
+    )
+    plan_path = cmd_plan(plan_args)
+    if not plan_path:
+        print("[tick] No plan generated.")
+        return
+
+    plan_data = json.loads(plan_path.read_text())
+    if not plan_data.get("items"):
+        print("[tick] Plan is empty — no themes due today.")
+        return
+
+    dispatch_args = types.SimpleNamespace(
+        plan=str(plan_path), ledger=args.ledger,
+    )
+    cmd_dispatch(dispatch_args)
+    print(f"[tick] Done. {len(plan_data['items'])} items parked at gates.")
+
+
 def cmd_status(args):
     PLANS_DIR.mkdir(parents=True, exist_ok=True)
     DISPATCH_DIR.mkdir(parents=True, exist_ok=True)
@@ -607,6 +634,11 @@ def main():
     sp = sub.add_parser("learn", help="self-improving loop: score themes from ledger outcomes → theme_weights.json")
     sp.add_argument("--llm", action="store_true", help="add advisory LLM tuning reflection")
     sp.set_defaults(func=cmd_learn)
+
+    sp = sub.add_parser("tick", help="cron tick: plan today + dispatch (build-only, gated, never publishes)")
+    sp.add_argument("--live-signals", action="store_true", help="allow read-only live Woo/GSC demand resolution")
+    sp.add_argument("--ledger", action="store_true", help="record dispatched items in the action ledger")
+    sp.set_defaults(func=cmd_tick)
 
     sp = sub.add_parser("status", help="dashboard of plans/dispatch")
     sp.set_defaults(func=cmd_status)

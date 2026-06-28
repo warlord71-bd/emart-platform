@@ -24,6 +24,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Claude | 2026-06-28 | Full session: (1) SEO sweep — CWV baselines, SEO-ORCH-3/6 closed, D6 documented, GROW-1 map (4,055+ pages/8 clusters/32 gaps). (2) BLOG-1 blog hero gen done. (3) CO-5 orchestrator tick + crontab done. (4) Hermes agent dashboard built — 22 engines, unified Hermes⚡+OpenClaw🐾 lanes, AI brain, model switcher, mobile UI, job tracking, follow-up conversations. PM2 + Nginx + auth. (5) Agent-task-routing doc. (6) Cleaned 10 stale PM2 processes. | uncommitted |
 | Codex | 2026-06-26 | Closed `USEO-8` source-of-truth state after verifying commit `b294337` already added Tier-2 category guides + FAQ schema for 7 categories. Updated `TASKS.md`, `SEO_MASTER.md`, session log, and verified lint/build. | current commit |
 | Codex | 2026-06-26 | Reconciled `workspace/SEO_MASTER.md` and `workspace/TASKS.md` as SEO source-of-truth docs: added ownership standard, current SEO execution mirror, SEO-22 wave mirror, owner-row aliases, schema map corrections, and aligned stale task statuses for SEO-ORCH, D8, SEO-2/4/5, and UX ledger consistency. | current commit |
 | Codex | 2026-06-26 | Added SEO-22 execution plan to `workspace/TASKS.md` and completed Wave 1: category-aware blog post guide labels, semantic H2 coverage for `/brands`/`/sale`/`/new-arrivals`, scannable education content rendering, safe ingredient FAQ JSON-LD, and plain-text FAQ schema answers for ingredient/concern education. | `e2642cf` |

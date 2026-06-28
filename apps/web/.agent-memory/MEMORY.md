@@ -73,6 +73,7 @@
 - [AI video engine state 2026-06-23](project_ai_video_engine_20260623.md) — Phase 0 local reel engine; inline/OpenRouter-free-Gemma script fallback; local ffprobe QA by default; direct Google/Gemini is explicit-only
 - [Social image sizes preference](feedback_social_image_sizes.md) — future Meta campaigns should generate separate IG 4:5 and FB 1:1 assets
 - [Bangla content language preference](feedback_bangla_content_language.md) — use simple natural Bangla; retain familiar English skincare terms only when Bangla sounds forced, with minimal mixing
+- [Social/reel approval and design workflow](feedback_social_reel_approval_design_workflow.md) — before generating/scheduling social/reel batches, show Excel/chat table for owner approval; 10-15 items/2 days per batch; natural voiceover; exact-product model holding shot only when QA-safe; single high-quality image per item, fetch exact product image from web if local/Woo image is missing/weak; keep 2-3 approved standard themes
 - [Business outcome first](feedback_business_outcome_first.md) — every job must connect to sales, qualified product discovery, trust, retention, measurable savings, or risk reduction; writing alone is not completion
 - [AI video influencer plan](project_ai_video_influencer_plan_20260623.md) — original tier-swappable AI video/persona plan and Phase 0 scaffold history
 - [Humanizer engine handoff](project_humanizer_engine_20260623.md) — reusable Opus-style PDP humanizer package for Hermes/OpenRouter model runs

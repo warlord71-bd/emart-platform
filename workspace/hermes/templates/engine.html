@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ engine.name }} — Hermes</title>
+<style>
+:root{--bg:#0f0f13;--card:#1a1a24;--accent:#c9a96e;--rose:#e8b4c8;--text:#e8e0d8;--muted:#8a8090;--border:#2a2a3a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;}
+.wrap{max-width:600px;margin:0 auto;padding:16px;}
+h1{font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px;}
+.sub{color:var(--muted);font-size:13px;margin-bottom:20px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;}
+label{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;margin-top:14px;}
+label:first-of-type{margin-top:0;}
+input,select,textarea{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);}
+textarea{resize:vertical;min-height:80px;}
+button{margin-top:18px;padding:14px;background:var(--accent);color:var(--bg);border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;width:100%;-webkit-appearance:none;}
+button:hover{opacity:.9;}
+button:active{transform:scale(.98);}
+a{color:var(--accent);text-decoration:none;font-size:13px;}
+.back{margin-bottom:14px;display:inline-flex;align-items:center;gap:4px;}
+.model-switch{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.model-switch summary{font-size:12px;color:var(--muted);cursor:pointer;}
+.model-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.model-opt{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text);}
+.model-opt input[type=radio]{width:auto;margin:0;}
+.hint{font-size:11px;color:var(--muted);margin-top:4px;}
+@media(max-width:600px){
+  .wrap{padding:12px;}
+  .card{padding:16px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a href="/" class="back">← Dashboard</a>
+<h1>{{ engine.name }}</h1>
+<p class="sub">{{ engine.desc }}</p>
+
+<div class="card">
+<form method="post" action="/job/create">
+<input type="hidden" name="engine" value="{{ engine_type }}">
+
+{% if engine_type == "creative" %}
+<label>Product ID</label>
+<input name="product_id" type="number" placeholder="e.g. 2591" required inputmode="numeric">
+<label>Format</label>
+<select name="format">
+{% for f in engine.formats %}
+<option value="{{ f }}">{{ f.replace('_',' ').title() }}</option>
+{% endfor %}
+</select>
+<label>Badge Text</label>
+<input name="badge" placeholder="SHOP NOW" value="SHOP NOW">
+
+{% elif engine_type == "blog_hero" %}
+<label>Blog Title</label>
+<input name="title" placeholder="Best Face Wash for Oily Skin in Bangladesh">
+<p class="hint">Leave blank if providing Post ID — title will be auto-detected</p>
+<label>Product ID (optional)</label>
+<input name="product_id" type="number" placeholder="Auto-picks if blank" inputmode="numeric">
+<label>Badge</label>
+<input name="badge" placeholder="Auto-detected from title">
+<label>WP Post ID (optional)</label>
+<input name="post_id" type="number" placeholder="Sets as featured image" inputmode="numeric">
+
+{% elif engine_type == "orchestrator_plan" %}
+<label>Days to plan</label>
+<input name="days" type="number" value="1" min="1" max="14" inputmode="numeric">
+<label>Themes (optional)</label>
+<input name="themes" placeholder="Leave blank for all themes">
+<p class="hint">Options: fast_selling, clearance, new_arrivals, trending, reviews, ingredients, innovation, cosmetics, color_cosmetics, free_giveaway, influencer_reco, doctor_reco</p>
+
+{% elif engine_type == "humanizer_run" %}
+<label>Number of products</label>
+<input name="limit" type="number" value="10" min="1" max="100" inputmode="numeric">
+<p class="hint">Uses free OpenRouter models. Runs detached — safe to close browser. Telegram pings when done.</p>
+
+{% elif engine_type == "video_enqueue" %}
+<label>Product ID</label>
+<input name="product_id" type="number" placeholder="e.g. 2591" required inputmode="numeric">
+<label>Product Name</label>
+<input name="product_name" placeholder="COSRX Snail Mucin Essence">
+<label>Platforms</label>
+<input name="platforms" value="facebook,instagram">
+<p class="hint">Queues a reel → auto-builds on next tick → Telegram approval → publishes</p>
+
+{% elif engine_type == "social_plan" %}
+<label>Number of products</label>
+<input name="count" type="number" value="6" min="1" max="18" inputmode="numeric">
+<label>Theme (optional)</label>
+<input name="theme" placeholder="e.g. fast_selling, trending">
+<p class="hint">Creates a dry-run campaign pack for review</p>
+
+{% elif engine_type == "social_pick" %}
+<label>How many products?</label>
+<input name="count" type="number" value="5" min="1" max="20" inputmode="numeric">
+
+{% elif engine_type == "blog_generate" %}
+<label>Topic (optional)</label>
+<input name="topic" placeholder="Auto-picks from GSC if blank">
+<p class="hint">Generates a DRAFT only — never publishes directly</p>
+
+{% elif engine_type == "ai_ask" %}
+<label>Your question</label>
+<textarea name="question" placeholder="What badge should this blog post use? Is this caption GMC-safe?" required></textarea>
+<label>Context (optional)</label>
+<textarea name="context" placeholder="Paste any relevant info: product details, post title, error message..."></textarea>
+
+{% elif engine_type == "ai_plan" %}
+<label>What do you want to do?</label>
+<textarea name="task" placeholder="Create a reel for COSRX Snail Mucin and post to FB/IG" required></textarea>
+<p class="hint">AI will break this into step-by-step engine actions you can run</p>
+
+{% elif engine_type == "ai_write" %}
+<label>What should I write?</label>
+<textarea name="prompt" placeholder="Instagram caption for COSRX Advanced Snail 96 Mucin Power Essence, highlight hydration benefits" required></textarea>
+<label>Style</label>
+<select name="style">
+<option value="Emart brand voice">Emart Brand Voice</option>
+<option value="Casual Bangla-English mix">Casual Bangla-English</option>
+<option value="Simple natural Bangla">Simple Bangla</option>
+<option value="SEO-optimized English">SEO English</option>
+<option value="Professional product description">Professional Description</option>
+</select>
+
+{% elif engine_type == "ai_review" %}
+<label>What to check for</label>
+<select name="check">
+<option value="GMC safety, brand voice, no medical claims">GMC Safety + Brand Voice</option>
+<option value="SEO quality: keyword usage, readability, internal link opportunities">SEO Quality</option>
+<option value="Social media readiness: engagement, CTA, emoji use, length">Social Media Ready</option>
+<option value="Factual accuracy: ingredients, product claims, pricing">Factual Accuracy</option>
+</select>
+<label>Text to review</label>
+<textarea name="text" rows="6" placeholder="Paste the content to review..." required></textarea>
+
+{% elif engine_type == "cwv_check" %}
+<label>Page path</label>
+<input name="page" placeholder="/" value="/">
+<p class="hint">Runs Lighthouse mobile check. Takes ~60 seconds.</p>
+
+{% elif engine_type == "revalidate" %}
+<label>Cache Tag</label>
+<input name="tag" placeholder="products, blog">
+<label>Or Path</label>
+<input name="path" placeholder="/blog, /shop">
+<p class="hint">Clears ISR cache so fresh data shows immediately</p>
+
+{% elif engine_type == "openclaw_task" %}
+<label>Task for OpenClaw</label>
+<textarea name="task" rows="4" placeholder="Analyze competitor pricing for top 10 COSRX products and recommend price adjustments" required></textarea>
+<label>Agent</label>
+<select name="agent">
+<option value="emart">Emart Agent (skills + business context)</option>
+<option value="main">Main Agent (general purpose)</option>
+</select>
+<p class="hint">Uses DeepSeek/Gemini brain with full memory. May take 1-2 minutes for complex tasks.</p>
+
+{% elif engine_type == "openclaw_ad_gen" %}
+<label>Product name or description</label>
+<input name="product" placeholder="COSRX Advanced Snail 96 Mucin Power Essence" required>
+<label>Platforms</label>
+<input name="platforms" value="facebook,instagram" placeholder="facebook,instagram,google">
+
+{% elif engine_type == "openclaw_auto_publish" %}
+<label>Topic</label>
+<input name="topic" placeholder="Best Korean Toner for Oily Skin" required>
+<p class="hint">Full pipeline: generate → review → draft → publish. Blog will be created as draft first.</p>
+
+{% elif engine_type == "openclaw_dashboard" %}
+<p style="color:var(--muted);">Opens the full OpenClaw Control UI at <a href="https://agent.e-mart.com.bd" target="_blank">agent.e-mart.com.bd</a></p>
+<script>window.location.href='https://agent.e-mart.com.bd';</script>
+
+{% elif engine_type in ("orchestrator_status", "topical_authority", "humanizer_status", "video_status", "video_build", "gmc_sync", "gsc_tracker", "seo_check", "openclaw_health", "openclaw_report", "openclaw_stock", "openclaw_seo_report", "openclaw_competitor") %}
+<p style="color:var(--muted);">No parameters needed — tap Run to execute.</p>
+
+{% else %}
+{% for p in engine.params %}
+<label>{{ p.replace('_',' ').title() }}</label>
+<input name="{{ p }}" placeholder="{{ p }}">
+{% endfor %}
+{% endif %}
+
+{% if engine_type.startswith('ai_') %}
+<details class="model-switch">
+<summary>Switch AI Model</summary>
+<div class="model-opts">
+<label class="model-opt"><input type="radio" name="model" value="" checked> Auto (free chain)</label>
+<label class="model-opt"><input type="radio" name="model" value="google/gemma-4-31b-it:free"> Gemma 31B</label>
+<label class="model-opt"><input type="radio" name="model" value="nvidia/nemotron-3-ultra-550b-a55b:free"> Nemotron 550B</label>
+<label class="model-opt"><input type="radio" name="model" value="poolside/laguna-xs.2:free"> Laguna</label>
+</div>
+<p class="hint" style="margin-top:6px;">Switch if output quality is poor. Auto tries all free models in order.</p>
+</details>
+{% endif %}
+
+<button type="submit">▶ Run</button>
+</form>
+</div>
+</div>
+</body>
+</html>

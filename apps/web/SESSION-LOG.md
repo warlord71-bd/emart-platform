@@ -3399,3 +3399,39 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Sample: Published fresh cache-busting review URLs: `https://e-mart.com.bd/public/videos/reels/sample-mobile-safe-boj-sunscreen-20260628-v2.mp4`, image `https://e-mart.com.bd/public/videos/reels/sample-mobile-safe-boj-sunscreen-20260628-v2-image.png`, and contact sheet `https://e-mart.com.bd/public/videos/reels/sample-mobile-safe-boj-sunscreen-20260628-v2-contact-sheet.jpg`.
 - Verified: `python3 -m py_compile workspace/creative-engine/api.py workspace/creative-engine/render.py workspace/creative-engine/data/backgrounds.py`; full sample worker render passed; local QA score 96 (`1080x1920`, audio, 12.30s, 7,583,699 bytes); v2 public URLs return HTTP 200 with fresh Cloudflare MISS.
 - Guardrail: Preview assets only; no Meta publish/schedule, no Woo/WordPress writes, no deploy, no PM2 restart, no checkout/cart/payment/order/customer/stock/price changes.
+
+## 2026-06-28 · Codex · Owner-first social/reel workflow rule
+- Did: Recorded the owner's new social/reel workflow preference in durable memory and task board: future batches must start with an Excel/CSV-style plan or chat table for approval before final generation/scheduling.
+- Details: Added requirements for 10-15 item / roughly two-day batches, natural Bangla/Banglish voiceover review, exact-product model holding shots only when generation and identity QA are trustworthy, product-first fallback when not, and 2-3 standard Emart design themes unless owner supplies a reference.
+- Next step: Produce the first approval table plus 2-3 theme sample directions before regenerating/scheduling any new social/reel batch.
+- Guardrail: Documentation/memory only; no Meta publish/schedule, no Woo/WordPress writes, no deploy, no PM2 restart, no checkout/cart/payment/order/customer/stock/price changes.
+
+## 2026-06-28 · Codex · First owner approval pack generated
+- Did: Created the first review-only social/reel approval pack at `workspace/audit/active/social-reel-approval-20260628/`.
+- Output: `approval-table.xlsx`, `approval-table.csv`, `approval-pack.md`, `theme-01-model-glow.png`, `theme-02-clean-product-hero.png`, `theme-03-luxury-jar-compact.png`, and `theme-contact-sheet.jpg`.
+- Scope: 15 proposed products for 2026-06-29 to 2026-06-30 BDT, with five reel candidates, natural voiceover directions, model/product shot status, and 3 proposed standard design themes. Held out Minimalist Niacinamide and Kojie San before approval due item/risk review.
+- Next step: Owner approves/changes/removes rows and chooses a theme direction; only then regenerate final assets and create any schedule.
+- Guardrail: Review pack only; no Meta publish/schedule, no Woo/WordPress writes, no deploy, no PM2 restart, no checkout/cart/payment/order/customer/stock/price changes.
+
+## 2026-06-28 · Codex · Social rejection memory + corrected fresh pack
+- Did: Fixed the owner-reported repeat issue. Social Engine now reads both published history and owner-rejected history for `pick`/`plan`; added `reject` to record rejected campaign JSON/approval CSV and `cleanup-assets` to dry-run/archive generated media after campaigns close.
+- Memory: Recorded the bad approval pack plus prior June 28 rejected/reschedule campaign files into `workspace/social-engine/history/rejected-products.json`; also recorded manually filtered risky/non-beauty fresh-pool items.
+- Corrected output: Generated fresh review-only pack at `workspace/audit/active/social-reel-approval-20260629-fresh/` with 15 products, Excel/CSV/Markdown, and theme samples. Excluded rejected June 28 items, HARADA Matcha Powder, Kerasys Permanent Hair Color, and Minimalist.
+- Verified: `python3 -m py_compile workspace/social-engine/social_engine/engine.py`; `python3 -m unittest workspace.social-engine.tests.test_engine` (13 tests); `cleanup-assets` dry-run found 36 old strict-campaign assets without moving files.
+- Guardrail: No Meta publish/schedule, no Woo writes, no deploy, no PM2 restart, no checkout/cart/payment/order/customer/stock/price changes. Product picker used read-only local Woo API.
+
+## 2026-06-28 · Codex · Social image source rule
+- Did: Recorded owner rule for creative jobs: use one clear high-quality exact-product image per post/reel featured item.
+- Details: If the local/Woo image is missing or low-quality, fetch a trustworthy exact-product image from the web before final generation, and record the image source in the approval/review pack.
+- Guardrail: Documentation/memory only; no image fetch, publish, schedule, Woo write, deploy, PM2 restart, or protected data changes.
+
+## 2026-06-28 · Codex · Reference-inspired creative theme prototypes
+- Did: Generated a review-only prototype pack at `workspace/audit/active/creative-theme-prototypes-20260628/` from the owner's design references: aqua bubble hero, soft grid concern, clinical note card, search/concern model card, and summer SPF sky.
+- Output: Final contact sheet `final-prototype-contact-sheet.jpg`, individual theme PNGs, and `final-manifest.json`. Prototypes use local Emart product/social assets as source placeholders; final production must use one clean high-quality exact-product image/cutout or fetch a trustworthy exact-product web image when local/Woo quality is weak.
+- Next step: Owner chooses/edits approved theme directions before any Creative Engine/social pipeline integration, final batch generation, scheduling, or publishing.
+- Guardrail: Review prototypes only; no Meta publish/schedule, no Woo/WordPress writes, no deploy, no PM2 restart, no checkout/cart/payment/order/customer/stock/price changes.
+
+## 2026-06-28 · Claude · Open SEO sweep + Hermes agent dashboard + BLOG-1 + CO-5
+- Did: (1) Swept all open SEO jobs by priority. CWV baselines captured for 5 key pages (SEO 100 everywhere, LCP 3-6.9s is perf gap). Created `cwv_monitor.py` + `seo_rotating_check.py` → SEO-ORCH-3 closed. SEO-ORCH-6 verified no changes needed → closed. D6 remaining 13 GMC items documented with exact owner actions. GROW-1 topical authority map built (4,055+ pages, 8 clusters, 32 disconnected content-type pairs, 10 link actions, `topical_authority_report.py`). (2) Built BLOG-1 `blog_hero_gen.py` — branded 1200×630 blog OG images via creative engine, backfill mode, 5 test images verified. (3) Built CO-5 content orchestrator `tick` command + crontab at 4:30 AM. (4) Built Hermes agent dashboard (`workspace/hermes/`) — FastAPI + Jinja2, 22 engines across 7 categories, unified Hermes ⚡ quick lane + OpenClaw 🐾 deep lane, AI brain (free OpenRouter models with model switcher), OpenClaw management/task routing, job tracking (SQLite), follow-up conversations on AI results, mobile-friendly responsive UI. PM2 `emart-hermes` on :8078, Nginx proxy :8088 with HTTP basic auth. (5) Created `workspace/docs/agent-task-routing.md` — full routing rules for Hermes/OpenClaw/Claude/Codex/Owner. (6) Cleaned 10 stale dated PM2 campaign processes.
+- Blockers: PageSpeed Insights API quota exceeded (used local Lighthouse instead). OpenRouter rate-limited by humanizer (used nemotron free model).
+- Next step: Owner reviews Hermes dashboard at :8088. Enable OpenClaw skills that are currently disabled. Add seo_rotating_check.py to crontab when approved.

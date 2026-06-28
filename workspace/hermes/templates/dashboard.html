@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hermes — Emart</title>
+<style>
+:root{--bg:#0f0f13;--card:#1a1a24;--accent:#c9a96e;--rose:#e8b4c8;--ink:#2a0a18;--text:#e8e0d8;--muted:#8a8090;--green:#4ade80;--red:#f87171;--yellow:#fbbf24;--blue:#60a5fa;--border:#2a2a3a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-text-size-adjust:100%;}
+.wrap{max-width:900px;margin:0 auto;padding:16px;}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:8px;}
+h1{font-size:22px;font-weight:800;color:var(--accent);}
+.badge{font-size:11px;padding:4px 10px;border-radius:20px;background:#064e3b;color:var(--green);font-weight:700;}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;flex:1;min-width:120px;}
+.stat-num{font-size:20px;font-weight:800;}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.meter{height:5px;background:var(--border);border-radius:3px;margin-top:4px;}
+.meter-fill{height:100%;border-radius:3px;background:var(--accent);}
+.section{margin-bottom:28px;}
+.section-head{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.section-desc{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.engines{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;}
+.eng{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .1s;}
+.eng:hover{border-color:var(--accent);transform:translateY(-1px);}
+.eng h3{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:2px;line-height:1.3;}
+.eng p{font-size:11px;color:var(--muted);line-height:1.3;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{text-align:left;color:var(--muted);font-weight:600;padding:5px 6px;border-bottom:1px solid var(--border);}
+td{padding:5px 6px;border-bottom:1px solid var(--border);}
+.tag{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10px;font-weight:700;text-transform:uppercase;}
+.tag.online{background:#064e3b;color:var(--green);}.tag.stopped{background:#422006;color:var(--yellow);}
+.tag.done{background:#064e3b;color:var(--green);}.tag.error{background:#450a0a;color:var(--red);}
+.tag.running{background:#1e1b4b;color:var(--blue);}.tag.queued{background:#27272a;color:var(--muted);}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+.cron-list{font-size:11px;color:var(--muted);line-height:1.8;}
+.cron-name{color:var(--text);font-weight:600;}
+.cron-sched{color:var(--accent);font-family:monospace;font-size:10px;}
+.tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap;}
+.tab{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:var(--card);border:1px solid var(--border);color:var(--muted);}
+.tab.active{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+@media(max-width:600px){
+  .wrap{padding:12px;}
+  h1{font-size:20px;}
+  .stats{gap:8px;}
+  .stat-box{padding:10px 12px;min-width:90px;}
+  .stat-num{font-size:18px;}
+  .engines{grid-template-columns:1fr 1fr;}
+  .eng{padding:10px;}
+  table{font-size:11px;}
+  td,th{padding:4px 4px;}
+}
+@media(max-width:380px){
+  .engines{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<h1>⚡ Hermes</h1>
+<span class="badge">ONLINE · {{ now }}</span>
+</header>
+
+<div class="stats">
+<div class="stat-box">
+<div class="stat-num">{{ stats.mem_available_mb }}MB</div>
+<div class="stat-label">RAM Free</div>
+</div>
+<div class="stat-box">
+<div class="stat-num">{{ stats.disk_pct }}%</div>
+<div class="stat-label">Disk Used</div>
+<div class="meter"><div class="meter-fill" style="width:{{ stats.disk_pct }}%"></div></div>
+</div>
+<div class="stat-box">
+<div class="stat-num">{{ pm2|selectattr('status','eq','online')|list|length }}</div>
+<div class="stat-label">Services Online</div>
+</div>
+<div class="stat-box">
+<div class="stat-num">{{ jobs|length }}</div>
+<div class="stat-label">Recent Jobs</div>
+</div>
+</div>
+
+{% for cat_id, cat_info in categories.items() %}
+{% if cat_id in grouped_engines and cat_info.lane == 'hermes' %}
+<div class="section">
+<div class="section-head">{{ cat_info.label }} <span style="font-size:10px;color:var(--green);font-weight:400;">⚡ FAST</span></div>
+<div class="engines">
+{% for eid, eng in grouped_engines[cat_id] %}
+<a href="/engine/{{ eid }}" class="eng">
+<h3>{{ eng.name.split(' — ')[-1] if ' — ' in eng.name else eng.name }}</h3>
+<p>{{ eng.desc[:55] }}{% if eng.desc|length > 55 %}…{% endif %}</p>
+</a>
+{% endfor %}
+</div>
+</div>
+{% endif %}
+{% endfor %}
+
+{% for cat_id, cat_info in categories.items() %}
+{% if cat_id in grouped_engines and cat_info.lane == 'openclaw' %}
+<div class="section">
+<div class="section-head">{{ cat_info.label }} <span style="font-size:10px;color:var(--rose);font-weight:400;">🧠 DEEP</span></div>
+<p class="sub" style="margin-bottom:8px;">{{ cat_info.desc }}</p>
+<div class="engines">
+{% for eid, eng in grouped_engines[cat_id] %}
+<a href="{% if eng.get('link') %}{{ eng.link }}{% else %}/engine/{{ eid }}{% endif %}" class="eng" style="border-color:#3a2a3a;" {% if eng.get('link') %}target="_blank"{% endif %}>
+<h3>{{ eng.name.split(' — ')[-1] if ' — ' in eng.name else eng.name }}</h3>
+<p>{{ eng.desc[:55] }}{% if eng.desc|length > 55 %}…{% endif %}</p>
+</a>
+{% endfor %}
+</div>
+</div>
+{% endif %}
+{% endfor %}
+
+<div class="section">
+<div class="section-head">📌 Open Tasks — Routing</div>
+<div class="card" style="font-size:12px;line-height:1.8;">
+<div style="margin-bottom:8px;"><span style="color:var(--green);font-weight:700;">⚡ Hermes</span> — run now from dashboard</div>
+<div style="color:var(--muted);">
+• Humanizer batches (326/3,625 done) → <a href="/engine/humanizer_run">Run Batch</a><br>
+• Video reel queue → <a href="/engine/video_enqueue">Enqueue</a> · <a href="/engine/video_build">Build</a><br>
+• Blog hero backfill → <a href="/engine/blog_hero">Generate</a><br>
+• CWV + SEO checks → <a href="/engine/cwv_check">CWV</a> · <a href="/engine/seo_check">SEO</a><br>
+• Content calendar → <a href="/engine/orchestrator_plan">Plan</a><br>
+• Quick content/review → <a href="/engine/ai_write">Write</a> · <a href="/engine/ai_review">Review</a>
+</div>
+<div style="margin:10px 0 8px;"><span style="color:var(--rose);font-weight:700;">🐾 OpenClaw</span> — deep reasoning tasks</div>
+<div style="color:var(--muted);">
+• Origin editorial (19 countries) → <a href="/engine/openclaw_task">Send Task</a><br>
+• Compare page pairs · Best page topics → <a href="/engine/openclaw_task">Send Task</a><br>
+• Backlink/PR pipeline · Reddit marketing → <a href="/engine/openclaw_task">Send Task</a><br>
+• Ad campaigns → <a href="/engine/openclaw_ad_gen">Ad Gen</a><br>
+• Competitor analysis → <a href="/engine/openclaw_competitor">Competitor</a>
+</div>
+<div style="margin:10px 0 8px;"><span style="color:var(--blue);font-weight:700;">💻 Claude Code</span> — needs VS Code session</div>
+<div style="color:var(--muted);">
+• Visual safety + a11y (UX-ORCH-3/4/8) · Frontend health (UX-ORCH-5)<br>
+• FAQ pipeline (USEO-10) · PM2 ecosystem (ORCH-5) · Deploy
+</div>
+<div style="margin:10px 0 8px;"><span style="color:var(--yellow);font-weight:700;">👤 Owner</span> — decisions pending</div>
+<div style="color:var(--muted);">
+• Revoke old WP/WC keys · D6 shade names (8) · GMC appeals (4)<br>
+• Reel standard sign-off · Meta token · TikTok app
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-head">📋 OpenClaw Scheduled Jobs</div>
+<div class="card">
+<div class="cron-list">
+{% for cron in crons %}
+<div><span class="cron-sched">{{ cron.schedule }}</span> <span class="cron-name">{{ cron.name }}</span></div>
+{% endfor %}
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-head">🔧 PM2 Services</div>
+<div class="card">
+<table>
+<tr><th>Service</th><th>Status</th><th>RAM</th></tr>
+{% for p in pm2 %}
+<tr>
+<td>{{ p.name }}</td>
+<td><span class="tag {{ p.status }}">{{ p.status }}</span></td>
+<td>{{ p.mem }}MB</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="section-head">📜 Recent Jobs</div>
+<div class="card">
+{% if jobs %}
+<table>
+<tr><th>ID</th><th>Type</th><th>Status</th><th>Time</th></tr>
+{% for j in jobs %}
+<tr>
+<td><a href="/job/{{ j.id }}">{{ j.id[:8] }}</a></td>
+<td>{{ j.type }}</td>
+<td><span class="tag {{ j.status }}">{{ j.status }}</span></td>
+<td>{{ j.created_at[11:16] if j.created_at|length > 11 else j.created_at }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p style="color:var(--muted);">No jobs yet. Pick an engine above.</p>
+{% endif %}
+</div>
+</div>
+
+</div>
+</body>
+</html>

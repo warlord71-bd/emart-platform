@@ -22,7 +22,7 @@ This compact mirror keeps the SEO source of truth aligned with the task board. F
 |---|---|---|
 | SEO data contract | `SEO-ORCH-1` | ✅ Complete. Canonical GSC merge, durable completed-content registry, humanizer queue correction, and full-catalog agentic scoring are trusted inputs. |
 | SEO work ledger | `SEO-ORCH-2` | ✅ Instantiated. Durable JSONL ledger at `workspace/ledgers/action-events.jsonl`; 30 SEO entries seeded with GSC+GA4 baselines. |
-| Technical control loop | `SEO-ORCH-3`, `SEO-ORCH-6`, `SEO-GAP-4` | 🟡 Partial. Classifier, bounded live sample, and URL-policy registry validation exist; rotating coverage, Qdrant/catalog parity, CWV/CrUX, and scheduled freshness alerts remain. |
+| Technical control loop | `SEO-ORCH-3`, `SEO-ORCH-6`, `SEO-GAP-4` | ✅ Complete 2026-06-28. All components built: classifier, live verifier, URL-policy registry (all 8 rules verified, no changes needed), Qdrant parity (100%), CWV baselines (SEO 100 everywhere; LCP is perf gap at 6.0-6.9s on product pages), `cwv_monitor.py`, `seo_rotating_check.py` (weekly Mon-Sat schedule). Add to crontab when ready. |
 | Measurement loop | `SEO-ORCH-4` | ✅ Operational for SEO ledger entries via `measurement_loop.py` with GSC+GA4 baselines and review windows. Order/revenue joins remain excluded unless explicitly approved because order data is protected. |
 | Content lifecycle | `SEO-ORCH-5`, `WA-H` | ✅ Contract/gate done. Blog generator supports draft/generate-only; `content-lifecycle-contract.md` defines demand→brief→draft→QA→approve→publish→verify→measure. Runtime adoption remains approval-first. |
 | Off-page/entity/AEO | `SEO-ORCH-7` | 🟡 Spec done only. Outreach/entity execution remains owner-gated. |
@@ -35,9 +35,9 @@ This compact mirror keeps the SEO source of truth aligned with the task board. F
 |---|---|---|
 | 1 | `USEO-12`, `L4`, `SEO-6`, `M6` | ✅ Code verified in source 2026-06-27: `getBlogGuideLabel()` in blog `[slug]/page.tsx`, H2s in brands/sale/new-arrivals pages, `EducationContent.tsx` auto-split + `[[LINK:]]` stripping, ingredient/concern FAQ JSON-LD cleanup. **Deployment pending** — changes are on `docs/post-freeze-board`, not yet on `main`/VPS. |
 | 2 | `USEO-8`, `D8/USEO-9`, `USEO-7`, `USEO-10` | 🟡 `USEO-8` verified in source (`b294337`, 7 category guides in `page.tsx`). **Deployment pending.** Remaining: `USEO-9` Tier-2 brand editorial (no data file yet), `USEO-7` humanizer in-body links (no code yet in humanizer engine), `USEO-10` product FAQ sample batch (needs Woo meta write pipeline). Owner/copy review required. |
-| 3 | `SEO-ORCH-2/3/4/5/6`, `QDR-DRIFT` | 🟡 Foundation verified: scripts exist (`seo_technical_control_loop.py`, `seo_url_policy_registry.py`, `url-policy-registry.json`). Remaining: Qdrant parity report (no drift/parity script exists yet), CWV/CrUX, rotating verification schedule, registry→middleware wiring. |
+| 3 | `SEO-ORCH-2/3/4/5/6`, `QDR-DRIFT` | ✅ Complete 2026-06-28. All scripts operational: control loop, URL-policy (all 8 rules, no changes needed), Qdrant (100% parity), CWV (`cwv_monitor.py` + baselines), rotating weekly schedule (`seo_rotating_check.py`). QDR-DRIFT done. |
 | 4 | `D6`, `O-13`, `M9/O-6/E3` | 🔲 Owner/data-gated revenue recovery. GMC disapproval list verified at `gmc-disapproved-20260622.md` (83 remaining). |
-| 5 | `L6`, `O-2`, `O-3`, `O-4`, `SEO-ORCH-7` | 🔲 Owner-decision growth roadmap. `topical-authority-map-spec.md` exists (spec only, no implementation). |
+| 5 | `L6`, `O-2`, `O-3`, `O-4`, `SEO-ORCH-7` | 🟡 GROW-1 topical authority map complete 2026-06-28 (`grow1-topical-authority-map-20260628.md`): 4,055+ pages, 8 clusters, 32 disconnected pairs, 10 prioritized link actions, regenerable report script. Owner-decision growth roadmap items remain open. |
 
 ### Open SEO Priority Order — Business Outcome Logic (2026-06-27)
 
@@ -48,15 +48,15 @@ Ranked by direct revenue/discovery impact during freeze. Items that can execute 
 | 1 | `USEO-11` | **Humanizer ongoing** — 3,503 thin PDPs directly hurt GMC approval, AI citations, and product discovery. Highest volume impact. | OpenRouter funds for speed | ✅ yes |
 | 2 | Deploy Wave 1+2 | **Merge + deploy** code-complete SEO work (USEO-8/12, L4, SEO-6 + USEO-6). Currently stuck on `docs/post-freeze-board` branch. | Merge to main + deploy sequence | ✅ yes |
 | 3 | `USEO-9` | **Tier-2 brand editorial** — AI Assistant is #2 BD channel; brand pages drive most AI traffic. 372 brands still generic. | Owner copy review | ✅ yes |
-| 4 | `D6` | **GMC disapprovals** — 83 products blocked from Google Shopping = direct lost revenue. | Owner per-item review | ✅ yes |
+| 4 | `D6` | **GMC disapprovals** — 33/46 fixed 2026-06-28. 13 remain (all owner-gated: 8 title shade names, 4 broad-category appeals, 1 backorder). Revenue impact <1%. | Owner decisions: title rename vs accept vs exclude | ✅ yes |
 | 5 | `M4` | **FAQ quality** — top products use templated FAQs; weak rich results + AI answer quality. | Owner top-10 review before bulk | ✅ yes |
 | 6 | `M6` | **Education content links** — ingredient/concern pages have sparse internal links (<1/entry avg). Affects topical authority + crawl depth. | Owner review of first 4 | ✅ yes |
 | 7 | `USEO-7` | **Humanizer in-body links** — rides the humanizer pipeline to add internal links at scale. Zero code exists yet. | Humanizer engine modification | ✅ yes |
-| 8 | `SEO-ORCH-3` | **Technical control loop** remaining — Qdrant parity, CWV/CrUX, rotating verification. | Read-only; no blocker | ✅ yes |
-| 9 | `QDR-DRIFT` | **Qdrant/catalog parity** report. No parity script exists yet. | Report first, no destructive ops | ✅ yes |
+| ~~8~~ | ~~`SEO-ORCH-3`~~ | ~~Technical control loop~~ | ✅ Complete 2026-06-28 — CWV baselines + rotating schedule | ✅ done |
+| ~~9~~ | ~~`QDR-DRIFT`~~ | ~~Qdrant parity~~ | ✅ 100% parity, 1 orphan | ✅ done |
 | 10 | `USEO-10` | **Template FAQ improvement** — overlaps M4; lower priority, needs M4 results first. | M4 completion | ✅ yes |
 | 11 | `O-13` | **PDP 404 redirects** — 18 review-only + 52 no-match candidates. | Owner review | ✅ yes |
-| 12 | `GROW-1` | **Topical authority map** — spec exists, no implementation. Strategic but post-freeze preferred. | Owner direction | ✅ yes |
+| ~~12~~ | ~~`GROW-1`~~ | ~~Topical authority map~~ | ✅ Complete 2026-06-28 — 4,055+ pages mapped, 8 clusters, 32 disconnected pairs, 10 link actions, `topical_authority_report.py` | ✅ done |
 | — | `O-2/3/4/5` | Owner-gated content pages (origins, compare, best, skin-type). | Owner decisions | ✅ yes |
 | — | `E1-E6` | External/off-page SEO. All owner-gated. | Owner action | N/A |
 

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Job {{ job.id }} — Hermes</title>
+<style>
+:root{--bg:#0f0f13;--card:#1a1a24;--accent:#c9a96e;--rose:#e8b4c8;--text:#e8e0d8;--muted:#8a8090;--green:#4ade80;--red:#f87171;--blue:#60a5fa;--border:#2a2a3a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;}
+.wrap{max-width:700px;margin:0 auto;padding:16px;}
+h1{font-size:18px;font-weight:800;color:var(--accent);margin-bottom:4px;}
+.sub{color:var(--muted);font-size:13px;margin-bottom:16px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;}
+.tag{display:inline-block;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;text-transform:uppercase;}
+.tag.done{background:#064e3b;color:var(--green);}.tag.error{background:#450a0a;color:var(--red);}
+.tag.running{background:#1e1b4b;color:var(--blue);}.tag.queued{background:#27272a;color:var(--muted);}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+.meta-item{font-size:12px;}.meta-label{color:var(--muted);font-weight:600;font-size:11px;}
+pre{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:12px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;color:var(--muted);margin-top:8px;max-height:400px;overflow-y:auto;}
+a{color:var(--accent);text-decoration:none;font-size:13px;}
+.back{margin-bottom:12px;display:inline-block;}
+.preview{margin-top:12px;max-width:100%;border-radius:8px;border:1px solid var(--border);}
+.result-title{font-size:14px;font-weight:700;color:var(--rose);margin-bottom:8px;}
+@media(max-width:600px){
+  .meta{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a href="/" class="back">← Dashboard</a>
+<h1>Job {{ job.id }}</h1>
+<p class="sub">{{ job.type }} · <span class="tag {{ job.status }}">{{ job.status }}</span></p>
+
+<div class="card">
+<div class="meta">
+<div class="meta-item"><div class="meta-label">Created</div>{{ job.created_at }}</div>
+<div class="meta-item"><div class="meta-label">Finished</div>{{ job.finished_at or '—' }}</div>
+</div>
+<div class="meta-label">Parameters</div>
+<pre>{{ job.params }}</pre>
+</div>
+
+{% if job.result_parsed %}
+<div class="card">
+<div class="result-title">Result</div>
+
+{% if job.result_parsed.preview %}
+<img src="{{ job.result_parsed.preview }}" class="preview" alt="Output">
+{% endif %}
+
+{% if job.result_parsed.log %}
+<pre>{{ job.result_parsed.log }}</pre>
+{% endif %}
+
+{% if job.result_parsed.error %}
+<pre style="color:var(--red);">{{ job.result_parsed.error }}</pre>
+{% endif %}
+
+{% if job.result_parsed.completed is defined %}
+<pre>Completed: {{ job.result_parsed.completed }}
+Running: {{ job.result_parsed.running }}
+Scored: {{ job.result_parsed.get('total_scored', '?') }}
+Last: {{ job.result_parsed.get('last_score', '?') }} (ID {{ job.result_parsed.get('last_product_id', '?') }})</pre>
+{% endif %}
+
+{% if job.result_parsed.model_used %}
+<p style="font-size:11px;color:var(--muted);margin-top:8px;">Model: {{ job.result_parsed.model_used }}</p>
+{% endif %}
+</div>
+{% endif %}
+
+{% if job.error %}
+<div class="card">
+<pre style="color:var(--red);">{{ job.error }}</pre>
+</div>
+{% endif %}
+
+{% if job.type.startswith('ai_') and job.status == 'done' %}
+<div class="card">
+<div class="result-title">Follow up</div>
+<form method="post" action="/job/create">
+<input type="hidden" name="engine" value="{{ job.type }}">
+{% if job.type == 'ai_ask' %}
+<textarea name="question" rows="3" placeholder="Ask a follow-up..." required style="width:100%;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;resize:vertical;"></textarea>
+<input type="hidden" name="context" value="{{ job.result_parsed.log[:1500] if job.result_parsed else '' }}">
+{% elif job.type == 'ai_write' %}
+<textarea name="prompt" rows="3" placeholder="Revise: make it shorter / more Bangla / add emoji..." required style="width:100%;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;resize:vertical;"></textarea>
+<input type="hidden" name="style" value="Emart brand voice">
+{% elif job.type == 'ai_review' %}
+<textarea name="text" rows="3" placeholder="Paste revised text to re-check..." required style="width:100%;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;resize:vertical;"></textarea>
+<input type="hidden" name="check" value="GMC safety, brand voice, no medical claims">
+{% elif job.type == 'ai_plan' %}
+<textarea name="task" rows="3" placeholder="Refine the plan or ask for a different approach..." required style="width:100%;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;resize:vertical;"></textarea>
+{% endif %}
+<button type="submit" style="margin-top:10px;padding:12px;background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;width:100%;">▶ Send</button>
+</form>
+</div>
+{% endif %}
+</div>
+</body>
+</html>
