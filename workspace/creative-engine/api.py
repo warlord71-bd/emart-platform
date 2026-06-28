@@ -153,28 +153,28 @@ def _compose_hero_vertical(d: ProductData, fmt: dict, req: CreativeRequest) -> s
   overflow-wrap:anywhere;word-break:break-word;}}
 .size{{display:inline-block;margin-top:20px;border:2px solid rgba(255,255,255,.72);border-radius:12px;
   padding:7px 18px;font-size:28px;font-weight:900;}}
-.product-stage{{position:absolute;left:64px;right:64px;top:430px;height:540px;border-radius:36px;
+.product-stage{{position:absolute;left:58px;right:58px;top:430px;height:650px;border-radius:36px;
   background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,248,238,.84));
   box-shadow:0 34px 90px rgba(0,0,0,.35);overflow:hidden;}}
 .product-stage::before{{content:"";position:absolute;inset:auto 70px 70px;height:112px;border-radius:50%;
   background:radial-gradient(ellipse, rgba(159,18,57,.28), rgba(159,18,57,0) 68%);filter:blur(8px);}}
 .product-stage img{{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  max-width:88%;max-height:82%;object-fit:contain;filter:drop-shadow(0 26px 36px rgba(0,0,0,.24));}}
+  max-width:92%;max-height:88%;object-fit:contain;filter:drop-shadow(0 26px 36px rgba(0,0,0,.24));}}
 .product-stage.shape-tall_bottle img,.product-stage.shape-dropper img{{max-width:58%;max-height:90%;}}
-.product-stage.shape-tube img{{max-width:68%;max-height:87%;}}
+.product-stage.shape-tube img{{max-width:66%;max-height:92%;}}
 .product-stage.shape-jar img{{max-width:76%;max-height:66%;}}
 .product-stage.shape-compact img{{max-width:78%;max-height:58%;}}
 .product-stage.shape-sheet_pack img,.product-stage.shape-box img,.product-stage.shape-pouch img{{max-width:86%;max-height:74%;}}
-.bn{{position:absolute;left:78px;right:78px;bottom:920px;text-align:center;font-size:34px;
+.bn{{position:absolute;left:76px;right:76px;top:1108px;text-align:center;font-size:34px;
   font-weight:800;line-height:1.32;color:#fff;}}
-.price{{position:absolute;left:78px;right:78px;bottom:780px;display:flex;align-items:center;
+.price{{position:absolute;left:76px;right:76px;top:1205px;display:flex;align-items:center;
   justify-content:center;gap:22px;flex-wrap:wrap;}}
 .price span:first-child{{font-size:76px;font-weight:900;color:{GOLD};text-shadow:0 8px 24px rgba(0,0,0,.32);}}
 .old{{font-size:44px!important;color:{SOFT_ROSE}!important;text-decoration:line-through;text-shadow:none!important;}}
 .save{{font-size:28px!important;color:#fff!important;background:rgba(255,255,255,.14);border-radius:24px;
   padding:8px 18px;text-shadow:none!important;}}
 .price b{{font-size:30px;color:{INK};background:{GOLD};border-radius:14px;padding:9px 18px;}}
-.foot{{position:absolute;left:58px;right:58px;bottom:650px;display:flex;align-items:center;
+.foot{{position:absolute;left:58px;right:58px;top:1360px;display:flex;align-items:center;
   justify-content:space-between;color:{SOFT_ROSE};font-size:28px;font-weight:800;}}
 .url{{color:{GOLD};font-size:34px;letter-spacing:1px;}}
 </style></head><body><div class="wrap">

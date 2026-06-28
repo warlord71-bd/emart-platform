@@ -16,13 +16,24 @@ def _ssl_ctx():
 # ── Background removal ──────────────────────────────────────────────────
 
 def remove_bg(image_url: str) -> str:
-    from PIL import Image
-    from rembg import remove
+    from PIL import Image, ImageChops
     import io
-    req = urllib.request.Request(image_url, headers={"User-Agent": "Mozilla/5.0"})
-    resp = urllib.request.urlopen(req, context=_ssl_ctx(), timeout=15)
-    input_img = Image.open(io.BytesIO(resp.read())).convert("RGBA")
-    output_img = remove(input_img)
+    if image_url.startswith(("http://", "https://")):
+        req = urllib.request.Request(image_url, headers={"User-Agent": "Mozilla/5.0"})
+        resp = urllib.request.urlopen(req, context=_ssl_ctx(), timeout=15)
+        raw = resp.read()
+    else:
+        raw = Path(image_url).read_bytes()
+    input_img = Image.open(io.BytesIO(raw)).convert("RGBA")
+    try:
+        from rembg import remove
+        output_img = remove(input_img)
+    except Exception:
+        bg = Image.new("RGBA", input_img.size, input_img.getpixel((0, 0)))
+        diff = ImageChops.difference(input_img, bg).convert("L")
+        diff = diff.point(lambda p: 255 if p > 14 else 0)
+        bbox = diff.getbbox()
+        output_img = input_img.crop(bbox) if bbox else input_img
     alpha_box = output_img.getchannel("A").getbbox()
     if alpha_box:
         pad = 18

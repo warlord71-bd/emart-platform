@@ -68,6 +68,14 @@ def screenshot(
         }
         if (overlap(by['.product-name'], by['.price-area'], 24)) issues.push('.product-name overlaps price area');
         if (overlap(by['.copy'], by['.product-stage'], 24)) issues.push('.copy overlaps product stage');
+        for (const [a, b, pad] of [
+            ['.bn', '.product-stage', 12],
+            ['.price', '.bn', 12],
+            ['.price', '.product-stage', 12],
+            ['.foot', '.price', 8],
+        ]) {
+            if (overlap(by[a], by[b], pad)) issues.push(`${a} overlaps ${b}`);
+        }
         const W = document.body.clientWidth || 1080;
         const H = document.body.clientHeight || 1920;
         for (const r of rects) {
