@@ -74,6 +74,15 @@ def screenshot(
             if (r.right > W || r.left < 0 || r.bottom > H || r.top < 0) issues.push(`${r.selector} escapes canvas`);
             if (r.scrollWidth > r.clientWidth + 2 || r.scrollHeight > r.clientHeight + 2) issues.push(`${r.selector} clips text`);
         }
+        if (H === 1920) {
+            const maxImportantBottom = Math.round(H * 0.74);
+            for (const selector of ['.bn', '.price', '.foot', '.brand', '.url']) {
+                const r = by[selector];
+                if (r && r.bottom > maxImportantBottom) {
+                    issues.push(`${selector} below mobile reel safe zone (${Math.round(r.bottom)} > ${maxImportantBottom})`);
+                }
+            }
+        }
         if (document.body.innerText.includes('&amp;')) issues.push('escaped entity visible in rendered text');
         return issues;
     });

@@ -153,7 +153,7 @@ def _compose_hero_vertical(d: ProductData, fmt: dict, req: CreativeRequest) -> s
   overflow-wrap:anywhere;word-break:break-word;}}
 .size{{display:inline-block;margin-top:20px;border:2px solid rgba(255,255,255,.72);border-radius:12px;
   padding:7px 18px;font-size:28px;font-weight:900;}}
-.product-stage{{position:absolute;left:64px;right:64px;top:535px;height:830px;border-radius:36px;
+.product-stage{{position:absolute;left:64px;right:64px;top:430px;height:540px;border-radius:36px;
   background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,248,238,.84));
   box-shadow:0 34px 90px rgba(0,0,0,.35);overflow:hidden;}}
 .product-stage::before{{content:"";position:absolute;inset:auto 70px 70px;height:112px;border-radius:50%;
@@ -165,18 +165,18 @@ def _compose_hero_vertical(d: ProductData, fmt: dict, req: CreativeRequest) -> s
 .product-stage.shape-jar img{{max-width:76%;max-height:66%;}}
 .product-stage.shape-compact img{{max-width:78%;max-height:58%;}}
 .product-stage.shape-sheet_pack img,.product-stage.shape-box img,.product-stage.shape-pouch img{{max-width:86%;max-height:74%;}}
-.bn{{position:absolute;left:78px;right:78px;bottom:360px;text-align:center;font-size:38px;
+.bn{{position:absolute;left:78px;right:78px;bottom:920px;text-align:center;font-size:34px;
   font-weight:800;line-height:1.32;color:#fff;}}
-.price{{position:absolute;left:78px;right:78px;bottom:194px;display:flex;align-items:center;
+.price{{position:absolute;left:78px;right:78px;bottom:780px;display:flex;align-items:center;
   justify-content:center;gap:22px;flex-wrap:wrap;}}
-.price span:first-child{{font-size:90px;font-weight:900;color:{GOLD};text-shadow:0 8px 24px rgba(0,0,0,.32);}}
+.price span:first-child{{font-size:76px;font-weight:900;color:{GOLD};text-shadow:0 8px 24px rgba(0,0,0,.32);}}
 .old{{font-size:44px!important;color:{SOFT_ROSE}!important;text-decoration:line-through;text-shadow:none!important;}}
 .save{{font-size:28px!important;color:#fff!important;background:rgba(255,255,255,.14);border-radius:24px;
   padding:8px 18px;text-shadow:none!important;}}
 .price b{{font-size:30px;color:{INK};background:{GOLD};border-radius:14px;padding:9px 18px;}}
-.foot{{position:absolute;left:58px;right:58px;bottom:62px;display:flex;align-items:center;
+.foot{{position:absolute;left:58px;right:58px;bottom:650px;display:flex;align-items:center;
   justify-content:space-between;color:{SOFT_ROSE};font-size:28px;font-weight:800;}}
-.url{{color:{GOLD};font-size:38px;letter-spacing:1px;}}
+.url{{color:{GOLD};font-size:34px;letter-spacing:1px;}}
 </style></head><body><div class="wrap">
   <div class="top"><div class="brand">{logo_block}<div><strong>{BRAND_NAME}</strong><span>{BRAND_TAGLINE}</span></div></div><div class="badge">{esc(badge)}</div></div>
   <div class="copy"><div class="kicker">{KICKER_DEFAULT}</div><div class="title">{esc(title)}</div><div class="sub">{esc(sub)}</div>{size_block}</div>
@@ -216,7 +216,7 @@ def _compose_scene_value(d: ProductData, fmt: dict, req: CreativeRequest) -> str
 
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 {_vertical_base_css(w, h)}
-.wrap{{position:absolute;inset:0;padding:112px 78px 76px;display:flex;flex-direction:column;}}
+.wrap{{position:absolute;inset:0;padding:112px 78px 360px;display:flex;flex-direction:column;}}
 .kicker{{align-self:flex-start;font-size:32px;font-weight:800;letter-spacing:3px;color:{INK};
   background:{GOLD};border-radius:14px;padding:10px 26px;margin-bottom:30px;}}
 .title{{font-size:{title_size}px;font-weight:900;line-height:1.18;margin-bottom:{title_margin}px;overflow-wrap:anywhere;word-break:break-word;}}
@@ -228,7 +228,7 @@ def _compose_scene_value(d: ProductData, fmt: dict, req: CreativeRequest) -> str
   font-size:{mark_font}px;font-weight:900;display:flex;align-items:center;justify-content:center;
   box-shadow:0 10px 24px rgba(0,0,0,.24);}}
 .txt{{font-size:{text_size}px;font-weight:800;line-height:1.25;overflow-wrap:anywhere;word-break:break-word;}}
-.foot{{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:28px;
+.foot{{margin-top:56px;display:flex;align-items:center;justify-content:space-between;gap:28px;
   min-height:156px;padding:18px 26px;background:rgba(42,10,24,.72);
   border:1px solid rgba(255,255,255,.18);border-radius:32px;box-shadow:0 18px 46px rgba(0,0,0,.32);}}
 .foot .logoimg{{width:132px;height:132px;border-radius:28px;box-shadow:0 14px 34px rgba(0,0,0,.36);}}
@@ -268,7 +268,7 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 {_vertical_base_css(w, h)}
 .wrap{{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;text-align:center;padding:0 90px;}}
+  justify-content:flex-start;text-align:center;padding:190px 90px 520px;}}
 .logo{{width:248px;height:248px;border-radius:40px;margin-bottom:42px;
   box-shadow:0 18px 50px rgba(0,0,0,0.45);}}
 .logotext{{font-size:84px;font-weight:900;letter-spacing:2px;margin-bottom:42px;color:#fff;}}
@@ -286,7 +286,7 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
   border-radius:30px;padding:8px 26px;margin-bottom:46px;display:inline-block;}}
 .url{{font-size:46px;font-weight:800;letter-spacing:1px;margin:8px 0 18px;color:{GOLD};}}
 .tag{{font-size:30px;font-style:italic;color:{SOFT_ROSE};}}
-.foot{{position:absolute;bottom:70px;left:0;right:0;font-size:26px;color:{SOFT_ROSE};text-align:center;}}
+.foot{{position:absolute;bottom:520px;left:0;right:0;font-size:26px;color:{SOFT_ROSE};text-align:center;}}
 </style></head><body><div class="wrap">
 {logo_block}<div class="rule"></div>
 <div class="product">{esc(product)}</div>
@@ -343,7 +343,7 @@ def _motion_manifest(req: CreativeRequest, d: ProductData, w: int, h: int) -> di
     return {
         "focal_point": [w // 2, int(h * 0.55)],
         "safe_zones": {"hook": 58, "benefit": 68, "cta": 76},
-        "caption_free_regions": [[0, 0, w, int(h * 0.28)], [0, int(h * 0.78), w, h]],
+        "caption_free_regions": [[0, 0, w, int(h * 0.28)], [0, int(h * 0.70), w, h]],
         "container_type": d.container_type,
         "suggested_motion": "static_card" if req.format.startswith("scene_") else "ken_burns_in",
         "duration_hint_s": 3.2 if req.format == "hero_vertical" else 2.6,
