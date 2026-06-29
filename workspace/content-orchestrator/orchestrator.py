@@ -60,6 +60,11 @@ try:
 except Exception:
     woo = None
 
+try:
+    import model_shot  # cron-safe model-with-real-product request/composite service
+except Exception:
+    model_shot = None
+
 
 def _load_weights() -> dict:
     """Self-improving feedback: per-theme multipliers learned from outcomes (default 1.0)."""
@@ -272,18 +277,40 @@ def _social_job(item: dict, stamp: str) -> dict:
 
 def _video_job(item: dict, stamp: str) -> dict:
     cand = item["candidate"]
-    return {
+    job = {
         "id": f"co-{item['theme']}-{stamp}-reel",
         "tier_target": "free",
         "platforms": [c for c in item["channels"] if c in ("facebook", "instagram", "tiktok", "youtube")] or ["instagram"],
         "product": cand.get("name"),
         "product_id": cand.get("product_id"),
+        "price": cand.get("price") or cand.get("sale_price") or "",
+        "original_price": cand.get("regular_price") or "",
+        "brand": cand.get("brand") or "",
+        "category": cand.get("category") or "Skincare",
+        "category_slug": cand.get("category_slug") or "skincare",
+        "product_image": cand.get("image") or cand.get("product_image") or "",
         "language": "bn",
         "status": "pending",  # gate: video-engine Telegram approval (publish_approved.py only)
         "_orchestrator": {"theme": item["theme"], "gate": "campaign", "metric": item["metric"],
                           "formats": item["formats"], "guard": item.get("guard"),
                           "candidate_source": cand.get("source")},
     }
+    if "model_holding_real_product" in item.get("formats", []):
+        persona = "dr-rumana" if item["theme"] == "doctor_reco" else "nusrat"
+        job.update({
+            "holding_request": True,
+            "holding_generation_mode": "real_product_composite",
+            "holding_first": True,
+            "holding_label": "Original product",
+            "holding_persona": persona,
+            "model_fallback": False,
+            "no_hallucination_product_layer": True,
+            "qa_block_on_vision": True,
+            "product_card": True,
+            "product_cutout": True,
+            "brand_card": True,
+        })
+    return job
 
 
 def _content_brief(item: dict, stamp: str) -> dict:
@@ -328,6 +355,62 @@ def _ledger_add(item: dict, targets: list[str]) -> str | None:
         return None
 
 
+def _enrich_candidate_for_visuals(cand: dict) -> dict:
+    """Best-effort read-only enrichment so cron-built visual jobs carry product image/brand/price.
+
+    Existing plan files can contain only a product id/slug. Dispatch is the last safe point before
+    native jobs are emitted, so hydrate missing visual fields here without writing Woo data.
+    """
+    out = dict(cand)
+    if out.get("image") or woo is None:
+        return out
+    detail = None
+    if out.get("product_id") and hasattr(woo, "product_by_id"):
+        detail = woo.product_by_id(out.get("product_id"))
+    elif out.get("slug") and hasattr(woo, "resolve_slug_id") and hasattr(woo, "product_by_id"):
+        pid = woo.resolve_slug_id(out.get("slug"))
+        if pid:
+            out["product_id"] = pid
+            detail = woo.product_by_id(pid)
+    if detail:
+        for key, value in detail.items():
+            if value not in (None, "") and not out.get(key):
+                out[key] = value
+    return out
+
+
+def _model_shot_persona(item: dict) -> str:
+    if item["theme"] == "doctor_reco":
+        return "dr-rumana"
+    if item["theme"] == "influencer_reco":
+        return "nusrat"
+    return "ayesha-hijabi"
+
+
+def _emit_model_shot_request(item: dict, stamp: str) -> dict | None:
+    if "model_holding_real_product" not in item.get("formats", []):
+        return None
+    cand = item["candidate"]
+    persona = _model_shot_persona(item)
+    if model_shot is None:
+        return {
+            "status": "blocked",
+            "reason": "model_shot_service_unavailable",
+            "product": cand.get("name"),
+            "persona": persona,
+        }
+    return model_shot.emit_request(
+        product=cand.get("name") or f"product-{cand.get('product_id') or stamp}",
+        product_id=cand.get("product_id"),
+        product_image=cand.get("image") or cand.get("product_image"),
+        persona=persona,
+        source=f"content-orchestrator:{item['theme']}:{stamp}",
+        render_composite=False,
+        label="Original product",
+        bangla="",
+    )
+
+
 def cmd_dispatch(args):
     plan_path = Path(args.plan)
     if not plan_path.exists():
@@ -340,12 +423,22 @@ def cmd_dispatch(args):
     (out_dir / "video").mkdir(parents=True, exist_ok=True)
     (out_dir / "briefs").mkdir(parents=True, exist_ok=True)
 
-    counts = {"social": 0, "video": 0, "brief": 0}
+    (out_dir / "model-shots").mkdir(parents=True, exist_ok=True)
+
+    counts = {"social": 0, "video": 0, "brief": 0, "model_shot": 0}
     manifest = []
     for i, item in enumerate(plan["items"]):
         stamp = f"{plan['window']['start'].replace('-','')}-{i:03d}"
+        item = dict(item)
+        item["candidate"] = _enrich_candidate_for_visuals(item.get("candidate", {}))
         gen = item["generator"]
         targets = []
+        model_req = _emit_model_shot_request(item, stamp)
+        if model_req:
+            p = out_dir / "model-shots" / f"{stamp}-{item['theme']}.json"
+            p.write_text(json.dumps(model_req, ensure_ascii=False, indent=2))
+            counts["model_shot"] += 1
+            targets.append(str(p.relative_to(ROOT)))
         if "social" in gen:
             p = out_dir / "social" / f"{stamp}-{item['theme']}.json"
             p.write_text(json.dumps(_social_job(item, stamp), ensure_ascii=False, indent=2))
@@ -364,6 +457,7 @@ def cmd_dispatch(args):
         ledger_id = _ledger_add(item, targets) if getattr(args, "ledger", False) else None
         manifest.append({"theme": item["theme"], "date": item["date"], "gate": item["gate"],
                          "targets": targets, "candidate_source": item["candidate"]["source"],
+                         "model_shot": model_req,
                          "ledger_id": ledger_id})
 
     (out_dir / "MANIFEST.json").write_text(json.dumps({
@@ -372,6 +466,7 @@ def cmd_dispatch(args):
         "next_steps": {
             "social": "review under social-engine plan workflow → owner approve → meta_schedule.js --publish",
             "video": "orchestrator.py --tick builds reel → reels_bot.py Telegram approve = only publisher",
+            "model_shots": "model_shot.py request/composite → owner review → video/social may consume",
             "briefs": "content-lifecycle-contract: brief → draft (blog_generator --draft) → QA → owner approve",
         },
     }, ensure_ascii=False, indent=2))
@@ -379,6 +474,7 @@ def cmd_dispatch(args):
     print(f"dispatch -> {out_dir} (DRY-RUN, parked at gates)")
     print(f"  social campaign drafts: {counts['social']}")
     print(f"  video reel jobs (pending): {counts['video']}")
+    print(f"  model-shot requests: {counts['model_shot']}")
     print(f"  content/SEO briefs (proposed): {counts['brief']}")
     if getattr(args, "ledger", False):
         ledgered = sum(1 for m in manifest if m["ledger_id"])
@@ -423,6 +519,7 @@ def cmd_manual(args):
         "source": "manual_owner",
         "signal_score": None,
         "note": args.note,
+        "image": args.product_image,
     }
     day = args.date or _today()
     item = _build_item(theme, day, cand)
@@ -594,7 +691,8 @@ def cmd_status(args):
         if mf.exists():
             m = json.loads(mf.read_text())
             c = m["counts"]
-            print(f"  {d.name:<24}social={c['social']} video={c['video']} briefs={c['brief']} (dry-run, gated)")
+            print(f"  {d.name:<24}social={c.get('social', 0)} video={c.get('video', 0)} "
+                  f"model_shots={c.get('model_shot', 0)} briefs={c.get('brief', 0)} (dry-run, gated)")
     print("\nEngines this orchestrator routes to (all approval-gated):")
     if ENGINE_REGISTRY.exists():
         registry = json.loads(ENGINE_REGISTRY.read_text())
@@ -653,6 +751,7 @@ def main():
     sp.add_argument("--name", help="product/display name")
     sp.add_argument("--slug", help="product/page slug")
     sp.add_argument("--topic", help="topic/angle for blog/SEO/ingredient content")
+    sp.add_argument("--product-image", help="exact product image/cutout URL or local path for visual jobs")
     sp.add_argument("--channels", help="override channels, comma-separated")
     sp.add_argument("--formats", help="override formats, comma-separated")
     sp.add_argument("--generator", help="override generator routing, e.g. social+video")

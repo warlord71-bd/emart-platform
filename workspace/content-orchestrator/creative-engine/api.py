@@ -479,10 +479,12 @@ body {{ width:{w}px; height:{h}px; font-family:{FONT_SOCIAL}; overflow:hidden; p
 
 def _compose_model_holding_real_product(d: ProductData, fmt: dict, req: CreativeRequest) -> str:
     w, h = fmt["width"], fmt["height"]
+    spec = req.value_spec or {}
+    clean_asset = bool(spec.get("clean_asset"))
     product_img = _product_image_data_uri(d, cutout=req.product_cutout)
     if not product_img:
         raise ValueError("model_holding_real_product requires a real product image")
-    persona_file = (req.value_spec or {}).get("persona_image") or "workspace/content-orchestrator/video-engine/personas/emart-model/reference-holding.png"
+    persona_file = spec.get("persona_image") or "workspace/content-orchestrator/video-engine/personas/emart-model/reference-holding.png"
     if not Path(str(persona_file)).exists():
         persona_file = "/root/emart-platform/workspace/content-orchestrator/video-engine/personas/emart-model/reference-holding.png"
     if not Path(str(persona_file)).exists():
@@ -492,13 +494,16 @@ def _compose_model_holding_real_product(d: ProductData, fmt: dict, req: Creative
     persona_img = image_to_data_uri(str(persona_file))
     logo = logo_data_uri()
     brand = d.brand or BRAND_NAME
-    label = (req.value_spec or {}).get("label") or f"{brand} pick"
-    bangla = (req.value_spec or {}).get("bangla") or f"{brand} · {_taka(d.price)} · COD available"
+    label = spec.get("label") or f"{brand} pick"
+    bangla = spec.get("bangla") or f"{brand} · {_taka(d.price)} · COD available"
+    logo_block = "" if clean_asset else f"""<div class="logo">{f'<img src="{logo}">' if logo else BRAND_NAME}</div>"""
+    label_block = "" if clean_asset else f"""<div class="label">{esc(label)}</div>"""
+    footer_block = "" if clean_asset else f"""<div class="footer"><div class="bn">{esc(bangla)}</div><div class="price">{_taka(d.price)}</div></div>"""
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 {_vertical_base_css(w, h)}
 body{{background:{INK};}}
 .model{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}}
-.scrim{{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 42%,rgba(25,8,13,.26) 66%,rgba(25,8,13,.80) 100%);}}
+.scrim{{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 42%,rgba(25,8,13,.20) 68%,rgba(25,8,13,{'.42' if clean_asset else '.80'}) 100%);}}
 .logo{{position:absolute;top:54px;left:54px;width:142px;height:74px;background:rgba(255,255,255,.88);
   border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 38px rgba(0,0,0,.28);}}
 .logo img{{width:126px;height:auto;display:block;}}
@@ -522,14 +527,14 @@ body{{background:{INK};}}
 </style></head><body>
 <img class="model" src="{persona_img}">
 <div class="scrim"></div>
-<div class="logo">{f'<img src="{logo}">' if logo else BRAND_NAME}</div>
-<div class="label">{esc(label)}</div>
+{logo_block}
+{label_block}
 <div class="veil"></div>
 <div class="product-shadow"></div>
 <img class="product" src="{product_img}">
 <div class="finger f1"></div><div class="finger f2"></div><div class="finger f3"></div>
 <img class="product-top" src="{product_img}">
-<div class="footer"><div class="bn">{esc(bangla)}</div><div class="price">{_taka(d.price)}</div></div>
+{footer_block}
 </body></html>"""
 
 

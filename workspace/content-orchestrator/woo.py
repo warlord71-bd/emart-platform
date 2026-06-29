@@ -30,6 +30,20 @@ def available() -> bool:
 
 
 def _norm(p: dict, source: str, score=None) -> dict:
+    image = ""
+    images = p.get("images") or []
+    if images and isinstance(images[0], dict):
+        image = images[0].get("src") or ""
+    brand = ""
+    brands = p.get("brands") or []
+    if brands and isinstance(brands[0], dict):
+        brand = brands[0].get("name") or ""
+    category = ""
+    category_slug = ""
+    categories = p.get("categories") or []
+    if categories and isinstance(categories[0], dict):
+        category = categories[0].get("name") or ""
+        category_slug = categories[0].get("slug") or ""
     return {
         "product_id": p.get("id"),
         "name": p.get("name"),
@@ -37,6 +51,13 @@ def _norm(p: dict, source: str, score=None) -> dict:
         "topic": None,
         "source": source,
         "signal_score": score if score is not None else p.get("total_sales"),
+        "image": image,
+        "price": p.get("price"),
+        "regular_price": p.get("regular_price"),
+        "sale_price": p.get("sale_price"),
+        "brand": brand,
+        "category": category,
+        "category_slug": category_slug,
     }
 
 
@@ -103,5 +124,15 @@ def resolve_slug_id(slug: str):
     try:
         rows = _woo_get(f"products?slug={slug}&status=publish")
         return rows[0]["id"] if rows else None
+    except Exception:
+        return None
+
+
+def product_by_id(product_id: int | str) -> dict | None:
+    """Read one Woo product and normalize visual fields for creative/video jobs."""
+    if not product_id:
+        return None
+    try:
+        return _norm(_woo_get(f"products/{product_id}"), "woo_product_detail")
     except Exception:
         return None

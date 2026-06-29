@@ -2,7 +2,8 @@
 
 The strategy brain above Emart's generation engines. Decides **what content to make, from which
 demand signal, toward which sale**, and dispatches native job specs to the existing engines, parked
-at the existing approval gates. It never generates creative, never posts, never writes Woo.
+at the existing approval gates. It never posts and never writes Woo. The only local asset it may
+create directly is a gated model-shot verification/composite under `generated-assets/model-shots/`.
 
 This is also the **one-roof** folder for the content engines:
 
@@ -38,6 +39,11 @@ python3 orchestrator.py status                            # dashboard
 python3 orchestrator.py manual --theme fast_selling --product-id 23112 \
         --name "The Ordinary Niacinamide" --channels facebook,instagram
 python3 orchestrator.py manual --theme free_giveaway --name "Eid Bundle" --no-dispatch
+python3 orchestrator.py manual --theme influencer_reco \
+        --name "Medicube PDRN Pink Peptide Serum 30ml" \
+        --product-image workspace/audit/active/reel-approval-20260629-v6/product-cutouts/01-medicube-pdrn-pink-peptide-serum-30ml-cutout.png \
+        --formats model_holding_real_product,hero_vertical,scene_value,scene_brand_end \
+        --generator video
 
 # self-improving loop — re-weight themes from measured outcomes
 python3 orchestrator.py learn                             # writes theme_weights.json (planner consumes)
@@ -51,6 +57,7 @@ OpenClaw local: `OPENCLAW_BASE_URL=...`. The brain degrades to off if unavailabl
 `manual` bypasses the cadence but **never** the approval gate; it builds a one-item plan and
 dispatches it straight to native, gated job specs. Override `--channels`/`--formats`/`--generator`
 per push; theme guards (real reviews only, no fabricated urgency, GMC/persona rules) still apply.
+Use `--product-image` for exact-product visual jobs so model-shot requests have a real source image.
 
 `--live-signals` enables read-only Woo/GSC demand resolution. Default is cached files + placeholders.
 
@@ -58,11 +65,13 @@ per push; theme guards (real reviews only, no fabricated urgency, GMC/persona ru
 
 - `themes.json` — the 12-theme strategy taxonomy (signal → format → channel → generator → gate → metric → cadence).
 - `orchestrator.py` — planner + dispatcher + status.
+- `model_shot.py` — model-holding-real-product request/composite service; outputs stay owner-gated.
 - `plans/` , `dispatch/` — generated runtime state (gitignored).
 
 ## Gates (publishing stays in the existing engines)
 
 - **campaign** → Social Engine plan → owner approve → `meta_schedule.js --publish`
 - **campaign (video)** → Video Engine `--tick` builds → `reels_bot.py` Telegram Approve = only publisher
+- **model-shot** → `model_shot.py` emits/fulfills product-in-hand assets → owner visual approval
 - **content** → content-lifecycle-contract: brief → `blog_generator.py --draft` → QA → owner approve
 - **owner** → money/giveaway/price decisions need direct owner sign-off before any asset is built

@@ -3,7 +3,9 @@
 **Status:** Active strategy layer, created 2026-06-26. Code at `workspace/content-orchestrator/`.
 **Goal:** One brain that decides *what content to make, from which demand signal, toward which
 sale*, and dispatches it to the engines we already built — parked at the approval gates we already
-have. It does **not** generate creative, post anything, or write Woo data.
+have. It does **not** post anything or write Woo data. It may create gated model-shot verification
+assets under `generated-assets/model-shots/` when a theme explicitly asks for
+`model_holding_real_product`.
 
 ## 1. Why this layer exists
 
@@ -23,6 +25,7 @@ themes.json (strategy taxonomy)
    → demand resolvers (read-only: perf scores, GSC trends, new-arrivals, reviews, categories…)
    → plan        content calendar for a date window               (dry-run, staged in plans/)
    → dispatch    native job specs per engine                      (dry-run, staged in dispatch/)
+      → model_shot.py for model_holding_real_product requests      (owner-gated)
    → APPROVAL GATE  (campaign-orchestration-contract / content-lifecycle-contract / owner)
    → existing engine publishes  (social-engine · video-engine reels_bot · blog --draft)
    → action ledger + measurement_loop  (keep / iterate / revert)
@@ -95,6 +98,15 @@ python3 orchestrator.py status                              # plans + dispatch d
 # manual / owner-triggered one-off (bypasses cadence, NOT the gate)
 python3 orchestrator.py manual --theme fast_selling --product-id 23112 \
         --name "The Ordinary Niacinamide" --channels facebook,instagram [--llm]
+python3 orchestrator.py manual --theme influencer_reco \
+        --name "Medicube PDRN Pink Peptide Serum 30ml" \
+        --product-image workspace/audit/active/reel-approval-20260629-v6/product-cutouts/01-medicube-pdrn-pink-peptide-serum-30ml-cutout.png \
+        --formats model_holding_real_product,hero_vertical,scene_value,scene_brand_end \
+        --generator video
+
+# model-shot service status / pending handoff list
+python3 model_shot.py --status
+python3 model_shot.py --list
 
 # self-improving loop — score themes from ledger outcomes → theme_weights.json
 python3 orchestrator.py learn [--llm]
@@ -102,7 +114,35 @@ python3 orchestrator.py learn [--llm]
 
 `--live-signals` lets demand resolvers make read-only Woo/GSC calls. `--llm` enriches items with an
 LLM hook/caption/angle. Without them everything resolves from cached files/placeholders and skips the
-model. Nothing in any mode publishes or writes commerce data.
+model. Nothing in any mode publishes or writes commerce data. `--product-image` attaches an exact
+real product source/cutout to persona/model visual jobs; without it, model-shot requests fail closed
+as blocked instead of inventing packaging.
+
+## 6c. Model-shot pipe
+
+Themes with `model_holding_real_product` now route through `model_shot.py` during dispatch. The
+service writes a machine-readable request under `generated-assets/model-shots/requests/`, a metadata
+sidecar under `generated-assets/model-shots/metadata/`, and fulfilled assets under
+`generated-assets/model-shots/holding/`.
+
+The safe default is `system_composite`: Creative Engine layers the exact real product image over a
+clean persona frame, with no baked-in price, COD, or Emart text. The request also carries a
+`codex_imagegen` fulfillment mode for premium manual/Codex generation, but the cron never pretends
+Codex ran unless a fulfilled file exists.
+
+Video jobs created from those themes carry:
+
+```
+holding_request: true
+holding_generation_mode: real_product_composite
+model_fallback: false
+no_hallucination_product_layer: true
+holding_first: true
+qa_block_on_vision: true
+```
+
+So the worker can render a clean model+real-product first frame, and if the product image is missing
+or invalid, the job fails closed before a fake package can enter a reel.
 
 ## 6a. Self-improving loop
 
@@ -133,6 +173,8 @@ orchestrator continues without it. The brain never publishes and never writes Wo
 - Dry-run by default. Dispatch writes staged JSON only; no engine is invoked to publish.
 - Every dispatched job carries its gate (`approval_status=draft`, `status=pending`,
   `status=proposed`) so it cannot skip the owner.
+- Model-shot outputs are verification assets until owner visual approval; no model-shot output is
+  automatically published.
 - No Woo writes, no price/discount creation, no fabricated urgency or testimonials.
 - Persona/creator content obeys `creative-persona-standard.md`; health/doctor content obeys GMC
   healthcare-claim rules from D6.
@@ -154,6 +196,9 @@ orchestrator continues without it. The brain never publishes and never writes Wo
 - ✅ Four `--live-signals` Woo resolvers (new arrivals, clearance, category, concern) — `woo.py`.
 - ✅ Slug→product_id resolution for perf-file candidates (CO-3).
 - ✅ `dispatch --ledger` records each item with `sub_category=theme` so the `learn` loop scores it (CO-4).
+- ✅ `model_holding_real_product` pipe: dispatch emits model-shot requests, video jobs carry
+  no-hallucination composite fields, and daily producer requests model-shot first frames when a real
+  product image exists.
 - Wire the Judge.me reviews export and a pa_ingredient resolver (remaining placeholder signals).
 - Add a `--tick` cron entry (build-only, gated) once owner approves the cadence.
 - When owner funds paid OpenRouter credits, set `OPENROUTER_MODEL` to Hermes for higher-quality

@@ -15,6 +15,7 @@ Usage:
 from __future__ import annotations
 import argparse, json, os, shutil, subprocess, sys, datetime
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "lib"))
@@ -218,9 +219,11 @@ def real_product_holding_images(job) -> list[str]:
     if not job.get("holding_request") or job.get("holding_generation_mode") != "real_product_composite":
         return []
     ref = job.get("product_image") or job.get("product_image_url")
-    if not ref or not Path(str(ref)).exists():
-        raise SystemExit("real_product_composite holding shot requires a local real product image")
-    persona = job.get("holding_persona_image") or str(CANONICAL_MODEL.with_name("reference-holding.png"))
+    is_remote = urlparse(str(ref or "")).scheme in ("http", "https")
+    if not ref or (not is_remote and not Path(str(ref)).exists()):
+        raise SystemExit("real_product_composite holding shot requires a real product image path or URL")
+    default_persona = CANONICAL_MODEL if job.get("holding_clean_asset", True) else CANONICAL_MODEL.with_name("reference-holding.png")
+    persona = job.get("holding_persona_image") or str(default_persona)
     if not Path(persona).exists():
         persona = str(CANONICAL_MODEL)
     out = OUTPUT / f"holding-realproduct-{job['id']}.png"
@@ -234,7 +237,9 @@ def real_product_holding_images(job) -> list[str]:
             "persona_image": persona,
             "label": label,
             "bangla": job.get("product_card_bangla", ""),
+            "clean_asset": job.get("holding_clean_asset", True),
         },
+        render_scale=1,
         out=str(out),
     ))
     return [str(out)]
