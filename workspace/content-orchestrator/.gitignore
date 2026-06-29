@@ -3,3 +3,6 @@ plans/
 dispatch/
 theme_weights.json
 __pycache__/
+**/__pycache__/
+**/*.pyc
+generated-assets/gmc-image-fix-*/

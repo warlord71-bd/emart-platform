@@ -206,6 +206,37 @@ def holding_request_images(job) -> list[str]:
     return []
 
 
+def real_product_holding_images(job) -> list[str]:
+    """No-hallucination holding shot: model/persona background + exact real product cutout.
+
+    The product layer is not generated. If the product image is missing, fail closed so a reel
+    cannot fall back to a fake bottle or model-only frame when the job asks for product-in-hand.
+    """
+    if not job.get("holding_request") or job.get("holding_generation_mode") != "real_product_composite":
+        return []
+    ref = job.get("product_image") or job.get("product_image_url")
+    if not ref or not Path(str(ref)).exists():
+        raise SystemExit("real_product_composite holding shot requires a local real product image")
+    persona = job.get("holding_persona_image") or str(CANONICAL_MODEL.with_name("reference-holding.png"))
+    if not Path(persona).exists():
+        persona = str(CANONICAL_MODEL)
+    out = OUTPUT / f"holding-realproduct-{job['id']}.png"
+    label = job.get("holding_label", "Original product")
+    render_creative(CreativeRequest(
+        product=product_snapshot(job, image=str(ref)),
+        format="model_holding_real_product",
+        image_override=str(ref),
+        product_cutout=True,
+        value_spec={
+            "persona_image": persona,
+            "label": label,
+            "bangla": job.get("product_card_bangla", ""),
+        },
+        out=str(out),
+    ))
+    return [str(out)]
+
+
 def resolve_images(job, cfg) -> list[str]:
     """image is a SHARED upstream capability (same source as static posts).
 
@@ -217,8 +248,10 @@ def resolve_images(job, cfg) -> list[str]:
     the exact product reference. If `holding_request: true` is pending and `model_fallback` is not
     false, one model-only frame is allowed. White/tile product overlays are not auto-inserted.
     """
-    imgs = (product_hero_images(job) + (job.get("holding_images") or []) + holding_request_images(job)
-            + (job.get("images") or []) + list_card_images(job))
+    holding_imgs = real_product_holding_images(job) or (job.get("holding_images") or []) + holding_request_images(job)
+    product_imgs = product_hero_images(job)
+    first = holding_imgs + product_imgs if job.get("holding_first") else product_imgs + holding_imgs
+    imgs = (first + (job.get("images") or []) + list_card_images(job))
     if imgs:
         return imgs + brand_card_image(job)
     pid = job.get("product_id")

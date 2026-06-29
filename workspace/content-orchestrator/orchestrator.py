@@ -10,12 +10,12 @@ parked at the existing approval gates:
         →  plan (content calendar)  →  dispatch (native job specs, dry-run)
         →  owner approval gate  →  existing engine publishes  →  ledger + measurement
 
-Engines it routes to (all already built; this layer only wires them):
-    social  → workspace/social-engine        (FB/IG campaign plan, approval-gated)
-    video   → workspace/video-engine          (reel queue job, Telegram-approval-gated)
-    blog    → workspace/docs blog generator   (draft-gated)
+Engines it routes to (all under this roof; workspace/* compatibility links remain):
+    social  → workspace/content-orchestrator/social-engine        (FB/IG campaign plan, approval-gated)
+    video   → workspace/content-orchestrator/video-engine          (reel queue job, Telegram-approval-gated)
+    blog    → workspace/content-orchestrator/docs blog generator (draft-gated)
     seo     → category guides / ingredient / best (content-lifecycle gated)
-    creative→ workspace/creative-engine        (appearance layer, called by social/video)
+    creative→ workspace/content-orchestrator/creative-engine        (appearance layer, called by social/video)
 
 Subcommands:
     themes              show the strategy taxonomy
@@ -33,14 +33,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 WORKSPACE = ROOT.parent
 THEMES_FILE = ROOT / "themes.json"
+ENGINE_REGISTRY = ROOT / "engine_registry.json"
 PLANS_DIR = ROOT / "plans"
 DISPATCH_DIR = ROOT / "dispatch"
 
-SOCIAL_PERF = WORKSPACE / "social-engine" / "performance" / "latest.json"
+SOCIAL_ENGINE = ROOT / "social-engine"
+VIDEO_ENGINE = ROOT / "video-engine"
+CREATIVE_ENGINE = ROOT / "creative-engine"
+
+SOCIAL_PERF = SOCIAL_ENGINE / "performance" / "latest.json"
 GSC_STRIKING = WORKSPACE / "seo-review" / "striking-distance.json"
-REVIEWS_FILE = WORKSPACE / "social-engine" / "performance" / "reviews-latest.json"
-VIDEO_QUEUE = WORKSPACE / "video-engine" / "jobs" / "queue"
-SOCIAL_CAMPAIGNS = WORKSPACE / "social-engine" / "campaigns"
+REVIEWS_FILE = SOCIAL_ENGINE / "performance" / "reviews-latest.json"
+VIDEO_QUEUE = VIDEO_ENGINE / "jobs" / "queue"
+SOCIAL_CAMPAIGNS = SOCIAL_ENGINE / "campaigns"
 LEDGER_HELPER = WORKSPACE / "ledgers" / "ledger_helper.py"
 LEDGER_FILE = WORKSPACE / "ledgers" / "action-events.jsonl"
 WEIGHTS_FILE = ROOT / "theme_weights.json"
@@ -591,7 +596,36 @@ def cmd_status(args):
             c = m["counts"]
             print(f"  {d.name:<24}social={c['social']} video={c['video']} briefs={c['brief']} (dry-run, gated)")
     print("\nEngines this orchestrator routes to (all approval-gated):")
-    print("  social → social-engine | video → video-engine (Telegram approve) | blog/seo → content-lifecycle gate")
+    if ENGINE_REGISTRY.exists():
+        registry = json.loads(ENGINE_REGISTRY.read_text())
+        for name, engine in registry.get("engines", {}).items():
+            print(f"  {name:<8}→ {engine['path']} ({engine['role']})")
+    else:
+        print("  social → social-engine | video → video-engine (Telegram approve) | blog/seo → content-lifecycle gate")
+
+
+def cmd_engines(args):
+    registry = json.loads(ENGINE_REGISTRY.read_text())
+    print(f"Engine roof: {registry['roof']} · registry {registry['version']}\n")
+    print(registry["principle"] + "\n")
+    for name, engine in registry["engines"].items():
+        print(f"{name.upper()}")
+        print(f"  path:      {engine['path']}")
+        print(f"  roof link: {engine['roof_link']}")
+        print(f"  role:      {engine['role']}")
+        if engine.get("must_use"):
+            print(f"  must use:  {', '.join(engine['must_use'])}")
+        if engine.get("must_own"):
+            print(f"  must own:  {', '.join(engine['must_own'])}")
+        print()
+    print("Approval gates:")
+    for gate, rule in registry["approval_gates"].items():
+        print(f"  {gate}: {rule}")
+    stores = registry.get("stores", {})
+    if stores:
+        print("\nShared stores:")
+        for name, store in stores.items():
+            print(f"  {name:<16}→ {store['path']} (compat: {store['compat_link']})")
 
 
 def main():
@@ -642,6 +676,9 @@ def main():
 
     sp = sub.add_parser("status", help="dashboard of plans/dispatch")
     sp.set_defaults(func=cmd_status)
+
+    sp = sub.add_parser("engines", help="show the unified engine roof/registry")
+    sp.set_defaults(func=cmd_engines)
 
     args = ap.parse_args()
     args.func(args)

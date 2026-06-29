@@ -88,14 +88,14 @@
       "surface": "external",
       "intent": "creator/persona voice gives relatable proof and routine context",
       "demand_signal": "performance_scores",
-      "formats": ["hero_vertical", "scene_value", "scene_brand_end"],
+      "formats": ["model_holding_real_product", "hero_vertical", "scene_value", "scene_brand_end"],
       "channels": ["instagram", "facebook", "tiktok", "youtube"],
       "generator": "video",
       "gate": "campaign",
       "metric": "watch_time,saves,reach,add_to_cart",
       "cadence_days": 5,
       "per_run": 1,
-      "guard": "Persona frames must follow creative-persona-standard.md: real product visible, one face per reel. TikTok gated on app approval."
+      "guard": "Persona frames must use Creative Engine model_holding_real_product: model/background may be generated, product pack must be real cutout/composite. One face per reel. TikTok gated on app approval."
     },
     {
       "id": "ingredients",
@@ -145,14 +145,14 @@
       "surface": "external+internal",
       "intent": "expert-tone authority for concern-led shoppers (acne, pigmentation, barrier)",
       "demand_signal": "concern_catalog",
-      "formats": ["hero_vertical", "scene_value", "scene_brand_end"],
+      "formats": ["model_holding_real_product", "hero_vertical", "scene_value", "scene_brand_end"],
       "channels": ["instagram", "facebook", "youtube", "ai_assistant"],
       "generator": "video+seo",
       "gate": "content",
       "metric": "watch_time,trust_ctr,ai_sessions",
       "cadence_days": 5,
       "per_run": 1,
-      "guard": "Persona dr-rumana. No medical claims or 'clinically proven' without source; follow GMC healthcare-claim rules."
+      "guard": "Persona dr-rumana. Use Creative Engine model_holding_real_product for product-in-hand shots. No medical claims or 'clinically proven' without source; follow GMC healthcare-claim rules."
     },
     {
       "id": "cosmetics",

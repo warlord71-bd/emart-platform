@@ -10,8 +10,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-_WORKSPACE = Path(__file__).resolve().parent.parent
-_SE = _WORKSPACE / "social-engine"
+_ROOT = Path(__file__).resolve().parent
+_SE = _ROOT / "social-engine"
 if str(_SE) not in sys.path:
     sys.path.insert(0, str(_SE))
 

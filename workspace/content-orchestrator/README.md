@@ -4,12 +4,41 @@ The strategy brain above Emart's generation engines. Decides **what content to m
 demand signal, toward which sale**, and dispatches native job specs to the existing engines, parked
 at the existing approval gates. It never generates creative, never posts, never writes Woo.
 
-Full model: `workspace/docs/claude-reference/content-orchestrator.md`.
+This is also the **one-roof** folder for the content engines:
+
+```text
+workspace/content-orchestrator/
+  engines/
+    creative-engine -> ../creative-engine
+    social-engine   -> ../social-engine
+    video-engine    -> ../video-engine
+  creative-engine/  # real folder; workspace/creative-engine is a compatibility link
+  social-engine/    # real folder; workspace/social-engine is a compatibility link
+  video-engine/     # real folder; workspace/video-engine is a compatibility link
+  scripts/          # real folder; workspace/scripts is a compatibility link
+  docs/             # real folder; workspace/docs is a compatibility link
+  generated-assets/ # real folder; workspace/generated-assets is a compatibility link
+  social-calendar/  # real folder; workspace/social-calendar is a compatibility link
+  design-changes/   # real folder; workspace/design-changes is a compatibility link
+  engine_registry.json
+  VISUAL_PIPELINE_RULES.md
+```
+
+The engine folders physically live here now. The old `workspace/creative-engine`,
+`workspace/social-engine`, and `workspace/video-engine` paths are compatibility links so old
+cron/PM2/import paths keep resolving while new code uses the one-roof paths.
+
+The shared stores do physically live here now. Their old `workspace/...` paths are symlinks, so old
+manifests, approved commands, and historical notes still resolve without edits.
+
+Full model: `workspace/content-orchestrator/docs/claude-reference/content-orchestrator.md`
+(`workspace/docs/...` remains a compatibility link).
 
 ## Quick start
 
 ```bash
 python3 orchestrator.py themes                            # strategy taxonomy (12 selling themes)
+python3 orchestrator.py engines                           # unified engine roof/ownership map
 python3 orchestrator.py plan --date 2026-06-27 --days 7   # content calendar (dry-run)
 python3 orchestrator.py dispatch PLAN-20260627-7d        # native engine job specs (dry-run, gated)
 python3 orchestrator.py status                            # dashboard

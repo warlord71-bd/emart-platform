@@ -143,6 +143,14 @@ def validate_job_spec(job: dict, script: dict | None = None) -> dict:
     if job.get("product_card") and not (job.get("product_image") or job.get("product_image_url")):
         errors.append("product_card_missing_product_image")
 
+    if job.get("holding_request") and job.get("holding_generation_mode") == "real_product_composite":
+        if not (job.get("product_image") or job.get("product_image_url")):
+            errors.append("real_product_holding_missing_product_image")
+        if job.get("model_fallback") is not False:
+            errors.append("real_product_holding_requires_model_fallback_false")
+        if not job.get("no_hallucination_product_layer"):
+            warnings.append("real_product_holding_missing_no_hallucination_flag")
+
     image = job.get("product_image") or job.get("product_image_url") or ""
     if image:
         image_name = unquote(urlparse(str(image)).path.split("/")[-1]).lower()
@@ -217,4 +225,3 @@ def validate_script_payload(script: dict, product: str = "", category: str = "")
 def assert_pass(report: dict, label: str = "quality gate") -> None:
     if report.get("status") == "fail":
         raise ValueError(f"{label} failed: {'; '.join(report.get('errors') or [])}")
-

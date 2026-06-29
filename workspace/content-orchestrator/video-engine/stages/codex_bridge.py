@@ -42,8 +42,10 @@ def build_prompt(product: str, persona: str) -> str:
     look = PERSONA_LOOK.get(persona, PERSONA_LOOK["dr-rumana"])
     return (
         f"Photorealistic vertical 9:16 beauty portrait. {look}, holding the skincare product "
-        f"'{product}' up beside her cheek with the product clearly facing the camera and recognizable. "
+        f"'{product}' up beside her cheek with the product clearly facing the camera. "
         f"Soft studio lighting, clean minimal warm background, premium commercial campaign photography. "
+        f"No invented product label, no invented packaging, no fake brand text: the final visible product "
+        f"must come from the supplied real product reference/cutout, composited cleanly into the hand. "
         f"IMPORTANT: a CLEAN photo only — NO added text, NO logos, NO watermark, NO poster graphics, "
         f"NO edge callouts, NO borders. Natural fingers around the product, no distorted hands. "
         f"Frame head-to-chest, product and face both fully inside the frame."
@@ -67,9 +69,11 @@ def emit(product: str, persona: str, product_image: str | None) -> Path:
         "size": "1080x1920",
         "prompt": build_prompt(product, persona),
         "output_path": str(out_img),
-        "instructions": "Generate the image per 'prompt', referencing 'product_image_reference' for the "
-                        "real product look, and SAVE it to 'output_path' (1080x1920). Then this request "
-                        "is fulfilled (the engine detects the file).",
+        "instructions": "Generate or edit the image per 'prompt'. The model/background may be generated, "
+                        "but the final visible product must be the exact real product from "
+                        "'product_image_reference' composited into the hand; do not hallucinate package "
+                        "text or a replacement bottle. SAVE it to 'output_path' (1080x1920). Then this "
+                        "request is fulfilled (the engine detects the file).",
     }, ensure_ascii=False, indent=2))
     return out_img  # not yet present; engine proceeds without and reuses once Codex fills it
 

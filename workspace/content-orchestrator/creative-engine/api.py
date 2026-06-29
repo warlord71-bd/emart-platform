@@ -441,6 +441,62 @@ body {{ width:{w}px; height:{h}px; font-family:{FONT_SOCIAL}; overflow:hidden; p
 </body></html>"""
 
 
+def _compose_model_holding_real_product(d: ProductData, fmt: dict, req: CreativeRequest) -> str:
+    w, h = fmt["width"], fmt["height"]
+    product_img = _product_image_data_uri(d, cutout=req.product_cutout)
+    if not product_img:
+        raise ValueError("model_holding_real_product requires a real product image")
+    persona_file = (req.value_spec or {}).get("persona_image") or "workspace/video-engine/personas/emart-model/reference-holding.png"
+    if not Path(str(persona_file)).exists():
+        persona_file = "/root/emart-platform/workspace/video-engine/personas/emart-model/reference-holding.png"
+    if not Path(str(persona_file)).exists():
+        persona_file = "/var/www/emart-platform/workspace/video-engine/personas/emart-model/reference-holding.png"
+    if not Path(str(persona_file)).exists():
+        raise ValueError("model_holding_real_product requires a persona_image")
+    persona_img = image_to_data_uri(str(persona_file))
+    logo = logo_data_uri()
+    brand = d.brand or BRAND_NAME
+    label = (req.value_spec or {}).get("label") or f"{brand} pick"
+    bangla = (req.value_spec or {}).get("bangla") or f"{brand} · {_taka(d.price)} · COD available"
+    return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+{_vertical_base_css(w, h)}
+body{{background:{INK};}}
+.model{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}}
+.scrim{{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 42%,rgba(25,8,13,.26) 66%,rgba(25,8,13,.80) 100%);}}
+.logo{{position:absolute;top:54px;left:54px;width:142px;height:74px;background:rgba(255,255,255,.88);
+  border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 38px rgba(0,0,0,.28);}}
+.logo img{{width:126px;height:auto;display:block;}}
+.label{{position:absolute;top:64px;right:54px;max-width:560px;background:rgba(42,10,24,.76);border:2px solid rgba(231,178,74,.65);
+  border-radius:28px;padding:14px 26px;color:#fff;font-size:34px;font-weight:900;line-height:1.2;text-align:right;}}
+.veil{{position:absolute;left:670px;top:510px;width:378px;height:900px;border-radius:110px;
+  background:linear-gradient(110deg,rgba(238,222,198,.78),rgba(238,222,198,.42));
+  filter:blur(12px);opacity:.86;}}
+.product-shadow{{position:absolute;left:742px;top:622px;width:290px;height:740px;border-radius:80px;
+  background:rgba(0,0,0,.28);filter:blur(24px);transform:translate(18px,24px);}}
+.product{{position:absolute;left:744px;top:596px;width:300px;height:790px;object-fit:contain;filter:drop-shadow(0 22px 28px rgba(0,0,0,.34));}}
+.finger{{position:absolute;background:linear-gradient(90deg,#c98a65,#f0c0a4);border-radius:999px;
+  box-shadow:inset -5px 0 9px rgba(114,60,42,.24),inset 4px 0 7px rgba(255,235,220,.28);z-index:4;opacity:.94;}}
+.f1{{left:960px;top:875px;width:34px;height:220px;}}
+.f2{{left:930px;top:1015px;width:34px;height:230px;}}
+.f3{{left:714px;top:1128px;width:42px;height:210px;}}
+.product-top{{position:absolute;left:744px;top:596px;width:300px;height:790px;object-fit:contain;z-index:5;clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 0);}}
+.footer{{position:absolute;left:54px;right:54px;bottom:64px;display:flex;align-items:flex-end;justify-content:space-between;gap:28px;}}
+.bn{{font-size:42px;font-weight:900;line-height:1.15;color:#fff;text-shadow:0 5px 18px rgba(0,0,0,.56);max-width:670px;}}
+.price{{background:{GOLD};color:{INK};border-radius:28px;padding:16px 28px;font-size:42px;font-weight:900;box-shadow:0 16px 36px rgba(0,0,0,.28);white-space:nowrap;}}
+</style></head><body>
+<img class="model" src="{persona_img}">
+<div class="scrim"></div>
+<div class="logo">{f'<img src="{logo}">' if logo else BRAND_NAME}</div>
+<div class="label">{esc(label)}</div>
+<div class="veil"></div>
+<div class="product-shadow"></div>
+<img class="product" src="{product_img}">
+<div class="finger f1"></div><div class="finger f2"></div><div class="finger f3"></div>
+<img class="product-top" src="{product_img}">
+<div class="footer"><div class="bn">{esc(bangla)}</div><div class="price">{_taka(d.price)}</div></div>
+</body></html>"""
+
+
 def _compose_composite(d: ProductData, w: int, h: int, logo: str, req: CreativeRequest) -> str:
     img_b64 = ""
     if d.image_url:
@@ -621,6 +677,8 @@ def render(req: CreativeRequest) -> CreativeResult:
         html_content = _compose_post(d, fmt, req)
     elif req.format == "hero_vertical":
         html_content = _compose_hero_vertical(d, fmt, req)
+    elif req.format == "model_holding_real_product":
+        html_content = _compose_model_holding_real_product(d, fmt, req)
     elif req.format == "scene_value":
         html_content = _compose_scene_value(d, fmt, req)
     elif req.format == "scene_brand_end":

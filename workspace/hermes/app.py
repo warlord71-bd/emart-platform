@@ -26,6 +26,10 @@ from fastapi.templating import Jinja2Templates
 ROOT = Path(__file__).resolve().parent.parent.parent
 WORKSPACE = ROOT / "workspace"
 HERMES = Path(__file__).resolve().parent
+CONTENT_ORCHESTRATOR = WORKSPACE / "content-orchestrator"
+SCRIPTS = CONTENT_ORCHESTRATOR / "scripts"
+SOCIAL_ENGINE = CONTENT_ORCHESTRATOR / "social-engine"
+VIDEO_ENGINE = CONTENT_ORCHESTRATOR / "video-engine"
 DB_PATH = HERMES / "hermes.db"
 
 app = FastAPI(title="Hermes — Emart Agent Dashboard", docs_url="/api/docs")
@@ -325,7 +329,7 @@ def _run_creative(params: dict) -> dict:
     Path(out).parent.mkdir(parents=True, exist_ok=True)
 
     r = subprocess.run(
-        [sys.executable, str(WORKSPACE / "scripts" / "active" / "social_image_gen.py"),
+        [sys.executable, str(SCRIPTS / "active" / "social_image_gen.py"),
          "--product-id", str(product_id), "--format", fmt, "--badge", badge, "--out", out],
         capture_output=True, text=True, timeout=120, cwd=str(ROOT),
     )
@@ -344,7 +348,7 @@ def _run_blog_hero(params: dict) -> dict:
     out = str(HERMES / "static" / "output" / f"blog-hero-{ts}.png")
     Path(out).parent.mkdir(parents=True, exist_ok=True)
 
-    cmd = [sys.executable, str(WORKSPACE / "scripts" / "active" / "blog_hero_gen.py"),
+    cmd = [sys.executable, str(SCRIPTS / "active" / "blog_hero_gen.py"),
            "--dry-run", "--out", out]
     if title:
         cmd += ["--title", title]
@@ -364,7 +368,7 @@ def _run_blog_hero(params: dict) -> dict:
 
 def _run_orchestrator_plan(params: dict) -> dict:
     days = str(params.get("days", "1"))
-    cmd = [sys.executable, str(WORKSPACE / "content-orchestrator" / "orchestrator.py"),
+    cmd = [sys.executable, str(CONTENT_ORCHESTRATOR / "orchestrator.py"),
            "plan", "--days", days, "--live-signals"]
     themes = params.get("themes", "")
     if themes:
@@ -375,7 +379,7 @@ def _run_orchestrator_plan(params: dict) -> dict:
 
 def _run_orchestrator_status() -> dict:
     r = subprocess.run(
-        [sys.executable, str(WORKSPACE / "content-orchestrator" / "orchestrator.py"), "status"],
+        [sys.executable, str(CONTENT_ORCHESTRATOR / "orchestrator.py"), "status"],
         capture_output=True, text=True, timeout=30, cwd=str(ROOT),
     )
     return {"log": r.stdout[-2000:]}
@@ -384,7 +388,7 @@ def _run_orchestrator_status() -> dict:
 def _run_cwv(params: dict) -> dict:
     page = params.get("page", "/")
     r = subprocess.run(
-        [sys.executable, str(WORKSPACE / "scripts" / "active" / "cwv_monitor.py"), "--page", page],
+        [sys.executable, str(SCRIPTS / "active" / "cwv_monitor.py"), "--page", page],
         capture_output=True, text=True, timeout=180, cwd=str(ROOT),
     )
     return {"log": r.stdout[-2000:], "error": r.stderr[-500:] if r.returncode != 0 else None}
@@ -392,7 +396,7 @@ def _run_cwv(params: dict) -> dict:
 
 def _run_topical_authority() -> dict:
     r = subprocess.run(
-        [sys.executable, str(WORKSPACE / "scripts" / "active" / "topical_authority_report.py")],
+        [sys.executable, str(SCRIPTS / "active" / "topical_authority_report.py")],
         capture_output=True, text=True, timeout=60, cwd=str(ROOT),
     )
     return {"log": r.stdout[-2000:]}
@@ -421,36 +425,36 @@ def _run_video_enqueue(params: dict) -> dict:
         "tier_target": "free",
         "status": "pending",
     }
-    spec_path = WORKSPACE / "video-engine" / "jobs" / "queue" / f"hermes-{product_id}-{int(time.time())}.json"
+    spec_path = VIDEO_ENGINE / "jobs" / "queue" / f"hermes-{product_id}-{int(time.time())}.json"
     spec_path.parent.mkdir(parents=True, exist_ok=True)
     spec_path.write_text(json.dumps(spec, indent=2))
     return {"log": f"Queued reel job: {spec_path.name}\nProduct: {name or product_id}\nPlatforms: {platforms}\n\nNext orchestrator tick will build it → Telegram approval → publish."}
 
 
 def _run_video_status() -> dict:
-    jobs_dir = WORKSPACE / "video-engine" / "jobs"
+    jobs_dir = VIDEO_ENGINE / "jobs"
     counts = {}
     for d in ["queue", "building", "review", "approved", "published", "rejected", "dead-letter"]:
         p = jobs_dir / d
         counts[d] = len(list(p.glob("*.json"))) if p.exists() else 0
     r = subprocess.run(
-        [sys.executable, str(WORKSPACE / "video-engine" / "orchestrator.py"), "--status"],
-        capture_output=True, text=True, timeout=30, cwd=str(WORKSPACE / "video-engine"),
+        [sys.executable, str(VIDEO_ENGINE / "orchestrator.py"), "--status"],
+        capture_output=True, text=True, timeout=30, cwd=str(VIDEO_ENGINE),
     )
     return {"log": r.stdout[-2000:] if r.stdout else json.dumps(counts, indent=2)}
 
 
 def _run_video_build() -> dict:
     r = subprocess.run(
-        [sys.executable, str(WORKSPACE / "video-engine" / "orchestrator.py"), "--tick"],
-        capture_output=True, text=True, timeout=300, cwd=str(WORKSPACE / "video-engine"),
+        [sys.executable, str(VIDEO_ENGINE / "orchestrator.py"), "--tick"],
+        capture_output=True, text=True, timeout=300, cwd=str(VIDEO_ENGINE),
     )
     return {"log": r.stdout[-2000:], "error": r.stderr[-500:] if r.returncode != 0 else None}
 
 
 def _run_social_plan(params: dict) -> dict:
     count = str(params.get("count", "6"))
-    cmd = [sys.executable, str(WORKSPACE / "social-engine" / "social_engine.py"), "plan",
+    cmd = [sys.executable, str(SOCIAL_ENGINE / "social_engine.py"), "plan",
            "--count", count, "--dry-run"]
     theme = params.get("theme", "")
     if theme:
@@ -462,7 +466,7 @@ def _run_social_plan(params: dict) -> dict:
 def _run_social_pick(params: dict) -> dict:
     count = str(params.get("count", "5"))
     r = subprocess.run(
-        [sys.executable, str(WORKSPACE / "social-engine" / "social_engine.py"), "pick",
+        [sys.executable, str(SOCIAL_ENGINE / "social_engine.py"), "pick",
          "--count", count],
         capture_output=True, text=True, timeout=30, cwd=str(ROOT),
     )
@@ -496,7 +500,7 @@ def _run_gsc_tracker() -> dict:
 
 def _run_seo_check() -> dict:
     r = subprocess.run(
-        [sys.executable, str(WORKSPACE / "scripts" / "active" / "seo_rotating_check.py")],
+        [sys.executable, str(SCRIPTS / "active" / "seo_rotating_check.py")],
         capture_output=True, text=True, timeout=300, cwd=str(ROOT),
     )
     return {"log": r.stdout[-2000:]}
@@ -595,7 +599,7 @@ def _run_reel_pipeline(params: dict) -> dict:
     if not product_id:
         return {"error": "product_id required"}
 
-    vid_engine = WORKSPACE / "video-engine"
+    vid_engine = VIDEO_ENGINE
     jobs_dir = vid_engine / "jobs"
 
     spec = {
@@ -871,7 +875,7 @@ async def engine_form(request: Request, engine_type: str):
 
 @app.post("/reel/approve/{stem}")
 async def reel_approve(stem: str):
-    vid_engine = WORKSPACE / "video-engine"
+    vid_engine = VIDEO_ENGINE
     review = vid_engine / "jobs" / "review" / f"{stem}.json"
     approved = vid_engine / "jobs" / "approved"
     if not review.exists():
@@ -894,7 +898,7 @@ async def reel_approve(stem: str):
 
 @app.post("/reel/reject/{stem}")
 async def reel_reject(stem: str):
-    vid_engine = WORKSPACE / "video-engine"
+    vid_engine = VIDEO_ENGINE
     review = vid_engine / "jobs" / "review" / f"{stem}.json"
     rejected = vid_engine / "jobs" / "rejected"
     if not review.exists():
@@ -906,7 +910,7 @@ async def reel_reject(stem: str):
 
 @app.get("/api/reels/review")
 async def api_reels_review():
-    vid_engine = WORKSPACE / "video-engine"
+    vid_engine = VIDEO_ENGINE
     review_dir = vid_engine / "jobs" / "review"
     reels = []
     if review_dir.exists():

@@ -11,7 +11,7 @@ def main():
     ap = argparse.ArgumentParser(description="Emart Creative Asset Engine")
     ap.add_argument("--product-id", type=int, required=True)
     ap.add_argument("--format", default="post_1x1", choices=[
-        "post_1x1", "post_4x5", "hero_vertical", "scene_value", "scene_brand_end",
+        "post_1x1", "post_4x5", "hero_vertical", "model_holding_real_product", "scene_value", "scene_brand_end",
         "blog_og_1200x630"])
     ap.add_argument("--variant", default="studio", choices=[
         "studio", "podium", "hijabi-lifestyle", "model-scene"])
