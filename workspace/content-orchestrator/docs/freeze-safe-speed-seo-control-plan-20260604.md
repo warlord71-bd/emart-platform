@@ -10,7 +10,7 @@ This document applies a stricter rule only for the current paused review/control
 
 Target review file:
 
-`workspace/docs/freeze-safe-speed-seo-control-plan-20260604.md`
+`workspace/content-orchestrator/docs/freeze-safe-speed-seo-control-plan-20260604.md`
 
 ## Scope
 
@@ -263,8 +263,8 @@ Continue existing metadata workflow to improve CTR and snippet quality without c
 ### Inspect/track files
 
 - `workspace/TASKS.md`
-- `workspace/docs/meta_generator.py`
-- `workspace/docs/meta_validator.py`
+- `workspace/content-orchestrator/docs/meta_generator.py`
+- `workspace/content-orchestrator/docs/meta_validator.py`
 
 ### Allowed
 

@@ -9,7 +9,7 @@ product-in-hand far better. This is an **automated producer/consumer handoff** â
    the real product reference, the exact `output_path`, and size (1080x1920).
 2. **Codex drains the queue.** Codex runs:
    ```
-   python3 workspace/video-engine/stages/codex_bridge.py --list     # pending work orders (JSON)
+   python3 workspace/content-orchestrator/video-engine/stages/codex_bridge.py --list     # pending work orders (JSON)
    ```
    For each order: generate the image per `prompt` (reference `product_image_reference`), then SAVE it
    to the order's `output_path`. File existence = fulfilled.
@@ -26,7 +26,7 @@ product-in-hand far better. This is an **automated producer/consumer handoff** â
 
 ## Manual option (still supported)
 Drop a ready image and reference it directly:
-`"holding_images": ["workspace/video-engine/codex-assets/holding/<key>.png"]`
+`"holding_images": ["workspace/content-orchestrator/video-engine/codex-assets/holding/<key>.png"]`
 
 ## Two asset types (route correctly)
 - **`holding_request` / `holding_images`** â†’ clean model+product, cover-pan (fills frame). Codex output here.

@@ -10,7 +10,7 @@ parked at the existing approval gates:
         →  plan (content calendar)  →  dispatch (native job specs, dry-run)
         →  owner approval gate  →  existing engine publishes  →  ledger + measurement
 
-Engines it routes to (all under this roof; workspace/* compatibility links remain):
+Engines it routes to (all under this roof; no root shortcut links):
     social  → workspace/content-orchestrator/social-engine        (FB/IG campaign plan, approval-gated)
     video   → workspace/content-orchestrator/video-engine          (reel queue job, Telegram-approval-gated)
     blog    → workspace/content-orchestrator/docs blog generator (draft-gated)
@@ -611,7 +611,6 @@ def cmd_engines(args):
     for name, engine in registry["engines"].items():
         print(f"{name.upper()}")
         print(f"  path:      {engine['path']}")
-        print(f"  roof link: {engine['roof_link']}")
         print(f"  role:      {engine['role']}")
         if engine.get("must_use"):
             print(f"  must use:  {', '.join(engine['must_use'])}")
@@ -625,7 +624,7 @@ def cmd_engines(args):
     if stores:
         print("\nShared stores:")
         for name, store in stores.items():
-            print(f"  {name:<16}→ {store['path']} (compat: {store['compat_link']})")
+            print(f"  {name:<16}→ {store['path']}")
 
 
 def main():

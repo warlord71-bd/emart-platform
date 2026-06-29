@@ -446,11 +446,11 @@ def _compose_model_holding_real_product(d: ProductData, fmt: dict, req: Creative
     product_img = _product_image_data_uri(d, cutout=req.product_cutout)
     if not product_img:
         raise ValueError("model_holding_real_product requires a real product image")
-    persona_file = (req.value_spec or {}).get("persona_image") or "workspace/video-engine/personas/emart-model/reference-holding.png"
+    persona_file = (req.value_spec or {}).get("persona_image") or "workspace/content-orchestrator/video-engine/personas/emart-model/reference-holding.png"
     if not Path(str(persona_file)).exists():
-        persona_file = "/root/emart-platform/workspace/video-engine/personas/emart-model/reference-holding.png"
+        persona_file = "/root/emart-platform/workspace/content-orchestrator/video-engine/personas/emart-model/reference-holding.png"
     if not Path(str(persona_file)).exists():
-        persona_file = "/var/www/emart-platform/workspace/video-engine/personas/emart-model/reference-holding.png"
+        persona_file = "/var/www/emart-platform/workspace/content-orchestrator/video-engine/personas/emart-model/reference-holding.png"
     if not Path(str(persona_file)).exists():
         raise ValueError("model_holding_real_product requires a persona_image")
     persona_img = image_to_data_uri(str(persona_file))

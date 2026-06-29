@@ -11,7 +11,7 @@ Resource-aware: checks available RAM before enqueuing. Skips if the box is under
 (emartweb/emart-embed must never be starved).
 
 Cron: run once daily at a quiet hour (e.g. 5 AM).
-    0 5 * * * cd /root/emart-platform/workspace/video-engine && python3 daily_producer.py >> /tmp/emart-daily-producer.log 2>&1
+    0 5 * * * cd /root/emart-platform/workspace/content-orchestrator/video-engine && python3 daily_producer.py >> /tmp/emart-daily-producer.log 2>&1
 """
 from __future__ import annotations
 import json, subprocess, sys, urllib.request, re

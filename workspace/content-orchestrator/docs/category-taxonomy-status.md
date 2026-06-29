@@ -167,7 +167,7 @@ The concern system has TWO layers:
 Updated: 2026-05-21
 
 - **2,480 of ~3,641 products now have pa_concern assigned (68%).**
-- Applied via keyword/ingredient-based mapping in `workspace/scripts/active/pa-concern-apply.py`.
+- Applied via keyword/ingredient-based mapping in `workspace/content-orchestrator/scripts/active/pa-concern-apply.py`.
 - Rollback SQL: `pa-concern-rollback-20260521-174257.sql`
 - **Remaining gap:** ~1,161 products — manual review CSV at `workspace/audit/active/pa-concern-manual-review-20260521-174247.csv`
   - 353 LOW-confidence rows: concern suggested, owner approves/changes/skips

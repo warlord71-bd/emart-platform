@@ -17,7 +17,7 @@ The old standalone `/opt/fb-poster/.env` is deprecated — credentials are now u
 
 ## Scripts
 
-All in `workspace/scripts/active/`, gitignored but present on Local and VPS:
+All in `workspace/content-orchestrator/scripts/active/`, gitignored but present on Local and VPS:
 
 | Script | Purpose | Usage |
 |--------|---------|-------|

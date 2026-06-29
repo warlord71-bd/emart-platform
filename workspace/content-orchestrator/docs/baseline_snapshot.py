@@ -43,7 +43,7 @@ DB_CONFIG   = {
 TABLE_PREFIX   = "wp4h_"
 HOLDOUT_RATIO  = 0.10   # 10% holdout
 AUDIT_DIR      = Path("workspace/audit/active")
-SCRIPTS_DIR    = Path("workspace/scripts/active")
+SCRIPTS_DIR    = Path("workspace/content-orchestrator/scripts/active")
 
 LINE_KEYWORDS = [
     'shampoo', 'conditioner', 'serum', 'toner', 'essence', 'moisturiser',

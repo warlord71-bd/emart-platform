@@ -1,7 +1,7 @@
 # Emart Video Engine
 
 Tier-swappable, API-first video content engine. Full design:
-`workspace/docs/claude-reference/ai-video-influencer-plan.md`.
+`workspace/content-orchestrator/docs/claude-reference/ai-video-influencer-plan.md`.
 
 ## Principle
 Every capability (image, face, b-roll video, talking video, voice, storage) is a **dial**:
@@ -96,7 +96,7 @@ images OR product_id, seconds).
 The reel engine does NOT have its own product/value/brand-card designer. It consumes
 the same Creative Asset Engine as static social posts:
 - `creative-engine` → product hero, value cards, brand end cards, FB 1:1, IG 4:5, blog OG
-- `emart-branded` → compatibility wrapper through `workspace/scripts/active/social_image_gen.py`
+- `emart-branded` → compatibility wrapper through `workspace/content-orchestrator/scripts/active/social_image_gen.py`
 - `codex-imagegen` → Codex's image-gen capacity (plug in when available)
 - `woo-product-photo` → raw WooCommerce image
 Flow: **product → Creative Engine frame(s) → HyperFrames motion/captions → ffmpeg encode/QA**.

@@ -7,8 +7,8 @@ a full image prompt + the real product reference + the exact output path + size.
 queue, generates each image with its own image-gen, and saves it to `output_path`. The engine then
 auto-consumes it (file existence = fulfilled). No manual step per asset.
 
-Request file: workspace/video-engine/codex-assets/requests/<key>.json
-Fulfilled image: workspace/video-engine/codex-assets/holding/<key>.png   (Codex writes this)
+Request file: workspace/content-orchestrator/video-engine/codex-assets/requests/<key>.json
+Fulfilled image: workspace/content-orchestrator/video-engine/codex-assets/holding/<key>.png   (Codex writes this)
 
 CLI:
   codex_bridge.py --emit --product "..." [--persona dr-rumana] [--product-image PATH]   # engine side

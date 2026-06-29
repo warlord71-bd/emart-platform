@@ -13,4 +13,4 @@ export WC_CONSUMER_KEY="${WOO_CONSUMER_KEY:?WOO_CONSUMER_KEY missing}"
 export WC_CONSUMER_SECRET="${WOO_CONSUMER_SECRET:?WOO_CONSUMER_SECRET missing}"
 : "${QDRANT_API_KEY:?QDRANT_API_KEY missing}"
 
-python3 workspace/scripts/active/qdrant_product_sync.py
+python3 workspace/content-orchestrator/scripts/active/qdrant_product_sync.py

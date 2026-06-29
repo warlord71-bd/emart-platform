@@ -16,7 +16,7 @@ Google Merchant Center has 127 disapproved products — 15% of our catalog block
 ```
 Dry-run CSV:    workspace/audit/active/gmc-policy-control-dryrun-2026-06-05.csv
 Proposals JSONL: workspace/audit/active/gmc-policy-copy-proposals-2026-06-05.jsonl
-Script:         workspace/scripts/active/gmc_policy_control_dryrun.py
+Script:         workspace/content-orchestrator/scripts/active/gmc_policy_control_dryrun.py
 GMC sync:       python3 /root/.gmc/sync.py
 ```
 

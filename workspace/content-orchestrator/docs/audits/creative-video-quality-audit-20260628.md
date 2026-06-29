@@ -1,6 +1,6 @@
 # Creative + Video Quality Audit - 2026-06-28
 
-Scope: `workspace/creative-engine/`, `workspace/video-engine/`, HyperFrames render path, script/voice/caption/QA stages, and current reel queue/review outputs.
+Scope: `workspace/content-orchestrator/creative-engine/`, `workspace/content-orchestrator/video-engine/`, HyperFrames render path, script/voice/caption/QA stages, and current reel queue/review outputs.
 
 ## Executive verdict
 
@@ -11,7 +11,7 @@ Recent rendered reels are consistently `1080x1920`, `24fps`, include audio, pass
 ## Evidence checked
 
 - Syntax checks passed for Creative Engine, video worker, producer, script, voice, QA, and orchestrator Python modules.
-- `node --check workspace/video-engine/hyperframes/render.js` passed.
+- `node --check workspace/content-orchestrator/video-engine/hyperframes/render.js` passed.
 - Recent MP4 outputs checked with `ffprobe`: all sampled reels were `1080x1920`, `24fps`, AAC audio present, around `13.5s`.
 - Orchestrator status showed one queued job, seven review jobs, four approved jobs, zero dead-letter jobs.
 - Current review QA reports show technical/audio/visual pass but often skip caption overlay validation when no overlay JSON exists.
@@ -20,7 +20,7 @@ Recent rendered reels are consistently `1080x1920`, `24fps`, include audio, pass
 
 ### P0 - Product-specific copy mismatch
 
-`workspace/video-engine/daily_producer.py` currently applies sunscreen/SPF defaults to every daily product:
+`workspace/content-orchestrator/video-engine/daily_producer.py` currently applies sunscreen/SPF defaults to every daily product:
 
 - `product_card_badge: Daily SPF`
 - `SPF50+ PA++++`
@@ -32,7 +32,7 @@ Recommended fix: make daily producer product-type aware before enqueue. Use prod
 
 ### P0 - Placeholder scripts can pass
 
-`workspace/video-engine/stages/script_gen.py` includes schema placeholder text in the prompt, and validation only checks that required keys exist. A current script file contains literal placeholders such as:
+`workspace/content-orchestrator/video-engine/stages/script_gen.py` includes schema placeholder text in the prompt, and validation only checks that required keys exist. A current script file contains literal placeholders such as:
 
 - `<=5 words`
 - `2-3 sentence platform caption`
@@ -56,7 +56,7 @@ Recommended fix: add a pre-render content QA gate plus an OCR/frame-text gate af
 
 ### P1 - Voice setup is inconsistent
 
-Actual voice generation uses `edge-tts` in `workspace/video-engine/stages/voice_gen.py`, while `workspace/video-engine/config/providers.json` still describes a disabled `piper-local` free provider and silent fallback. Worker fallback can produce a music/silence file when voice fails; later QA can catch very low loudness, but it does not guarantee intelligible spoken voice.
+Actual voice generation uses `edge-tts` in `workspace/content-orchestrator/video-engine/stages/voice_gen.py`, while `workspace/content-orchestrator/video-engine/config/providers.json` still describes a disabled `piper-local` free provider and silent fallback. Worker fallback can produce a music/silence file when voice fails; later QA can catch very low loudness, but it does not guarantee intelligible spoken voice.
 
 Recommended fix: align provider config/docs with actual Edge TTS use. Add a `voice_required` default for review reels, record voice provider in job metadata, and fail owner-review builds when spoken duration or speech confidence is missing.
 
@@ -79,19 +79,19 @@ Recommended fix: add image-source metadata and a product-identity review check. 
 
 ### P2 - Background generation is nondeterministic
 
-`workspace/creative-engine/data/backgrounds.py` can fetch Pollinations backgrounds and disables SSL certificate verification for that call. This can produce style drift, network variability, and trust concerns.
+`workspace/content-orchestrator/creative-engine/data/backgrounds.py` can fetch Pollinations backgrounds and disables SSL certificate verification for that call. This can produce style drift, network variability, and trust concerns.
 
 Recommended fix: treat remote AI backgrounds as optional drafts only. Prefer a local approved background library per category/claim. If remote generation stays enabled, restore certificate verification or explicitly mark it as non-production draft mode.
 
 ### P2 - HyperFrames quality is standard mode
 
-`workspace/video-engine/hyperframes/render.js` currently invokes HyperFrames with `--quality standard --low-memory-mode`. Output is technically good and lightweight, but there is room for a premium render profile for final owner-approved assets.
+`workspace/content-orchestrator/video-engine/hyperframes/render.js` currently invokes HyperFrames with `--quality standard --low-memory-mode`. Output is technically good and lightweight, but there is room for a premium render profile for final owner-approved assets.
 
 Recommended fix: keep standard for queue throughput, add a `premium` render preset for final/rebuild mode with higher quality/bitrate and a no-low-memory option when VPS resources allow.
 
 ### P2 - Docs/config are stale
 
-`workspace/video-engine/README.md` still references future caption work that now exists, and provider config does not match actual voice implementation.
+`workspace/content-orchestrator/video-engine/README.md` still references future caption work that now exists, and provider config does not match actual voice implementation.
 
 Recommended fix: update video-engine docs after implementation fixes so future agents do not optimize the wrong layer.
 
@@ -127,7 +127,7 @@ No automatic publish path was found in the builder cron: orchestrator builds dra
 
 ## Remediation applied - 2026-06-28
 
-- Added shared deterministic gates in `workspace/video-engine/lib/quality_gates.py`.
+- Added shared deterministic gates in `workspace/content-orchestrator/video-engine/lib/quality_gates.py`.
 - Made `daily_producer.py` product-type aware, replacing universal SPF copy with class-specific templates.
 - Added enqueue, worker, and master-QA gates for product-claim mismatch, placeholder scripts, unsafe medical claims, odd CJK characters, missing product-card images, and product-image identity warnings.
 - Made review-reel voiceover required by default; missing/too-short Edge TTS narration now fails instead of producing a music-only draft.
@@ -139,7 +139,7 @@ No automatic publish path was found in the builder cron: orchestrator builds dra
 
 ## Verification commands run
 
-- `python3 -m py_compile workspace/creative-engine/api.py workspace/creative-engine/render.py workspace/creative-engine/data/normalize.py workspace/creative-engine/data/backgrounds.py workspace/video-engine/worker.py workspace/video-engine/daily_producer.py workspace/video-engine/stages/script_gen.py workspace/video-engine/stages/voice_gen.py workspace/video-engine/stages/reel_qa_master.py workspace/video-engine/orchestrator.py`
-- `node --check workspace/video-engine/hyperframes/render.js`
+- `python3 -m py_compile workspace/content-orchestrator/creative-engine/api.py workspace/content-orchestrator/creative-engine/render.py workspace/content-orchestrator/creative-engine/data/normalize.py workspace/content-orchestrator/creative-engine/data/backgrounds.py workspace/content-orchestrator/video-engine/worker.py workspace/content-orchestrator/video-engine/daily_producer.py workspace/content-orchestrator/video-engine/stages/script_gen.py workspace/content-orchestrator/video-engine/stages/voice_gen.py workspace/content-orchestrator/video-engine/stages/reel_qa_master.py workspace/content-orchestrator/video-engine/orchestrator.py`
+- `node --check workspace/content-orchestrator/video-engine/hyperframes/render.js`
 - `ffprobe` sampling of recent rendered MP4 outputs
-- `python3 workspace/video-engine/orchestrator.py --status`
+- `python3 workspace/content-orchestrator/video-engine/orchestrator.py --status`

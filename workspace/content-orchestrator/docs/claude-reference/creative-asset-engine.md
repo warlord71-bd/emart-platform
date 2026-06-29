@@ -175,7 +175,7 @@ Completed 2026-06-26:
   `tall_bottle`, `dropper`, `tube`, `jar`, `compact`, `sheet_pack`, `box`, `pouch`, or `general`.
   The renderer uses this to frame tall bottles differently from short cream jars, palettes, sheet masks, and sets.
 - Creative Engine defaults to 2x supersampled rendering and downsampling for sharper AMOLED/iPhone outputs while preserving native platform dimensions.
-- `workspace/video-engine/worker.py` calls Creative Engine directly for product hero/value/end cards.
+- `workspace/content-orchestrator/video-engine/worker.py` calls Creative Engine directly for product hero/value/end cards.
 - `product_hero_card.py`, `list_card.py`, and `brand_card.py` are compatibility shims.
 - HyperFrames treats value/brand/product cards as pre-rendered frames and only handles motion/caption/audio/encoding.
 - Smoke verified: `creative-migration-smoke.mp4` rendered 1080×1920 and passed local video QA score 96.
@@ -248,7 +248,7 @@ moves* → HyperFrames. *How it's encoded/normalized* → ffmpeg. A change shoul
 touch two of these.
 
 Persona/model-photo rules live in
-`workspace/docs/claude-reference/creative-persona-standard.md`. Short version:
+`workspace/content-orchestrator/docs/claude-reference/creative-persona-standard.md`. Short version:
 product-first is the default; best persona frames show the exact real product in
 hand or beside the face; a model-only reel frame is allowed as fallback when the
 Codex-generated holding shot is pending; white/tile product overlays are not the

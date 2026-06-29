@@ -131,7 +131,7 @@ TKM_CONCERN_MAP = {
     "melasma": "hyperpigmentation",
 }
 
-BRAND_PHILOSOPHY_FILE = Path("/root/emart-platform/workspace/scripts/active/brand_philosophies.json")
+BRAND_PHILOSOPHY_FILE = Path("/root/emart-platform/workspace/content-orchestrator/scripts/active/brand_philosophies.json")
 
 def _get_brand_context(brand_name: str) -> dict:
     """Load brand philosophy for LLM context."""

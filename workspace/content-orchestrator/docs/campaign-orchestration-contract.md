@@ -79,7 +79,7 @@ Status: **spec/contract** — no price/discount automation. No visible UI refact
 - Source data must be a specific product list or Woo sale query, not a made-up "top deals" claim.
 
 ### Social Campaign Assets
-- Follow `workspace/docs/claude-reference/social-publishing.md` reference.
+- Follow `workspace/content-orchestrator/docs/claude-reference/social-publishing.md` reference.
 - FB 1:1, IG 4:5 separate assets (per `feedback_social_image_sizes.md`).
 - Campaign plan approval (`approval_status=approved_for_scheduled_run`) required before any Meta API call.
 - Buying-link first comments require `pages_manage_engagement` permission (currently blocked — O-15).

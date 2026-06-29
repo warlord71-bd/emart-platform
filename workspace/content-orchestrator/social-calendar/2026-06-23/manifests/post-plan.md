@@ -22,6 +22,6 @@ The authoritative schedule, captions, first-comment links, and publishing status
 - 8 model-real-item creatives: `codex-model-samples/` and `codex-model-variants/`
 - Public Meta assets: `apps/web/public/images/social/2026-06-23/meta-18/`
 - Contact sheets: `pipeline/contact-sheet-10-unique-pipeline-podium.png` and `codex-model-samples/contact-sheet-8-model-real-items.png`
-- Scheduler: `workspace/scripts/active/meta_18_scheduler_20260623.js`
+- Scheduler: `workspace/content-orchestrator/scripts/active/meta_18_scheduler_20260623.js`
 
 Rejected and superseded drafts were moved to `/root/.attic-2026-06-23/`.

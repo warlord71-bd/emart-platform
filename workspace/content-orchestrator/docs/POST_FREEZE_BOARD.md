@@ -1,7 +1,7 @@
 # Emart Post-Freeze Task Board
 
 Generated: 2026-06-26. Verified: 2026-06-26 (branch audit pass 2).
-Sources: TASKS.md, SEO_MASTER.md, DEV_MASTER.md, workspace/docs/*,
+Sources: TASKS.md, SEO_MASTER.md, DEV_MASTER.md, workspace/content-orchestrator/docs/*,
 CONTENT_STANDARD.md, BRAND_GUIDE.md, all local+remote branches,
 codebase grep. Zero TODO/FIXME/HACK comments found in source.
 
@@ -27,7 +27,7 @@ Items 7–10 are already deployed or need only a runtime action (no merge).
 | 5 | PM2 ecosystem.config.cjs env-isolated process definitions | ORCH-5 config ready on main | — | Apply clean restart at maintenance window |
 | 6 | Tier-1 category guides + FAQ schema (7 categories) | Already deployed `85b15ad`+`a580709` | — | Validate live; no merge needed |
 | 7 | Tier-1 brand editorial (15 brands) | Deployed `40b58df` | — | Owner may refine copy |
-| 8 | HyperFrames VPS npm install | VID-6 source ready on main | — | `cd workspace/video-engine/hyperframes && npm install` |
+| 8 | HyperFrames VPS npm install | VID-6 source ready on main | — | `cd workspace/content-orchestrator/video-engine/hyperframes && npm install` |
 | 9 | Reel standard v2 + product-hand reels | VID-4/VID-8 in Telegram review | — | Owner approves → publish |
 
 ### Reclassified out of DAY-ONE

@@ -55,7 +55,7 @@ I will then:
 ## What I'll Build (after you complete steps above)
 
 ```
-workspace/scripts/active/tiktok_publish.py
+workspace/content-orchestrator/scripts/active/tiktok_publish.py
 
 Usage:
   python3 tiktok_publish.py --video /path/to/video.mp4 --caption "COSRX Snail Mucin ✨ #skincare #kbeauty"

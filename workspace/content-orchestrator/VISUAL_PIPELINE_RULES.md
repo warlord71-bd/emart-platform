@@ -43,4 +43,6 @@ Static posts should use:
 
 ## Runtime Safety
 
-The engines physically live under `workspace/content-orchestrator/`. Root-level `workspace/creative-engine`, `workspace/social-engine`, and `workspace/video-engine` remain compatibility links for PM2/crontab/import paths while runtime migration is completed and smoke-tested.
+The engines physically live under `workspace/content-orchestrator/`. Do not recreate root-level
+shortcut links such as `workspace/creative-engine`, `workspace/social-engine`, or
+`workspace/video-engine`; active code should call the canonical Content Orchestrator paths directly.

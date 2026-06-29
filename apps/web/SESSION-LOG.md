@@ -3482,3 +3482,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed: Updated active config/docs/shim comments to use the canonical Content Orchestrator path, keeping `workspace/creative-engine` documented only as a compatibility link.
 - Verified: `realpath` and `stat -L` resolve all visible Creative Engine entries to the same inode; only one real `*/creative-engine` directory exists; provider JSON validates; `social_image_gen.py` compiles.
 - Guardrail: Local docs/config/shim cleanup only; no Woo/WordPress writes, no deploy, no PM2 restart, no checkout/cart/payment/order/customer/stock/price changes.
+
+## 2026-06-29 · Codex · Content Orchestrator clean no-shortcut setup
+- Did: Removed root workspace shortcut symlinks for engines/stores and removed internal `content-orchestrator/engines/*` shortcut symlinks. The visible workspace now has only real engine/store folders under `workspace/content-orchestrator/`.
+- Fixed: Rewrote active code/config/docs/runbooks from old `workspace/*` engine/store paths to canonical `workspace/content-orchestrator/*` paths; updated `engine_registry.json` to v2 no-shortcut policy and patched `orchestrator.py engines`.
+- Runtime: Replaced PM2 `emart-reels-bot` entry so the single Telegram approval bot runs from `/root/emart-platform/workspace/content-orchestrator/video-engine/reels_bot.py` with canonical cwd. Moved stray recreated root `workspace/video-engine` state dirs and empty nested `workspace/workspace` to `/root/.attic-2026-06-29/emart-content-orchestrator-cleanup/`.
+- Verified: no symlinks under `workspace` maxdepth 3; no root engine/store directories; `orchestrator.py engines/status`; `video-engine/orchestrator.py --status`; provider/registry JSON validate; Python compile; Social Engine unittest suite; HyperFrames `node --check`; PM2 describes `emart-reels-bot` with canonical script/cwd.
+- Guardrail: No Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no web deploy, no `emartweb` restart.

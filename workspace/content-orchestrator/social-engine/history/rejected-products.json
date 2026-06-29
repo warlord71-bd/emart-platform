@@ -91,7 +91,7 @@
       "name": "2026-06-28-owner-rejected-reschedule-campaign",
       "status": "rejected",
       "reason": "owner rejected/flagged prior June 28 social list",
-      "source": "workspace/social-engine/campaigns/2026-06-28-daily-18-reschedule.json",
+      "source": "workspace/content-orchestrator/social-engine/campaigns/2026-06-28-daily-18-reschedule.json",
       "items": [
         {
           "product_id": 2591,
@@ -191,7 +191,7 @@
       "name": "2026-06-28-owner-rejected-strict-campaign",
       "status": "rejected",
       "reason": "owner rejected repeated June 28 draft list",
-      "source": "workspace/social-engine/campaigns/2026-06-28-daily-18-strict-3day.json",
+      "source": "workspace/content-orchestrator/social-engine/campaigns/2026-06-28-daily-18-strict-3day.json",
       "items": [
         {
           "product_id": 74877,
@@ -291,7 +291,7 @@
       "name": "2026-06-29-manual-risk-filtered-products",
       "status": "rejected",
       "reason": "manual filter: non-beauty/risky wording/recent Minimalist rejection pattern",
-      "source": "workspace/social-engine/campaigns/2026-06-29-owner-approval-fresh-22.json",
+      "source": "workspace/content-orchestrator/social-engine/campaigns/2026-06-29-owner-approval-fresh-22.json",
       "items": [
         {
           "product_id": 58444,

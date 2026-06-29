@@ -131,7 +131,7 @@ Navigation, URL structure, sitemap, and routing changes are frozen until **2026-
 > Always dry-run first. Never mutate checkout/cart/payment/order without explicit owner approval.
 
 ### B2: SKU assignment — 0 missing as of 2026-05-15
-- **Script:** `workspace/scripts/active/product-sku-audit-dry-run.php`
+- **Script:** `workspace/content-orchestrator/scripts/active/product-sku-audit-dry-run.php`
 - **Status:** 0 published products missing SKU, 0 duplicate SKU meta. No action needed unless owner provides new data.
 
 ### B3: Product image upload — 16 products
@@ -139,7 +139,7 @@ Navigation, URL structure, sitemap, and routing changes are frozen until **2026-
 - **Status:** CSV ready. Owner uploads images → Codex assigns in WooCommerce.
 
 ### B4: Fresh product SEO / image audit
-- **Script:** `workspace/scripts/active/product-seo-audit.php`
+- **Script:** `workspace/content-orchestrator/scripts/active/product-seo-audit.php`
 - **Last run:** 2026-05-15 — outputs in `workspace/audit/archive/processed/`
 
 ---
@@ -154,7 +154,7 @@ Navigation, URL structure, sitemap, and routing changes are frozen until **2026-
 - **Files:** `apps/web/tailwind.config.js`, `apps/web/src/app/globals.css`
 - **Effort:** Small | **Risk:** Low
 
-### U2: Update `workspace/docs/theme-contract.md` with canonical token map
+### U2: Update `workspace/content-orchestrator/docs/theme-contract.md` with canonical token map
 - **Change:** One canonical set: `bg`, `card`, `surface`, `ink`, `muted`, `accent`, `border`, `success`, `warning`, `danger`. Mark `lumiere` and `--mb-*` as scoped-island aliases only.
 - **Effort:** Small | **Risk:** None (docs only)
 
@@ -199,13 +199,13 @@ Navigation, URL structure, sitemap, and routing changes are frozen until **2026-
 - **Effort:** Trivial
 
 ### WH6: Fix output path in `product-image-brand-size-audit.mjs`
-- **Files:** `workspace/scripts/active/product-image-brand-size-audit.mjs`
+- **Files:** `workspace/content-orchestrator/scripts/active/product-image-brand-size-audit.mjs`
 - **Change:** Default `OUT` path → `workspace/audit/active/`
 - **Effort:** Trivial
 
 ### WH7: Review app-local scripts for archival
 - **Files:** `apps/web/scripts/seo-p1-preview.mjs`, `apps/web/scripts/ocr-image-audit.mjs`, `apps/web/scripts/image-logic-fixer.mjs`
-- **Change:** If no active owner, move to `workspace/scripts/archive/`. Keep `check-all.sh`, `audit-duplicate-products.mjs` (referenced in package.json).
+- **Change:** If no active owner, move to `workspace/content-orchestrator/scripts/archive/`. Keep `check-all.sh`, `audit-duplicate-products.mjs` (referenced in package.json).
 - **Effort:** Small
 
 ---

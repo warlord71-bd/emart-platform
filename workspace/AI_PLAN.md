@@ -156,7 +156,7 @@ python3 workspace/seo-review/tg_commands.py --tg report    # send to Telegram
 python3 workspace/seo-review/internal_seo_tool.py          # weekly
 
 # Qdrant
-python3 workspace/scripts/active/qdrant_product_sync.py    # weekly full sync
+python3 workspace/content-orchestrator/scripts/active/qdrant_product_sync.py    # weekly full sync
 
 # Chat agent test
 curl -X POST https://e-mart.com.bd/api/chat \

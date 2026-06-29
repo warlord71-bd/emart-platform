@@ -7,7 +7,7 @@ cluster, checks for cross-type internal links, and outputs a coverage / gap
 summary. Does NOT modify any files; read-only analysis.
 
 Usage:
-    python3 workspace/scripts/active/topical_authority_report.py [--json]
+    python3 workspace/content-orchestrator/scripts/active/topical_authority_report.py [--json]
 
 Outputs to stdout by default. Pass --json for machine-readable output.
 """

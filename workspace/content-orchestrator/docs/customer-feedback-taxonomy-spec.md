@@ -63,7 +63,7 @@ Each feedback category maps to an action domain:
 - **Review content is public:** can be tracked as-is
 
 ## Implementation
-- Script: `workspace/scripts/active/feedback_classifier.py`
+- Script: `workspace/content-orchestrator/scripts/active/feedback_classifier.py`
 - Input: chat session summaries (anonymized), search no-result logs, review text
 - Output: `workspace/seo/feedback-signals.jsonl` (category, count, example, date)
 - Monthly summary report for owner review

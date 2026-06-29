@@ -31,11 +31,11 @@ paths:
    `emart-humanizer-rest` and `emart-humanizer-regular` jobs were removed and
    their scripts archived.
    Note: `emart-meta-gen` is running correctly from
-   `/var/www/emart-platform/workspace/scripts/active/meta_gen_batch.sh` (confirmed
+   `/var/www/emart-platform/workspace/content-orchestrator/scripts/active/meta_gen_batch.sh` (confirmed
    active at cycle 42+, 2,000+ descriptions applied as of 2026-06-05).
 3. Active script/doc layout: face-cleanser humanizer source of truth is
    `workspace/humanizer/face-cleansers/`; do not use the old
-   `workspace/docs/humanizer_face_cleansers.py` path.
+   `workspace/content-orchestrator/docs/humanizer_face_cleansers.py` path.
 4. Active face-cleanser run files live under
    `workspace/humanizer/face-cleansers/active/`; do not use old
    `workspace/audit/active/face-cleansers-*` paths for new work.

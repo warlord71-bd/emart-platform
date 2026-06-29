@@ -13,7 +13,7 @@
       "slot": "2026-06-27T10:16:00+06:00",
       "title": "Beauty of Joseon Relief Sun Rice + Probiotics 50ml",
       "product_id": 4320,
-      "job_path": "workspace/video-engine/jobs/approved/04-2026-06-26-boj-sunscreen-approval-v3.json",
+      "job_path": "workspace/content-orchestrator/video-engine/jobs/approved/04-2026-06-26-boj-sunscreen-approval-v3.json",
       "media_url": "https://e-mart.com.bd/public/videos/reels/2026-06-26-boj-sunscreen-approval-v3.mp4?v=1782501055",
       "platforms": [
         "facebook"
@@ -26,7 +26,7 @@
       "slot": "2026-06-27T12:38:00+06:00",
       "title": "Dr. Althea 345 Relief Cream",
       "product_id": 58162,
-      "job_path": "workspace/video-engine/jobs/approved/05-althea-345-relief-cream.json",
+      "job_path": "workspace/content-orchestrator/video-engine/jobs/approved/05-althea-345-relief-cream.json",
       "media_url": "https://e-mart.com.bd/public/videos/reels/althea-345-relief-cream.mp4?v=1782540508",
       "platforms": [
         "facebook"
@@ -40,7 +40,7 @@
       "slot": "2026-06-27T13:42:00+06:00",
       "title": "COSRX Advanced Snail 96 Mucin Power Essence",
       "product_id": 2591,
-      "job_path": "workspace/video-engine/jobs/approved/05-cosrx-snail-clean-demo.json",
+      "job_path": "workspace/content-orchestrator/video-engine/jobs/approved/05-cosrx-snail-clean-demo.json",
       "media_url": "https://e-mart.com.bd/public/videos/reels/cosrx-snail-clean-demo.mp4?v=1782540508",
       "platforms": [
         "facebook"
@@ -53,7 +53,7 @@
       "slot": "2026-06-27T15:25:00+06:00",
       "title": "CeraVe Skin Renewing Retinol Serum 30ml",
       "product_id": 23486,
-      "job_path": "workspace/video-engine/jobs/review/05-2026-06-26-cerave-retinol-approval-v3.json",
+      "job_path": "workspace/content-orchestrator/video-engine/jobs/review/05-2026-06-26-cerave-retinol-approval-v3.json",
       "media_url": "https://e-mart.com.bd/public/videos/reels/2026-06-26-cerave-retinol-approval-v3.mp4?v=1782501256",
       "platforms": [
         "facebook"
@@ -66,7 +66,7 @@
       "slot": "2026-06-27T17:05:00+06:00",
       "title": "CosRx Advanced Snail 92 All In One Cream 100g",
       "product_id": 3700,
-      "job_path": "workspace/video-engine/jobs/review/30-2026-06-26-cosrx-advanced-snail-92-all-in-one-cream-fa.json",
+      "job_path": "workspace/content-orchestrator/video-engine/jobs/review/30-2026-06-26-cosrx-advanced-snail-92-all-in-one-cream-fa.json",
       "media_url": "https://e-mart.com.bd/public/videos/reels/2026-06-26-cosrx-advanced-snail-92-all-in-one-cream-fa.mp4?v=1782540508",
       "platforms": [
         "facebook"
@@ -79,7 +79,7 @@
       "slot": "2026-06-27T18:55:00+06:00",
       "title": "Simple Refreshing Facial Wash 150ml",
       "product_id": 36319,
-      "job_path": "workspace/video-engine/jobs/_manual_2026-06-27-simple-refreshing-facial-wash-reel.json",
+      "job_path": "workspace/content-orchestrator/video-engine/jobs/_manual_2026-06-27-simple-refreshing-facial-wash-reel.json",
       "media_url": "https://e-mart.com.bd/public/videos/reels/2026-06-27-simple-refreshing-facial-wash-reel.mp4?v=1782540508",
       "platforms": [
         "facebook"

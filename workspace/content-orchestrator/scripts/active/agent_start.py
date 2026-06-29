@@ -56,7 +56,7 @@ def main() -> int:
         if line.startswith(keep_prefixes):
             print(line)
     print("")
-    print("For the full compact brain, run: python3 workspace/scripts/active/agent_start.py --show")
+    print("For the full compact brain, run: python3 workspace/content-orchestrator/scripts/active/agent_start.py --show")
     return 0
 
 

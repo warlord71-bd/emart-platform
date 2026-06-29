@@ -8,31 +8,22 @@ This is also the **one-roof** folder for the content engines:
 
 ```text
 workspace/content-orchestrator/
-  engines/
-    creative-engine -> ../creative-engine
-    social-engine   -> ../social-engine
-    video-engine    -> ../video-engine
-  creative-engine/  # real folder; workspace/creative-engine is a compatibility link
-  social-engine/    # real folder; workspace/social-engine is a compatibility link
-  video-engine/     # real folder; workspace/video-engine is a compatibility link
-  scripts/          # real folder; workspace/scripts is a compatibility link
-  docs/             # real folder; workspace/docs is a compatibility link
-  generated-assets/ # real folder; workspace/generated-assets is a compatibility link
-  social-calendar/  # real folder; workspace/social-calendar is a compatibility link
-  design-changes/   # real folder; workspace/design-changes is a compatibility link
+  creative-engine/  # real folder
+  social-engine/    # real folder
+  video-engine/     # real folder
+  scripts/          # real folder
+  docs/             # real folder
+  generated-assets/ # real folder
+  social-calendar/  # real folder
+  design-changes/   # real folder
   engine_registry.json
   VISUAL_PIPELINE_RULES.md
 ```
 
-The engine folders physically live here now. The old `workspace/creative-engine`,
-`workspace/social-engine`, and `workspace/video-engine` paths are compatibility links so old
-cron/PM2/import paths keep resolving while new code uses the one-roof paths.
-
-The shared stores do physically live here now. Their old `workspace/...` paths are symlinks, so old
-manifests, approved commands, and historical notes still resolve without edits.
+The engine folders and shared stores physically live here. Root-level shortcut links were removed
+so the workspace does not show duplicate engine/content entries.
 
 Full model: `workspace/content-orchestrator/docs/claude-reference/content-orchestrator.md`
-(`workspace/docs/...` remains a compatibility link).
 
 ## Quick start
 

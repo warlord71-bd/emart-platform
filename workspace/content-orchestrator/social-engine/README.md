@@ -97,8 +97,8 @@ one of the approved candidate themes after owner approval.
 ## Run
 
 ```bash
-python3 workspace/social-engine/social_engine.py plan \
-  --campaign workspace/social-engine/campaigns/2026-06-24-v3.json \
+python3 workspace/content-orchestrator/social-engine/social_engine.py plan \
+  --campaign workspace/content-orchestrator/social-engine/campaigns/2026-06-24-v3.json \
   --make-ig-variants \
   --contact-sheet \
   --vision-qa
@@ -107,7 +107,7 @@ python3 workspace/social-engine/social_engine.py plan \
 Output defaults to:
 
 ```text
-workspace/social-engine/output/<date>/<campaign-id>/
+workspace/content-orchestrator/social-engine/output/<date>/<campaign-id>/
 ```
 
 ## Campaign Flow
@@ -123,29 +123,29 @@ workspace/social-engine/output/<date>/<campaign-id>/
 ## Pick and Record
 
 ```bash
-python3 workspace/social-engine/social_engine.py pick \
+python3 workspace/content-orchestrator/social-engine/social_engine.py pick \
   --date 2026-06-25 \
   --id 2026-06-25-daily \
   --name "June 25 Daily Social" \
-  --out workspace/social-engine/campaigns/2026-06-25-daily.json \
+  --out workspace/content-orchestrator/social-engine/campaigns/2026-06-25-daily.json \
   --count 18 \
   --pipeline-count 10 \
-  --performance workspace/social-engine/performance/latest.json
+  --performance workspace/content-orchestrator/social-engine/performance/latest.json
 
-python3 workspace/social-engine/social_engine.py record \
-  --campaign workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json
+python3 workspace/content-orchestrator/social-engine/social_engine.py record \
+  --campaign workspace/content-orchestrator/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json
 ```
 
 `record` should be run after a campaign is actually published or intentionally locked as used.
 The live scheduler can also append history automatically after a completed publish loop:
 
 ```bash
-node workspace/scripts/active/meta_schedule.js \
-  --plan workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
+node workspace/content-orchestrator/scripts/active/meta_schedule.js \
+  --plan workspace/content-orchestrator/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
   --platform facebook \
   --publish \
-  --record-history workspace/social-engine/history/published-products.json \
-  --result-ledger workspace/social-engine/performance/published-results.jsonl
+  --record-history workspace/content-orchestrator/social-engine/history/published-products.json \
+  --result-ledger workspace/content-orchestrator/social-engine/performance/published-results.jsonl
 ```
 
 Dry-runs never record history. Re-running FB/IG with the same campaign ID safely replaces the same
@@ -156,7 +156,7 @@ history row instead of duplicating it.
 When the owner rejects a campaign or approval table, record it before picking the next batch:
 
 ```bash
-python3 workspace/social-engine/social_engine.py reject \
+python3 workspace/content-orchestrator/social-engine/social_engine.py reject \
   --source workspace/audit/active/social-reel-approval-YYYYMMDD/approval-table.csv \
   --reason "owner rejected creative/list"
 ```
@@ -172,8 +172,8 @@ signatures in `history/rejected-designs.json`, so similar rejected layouts can b
 After a campaign is posted or closed, dry-run asset cleanup first:
 
 ```bash
-python3 workspace/social-engine/social_engine.py cleanup-assets \
-  --campaign workspace/social-engine/output/YYYY-MM-DD/CAMPAIGN/campaign-plan.json
+python3 workspace/content-orchestrator/social-engine/social_engine.py cleanup-assets \
+  --campaign workspace/content-orchestrator/social-engine/output/YYYY-MM-DD/CAMPAIGN/campaign-plan.json
 ```
 
 If the listed files are safe to clear, rerun with `--apply`. Assets are moved to
@@ -205,12 +205,12 @@ After approved live publishing, the scheduler can append one JSONL row per post 
 `--result-ledger`. Then import those results into the score file used by the next picker run:
 
 ```bash
-python3 workspace/social-engine/social_engine.py import-performance \
-  --campaign workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
-  --ledger workspace/social-engine/performance/published-results.jsonl \
+python3 workspace/content-orchestrator/social-engine/social_engine.py import-performance \
+  --campaign workspace/content-orchestrator/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
+  --ledger workspace/content-orchestrator/social-engine/performance/published-results.jsonl \
   --include-gsc \
   --include-gmc \
-  --out workspace/social-engine/performance/latest.json
+  --out workspace/content-orchestrator/social-engine/performance/latest.json
 ```
 
 If the ledger has social post IDs and the runtime Meta token is configured, add `--fetch-meta` to
@@ -218,12 +218,12 @@ pull reactions, comments, shares, clicks, reach, impressions, likes, and saves w
 them:
 
 ```bash
-python3 workspace/social-engine/social_engine.py import-performance \
-  --campaign workspace/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
-  --ledger workspace/social-engine/performance/published-results.jsonl \
+python3 workspace/content-orchestrator/social-engine/social_engine.py import-performance \
+  --campaign workspace/content-orchestrator/social-engine/output/2026-06-25/2026-06-25-daily/campaign-plan.json \
+  --ledger workspace/content-orchestrator/social-engine/performance/published-results.jsonl \
   --fetch-meta \
   --allow-partial \
-  --out workspace/social-engine/performance/latest.json
+  --out workspace/content-orchestrator/social-engine/performance/latest.json
 ```
 
 `--include-gsc` imports the latest local `workspace/seo-review/gsc-daily/*.json` product-page
@@ -234,19 +234,19 @@ GA4 export with `slug`/`path`/`product_id` plus sessions, views, conversions, or
 Create that GA4 product export with:
 
 ```bash
-python3 workspace/scripts/active/ga4_product_export.py \
+python3 workspace/content-orchestrator/scripts/active/ga4_product_export.py \
   --days 28 \
-  --out workspace/social-engine/performance/ga4-product-latest.jsonl
+  --out workspace/content-orchestrator/social-engine/performance/ga4-product-latest.jsonl
 ```
 
 Then merge it into the picker score model:
 
 ```bash
-python3 workspace/social-engine/social_engine.py import-performance \
+python3 workspace/content-orchestrator/social-engine/social_engine.py import-performance \
   --include-gsc \
   --include-gmc \
-  --ga4 workspace/social-engine/performance/ga4-product-latest.jsonl \
-  --out workspace/social-engine/performance/latest.json
+  --ga4 workspace/content-orchestrator/social-engine/performance/ga4-product-latest.jsonl \
+  --out workspace/content-orchestrator/social-engine/performance/latest.json
 ```
 
 The command writes only local JSON. It never publishes, never changes Woo data, and redacts Meta
@@ -266,7 +266,7 @@ the engine writes a dry-run video job under:
 output/<date>/<campaign-id>/video-queue/
 ```
 
-Those JSON files match `workspace/video-engine/worker.py` job format. The video engine remains
+Those JSON files match `workspace/content-orchestrator/video-engine/worker.py` job format. The video engine remains
 dry-run by default unless `--allow-publish` is explicitly used there.
 
 ## Safety Defaults

@@ -1,6 +1,6 @@
 # Audit Remediation Plan — B+ → A+ (2026-06-10)
 
-Source audit: `workspace/docs/audits/EMART_AUDIT_20260610.md` (full findings, file paths, evidence).
+Source audit: `workspace/content-orchestrator/docs/audits/EMART_AUDIT_20260610.md` (full findings, file paths, evidence).
 Executors: **[S]** Sonnet 4.6 · **[X]** Codex 5.5 · **[C]** Claude · **[O]** Owner decision required.
 Freeze rule (until 2026-07-03): structural/nav/visible-layout frozen. Content, data, schema correctness, backend, security, automation: **OK now**.
 
@@ -31,7 +31,7 @@ All Critical + High findings closed and live-verified; Mediums closed or explici
 - Verify: burst curl returns 429 after threshold; normal checkout smoke still passes (run `emart-checkout-monitor` steps).
 - Risk: too-tight limits can block real customers behind CGNAT — start generous, log, tighten later.
 - ⚠️ PREREQS (board conflicts): (a) Site is behind Cloudflare — Nginx must restore real client IPs first (`set_real_ip_from` Cloudflare ranges + `real_ip_header CF-Connecting-IP`, currently NOT configured) or per-IP limits will throttle Cloudflare edge IPs = mass false 429s for everyone. (b) `emart-checkout-monitor` (PM2, every 15 min) hits `https://e-mart.com.bd` checkout endpoints — allowlist the VPS's own IP or the monitor will trip limits and fire false alarms.
-- Status 2026-06-11: DONE/live. Runtime Nginx now restores Cloudflare real client IPs via `/etc/nginx/conf.d/cloudflare-real-ip.conf` (repo reference: `workspace/docs/R2-cloudflare-real-ip-nginx.conf`), keys rate zones on real client IP with localhost/VPS exemption, and splits `/api/checkout`, `/api/admin/auth`, `/api/newsletter/subscribe`, `/api/search`, auth, and general API buckets. `nginx -t` passed and Nginx reloaded. Live smoke: homepage 200, search 200, admin/newsletter/checkout GETs normal 405. Direct 429 burst was not tested from VPS because the VPS IP is intentionally exempt for `emart-checkout-monitor`; effective config confirms non-exempt clients are covered.
+- Status 2026-06-11: DONE/live. Runtime Nginx now restores Cloudflare real client IPs via `/etc/nginx/conf.d/cloudflare-real-ip.conf` (repo reference: `workspace/content-orchestrator/docs/R2-cloudflare-real-ip-nginx.conf`), keys rate zones on real client IP with localhost/VPS exemption, and splits `/api/checkout`, `/api/admin/auth`, `/api/newsletter/subscribe`, `/api/search`, auth, and general API buckets. `nginx -t` passed and Nginx reloaded. Live smoke: homepage 200, search 200, admin/newsletter/checkout GETs normal 405. Direct 429 burst was not tested from VPS because the VPS IP is intentionally exempt for `emart-checkout-monitor`; effective config confirms non-exempt clients are covered.
 
 ### R3 [O] — H-06: wp-login.php exposure
 - Decision: Cloudflare Access / IP allowlist / leave-as-is (fail2ban?). Owner picks; agent implements at Nginx or Cloudflare only after decision. Must not lock owner out of wp-admin.
@@ -121,7 +121,7 @@ All Critical + High findings closed and live-verified; Mediums closed or explici
 - Sweep 33× `#9f1239`→`accent`, 26× `#D4A248`→`brass`; retire `--color-brand-dark: #1a1a2e`; then map which surface owns `porcelain` vs `lumiere-*` vs `midnight-blossom` (20 files) and consolidate. Mobile-first review per owner preference; screenshot-diff key pages before/after.
 
 ### R20 [C] — Re-audit
-- Re-run the audit checklist (read-only) against all closed IDs + Verified-Good list. Target: A+. Write `workspace/docs/audits/EMART_AUDIT_<date>.md` v2.
+- Re-run the audit checklist (read-only) against all closed IDs + Verified-Good list. Target: A+. Write `workspace/content-orchestrator/docs/audits/EMART_AUDIT_<date>.md` v2.
 
 ---
 
@@ -137,9 +137,9 @@ After R3 lands, every pre-freeze audit item is closed. The A+ re-audit then wait
 ## Per-session agent prompt template (paste to Sonnet/Codex)
 ```
 Read /root/emart-platform/CLAUDE.md, apps/web/.agent-memory/MEMORY.md, and
-workspace/docs/AUDIT_REMEDIATION_PLAN_20260610.md. Execute task R<N> only,
+workspace/content-orchestrator/docs/AUDIT_REMEDIATION_PLAN_20260610.md. Execute task R<N> only,
 exactly as specified, including its Verify line. Full finding details are in
-workspace/docs/audits/EMART_AUDIT_20260610.md under ID <audit-id>.
+workspace/content-orchestrator/docs/audits/EMART_AUDIT_20260610.md under ID <audit-id>.
 Deploy via deploy.sh, never push before live smoke passes. When done, update
 workspace/TASKS.md (R<N> status) and append a SESSION-LOG.md block.
 ```

@@ -21,4 +21,4 @@ Avoid: do not copy another brand's layout exactly, do not include Skinnora/SKIN1
 
 Example product used:
 - AESTURA Atobarrier 365 Cream
-- Saved output: `workspace/generated-assets/emart-aestura-promo.png`
+- Saved output: `workspace/content-orchestrator/generated-assets/emart-aestura-promo.png`

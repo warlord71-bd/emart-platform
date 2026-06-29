@@ -15,11 +15,11 @@
     "recent_duplicate_replacements": {
       "generated_at": "2026-06-27T11:56:09.661725+06:00",
       "blocked_recent_sources": [
-        "workspace/social-engine/history/published-products.json",
-        "workspace/social-engine/output/2026-06-26/2026-06-26-random-24h-rescheduled/campaign-plan.json",
-        "workspace/social-engine/output/2026-06-26/2026-06-26-random-24h/campaign-plan.json",
-        "workspace/social-engine/output/2026-06-25/2026-06-25-daily-18/campaign-plan.json",
-        "workspace/social-engine/output/2026-06-24/2026-06-24-v3/campaign-plan.json"
+        "workspace/content-orchestrator/social-engine/history/published-products.json",
+        "workspace/content-orchestrator/social-engine/output/2026-06-26/2026-06-26-random-24h-rescheduled/campaign-plan.json",
+        "workspace/content-orchestrator/social-engine/output/2026-06-26/2026-06-26-random-24h/campaign-plan.json",
+        "workspace/content-orchestrator/social-engine/output/2026-06-25/2026-06-25-daily-18/campaign-plan.json",
+        "workspace/content-orchestrator/social-engine/output/2026-06-24/2026-06-24-v3/campaign-plan.json"
       ],
       "replaced_count": 13
     },

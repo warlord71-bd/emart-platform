@@ -67,7 +67,7 @@ A topical cluster is a group of related pages around a core concern, ingredient,
 ## Implementation Plan
 
 ### Phase 1: Build the map (script)
-- Script: `workspace/scripts/active/topical_authority_map.py`
+- Script: `workspace/content-orchestrator/scripts/active/topical_authority_map.py`
 - Input: sitemap URLs, GSC query data, category taxonomy, concern/ingredient page list
 - Output: `workspace/seo/topical-authority-map.json` + `workspace/seo/topical-authority-report.md`
 - Maps every URL to its cluster, calculates coverage scores, identifies gaps

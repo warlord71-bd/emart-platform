@@ -1,12 +1,10 @@
 {
-  "version": "2026-06-29-v1",
+  "version": "2026-06-29-v2",
   "roof": "workspace/content-orchestrator",
-  "principle": "One roof, stable compatibility paths. Content Orchestrator decides what to make; Creative Engine owns visual composition; Social Engine owns static campaign planning/scheduling; Video Engine owns reel build/QA/Telegram approval; shared scripts/docs/assets/calendar live under the same roof.",
+  "principle": "One roof, no shortcut paths. Content Orchestrator decides what to make; Creative Engine owns visual composition; Social Engine owns static campaign planning/scheduling; Video Engine owns reel build/QA/Telegram approval; shared scripts/docs/assets/calendar live under the same roof.",
   "engines": {
     "creative": {
       "path": "workspace/content-orchestrator/creative-engine",
-      "roof_link": "workspace/content-orchestrator/engines/creative-engine",
-      "compat_link": "workspace/creative-engine",
       "role": "Shared visual/image composition engine for static posts, product cards, model/product frames, value cards, brand end cards, blog OG assets.",
       "allowed_outputs": ["png", "jpg", "html composition screenshots"],
       "must_own": [
@@ -24,8 +22,6 @@
     },
     "social": {
       "path": "workspace/content-orchestrator/social-engine",
-      "roof_link": "workspace/content-orchestrator/engines/social-engine",
-      "compat_link": "workspace/social-engine",
       "role": "Campaign planner and static-post scheduler. Selects products, builds approval packs, validates campaign gates, and hands live posts to Meta scheduler after owner approval.",
       "must_use": ["creative engine for all final visual assets"],
       "must_not_own": [
@@ -36,8 +32,6 @@
     },
     "video": {
       "path": "workspace/content-orchestrator/video-engine",
-      "roof_link": "workspace/content-orchestrator/engines/video-engine",
-      "compat_link": "workspace/video-engine",
       "role": "Reel job queue, voiceover, frame sequencing, QA, hosting, and Telegram approval gate.",
       "must_use": ["creative engine for product hero/value/brand/model-holding frames"],
       "must_not_own": [
@@ -55,34 +49,29 @@
   "stores": {
     "scripts": {
       "path": "workspace/content-orchestrator/scripts",
-      "compat_link": "workspace/scripts",
       "role": "Shared operational scripts and active social/publish utilities."
     },
     "docs": {
       "path": "workspace/content-orchestrator/docs",
-      "compat_link": "workspace/docs",
       "role": "Reference docs, runbooks, and Claude/OpenClaw/deploy notes."
     },
     "generated_assets": {
       "path": "workspace/content-orchestrator/generated-assets",
-      "compat_link": "workspace/generated-assets",
       "role": "Generated image assets, GMC repair candidates, prompts, and reusable output artifacts."
     },
     "social_calendar": {
       "path": "workspace/content-orchestrator/social-calendar",
-      "compat_link": "workspace/social-calendar",
       "role": "Historical and current social calendar working assets, references, backups, and review sets."
     },
     "design_changes": {
       "path": "workspace/content-orchestrator/design-changes",
-      "compat_link": "workspace/design-changes",
       "role": "Design-change notes and review materials."
     }
   },
   "migration_policy": {
     "phase_1": "Physical engine and shared-store directories live under Content Orchestrator.",
-    "phase_2": "Old workspace/* engine/store paths remain compatibility symlinks during runtime migration.",
-    "phase_3": "New code should resolve Content Orchestrator paths first; old commands may use compatibility links.",
-    "phase_4": "After PM2/crontab/runbook migration is complete, remove compatibility links only with owner approval."
+    "phase_2": "Active code, runbooks, generated scheduler paths, and local configs use Content Orchestrator paths directly.",
+    "phase_3": "Root workspace shortcut symlinks and internal engine shortcut symlinks are removed.",
+    "phase_4": "Any future engine/content folder must be created under Content Orchestrator first."
   }
 }

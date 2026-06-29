@@ -4,7 +4,7 @@
  *
  * Usage:
  *   wp --path=/var/www/wordpress eval-file \
- *     workspace/scripts/active/gmc_small_image_audit.php \
+ *     workspace/content-orchestrator/scripts/active/gmc_small_image_audit.php \
  *     workspace/audit/active/gmc-small-images-20260623.csv \
  *     workspace/audit/active/gmc-small-images-source-audit.csv
  */

@@ -97,9 +97,9 @@ voice profile, tone rules, do/don't. Stored in repo; drives both image and video
 
 Reuse the proven meta-18 scheduler pattern, generalized:
 
-- **Content queue** — implemented under `workspace/video-engine/queue/*.json` (one job per file: product, persona, format,
+- **Content queue** — implemented under `workspace/content-orchestrator/video-engine/queue/*.json` (one job per file: product, persona, format,
   tier_target, status: pending|generating|ready|published|failed).
-- **Worker** — implemented at `workspace/video-engine/worker.py`; future PM2 process (`--no-autorestart`) or cron. Picks next `pending`, runs pipeline,
+- **Worker** — implemented at `workspace/content-orchestrator/video-engine/worker.py`; future PM2 process (`--no-autorestart`) or cron. Picks next `pending`, runs pipeline,
   **checkpoints after every stage** (resumable — if it dies mid-job it resumes, never re-bills a
   completed stage). Marks status. Continues on command.
 - **Guardrails** — `MAX_VIDEOS_PER_DAY`, `DAILY_BUDGET_CAP` (USD), hard stop when hit. Dry-run default.
@@ -134,7 +134,7 @@ Reuse the proven meta-18 scheduler pattern, generalized:
 ## 12. Phased rollout (prove cheap → scale to premium)
 
 - **Phase 0 (free, now):** Provider-registry + job-router + queue + ffmpeg Ken-Burns b-roll
-  reels + script generation + optional Gemini QA are built locally in `workspace/video-engine/`.
+  reels + script generation + optional Gemini QA are built locally in `workspace/content-orchestrator/video-engine/`.
   Remaining Phase 0 work: local/free voice, R2 storage, cron/PM2 trigger, and owner-approved live publishing.
 - **Phase 1 (mid):** Add Flux + InstantID personas (consistent faces) for images AND reel stills.
   Add Google bn-BD voice. Small API spend.

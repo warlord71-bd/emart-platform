@@ -1,5 +1,5 @@
 // DEPRECATED CATEGORIES — do not add these slugs to any nav, filter, sitemap, or product mapping.
-// Full status reference: workspace/docs/category-taxonomy-status.md
+// Full status reference: workspace/content-orchestrator/docs/category-taxonomy-status.md
 // Redirected (301 in next.config.js):
 //   shop-by-concern → /concerns
 //   acne-blemish-care → /concerns/acne-blemish-care

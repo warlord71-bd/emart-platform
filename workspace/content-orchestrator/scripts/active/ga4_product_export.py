@@ -2,7 +2,7 @@
 """Export GA4 product landing-page metrics for Social Engine scoring.
 
 Default output is JSONL rows accepted by:
-  python3 workspace/social-engine/social_engine.py import-performance --ga4 <file>
+  python3 workspace/content-orchestrator/social-engine/social_engine.py import-performance --ga4 <file>
 
 This script reads the GA4 service-account credential path from the same runtime
 default used by ga4_report.py. It never prints credential values.

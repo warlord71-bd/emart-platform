@@ -81,7 +81,7 @@ These brands need deep, humanized product descriptions more urgently than any ot
 
 ## TASK 3 — Mobile App M0 (starts today 2026-06-05)
 
-**Read first:** `workspace/docs/mobile-build-notes.md`
+**Read first:** `workspace/content-orchestrator/docs/mobile-build-notes.md`
 
 **Critical checks before build:**
 1. Confirm no `WOOCOMMERCE_KEY` / `WOOCOMMERCE_SECRET` anywhere in `apps/mobile/`

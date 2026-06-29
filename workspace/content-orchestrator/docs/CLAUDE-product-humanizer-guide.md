@@ -3,7 +3,7 @@
 **Last updated:** 2026-06-01  
 **Current state:** 40/3,640 products humanized | 213 holdout (do not touch) | 11 high-sales skip  
 **Canonical script:** `workspace/humanizer/face-cleansers/humanizer_face_cleansers.py` (face cleansers)  
-**Spec:** `workspace/docs/CODEX-TASK-product-content-humanizer.md`
+**Spec:** `workspace/content-orchestrator/docs/CODEX-TASK-product-content-humanizer.md`
 
 ---
 
@@ -61,7 +61,7 @@ The face cleanser script is the template. For each new category:
 
 ```bash
 cp workspace/humanizer/face-cleansers/humanizer_face_cleansers.py \
-   workspace/docs/humanizer_{CATEGORY_SLUG}.py
+   workspace/content-orchestrator/docs/humanizer_{CATEGORY_SLUG}.py
 ```
 
 Change these 4 things in the new script:
@@ -103,7 +103,7 @@ Each category has different safe pairings. Never suggest:
 ```bash
 EMART_DB_PASSWORD='...' \
 OPENROUTER_API_KEY='sk-or-v1-...' \
-python3 workspace/docs/humanizer_{CATEGORY}.py --dry-run --limit 5
+python3 workspace/content-orchestrator/docs/humanizer_{CATEGORY}.py --dry-run --limit 5
 ```
 
 **Check the output for:**
@@ -136,7 +136,7 @@ Look for:
 ```bash
 EMART_DB_PASSWORD='...' \
 OPENROUTER_API_KEY='sk-or-v1-...' \
-python3 workspace/docs/humanizer_{CATEGORY}.py --apply
+python3 workspace/content-orchestrator/docs/humanizer_{CATEGORY}.py --apply
 ```
 
 ### Step 6 — Verify live on 3 URLs
@@ -295,7 +295,7 @@ EOF
 ## Measurement — remeasure GSC at +4 weeks
 
 ```bash
-EMART_DB_PASSWORD='...' python3 workspace/docs/baseline_snapshot.py \
+EMART_DB_PASSWORD='...' python3 workspace/content-orchestrator/docs/baseline_snapshot.py \
   --mode=remeasure \
   --baseline=workspace/audit/active/baseline-snapshot-2026-05-31.json
 ```

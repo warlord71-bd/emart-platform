@@ -93,7 +93,7 @@ const REDIRECTED_BRAND_SLUGS = new Set([
 
 // Categories that 301-redirect to /concerns/* or /shop — must not appear in sitemap.
 // Sitemap should only list canonical URLs that return 200 with index,follow.
-// Full reference: workspace/docs/category-taxonomy-status.md
+// Full reference: workspace/content-orchestrator/docs/category-taxonomy-status.md
 const REDIRECTED_CATEGORY_SLUGS = new Set([
   'shop-by-concern',
   'acne-blemish-care',
