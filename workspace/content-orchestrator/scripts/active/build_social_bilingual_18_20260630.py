@@ -50,16 +50,16 @@ ITEMS = [
     {
         "slot": 2,
         "brand": "Medicube",
-        "product_id": 62280,
-        "product": "Medicube PDRN Pink Collagen Capsule Cream 55g",
-        "slug": "medicube-pdrn-pink-collagen-capsule-cream-55g",
-        "price": "1987",
-        "regular_price": "2350",
-        "sale_price": "1987",
-        "image_file": "2026/02/emart-medicube-pdrn-pink-collagen-capsule-cream-55g.jpg",
-        "bn": "PDRN ক্যাপসুল ক্রিমটি স্কিনকেয়ার রুটিনে নরম, কমফোর্ট-কেয়ার ফিনিশ দেয়।",
-        "en": "A PDRN capsule cream pick for a soft comfort-care finish.",
-        "tags": "#MedicubeBangladesh #PDRN #CollagenCream #EmartSkincare",
+        "product_id": 59029,
+        "product": "Medicube COLLAGEN NIGHT WRAPPING MASK 75ml",
+        "slug": "medicube-collagen-night-wrapping-mask-75ml",
+        "price": "1899",
+        "regular_price": "2200",
+        "sale_price": "1899",
+        "image_file": "2025/03/emart-medicube-collagen-night-wrapping-mask-75ml.jpg",
+        "bn": "রাতের রুটিনে mask step চাইলে এই collagen wrapping mask টা সুন্দর fit করে।",
+        "en": "A night mask pick for a soft, rested-looking routine finish.",
+        "tags": "#MedicubeBangladesh #NightMask #KBeautyBD #EmartSkincare",
     },
     {
         "slot": 3,
@@ -92,58 +92,58 @@ ITEMS = [
     {
         "slot": 5,
         "brand": "Anua",
-        "product_id": 57100,
-        "product": "Anua Peach 77 Niacin Essence Toner 250ml",
-        "slug": "anua-peach-77-niacin-essence-toner-250ml",
-        "price": "1902",
-        "regular_price": "2250",
-        "sale_price": "1902",
-        "image_file": "2024/06/emart-anua-peach-77-niacin-essence-toner-250ml.jpg",
-        "bn": "Peach essence toner টি গ্লো-কেয়ার রুটিনে হাইড্রেটিং লেয়ার হিসেবে মানায়।",
-        "en": "A peach essence toner for a hydrated glow-care layering step.",
-        "tags": "#AnuaBangladesh #PeachToner #KBeautyBD #EmartSkincare",
+        "product_id": 61940,
+        "product": "Anua Zero Cast Moisturizing Finish Sunscreen 50ml",
+        "slug": "anua-zero-cast-moisturizing-finish-sunscreen-50ml",
+        "price": "1700.0",
+        "regular_price": "1700.0",
+        "sale_price": "",
+        "image_file": "2026/02/emart-anua-zero-cast-moisturizing-finish-sunscreen-50ml.jpg",
+        "bn": "day routine-e lightweight sunscreen চাইলে zero-cast finish টা easy choice।",
+        "en": "A simple daily sunscreen pick for a moisturizing, no-fuss finish.",
+        "tags": "#AnuaBangladesh #Sunscreen #KBeautyBD #EmartSkincare",
     },
     {
         "slot": 6,
         "brand": "Anua",
-        "product_id": 53342,
-        "product": "Anua Heartleaf Pore Control Cleansing Oil Mini 20ml",
-        "slug": "anua-heartleaf-pore-control-cleansing-oil-mini-20ml",
-        "price": "480.0",
-        "regular_price": "650",
-        "sale_price": "480.0",
-        "image_file": "2024/02/emart-anua-heartleaf-pore-control-cleansing-oil-mini-20ml.jpg",
-        "bn": "মিনি ক্লেনজিং অয়েলটি Anua ট্রাই করতে বা ট্রাভেলে নিতে বেশ সুবিধাজনক।",
-        "en": "A mini cleansing oil that is easy to try and travel-friendly.",
-        "tags": "#AnuaBangladesh #CleansingOil #Heartleaf #EmartSkincare",
+        "product_id": 59929,
+        "product": "Anua Azelaic Acid 10 Hyaluron Redness Soothing Serum 30ml",
+        "slug": "anua-azelaic-acid-10-hyaluron-redness-soothing-serum-30ml",
+        "price": "2142",
+        "regular_price": "2690",
+        "sale_price": "2142",
+        "image_file": "2025/11/emart-anua-azelaic-acid-10-hyaluron-redness-soothing-serum-30ml.jpg",
+        "bn": "sensitive-feel routine-e calm serum step রাখতে চাইলে এই Anua pick টা ভালো।",
+        "en": "A soothing serum pick for a calm, balanced-feel routine.",
+        "tags": "#AnuaBangladesh #SoothingSerum #KBeautyBD #EmartSkincare",
     },
     {
         "slot": 7,
         "brand": "Anua",
-        "product_id": 53339,
-        "product": "Anua Heartleaf Pore Control Cleansing Oil 200ml",
-        "slug": "anua-heartleaf-pore-control-cleansing-oil-200ml",
-        "price": "1900",
-        "regular_price": "1900",
-        "sale_price": "",
-        "image_file": "2024/02/Anua-Heartleaf-Pore-Control-Cleansing-Oil-200mL.jpg",
-        "bn": "ডাবল-ক্লেনজিং রুটিনে বড় সাইজের Heartleaf cleansing oil ব্যবহারবান্ধব।",
-        "en": "A full-size Heartleaf cleansing oil for regular double-cleansing routines.",
-        "tags": "#AnuaBangladesh #DoubleCleansing #Heartleaf #EmartSkincare",
+        "product_id": 74052,
+        "product": "Anua Heartleaf Quercetinol Pore Deep Cleansing Foam 150ml",
+        "slug": "anua-heartleaf-quercetinol-pore-deep-cleansing-foam-150ml",
+        "price": "1450",
+        "regular_price": "1550",
+        "sale_price": "1450",
+        "image_file": "2026/03/emart-anua-heartleaf-quercetinol-pore-deep-cleansing-foam-150ml.jpg",
+        "bn": "cleanser step-e fresh feel চাইলে এই foam cleanser routine-e nicely বসে।",
+        "en": "A fresh-feel cleansing foam for a clean daily wash step.",
+        "tags": "#AnuaBangladesh #FoamCleanser #KBeautyBD #EmartSkincare",
     },
     {
         "slot": 8,
         "brand": "Anua",
-        "product_id": 60013,
-        "product": "ANUA Azelaic Acid 10 Hyaluron Redness Soothing Serum 10ml Mini",
-        "slug": "anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini",
-        "price": "950.0",
-        "regular_price": "990",
-        "sale_price": "950.0",
-        "image_file": "2026/02/emart-anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini.jpg",
-        "bn": "মিনি সিরামটি নতুন অ্যাকটিভ ট্রাই করার আগে ছোট করে শুরু করতে সাহায্য করে।",
-        "en": "A mini serum size for starting small with a new active step.",
-        "tags": "#AnuaBangladesh #MiniSerum #KBeautyBD #EmartSkincare",
+        "product_id": 92910,
+        "product": "ANUA RETINOL 0.3 + NIACIN RENEWING SERUM 30m",
+        "slug": "anua-retinol-0-3-niacin-renewing-serum-30m",
+        "price": "2422",
+        "regular_price": "2500",
+        "sale_price": "2422",
+        "image_file": "2026/04/new-anua-nano-retinol-0-3-niacin-renewing-serum-30ml.jpg",
+        "bn": "night routine-e retinol + niacin step চাইলে ধীরে ধীরে add করার মতো pick।",
+        "en": "A renewing night-serum pick for gradual retinol routine building.",
+        "tags": "#AnuaBangladesh #RetinolSerum #KBeautyBD #EmartSkincare",
     },
     {
         "slot": 9,
@@ -260,16 +260,16 @@ ITEMS = [
     {
         "slot": 17,
         "brand": "Celimax",
-        "product_id": 61914,
-        "product": "Celimax The Real Noni Energy Ampoule 50ml",
-        "slug": "celimax-the-real-noni-energy-ampoule-50ml",
-        "price": "1900.0",
-        "regular_price": "1900.0",
+        "product_id": 61908,
+        "product": "Celimax The Real Noni Acne Bubble Cleanser 155mL",
+        "slug": "celimax-the-real-noni-acne-bubble-cleanser-155ml",
+        "price": "1700.0",
+        "regular_price": "1700.0",
         "sale_price": "",
-        "image_file": "2026/02/emart-celimax-the-real-noni-energy-ampoule-50ml.jpg",
-        "bn": "৫০মিলি Noni ampoule টি সিরাম রুটিনে পুষ্টিকর গ্লো-ফিল যোগ করে।",
-        "en": "A 50ml Noni ampoule for a nourishing glow-feel serum routine.",
-        "tags": "#CelimaxBangladesh #NoniAmpoule #KBeautyBD #EmartSkincare",
+        "image_file": "2026/02/emart-celimax-the-real-noni-acne-bubble-cleanser-155ml.jpg",
+        "bn": "bubble cleanser step-e fresh clean feel চাইলে Celimax Noni line-এর এই pick।",
+        "en": "A Noni bubble cleanser for a fresh, easy daily cleanse.",
+        "tags": "#CelimaxBangladesh #BubbleCleanser #KBeautyBD #EmartSkincare",
     },
     {
         "slot": 18,
@@ -421,19 +421,22 @@ def render_card(item: dict[str, str], source: Image.Image, suffix: str, dest: Pa
 
 def build_captions(item: dict[str, str], link: str) -> dict[str, str]:
     price = price_line(item)
+    hook = f"আজকের {item['brand']} pick: {item['product']}"
+    blended = f"{item['bn']} {item['en']}"
+    engagement = "আপনার routine-e এই stepটা দরকার হলে save করে রাখুন, আর order করতে চাইলে message দিন."
     fb = (
-        f"আজকের {item['brand']} পিক: {item['product']}\n\n"
-        f"বাংলা: {item['bn']}\n"
-        f"English: {item['en']}\n\n"
+        f"{hook}\n\n"
+        f"{blended}\n\n"
+        f"{engagement}\n\n"
         f"{price}\n"
         f"Original product. COD available across Bangladesh.\n\n"
         f"Shop now: {link}\n\n"
         f"{item['tags']}"
     )
     ig = (
-        f"আজকের {item['brand']} পিক: {item['product']}\n\n"
-        f"বাংলা: {item['bn']}\n"
-        f"English: {item['en']}\n\n"
+        f"{hook}\n\n"
+        f"{blended}\n\n"
+        f"{engagement}\n\n"
         f"{price}\n"
         f"DM to order or tap the link in bio.\n\n"
         f"{item['tags']}"
