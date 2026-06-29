@@ -3,8 +3,8 @@
   "default_tier": "free",
   "capabilities": {
     "image": {
-      "_doc": "Shared upstream: Creative Asset Engine feeds BOTH static social posts and video reels. 'emart-branded' remains a compatibility wrapper through workspace/scripts/active/social_image_gen.py.",
-      "free":    { "provider": "creative-engine", "enabled": true,  "cost_per": 0.0, "wraps": "workspace/creative-engine", "note": "branded static/social/video frames; social_image_gen.py is compatibility shim" },
+      "_doc": "Shared upstream: Creative Asset Engine feeds BOTH static social posts and video reels. 'emart-branded' remains a compatibility wrapper through workspace/content-orchestrator/scripts/active/social_image_gen.py.",
+      "free":    { "provider": "creative-engine", "enabled": true,  "cost_per": 0.0, "wraps": "workspace/content-orchestrator/creative-engine", "compat_link": "workspace/creative-engine", "note": "branded static/social/video frames; social_image_gen.py is compatibility shim" },
       "free_raw":{ "provider": "woo-product-photo", "enabled": true, "cost_per": 0.0, "note": "raw WooCommerce product image, no branding" },
       "mid":     { "provider": "codex-imagegen",  "enabled": false, "cost_per": 0.0, "note": "Codex image-gen capacity (produced AESTURA/promo assets); call when available" },
       "mid_api": { "provider": "fal-flux-schnell", "enabled": false, "env": "FAL_KEY", "cost_per": 0.003 },

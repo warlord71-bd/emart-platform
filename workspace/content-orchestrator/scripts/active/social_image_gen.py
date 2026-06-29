@@ -3,8 +3,8 @@
 Emart Social Media Image Generator — thin shim over creative_engine.
 
 Same CLI as before. All composition, tokens, QA, and rendering now live in
-workspace/creative-engine/. This file is kept for backward compatibility so
-existing Codex/agent calls don't break.
+workspace/content-orchestrator/creative-engine/. This file is kept for backward
+compatibility so existing Codex/agent calls don't break.
 
 Usage (unchanged):
   python3 social_image_gen.py --product-id 2591

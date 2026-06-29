@@ -3476,3 +3476,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Updated: Orchestrator and Hermes now resolve canonical Content Orchestrator paths first; README, registry, visual pipeline rules, and task board now reflect the one-roof structure.
 - Verified: `py_compile` for orchestrator/Hermes/social/video modules, `orchestrator.py engines`, `orchestrator.py status`, compatibility `workspace/video-engine/orchestrator.py --status`, Social Engine unittest suite, video quality-gate test file, Creative Engine import bridge, and HyperFrames `node --check`.
 - Guardrail: Local code/docs/filesystem only; no Meta publish/schedule change, no Woo/WordPress writes, no deploy, no PM2 restart, no checkout/cart/payment/order/customer/stock/price changes.
+
+## 2026-06-29 · Codex · Creative Engine duplication check
+- Did: Checked why Content Orchestrator and Creative Engine still show separately. Confirmed there is one real Creative Engine directory at `workspace/content-orchestrator/creative-engine`; `workspace/creative-engine` and `workspace/content-orchestrator/engines/creative-engine` are symlinks to that same directory.
+- Fixed: Updated active config/docs/shim comments to use the canonical Content Orchestrator path, keeping `workspace/creative-engine` documented only as a compatibility link.
+- Verified: `realpath` and `stat -L` resolve all visible Creative Engine entries to the same inode; only one real `*/creative-engine` directory exists; provider JSON validates; `social_image_gen.py` compiles.
+- Guardrail: Local docs/config/shim cleanup only; no Woo/WordPress writes, no deploy, no PM2 restart, no checkout/cart/payment/order/customer/stock/price changes.

@@ -31,8 +31,8 @@ Every blog post published on e-mart.com.bd should have a generated featured imag
 - **Variant C:** Centered text over gradient, small product thumbnails below
 
 ## Dependencies
-- `workspace/creative-engine/` (active shared renderer)
-- `social_image_gen.py` compatibility shim (existing)
+- `workspace/content-orchestrator/creative-engine/` (active shared renderer)
+- `workspace/content-orchestrator/scripts/active/social_image_gen.py` compatibility shim (existing)
 - `Pillow` (already installed for social image gen)
 - Blog generator `--draft` mode (WA-H, ✅ done)
 - WP REST API media upload (existing capability in blog generator)

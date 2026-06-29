@@ -2,8 +2,8 @@
 
 **Status:** Active shared renderer. Initial full migration completed 2026-06-26:
 Social Engine and Video Engine now route static/product/value/end-card creative
-frames through `workspace/creative-engine/`, with legacy video card scripts kept
-as compatibility shims.
+frames through `workspace/content-orchestrator/creative-engine/`, with legacy
+video card scripts kept as compatibility shims.
 **Goal:** One shared composition layer. `product in → branded creative out`
 (square / 4:5 / hero / scene card / reel frame). Social Engine and Video Engine
 both call it. HyperFrames animates its output. No second image engine.
