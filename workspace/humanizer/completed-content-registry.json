@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-28",
+  "generated": "2026-06-29",
   "source": "read-only WordPress _emart_humanized postmeta",
-  "total_completed": 326,
+  "total_completed": 344,
   "entries": [
     {
       "post_id": 2583,
@@ -536,6 +536,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 26899,
+      "slug": "melasma-x-glutathione-water-drop-skin-toner-260ml",
+      "path": "/shop/melasma-x-glutathione-water-drop-skin-toner-260ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 26933,
       "slug": "cosrx-pure-fit-cica-serum-30ml",
       "path": "/shop/cosrx-pure-fit-cica-serum-30ml",
@@ -641,6 +648,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 36301,
+      "slug": "simple-kind-to-skin-hydrating-light-moisturiser-125ml",
+      "path": "/shop/simple-kind-to-skin-hydrating-light-moisturiser-125ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 36304,
       "slug": "simple-replenishing-rich-moisturiser-125ml",
       "path": "/shop/simple-replenishing-rich-moisturiser-125ml",
@@ -711,6 +725,20 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 37150,
+      "slug": "eucerin-original-healing-cream-454ge",
+      "path": "/shop/eucerin-original-healing-cream-454ge",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 37165,
+      "slug": "eucerin-eczema-relief-body-cream-141ge",
+      "path": "/shop/eucerin-eczema-relief-body-cream-141ge",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 37335,
       "slug": "garnier-skin-active-micellar-cleansing-gel-wash-200ml",
       "path": "/shop/garnier-skin-active-micellar-cleansing-gel-wash-200ml",
@@ -739,9 +767,37 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 37439,
+      "slug": "the-body-shop-skin-defence-multi-protection-lotion-spf50-60ml",
+      "path": "/shop/the-body-shop-skin-defence-multi-protection-lotion-spf50-60ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 37718,
+      "slug": "palmers-cocoa-butter-with-vitamin-e-moisturizer-200ge",
+      "path": "/shop/palmers-cocoa-butter-with-vitamin-e-moisturizer-200ge",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 38103,
       "slug": "ponds-super-light-gel-oil-free-moisturiser",
       "path": "/shop/ponds-super-light-gel-oil-free-moisturiser",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 38172,
+      "slug": "jigott-natural-aloe-vera-moisture-soothing-gel",
+      "path": "/shop/jigott-natural-aloe-vera-moisture-soothing-gel",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 38184,
+      "slug": "nivea-soft-light-moisturising-cream-jar",
+      "path": "/shop/nivea-soft-light-moisturising-cream-jar",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
@@ -760,6 +816,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 39947,
+      "slug": "some-by-mi-retinol-intense-advanced-triple-action-eye-cream-30ml",
+      "path": "/shop/some-by-mi-retinol-intense-advanced-triple-action-eye-cream-30ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 42224,
       "slug": "neutrogena-hydro-boost-water-gel",
       "path": "/shop/neutrogena-hydro-boost-water-gel",
@@ -770,6 +833,13 @@
       "post_id": 43232,
       "slug": "3w-clinic-hyaluronic-eye-cream-40ml",
       "path": "/shop/3w-clinic-hyaluronic-eye-cream-40ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 43612,
+      "slug": "cos-de-baha-snail-mucin-hyaluronic-acid-serum-sh-120ml",
+      "path": "/shop/cos-de-baha-snail-mucin-hyaluronic-acid-serum-sh-120ml",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
@@ -795,9 +865,30 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 43754,
+      "slug": "cos-de-baha-aha-bha-facial-toner-gs-200ml",
+      "path": "/shop/cos-de-baha-aha-bha-facial-toner-gs-200ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 43774,
       "slug": "cos-de-baha-glycolic-acid-10-aha-serum-g-30ml",
       "path": "/shop/cos-de-baha-glycolic-acid-10-aha-serum-g-30ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 43794,
+      "slug": "cos-de-baha-m-a-peptide-serum-p-60ml",
+      "path": "/shop/cos-de-baha-m-a-peptide-serum-p-60ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 43824,
+      "slug": "cos-de-baha-salicylic-acid-bha-4-serum-s4-30ml",
+      "path": "/shop/cos-de-baha-salicylic-acid-bha-4-serum-s4-30ml",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
@@ -830,6 +921,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 50505,
+      "slug": "iunik-centella-calming-vegan-moisture-spf-50-pa",
+      "path": "/shop/iunik-centella-calming-vegan-moisture-spf-50-pa",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 50540,
       "slug": "cosrx-balancium-comfort-ceramide-cream-mist-120m",
       "path": "/shop/cosrx-balancium-comfort-ceramide-cream-mist-120m",
@@ -847,6 +945,13 @@
       "post_id": 50566,
       "slug": "cosrx-advanced-snail-mucin-96-power-essence-30ml",
       "path": "/shop/cosrx-advanced-snail-mucin-96-power-essence-30ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 50608,
+      "slug": "innisfree-brightening-pore-serum-15ml",
+      "path": "/shop/innisfree-brightening-pore-serum-15ml",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
@@ -928,6 +1033,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 51266,
+      "slug": "w-skin-laboratory-a-m-boosting-serum-anti-melasma-30ml",
+      "path": "/shop/w-skin-laboratory-a-m-boosting-serum-anti-melasma-30ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 51313,
       "slug": "skin-aqua-super-moisture-gel-spf50-pa-110g",
       "path": "/shop/skin-aqua-super-moisture-gel-spf50-pa-110g",
@@ -942,6 +1054,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 51446,
+      "slug": "some-by-mi-propolis-b5-glow-barrier-calming-serum-50-ml",
+      "path": "/shop/some-by-mi-propolis-b5-glow-barrier-calming-serum-50-ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 51695,
       "slug": "cosrx-the-vitamin-c-13-serum-20-ml",
       "path": "/shop/cosrx-the-vitamin-c-13-serum-20-ml",
@@ -952,6 +1071,13 @@
       "post_id": 51708,
       "slug": "buy-the-niacinamide-15-serum",
       "path": "/shop/buy-the-niacinamide-15-serum",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 51752,
+      "slug": "rovectin-vita-dark-spot-serum-30ml",
+      "path": "/shop/rovectin-vita-dark-spot-serum-30ml",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },

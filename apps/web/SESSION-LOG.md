@@ -3535,3 +3535,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Rechecked and confirmed the generated-media cleanup is committed in `4729f55`; current proof MP4/poster/end-frame/QA files remain in the canonical Content Orchestrator output folder.
 - Verified: Relevant tracked paths are clean; archive size is 99M, remaining video output is 110M, and `generated-assets` has no top-level image/video files.
 - Guardrail: Verification/docs only; unrelated dirty workspace files were not staged or changed; no deploy, no publish, no Woo/WordPress writes.
+
+## 2026-06-29 · Codex · Uncommitted workspace cross-check cleanup
+- Did: Audited the remaining dirty worktree after generated-media cleanup: 102 untracked files, 2 deleted screenshots, and 2 modified durable state files. Archived 60 untracked old `scripts/archive`/`scripts/done` residue files plus the obsolete `social_image_gen.py.pre-engine-backup` to `/root/.attic-2026-06-29/emart-untracked-cleanup-20260629/`.
+- Kept/committed: Canonical reusable active helpers under `workspace/content-orchestrator/scripts/active/`, the June 30 social campaign plan JSON, the humanizer completed registry update, the action ledger append, and removal of obsolete checkout screenshot PNGs.
+- Verified: Active helper syntax checks passed (`py_compile`, `node --check`, `php -l`, `bash -n`); JSON validation passed for `brand_philosophies.json` and the June 30 campaign plan; secret scan found env/placeholders only in the committed active set.
+- Guardrail: No Woo/WordPress writes, no Meta publish/schedule changes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.

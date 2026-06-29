@@ -1,0 +1,92 @@
+{
+  "Cosrx": {
+    "origin": "South Korea",
+    "philosophy": "Ingredient-driven solutions for specific skin concerns. Clinically tested, dermatologist-formulated. Key actives: snail mucin, peptides, centella, BHA, niacinamide. 'Your skin, your answer' — personalized skincare, not one-size-fits-all.",
+    "tone": "Scientific but accessible, problem-solution focused"
+  },
+  "CeraVe": {
+    "origin": "United States",
+    "philosophy": "Developed with dermatologists. Three essential ceramides + MVE technology for time-released hydration. Restores skin barrier. Suitable for all skin types including eczema, acne, psoriasis. #1 dermatologist-recommended brand.",
+    "tone": "Clinical authority, barrier-science focused, gentle and trustworthy"
+  },
+  "Some By Mi": {
+    "origin": "South Korea",
+    "philosophy": "30 Days Miracle — visible results in 30 days. AHA/BHA/PHA triple-acid approach combined with natural extracts (tea tree, truecica, yuja niacin). Targets acne-prone and troubled skin with Korean herbal science.",
+    "tone": "Results-driven, transformation-focused, youthful energy"
+  },
+  "innisfree": {
+    "origin": "South Korea",
+    "philosophy": "Nature from Jeju Island — volcanic minerals, green tea, orchid extracts sourced from Korea's pristine Jeju. Green science combining nature + technology. Eco-friendly packaging and sustainability commitment.",
+    "tone": "Natural, fresh, eco-conscious, Jeju island storytelling"
+  },
+  "The Ordinary": {
+    "origin": "Canada",
+    "philosophy": "Clinical formulations, honest pricing. Ingredient-first — each product features a hero active at effective concentration. No marketing fluff. Transparency in what each product does and doesn't do. Part of DECIEM 'The Abnormal Beauty Company'.",
+    "tone": "No-nonsense, ingredient-education, democratized skincare"
+  },
+  "Neutrogena": {
+    "origin": "United States",
+    "philosophy": "Dermatologist-recommended, science-backed. Clean formulations that work — no unnecessary additives. Known for gentle cleansers, oil-free moisturizers, and reliable SPF protection. Johnson & Johnson heritage.",
+    "tone": "Trustworthy, clean, dermatologist-backed, everyday essential"
+  },
+  "SKIN1004": {
+    "origin": "South Korea",
+    "philosophy": "Madagascar Centella Asiatica specialist — single-hero-ingredient focus. Pure centella from Madagascar for calming, healing, and strengthening sensitive skin. Minimal irritants, maximum efficacy.",
+    "tone": "Pure, minimal, centella-focused, sensitive-skin authority"
+  },
+  "Anua": {
+    "origin": "South Korea",
+    "philosophy": "Heartleaf (Houttuynia Cordata) specialist — 77-80% concentration. Gentle enough for daily use, effective enough for troubled skin. Clean beauty with minimal unnecessary ingredients.",
+    "tone": "Clean, gentle, heartleaf-forward, minimalist"
+  },
+  "Medicube": {
+    "origin": "South Korea",
+    "philosophy": "Medical-grade skincare meets beauty technology. PDRN (salmon DNA), collagen boosting devices, derma-level actives in consumer-friendly formats. Clinic results at home.",
+    "tone": "Medical authority, technology-forward, professional results"
+  },
+  "Beauty of Joseon": {
+    "origin": "South Korea",
+    "philosophy": "Korean herbal medicine meets modern skincare — ginseng, rice, propolis, plum from traditional hanbang recipes. Glow Serum and Relief Sun are cult favorites. Heritage ingredients, modern formulation.",
+    "tone": "Traditional Korean heritage, hanbang wisdom, elegant simplicity"
+  },
+  "Purito Seoul": {
+    "origin": "South Korea",
+    "philosophy": "Clean beauty with EWG Green-grade ingredients. Centella and green-level safe formulations. Transparent ingredient sourcing. Minimalist but effective — fewer ingredients, better results.",
+    "tone": "Clean, transparent, EWG-safe, minimalist efficacy"
+  },
+  "Heimish": {
+    "origin": "South Korea",
+    "philosophy": "Home-like comfort skincare. Gentle Bulgarian rose, chamomile, and herbal extracts for soothing daily care. Famous for All Clean Balm — effortless double cleansing.",
+    "tone": "Comforting, gentle, daily ritual, approachable"
+  },
+  "The Derma Co": {
+    "origin": "India",
+    "philosophy": "Dermatologist-backed active skincare at accessible prices. High-concentration actives (retinol, salicylic acid, vitamin C, niacinamide) with clinical efficacy. Science-first approach for Indian/South Asian skin.",
+    "tone": "Clinical potency, dermatologist-endorsed, active-forward"
+  },
+  "Dabo": {
+    "origin": "South Korea",
+    "philosophy": "Affordable Korean beauty basics — accessible skincare for everyday use. Wide range covering sun protection, cleansing, moisturizing. Value-oriented without compromising on Korean formulation quality.",
+    "tone": "Accessible, value-focused, everyday Korean beauty"
+  },
+  "APLB": {
+    "origin": "South Korea",
+    "philosophy": "High-performance Korean skincare with premium ingredients at fair prices. Focus on peptides, stem cells, and advanced actives for anti-aging and skin renewal.",
+    "tone": "Premium performance, advanced actives, results-oriented"
+  },
+  "Maybelline": {
+    "origin": "United States",
+    "philosophy": "Maybe she's born with it, maybe it's Maybelline. Accessible makeup artistry for everyone. Bold color, reliable formulas, trend-setting looks at drugstore prices.",
+    "tone": "Fun, expressive, trend-forward, accessible glamour"
+  },
+  "The Body Shop": {
+    "origin": "United Kingdom",
+    "philosophy": "Ethically sourced, cruelty-free, community trade ingredients. Nature-inspired formulations with shea butter, tea tree, vitamin E. Activism and beauty together.",
+    "tone": "Ethical, community-driven, nature-loving, activist spirit"
+  },
+  "_default": {
+    "origin": "varies",
+    "philosophy": "Quality skincare/beauty formulation with focus on efficacy and safety.",
+    "tone": "Informative, product-focused, trustworthy"
+  }
+}
