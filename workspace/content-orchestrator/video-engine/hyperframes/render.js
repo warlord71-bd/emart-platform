@@ -14,6 +14,8 @@ const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 const os = require("os");
+const REPO_ROOT = path.resolve(__dirname, "../../../..");
+const VIDEO_ROOT = path.resolve(__dirname, "..");
 
 // ── Caption styling ───────────────────────────────────────────────────
 const GOLD = "#e7b24a";
@@ -37,16 +39,31 @@ function esc(t) {
     .replace(/"/g, "&quot;");
 }
 
-function imgToDataUri(filePath) {
-  if (!filePath || !fs.existsSync(filePath)) return "";
-  const ext = path.extname(filePath).toLowerCase();
+function resolveAssetPath(filePath, baseDir = process.cwd()) {
+  if (!filePath) return "";
+  const candidates = path.isAbsolute(filePath)
+    ? [filePath]
+    : [
+        filePath,
+        path.resolve(process.cwd(), filePath),
+        path.resolve(REPO_ROOT, filePath),
+        path.resolve(VIDEO_ROOT, filePath),
+        path.resolve(baseDir, filePath),
+      ];
+  return candidates.find((candidate) => fs.existsSync(candidate)) || "";
+}
+
+function imgToDataUri(filePath, baseDir = process.cwd()) {
+  const resolved = resolveAssetPath(filePath, baseDir);
+  if (!resolved) return "";
+  const ext = path.extname(resolved).toLowerCase();
   const mime =
     ext === ".png"
       ? "image/png"
       : ext === ".webp"
         ? "image/webp"
         : "image/jpeg";
-  return `data:${mime};base64,${fs.readFileSync(filePath).toString("base64")}`;
+  return `data:${mime};base64,${fs.readFileSync(resolved).toString("base64")}`;
 }
 
 // ── Scene HTML generators ──────────────────────────────────────────────
@@ -216,7 +233,7 @@ function buildTimeline(scenes, script, totalDuration, secondsPerScene, benefitLi
 
 // ── Composition builder ────────────────────────────────────────────────
 
-function buildComposition(job, images, script, audioPath, musicPath) {
+function buildComposition(job, images, script, audioPath, musicPath, jobPath) {
   const secondsPerScene = parseFloat(job.seconds || 5);
   const nScenes = images.length;
   const CROSSFADE = 0.5;
@@ -238,13 +255,26 @@ function buildComposition(job, images, script, audioPath, musicPath) {
     const dur = secondsPerScene;
     const id = `scene-${i}`;
 
-    const base = path.basename(img);
+    const jobDir = path.dirname(path.resolve(jobPath));
+    const resolvedImg = resolveAssetPath(img, jobDir);
+    if (!resolvedImg) {
+      throw new Error(`image not found: ${img}`);
+    }
+    const base = path.basename(resolvedImg);
+    const forceStatic =
+      job.static_images === true ||
+      (job.static_frame_images || [])
+        .map(p => resolveAssetPath(p, jobDir) || path.resolve(p))
+        .includes(resolvedImg);
     const isStaticFrame =
+      forceStatic ||
       base.startsWith("producthero-") ||
       base.startsWith("listcard-") ||
       base.startsWith("card-");
-    const isFit = (job.images || []).map(p => path.resolve(p)).includes(path.resolve(img));
-    const dataUri = imgToDataUri(img);
+    const isFit = (job.images || [])
+      .map(p => resolveAssetPath(p, jobDir) || path.resolve(p))
+      .includes(resolvedImg);
+    const dataUri = imgToDataUri(resolvedImg, jobDir);
     scenesMeta.push({
       id,
       start,
@@ -387,7 +417,7 @@ function main() {
   }
 
   // Generate composition HTML + audio file list
-  const { html, audioFiles } = buildComposition(job, images, script, audioPath, musicPath);
+  const { html, audioFiles } = buildComposition(job, images, script, audioPath, musicPath, jobPath);
 
   // Write to project dir (user-specified or temp) and copy audio assets
   const projectDir = getArg("--project-dir");

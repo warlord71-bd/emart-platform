@@ -3495,3 +3495,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed: The reel verification exposed `workspace_creative_engine` import paths in `video-engine/worker.py`, legacy card shims, and `social_image_gen.py` that still depended on old shortcut layout. Patched them to add the real workspace root.
 - Verified: Creative Engine image QA passed (1080x1080, no layout issues). Video worker completed with `status=ready`; local ffprobe QA passed score 96; MP4 is 1080x1920 H.264/AAC, 5.70s, 1,143,368 bytes; generated value/brand frames and poster stills under canonical `workspace/content-orchestrator/video-engine/output/`. No symlinks reappeared under `workspace` maxdepth 3.
 - Guardrail: Dry-run/local only with `store:false` and `publish:false`; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-29 · Codex · Content Orchestrator verification black-start repair
+- Did: Repaired HyperFrames asset resolution for canonical Content Orchestrator jobs so relative generated-image paths resolve from the repo/video/job roots instead of silently producing a black first scene.
+- Fixed: Missing images now raise `image not found`, and verification jobs can force pre-rendered Creative Engine frames to remain static instead of being Ken Burns-cropped.
+- Verified: Rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`; first-frame poster `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629-poster-first.jpg` is visible, not black. Local ffprobe QA passed score 96; MP4 is 1080x1920, 24fps, 135 frames, 5.625s. No symlinks reappeared under `workspace` maxdepth 3.
+- Guardrail: Dry-run/local render only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
