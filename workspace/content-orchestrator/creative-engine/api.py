@@ -296,7 +296,7 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
 .brandcopy strong{{display:block;font-size:36px;line-height:1;font-weight:900;color:#fff;}}
 .brandcopy span{{display:block;margin-top:6px;font-size:15px;text-transform:uppercase;font-weight:800;color:{SOFT_ROSE};}}
 .badge{{background:{GOLD};color:{INK};border-radius:18px;padding:12px 22px;font-size:26px;font-weight:900;letter-spacing:1px;}}
-.main{{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:42px 10px 160px;}}
+.main{{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px 10px 330px;}}
 .rule{{width:108px;height:5px;background:{GOLD};border-radius:3px;margin:0 auto 28px;}}
 .product-mini{{width:230px;height:230px;border-radius:34px;margin:0 auto 30px;
   display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,248,238,.80));
@@ -315,8 +315,12 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
   border-radius:30px;padding:8px 26px;margin-bottom:46px;display:inline-block;}}
 .url{{font-size:52px;font-weight:900;letter-spacing:1px;color:{GOLD};}}
 .tag{{font-size:30px;font-style:italic;color:{SOFT_ROSE};margin-top:16px;}}
-.foot{{position:absolute;left:72px;right:72px;top:1376px;display:flex;justify-content:space-between;
-  gap:28px;font-size:26px;font-weight:800;color:{SOFT_ROSE};}}
+.foot{{position:absolute;left:56px;right:56px;top:1352px;height:64px;box-sizing:border-box;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:18px;font-size:22px;line-height:1.2;font-weight:800;color:{SOFT_ROSE};padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.18);}}
+.foot span{{min-width:0;flex:1;white-space:nowrap;}}
+.foot span:last-child{{text-align:right;}}
 </style></head><body><div class="wrap">
 <div class="top"><div class="brandmark">{logo_block}<div class="brandcopy"><strong>{BRAND_NAME}</strong><span>{BRAND_TAGLINE}</span></div></div><div class="badge">ORIGINAL · COD</div></div>
 <div class="main"><div class="rule"></div>
@@ -326,7 +330,7 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
 {price_block}
 <div class="url">{esc(url)}</div>
 <div class="tag">{BRAND_FOOTER}</div>
-</div></div><div class="foot"><span>Original product</span><span>Cash on Delivery across Bangladesh</span></div></body></html>"""
+</div></div><div class="foot"><span>Original product</span><span>Cash on Delivery</span></div></body></html>"""
 
 
 def _compose_blog_og(d: ProductData, fmt: dict, req: CreativeRequest) -> str:

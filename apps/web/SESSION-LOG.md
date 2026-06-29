@@ -3518,3 +3518,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed: Brand end cards now keep the "Original product" and "Cash on Delivery across Bangladesh" trust row at the bottom safe area instead of floating in the middle.
 - Verified: Rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`; visually checked first and last frames. Local ffprobe QA passed score 96; MP4 remains 1080x1920, 24fps, 149 frames, 6.208s.
 - Guardrail: Dry-run/local render only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-29 · Codex · Reel end-card trust-row spacing repair
+- Did: Repositioned the Creative Engine brand end-card main content upward and anchored the trust row in the lowest QA-safe footer band, with a divider and shortened `Cash on Delivery` copy to avoid text clipping.
+- Fixed: Removed the visual conflict between `Global Beauty. Local Trust.` and the cash-on-delivery line on the last verification card.
+- Verified: Forced the manual verification job to regenerate cards/reel, rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`, refreshed poster/end-frame stills, and visually checked the last card. Local ffprobe QA passed score 96; MP4 is 1080x1920, 24fps, 149 frames, 6.30s.
+- Guardrail: Dry-run/local render only; ignored job/output artifacts only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
