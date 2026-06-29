@@ -36,7 +36,7 @@
 - [Homepage/global SEO title policy](project_homepage_global_title_20260516.md) — approved brand title is `Emart Skincare Bangladesh | Korean & Global Beauty` (updated 2026-05-19, 50 chars); use for homepage/global fallback/search-facing brand surfaces, not as a blanket suffix on all commercial pages
 - [Delivery charge logic](project_delivery_charge_logic_20260518.md) — web checkout follows live Woo shipping methods: Dhaka flat rate, outside-Dhaka flat rate, and free delivery only when Woo free_shipping is enabled and threshold is met
 - [Recent work check rule](feedback_recent_work_check.md) — at session start run `git log --oneline -20`, inspect relevant commit stats, and targeted-search current code before editing; account for Claude/other-agent work first
-- [WooCommerce write-protection hardening](project_wc_key_rotation_20260523.md) — M1 closed 2026-05-25; key_id 34 is live BFF key; woo-api-fix.php gates writes; key_ids 2/3/26/32 all revoked
+- [WooCommerce write-protection hardening](project_wc_key_rotation_20260523.md) — M1 closed 2026-05-25; current live BFF key is key_id 50 as of 2026-06-29 verification; woo-api-fix.php gates writes; key_ids 2/3/26/32 all revoked and key_id 34 is historical
 - [deploy.sh one-command deploy](project_deploy_script.md) — `/root/emart-platform/deploy.sh` replaces manual rsync; smoke gates push; `--no-commit` for idempotent recovery
 - [DEV_MASTER.md stack version reference](project_dev_master.md) — hard holds: Next.js 14, React 18, Tailwind 3, Zustand 4, NextAuth 4, lucide-react 0.x, ESLint 8, WP 6.x — frozen until 2026-07-03
 - [Stability fixes 2026-05-25](project_stability_fixes_20260525.md) — ReviewsSection try/finally, getCategories unstable_cache 1hr, deployment version check toast

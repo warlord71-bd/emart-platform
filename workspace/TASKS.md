@@ -60,7 +60,7 @@ inline (don't mark ✅). Before starting any WA item, check AGENT_BUS ACTIVE WOR
 | WA-D | 🟡 | **One-shot dated scripts archived.** Dated scripts rotated to `/root/.attic-*` in prior session; 3 dated PM2 campaign processes (`emart-fb-18-20260625`, `emart-ig-18-20260625`, `emart-fb-comment-20260625`) deleted after confirming all slots expired. | [C] | ✅ 2026-06-25 |
 | WA-E | 🟠 | **Video-engine free-output gaps resolved by Claude.** Free bn-BD voiceover, ducked music, browser-shaped captions, populated persona libraries, branded/value cards, and master QA are implemented and verified. | [C] | ✅ complete |
 | WA-F | 🟠 | **social-engine gaps** — tracked as X8a (performance loop), X8b (IG 4:5 generation), X8c (approval status semantics) in the Codex — Open block below. F1 (real vision QA) already ✅ in `f01c602`; product picker/history hook/IG variants/contact sheet now implemented. Meta/GSC/GMC/GA4 performance import now writes the picker score file; approval-status publish gates verified. | [X] | ✅ complete |
-| WA-G | 🔴 | **Embedded credentials removed from all OpenClaw scripts.** 12 scripts migrated to shared `creds.py` loader reading from `openclaw.env`. `IDENTITY.md` scrubbed. WC key updated to live BFF key_id 34; WC localhost access fixed (Host + X-Forwarded-Proto headers). All cron scripts verified working. **Owner actions remain:** (1) revoke old WP app password `mrVDk8iq...` in WordPress; (2) revoke old WC keys `ck_9d9f...` and `ck_53d4...` if not already; (3) set valid `META_ACCESS_TOKEN` in `openclaw.env` if ads_briefing.py is needed. | [C]+[O] | ✅ 2026-06-25 scripts fixed; owner rotation pending |
+| WA-G | 🔴 | **Embedded credentials removed from all OpenClaw scripts.** 12 scripts migrated to shared `creds.py` loader reading from `openclaw.env`. `IDENTITY.md` scrubbed. WC key currently verified as live BFF key_id 50 (key_id 34 is historical); WC localhost access fixed (Host + X-Forwarded-Proto headers). All cron scripts verified working. **Owner actions remain:** (1) revoke old WP app password `mrVDk8iq...` in WordPress; (2) revoke old WC keys `ck_9d9f...` and `ck_53d4...` if not already; (3) set valid `META_ACCESS_TOKEN` in `openclaw.env` if ads_briefing.py is needed. | [C]+[O] | ✅ 2026-06-25 scripts fixed; owner rotation pending |
 | WA-H | 🟠 | **Blog generator draft/review gate implemented.** Live OpenClaw `blog_generator.py` now supports `--draft` (generate + WP draft status) and `--generate-only` (save to file, no WP). Drafts saved to `blog_drafts/` for review. Archived copy hardcoded creds removed. | [C] | ✅ 2026-06-25 |
 
 ### Blog Enhancement
@@ -498,6 +498,18 @@ What we're MISSING:
 | CC-2 | **`.claude/rules/` directory** — modular per-topic rule files | Currently all rules are monolithic in CLAUDE.md (~5KB); splitting into focused rule files (e.g. `seo.md`, `deploy.md`, `data-safety.md`) makes them toggleable, easier to maintain, and reduces prompt bloat | [C] | ✅ 2026-06-26 |
 | CC-3 | **`.claude/workflows/` directory** — repeatable multi-step blueprints | Deploy, SEO audit, content humanizer, and session flows are currently ad-hoc commands or CLAUDE.md prose; formal workflow files let Claude follow structured blueprints without repeated prompts | [C] | ✅ 2026-06-26 |
 
+### Context Governance Follow-up (2026-06-29)
+
+Audit summary: context system is strong but overweight. Keep `AGENTS.md`/`CLAUDE.md` as the short operating contract, `.claude/rules` as modular safety policy, `.agent-memory/MEMORY.md` as the durable fact index, `AGENT_BUS.md` as live coordination, and `workspace/TASKS.md` as the execution board. Reduce duplicate facts and stale long logs.
+
+| ID | Task | Owner | Status |
+|---|---|---|---|
+| CTX-1 | Align all agent entrypoints on current source-of-truth facts: WC key_id 50, `AGENT_BUS` at start, `workspace/TASKS.md` as task board, no stale `apps/web/TASKS.md` references. | [X] | ✅ 2026-06-29 — active docs/memory aligned after live verification; stale tracked memory credential redacted; reference archive at `/root/.attic-2026-06-29/emart-context-key-verification-20260629/` |
+| CTX-2 | Slim `workspace/TASKS.md`: keep only active/open/recently completed sections in the loaded top slice; move old completed detail into dated archive docs with backlinks. | [X]/[C] | 🔲 open |
+| CTX-3 | Memory hygiene pass: archive obsolete `.agent-memory` project notes, remove non-memory code artifacts from memory, and run a tracked-memory secret scan before commits. | [X]/[C] | 🔲 open |
+| CTX-4 | Add a one-command context health check that reports entrypoint drift, tracked ignored files, stale ACTIVE WORK rows, oversized logs, and secret-like strings in context docs. | [X] | 🔲 open |
+| CTX-5 | Rotate `SESSION-LOG.md` into monthly archives while keeping a short current log for startup context. | [X]/[C] | 🔲 open |
+
 ### Backlog (post-freeze Jul 3+)
 
 - UCP/MCP commerce endpoint (gated: reviews > 200, currently ~16)
@@ -549,7 +561,7 @@ R12 ISR, R18 homepage links, R20 A+ re-audit, PDP title coverage, PDP FAQ schema
 
 ## 🔑 Key Rules
 
-- **WC API Key:** key_id `34` (live BFF, write-gated). Key_ids 2/3/26/32 revoked.
+- **WC API Key:** key_id `50` (live BFF, write-gated; verified 2026-06-29). Key_ids 2/3/26/32 revoked; key_id 34 is historical.
 - **Freeze:** Structural/nav frozen until 2026-07-03. Content, data, new features, automation: OK.
 - **Deploy:** Local build → commit → rsync → VPS build → pm2 restart → SEO gate → smoke → push.
 - **Humanizer priority:** Always by GSC impression count, not category order.

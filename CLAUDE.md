@@ -8,7 +8,7 @@ Written for Claude, Codex, GPT-style agents, and human developers. Follow as pro
 - PM2 process: `emartweb` | Live: `https://e-mart.com.bd`
 - Local: `/root/emart-platform` | VPS runtime: `/var/www/emart-platform`
 - Repo: `origin/main` — push ONLY after live smoke test passes
-- WC API key: key_id `39` ("Emart BFF Live") in `.env.local`
+- WC API key: key_id `50` ("Emart BFF Live auto-recovered 2026-06-07 17:45") in `.env.local`
 - Currency: ৳ BDT | Payments: COD, bKash, Nagad | Market: mobile-first Bangladesh
 
 ## Safety & Architecture (auto-loaded from `.claude/rules/`)

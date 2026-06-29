@@ -3546,3 +3546,10 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Generated a new Content Orchestrator model-holding-product visual for Medicube PDRN Pink Peptide Serum 30ml using the real product cutout as the reference, then saved it under the canonical `workspace/content-orchestrator/generated-assets/` path with a metadata sidecar.
 - Verified: Visually inspected the saved asset; product is upright in hand, model composition is vertical reel-friendly, and no price/COD/Emart overlay or duplicated offer text is embedded. PNG is 941x1672.
 - Guardrail: Verification asset only and owner review required before campaign use; no Woo/WordPress writes, no Meta publish/schedule changes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-29 · Codex · Context key verification archive
+- Did: Verified the current Woo BFF runtime key is key_id 50, not stale key_id 34/39/54, and aligned AGENTS/CLAUDE/data-safety memory/task-board context to that working state.
+- Fixed: Added AGENT_BUS to the all-agent start protocol and redacted a tracked memory command that contained a raw password-shaped value.
+- Archived: Saved sanitized verification evidence, changed-file snapshots, and the context-doc diff at `/root/.attic-2026-06-29/emart-context-key-verification-20260629/`.
+- Verified: Woo key table shows key_id 50 with matching runtime key suffix; internal HTTPS WC API smoke returned HTTP 200. Public WC REST remained 403 as expected behind Nginx/Cloudflare protection.
+- Guardrail: Read-only verification plus docs/memory changes only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart. Unrelated content-orchestrator dirty files were not staged.

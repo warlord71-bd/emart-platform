@@ -11,7 +11,7 @@ metadata:
 - `meta_generator.py` (`/var/www/emart-platform/workspace/docs/meta_generator.py`, gitignored, VPS-only) now supports `--force` and `--ids-file`.
 - 38/1304 already done (dry-run, no DB writes) → `workspace/audit/active/meta-generator-2026-06-10-003216.jsonl`.
 - Remaining 1266 IDs → `workspace/docs/meta_regen_ids_remaining_20260610.txt`.
-- Background dry-run resumed: PID 448966, started 2026-06-10 01:22 UTC, output → `workspace/audit/active/meta-generator-2026-06-10-resume.log`. Command: `EMART_DB_PASSWORD=Emart@123456 OPENROUTER_API_KEY=<from /root/.openclaw/credentials/openrouter_default.json 'apiKey'> python3 workspace/docs/meta_generator.py --dry-run --force --ids-file workspace/docs/meta_regen_ids_remaining_20260610.txt`.
+- Background dry-run resumed: PID 448966, started 2026-06-10 01:22 UTC, output → `workspace/audit/active/meta-generator-2026-06-10-resume.log`. Command: `EMART_DB_PASSWORD=<from secure runtime env> OPENROUTER_API_KEY=<from /root/.openclaw/credentials/openrouter_default.json 'apiKey'> python3 workspace/docs/meta_generator.py --dry-run --force --ids-file workspace/docs/meta_regen_ids_remaining_20260610.txt`.
 - **Why:** owner said "meta first" — this task takes priority over blog generation; both compete for the same OpenRouter free-tier quota.
 - **How to apply:** check if PID 448966 still running / log progress at session start. Once dry-run completes, spot-check JSONL output quality, then re-run the SAME command WITHOUT `--dry-run` to write `_emart_meta_description` to DB, then revalidate `tag:products` via `/api/revalidate` (x-revalidate-secret header).
 

@@ -14,7 +14,7 @@ Claude additionally reads `CLAUDE.md` for the same content plus Claude-specific 
 - PM2 process: `emartweb` | Live: `https://e-mart.com.bd`
 - Local: `/root/emart-platform` | VPS runtime: `/var/www/emart-platform`
 - Repo: `origin/main` — push ONLY after live smoke test passes
-- WC API key: key_id `39` ("Emart BFF Live") in `.env.local`
+- WC API key: key_id `50` ("Emart BFF Live auto-recovered 2026-06-07 17:45") in `.env.local`
 - Currency: ৳ BDT | Payments: COD, bKash, Nagad | Market: mobile-first Bangladesh
 
 ## Brand (never change without owner approval)
@@ -50,8 +50,9 @@ Hotfix on VPS: reverse-sync VPS → Local before committing. Never commit from V
 Quick reference: `workspace/docs/claude-reference/deploy-reference.md`
 
 ## Session Protocol (all agents)
-- **Start:** `cat apps/web/.agent-memory/MEMORY.md` + `tail -50 apps/web/SESSION-LOG.md` + `cat workspace/TASKS.md` + `git log --oneline -10`
-- **End:** append one block to `SESSION-LOG.md` (date · did · blockers · next step) + update `workspace/TASKS.md`
+- **Start:** `cat apps/web/.agent-memory/AGENT_BUS.md` + `cat apps/web/.agent-memory/MEMORY.md` + `tail -50 apps/web/SESSION-LOG.md` + `cat workspace/TASKS.md` + `git log --oneline -10` + `git status --short`
+- **Before work:** check `AGENT_BUS.md` ACTIVE WORK. If work overlaps, coordinate or pick another task.
+- **End:** append one block to `SESSION-LOG.md` (date · did · blockers · next step) + update `workspace/TASKS.md`; if you added an ACTIVE WORK row, move it to LAST COMPLETED.
 
 ## Live Business Rules
 - WhatsApp signup: `8801717082135` | support/payment: `8801919797399` — do NOT merge
