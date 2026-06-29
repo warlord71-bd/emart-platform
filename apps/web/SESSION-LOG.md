@@ -3553,3 +3553,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Archived: Saved sanitized verification evidence, changed-file snapshots, and the context-doc diff at `/root/.attic-2026-06-29/emart-context-key-verification-20260629/`.
 - Verified: Woo key table shows key_id 50 with matching runtime key suffix; internal HTTPS WC API smoke returned HTTP 200. Public WC REST remained 403 as expected behind Nginx/Cloudflare protection.
 - Guardrail: Read-only verification plus docs/memory changes only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart. Unrelated content-orchestrator dirty files were not staged.
+
+## 2026-06-29 · Codex · Real-product model-shot pipeline commit
+- Did: Finished and committed the remaining Content Orchestrator model-shot work in `1c55ecf`: `model_shot.py`, read-only Woo visual enrichment, dispatch model-shot requests, clean Creative Engine composites, daily producer/worker real-product holding-shot fields, docs, and preserved Medicube source/request/metadata/fulfilled asset.
+- Preserved: Copied the ignored audit cutout into `workspace/content-orchestrator/generated-assets/model-shots/sources/` so the fulfilled asset and request are reproducible without ignored job folders.
+- Verified: `py_compile` passed for changed Python files; Social Engine unittest ran 16 tests OK; video quality-gate pytest-style tests were invoked manually because `pytest` is not installed and all 5 passed; `model_shot.py --status` shows 1 fulfilled, 0 pending, 0 blocked; end-to-end composite render succeeded outside sandbox using the preserved source cutout.
+- Guardrail: Owner-review gate remains required before campaign use; no Woo/WordPress writes, no Meta publish/schedule changes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
