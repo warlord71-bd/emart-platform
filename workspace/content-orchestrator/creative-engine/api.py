@@ -220,7 +220,14 @@ def _compose_scene_value(d: ProductData, fmt: dict, req: CreativeRequest) -> str
 
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 {_vertical_base_css(w, h)}
-.wrap{{position:absolute;inset:0;padding:112px 78px 360px;display:flex;flex-direction:column;}}
+.bottom-fill{{position:absolute;left:0;right:0;top:1410px;bottom:0;z-index:0;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(231,178,74,.16), transparent 26%),
+    radial-gradient(circle at 82% 38%, rgba(255,255,255,.08), transparent 24%),
+    linear-gradient(180deg, rgba(42,10,24,0), rgba(42,10,24,.42) 32%, rgba(25,8,13,.86) 100%);}}
+.bottom-fill::before{{content:"";position:absolute;left:78px;right:78px;top:88px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(231,178,74,.45),transparent);}}
+.wrap{{position:absolute;inset:0;padding:112px 78px 0;display:flex;flex-direction:column;z-index:1;}}
 .kicker{{align-self:flex-start;font-size:32px;font-weight:800;letter-spacing:3px;color:{INK};
   background:{GOLD};border-radius:14px;padding:10px 26px;margin-bottom:30px;}}
 .title{{font-size:{title_size}px;font-weight:900;line-height:1.18;margin-bottom:{title_margin}px;overflow-wrap:anywhere;word-break:break-word;}}
@@ -232,7 +239,7 @@ def _compose_scene_value(d: ProductData, fmt: dict, req: CreativeRequest) -> str
   font-size:{mark_font}px;font-weight:900;display:flex;align-items:center;justify-content:center;
   box-shadow:0 10px 24px rgba(0,0,0,.24);}}
 .txt{{font-size:{text_size}px;font-weight:800;line-height:1.25;overflow-wrap:anywhere;word-break:break-word;}}
-.foot{{margin-top:56px;display:flex;align-items:center;justify-content:space-between;gap:28px;
+.foot{{position:absolute;left:78px;right:78px;top:1248px;display:flex;align-items:center;justify-content:space-between;gap:28px;
   min-height:156px;padding:18px 26px;background:rgba(42,10,24,.72);
   border:1px solid rgba(255,255,255,.18);border-radius:32px;box-shadow:0 18px 46px rgba(0,0,0,.32);}}
 .foot .logoimg{{width:132px;height:132px;border-radius:28px;box-shadow:0 14px 34px rgba(0,0,0,.36);}}
@@ -241,7 +248,7 @@ def _compose_scene_value(d: ProductData, fmt: dict, req: CreativeRequest) -> str
 .domain{{font-size:46px;line-height:1;font-weight:900;color:{GOLD};letter-spacing:1px;text-transform:uppercase;}}
 .codline{{font-size:30px;line-height:1.2;font-weight:800;color:#fff;}}
 .trust{{font-size:24px;line-height:1.2;font-weight:700;color:{SOFT_ROSE};}}
-</style></head><body><div class="wrap">
+</style></head><body><div class="bottom-fill"></div><div class="wrap">
 <div class="kicker">{esc(kicker)}</div>
 <div class="title">{esc(title)}</div>
 <div class="rows">{''.join(rows)}</div>

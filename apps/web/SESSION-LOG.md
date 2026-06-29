@@ -3507,3 +3507,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed: Rebuilt the manual Content Orchestrator verification job to use the real Medicube product cutout instead of feeding a generated promo image into another reel card, removing duplicated embedded price/info from the first card.
 - Verified: Rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`; extracted and visually checked opening/value/end frames. Final MP4 is vertical 1080x1920, 24fps, 149 frames, 6.208s; local QA passed score 96.
 - Guardrail: Dry-run/local render only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-29 · Codex · Reel value-card bottom layout repair
+- Did: Moved the Creative Engine value-card Emart/footer block down to the lowest reel-safe area and added a subtle decorative bottom fill so the lower half no longer looks empty.
+- Verified: Rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`; visually checked updated second card. Local ffprobe QA passed score 96; MP4 remains 1080x1920, 24fps, 149 frames, 6.208s.
+- Guardrail: Dry-run/local render only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
