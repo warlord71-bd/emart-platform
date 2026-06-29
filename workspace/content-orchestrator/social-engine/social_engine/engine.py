@@ -34,7 +34,7 @@ except Exception:  # pragma: no cover - CLI still works without image checks.
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REPO = ROOT.parents[1]
+REPO = ROOT.parents[2]
 SITE = "https://e-mart.com.bd"
 APPROVED_STATUS = "approved_for_scheduled_run"
 REVIEW_STATUS = "review_required"
@@ -443,6 +443,20 @@ def caption_has_forbidden_claim(caption: str) -> list[str]:
         if re.search(pattern, caption, flags=re.I):
             hits.append(pattern)
     return hits
+
+
+def platform_caption_policy(campaign: dict[str, Any], item: dict[str, Any], platform: str, expected: dict[str, Any]) -> str:
+    item_policy = item.get("caption_link_policy")
+    if isinstance(item_policy, dict) and item_policy.get(platform):
+        return str(item_policy[platform])
+    if isinstance(item_policy, str):
+        return item_policy
+    campaign_policy = campaign.get("caption_link_policy")
+    if isinstance(campaign_policy, dict) and campaign_policy.get(platform):
+        return str(campaign_policy[platform])
+    if isinstance(campaign_policy, str):
+        return campaign_policy
+    return str(expected.get(platform, {}).get("caption_link_policy", ""))
 
 
 def parse_time(value: str) -> dt.datetime:
@@ -973,9 +987,13 @@ def qa_campaign(
                         "score": vision_result.get("score"),
                     })
             if platform == "facebook":
-                if link and "first comment" not in caption.lower():
+                policy = platform_caption_policy(campaign, item, platform, expected)
+                if policy == "inline_purchase_link":
+                    if link and link not in caption:
+                        errors.append({"item": ref, "platform": platform, "code": "fb_caption_missing_inline_link"})
+                elif link and "first comment" not in caption.lower():
                     warnings.append({"item": ref, "platform": platform, "code": "fb_caption_missing_first_comment_hint"})
-                if caption_has_url(caption):
+                if caption_has_url(caption) and policy != "inline_purchase_link":
                     errors.append({"item": ref, "platform": platform, "code": "fb_caption_contains_raw_url"})
             if platform == "instagram":
                 if caption_has_url(caption):

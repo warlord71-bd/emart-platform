@@ -57,6 +57,16 @@ function queueBuyingLink(plan, item, facebookId) {
   }
 }
 
+function captionLinkPolicy(plan, item, platform) {
+  const itemPolicy = item.caption_link_policy;
+  if (itemPolicy && typeof itemPolicy === 'object' && itemPolicy[platform]) return itemPolicy[platform];
+  if (typeof itemPolicy === 'string') return itemPolicy;
+  const planPolicy = plan.caption_link_policy;
+  if (planPolicy && typeof planPolicy === 'object' && planPolicy[platform]) return planPolicy[platform];
+  if (typeof planPolicy === 'string') return planPolicy;
+  return '';
+}
+
 function recordPublishedHistory(plan) {
   const historyArg = arg('record-history');
   if (!historyArg) return;
@@ -150,7 +160,9 @@ async function main() {
       result,
     });
     alreadyPublished.add(idempotencyKey);
-    if (platform === 'facebook') queueBuyingLink(plan, item, result.facebook);
+    if (platform === 'facebook' && captionLinkPolicy(plan, item, 'facebook') !== 'inline_purchase_link') {
+      queueBuyingLink(plan, item, result.facebook);
+    }
   }
   recordPublishedHistory(plan);
 }

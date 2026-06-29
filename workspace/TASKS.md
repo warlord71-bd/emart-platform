@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-29 (Content Orchestrator no-shortcut one-roof setup verified with dry-run image + reel; verification reel black-start/poster and reel-card first/middle/end layout issues repaired/rechecked, including last-card trust-row separation; unused generated media and untracked script residue archived; canonical active helpers tracked; gated real-product model-shot pipeline committed in `1c55ecf` with preserved source cutout + fulfilled Medicube proof asset; social product-base v6 scheduled via PM2 for 18 FB + 18 IG posts today, plus FB first-comment link worker; first slot 08:00 BDT)
+Last updated: 2026-06-29 (Content Orchestrator no-shortcut one-roof setup verified; gated real-product model-shot pipeline committed in `1c55ecf`; Jun 30 bilingual social campaign scheduled via PM2 for 18 FB + 18 IG posts using yesterday's brand mix but new products, current Woo prices/offers, FB purchase links inside captions, and first slot 08:00 BDT)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -25,6 +25,8 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emart-revenue-health` (PM2 cron) | ✅ stopped | Intentionally stopped |
 | `emart-seo-autoscan` (PM2 cron) | ✅ stopped | Intentionally stopped |
 | `emart-meta-gen` (PM2) | ✅ stopped | Job complete (1,360/1,360 metas done Jun 15) |
+| `emart-social-fb-20260630-bilingual` (PM2) | 🟢 online | Jun 30 bilingual 18-post campaign, waiting/posting 08:00→22:10 BDT; FB captions contain direct purchase links. |
+| `emart-social-ig-20260630-bilingual` (PM2) | 🟢 online | Jun 30 bilingual 18-post campaign, waiting/posting 08:00→22:10 BDT; IG captions use DM/link-in-bio CTA and prepared manual comment queue. |
 | Opus Humanizer Engine (detached, free OpenRouter) | 🟢 ongoing | `workspace/humanizer/engine/` — generates PDP descriptions on free models (gemma-4-31b chain), gated GMC+AI-residue, auto-applies PASS + revalidates + Telegram ping. Run: `bash workspace/humanizer/engine/run_detached.sh N`. 122 humanized as of 2026-06-23. Awaiting owner OpenRouter funds for Hermes handoff. |
 | Video orchestrator (crontab, `*/15`) | 🟢 running | `orchestrator.py --tick` — builds+QAs reels to `jobs/review/`, parks at human-approval gate. **Builds only; never posts.** `--status` = pipeline dashboard. |
 | Reels approval bot (`reels_bot.py`) | ✅ online | Telegram see-and-approve bot is polling with a registered chat. Posts reel as video + ✅Approve/❌Reject; Approve = the ONLY thing that publishes. No auto-publish cron exists. |

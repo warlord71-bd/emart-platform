@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const WEB_ROOT = path.resolve(__dirname, '../../..', 'apps/web');
+const WEB_ROOT = path.resolve(__dirname, '../../../..', 'apps/web');
 
 function localRequire(name) {
   return require(path.join(WEB_ROOT, 'node_modules', name));

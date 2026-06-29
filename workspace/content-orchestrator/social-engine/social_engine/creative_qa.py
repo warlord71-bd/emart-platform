@@ -53,6 +53,12 @@ THEME_REGISTRY: dict[str, dict[str, Any]] = {
         "allowed_categories": ["sunscreen"],
         "allowed_containers": ["tube", "bottle", "stick", "jar", "general"],
     },
+    "brand-fresh-product-base-v6-bilingual-price": {
+        "status": "approved_candidate",
+        "single_hero_required": True,
+        "allowed_categories": ["skincare", "sunscreen", "cleanser", "serum", "cream", "mask"],
+        "allowed_containers": ["bottle", "tube", "jar", "dropper", "general"],
+    },
 }
 
 THEME_ALIASES = {

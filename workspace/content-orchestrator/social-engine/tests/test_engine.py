@@ -229,6 +229,34 @@ class SocialEngineTests(unittest.TestCase):
         self.assertTrue(qa["publish_allowed"])
         self.assertEqual(qa["publish_gate"], "approved_for_scheduled_run")
 
+    def test_facebook_inline_purchase_link_policy_allows_caption_url(self):
+        raw = campaign_with_item()
+        raw["caption_link_policy"] = {"facebook": "inline_purchase_link"}
+        raw["items"][0]["captions"]["facebook"] = (
+            "Soft serum moment.\n\nShop: https://e-mart.com.bd/shop/cosrx-test-serum"
+        )
+        campaign = normalize_campaign(raw, base_config())
+        qa = qa_campaign(
+            campaign,
+            base_config(),
+            {"blocked_product_ids": set(), "blocked_slugs": set(), "dates": []},
+        )
+        self.assertEqual(qa["status"], "pass")
+        self.assertFalse(any(error["code"] == "fb_caption_contains_raw_url" for error in qa["errors"]))
+
+    def test_facebook_inline_purchase_link_policy_requires_product_link(self):
+        raw = campaign_with_item()
+        raw["caption_link_policy"] = {"facebook": "inline_purchase_link"}
+        raw["items"][0]["captions"]["facebook"] = "Soft serum moment.\n\nShop now on Emart."
+        campaign = normalize_campaign(raw, base_config())
+        qa = qa_campaign(
+            campaign,
+            base_config(),
+            {"blocked_product_ids": set(), "blocked_slugs": set(), "dates": []},
+        )
+        self.assertEqual(qa["status"], "blocked")
+        self.assertTrue(any(error["code"] == "fb_caption_missing_inline_link" for error in qa["errors"]))
+
     def test_social_metric_score_weights_intent_metrics(self):
         self.assertEqual(
             social_metric_score({"reactions": 10, "comments": 2, "shares": 1, "clicks": 3, "reach": 100}),

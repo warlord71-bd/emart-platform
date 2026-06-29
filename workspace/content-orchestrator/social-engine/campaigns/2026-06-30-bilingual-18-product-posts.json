@@ -1,0 +1,832 @@
+{
+  "id": "2026-06-30-bilingual-18-product-posts",
+  "name": "June 30 Bilingual 18 Product Posts",
+  "date": "2026-06-30",
+  "approval_status": "approved_for_scheduled_run",
+  "caption_link_policy": {
+    "facebook": "inline_purchase_link",
+    "instagram": "comment_if_possible"
+  },
+  "design_template": "brand-fresh-product-base-v6-bilingual-price",
+  "platforms": [
+    "facebook",
+    "instagram"
+  ],
+  "schedule": {
+    "start": "08:00",
+    "end": "22:10",
+    "timezone": "+06:00"
+  },
+  "items": [
+    {
+      "product_id": 59211,
+      "title": "MediCube Txa Niacinamide 15% Serum 30ml",
+      "slug": "medicube-txa-niacinamide-15-serum-30ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/medicube-txa-niacinamide-15-serum-30ml",
+      "angle": "A focused niacinamide serum step for an easy daily glow routine.",
+      "hashtags": "#MedicubeBangladesh #NiacinamideSerum #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Medicube পিক: MediCube Txa Niacinamide 15% Serum 30ml\n\nবাংলা: নিয়াসিনামাইড সিরামটি ডেইলি গ্লো রুটিনে হালকা, ফোকাসড ধাপ হিসেবে রাখা যায়।\nEnglish: A focused niacinamide serum step for an easy daily glow routine.\n\nOffer price: ৳1690 | Regular: ৳2000\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/medicube-txa-niacinamide-15-serum-30ml\n\n#MedicubeBangladesh #NiacinamideSerum #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের Medicube পিক: MediCube Txa Niacinamide 15% Serum 30ml\n\nবাংলা: নিয়াসিনামাইড সিরামটি ডেইলি গ্লো রুটিনে হালকা, ফোকাসড ধাপ হিসেবে রাখা যায়।\nEnglish: A focused niacinamide serum step for an easy daily glow routine.\n\nOffer price: ৳1690 | Regular: ৳2000\nDM to order or tap the link in bio.\n\n#MedicubeBangladesh #NiacinamideSerum #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/01-medicube-txa-niacinamide-15-serum-30ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/01-medicube-txa-niacinamide-15-serum-30ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/01-medicube-txa-niacinamide-15-serum-30ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/01-medicube-txa-niacinamide-15-serum-30ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/01-medicube-txa-niacinamide-15-serum-30ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "1690",
+        "regular_price": "2000",
+        "sale_price": "1690",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2025/05/emart-medicube-txa-niacinamide-15-serum-30ml.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 62280,
+      "title": "Medicube PDRN Pink Collagen Capsule Cream 55g",
+      "slug": "medicube-pdrn-pink-collagen-capsule-cream-55g",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/medicube-pdrn-pink-collagen-capsule-cream-55g",
+      "angle": "A PDRN capsule cream pick for a soft comfort-care finish.",
+      "hashtags": "#MedicubeBangladesh #PDRN #CollagenCream #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Medicube পিক: Medicube PDRN Pink Collagen Capsule Cream 55g\n\nবাংলা: PDRN ক্যাপসুল ক্রিমটি স্কিনকেয়ার রুটিনে নরম, কমফোর্ট-কেয়ার ফিনিশ দেয়।\nEnglish: A PDRN capsule cream pick for a soft comfort-care finish.\n\nOffer price: ৳1987 | Regular: ৳2350\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/medicube-pdrn-pink-collagen-capsule-cream-55g\n\n#MedicubeBangladesh #PDRN #CollagenCream #EmartSkincare",
+        "instagram": "আজকের Medicube পিক: Medicube PDRN Pink Collagen Capsule Cream 55g\n\nবাংলা: PDRN ক্যাপসুল ক্রিমটি স্কিনকেয়ার রুটিনে নরম, কমফোর্ট-কেয়ার ফিনিশ দেয়।\nEnglish: A PDRN capsule cream pick for a soft comfort-care finish.\n\nOffer price: ৳1987 | Regular: ৳2350\nDM to order or tap the link in bio.\n\n#MedicubeBangladesh #PDRN #CollagenCream #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/02-medicube-pdrn-pink-collagen-capsule-cream-55g-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/02-medicube-pdrn-pink-collagen-capsule-cream-55g-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/02-medicube-pdrn-pink-collagen-capsule-cream-55g-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/02-medicube-pdrn-pink-collagen-capsule-cream-55g-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/02-medicube-pdrn-pink-collagen-capsule-cream-55g-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "1987",
+        "regular_price": "2350",
+        "sale_price": "1987",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2026/02/emart-medicube-pdrn-pink-collagen-capsule-cream-55g.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 62028,
+      "title": "MEDICUBE Kojic Acid Turmeric Niacinamide Serum 30ml",
+      "slug": "medicube-kojic-acid-turmeric-niacinamide-serum-30ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/medicube-kojic-acid-turmeric-niacinamide-serum-30ml",
+      "angle": "A turmeric-niacinamide serum pick for an even-glow routine.",
+      "hashtags": "#MedicubeBangladesh #GlowSerum #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Medicube পিক: MEDICUBE Kojic Acid Turmeric Niacinamide Serum 30ml\n\nবাংলা: টারমারিক-নিয়াসিনামাইড সিরামটি ইভেন-গ্লো রুটিনে স্মার্ট একটি পিক।\nEnglish: A turmeric-niacinamide serum pick for an even-glow routine.\n\nOffer price: ৳1950 | Regular: ৳2100\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/medicube-kojic-acid-turmeric-niacinamide-serum-30ml\n\n#MedicubeBangladesh #GlowSerum #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের Medicube পিক: MEDICUBE Kojic Acid Turmeric Niacinamide Serum 30ml\n\nবাংলা: টারমারিক-নিয়াসিনামাইড সিরামটি ইভেন-গ্লো রুটিনে স্মার্ট একটি পিক।\nEnglish: A turmeric-niacinamide serum pick for an even-glow routine.\n\nOffer price: ৳1950 | Regular: ৳2100\nDM to order or tap the link in bio.\n\n#MedicubeBangladesh #GlowSerum #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/03-medicube-kojic-acid-turmeric-niacinamide-serum-30ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/03-medicube-kojic-acid-turmeric-niacinamide-serum-30ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/03-medicube-kojic-acid-turmeric-niacinamide-serum-30ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/03-medicube-kojic-acid-turmeric-niacinamide-serum-30ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/03-medicube-kojic-acid-turmeric-niacinamide-serum-30ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "1950",
+        "regular_price": "2100",
+        "sale_price": "1950",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2026/02/emart-medicube-kojic-acid-turmeric-niacinamide-serum-30ml.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 60785,
+      "title": "Medicube Txa Niacinamide Capsule Cream 55 g",
+      "slug": "medicube-txa-niacinamide-capsule-cream-55-g",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/medicube-txa-niacinamide-capsule-cream-55-g",
+      "angle": "A TXA capsule cream for moisture care with a polished glow feel.",
+      "hashtags": "#MedicubeBangladesh #CapsuleCream #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Medicube পিক: Medicube Txa Niacinamide Capsule Cream 55 g\n\nবাংলা: TXA ক্যাপসুল ক্রিমটি ময়েশ্চার ও গ্লো-কেয়ার একসাথে রাখতে চাইলে ভালো।\nEnglish: A TXA capsule cream for moisture care with a polished glow feel.\n\nOffer price: ৳2090 | Regular: ৳2500\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/medicube-txa-niacinamide-capsule-cream-55-g\n\n#MedicubeBangladesh #CapsuleCream #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের Medicube পিক: Medicube Txa Niacinamide Capsule Cream 55 g\n\nবাংলা: TXA ক্যাপসুল ক্রিমটি ময়েশ্চার ও গ্লো-কেয়ার একসাথে রাখতে চাইলে ভালো।\nEnglish: A TXA capsule cream for moisture care with a polished glow feel.\n\nOffer price: ৳2090 | Regular: ৳2500\nDM to order or tap the link in bio.\n\n#MedicubeBangladesh #CapsuleCream #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/04-medicube-txa-niacinamide-capsule-cream-55-g-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/04-medicube-txa-niacinamide-capsule-cream-55-g-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/04-medicube-txa-niacinamide-capsule-cream-55-g-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/04-medicube-txa-niacinamide-capsule-cream-55-g-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/04-medicube-txa-niacinamide-capsule-cream-55-g-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "2090",
+        "regular_price": "2500",
+        "sale_price": "2090",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2026/02/Medicube-Txa-Niacinamide-Capsule-Cream-55-g5.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 57100,
+      "title": "Anua Peach 77 Niacin Essence Toner 250ml",
+      "slug": "anua-peach-77-niacin-essence-toner-250ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/anua-peach-77-niacin-essence-toner-250ml",
+      "angle": "A peach essence toner for a hydrated glow-care layering step.",
+      "hashtags": "#AnuaBangladesh #PeachToner #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Anua পিক: Anua Peach 77 Niacin Essence Toner 250ml\n\nবাংলা: Peach essence toner টি গ্লো-কেয়ার রুটিনে হাইড্রেটিং লেয়ার হিসেবে মানায়।\nEnglish: A peach essence toner for a hydrated glow-care layering step.\n\nOffer price: ৳1902 | Regular: ৳2250\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/anua-peach-77-niacin-essence-toner-250ml\n\n#AnuaBangladesh #PeachToner #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের Anua পিক: Anua Peach 77 Niacin Essence Toner 250ml\n\nবাংলা: Peach essence toner টি গ্লো-কেয়ার রুটিনে হাইড্রেটিং লেয়ার হিসেবে মানায়।\nEnglish: A peach essence toner for a hydrated glow-care layering step.\n\nOffer price: ৳1902 | Regular: ৳2250\nDM to order or tap the link in bio.\n\n#AnuaBangladesh #PeachToner #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/05-anua-peach-77-niacin-essence-toner-250ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/05-anua-peach-77-niacin-essence-toner-250ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/05-anua-peach-77-niacin-essence-toner-250ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/05-anua-peach-77-niacin-essence-toner-250ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/05-anua-peach-77-niacin-essence-toner-250ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "1902",
+        "regular_price": "2250",
+        "sale_price": "1902",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2024/06/emart-anua-peach-77-niacin-essence-toner-250ml.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 53342,
+      "title": "Anua Heartleaf Pore Control Cleansing Oil Mini 20ml",
+      "slug": "anua-heartleaf-pore-control-cleansing-oil-mini-20ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/anua-heartleaf-pore-control-cleansing-oil-mini-20ml",
+      "angle": "A mini cleansing oil that is easy to try and travel-friendly.",
+      "hashtags": "#AnuaBangladesh #CleansingOil #Heartleaf #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Anua পিক: Anua Heartleaf Pore Control Cleansing Oil Mini 20ml\n\nবাংলা: মিনি ক্লেনজিং অয়েলটি Anua ট্রাই করতে বা ট্রাভেলে নিতে বেশ সুবিধাজনক।\nEnglish: A mini cleansing oil that is easy to try and travel-friendly.\n\nOffer price: ৳480 | Regular: ৳650\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/anua-heartleaf-pore-control-cleansing-oil-mini-20ml\n\n#AnuaBangladesh #CleansingOil #Heartleaf #EmartSkincare",
+        "instagram": "আজকের Anua পিক: Anua Heartleaf Pore Control Cleansing Oil Mini 20ml\n\nবাংলা: মিনি ক্লেনজিং অয়েলটি Anua ট্রাই করতে বা ট্রাভেলে নিতে বেশ সুবিধাজনক।\nEnglish: A mini cleansing oil that is easy to try and travel-friendly.\n\nOffer price: ৳480 | Regular: ৳650\nDM to order or tap the link in bio.\n\n#AnuaBangladesh #CleansingOil #Heartleaf #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/06-anua-heartleaf-pore-control-cleansing-oil-mini-20ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/06-anua-heartleaf-pore-control-cleansing-oil-mini-20ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/06-anua-heartleaf-pore-control-cleansing-oil-mini-20ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/06-anua-heartleaf-pore-control-cleansing-oil-mini-20ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/06-anua-heartleaf-pore-control-cleansing-oil-mini-20ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "480",
+        "regular_price": "650",
+        "sale_price": "480",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2024/02/emart-anua-heartleaf-pore-control-cleansing-oil-mini-20ml.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 53339,
+      "title": "Anua Heartleaf Pore Control Cleansing Oil 200ml",
+      "slug": "anua-heartleaf-pore-control-cleansing-oil-200ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/anua-heartleaf-pore-control-cleansing-oil-200ml",
+      "angle": "A full-size Heartleaf cleansing oil for regular double-cleansing routines.",
+      "hashtags": "#AnuaBangladesh #DoubleCleansing #Heartleaf #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Anua পিক: Anua Heartleaf Pore Control Cleansing Oil 200ml\n\nবাংলা: ডাবল-ক্লেনজিং রুটিনে বড় সাইজের Heartleaf cleansing oil ব্যবহারবান্ধব।\nEnglish: A full-size Heartleaf cleansing oil for regular double-cleansing routines.\n\nPrice: ৳1900\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/anua-heartleaf-pore-control-cleansing-oil-200ml\n\n#AnuaBangladesh #DoubleCleansing #Heartleaf #EmartSkincare",
+        "instagram": "আজকের Anua পিক: Anua Heartleaf Pore Control Cleansing Oil 200ml\n\nবাংলা: ডাবল-ক্লেনজিং রুটিনে বড় সাইজের Heartleaf cleansing oil ব্যবহারবান্ধব।\nEnglish: A full-size Heartleaf cleansing oil for regular double-cleansing routines.\n\nPrice: ৳1900\nDM to order or tap the link in bio.\n\n#AnuaBangladesh #DoubleCleansing #Heartleaf #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/07-anua-heartleaf-pore-control-cleansing-oil-200ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/07-anua-heartleaf-pore-control-cleansing-oil-200ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/07-anua-heartleaf-pore-control-cleansing-oil-200ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/07-anua-heartleaf-pore-control-cleansing-oil-200ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/07-anua-heartleaf-pore-control-cleansing-oil-200ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "1900",
+        "regular_price": "1900",
+        "sale_price": "",
+        "on_offer": false,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2024/02/Anua-Heartleaf-Pore-Control-Cleansing-Oil-200mL.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 60013,
+      "title": "ANUA Azelaic Acid 10 Hyaluron Redness Soothing Serum 10ml Mini",
+      "slug": "anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini",
+      "angle": "A mini serum size for starting small with a new active step.",
+      "hashtags": "#AnuaBangladesh #MiniSerum #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Anua পিক: ANUA Azelaic Acid 10 Hyaluron Redness Soothing Serum 10ml Mini\n\nবাংলা: মিনি সিরামটি নতুন অ্যাকটিভ ট্রাই করার আগে ছোট করে শুরু করতে সাহায্য করে।\nEnglish: A mini serum size for starting small with a new active step.\n\nOffer price: ৳950 | Regular: ৳990\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini\n\n#AnuaBangladesh #MiniSerum #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের Anua পিক: ANUA Azelaic Acid 10 Hyaluron Redness Soothing Serum 10ml Mini\n\nবাংলা: মিনি সিরামটি নতুন অ্যাকটিভ ট্রাই করার আগে ছোট করে শুরু করতে সাহায্য করে।\nEnglish: A mini serum size for starting small with a new active step.\n\nOffer price: ৳950 | Regular: ৳990\nDM to order or tap the link in bio.\n\n#AnuaBangladesh #MiniSerum #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/08-anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/08-anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/08-anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/08-anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/08-anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "950",
+        "regular_price": "990",
+        "sale_price": "950",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2026/02/emart-anua-azelaic-acid-10-hyaluron-redness-soothing-serum-10ml-mini.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 2595,
+      "title": "COSRX Low pH Good Morning Gel Cleanser 150ml",
+      "slug": "cosrx-low-ph-good-morning-gel-cleanser-150ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/cosrx-low-ph-good-morning-gel-cleanser-150ml",
+      "angle": "A low-pH cleanser pick for simple morning or night cleansing routines.",
+      "hashtags": "#CosrxBangladesh #GelCleanser #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের COSRX পিক: COSRX Low pH Good Morning Gel Cleanser 150ml\n\nবাংলা: Low pH cleanser টি সকাল বা রাতের সহজ ক্লেনজিং রুটিনে রাখা যায়।\nEnglish: A low-pH cleanser pick for simple morning or night cleansing routines.\n\nOffer price: ৳950 | Regular: ৳1100\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/cosrx-low-ph-good-morning-gel-cleanser-150ml\n\n#CosrxBangladesh #GelCleanser #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের COSRX পিক: COSRX Low pH Good Morning Gel Cleanser 150ml\n\nবাংলা: Low pH cleanser টি সকাল বা রাতের সহজ ক্লেনজিং রুটিনে রাখা যায়।\nEnglish: A low-pH cleanser pick for simple morning or night cleansing routines.\n\nOffer price: ৳950 | Regular: ৳1100\nDM to order or tap the link in bio.\n\n#CosrxBangladesh #GelCleanser #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/09-cosrx-low-ph-good-morning-gel-cleanser-150ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/09-cosrx-low-ph-good-morning-gel-cleanser-150ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/09-cosrx-low-ph-good-morning-gel-cleanser-150ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/09-cosrx-low-ph-good-morning-gel-cleanser-150ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/09-cosrx-low-ph-good-morning-gel-cleanser-150ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "950",
+        "regular_price": "1100",
+        "sale_price": "950",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2022/04/76759.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 18095,
+      "title": "Cosrx Acne Pimple Master Patch 24 Patch",
+      "slug": "cosrx-acne-pimple-master-patch-24-patch",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/cosrx-acne-pimple-master-patch-24-patch",
+      "angle": "A compact patch pack for simple spot-care routines.",
+      "hashtags": "#CosrxBangladesh #PatchCare #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের COSRX পিক: Cosrx Acne Pimple Master Patch 24 Patch\n\nবাংলা: স্পট-কেয়ার রুটিনে ছোট, সহজে বহনযোগ্য patch pack হিসেবে এটি জনপ্রিয়।\nEnglish: A compact patch pack for simple spot-care routines.\n\nOffer price: ৳360 | Regular: ৳400\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/cosrx-acne-pimple-master-patch-24-patch\n\n#CosrxBangladesh #PatchCare #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের COSRX পিক: Cosrx Acne Pimple Master Patch 24 Patch\n\nবাংলা: স্পট-কেয়ার রুটিনে ছোট, সহজে বহনযোগ্য patch pack হিসেবে এটি জনপ্রিয়।\nEnglish: A compact patch pack for simple spot-care routines.\n\nOffer price: ৳360 | Regular: ৳400\nDM to order or tap the link in bio.\n\n#CosrxBangladesh #PatchCare #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/10-cosrx-acne-pimple-master-patch-24-patch-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/10-cosrx-acne-pimple-master-patch-24-patch-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/10-cosrx-acne-pimple-master-patch-24-patch-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/10-cosrx-acne-pimple-master-patch-24-patch-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/10-cosrx-acne-pimple-master-patch-24-patch-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "360",
+        "regular_price": "400",
+        "sale_price": "360",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2021/02/61YPY6Dv6MS._SL1500_.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 50566,
+      "title": "Cosrx Advanced Snail Mucin 96 Power Essence 30ml",
+      "slug": "cosrx-advanced-snail-mucin-96-power-essence-30ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-96-power-essence-30ml",
+      "angle": "A 30ml snail essence that works neatly for trial, travel, or small routines.",
+      "hashtags": "#CosrxBangladesh #MiniEssence #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের COSRX পিক: Cosrx Advanced Snail Mucin 96 Power Essence 30ml\n\nবাংলা: ৩০মিলি Snail essence টি ট্রায়াল, ট্রাভেল বা ছোট রুটিনের জন্য পারফেক্ট।\nEnglish: A 30ml snail essence that works neatly for trial, travel, or small routines.\n\nOffer price: ৳490 | Regular: ৳799\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/cosrx-advanced-snail-mucin-96-power-essence-30ml\n\n#CosrxBangladesh #MiniEssence #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের COSRX পিক: Cosrx Advanced Snail Mucin 96 Power Essence 30ml\n\nবাংলা: ৩০মিলি Snail essence টি ট্রায়াল, ট্রাভেল বা ছোট রুটিনের জন্য পারফেক্ট।\nEnglish: A 30ml snail essence that works neatly for trial, travel, or small routines.\n\nOffer price: ৳490 | Regular: ৳799\nDM to order or tap the link in bio.\n\n#CosrxBangladesh #MiniEssence #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/11-cosrx-advanced-snail-mucin-96-power-essence-30ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/11-cosrx-advanced-snail-mucin-96-power-essence-30ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/11-cosrx-advanced-snail-mucin-96-power-essence-30ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/11-cosrx-advanced-snail-mucin-96-power-essence-30ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/11-cosrx-advanced-snail-mucin-96-power-essence-30ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "490",
+        "regular_price": "799",
+        "sale_price": "490",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2023/03/Cosrx-Advanced-Snail-96-Mucin-Power-Essence.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 3509,
+      "title": "3W CLINIC Pure Natural Brown Rice Cleansing Foam 100ml",
+      "slug": "3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml",
+      "angle": "A brown rice cleansing foam for a fresh, simple cleansing step.",
+      "hashtags": "#3WClinicBangladesh #CleansingFoam #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের 3W Clinic পিক: 3W CLINIC Pure Natural Brown Rice Cleansing Foam 100ml\n\nবাংলা: Brown Rice cleansing foam টি ফ্রেশ, সহজ ক্লেনজিং স্টেপ হিসেবে রাখা যায়।\nEnglish: A brown rice cleansing foam for a fresh, simple cleansing step.\n\nOffer price: ৳484 | Regular: ৳900\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml\n\n#3WClinicBangladesh #CleansingFoam #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের 3W Clinic পিক: 3W CLINIC Pure Natural Brown Rice Cleansing Foam 100ml\n\nবাংলা: Brown Rice cleansing foam টি ফ্রেশ, সহজ ক্লেনজিং স্টেপ হিসেবে রাখা যায়।\nEnglish: A brown rice cleansing foam for a fresh, simple cleansing step.\n\nOffer price: ৳484 | Regular: ৳900\nDM to order or tap the link in bio.\n\n#3WClinicBangladesh #CleansingFoam #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/12-3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/12-3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/12-3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/12-3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/12-3w-clinic-pure-natural-brown-rice-cleansing-foam-100ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "484",
+        "regular_price": "900",
+        "sale_price": "484",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2022/04/81yEKxCFU7L._SL1500_-1.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 43290,
+      "title": "3W CLINIC Herbal Green Tea Beauty Soap 120g",
+      "slug": "3w-clinic-herbal-greenteabeauty-soap-120g",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/3w-clinic-herbal-greenteabeauty-soap-120g",
+      "angle": "A green tea soap pick for a simple fresh-feel bath-care routine.",
+      "hashtags": "#3WClinicBangladesh #GreenTeaSoap #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের 3W Clinic পিক: 3W CLINIC Herbal Green Tea Beauty Soap 120g\n\nবাংলা: গ্রিন টি soap টি সহজ, ফ্রেশ ফিলের বাথ-কেয়ার পিক হিসেবে রাখা যায়।\nEnglish: A green tea soap pick for a simple fresh-feel bath-care routine.\n\nPrice: ৳450\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/3w-clinic-herbal-greenteabeauty-soap-120g\n\n#3WClinicBangladesh #GreenTeaSoap #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের 3W Clinic পিক: 3W CLINIC Herbal Green Tea Beauty Soap 120g\n\nবাংলা: গ্রিন টি soap টি সহজ, ফ্রেশ ফিলের বাথ-কেয়ার পিক হিসেবে রাখা যায়।\nEnglish: A green tea soap pick for a simple fresh-feel bath-care routine.\n\nPrice: ৳450\nDM to order or tap the link in bio.\n\n#3WClinicBangladesh #GreenTeaSoap #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/13-3w-clinic-herbal-greenteabeauty-soap-120g-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/13-3w-clinic-herbal-greenteabeauty-soap-120g-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/13-3w-clinic-herbal-greenteabeauty-soap-120g-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/13-3w-clinic-herbal-greenteabeauty-soap-120g-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/13-3w-clinic-herbal-greenteabeauty-soap-120g-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "450",
+        "regular_price": "450",
+        "sale_price": "",
+        "on_offer": false,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2022/05/3034.970x0.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 43289,
+      "title": "3W CLINIC Charcoal Beauty Soap 120g",
+      "slug": "3w-clinic-charcoal-beauty-soap-120g",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/3w-clinic-charcoal-beauty-soap-120g",
+      "angle": "A charcoal soap pick for a clean, minimal bath-care routine.",
+      "hashtags": "#3WClinicBangladesh #CharcoalSoap #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের 3W Clinic পিক: 3W CLINIC Charcoal Beauty Soap 120g\n\nবাংলা: Charcoal soap টি ক্লিন, মিনিমাল বাথ-কেয়ার রুটিনে সহজে বসে যায়।\nEnglish: A charcoal soap pick for a clean, minimal bath-care routine.\n\nPrice: ৳450\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/3w-clinic-charcoal-beauty-soap-120g\n\n#3WClinicBangladesh #CharcoalSoap #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের 3W Clinic পিক: 3W CLINIC Charcoal Beauty Soap 120g\n\nবাংলা: Charcoal soap টি ক্লিন, মিনিমাল বাথ-কেয়ার রুটিনে সহজে বসে যায়।\nEnglish: A charcoal soap pick for a clean, minimal bath-care routine.\n\nPrice: ৳450\nDM to order or tap the link in bio.\n\n#3WClinicBangladesh #CharcoalSoap #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/14-3w-clinic-charcoal-beauty-soap-120g-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/14-3w-clinic-charcoal-beauty-soap-120g-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/14-3w-clinic-charcoal-beauty-soap-120g-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/14-3w-clinic-charcoal-beauty-soap-120g-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/14-3w-clinic-charcoal-beauty-soap-120g-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "450",
+        "regular_price": "450",
+        "sale_price": "",
+        "on_offer": false,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2022/05/3w_opt_500008_05-650x650-2.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 62180,
+      "title": "Celimax The Vita A Retinal Shot Tightening Booster 15ml",
+      "slug": "celimax-the-vita-a-retinal-shot-tightening-booster-15ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/celimax-the-vita-a-retinal-shot-tightening-booster-15ml",
+      "angle": "A focused Vita A booster pick for gradual night-routine use.",
+      "hashtags": "#CelimaxBangladesh #VitaABooster #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Celimax পিক: Celimax The Vita A Retinal Shot Tightening Booster 15ml\n\nবাংলা: Vita A booster টি রাতের রুটিনে ধীরে ধীরে যোগ করার মতো ফোকাসড পিক।\nEnglish: A focused Vita A booster pick for gradual night-routine use.\n\nOffer price: ৳1450 | Regular: ৳1600\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/celimax-the-vita-a-retinal-shot-tightening-booster-15ml\n\n#CelimaxBangladesh #VitaABooster #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের Celimax পিক: Celimax The Vita A Retinal Shot Tightening Booster 15ml\n\nবাংলা: Vita A booster টি রাতের রুটিনে ধীরে ধীরে যোগ করার মতো ফোকাসড পিক।\nEnglish: A focused Vita A booster pick for gradual night-routine use.\n\nOffer price: ৳1450 | Regular: ৳1600\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #VitaABooster #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/15-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/15-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/15-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/15-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/15-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "1450",
+        "regular_price": "1600",
+        "sale_price": "1450",
+        "on_offer": true,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2026/02/emart-celimax-the-vita-a-retinal-shot-tightening-booster-15ml.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 61916,
+      "title": "Celimax The Real Noni Refresh Clay Mask 120g",
+      "slug": "celimax-the-real-noni-refresh-clay-mask-120g",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/celimax-the-real-noni-refresh-clay-mask-120g",
+      "angle": "A Noni clay mask pick for a refreshing weekly mask step.",
+      "hashtags": "#CelimaxBangladesh #NoniMask #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Celimax পিক: Celimax The Real Noni Refresh Clay Mask 120g\n\nবাংলা: Noni clay mask টি সাপ্তাহিক রুটিনে রিফ্রেশিং mask step হিসেবে রাখা যায়।\nEnglish: A Noni clay mask pick for a refreshing weekly mask step.\n\nPrice: ৳1700\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/celimax-the-real-noni-refresh-clay-mask-120g\n\n#CelimaxBangladesh #NoniMask #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের Celimax পিক: Celimax The Real Noni Refresh Clay Mask 120g\n\nবাংলা: Noni clay mask টি সাপ্তাহিক রুটিনে রিফ্রেশিং mask step হিসেবে রাখা যায়।\nEnglish: A Noni clay mask pick for a refreshing weekly mask step.\n\nPrice: ৳1700\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #NoniMask #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/16-celimax-the-real-noni-refresh-clay-mask-120g-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/16-celimax-the-real-noni-refresh-clay-mask-120g-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/16-celimax-the-real-noni-refresh-clay-mask-120g-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/16-celimax-the-real-noni-refresh-clay-mask-120g-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/16-celimax-the-real-noni-refresh-clay-mask-120g-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "1700",
+        "regular_price": "1700",
+        "sale_price": "",
+        "on_offer": false,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2026/02/emart-celimax-the-real-noni-refresh-clay-mask-120g.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 61914,
+      "title": "Celimax The Real Noni Energy Ampoule 50ml",
+      "slug": "celimax-the-real-noni-energy-ampoule-50ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/celimax-the-real-noni-energy-ampoule-50ml",
+      "angle": "A 50ml Noni ampoule for a nourishing glow-feel serum routine.",
+      "hashtags": "#CelimaxBangladesh #NoniAmpoule #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Celimax পিক: Celimax The Real Noni Energy Ampoule 50ml\n\nবাংলা: ৫০মিলি Noni ampoule টি সিরাম রুটিনে পুষ্টিকর গ্লো-ফিল যোগ করে।\nEnglish: A 50ml Noni ampoule for a nourishing glow-feel serum routine.\n\nPrice: ৳1900\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/celimax-the-real-noni-energy-ampoule-50ml\n\n#CelimaxBangladesh #NoniAmpoule #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের Celimax পিক: Celimax The Real Noni Energy Ampoule 50ml\n\nবাংলা: ৫০মিলি Noni ampoule টি সিরাম রুটিনে পুষ্টিকর গ্লো-ফিল যোগ করে।\nEnglish: A 50ml Noni ampoule for a nourishing glow-feel serum routine.\n\nPrice: ৳1900\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #NoniAmpoule #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/17-celimax-the-real-noni-energy-ampoule-50ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/17-celimax-the-real-noni-energy-ampoule-50ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/17-celimax-the-real-noni-energy-ampoule-50ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/17-celimax-the-real-noni-energy-ampoule-50ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/17-celimax-the-real-noni-energy-ampoule-50ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "1900",
+        "regular_price": "1900",
+        "sale_price": "",
+        "on_offer": false,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2026/02/emart-celimax-the-real-noni-energy-ampoule-50ml.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    },
+    {
+      "product_id": 61912,
+      "title": "celimax The Real Noni Hydra Firming Lotion 150ml",
+      "slug": "celimax-the-real-noni-hydra-firming-lotion-150ml",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "same-brand-new-product-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/celimax-the-real-noni-hydra-firming-lotion-150ml",
+      "angle": "A lightweight Noni lotion step for daily moisture routines.",
+      "hashtags": "#CelimaxBangladesh #NoniLotion #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের Celimax পিক: celimax The Real Noni Hydra Firming Lotion 150ml\n\nবাংলা: Noni lotion টি ডেইলি ময়েশ্চার রুটিনে লাইটওয়েট, সহজ একটি ধাপ।\nEnglish: A lightweight Noni lotion step for daily moisture routines.\n\nPrice: ৳1700\nOriginal product. COD available across Bangladesh.\n\nShop now: https://e-mart.com.bd/shop/celimax-the-real-noni-hydra-firming-lotion-150ml\n\n#CelimaxBangladesh #NoniLotion #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের Celimax পিক: celimax The Real Noni Hydra Firming Lotion 150ml\n\nবাংলা: Noni lotion টি ডেইলি ময়েশ্চার রুটিনে লাইটওয়েট, সহজ একটি ধাপ।\nEnglish: A lightweight Noni lotion step for daily moisture routines.\n\nPrice: ৳1700\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #NoniLotion #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/18-celimax-the-real-noni-hydra-firming-lotion-150ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/18-celimax-the-real-noni-hydra-firming-lotion-150ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-06-30/bilingual-18-product-posts/18-celimax-the-real-noni-hydra-firming-lotion-150ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/18-celimax-the-real-noni-hydra-firming-lotion-150ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-06-30/bilingual-18-product-posts/18-celimax-the-real-noni-hydra-firming-lotion-150ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true
+      },
+      "price_snapshot": {
+        "price": "1700",
+        "regular_price": "1700",
+        "sale_price": "",
+        "on_offer": false,
+        "verified_at": "2026-06-30T02:45:00+06:00"
+      },
+      "product_image_source": "WordPress featured image: 2026/02/emart-celimax-the-real-noni-hydra-firming-lotion-150ml.jpg",
+      "background_source": "codex-rendered wooden podium card"
+    }
+  ]
+}

@@ -16,7 +16,6 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
-| | | | |
 
 ---
 
@@ -24,6 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-29 | Built and scheduled Jun 30 bilingual 18-post FB+IG campaign using yesterday's brand mix but new products; verified current prices/offers, rendered FB 1:1 + IG 4:5 assets, passed Social Engine QA, synced live public images, and started PM2 schedulers for 08:00-22:10 BDT. | current commit |
 | Codex | 2026-06-29 | Finished remaining Content Orchestrator real-product model-shot pipeline, preserved source cutout/request/metadata/fulfilled Medicube asset, verified syntax/status/social/video quality gates, and left owner-review gate/no-publish guardrails intact. | `1c55ecf` |
 | Claude | 2026-06-28 | Full session: (1) SEO sweep — CWV baselines, SEO-ORCH-3/6 closed, D6 documented, GROW-1 map (4,055+ pages/8 clusters/32 gaps). (2) BLOG-1 blog hero gen done. (3) CO-5 orchestrator tick + crontab done. (4) Hermes agent dashboard built — 22 engines, unified Hermes⚡+OpenClaw🐾 lanes, AI brain, model switcher, mobile UI, job tracking, follow-up conversations. PM2 + Nginx + auth. (5) Agent-task-routing doc. (6) Cleaned 10 stale PM2 processes. | uncommitted |
 | Codex | 2026-06-26 | Closed `USEO-8` source-of-truth state after verifying commit `b294337` already added Tier-2 category guides + FAQ schema for 7 categories. Updated `TASKS.md`, `SEO_MASTER.md`, session log, and verified lint/build. | current commit |
