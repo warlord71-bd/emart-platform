@@ -3541,3 +3541,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Kept/committed: Canonical reusable active helpers under `workspace/content-orchestrator/scripts/active/`, the June 30 social campaign plan JSON, the humanizer completed registry update, the action ledger append, and removal of obsolete checkout screenshot PNGs.
 - Verified: Active helper syntax checks passed (`py_compile`, `node --check`, `php -l`, `bash -n`); JSON validation passed for `brand_philosophies.json` and the June 30 campaign plan; secret scan found env/placeholders only in the committed active set.
 - Guardrail: No Woo/WordPress writes, no Meta publish/schedule changes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-29 · Codex · Model-with-product verification asset
+- Did: Generated a new Content Orchestrator model-holding-product visual for Medicube PDRN Pink Peptide Serum 30ml using the real product cutout as the reference, then saved it under the canonical `workspace/content-orchestrator/generated-assets/` path with a metadata sidecar.
+- Verified: Visually inspected the saved asset; product is upright in hand, model composition is vertical reel-friendly, and no price/COD/Emart overlay or duplicated offer text is embedded. PNG is 941x1672.
+- Guardrail: Verification asset only and owner review required before campaign use; no Woo/WordPress writes, no Meta publish/schedule changes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
