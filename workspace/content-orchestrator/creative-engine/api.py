@@ -153,28 +153,28 @@ def _compose_hero_vertical(d: ProductData, fmt: dict, req: CreativeRequest) -> s
   overflow-wrap:anywhere;word-break:break-word;}}
 .size{{display:inline-block;margin-top:20px;border:2px solid rgba(255,255,255,.72);border-radius:12px;
   padding:7px 18px;font-size:28px;font-weight:900;}}
-.product-stage{{position:absolute;left:58px;right:58px;top:430px;height:650px;border-radius:36px;
+.product-stage{{position:absolute;left:58px;right:58px;top:414px;height:740px;border-radius:36px;
   background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,248,238,.84));
   box-shadow:0 34px 90px rgba(0,0,0,.35);overflow:hidden;}}
 .product-stage::before{{content:"";position:absolute;inset:auto 70px 70px;height:112px;border-radius:50%;
   background:radial-gradient(ellipse, rgba(159,18,57,.28), rgba(159,18,57,0) 68%);filter:blur(8px);}}
 .product-stage img{{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  max-width:92%;max-height:88%;object-fit:contain;filter:drop-shadow(0 26px 36px rgba(0,0,0,.24));}}
-.product-stage.shape-tall_bottle img,.product-stage.shape-dropper img{{max-width:58%;max-height:90%;}}
+  max-width:92%;max-height:92%;object-fit:contain;filter:drop-shadow(0 26px 36px rgba(0,0,0,.24));}}
+.product-stage.shape-tall_bottle img,.product-stage.shape-dropper img{{height:90%;width:auto;max-width:66%;max-height:96%;}}
 .product-stage.shape-tube img{{max-width:66%;max-height:92%;}}
 .product-stage.shape-jar img{{max-width:76%;max-height:66%;}}
 .product-stage.shape-compact img{{max-width:78%;max-height:58%;}}
 .product-stage.shape-sheet_pack img,.product-stage.shape-box img,.product-stage.shape-pouch img{{max-width:86%;max-height:74%;}}
-.bn{{position:absolute;left:76px;right:76px;top:1108px;text-align:center;font-size:34px;
+.bn{{position:absolute;left:76px;right:76px;top:1174px;text-align:center;font-size:34px;
   font-weight:800;line-height:1.32;color:#fff;}}
-.price{{position:absolute;left:76px;right:76px;top:1205px;display:flex;align-items:center;
+.price{{position:absolute;left:76px;right:76px;top:1248px;display:flex;align-items:center;
   justify-content:center;gap:22px;flex-wrap:wrap;}}
 .price span:first-child{{font-size:76px;font-weight:900;color:{GOLD};text-shadow:0 8px 24px rgba(0,0,0,.32);}}
 .old{{font-size:44px!important;color:{SOFT_ROSE}!important;text-decoration:line-through;text-shadow:none!important;}}
 .save{{font-size:28px!important;color:#fff!important;background:rgba(255,255,255,.14);border-radius:24px;
   padding:8px 18px;text-shadow:none!important;}}
 .price b{{font-size:30px;color:{INK};background:{GOLD};border-radius:14px;padding:9px 18px;}}
-.foot{{position:absolute;left:58px;right:58px;top:1360px;display:flex;align-items:center;
+.foot{{position:absolute;left:58px;right:58px;top:1370px;display:flex;align-items:center;
   justify-content:space-between;color:{SOFT_ROSE};font-size:28px;font-weight:800;}}
 .url{{color:{GOLD};font-size:34px;letter-spacing:1px;}}
 </style></head><body><div class="wrap">
@@ -197,6 +197,10 @@ def _compose_scene_value(d: ProductData, fmt: dict, req: CreativeRequest) -> str
         bullets = ["ত্বকের চাহিদা বুঝে ব্যবহার করুন", "দিনে SPF ব্যবহার করুন", "প্যাচ টেস্ট করে নিন"]
     style = spec.get("style", "numbered")
     footer = spec.get("footer") or f"{BRAND_URL} · COD"
+    footer = footer.strip()
+    if footer.upper().startswith(BRAND_URL.upper()):
+        footer = footer[len(BRAND_URL):].strip(" ·|-")
+    footer = footer or "COD"
     logo = logo_data_uri()
     logo_block = f'<img class="logoimg" src="{logo}" alt="{BRAND_NAME} logo">' if logo else f'<span class="logo">{BRAND_NAME}</span>'
     count = len(bullets)
@@ -267,14 +271,19 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
 
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 {_vertical_base_css(w, h)}
-.wrap{{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  justify-content:flex-start;text-align:center;padding:190px 90px 520px;}}
-.logo{{width:248px;height:248px;border-radius:40px;margin-bottom:42px;
-  box-shadow:0 18px 50px rgba(0,0,0,0.45);}}
-.logotext{{font-size:84px;font-weight:900;letter-spacing:2px;margin-bottom:42px;color:#fff;}}
-.rule{{width:96px;height:4px;background:{GOLD};border-radius:2px;margin:0 auto 40px;}}
-.product{{font-size:64px;font-weight:800;line-height:1.25;margin-bottom:24px;}}
-.bn{{font-size:40px;font-weight:600;color:{SOFT_ROSE};line-height:1.4;margin-bottom:38px;}}
+.wrap{{position:absolute;inset:0;padding:78px 72px 96px;display:flex;flex-direction:column;}}
+.top{{display:flex;align-items:center;justify-content:space-between;gap:28px;}}
+.brandmark{{display:flex;align-items:center;gap:18px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);border-radius:26px;padding:12px 22px 12px 12px;}}
+.logo{{width:86px;height:86px;border-radius:22px;box-shadow:0 12px 34px rgba(0,0,0,0.38);}}
+.logotext{{font-size:38px;font-weight:900;letter-spacing:1px;color:#fff;}}
+.brandcopy strong{{display:block;font-size:36px;line-height:1;font-weight:900;color:#fff;}}
+.brandcopy span{{display:block;margin-top:6px;font-size:15px;text-transform:uppercase;font-weight:800;color:{SOFT_ROSE};}}
+.badge{{background:{GOLD};color:{INK};border-radius:18px;padding:12px 22px;font-size:26px;font-weight:900;letter-spacing:1px;}}
+.main{{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 10px 130px;}}
+.rule{{width:108px;height:5px;background:{GOLD};border-radius:3px;margin:0 auto 42px;}}
+.product{{font-size:62px;font-weight:900;line-height:1.18;margin-bottom:26px;max-width:880px;}}
+.bn{{font-size:38px;font-weight:700;color:{SOFT_ROSE};line-height:1.35;margin-bottom:42px;max-width:820px;}}
 .offerlabel{{font-size:30px;font-weight:800;letter-spacing:4px;color:{GOLD};
   text-transform:uppercase;margin-bottom:10px;}}
 .pricerow{{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:14px;}}
@@ -284,17 +293,19 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
   padding:8px 20px;letter-spacing:1px;}}
 .save{{font-size:32px;font-weight:800;color:#fff;background:rgba(255,255,255,0.16);
   border-radius:30px;padding:8px 26px;margin-bottom:46px;display:inline-block;}}
-.url{{font-size:46px;font-weight:800;letter-spacing:1px;margin:8px 0 18px;color:{GOLD};}}
-.tag{{font-size:30px;font-style:italic;color:{SOFT_ROSE};}}
-.foot{{position:absolute;bottom:520px;left:0;right:0;font-size:26px;color:{SOFT_ROSE};text-align:center;}}
+.url{{font-size:52px;font-weight:900;letter-spacing:1px;color:{GOLD};}}
+.tag{{font-size:30px;font-style:italic;color:{SOFT_ROSE};margin-top:16px;}}
+.foot{{position:absolute;left:72px;right:72px;top:1348px;display:flex;justify-content:space-between;
+  gap:28px;font-size:27px;font-weight:800;color:{SOFT_ROSE};}}
 </style></head><body><div class="wrap">
-{logo_block}<div class="rule"></div>
+<div class="top"><div class="brandmark">{logo_block}<div class="brandcopy"><strong>{BRAND_NAME}</strong><span>{BRAND_TAGLINE}</span></div></div><div class="badge">ORIGINAL · COD</div></div>
+<div class="main"><div class="rule"></div>
 <div class="product">{esc(product)}</div>
 {bangla_block}
 {price_block}
 <div class="url">{esc(url)}</div>
 <div class="tag">{BRAND_FOOTER}</div>
-</div><div class="foot">সারা বাংলাদেশে ক্যাশ অন ডেলিভারি · অরিজিনাল প্রোডাক্ট</div></body></html>"""
+</div></div><div class="foot"><span>Original product</span><span>Cash on Delivery across Bangladesh</span></div></body></html>"""
 
 
 def _compose_blog_og(d: ProductData, fmt: dict, req: CreativeRequest) -> str:

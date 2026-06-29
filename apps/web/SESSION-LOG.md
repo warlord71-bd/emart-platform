@@ -3501,3 +3501,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed: Missing images now raise `image not found`, and verification jobs can force pre-rendered Creative Engine frames to remain static instead of being Ken Burns-cropped.
 - Verified: Rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`; first-frame poster `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629-poster-first.jpg` is visible, not black. Local ffprobe QA passed score 96; MP4 is 1080x1920, 24fps, 135 frames, 5.625s. No symlinks reappeared under `workspace` maxdepth 3.
 - Guardrail: Dry-run/local render only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-29 · Codex · Reel card layout verification repair
+- Did: Reworked Creative Engine reel-card layout after owner visual review: serum/dropper/tall-bottle product heroes now explicitly upscale clean cutout images, value-card footers no longer duplicate the domain, and brand end cards use a top brand lockup plus centered product/price close.
+- Fixed: Rebuilt the manual Content Orchestrator verification job to use the real Medicube product cutout instead of feeding a generated promo image into another reel card, removing duplicated embedded price/info from the first card.
+- Verified: Rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`; extracted and visually checked opening/value/end frames. Final MP4 is vertical 1080x1920, 24fps, 149 frames, 6.208s; local QA passed score 96.
+- Guardrail: Dry-run/local render only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
