@@ -135,7 +135,14 @@ def _compose_hero_vertical(d: ProductData, fmt: dict, req: CreativeRequest) -> s
 
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 {_vertical_base_css(w, h)}
-.wrap{{position:absolute;inset:0;padding:58px 58px 62px;}}
+.hero-bottom-fill{{position:absolute;left:0;right:0;top:1410px;bottom:0;z-index:0;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(231,178,74,.14), transparent 25%),
+    radial-gradient(circle at 78% 30%, rgba(255,255,255,.07), transparent 24%),
+    linear-gradient(180deg, rgba(42,10,24,0), rgba(42,10,24,.38) 34%, rgba(25,8,13,.88) 100%);}}
+.hero-bottom-fill::before{{content:"";position:absolute;left:58px;right:58px;top:80px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(231,178,74,.42),transparent);}}
+.wrap{{position:absolute;inset:0;padding:58px 58px 62px;z-index:1;}}
 .top{{display:flex;justify-content:space-between;align-items:flex-start;gap:28px;}}
 .brand{{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.12);
   border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:10px 18px 10px 10px;}}
@@ -153,7 +160,7 @@ def _compose_hero_vertical(d: ProductData, fmt: dict, req: CreativeRequest) -> s
   overflow-wrap:anywhere;word-break:break-word;}}
 .size{{display:inline-block;margin-top:20px;border:2px solid rgba(255,255,255,.72);border-radius:12px;
   padding:7px 18px;font-size:28px;font-weight:900;}}
-.product-stage{{position:absolute;left:58px;right:58px;top:414px;height:740px;border-radius:36px;
+.product-stage{{position:absolute;left:58px;right:58px;top:450px;height:700px;border-radius:36px;
   background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,248,238,.84));
   box-shadow:0 34px 90px rgba(0,0,0,.35);overflow:hidden;}}
 .product-stage::before{{content:"";position:absolute;inset:auto 70px 70px;height:112px;border-radius:50%;
@@ -165,9 +172,9 @@ def _compose_hero_vertical(d: ProductData, fmt: dict, req: CreativeRequest) -> s
 .product-stage.shape-jar img{{max-width:76%;max-height:66%;}}
 .product-stage.shape-compact img{{max-width:78%;max-height:58%;}}
 .product-stage.shape-sheet_pack img,.product-stage.shape-box img,.product-stage.shape-pouch img{{max-width:86%;max-height:74%;}}
-.bn{{position:absolute;left:76px;right:76px;top:1174px;text-align:center;font-size:34px;
+.bn{{position:absolute;left:76px;right:76px;top:1186px;text-align:center;font-size:34px;
   font-weight:800;line-height:1.32;color:#fff;}}
-.price{{position:absolute;left:76px;right:76px;top:1248px;display:flex;align-items:center;
+.price{{position:absolute;left:76px;right:76px;top:1262px;display:flex;align-items:center;
   justify-content:center;gap:22px;flex-wrap:wrap;}}
 .price span:first-child{{font-size:76px;font-weight:900;color:{GOLD};text-shadow:0 8px 24px rgba(0,0,0,.32);}}
 .old{{font-size:44px!important;color:{SOFT_ROSE}!important;text-decoration:line-through;text-shadow:none!important;}}
@@ -177,7 +184,7 @@ def _compose_hero_vertical(d: ProductData, fmt: dict, req: CreativeRequest) -> s
 .foot{{position:absolute;left:58px;right:58px;top:1370px;display:flex;align-items:center;
   justify-content:space-between;color:{SOFT_ROSE};font-size:28px;font-weight:800;}}
 .url{{color:{GOLD};font-size:34px;letter-spacing:1px;}}
-</style></head><body><div class="wrap">
+</style></head><body><div class="hero-bottom-fill"></div><div class="wrap">
   <div class="top"><div class="brand">{logo_block}<div><strong>{BRAND_NAME}</strong><span>{BRAND_TAGLINE}</span></div></div><div class="badge">{esc(badge)}</div></div>
   <div class="copy"><div class="kicker">{KICKER_DEFAULT}</div><div class="title">{esc(title)}</div><div class="sub">{esc(sub)}</div>{size_block}</div>
   <div class="product-stage {shape_class}">{f'<img src="{product_img}" alt="product">' if product_img else ''}</div>
@@ -263,6 +270,8 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
     bangla = spec.get("bangla") or ""
     url = spec.get("url") or BRAND_URL
     logo = logo_data_uri()
+    product_img = _product_image_data_uri(d, cutout=req.product_cutout)
+    product_block = f'<div class="product-mini"><img src="{product_img}" alt="product"></div>' if product_img else ""
     logo_block = f'<img class="logo" src="{logo}" alt="{BRAND_NAME} logo">' if logo else f'<div class="logotext">{BRAND_NAME}</div>'
     old_amount = _price_value(d.regular_price)
     price_amount = _price_value(d.price)
@@ -287,9 +296,13 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
 .brandcopy strong{{display:block;font-size:36px;line-height:1;font-weight:900;color:#fff;}}
 .brandcopy span{{display:block;margin-top:6px;font-size:15px;text-transform:uppercase;font-weight:800;color:{SOFT_ROSE};}}
 .badge{{background:{GOLD};color:{INK};border-radius:18px;padding:12px 22px;font-size:26px;font-weight:900;letter-spacing:1px;}}
-.main{{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 10px 130px;}}
-.rule{{width:108px;height:5px;background:{GOLD};border-radius:3px;margin:0 auto 42px;}}
-.product{{font-size:62px;font-weight:900;line-height:1.18;margin-bottom:26px;max-width:880px;}}
+.main{{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:42px 10px 160px;}}
+.rule{{width:108px;height:5px;background:{GOLD};border-radius:3px;margin:0 auto 28px;}}
+.product-mini{{width:230px;height:230px;border-radius:34px;margin:0 auto 30px;
+  display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,248,238,.80));
+  box-shadow:0 24px 58px rgba(0,0,0,.34), inset 0 0 0 1px rgba(255,255,255,.42);}}
+.product-mini img{{max-width:78%;max-height:88%;object-fit:contain;filter:drop-shadow(0 18px 24px rgba(0,0,0,.25));}}
+.product{{font-size:58px;font-weight:900;line-height:1.16;margin-bottom:24px;max-width:880px;}}
 .bn{{font-size:38px;font-weight:700;color:{SOFT_ROSE};line-height:1.35;margin-bottom:42px;max-width:820px;}}
 .offerlabel{{font-size:30px;font-weight:800;letter-spacing:4px;color:{GOLD};
   text-transform:uppercase;margin-bottom:10px;}}
@@ -302,11 +315,12 @@ def _compose_scene_brand_end(d: ProductData, fmt: dict, req: CreativeRequest) ->
   border-radius:30px;padding:8px 26px;margin-bottom:46px;display:inline-block;}}
 .url{{font-size:52px;font-weight:900;letter-spacing:1px;color:{GOLD};}}
 .tag{{font-size:30px;font-style:italic;color:{SOFT_ROSE};margin-top:16px;}}
-.foot{{position:absolute;left:72px;right:72px;top:1348px;display:flex;justify-content:space-between;
-  gap:28px;font-size:27px;font-weight:800;color:{SOFT_ROSE};}}
+.foot{{position:absolute;left:72px;right:72px;top:1376px;display:flex;justify-content:space-between;
+  gap:28px;font-size:26px;font-weight:800;color:{SOFT_ROSE};}}
 </style></head><body><div class="wrap">
 <div class="top"><div class="brandmark">{logo_block}<div class="brandcopy"><strong>{BRAND_NAME}</strong><span>{BRAND_TAGLINE}</span></div></div><div class="badge">ORIGINAL · COD</div></div>
 <div class="main"><div class="rule"></div>
+{product_block}
 <div class="product">{esc(product)}</div>
 {bangla_block}
 {price_block}

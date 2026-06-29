@@ -123,9 +123,11 @@ def brand_card_image(job) -> list[str]:
     if not job.get("brand_card"):
         return []
     card = OUTPUT / f"card-{job['id']}.png"
+    src = job.get("product_image") or job.get("product_image_url") or ""
     render_creative(CreativeRequest(
-        product=product_snapshot(job),
+        product=product_snapshot(job, image=str(src)),
         format="scene_brand_end",
+        image_override=str(src) if src else None,
         value_spec={
             "product": job.get("product") or job.get("headline", "Emart Skincare"),
             "bangla": job.get("brand_card_bangla", ""),

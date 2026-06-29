@@ -3512,3 +3512,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Moved the Creative Engine value-card Emart/footer block down to the lowest reel-safe area and added a subtle decorative bottom fill so the lower half no longer looks empty.
 - Verified: Rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`; visually checked updated second card. Local ffprobe QA passed score 96; MP4 remains 1080x1920, 24fps, 149 frames, 6.208s.
 - Guardrail: Dry-run/local render only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-29 · Codex · Reel hero/end-card product layout repair
+- Did: Moved the hero product panel lower under the 30ml badge, added lower-card fill to the first frame, and passed the real product image into the brand end card so it can show a small product visual above the product name.
+- Fixed: Brand end cards now keep the "Original product" and "Cash on Delivery across Bangladesh" trust row at the bottom safe area instead of floating in the middle.
+- Verified: Rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`; visually checked first and last frames. Local ffprobe QA passed score 96; MP4 remains 1080x1920, 24fps, 149 frames, 6.208s.
+- Guardrail: Dry-run/local render only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
