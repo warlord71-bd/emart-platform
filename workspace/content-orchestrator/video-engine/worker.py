@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "lib"))
 sys.path.insert(0, str(ROOT.parent))
+sys.path.insert(0, str(ROOT.parents[1]))
 import router  # noqa: E402
 from quality_gates import validate_job_spec, validate_script_payload  # noqa: E402
 from workspace_creative_engine import CreativeRequest, render as render_creative  # noqa: E402

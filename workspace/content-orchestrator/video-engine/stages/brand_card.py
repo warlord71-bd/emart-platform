@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse, sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
 from workspace_creative_engine import CreativeRequest, render as render_creative  # noqa: E402
