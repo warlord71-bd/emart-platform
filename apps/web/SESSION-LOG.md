@@ -3524,3 +3524,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed: Removed the visual conflict between `Global Beauty. Local Trust.` and the cash-on-delivery line on the last verification card.
 - Verified: Forced the manual verification job to regenerate cards/reel, rebuilt `workspace/content-orchestrator/video-engine/output/orchestrator-verification-20260629.mp4`, refreshed poster/end-frame stills, and visually checked the last card. Local ffprobe QA passed score 96; MP4 is 1080x1920, 24fps, 149 frames, 6.30s.
 - Guardrail: Dry-run/local render only; ignored job/output artifacts only; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-29 · Codex · Generated media cleanup
+- Did: Archived unused generated image/video artifacts from `workspace/content-orchestrator/video-engine/output/` and top-level `workspace/content-orchestrator/generated-assets/` into `/root/.attic-2026-06-29/emart-generated-media-cleanup-20260629/`.
+- Preserved: Current verification proof files stayed in place: `orchestrator-verification-20260629.mp4`, `orchestrator-verification-20260629-poster-first.jpg`, `orchestrator-verification-20260629-frame-end.jpg`, and `qa-orchestrator-verification-20260629.json`. Media still referenced by video job JSONs stayed in output.
+- Verified: Moved 57 unused media files (103,472,334 bytes); archive manifest saved at `/root/.attic-2026-06-29/emart-generated-media-cleanup-20260629/MANIFEST.txt`. Top-level `generated-assets` has no remaining image/video files.
+- Guardrail: Safe archive only, no deletion; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
