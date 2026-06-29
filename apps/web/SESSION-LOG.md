@@ -3530,3 +3530,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Preserved: Current verification proof files stayed in place: `orchestrator-verification-20260629.mp4`, `orchestrator-verification-20260629-poster-first.jpg`, `orchestrator-verification-20260629-frame-end.jpg`, and `qa-orchestrator-verification-20260629.json`. Media still referenced by video job JSONs stayed in output.
 - Verified: Moved 57 unused media files (103,472,334 bytes); archive manifest saved at `/root/.attic-2026-06-29/emart-generated-media-cleanup-20260629/MANIFEST.txt`. Top-level `generated-assets` has no remaining image/video files.
 - Guardrail: Safe archive only, no deletion; no Woo/WordPress writes, no Meta publish/schedule, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-29 · Codex · Cleanup commit verification
+- Did: Rechecked and confirmed the generated-media cleanup is committed in `4729f55`; current proof MP4/poster/end-frame/QA files remain in the canonical Content Orchestrator output folder.
+- Verified: Relevant tracked paths are clean; archive size is 99M, remaining video output is 110M, and `generated-assets` has no top-level image/video files.
+- Guardrail: Verification/docs only; unrelated dirty workspace files were not staged or changed; no deploy, no publish, no Woo/WordPress writes.
