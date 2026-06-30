@@ -96,7 +96,7 @@ Items 7–10 are already deployed or need only a runtime action (no merge).
 | X11 | Plain-English blog capacity pilot — revision in progress | TASKS | S | — | P3 |
 | X10 | Bangla blog anti-slop pilot — owner content review | TASKS | S | Owner review | P3 |
 | CO-5 | Content orchestrator `--tick` cron — owner cadence decision | TASKS | S | Owner approval | P3 |
-| CO-7 | Wire Judge.me reviews + pa_ingredient resolver to orchestrator | TASKS | M | — | P3 |
+| CO-7 | Wire native review signals + pa_ingredient resolver to orchestrator | TASKS | M | Native review export / magic-link flow | P3 |
 | WA-H | Blog generator: verify no new pilots use direct-publish | TASKS | S | — | P1 (risk) |
 | Product onboarding | Review-gated apply tool | TASKS | S | — | P3 |
 | Hybrid humanizer | 800–1,200 word descriptions (60% auto + 40% LLM) | TASKS | L | Owner review | P2 |

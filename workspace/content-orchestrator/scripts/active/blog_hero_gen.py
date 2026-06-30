@@ -24,7 +24,7 @@ import argparse, json, os, re, sys, base64
 from pathlib import Path
 from datetime import datetime
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "workspace"))
 

@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 AUDIT_DIR = ROOT / "workspace/audit/active/social-reel-approval-20260630-brand-fresh-product-base-v6"
 APP_PUBLIC_DIR = ROOT / "apps/web/public/images/social/2026-06-29/brand-fresh-product-base-v6"
 OUTPUT_DIR = ROOT / "workspace/content-orchestrator/social-engine/output/2026-06-29/2026-06-29-brand-fresh-product-base-v6"

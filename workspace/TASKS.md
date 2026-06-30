@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-30 (Whole-catalog product-route audit clean: 3,624 published products checked against 374 Next redirects; 0 live `/shop` slugs redirected away, 0 legacy `/product` slugs off-canonical, 0 missing product redirect targets after deployed fixes for Medipeel, APLB, La Roche, Nature Republic, and Round Lab aliases; live SEO/AEO gate passed)
+Last updated: 2026-06-30 (Workspace housekeeping: empty accidental `workspace/workspace` tree moved to `/root/.attic-2026-06-30/emart-platform-empty-nested-workspace-20260630/`; active helper script repo-root calculations fixed to prevent nested workspace outputs. Previous live audit remains clean: 3,624 published products checked against 374 Next redirects; 0 live `/shop` slugs redirected away, 0 legacy `/product` slugs off-canonical, 0 missing product redirect targets.)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 

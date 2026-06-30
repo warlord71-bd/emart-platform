@@ -72,7 +72,7 @@
       "label": "Customer Reviews / Testimonials",
       "surface": "external+internal",
       "intent": "real verified reviews build trust at the moment of decision",
-      "demand_signal": "reviews_judgeme",
+      "demand_signal": "reviews_native",
       "formats": ["post_1x1", "post_4x5", "scene_value"],
       "channels": ["facebook", "instagram", "pdp_quote"],
       "generator": "social",
@@ -80,7 +80,7 @@
       "metric": "trust_ctr,conversion,review_count",
       "cadence_days": 4,
       "per_run": 3,
-      "guard": "Use only real Judge.me-verified reviews. No fabricated testimonials."
+      "guard": "Use only real approved Woo/native magic-link reviews. No fabricated testimonials."
     },
     {
       "id": "influencer_reco",

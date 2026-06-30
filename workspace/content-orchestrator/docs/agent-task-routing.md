@@ -45,7 +45,7 @@ Last updated: 2026-06-28
 | SEO analysis reports | Deep ranking/gap analysis | SEO Report |
 | Competitor pricing | Research + comparison + recommendations | Competitor Prices |
 | Blog content strategy | Topic selection, editorial calendar | Auto Publisher |
-| CO-7 Judge.me + ingredient wiring | Needs analysis of review data patterns | Send Task |
+| CO-7 native review + ingredient wiring | Needs analysis of review data patterns | Send Task |
 
 ### 💻 Claude Code (needs human in VS Code)
 

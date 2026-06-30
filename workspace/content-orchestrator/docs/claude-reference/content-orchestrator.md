@@ -68,7 +68,7 @@ guard           hard rules (no fake urgency, real reviews only, GMC claim safety
 |---|---|---|
 | `performance_scores` | `social-engine/performance/latest.json` (GA4+GSC+GMC+Meta join already built) | ✅ live (slug→id resolved with `--live-signals`) |
 | `gsc_trending` | GSC striking-distance export | ✅ when export present |
-| `reviews_judgeme` | Judge.me reviews export | wire export file |
+| `reviews_native` | Approved Woo / native magic-link reviews export | wire export file |
 | `new_arrivals_woo_date` | Woo `orderby=date` read-only | ✅ live with `--live-signals` |
 | `clearance_woo_sale` | Woo `on_sale=true` (reflects REAL sale prices only — empty until owner enables sales) | ✅ live with `--live-signals` |
 | `category_catalog` | Woo category pick (makeup/skincare filters, slug→id) | ✅ live with `--live-signals` |
@@ -199,7 +199,7 @@ orchestrator continues without it. The brain never publishes and never writes Wo
 - ✅ `model_holding_real_product` pipe: dispatch emits model-shot requests, video jobs carry
   no-hallucination composite fields, and daily producer requests model-shot first frames when a real
   product image exists.
-- Wire the Judge.me reviews export and a pa_ingredient resolver (remaining placeholder signals).
+- Wire the native review export and a pa_ingredient resolver (remaining placeholder signals).
 - Add a `--tick` cron entry (build-only, gated) once owner approves the cadence.
 - When owner funds paid OpenRouter credits, set `OPENROUTER_MODEL` to Hermes for higher-quality
   angles; the free chain is the default until then.

@@ -21,7 +21,7 @@ from pathlib import Path
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 
-ROOT = Path(__file__).resolve().parents[3]  # emart-platform root
+ROOT = Path(__file__).resolve().parents[4]  # emart-platform root
 APP_SRC = ROOT / "apps" / "web" / "src"
 LIB = APP_SRC / "lib"
 DATA = APP_SRC / "data"

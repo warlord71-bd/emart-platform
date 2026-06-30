@@ -3342,7 +3342,7 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Changed: `themes.json` (12 selling themes: fast-selling, clearance, new-arrivals, giveaway, reviews, influencer, ingredients, trending, innovation, doctor-reco, cosmetics, color-cosmetics — each mapping signal→format→channel→generator→gate→metric→cadence). `orchestrator.py` (`themes`/`plan`/`dispatch`/`manual`/`learn`/`status`). `brain.py` optional LLM (`--llm`) reusing the humanizer's OpenRouter free chain (no new secret; Hermes via `OPENROUTER_MODEL`, OpenClaw via `OPENCLAW_BASE_URL`). `woo.py` 4 read-only Woo resolvers reusing Social Engine `woo_get` (new-arrivals, clearance=real `on_sale` only, category slug→id, pa_concern) + slug→product_id. `dispatch --ledger` writes one action-ledger entry per item (`sub_category=theme`) feeding the `learn` self-improving loop → `theme_weights.json` per_run multiplier (cadence stays owner-gated). Model doc `workspace/docs/claude-reference/content-orchestrator.md`; README; TASKS CO-1..CO-7 (CO-1/2/3/4/6 ✅).
 - Verified: All subcommands pass (syntax + run). `plan` pulled 13/32 real candidates from `performance/latest.json` + GSC; `plan --live-signals` returned 8/8 real Woo candidates with numeric IDs; clearance items confirmed GENUINELY on-sale (Medicube ৳1500→1400, Neutrogena ৳1600→1200); `--llm` generated a real hook live; `dispatch --ledger` entry grouped by `learn`, then test entry removed (ledger restored to 30 lines). `manual` giveaway correctly hit the owner gate with its guard.
 - Blockers: None. Files new/isolated but left UNCOMMITTED (shared dirty tree has Codex creative-engine work). Woo creds reachable on Local this session.
-- Next step: CO-5 (owner-gated build-only `--tick` cron — needs owner cadence approval); CO-7 (Judge.me reviews + pa_ingredient resolvers); CO-4 weights go live once dispatched items reach keep/revert outcome status. Optional: stage only `content-orchestrator/` + doc for a clean isolated commit.
+- Next step: CO-5 (owner-gated build-only `--tick` cron — needs owner cadence approval); CO-7 (native review signals + pa_ingredient resolvers); CO-4 weights go live once dispatched items reach keep/revert outcome status. Optional: stage only `content-orchestrator/` + doc for a clean isolated commit.
 - Guardrail: Dry-run throughout; no Meta publish/schedule, no Woo/WordPress writes, no deploy, no PM2 restart, no push. One test ledger entry written then removed.
 
 ## 2026-06-26 · Codex · Creative/video v2 approval rebuild
@@ -3582,3 +3582,25 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Deployed: Built locally, committed `81dd4ce`, rsynced `apps/web` to VPS, built on VPS, and restarted `emartweb`.
 - Verified: Final audit report shows 0 live `/shop` slugs redirected away, 0 live legacy `/product` slugs off-canonical, and 0 missing product redirect destinations. Public URL checks returned HTTP 200 for Medipeel, APLB, La Roche old alias, Nature Republic old alias, Round Lab old alias, and homepage. Live SEO/AEO gate passed 10/10 checks.
 - Guardrail: Read-only Woo catalog inspection and frontend route config only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes.
+
+## 2026-06-30 · Codex · PDP review schema verification
+- Did: Checked current Next.js PDP review/SEO implementation for the owner review-collection question. Source search found no third-party review integration in `apps/web`; PDPs use approved Woo reviews via `getProductReviews`.
+- Verified: `apps/web/src/app/shop/[slug]/page.tsx` server-fetches reviews, passes them to `ReviewsSection`, and emits Product JSON-LD via `getProductJsonLd(product, reviews)`. Live HTML for `/shop/cosrx-advanced-snail-mucin-96-power-essence-100ml` contains server-rendered reviews, `aggregateRating` reviewCount 2, and two individual `Review` objects before hydration. `workspace/SEO_MASTER.md` already records this as the intended policy: review schema only when real Woo reviews exist.
+- Guardrail: Read-only verification plus task/log note only; no storefront code changes, no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+- Did: Rechecked whether anything logically must be added for review SEO. Confirmed checkout stores Google Customer Reviews opt-in data, order-success renders the Google survey opt-in, the runtime merchant badge is present, and Woo review submission exists.
+- Verified: Current required business action is review volume, not more schema code: collect real approved product reviews into Woo so existing Next.js server-rendered schema can expose them.
+- Guardrail: Task/log clarification only; no checkout/order/customer data access, no Woo/WordPress writes, no storefront code changes, no deploy, no `emartweb` restart.
+
+## 2026-06-30 · Codex · Native magic-link review task direction
+- Did: Removed the active third-party review-collection direction after the integration path failed cleanly for the store, and changed the pending work to a native magic-link review flow.
+- Changed: Active task board now points O-11 to secure post-purchase magic links that create Woo-visible product reviews; Content Orchestrator review demand signal was renamed to native reviews.
+- Verified: Python syntax, `themes.json` parse, and diff whitespace checks passed; active review docs/code/task references now point to native magic-link reviews.
+- Guardrail: Direction/code-label cleanup only; no checkout/order/customer/stock/price data access, no Woo/WordPress writes, no storefront deploy, no `emartweb` restart.
+
+## 2026-06-30 · Codex · Nested workspace cleanup
+- Did: Investigated accidental `workspace/workspace` folder, confirmed it was untracked, contained no files, and only held empty audit/social-campaign directories.
+- Cleaned: Moved the empty tree to `/root/.attic-2026-06-30/emart-platform-empty-nested-workspace-20260630/` instead of deleting it.
+- Fixed: Corrected active helper scripts where `Path(__file__).resolve().parents[3]` pointed at `/root/emart-platform/workspace` while the scripts expected repo root, preventing future `workspace/workspace/...` outputs when those helpers run directly.
+- Verified: `py_compile` passed for the six touched Python scripts; path sanity check resolves repo root as `/root/emart-platform`; repo search finds no `workspace/workspace`, `workspce`, or `wokspace` references; only the real top-level `workspace` remains.
+- Guardrail: Housekeeping/script-path fix only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.

@@ -13,7 +13,7 @@ from pathlib import Path
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 SRC_DIR = ROOT / "workspace/audit/active/social-reel-approval-20260630-brand-fresh-product-base-v4"
 OUT_DIR = ROOT / "workspace/audit/active/social-reel-approval-20260630-brand-fresh-product-base-v6"
 CANDIDATES = ROOT / "workspace/audit/active/social-brand-fresh-candidates-20260629.json"

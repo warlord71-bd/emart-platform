@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 AUDIT_DIR = ROOT / "workspace/audit/active/social-reel-approval-20260630-brand-fresh-product-base-v6"
 OUT_DIR = ROOT / "workspace/audit/active/reel-approval-20260629-v6"
 QUEUE_DIR = ROOT / "workspace/content-orchestrator/video-engine/jobs/queue"

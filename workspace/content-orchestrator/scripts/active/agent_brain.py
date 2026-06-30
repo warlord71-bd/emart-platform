@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Iterable
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 WORKSPACE = ROOT / "workspace"
 AGENT_BUS = ROOT / "apps/web/.agent-memory/AGENT_BUS.md"
 TASKS = WORKSPACE / "TASKS.md"

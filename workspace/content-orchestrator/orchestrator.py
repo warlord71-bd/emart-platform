@@ -43,7 +43,7 @@ CREATIVE_ENGINE = ROOT / "creative-engine"
 
 SOCIAL_PERF = SOCIAL_ENGINE / "performance" / "latest.json"
 GSC_STRIKING = WORKSPACE / "seo-review" / "striking-distance.json"
-REVIEWS_FILE = SOCIAL_ENGINE / "performance" / "reviews-latest.json"
+REVIEWS_FILE = SOCIAL_ENGINE / "performance" / "native-reviews-latest.json"
 VIDEO_QUEUE = VIDEO_ENGINE / "jobs" / "queue"
 SOCIAL_CAMPAIGNS = SOCIAL_ENGINE / "campaigns"
 LEDGER_HELPER = WORKSPACE / "ledgers" / "ledger_helper.py"
@@ -149,7 +149,7 @@ def _reviews(n: int) -> list[dict]:
     for r in rows[:n]:
         out.append({"product_id": r.get("product_id"), "name": r.get("product") or "review",
                     "slug": r.get("slug"), "topic": r.get("excerpt"),
-                    "source": "judgeme", "signal_score": r.get("rating")})
+                    "source": "native_review", "signal_score": r.get("rating")})
     return out
 
 
@@ -171,7 +171,7 @@ def _live(fn, theme, n, live, why):
 DEMAND_RESOLVERS = {
     "performance_scores": lambda theme, n, live: _perf_top(n, live) or _placeholder(theme, n, "no performance/latest.json yet"),
     "gsc_trending":       lambda theme, n, live: _gsc_trending(n) or _placeholder(theme, n, "no striking-distance export yet"),
-    "reviews_judgeme":    lambda theme, n, live: _reviews(n) or _placeholder(theme, n, "no reviews export yet"),
+    "reviews_native":     lambda theme, n, live: _reviews(n) or _placeholder(theme, n, "no native review export yet"),
     "new_arrivals_woo_date": lambda theme, n, live: _live(woo.new_arrivals if woo else None, theme, n, live, "Woo orderby=date read-only"),
     "clearance_woo_sale":    lambda theme, n, live: _live(woo.clearance if woo else None, theme, n, live, "owner must enable Woo sale prices first"),
     "category_catalog":      lambda theme, n, live: _live((lambda k: woo.by_category(theme.get("category_filter", []), k)) if woo else None, theme, n, live, f"Woo category pick {theme.get('category_filter')}"),
