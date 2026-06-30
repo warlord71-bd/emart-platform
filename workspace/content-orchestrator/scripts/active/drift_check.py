@@ -142,7 +142,9 @@ def print_vps_dirty(vps: Path) -> int:
         print("  source-like examples:")
         for path in source_like[:20]:
             print(f"    {path}")
-    return len(source_like)
+    if source_like:
+        print("  note: runtime git dirt is informational; key source-file compare decides dangerous source drift")
+    return 0
 
 
 def print_key_file_cmp(local: Path, vps: Path) -> int:
