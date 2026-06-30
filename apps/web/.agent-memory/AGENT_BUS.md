@@ -23,7 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
-| Claude | 2026-06-30 | Reorganized `workspace/content-orchestrator/docs/` (34 loose root files → specs/guides/owner-actions/audits/archive) + 1 misplaced `workspace/audit/` file; fixed all path references incl. one functional script dependency; refreshed `ARCHIVE_INDEX.md`. Flagged (not fixed): `emart-meta-gen` PM2 entry points at a legacy `workspace/scripts/` tree that exists on VPS only, never reconciled to Local/git. | uncommitted |
+| Claude | 2026-06-30 | Reorganized `workspace/content-orchestrator/docs/` (34 loose root files → specs/guides/owner-actions/audits/archive) + 1 misplaced `workspace/audit/` file; fixed all path references incl. one functional script dependency; refreshed `ARCHIVE_INDEX.md`. Flagged (not fixed): `emart-meta-gen` PM2 entry points at a legacy `workspace/scripts/` tree that exists on VPS only, never reconciled to Local/git. | `d8d7d89` |
 | Codex | 2026-06-30 | Closed remaining context/deploy-reference inconsistencies, refreshed agent brain, and updated session closeout docs. | `dc8d154` |
 | Codex | 2026-06-30 | Pinned recent Codex completion rows to concrete commit hashes after later commits moved `HEAD`. | `f396ff1` |
 | Codex | 2026-06-30 | Added automatic social/video done-history cleanup: completed published/rejected records archive into category-wise logical history, hot job folders stay clear, and runtime history ledgers are no longer tracked. | `ad16668` |
