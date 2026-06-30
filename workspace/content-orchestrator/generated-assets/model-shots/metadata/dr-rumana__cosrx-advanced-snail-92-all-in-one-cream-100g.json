@@ -1,0 +1,15 @@
+{
+  "asset": "/root/emart-platform/workspace/content-orchestrator/generated-assets/model-shots/holding/dr-rumana__cosrx-advanced-snail-92-all-in-one-cream-100g.png",
+  "request": "/root/emart-platform/workspace/content-orchestrator/generated-assets/model-shots/requests/dr-rumana__cosrx-advanced-snail-92-all-in-one-cream-100g.json",
+  "status": "ready_to_generate",
+  "publish_gate": "owner_review_required",
+  "product": "CosRx Advanced Snail 92 All In One Cream 100g",
+  "product_id": 3700,
+  "product_image_reference": "https://e-mart.com.bd/wp-content/uploads/2022/04/advanced-snail-92-all-in-one-cream_2-1.png",
+  "checks": {
+    "product_reference_available": true,
+    "embedded_price_or_offer_text_allowed": false,
+    "woocommerce_write": false,
+    "meta_publish": false
+  }
+}

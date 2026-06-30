@@ -1,0 +1,22 @@
+{
+  "request_id": "dr-rumana__cosrx-advanced-snail-92-all-in-one-cream-100g",
+  "created_at": "2026-06-30T04:30:11",
+  "status": "ready_to_generate",
+  "publish_gate": "owner_review_required",
+  "source": "content-orchestrator:doctor_reco:20260630-021",
+  "product": "CosRx Advanced Snail 92 All In One Cream 100g",
+  "product_id": 3700,
+  "persona": "dr-rumana",
+  "product_image_reference": "https://e-mart.com.bd/wp-content/uploads/2022/04/advanced-snail-92-all-in-one-cream_2-1.png",
+  "product_reference_status": "url_reference",
+  "size": "1080x1920",
+  "asset_type": "model_holding_real_product",
+  "fulfillment_modes": [
+    "system_composite",
+    "codex_imagegen"
+  ],
+  "prompt": "Photorealistic vertical 9:16 beauty portrait. a 32-year-old Bangladeshi woman, warm medium-tan natural skin, sleek low bun of black hair, gentle confident smile, soft sage-green modest high-neck blouse, holding the skincare product 'CosRx Advanced Snail 92 All In One Cream 100g' beside her cheek with the product front facing the camera. The model/background may be generated, but the visible product must come from the supplied real product reference. Do not invent replacement packaging, label text, logo, claims, offer text, price, COD badge, watermark, poster border, or callouts. Natural hand anatomy, product not distorted, product clear enough for owner identity review.",
+  "output_path": "/root/emart-platform/workspace/content-orchestrator/generated-assets/model-shots/holding/dr-rumana__cosrx-advanced-snail-92-all-in-one-cream-100g.png",
+  "metadata_path": "/root/emart-platform/workspace/content-orchestrator/generated-assets/model-shots/metadata/dr-rumana__cosrx-advanced-snail-92-all-in-one-cream-100g.json",
+  "instructions": "Use a generated/model background if needed, but keep the final product layer grounded in product_image_reference. No price/COD/brand overlay text inside the raw model shot. Owner review is required before campaign use."
+}
