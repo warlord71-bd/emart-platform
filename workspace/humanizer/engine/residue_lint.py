@@ -137,7 +137,11 @@ def lint(html: str, focus: str = "", brand: str = "", product_type: str = "") ->
     cat: dict[str, float] = {}
 
     # ── HARD GATES ────────────────────────────────────────────────────────────
-    gmc_hard = _find(GMC_HARD, low)
+    gmc_hard_raw = _find(GMC_HARD, low)
+    # allow hard hits that are inside the focus keyword / product name itself (e.g. a
+    # brand's own "Miracle Repair Toner" naming) — same exemption already applied to
+    # soft claims below; mentioning the product's own name isn't a marketing claim.
+    gmc_hard = [h for h in gmc_hard_raw if h not in (focus or "").lower()]
     residue  = _find(AI_RESIDUE, low)
     style_slop = _style_slop_hits(text)
     em_dashes = body.count("—") + body.count("–")
