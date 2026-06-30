@@ -1,7 +1,7 @@
 # Emart Process Manifest and Freshness SLO
 
-Version: 2026-06-25-v2
-Snapshot time: 2026-06-25 23:02 CEST
+Version: 2026-06-30-v3
+Snapshot time: 2026-06-30 23:10 CEST
 Sources: filtered `pm2 jlist`, `crontab -l`, `workspace/TASKS.md`, current log mtimes/tails, and read-only runtime docs.
 Scope: documentation only. This file does not authorize restarts, deploys, publishing, WordPress/Woo writes, or protected commerce-data changes.
 
@@ -11,6 +11,10 @@ Scope: documentation only. This file does not authorize restarts, deploys, publi
 - Env file paths are recorded as locations only. Do not copy secret values into this file.
 - "Expected state" separates active production processes from intentionally stopped jobs and dated one-shot workers.
 - Reconcile commands are inspection or owner-approved recovery commands. Do not run restart/publish commands from an unknown source state.
+- Source of truth: `/root/emart-platform` is the source repo; `/var/www/emart-platform` is the storefront runtime deploy tree; `origin/main` is publish history after live smoke passes.
+- Runtime git metadata is advisory only. `deploy.sh` writes `/var/www/emart-platform/.deployed-rev` after live smoke and SEO/AEO gate pass; use that marker plus smoke evidence as deployed truth.
+- Do not run `git reset --hard` in `/var/www/emart-platform` as a routine metadata fix. If runtime/source drift looks dangerous, first run `workspace/content-orchestrator/scripts/active/drift_check.py` from `/root/emart-platform` and review the source-like differences.
+- Generated campaign assets, audit archives, ledgers, and hot runtime state can make `/var/www` appear dirty. Treat those separately from source files.
 
 ## PM2 Processes
 
@@ -20,9 +24,7 @@ Scope: documentation only. This file does not authorize restarts, deploys, publi
 | `emart-presence` | PM2 | `/var/www/emart-platform/apps/presence-server` | `node server.js` | always-on | server | [C] | always-on | PM2 autorestart | running; same-origin WebSocket | service env or shell env, no committed secrets | `pm2 jlist`; smoke `wss://e-mart.com.bd/ws/presence` through nginx |
 | `emart-embed` | PM2 | `/root/emart-platform/services/embed` | `uvicorn embed_service:app --host 127.0.0.1 --port 8077` | always-on | server | [C]/[X] | always-on | PM2 autorestart | running; embedding/rerank API | process env; no committed secrets | `pm2 jlist`; local HTTP health/sample query |
 | `emart-reels-bot` | PM2 | `/root/emart-platform/workspace/content-orchestrator/video-engine` | `python3 reels_bot.py` | always-on polling | server | [C] | always-on | PM2 autorestart | running; Telegram approval bot only | `/var/www/emart-platform/apps/web/.env.local` or runtime env for dedicated reel bot token | `pm2 jlist`; tail `/root/.pm2/logs/emart-reels-bot-out.log` |
-| `emart-fb-18-20260625` | PM2 | `/root/emart-platform` | `node workspace/content-orchestrator/social-engine/output/2026-06-25/2026-06-25-daily-18/scheduler-facebook-preview.js --publish ...` | one-shot campaign slots | BDT payload, server process | [X] | dated one-shot | PM2 autorestart during active campaign | running at snapshot; archive/stop after campaign completion | `apps/web/.env.local` for Meta token | Tail PM2 log; verify result ledger and published history |
-| `emart-ig-18-20260625` | PM2 | `/root/emart-platform` | `node workspace/content-orchestrator/social-engine/output/2026-06-25/2026-06-25-daily-18/scheduler-instagram-preview.js --publish ...` | one-shot campaign slots | BDT payload, server process | [X] | dated one-shot | PM2 autorestart during active campaign | stopped at snapshot after/near completion | `apps/web/.env.local` for Meta token | Tail PM2 log; verify result ledger and published history |
-| `emart-fb-comment-20260625` | PM2 | `/root/emart-platform` | `node workspace/content-orchestrator/scripts/active/meta_fb_comment_worker_20260625.js --interval=180000` | one-shot polling | server | [X] | dated one-shot | PM2 autorestart if enabled | stopped; blocked by Meta permissions | `apps/web/.env.local` for Meta token | Keep stopped until owner resolves O-15 permissions |
+| Dated social campaign workers | PM2 one-shot pattern | `/root/emart-platform` preferred | `workspace/content-orchestrator/scripts/active/meta_schedule.js` / `meta_comment_queue.js` with a dated approved plan | campaign slots only | BDT payload, server process | [X] | dated one-shot | PM2 autorestart only inside active campaign window | no expired dated workers should remain online; June 29/30 leftovers deleted 2026-06-30 and PM2 saved | `apps/web/.env.local` for Meta token | After campaign completion, verify ledgers/history, delete dated PM2 entries, run `pm2 save`, then confirm with `drift_check.py` |
 | `emart-blog-generator` | PM2 cron | `/root/emart-platform/apps/web` | `bash /var/www/emart-platform/workspace/content-orchestrator/scripts/active/blog_generator_run.sh` | `0 2,10,18 * * *` | server | [A]/[C] | cron | no autorestart between cron runs | stopped in PM2; unsafe for pilots until draft gate is verified | `/root/.openclaw/openclaw.env` and runtime app env | Tail `/root/.openclaw/workspace-emart/blog_generator.log`; keep publish path approval-gated |
 | `emart-checkout-monitor` | PM2 cron | `/root/emart-platform` | `bash /var/www/emart-platform/workspace/content-orchestrator/scripts/active/checkout_monitor_run.sh` | `*/15 * * * *` plus watchdog | server | [A] | cron/checker | no autorestart between cron runs | intentionally stopped, watchdog can force-run if silent | `/root/.openclaw/openclaw.env` | Tail `/root/.pm2/logs/emart-checkout-monitor-out.log`; do not modify checkout/cart/payment logic |
 | `emart-competitor-prices` | PM2 cron | `/root/emart-platform` | `bash /var/www/emart-platform/workspace/content-orchestrator/scripts/active/competitor_prices_run.sh` | PM2 `0 2 * * *`; root cron weekly Sun 03:00 | server | [A] | cron/on-demand | no autorestart between cron runs | stopped in PM2; active via root cron weekly | `/root/.openclaw/openclaw.env` | Tail `/tmp/emart-competitor.log` and PM2 out log |

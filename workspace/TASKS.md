@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-30 (Context/deploy-reference cleanup: Emart entrypoints now point agents to repo-local `CLAUDE.md`/`AGENTS.md` plus `deploy.sh`; stale root-level deploy guidance and broad staging examples were corrected; `AGENT_BRAIN.md` refreshed.)
+Last updated: 2026-06-30 (VPS drift-control hardening: `deploy.sh` now writes `/var/www/emart-platform/.deployed-rev` after live gates, no longer routine-resets runtime git metadata, and `drift_check.py` reports Local/VPS/origin/PM2/cron drift.)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -456,7 +456,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 
 | ID | Priority | Item | Status |
 |---|---|---|---|
-| ORCH-1 | Critical | Deploy hardened: `deploy.sh` now has deploy lock (PID-based, stale-safe), `git add -u` + explicit subdirs (not blanket `-A`), lockfile diff BEFORE rsync, `.next` rollback backup on VPS build failure, workspace rsync excludes `jobs/` + state/checkpoint files, removed `git clean -fd`. | ✅ 2026-06-25 |
+| ORCH-1 | Critical | Deploy hardened: `deploy.sh` now has deploy lock (PID-based, stale-safe), `git add -u` + explicit subdirs (not blanket `-A`), lockfile diff BEFORE rsync, `.next` rollback backup on VPS build failure, workspace rsync excludes `jobs/` + state/checkpoint files, removed `git clean -fd`. 2026-06-30 drift-control update: deploy writes `/var/www/emart-platform/.deployed-rev` only after live smoke + SEO/AEO gate, routine `/var/www` `git reset --hard` was removed, and `workspace/content-orchestrator/scripts/active/drift_check.py` reports Local/VPS/origin/PM2/cron drift before any reconciliation. | ✅ 2026-06-30 |
 | ORCH-2 | High | Create one versioned runtime manifest for every Emart PM2 process and scheduled job, including cwd, timezone, owner, restart policy, resource limits, expected lifecycle, and install/reconcile commands. | ✅ docs complete 2026-06-25 in `328572a`: `workspace/content-orchestrator/docs/specs/process-manifest.md` inventories filtered PM2, root crontab, detached/on-demand engines, and queue workers. |
 | ORCH-3 | High | Video orchestration hardened: global `flock`-based worker lock (prevents overlapping ticks), retry budget (MAX_RETRIES=3 before dead-letter), `jobs/dead-letter/` lane for exhausted jobs, Telegram notification on dead-letter. Cron uses absolute paths via `ROOT = Path(__file__).resolve().parent`. Approval gate + Telegram bot already functional. | ✅ 2026-06-26 lock + retry + dead-letter |
 | ORCH-4 | High | Replace presence-only monitoring with freshness/SLO monitoring: last successful run, duration, queue age, retry count, error class, commercial endpoint health, and alert recovery. Stop maintaining a hard-coded expected-stopped PM2 list. | ✅ spec complete 2026-06-25 in `328572a`: SLO table added to `workspace/content-orchestrator/docs/specs/process-manifest.md`; implementation pending. |

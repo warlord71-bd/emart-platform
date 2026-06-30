@@ -23,6 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-30 | Implemented durable Local/VPS/origin drift controls: deploy revision marker, non-destructive deploy metadata check, read-only drift checker, PM2 expired campaign cleanup, and updated process/session/task/memory docs. | `11a19ba` |
 | Claude | 2026-06-30 | docs reorg + 360° legacy path sweep. (1) `content-orchestrator/docs/` reorganized: 34 loose files → specs/guides/owner-actions/audits/archive; all references updated; seo-migration-forensic-readonly.mjs hardcoded path fixed. (2) ecosystem.config.cjs: 6 cwd entries repointed to content-orchestrator (5× scripts/active, 1× video-engine). (3) Crontab: 5 broken entries fixed (checkout_monitor, qdrant_sync, cleanup_chromium, video orchestrator, daily_producer). VPS ecosystem synced. WA-I closed. | `d8d7d89` `471ca1c` `571ff19` |
 | Codex | 2026-06-30 | Closed remaining context/deploy-reference inconsistencies, refreshed agent brain, and updated session closeout docs. | `dc8d154` |
 | Codex | 2026-06-30 | Pinned recent Codex completion rows to concrete commit hashes after later commits moved `HEAD`. | `f396ff1` |

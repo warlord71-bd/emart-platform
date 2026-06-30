@@ -22,6 +22,7 @@ node_modules/
 .env
 .env.local
 *.env.*
+.deployed-rev
 
 # OS generated files
 .DS_Store

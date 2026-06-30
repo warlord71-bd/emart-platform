@@ -81,3 +81,4 @@
 - [Unified social publishing memory](project_social_publishing_20260623_unified.md) — expanded Meta FB+IG publishing memory, token type, script/env migration
 - [HyperFrames video engine integration](project_hyperframes_integration_20260626.md) — HTML composition renderer (GSAP animations, crossfades) replaces ffmpeg concat as default; falls back on failure
 - [Gated real-product model-shot pipeline](project_model_shot_pipeline_20260629.md) — Content Orchestrator emits owner-review-required model-shot requests, preserves exact product source cutouts, renders clean real-product composites, and blocks fake packaging fallbacks
+- [Local/VPS/origin drift control](project_local_vps_drift_control_20260630.md) — `/root` is source, `/var/www` is runtime, deploy writes `.deployed-rev`, `drift_check.py` separates source drift from generated/runtime/PM2 noise, and routine VPS `git reset --hard` is no longer allowed
