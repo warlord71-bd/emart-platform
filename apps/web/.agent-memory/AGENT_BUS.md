@@ -23,7 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
-| Codex | 2026-06-30 | Closed remaining context/deploy-reference inconsistencies, refreshed agent brain, and updated session closeout docs. | closeout commit |
+| Codex | 2026-06-30 | Closed remaining context/deploy-reference inconsistencies, refreshed agent brain, and updated session closeout docs. | `dc8d154` |
 | Codex | 2026-06-30 | Pinned recent Codex completion rows to concrete commit hashes after later commits moved `HEAD`. | `f396ff1` |
 | Codex | 2026-06-30 | Added automatic social/video done-history cleanup: completed published/rejected records archive into category-wise logical history, hot job folders stay clear, and runtime history ledgers are no longer tracked. | `ad16668` |
 | Codex | 2026-06-30 | Cleaned accidental empty `workspace/workspace` tree by moving it to the dated attic and fixed active helper scripts whose repo-root calculation could recreate nested `workspace/workspace` paths. | `2347d58` |
