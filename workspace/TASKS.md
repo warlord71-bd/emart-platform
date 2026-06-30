@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-30 (Social/video cleanup: completed published/rejected jobs now auto-archive into ignored category-wise logical history under `social-engine/history/logical-history/`; hot published/rejected job folders stay clear; runtime published/rejected/product-result files are ignored and removed from git tracking while preserved on disk.)
+Last updated: 2026-06-30 (Context/deploy-reference cleanup: Emart entrypoints now point agents to repo-local `CLAUDE.md`/`AGENTS.md` plus `deploy.sh`; stale root-level deploy guidance and broad staging examples were corrected; `AGENT_BRAIN.md` refreshed.)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 

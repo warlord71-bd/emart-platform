@@ -3617,3 +3617,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Replaced stale `current commit` labels for the recent nested-workspace/native-review and social done-history rows with concrete commit hashes.
 - Verified: Read-only git status/log check; no code/runtime changes.
 - Guardrail: Coordination docs only; no deploy, no push, no live restart.
+
+## 2026-06-30 · Codex · Context/deploy-reference consistency cleanup
+- Did: Rechecked the remaining context inconsistencies, updated Emart deploy guidance away from root-level generic `/root/CLAUDE.md` toward repo-local `CLAUDE.md`/`AGENTS.md` and `deploy.sh`, removed broad `git add -A` examples from the deploy reference, refreshed `workspace/AGENT_BRAIN.md`, and updated session coordination docs.
+- Verified: `agent_brain.py --write` completed; source search no longer finds active Emart workflow references to the wrong `gsc_tracker.py` path or bare blog generator command; dirty tree review kept existing humanizer/ledger/model-shot runtime files unstaged.
+- Guardrail: Documentation/context cleanup only; no storefront code changes, no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
