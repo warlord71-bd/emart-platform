@@ -23,6 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-07-01 | Revised and scheduled July 1 mixed Bangla-English social campaign per owner approval; replaced iUNIK/Celimax/Medicube items, fixed web images, changed Minimalist SPF 50 to tube-only seated on podium, synced runtime assets, and started FB+IG PM2 schedulers. | pending |
 | Claude | 2026-07-01 | Audit + cleanup: rejected 10 stale video reels (review queue empty), archived 8 manual/preview job files to attic, deleted 5 PM2 stale-path entries (emart-seo-autoscan/meta-gen/checkout-monitor/competitor-prices/revenue-health) + pm2 save, fixed TASKS.md video orchestrator cadence (*/15 → 0 */2 * * *). | `198fdae` + this commit |
 | Codex | 2026-07-01 | Built and scheduled July 1 mixed Bangla-English 18-post FB+IG campaign for requested brands; rendered/synced 36 assets, verified live media URL, passed Social Engine QA, and started PM2 schedulers for 08:20-21:40 BDT. | `74fae34` |
 | Codex | 2026-06-30 | Implemented durable Local/VPS/origin drift controls: deploy revision marker, non-destructive deploy metadata check, read-only drift checker, PM2 expired campaign cleanup, and updated process/session/task/memory docs. | `cf993bc` |

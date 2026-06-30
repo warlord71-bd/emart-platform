@@ -3648,3 +3648,16 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Scheduled: Started PM2 one-shot workers `emart-social-fb-20260701-mixed` and `emart-social-ig-20260701-mixed` for 08:20→21:40 BDT, with higher-demand/trending CeraVe/iUNIK/Medicube items in evening slots; ran `pm2 save`.
 - Verified: Builder completed, `py_compile` passed, Social Engine plan QA passed 0 errors/0 warnings, scheduler dry-runs saw 18 FB + 18 IG posts, caption scan found no romanized Bangla tokens and no IG raw URLs, local/runtime image counts both 36.
 - Guardrail: Read-only Woo API only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no storefront deploy, no `emartweb` restart.
+
+## 2026-07-01 · Codex · July 1 social campaign preview revision
+- Did: Revised the July 1 mixed Bangla-English 18-post FB+IG campaign after owner review; replaced iUNIK Centella Mini Set, Celimax Noni Eye Cream, and Medicube PDRN Pink Tone Up Sun Cream; added web-sourced image overrides for Minimalist Oat Cleanser, Minimalist SPF 50, and CeraVe Daily Moisturizing Lotion.
+- Fixed: Changed Minimalist SPF 50 to a tube-only web image, removed the box, then adjusted the tube down so it sits on the podium in both 1:1 and 4:5 formats.
+- Verified: Inspected all 18 final item cards one by one; Social Engine plan passes with 0 errors and 2 owner-requested Celimax repeat warnings; caption scan passes mixed Bangla-English rules; active public folder has 36 current PNGs and no stale replaced assets.
+- Guardrail: Preview only; no scheduling command run, no July 1 social PM2 workers running, no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no storefront deploy, no emartweb restart.
+
+## 2026-07-01 · Codex · Revised July 1 campaign scheduled
+- Did: Scheduled the owner-approved revised July 1 mixed Bangla-English 18-post FB+IG campaign after final Minimalist SPF 50 tube-only/podium adjustment.
+- Runtime: Synced approved campaign JSON, scheduler output, and the 36 approved public images to `/var/www/emart-platform`; delete-synced the runtime image folder to remove stale rejected assets.
+- Scheduled: Started PM2 one-shot workers `emart-social-fb-20260701-mixed` and `emart-social-ig-20260701-mixed` with `--publish`, `--result-ledger`, and `--record-history`; ran `pm2 save`.
+- Verified: Runtime dry-runs saw 18 FB + 18 IG posts; live SPF image URL returned HTTP 200; PM2 workers are online with empty startup error logs; Social Engine QA passes with 0 errors and 2 owner-requested Celimax repeat warnings.
+- Guardrail: No Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no storefront deploy, no `emartweb` restart.

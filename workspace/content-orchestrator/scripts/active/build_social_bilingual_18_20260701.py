@@ -73,9 +73,9 @@ ITEMS = [
     {
         "slot": 2,
         "brand": "iUNIK",
-        "product_id": 63925,
-        "line": "Centella routine try করতে চাইলে এই mini set travel-friendly option.",
-        "tags": "#iUNIKBangladesh #CentellaCare #KBeautyBD #EmartSkincare",
+        "product_id": 62356,
+        "line": "barrier cream step-এ comforting moisture layer চাইলে এই iUNIK pick ভালো.",
+        "tags": "#iUNIKBangladesh #BarrierCream #KBeautyBD #EmartSkincare",
     },
     {
         "slot": 3,
@@ -83,6 +83,8 @@ ITEMS = [
         "product_id": 74869,
         "line": "gentle cleanser step-এ soft, non-fussy wash feel চাইলে ভালো match.",
         "tags": "#MinimalistBangladesh #GentleCleanser #SkincareBD #EmartSkincare",
+        "image_local_override": "workspace/audit/active/social-bilingual-18-20260701/web-sources/minimalist-oat-cleanser.jpg",
+        "image_source_note": "Web image override: DuckDuckBaby CDN product photo",
     },
     {
         "slot": 4,
@@ -94,9 +96,10 @@ ITEMS = [
     {
         "slot": 5,
         "brand": "Celimax",
-        "product_id": 62306,
-        "line": "eye cream step add করতে চাইলে Noni line-এর compact pick.",
-        "tags": "#CelimaxBangladesh #NoniEyeCream #KBeautyBD #EmartSkincare",
+        "product_id": 62180,
+        "line": "retinal booster step night routine-এ add করলে slow start রাখুন.",
+        "tags": "#CelimaxBangladesh #RetinalBooster #KBeautyBD #EmartSkincare",
+        "owner_requested_recent_repeat": True,
     },
     {
         "slot": 6,
@@ -118,6 +121,9 @@ ITEMS = [
         "product_id": 74863,
         "line": "day routine-এ sunscreen skip না করতে চাইলে lightweight SPF pick.",
         "tags": "#MinimalistBangladesh #SunscreenBD #SkincareBD #EmartSkincare",
+        "image_local_override": "workspace/audit/active/social-bilingual-18-20260701/web-sources/minimalist-spf50-tube-only-clean-no-box.jpg",
+        "image_source_note": "Web image override: DocMorris product photo, tube-only crop",
+        "product_y_offset": 24,
     },
     {
         "slot": 9,
@@ -153,6 +159,8 @@ ITEMS = [
         "product_id": 93122,
         "line": "daily moisturising routine-এ CeraVe lotion barrier-friendly comfort feel রাখে.",
         "tags": "#CeraVeBangladesh #MoisturizingLotion #SkincareBD #EmartSkincare",
+        "image_local_override": "workspace/audit/active/social-bilingual-18-20260701/web-sources/cerave-daily-lotion.jpg",
+        "image_source_note": "Web image override: Lulu CDN product photo",
     },
     {
         "slot": 14,
@@ -178,9 +186,9 @@ ITEMS = [
     {
         "slot": 17,
         "brand": "Medicube",
-        "product_id": 94593,
-        "line": "evening scroll-এ trending Medicube SPF pick: pink tone-up finish, easy day use.",
-        "tags": "#MedicubeBangladesh #ToneUpSunscreen #KBeautyBD #EmartSkincare",
+        "product_id": 62660,
+        "line": "glow serum step-এ fresh-looking routine finish চাইলে Medicube option ভালো.",
+        "tags": "#MedicubeBangladesh #GlowSerum #KBeautyBD #EmartSkincare",
     },
     {
         "slot": 18,
@@ -259,6 +267,12 @@ def upload_rel_from_url(url: str) -> str:
 
 
 def load_source_image(item: dict[str, str]) -> Image.Image:
+    if item.get("image_local_override"):
+        override = ROOT / item["image_local_override"]
+        if not override.exists():
+            raise SystemExit(f"Image override missing: {override}")
+        return Image.open(io.BytesIO(override.read_bytes())).convert("RGBA")
+
     rel = upload_rel_from_url(item["image_url"])
     local = WP_UPLOADS / rel if rel else Path()
     if rel and local.exists():
@@ -298,7 +312,7 @@ def render_card(item: dict[str, str], source: Image.Image, suffix: str, dest: Pa
     product_bottom = text_y - (86 if h == 1080 else 108)
     cx = w // 2 + (18 if kind == "tall" else 0)
     px = cx - tw // 2
-    py = max(202 if h == 1080 else 250, product_bottom - th)
+    py = max(202 if h == 1080 else 250, product_bottom - th + int(item.get("product_y_offset", 0)))
 
     base_h = 88 if h == 1080 else 104
     if kind == "jar":
@@ -426,6 +440,7 @@ def fetch_product(item: dict[str, str]) -> dict[str, str]:
         "regular_price": str(product.get("regular_price") or product.get("price") or ""),
         "sale_price": str(product.get("sale_price") or ""),
         "image_url": images[0]["src"],
+        "product_image_source": item.get("image_source_note") or f"Woo featured image: {images[0]['src']}",
         "categories": ", ".join(html.unescape(c.get("name", "")) for c in product.get("categories", [])),
     }
 
@@ -440,7 +455,7 @@ def main() -> None:
     ig_comment_items: list[dict] = []
     previous_ids = {
         59211, 59029, 62028, 60785, 61940, 59929, 74052, 92910, 2595,
-        18095, 50566, 3509, 43290, 43289, 62180, 61916, 61908, 61912,
+        18095, 50566, 3509, 43290, 43289, 61916, 61908, 61912,
     }
 
     for raw in ITEMS:
@@ -485,7 +500,7 @@ def main() -> None:
             "price_caption": price_line(item).replace("৳", "TK "),
             "format": "facebook 1:1 + instagram 4:5",
             "caption_style": "Mixed Bangla-English voice; Bangla words in Bangla script, English skincare terms in English",
-            "image_source": f"Woo featured image: {item['image_url']}",
+            "image_source": item["product_image_source"],
             "fb_image": str(fb_rel),
             "ig_image": str(ig_rel),
             "fb_public_url": f"{PUBLIC_BASE}/{fb_name}",
@@ -534,9 +549,10 @@ def main() -> None:
                 "on_offer": is_offer(item),
                 "verified_at": PRICE_VERIFIED_AT,
             },
-            "product_image_source": f"Woo featured image: {item['image_url']}",
+            "product_image_source": item["product_image_source"],
             "background_source": "codex-rendered wooden podium card",
             "category_hint": item.get("categories", ""),
+            **({"owner_requested_recent_repeat": True} if item.get("owner_requested_recent_repeat") is True else {}),
         })
 
         ig_comment_items.append({
@@ -587,6 +603,8 @@ def main() -> None:
             "rule": "Do not write separate Bangla and English versions of the same line.",
             "qa": "assert_caption_quality",
         },
+        "owner_requested_repeat_product_ids": [62180],
+        "owner_requested_repeat_slugs": ["celimax-the-vita-a-retinal-shot-tightening-booster-15ml"],
         "design_template": "brand-fresh-product-base-v6-bilingual-price",
         "platforms": ["facebook", "instagram"],
         "schedule": {"start": "08:20", "end": "21:40", "timezone": "+06:00", "strategy": "highest-demand anchors in evening"},

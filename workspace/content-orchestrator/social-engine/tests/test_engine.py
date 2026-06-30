@@ -79,6 +79,25 @@ class SocialEngineTests(unittest.TestCase):
         self.assertEqual(qa["status"], "blocked")
         self.assertTrue(any(error["code"] == "recent_product_repeat" for error in qa["errors"]))
 
+    def test_owner_requested_repeat_warns_without_blocking(self):
+        raw = campaign_with_item()
+        raw["owner_requested_repeat_product_ids"] = [100]
+        raw["owner_requested_repeat_slugs"] = ["cosrx-test-serum"]
+        campaign = normalize_campaign(raw, base_config())
+        qa = qa_campaign(
+            campaign,
+            base_config(),
+            {
+                "blocked_product_ids": {"100"},
+                "blocked_slugs": {"cosrx-test-serum"},
+                "dates": ["2026-06-23"],
+            },
+        )
+        self.assertEqual(qa["status"], "pass")
+        self.assertEqual(qa["errors"], [])
+        self.assertTrue(any(warning["code"] == "owner_requested_recent_product_repeat" for warning in qa["warnings"]))
+        self.assertTrue(any(warning["code"] == "owner_requested_recent_slug_repeat" for warning in qa["warnings"]))
+
     def test_rejected_history_blocks_campaign_memory(self):
         with tempfile.TemporaryDirectory() as tmp:
             published = Path(tmp) / "published.json"

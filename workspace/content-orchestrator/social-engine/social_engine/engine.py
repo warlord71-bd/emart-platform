@@ -1139,6 +1139,8 @@ def qa_campaign(
         "summary": {"pass": 0, "warn": 0, "fail": 0, "unavailable": 0, "platform_checks": 0},
     }
     creative_cache: dict[tuple[str, str, str], dict[str, Any]] = {}
+    owner_repeat_ids = {str(pid) for pid in campaign.get("owner_requested_repeat_product_ids", [])}
+    owner_repeat_slugs = {str(slug) for slug in campaign.get("owner_requested_repeat_slugs", [])}
 
     for item in campaign["items"]:
         ref = f"{item['index']:02d} {item['title']}"
@@ -1153,13 +1155,29 @@ def qa_campaign(
                 errors.append({"item": ref, "code": "duplicate_product_id", "product_id": pid})
             seen_ids.add(pid)
             if pid in blocked_ids:
-                errors.append({"item": ref, "code": "recent_product_repeat", "product_id": pid, "history_dates": lookback_dates})
+                if pid in owner_repeat_ids or item.get("owner_requested_recent_repeat") is True:
+                    warnings.append({
+                        "item": ref,
+                        "code": "owner_requested_recent_product_repeat",
+                        "product_id": pid,
+                        "history_dates": lookback_dates,
+                    })
+                else:
+                    errors.append({"item": ref, "code": "recent_product_repeat", "product_id": pid, "history_dates": lookback_dates})
         if slug:
             if slug in seen_slugs:
                 errors.append({"item": ref, "code": "duplicate_slug", "slug": slug})
             seen_slugs.add(slug)
             if slug in blocked_slugs:
-                errors.append({"item": ref, "code": "recent_slug_repeat", "slug": slug, "history_dates": lookback_dates})
+                if slug in owner_repeat_slugs or item.get("owner_requested_recent_repeat") is True:
+                    warnings.append({
+                        "item": ref,
+                        "code": "owner_requested_recent_slug_repeat",
+                        "slug": slug,
+                        "history_dates": lookback_dates,
+                    })
+                else:
+                    errors.append({"item": ref, "code": "recent_slug_repeat", "slug": slug, "history_dates": lookback_dates})
 
         try:
             slots.append(parse_time(item["slot"]))

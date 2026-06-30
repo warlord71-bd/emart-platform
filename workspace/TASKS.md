@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-07-01 (Scheduled July 1 mixed Bangla-English 18-post FB+IG campaign for requested brands; Social Engine QA 0 errors/0 warnings, live media URL 200, PM2 workers online.)
+Last updated: 2026-07-01 (Scheduled revised July 1 mixed Bangla-English 18-post FB+IG campaign after owner approval. Social Engine QA passes with 0 errors/2 owner-requested Celimax repeat warnings; runtime assets synced; FB+IG PM2 workers online.)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -26,8 +26,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | `emart-seo-autoscan` (PM2 cron) | ✅ stopped | Intentionally stopped |
 | `emart-meta-gen` (PM2) | ✅ stopped | Job complete (1,360/1,360 metas done Jun 15) |
 | `emart-social-fb-20260630-bilingual` / `emart-social-ig-20260630-bilingual` | ✅ completed/removed | Jun 30 one-shot campaign completed; no longer present in PM2. |
-| `emart-social-fb-20260701-mixed` (PM2) | 🟢 online | Jul 1 mixed Bangla-English 18-post campaign, waiting/posting 08:20→21:40 BDT; FB captions include direct order links. |
-| `emart-social-ig-20260701-mixed` (PM2) | 🟢 online | Jul 1 mixed Bangla-English 18-post campaign, waiting/posting 08:20→21:40 BDT; IG captions use DM/link-in-bio CTA and no raw product URLs. |
+| `emart-social-fb-20260701-mixed` / `emart-social-ig-20260701-mixed` | 🟢 online | Revised Jul 1 mixed Bangla-English 18-post campaign scheduled after owner approval; FB captions include direct order links, IG captions use DM/link-in-bio CTA. |
 | Opus Humanizer Engine (detached, free OpenRouter) | 🟢 ongoing | `workspace/humanizer/engine/` — generates PDP descriptions on free models (gemma-4-31b chain), gated GMC+AI-residue, auto-applies PASS + revalidates + Telegram ping. Run: `bash workspace/humanizer/engine/run_detached.sh N`. 122 humanized as of 2026-06-23. Awaiting owner OpenRouter funds for Hermes handoff. |
 | Video orchestrator (crontab, `0 */2 * * *`) | 🟢 running | `orchestrator.py --tick` — builds+QAs reels to `jobs/review/`, parks at human-approval gate. **Builds only; never posts.** `--status` = pipeline dashboard. |
 | Reels approval bot (`reels_bot.py`) | ✅ online | Telegram see-and-approve bot is polling with a registered chat. Posts reel as video + ✅Approve/❌Reject; Approve = the ONLY thing that publishes. No auto-publish cron exists. |

@@ -12,6 +12,12 @@
     "rule": "Do not write separate Bangla and English versions of the same line.",
     "qa": "assert_caption_quality"
   },
+  "owner_requested_repeat_product_ids": [
+    62180
+  ],
+  "owner_requested_repeat_slugs": [
+    "celimax-the-vita-a-retinal-shot-tightening-booster-15ml"
+  ],
   "design_template": "brand-fresh-product-base-v6-bilingual-price",
   "platforms": [
     "facebook",
@@ -73,26 +79,26 @@
       "category_hint": "Beauty Supplements, Health & Wellbeing, Korean Beauty, Melasma, Sheet Masks"
     },
     {
-      "product_id": 63925,
-      "title": "iUNIK CENTELLA MINI SET",
-      "slug": "iunik-centella-mini-set",
+      "product_id": 62356,
+      "title": "iUNIK Beta Glucan 3X Barrier Cream 50ml",
+      "slug": "iunik-beta-glucan-3x-barrier-cream-50ml",
       "time": "2026-07-01T09:10:00+06:00",
       "creative_type": "owner-approved-static-card",
       "asset_source": "requested-brand-current-price",
       "design_template": "brand-fresh-product-base-v6-bilingual-price",
-      "link": "https://e-mart.com.bd/shop/iunik-centella-mini-set",
-      "angle": "Centella routine try করতে চাইলে এই mini set travel-friendly option.",
-      "hashtags": "#iUNIKBangladesh #CentellaCare #KBeautyBD #EmartSkincare",
+      "link": "https://e-mart.com.bd/shop/iunik-beta-glucan-3x-barrier-cream-50ml",
+      "angle": "barrier cream step-এ comforting moisture layer চাইলে এই iUNIK pick ভালো.",
+      "hashtags": "#iUNIKBangladesh #BarrierCream #KBeautyBD #EmartSkincare",
       "captions": {
-        "facebook": "আজকের shelf pick: iUNIK CENTELLA MINI SET\n\nCentella routine try করতে চাইলে এই mini set travel-friendly option.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1237 | Regular: ৳1450\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/iunik-centella-mini-set\n\n#iUNIKBangladesh #CentellaCare #KBeautyBD #EmartSkincare",
-        "instagram": "আজকের shelf pick: iUNIK CENTELLA MINI SET\n\nCentella routine try করতে চাইলে এই mini set travel-friendly option.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1237 | Regular: ৳1450\nDM to order or tap the link in bio.\n\n#iUNIKBangladesh #CentellaCare #KBeautyBD #EmartSkincare"
+        "facebook": "আজকের shelf pick: iUNIK Beta Glucan 3X Barrier Cream 50ml\n\nbarrier cream step-এ comforting moisture layer চাইলে এই iUNIK pick ভালো.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1880 | Regular: ৳2290\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/iunik-beta-glucan-3x-barrier-cream-50ml\n\n#iUNIKBangladesh #BarrierCream #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: iUNIK Beta Glucan 3X Barrier Cream 50ml\n\nbarrier cream step-এ comforting moisture layer চাইলে এই iUNIK pick ভালো.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1880 | Regular: ৳2290\nDM to order or tap the link in bio.\n\n#iUNIKBangladesh #BarrierCream #KBeautyBD #EmartSkincare"
       },
       "images": {
-        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-1x1.png",
-        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-1x1.png",
-        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-4x5.png"
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-beta-glucan-3x-barrier-cream-50ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-beta-glucan-3x-barrier-cream-50ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-beta-glucan-3x-barrier-cream-50ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-beta-glucan-3x-barrier-cream-50ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-beta-glucan-3x-barrier-cream-50ml-4x5.png"
       },
       "caption_link_policy": {
         "facebook": "inline_purchase_link",
@@ -110,15 +116,15 @@
         "caption_style_checked": "mixed_bangla_english_single_voice"
       },
       "price_snapshot": {
-        "price": "1237",
-        "regular_price": "1450",
-        "sale_price": "1237",
+        "price": "1880",
+        "regular_price": "2290",
+        "sale_price": "1880",
         "on_offer": true,
         "verified_at": "2026-07-01T04:30:00+06:00"
       },
-      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/b90feb67537bb.jpeg",
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/emart-iunik-beta-glucan-3x-barrier-cream-50ml.jpg",
       "background_source": "codex-rendered wooden podium card",
-      "category_hint": "Acne & Blemish Care, Korean Beauty"
+      "category_hint": "Dryness & Hydration, Korean Beauty"
     },
     {
       "product_id": 74869,
@@ -164,7 +170,7 @@
         "on_offer": true,
         "verified_at": "2026-07-01T04:30:00+06:00"
       },
-      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/03/550_Minimalist20Oat20Extract200620Gentle20Cleanse.jpg",
+      "product_image_source": "Web image override: DuckDuckBaby CDN product photo",
       "background_source": "codex-rendered wooden podium card",
       "category_hint": ""
     },
@@ -217,26 +223,26 @@
       "category_hint": "Face Cleansers, Korean Beauty"
     },
     {
-      "product_id": 62306,
-      "title": "Celimax Noni Ultimate Eye Cream 20ml",
-      "slug": "celimax-noni-ultimate-eye-cream-20ml",
+      "product_id": 62180,
+      "title": "Celimax The Vita A Retinal Shot Tightening Booster 15ml",
+      "slug": "celimax-the-vita-a-retinal-shot-tightening-booster-15ml",
       "time": "2026-07-01T11:40:00+06:00",
       "creative_type": "owner-approved-static-card",
       "asset_source": "requested-brand-current-price",
       "design_template": "brand-fresh-product-base-v6-bilingual-price",
-      "link": "https://e-mart.com.bd/shop/celimax-noni-ultimate-eye-cream-20ml",
-      "angle": "eye cream step add করতে চাইলে Noni line-এর compact pick.",
-      "hashtags": "#CelimaxBangladesh #NoniEyeCream #KBeautyBD #EmartSkincare",
+      "link": "https://e-mart.com.bd/shop/celimax-the-vita-a-retinal-shot-tightening-booster-15ml",
+      "angle": "retinal booster step night routine-এ add করলে slow start রাখুন.",
+      "hashtags": "#CelimaxBangladesh #RetinalBooster #KBeautyBD #EmartSkincare",
       "captions": {
-        "facebook": "আজকের shelf pick: Celimax Noni Ultimate Eye Cream 20ml\n\neye cream step add করতে চাইলে Noni line-এর compact pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳1700\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/celimax-noni-ultimate-eye-cream-20ml\n\n#CelimaxBangladesh #NoniEyeCream #KBeautyBD #EmartSkincare",
-        "instagram": "আজকের shelf pick: Celimax Noni Ultimate Eye Cream 20ml\n\neye cream step add করতে চাইলে Noni line-এর compact pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳1700\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #NoniEyeCream #KBeautyBD #EmartSkincare"
+        "facebook": "আজকের shelf pick: Celimax The Vita A Retinal Shot Tightening Booster 15ml\n\nretinal booster step night routine-এ add করলে slow start রাখুন.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1450 | Regular: ৳1600\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/celimax-the-vita-a-retinal-shot-tightening-booster-15ml\n\n#CelimaxBangladesh #RetinalBooster #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: Celimax The Vita A Retinal Shot Tightening Booster 15ml\n\nretinal booster step night routine-এ add করলে slow start রাখুন.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1450 | Regular: ৳1600\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #RetinalBooster #KBeautyBD #EmartSkincare"
       },
       "images": {
-        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-4x5.png"
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-the-vita-a-retinal-shot-tightening-booster-15ml-4x5.png"
       },
       "caption_link_policy": {
         "facebook": "inline_purchase_link",
@@ -254,15 +260,16 @@
         "caption_style_checked": "mixed_bangla_english_single_voice"
       },
       "price_snapshot": {
-        "price": "1700",
-        "regular_price": "1700",
-        "sale_price": "",
-        "on_offer": false,
+        "price": "1450",
+        "regular_price": "1600",
+        "sale_price": "1450",
+        "on_offer": true,
         "verified_at": "2026-07-01T04:30:00+06:00"
       },
-      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/emart-celimax-noni-ultimate-eye-cream-20ml.jpg",
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/emart-celimax-the-vita-a-retinal-shot-tightening-booster-15ml.jpg",
       "background_source": "codex-rendered wooden podium card",
-      "category_hint": "Eye Care, Korean Beauty"
+      "category_hint": "Acne & Blemish Care, Korean Beauty, Serums, Ampoules & Essences",
+      "owner_requested_recent_repeat": true
     },
     {
       "product_id": 62506,
@@ -404,7 +411,7 @@
         "on_offer": true,
         "verified_at": "2026-07-01T04:30:00+06:00"
       },
-      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/03/544_Minimalist20SPF205020Sunscreen2050g.jpg",
+      "product_image_source": "Web image override: DocMorris product photo, tube-only crop",
       "background_source": "codex-rendered wooden podium card",
       "category_hint": "Sunscreen"
     },
@@ -644,7 +651,7 @@
         "on_offer": true,
         "verified_at": "2026-07-01T04:30:00+06:00"
       },
-      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/06/cerave-daily-moisturizing-lotion-237ml-usa-version-gmc-enhanced-93122.jpg",
+      "product_image_source": "Web image override: Lulu CDN product photo",
       "background_source": "codex-rendered wooden podium card",
       "category_hint": "Cream/Moisturizer, Moisturizers"
     },
@@ -793,26 +800,26 @@
       "category_hint": "Serums, Ampoules & Essences"
     },
     {
-      "product_id": 94593,
-      "title": "Medicube pdrn pink tone up sun cream spf50+ pa++++ 50ml",
-      "slug": "medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml",
+      "product_id": 62660,
+      "title": "Medicube GLUTATHIONE GLOW SERUM 30ml",
+      "slug": "medicube-glutathione-glow-serum-30ml",
       "time": "2026-07-01T21:00:00+06:00",
       "creative_type": "owner-approved-static-card",
       "asset_source": "requested-brand-current-price",
       "design_template": "brand-fresh-product-base-v6-bilingual-price",
-      "link": "https://e-mart.com.bd/shop/medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml",
-      "angle": "evening scroll-এ trending Medicube SPF pick: pink tone-up finish, easy day use.",
-      "hashtags": "#MedicubeBangladesh #ToneUpSunscreen #KBeautyBD #EmartSkincare",
+      "link": "https://e-mart.com.bd/shop/medicube-glutathione-glow-serum-30ml",
+      "angle": "glow serum step-এ fresh-looking routine finish চাইলে Medicube option ভালো.",
+      "hashtags": "#MedicubeBangladesh #GlowSerum #KBeautyBD #EmartSkincare",
       "captions": {
-        "facebook": "আজকের shelf pick: Medicube pdrn pink tone up sun cream spf50+ pa++++ 50ml\n\nevening scroll-এ trending Medicube SPF pick: pink tone-up finish, easy day use.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1400 | Regular: ৳1500\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml\n\n#MedicubeBangladesh #ToneUpSunscreen #KBeautyBD #EmartSkincare",
-        "instagram": "আজকের shelf pick: Medicube pdrn pink tone up sun cream spf50+ pa++++ 50ml\n\nevening scroll-এ trending Medicube SPF pick: pink tone-up finish, easy day use.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1400 | Regular: ৳1500\nDM to order or tap the link in bio.\n\n#MedicubeBangladesh #ToneUpSunscreen #KBeautyBD #EmartSkincare"
+        "facebook": "আজকের shelf pick: Medicube GLUTATHIONE GLOW SERUM 30ml\n\nglow serum step-এ fresh-looking routine finish চাইলে Medicube option ভালো.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳2500\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/medicube-glutathione-glow-serum-30ml\n\n#MedicubeBangladesh #GlowSerum #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: Medicube GLUTATHIONE GLOW SERUM 30ml\n\nglow serum step-এ fresh-looking routine finish চাইলে Medicube option ভালো.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳2500\nDM to order or tap the link in bio.\n\n#MedicubeBangladesh #GlowSerum #KBeautyBD #EmartSkincare"
       },
       "images": {
-        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-1x1.png",
-        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-1x1.png",
-        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-4x5.png",
-        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-1x1.png",
-        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-4x5.png"
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-glutathione-glow-serum-30ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-glutathione-glow-serum-30ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-glutathione-glow-serum-30ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-glutathione-glow-serum-30ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-glutathione-glow-serum-30ml-4x5.png"
       },
       "caption_link_policy": {
         "facebook": "inline_purchase_link",
@@ -830,15 +837,15 @@
         "caption_style_checked": "mixed_bangla_english_single_voice"
       },
       "price_snapshot": {
-        "price": "1400",
-        "regular_price": "1500",
-        "sale_price": "1400",
-        "on_offer": true,
+        "price": "2500",
+        "regular_price": "2500",
+        "sale_price": "",
+        "on_offer": false,
         "verified_at": "2026-07-01T04:30:00+06:00"
       },
-      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/06/medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml.jpg",
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/MedicubeAGE-RGlutathioneGlowSerum.webp",
       "background_source": "codex-rendered wooden podium card",
-      "category_hint": "Sunscreen"
+      "category_hint": "Beauty Supplements, Health & Wellbeing, Korean Beauty, Melasma, Serums, Ampoules & Essences"
     },
     {
       "product_id": 93123,
