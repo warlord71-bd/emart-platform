@@ -294,12 +294,34 @@ EXCLUDE = "cleans|wash|foam|shampoo|soap|scrub|mask|lip|hair|powder|cushion|patc
 HOLDOUT_IDS = {2611, 2591, 4064}
 
 def _holdout_slugs() -> set[str]:
-    p = Path("workspace/audit/active/baseline-snapshot-2026-05-31.json")
+    p = Path("workspace/humanizer/engine/baseline-snapshot-2026-05-31.json")
     if p.exists():
         return set(json.loads(p.read_text()).get("holdout_slugs", []))
     return set()
 
+AGENTIC_SCORE_FILE = Path("workspace/seo-review/agentic-score.jsonl")
+AGENTIC_DEFAULT_SCORE = 70  # neutral fallback for products with no agentic-score row (matches gsc_tracker.py)
+
+def _agentic_scores() -> dict[str, int]:
+    """slug -> deterministic content-quality score (0-100, lower = thinner/lower-quality)."""
+    if not AGENTIC_SCORE_FILE.exists():
+        return {}
+    out: dict[str, int] = {}
+    for line in AGENTIC_SCORE_FILE.read_text().splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        slug = row.get("slug")
+        if slug:
+            out[slug] = row.get("score", AGENTIC_DEFAULT_SCORE)
+    return out
+
 def targets(limit: int = 20) -> list[dict]:
+    """Pick the next products to humanize: in-stock only, worst existing content first
+    (deterministic agentic-score ascending), top-selling as the tiebreaker within a
+    quality band. Buffer-fetches a large candidate pool so holdout/stock filtering
+    can't starve the result set (see 2026-06-30 fix: limit*2 was sometimes consumed
+    entirely by the holdout exclusion, silently returning 0 targets)."""
     conn = DB.db_connect(); cur = conn.cursor(dictionary=True)
     cur.execute(f"""
         SELECT p.ID AS post_id, p.post_title AS title, p.post_name AS slug,
@@ -307,26 +329,31 @@ def targets(limit: int = 20) -> list[dict]:
                COALESCE(MAX(CASE WHEN pm.meta_key='total_sales' THEN CAST(pm.meta_value AS UNSIGNED) END),0) AS sales,
                MAX(CASE WHEN pm.meta_key='_rank_math_focus_keyword' THEN pm.meta_value END) AS focus_kw,
                MAX(CASE WHEN pm.meta_key='_emart_ingredients' THEN pm.meta_value END) AS ingredients,
-               MAX(CASE WHEN pm.meta_key='_emart_humanized' THEN pm.meta_value END) AS humanized
+               MAX(CASE WHEN pm.meta_key='_emart_humanized' THEN pm.meta_value END) AS humanized,
+               MAX(CASE WHEN pm.meta_key='_stock_status' THEN pm.meta_value END) AS stock_status
         FROM {DB.PREFIX}posts p
         LEFT JOIN {DB.PREFIX}postmeta pm ON pm.post_id=p.ID
         WHERE p.post_type='product' AND p.post_status='publish'
           AND p.post_title REGEXP %s AND p.post_title NOT REGEXP %s
         GROUP BY p.ID
         HAVING (humanized IS NULL OR humanized!='1')
+          AND stock_status='instock'
         ORDER BY sales DESC
         LIMIT %s
     """, (INCLUDE, EXCLUDE, max(limit * 50, 2000)))
     rows = cur.fetchall(); conn.close()
     holdout = _holdout_slugs()
+    agentic = _agentic_scores()
+    candidates = [r for r in rows if r["post_id"] not in HOLDOUT_IDS and r["slug"] not in holdout]
+    # worst (thinnest/lowest-quality) existing content first; top-seller breaks ties within a score
+    candidates.sort(key=lambda r: (agentic.get(r["slug"], AGENTIC_DEFAULT_SCORE), -r["sales"]))
     out = []
-    for r in rows:
-        if r["post_id"] in HOLDOUT_IDS or r["slug"] in holdout:
-            continue
+    for r in candidates:
         r["brand"] = DB.get_brand(r["post_id"])
         for tax, field in (("pa_origin","origin"),("pa_concern","concern"),
                            ("pa_skin_type","skin_type"),("product_cat","category")):
             r[field] = _term(r["post_id"], tax)
+        r["agentic_score"] = agentic.get(r["slug"], AGENTIC_DEFAULT_SCORE)
         out.append(r)
         if len(out) >= limit:
             break
@@ -345,7 +372,7 @@ def _term(post_id: int, taxonomy: str) -> str:
 
 def cmd_targets(a):
     for t in targets(a.targets):
-        print(f"  {t['post_id']:>6} | sales={t['sales']:>3} | {t['brand'][:16]:<16} | {t['title'][:54]}")
+        print(f"  {t['post_id']:>6} | qscore={t['agentic_score']:>3} | sales={t['sales']:>3} | {t['brand'][:16]:<16} | {t['title'][:54]}")
 
 def cmd_dry_run(a):
     OUT.mkdir(parents=True, exist_ok=True)
