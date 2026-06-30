@@ -5,12 +5,16 @@ on:
     branches: [main]
     paths:
       - 'apps/web/**'
+      - '!apps/web/.agent-memory/**'
+      - '!apps/web/SESSION-LOG.md'
       - 'package*.json'
       - '.github/workflows/ci.yml'
   pull_request:
     branches: [main]
     paths:
       - 'apps/web/**'
+      - '!apps/web/.agent-memory/**'
+      - '!apps/web/SESSION-LOG.md'
       - 'package*.json'
 
 jobs:
@@ -44,8 +48,17 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_SITE_URL: https://e-mart.com.bd
+          NEXT_PUBLIC_WOO_URL: https://e-mart.com.bd
+          NEXT_PUBLIC_WC_API_URL: https://e-mart.com.bd/wp-json/wc/v3
+          NEXT_PUBLIC_API_URL: https://e-mart.com.bd
+          NEXT_PUBLIC_WS_PRESENCE_URL: wss://e-mart.com.bd/ws/presence
           NEXT_PUBLIC_GA_ID: G-PLACEHOLDER
           NEXT_PUBLIC_META_PIXEL_ID: PLACEHOLDER
+          WOO_INTERNAL_URL: https://e-mart.com.bd
+          WOO_CONSUMER_KEY: ci-placeholder
+          WOO_CONSUMER_SECRET: ci-placeholder
+          NEXTAUTH_SECRET: ci-placeholder-secret
+          NEXTAUTH_URL: https://e-mart.com.bd
 
       - name: Dependency audit
         working-directory: apps/web
