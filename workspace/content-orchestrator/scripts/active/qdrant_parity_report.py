@@ -30,7 +30,9 @@ WC_KEY = os.environ.get("WC_CONSUMER_KEY", "")
 WC_SECRET = os.environ.get("WC_CONSUMER_SECRET", "")
 
 if not WC_KEY:
-    env_path = Path("/var/www/emart-platform/apps/web/.env.local")
+    env_path = Path(__file__).resolve().parents[4] / "apps" / "web" / ".env.local"
+    if not env_path.exists():
+        env_path = Path("/var/www/emart-platform/apps/web/.env.local")
     if env_path.exists():
         for line in env_path.read_text().splitlines():
             if line.startswith("WC_CONSUMER_KEY="):

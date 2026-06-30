@@ -38,6 +38,7 @@ from uuid import uuid4
 
 
 DEFAULT_ENV_FILES = (
+    Path(__file__).resolve().parents[4] / "apps" / "web" / ".env.local",
     Path("apps/web/.env.local"),
     Path("/var/www/emart-platform/apps/web/.env.local"),
 )

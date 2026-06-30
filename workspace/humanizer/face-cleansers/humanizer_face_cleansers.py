@@ -874,7 +874,9 @@ def _apply(product: dict, content_html: str, meta_desc: str) -> bool:
         cur.close(); conn.close()
 
 
-REVALIDATE_SECRET_FILE = Path("/var/www/emart-platform/apps/web/.env.local")
+REVALIDATE_SECRET_FILE = Path(__file__).resolve().parents[3] / "apps" / "web" / ".env.local"
+if not REVALIDATE_SECRET_FILE.exists():
+    REVALIDATE_SECRET_FILE = Path("/var/www/emart-platform/apps/web/.env.local")
 
 def _get_revalidate_secret() -> str:
     try:

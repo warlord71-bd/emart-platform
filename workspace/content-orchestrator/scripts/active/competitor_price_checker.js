@@ -40,7 +40,8 @@ const TODAY        = new Date().toISOString().split('T')[0];
 const _logTag      = BRAND_MODE      ? `brand-${(BRAND_FILTER||'unknown').replace(/[^a-z0-9]/gi,'-').toLowerCase()}`
                    : COMPETITOR_MODE ? `site-${(COMPETITOR_FILTER||'unknown').replace(/[^a-z0-9]/gi,'-').toLowerCase()}`
                    : 'competitor';
-const LOG_FILE     = `/var/www/emart-platform/workspace/audit/active/${_logTag}-${TODAY}.json`;
+const REPO_ROOT    = path.resolve(__dirname, '../../../..');
+const LOG_FILE     = `${REPO_ROOT}/workspace/audit/active/${_logTag}-${TODAY}.json`;
 
 const COMPETITOR_DOMAINS = [
   'shajgoj.com',
@@ -235,7 +236,7 @@ function wpFetchProductData(pid) {
 async function fetchEmartProducts() {
   if (BRAND_MODE) return fetchBrandProducts(BRAND_FILTER);
 
-  const snapPath = '/var/www/emart-platform/workspace/audit/active/baseline-snapshot-2026-05-31.json';
+  const snapPath = `${REPO_ROOT}/workspace/humanizer/engine/baseline-snapshot-2026-05-31.json`;
   if (!fs.existsSync(snapPath)) throw new Error('No GSC snapshot found');
 
   const snap = JSON.parse(fs.readFileSync(snapPath));

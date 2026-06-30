@@ -17,7 +17,10 @@ def _ssl_ctx():
 
 
 def fetch_product(product_id: int) -> dict:
-    env_file = Path("/var/www/emart-platform/apps/web/.env.local")
+    repo_root = Path(__file__).resolve().parents[4]
+    env_file = repo_root / "apps" / "web" / ".env.local"
+    if not env_file.exists():
+        env_file = Path("/var/www/emart-platform/apps/web/.env.local")
     wc_key = wc_secret = ""
     if env_file.exists():
         for line in env_file.read_text().strip().split("\n"):

@@ -1438,7 +1438,9 @@ def _load_wc_creds():
     secret = os.environ.get("WOO_CONSUMER_SECRET", "") or os.environ.get("WC_CONSUMER_SECRET", "")
     if key and secret:
         return key, secret
-    env_file = Path("/var/www/emart-platform/apps/web/.env.local")
+    env_file = Path(__file__).resolve().parents[2] / "apps" / "web" / ".env.local"
+    if not env_file.exists():
+        env_file = Path("/var/www/emart-platform/apps/web/.env.local")
     if env_file.exists():
         for line in env_file.read_text().strip().split("\n"):
             if "=" in line and not line.startswith("#"):

@@ -48,6 +48,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 | ID | Task | Owner | Status |
 |---|---|---|---|
 | INFRA-1 | **Hermes subdomain + SSL.** Add DNS A record `hermes.e-mart.com.bd → 5.189.188.229` at your DNS provider, then run `certbot --nginx -d hermes.e-mart.com.bd`. Nginx vhost `/etc/nginx/sites-enabled/hermes-domain` is already in place and listening on port 80 — certbot just needs to issue the cert and add the SSL stanza. After this, Hermes will be at `https://hermes.e-mart.com.bd` (same as OpenClaw at `https://agent.e-mart.com.bd`). | [O]→[C] | 🔲 waiting on DNS A record |
+| INFRA-2 | **`GEMINI_API_KEY` corrupted in `/root/emart-platform/apps/web/.env.local`** (line 66): value is a 39-char key duplicated into 78 chars with no separator (`AIzaSy...q9c` + itself again) — a copy-paste bug, not a valid key. `/var/www`'s `.env.local` doesn't have this key at all. Used only by the video engine's optional Gemini fallback (`script_gen.py`, `reel_qa_gemini.py`) — not core to checkout/daily ops, so left as-is per owner instruction 2026-07-01. Owner to provide the correct single key when ready; until then the Gemini fallback path will fail closed if invoked. | [O] | 🔲 known issue, deprioritized |
 
 ---
 

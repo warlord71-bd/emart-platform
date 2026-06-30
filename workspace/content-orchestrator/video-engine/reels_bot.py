@@ -34,8 +34,8 @@ REVIEW, APPROVED, REJECTED = JOBS / "review", JOBS / "approved", JOBS / "rejecte
 STATE = JOBS / ".bot_state.json"
 PUBLISH = ROOT / "publish_approved.py"
 SOCIAL_ENGINE = ROOT.parent / "social-engine" / "social_engine.py"
-ENV_FILE = Path("/var/www/emart-platform/apps/web/.env.local")
-ENV_FILE_LOCAL = ROOT.parent.parent / "apps" / "web" / ".env.local"
+ENV_FILE = ROOT.parents[2] / "apps" / "web" / ".env.local"
+ENV_FILE_LOCAL = Path("/var/www/emart-platform/apps/web/.env.local")
 
 
 def token() -> str:

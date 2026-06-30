@@ -6,7 +6,8 @@ set -euo pipefail
 
 source /root/.openclaw/openclaw.env
 
-LOG="/var/www/emart-platform/workspace/audit/active/seo-auto-scan-$(date +%F).log"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+LOG="$REPO_ROOT/workspace/audit/active/seo-auto-scan-$(date +%F).log"
 echo "=== SEO Auto-Scan $(date '+%F %T') ===" >> "$LOG"
 
 # Auth header for WP REST API

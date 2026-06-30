@@ -24,7 +24,7 @@ mkdir -p "$ENGINE/active"
 
 export PYTHONUNBUFFERED=1
 export EMART_DB_PASSWORD="$(grep DB_PASSWORD /var/www/wordpress/wp-config.php | head -1 | sed "s/.*'\([^']*\)'.*/\1/")"
-export REVALIDATE_SECRET="$(grep REVALIDATE_SECRET /var/www/emart-platform/apps/web/.env.local | cut -d= -f2)"
+export REVALIDATE_SECRET="$(grep REVALIDATE_SECRET "$ROOT/apps/web/.env.local" | cut -d= -f2)"
 unset OPENROUTER_MODEL                           # use free-model chain
 set -a; source /root/.openclaw/openclaw.env 2>/dev/null; set +a
 

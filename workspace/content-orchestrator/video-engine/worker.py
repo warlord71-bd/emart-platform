@@ -31,7 +31,7 @@ STATE = ROOT / "state"
 REEL = ROOT / "stages" / "reel_ffmpeg.py"
 REEL_HF = ROOT / "stages" / "reel_hyperframes.py"
 REEL_QA_LOCAL = ROOT / "stages" / "reel_qa_local.py"
-PUBLIC_REELS = Path("/var/www/emart-platform/apps/web/public/videos/reels")
+PUBLIC_REELS = ROOT.parents[2] / "apps" / "web" / "public" / "videos" / "reels"
 # nginx serves the public dir directly via /public/ alias (range-request capable, no Next restart needed)
 PUBLIC_BASE = "https://e-mart.com.bd/public/videos/reels"
 META_PUBLISH = ROOT.parent / "scripts" / "active" / "meta_publish.js"

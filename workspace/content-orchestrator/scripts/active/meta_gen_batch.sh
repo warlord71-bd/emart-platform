@@ -9,7 +9,7 @@ BATCH_SIZE=50
 SLEEP_BETWEEN=90
 REPORT_EVERY=5
 
-WORK="/var/www/emart-platform"
+WORK="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 DOCS="$WORK/workspace/content-orchestrator/docs"
 AUDIT="$WORK/workspace/audit/active"
 SESSION_LOG="$WORK/apps/web/SESSION-LOG.md"
