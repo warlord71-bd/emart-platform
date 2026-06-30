@@ -1,6 +1,6 @@
 # Emart Action & Event Ledger
 
-Schema: `workspace/content-orchestrator/docs/action-ledger-schema.md` (v1, 2026-06-25)
+Schema: `workspace/content-orchestrator/docs/specs/action-ledger-schema.md` (v1, 2026-06-25)
 Instantiated: 2026-06-26
 
 ## Files

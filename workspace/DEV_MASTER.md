@@ -154,7 +154,7 @@ Navigation, URL structure, sitemap, and routing changes are frozen until **2026-
 - **Files:** `apps/web/tailwind.config.js`, `apps/web/src/app/globals.css`
 - **Effort:** Small | **Risk:** Low
 
-### U2: Update `workspace/content-orchestrator/docs/theme-contract.md` with canonical token map
+### U2: Update `workspace/content-orchestrator/docs/specs/theme-contract.md` with canonical token map
 - **Change:** One canonical set: `bg`, `card`, `surface`, `ink`, `muted`, `accent`, `border`, `success`, `warning`, `danger`. Mark `lumiere` and `--mb-*` as scoped-island aliases only.
 - **Effort:** Small | **Risk:** None (docs only)
 

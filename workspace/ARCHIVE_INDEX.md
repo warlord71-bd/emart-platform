@@ -181,20 +181,22 @@ workspace/
       rollback-current.json             ← ACTIVE rollback — do not delete
       consistency-audit-final.csv/md    ← CURRENT consistency audit
 
-  content-orchestrator/docs/
-    meta_generator.py                   ← catalog meta generation (ACTIVE)
-    meta_validator.py                   ← meta validator (ACTIVE)
-    baseline_snapshot.py                ← GSC snapshot tool
-    catalog-lighthouse-fast-audit.mjs   ← read-only PDP audit
-    mobile-build-notes.md               ← mobile app build config
-    CLAUDE-product-humanizer-guide.md   ← humanizer operating guide
-    category-taxonomy-status.md         ← category decisions
-    theme-contract.md                   ← UI contract
+  content-orchestrator/docs/            ← reorganized 2026-06-30, see docs/README.md
+    meta_generator.py                   ← catalog meta generation (job complete, kept for resume)
+    meta_validator.py                   ← meta validator (kept alongside generator)
+    baseline_snapshot.py                ← GSC snapshot tool (reusable, humanizer-wide)
+    catalog-lighthouse-fast-audit.mjs   ← read-only PDP audit (reusable tool)
+    specs/                              ← durable contracts/specs (theme-contract.md, process-manifest.md, category-taxonomy-status.md, etc.)
+    guides/                             ← how-to/runbooks (CLAUDE-product-humanizer-guide.md, mobile-build-notes.md, RECOVERY.md, etc.)
+    owner-actions/                      ← pending owner-only actions (OWNER-ACTION-R3-cloudflare-access-20260611.md still open)
+    audits/                             ← completed audit reports
+    archive/                            ← superseded/completed task briefs
+    claude-reference/                   ← unchanged, agent operating reference docs
 
   content-orchestrator/scripts/active/
     checkout_monitor.js                 ← PM2: 15-min checkout test
     competitor_price_checker.js         ← PM2: daily competitor prices
     seo_auto_scan.sh                    ← PM2: daily blog SEO fill
-    meta_gen_batch.sh                   ← MISSING locally/VPS file removed; PM2 process is stale-running from old path
+    meta_gen_batch.sh                   ← lives here on Local; PM2 `emart-meta-gen` in `ecosystem.config.cjs` still points at the legacy `workspace/scripts/active/` path — VPS still has a full untracked duplicate `workspace/scripts/` tree (not in Local/git). Needs owner decision before resuming this job. See SESSION-LOG 2026-06-30.
     google_sheets_setup.js              ← Sheets webhook reference
 ```

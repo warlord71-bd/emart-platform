@@ -79,6 +79,6 @@ Key SEO search targets: `canonical` · `generateMetadata` · `sitemap` · `robot
 - [OpenClaw](workspace/content-orchestrator/docs/claude-reference/openclaw.md) — VPS inspection, Telegram, safety rules
 - [Deploy function](workspace/content-orchestrator/docs/claude-reference/deploy-reference.md) — full rsync/pm2 reference script
 - [Brand guide](workspace/BRAND_GUIDE.md) — copy tone, product naming, brand story
-- [Category taxonomy](workspace/content-orchestrator/docs/category-taxonomy-status.md) — active/redirected/backend-only categories
+- [Category taxonomy](workspace/content-orchestrator/docs/specs/category-taxonomy-status.md) — active/redirected/backend-only categories
 - [Task board](workspace/TASKS.md) — open work, priority order, freeze scope
 - [Agent memory](apps/web/.agent-memory/MEMORY.md) — durable facts, preferences, project state

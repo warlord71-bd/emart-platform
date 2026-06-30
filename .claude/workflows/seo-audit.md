@@ -41,4 +41,4 @@ Flag regressions, new issues, and confirm known-good state. Reference SEO_MASTER
 ## Reference
 - URL policy registry: `workspace/seo/url-policy-registry.json`
 - Technical control loop: `workspace/content-orchestrator/scripts/active/seo_technical_control_loop.py`
-- Category taxonomy: `workspace/content-orchestrator/docs/category-taxonomy-status.md`
+- Category taxonomy: `workspace/content-orchestrator/docs/specs/category-taxonomy-status.md`

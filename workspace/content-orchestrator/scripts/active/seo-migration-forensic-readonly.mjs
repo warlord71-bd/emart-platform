@@ -10,7 +10,7 @@ const OUT = path.join(ROOT, 'workspace/audit/active/seo-migration-forensic-20260
 const GSC_404 = path.join(ROOT, 'workspace/audit/archive/processed/gsc-404-report-20260512/Table.csv');
 const GSC_404_CHART = path.join(ROOT, 'workspace/audit/archive/processed/gsc-404-report-20260512/Chart.csv');
 const GSC_NON_PRODUCT = path.join(ROOT, 'workspace/audit/archive/gsc-exports/organic-traffic-non-product-2026-06-02.csv');
-const GMC_REPORT = path.join(ROOT, 'workspace/content-orchestrator/docs/gmc-steps3-6-report-20260605.md');
+const GMC_REPORT = path.join(ROOT, 'workspace/content-orchestrator/docs/audits/gmc-steps3-6-report-20260605.md');
 
 function localUrl(urlOrPath) {
   const url = new URL(urlOrPath, SITE);
