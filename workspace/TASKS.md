@@ -44,6 +44,14 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 
 ## 🔴 OPEN WORK — Prioritized
 
+### Infra / Hermes
+
+| ID | Task | Owner | Status |
+|---|---|---|---|
+| INFRA-1 | **Hermes subdomain + SSL.** Add DNS A record `hermes.e-mart.com.bd → 5.189.188.229` at your DNS provider, then run `certbot --nginx -d hermes.e-mart.com.bd`. Nginx vhost `/etc/nginx/sites-enabled/hermes-domain` is already in place and listening on port 80 — certbot just needs to issue the cert and add the SSL stanza. After this, Hermes will be at `https://hermes.e-mart.com.bd` (same as OpenClaw at `https://agent.e-mart.com.bd`). | [O]→[C] | 🔲 waiting on DNS A record |
+
+---
+
 ### Workspace Audit — Inconsistencies & Logical Gaps (2026-06-24)
 
 Cross-system audit of the live automation surface (publishing, generated state, engines). A and B

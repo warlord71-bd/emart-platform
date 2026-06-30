@@ -313,6 +313,17 @@ resolved
 
 # === session screenshots (audit/active PNGs) ===
 workspace/audit/active/*.png
+*-dashboard-desktop.png
+*-dashboard-mobile.png
+
+# === Hermes runtime state (never commit DB or generated outputs) ===
+workspace/hermes/hermes.db
+workspace/hermes/hermes.db-shm
+workspace/hermes/hermes.db-wal
+workspace/hermes/static/output/
+
+# === Attic directories (archived/rotated files) ===
+workspace/.attic-*/
 
 # === local MCP / Playwright MCP artifacts ===
 .playwright-mcp/

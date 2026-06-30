@@ -27,6 +27,61 @@
         "cwd": "${env:EMART_VPS_WEB_APP}"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Hermes: Open Dashboard",
+      "type": "shell",
+      "command": "echo '→ Hermes Dashboard: http://5.189.188.229:8088  (login: emart)' && echo '→ Domain (after DNS): http://hermes.e-mart.com.bd'",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      }
+    },
+    {
+      "label": "Hermes: Run Job (ask brain)",
+      "type": "shell",
+      "command": "curl -su emart -X POST http://127.0.0.1:8078/job/create -d 'engine=ai_ask' -d 'question=${input:question}'",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "OpenClaw: Open Agent Dashboard",
+      "type": "shell",
+      "command": "echo '→ OpenClaw: https://agent.e-mart.com.bd'",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      }
+    },
+    {
+      "label": "OpenClaw: Send Task to Emart Agent",
+      "type": "shell",
+      "command": "openclaw agent -m '${input:task}' --agent emart --json",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "question",
+      "type": "promptString",
+      "description": "Ask Hermes brain a question"
+    },
+    {
+      "id": "task",
+      "type": "promptString",
+      "description": "Task for OpenClaw emart agent"
     }
   ]
 }

@@ -13,7 +13,7 @@ Nginx: proxy_pass http://127.0.0.1:8078; (behind /hermes/ or subdomain)
 """
 from __future__ import annotations
 
-import json, os, sqlite3, subprocess, sys, time, uuid
+import asyncio, json, os, sqlite3, subprocess, sys, time, uuid
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -823,6 +823,11 @@ def get_jobs(limit: int = 20) -> list[dict]:
 
 # ─── Routes ──────────────────────────────────────────────────────────────────
 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return FileResponse(str(HERMES / "static" / "favicon.ico"))
+
+
 @app.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request):
     pm2 = _pm2_status()
@@ -845,7 +850,7 @@ async def job_create(request: Request, engine: str = Form(...)):
     form = await request.form()
     params = {k: v for k, v in form.items() if k != "engine" and v}
     job_id = create_job(engine, params)
-    run_job(job_id)
+    await asyncio.to_thread(run_job, job_id)
     return RedirectResponse(f"/job/{job_id}", status_code=303)
 
 
@@ -882,12 +887,15 @@ async def reel_approve(stem: str):
         raise HTTPException(404, "Reel not found or already handled")
     approved.mkdir(parents=True, exist_ok=True)
     review.rename(approved / review.name)
-    # Publish
     publish_script = vid_engine / "publish_approved.py"
-    r = subprocess.run(
-        [sys.executable, str(publish_script), "--live"],
-        capture_output=True, text=True, timeout=600,
-    )
+
+    def _publish():
+        return subprocess.run(
+            [sys.executable, str(publish_script), "--live"],
+            capture_output=True, text=True, timeout=600,
+        )
+
+    r = await asyncio.to_thread(_publish)
     ok = "PUBLISHED" in (r.stdout or "") or not (approved / f"{stem}.json").exists()
     return JSONResponse({
         "status": "published" if ok else "approved_publish_pending",
