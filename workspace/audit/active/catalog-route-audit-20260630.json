@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-06-30T09:25:33.817Z",
+  "productCount": 3624,
+  "redirectCount": 374,
+  "findings": {
+    "liveShopRedirects": [],
+    "liveProductRedirectsOffCanonical": [],
+    "missingProductDestinations": []
+  }
+}

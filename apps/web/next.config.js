@@ -221,10 +221,9 @@ const nextConfig = {
       { source: '/shop/cos-de-baha-snail-mucin-hyaluronic-acid-serum-sh-120ml-2',                                destination: '/shop/cos-de-baha-snail-mucin-hyaluronic-acid-serum-sh-120ml',                                     permanent: true },
       { source: '/shop/raip-r3-argan-hair-oil-100-ml-original',                                                   destination: '/shop/raip-r3-argan-hair-oil-100ml',                                                               permanent: true },
       { source: '/shop/beauty-of-joseon-matte-sun-stick-mugwortcamelia-18g',                                     destination: '/shop/beauty-of-joseon-matte-sun-stick-mugwortcamelia18g-0-63fl-oz',                               permanent: true },
-      { source: '/shop/medipeel-melanon-x-dark-spot-blemish-care-solution-cream-30ml',                           destination: '/shop/medi-peel-melanon-x-cream-30ml',                                                             permanent: true },
       { source: '/shop/im-from-rice-sunscreen-50ml',                                                             destination: '/shop/im-from-rice-sunscreen',                                                                     permanent: true },
       { source: '/shop/la-roche-posay-cicaplast-baume-b5-100ml-2',                                               destination: '/shop/la-roche-posay-cicaplast-baume-b5-100ml',                                                    permanent: true },
-      { source: '/shop/la-roche-posay-cicaplast-baume-b5-40ml-2',                                                destination: '/shop/la-roche-posay-cicaplast-baume-b5-40ml',                                                     permanent: true },
+      { source: '/shop/la-roche-posay-cicaplast-baume-b5-40ml-2',                                                destination: '/shop/la-roche-posay-cicaplast-baume-b5-40ml-2__trashed',                                          permanent: true },
       { source: '/shop/im-from-black-rice-toner-150ml-2',                                                         destination: '/shop/im-from-black-rice-toner-150ml',                                                             permanent: true },
       { source: '/shop/raip-moisture-repair-body-lotion-original-500-ml',                                         destination: '/shop/raip-moisture-repair-body-lotion-500-ml',                                                    permanent: true },
       { source: '/shop/3w-clinic-charcoal-cleansing-foam100ml',                                                  destination: '/shop/3w-clinic-charcoal-cleansing-foam-100-ml',                                                   permanent: true },
@@ -390,8 +389,8 @@ const nextConfig = {
       { source: '/product/some-by-mi-total-care-serum-trial-kit-4pcs-2', destination: '/shop/some-by-mi-total-care-serum-trial-kit-4pcs', permanent: true },
       { source: '/shop/m-a-c-amplified-lipstick-vegas-volt-3gm-2', destination: '/shop/m-a-c-amplified-lipstick-vegas-volt-3gm', permanent: true },
       { source: '/product/m-a-c-amplified-lipstick-vegas-volt-3gm-2', destination: '/shop/m-a-c-amplified-lipstick-vegas-volt-3gm', permanent: true },
-      { source: '/shop/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel-2', destination: '/shop/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel', permanent: true },
-      { source: '/product/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel-2', destination: '/shop/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel', permanent: true },
+      { source: '/shop/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel-2', destination: '/shop/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel-300-ml', permanent: true },
+      { source: '/product/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel-2', destination: '/shop/nature-republic-soothing-moisture-aloe-vera-92-soothing-gel-300-ml', permanent: true },
       { source: '/shop/anua-heartleaf-pore-control-cleansing-oil-200ml-2', destination: '/shop/anua-heartleaf-pore-control-cleansing-oil-200ml', permanent: true },
       { source: '/product/anua-heartleaf-pore-control-cleansing-oil-200ml-2', destination: '/shop/anua-heartleaf-pore-control-cleansing-oil-200ml', permanent: true },
       { source: '/shop/beauty-of-joseon-red-bean-water-gel-100ml-2', destination: '/shop/beauty-of-joseon-red-bean-water-gel-100ml', permanent: true },
@@ -400,8 +399,6 @@ const nextConfig = {
       { source: '/product/medicube-zero-pore-cream-50ml-2', destination: '/shop/medicube-zero-pore-cream-50ml', permanent: true },
       { source: '/shop/karite-bubble-pink-mud-mask-5ml-2', destination: '/shop/karite-bubble-pink-mud-mask-5ml', permanent: true },
       { source: '/product/karite-bubble-pink-mud-mask-5ml-2', destination: '/shop/karite-bubble-pink-mud-mask-5ml', permanent: true },
-      { source: '/shop/aplb-glutathione-niacinamide-body-lotion-300ml-copy', destination: '/shop/aplb-glutathione-niacinamide-body-lotion-300ml', permanent: true },
-      { source: '/product/aplb-glutathione-niacinamide-body-lotion-300ml-copy', destination: '/shop/aplb-glutathione-niacinamide-body-lotion-300ml', permanent: true },
 
       // GA4 PDP 404 audit safe redirects (2026-06-17)
       { source: '/shop/neutrogena-oil-free-acne-wash', destination: '/shop/neutrogena-oil-free-acne-wash-269ml', permanent: true },
@@ -507,7 +504,6 @@ const nextConfig = {
 
       // Specific broken shop slugs (underscore/encoding variants)
       { source: '/shop/b_lab-matcha-hydrating-real-sun-stick-21g',   destination: '/shop/b-lab-matcha-hydrating-real-sun-stick-21g',  permanent: true },
-      { source: '/shop/round-lab-eng-1025-dokdo-ampule_45g',         destination: '/shop/round-lab-1025-dokdo-ampule',               permanent: true },
       { source: '/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-118ml', destination: '/shop', permanent: true },
 
       // Junk/old WordPress routes
