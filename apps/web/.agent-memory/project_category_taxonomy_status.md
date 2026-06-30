@@ -5,7 +5,7 @@ metadata:
   type: project
 ---
 
-WooCommerce category taxonomy was audited and locked 2026-05-13. Full reference: `workspace/docs/category-taxonomy-status.md`.
+WooCommerce category taxonomy was audited and locked 2026-05-13. Full reference: `workspace/content-orchestrator/docs/category-taxonomy-status.md`.
 
 **Why:** Old concern categories had dirty data (hair/body products inside skincare concern categories). Using them for pa_concern assignment, frontend filters, or sitemap would spread the mess.
 

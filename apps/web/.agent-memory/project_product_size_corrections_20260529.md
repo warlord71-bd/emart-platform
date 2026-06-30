@@ -9,8 +9,8 @@ Important constraints:
 - Apply only after reviewing the dry-run CSV; bulk Woo data writes must not skip dry-run review.
 
 Files added/updated:
-- `workspace/scripts/active/audit-product-data-mismatches.php` now parses decimal sizes in slugs.
-- `workspace/scripts/active/product-size-corrections-from-review.php` creates dry-run/apply reports from reviewed CSV input and never writes `post_name`.
+- `workspace/content-orchestrator/scripts/active/audit-product-data-mismatches.php` now parses decimal sizes in slugs.
+- `workspace/content-orchestrator/scripts/active/product-size-corrections-from-review.php` creates dry-run/apply reports from reviewed CSV input and never writes `post_name`.
 - Reviewed input CSV generated from XLSX: `workspace/audit/active/product-size-corrections-review-20260529-202621.csv`.
 - Latest dry-run: `workspace/audit/active/product-size-corrections-dry-run-20260529-203021.csv`.
 - Fixed-parser audit: `workspace/audit/active/product-data-mismatch-audit-20260529-203048.md` / `.csv`.

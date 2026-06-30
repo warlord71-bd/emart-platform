@@ -34,7 +34,7 @@ workspace/humanizer/
   |-- face-cleansers/             <-- Completed: 64 products humanized
   '-- impression-priority/        <-- GSC-driven humanization targets
 
-workspace/scripts/active/
+workspace/content-orchestrator/scripts/active/
   |-- blog_generator_run.sh       <-- Blog post generator launcher
   |-- humanizer_*.py              <-- Humanizer target scripts
   '-- meta_gen_batch.sh           <-- Meta description generator

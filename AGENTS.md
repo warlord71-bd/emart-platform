@@ -47,7 +47,7 @@ Claude additionally reads `CLAUDE.md` for the same content plus Claude-specific 
 Follow `/root/CLAUDE.md` sequence: Local edit → build → commit → rsync → VPS build → `pm2 restart emartweb` → smoke test → push.
 **Never push `origin/main` before smoke test passes.**
 Hotfix on VPS: reverse-sync VPS → Local before committing. Never commit from VPS directly.
-Quick reference: `workspace/docs/claude-reference/deploy-reference.md`
+Quick reference: `workspace/content-orchestrator/docs/claude-reference/deploy-reference.md`
 
 ## Session Protocol (all agents)
 - **Start:** `cat apps/web/.agent-memory/AGENT_BUS.md` + `cat apps/web/.agent-memory/MEMORY.md` + `tail -50 apps/web/SESSION-LOG.md` + `cat workspace/TASKS.md` + `git log --oneline -10` + `git status --short`
@@ -76,9 +76,9 @@ Key SEO search targets: `canonical` · `generateMetadata` · `sitemap` · `robot
 
 ## Reference (load only when the task needs it)
 - [SEO Master](workspace/SEO_MASTER.md) — full SEO gap tracker, canonical/sitemap/schema rules
-- [OpenClaw](workspace/docs/claude-reference/openclaw.md) — VPS inspection, Telegram, safety rules
-- [Deploy function](workspace/docs/claude-reference/deploy-reference.md) — full rsync/pm2 reference script
+- [OpenClaw](workspace/content-orchestrator/docs/claude-reference/openclaw.md) — VPS inspection, Telegram, safety rules
+- [Deploy function](workspace/content-orchestrator/docs/claude-reference/deploy-reference.md) — full rsync/pm2 reference script
 - [Brand guide](workspace/BRAND_GUIDE.md) — copy tone, product naming, brand story
-- [Category taxonomy](workspace/docs/category-taxonomy-status.md) — active/redirected/backend-only categories
+- [Category taxonomy](workspace/content-orchestrator/docs/category-taxonomy-status.md) — active/redirected/backend-only categories
 - [Task board](workspace/TASKS.md) — open work, priority order, freeze scope
 - [Agent memory](apps/web/.agent-memory/MEMORY.md) — durable facts, preferences, project state

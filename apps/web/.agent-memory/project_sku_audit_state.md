@@ -11,6 +11,6 @@
   - `workspace/audit/active/product-duplicate-sku-meta-dry-run-20260508-210540.csv`
   - `workspace/audit/active/product-sku-audit-summary-20260508-210540.txt`
 - Script:
-  - `workspace/scripts/active/product-sku-audit-dry-run.php`
+  - `workspace/content-orchestrator/scripts/active/product-sku-audit-dry-run.php`
 
 Do not apply SKU mutations without owner review/approval of the dry-run CSV. Recommended behavior: preserve every existing non-empty `_sku`; only fill missing `_sku`; optionally remove duplicate same-value `_sku` meta rows.

@@ -35,10 +35,10 @@ PM2 process `emart-meta-gen` was stopped on 2026-06-09. It had been stuck in a s
 - `root/CLAUDE.md`: 2,014t → 824t
 - `AGENTS.md`: lean self-contained entry point for Codex (same content as CLAUDE.md)
 - Moved to reference docs (load on demand, not auto-loaded):
-  - `workspace/docs/claude-reference/openclaw.md` — full OpenClaw capability
-  - `workspace/docs/claude-reference/deploy-reference.md` — deploy shell functions
+  - `workspace/content-orchestrator/docs/claude-reference/openclaw.md` — full OpenClaw capability
+  - `workspace/content-orchestrator/docs/claude-reference/deploy-reference.md` — deploy shell functions
 - `.github/copilot-instructions.md` created (minimal, 147t)
-- `.claudeignore`: `workspace/docs/*.py` + `workspace/docs/*.mjs` excluded
+- `.claudeignore`: `workspace/content-orchestrator/docs/*.py` + `workspace/content-orchestrator/docs/*.mjs` excluded
 
 ## Git state after this session
 

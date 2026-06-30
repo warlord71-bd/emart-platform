@@ -11,7 +11,7 @@ metadata:
 - Container: `hgc-qdrant` at `127.0.0.1:6333` (healthy, 512MB limit, auto-restart)
 - Collection: `emart_products` — 3,625 products, 768-dim `all-mpnet-base-v2` embeddings
 - API key env var: `QDRANT_API_KEY` (in both Local + VPS `.env.local`)
-- Weekly sync cron: Sundays 5am via `workspace/scripts/active/qdrant_sync_run.sh`
+- Weekly sync cron: Sundays 5am via `workspace/content-orchestrator/scripts/active/qdrant_sync_run.sh`
 
 ## Existing search utilities — USE THESE
 - `lib/qdrantSearch.ts` → `searchByText(query, limit)` — payload text search on name/brand/category/origin. No embedding needed. Fast.

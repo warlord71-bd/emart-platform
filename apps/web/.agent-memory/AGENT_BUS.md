@@ -23,7 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
-| Codex | 2026-06-30 | Pinned recent Codex completion rows to concrete commit hashes after later commits moved `HEAD`. | pending commit |
+| Codex | 2026-06-30 | Pinned recent Codex completion rows to concrete commit hashes after later commits moved `HEAD`. | current commit |
 | Codex | 2026-06-30 | Added automatic social/video done-history cleanup: completed published/rejected records archive into category-wise logical history, hot job folders stay clear, and runtime history ledgers are no longer tracked. | `ad16668` |
 | Codex | 2026-06-30 | Cleaned accidental empty `workspace/workspace` tree by moving it to the dated attic and fixed active helper scripts whose repo-root calculation could recreate nested `workspace/workspace` paths. | `2347d58` |
 | Codex | 2026-06-30 | Dropped third-party review-collection direction and converted active review work to a pending native magic-link flow backed by Woo/Next schema. | `2347d58` |
@@ -51,7 +51,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 | Codex | 2026-06-25 | B0 coordination reconciliation: current tracked tree checked; only generated Social Engine runtime state was hanging, now ignored via `workspace/social-engine/.gitignore`. Rule clarified: old `pending` rows are historical only; live ownership comes from ACTIVE WORK + `git status --short`. | reconciliation commit |
 | Claude | 2026-06-25 | Reel quality + consistency overhaul (owner iterations): brand-themed cards w/ real logo + dual price; loudness hard-gate + fresh-build enqueue; caption-window fix; voiceover Bangla-phonetic pronunciation; **canonical reusable Emart model** (`personas/emart-model/clean-portrait.png`, Codex face-matched) + free `presenter_card.py` composite fallback; standard 5-frame layout (clean model→model+product→product→value→brand, ONE face). COSRX + Dr.Althea reels delivered to Telegram. Local=Git=VPS reconciled, session closed. | `0bbd1f1` `0958ddf` |
 | Codex | 2026-06-25 | Fulfilled video bridge image request `emart-model__clean-portrait-reusable`: generated product-free reusable Emart model portrait from `reference-holding.png`, saved 1080x1920 asset to `workspace/video-engine/personas/emart-model/clean-portrait.png`, and verified bridge queue is empty. | `0bbd1f1` |
-| Codex | 2026-06-25 | UX-ORCH-1 trust-data contract audit: inventoried storefront live/verified/stock/review/sold/viewer/social-proof claims; created `workspace/docs/audits/storefront-trust-data-contract-20260625.md`; marked board as contract done with visible relabeling/source flags pending. | `b6f4836` |
+| Codex | 2026-06-25 | UX-ORCH-1 trust-data contract audit: inventoried storefront live/verified/stock/review/sold/viewer/social-proof claims; created `workspace/content-orchestrator/docs/audits/storefront-trust-data-contract-20260625.md`; marked board as contract done with visible relabeling/source flags pending. | `b6f4836` |
 | Claude | 2026-06-25 | Priority lane 1-3: (1) WA-G+ORCH-5 credential security — 12 OpenClaw scripts migrated to `creds.py`/`openclaw.env`, IDENTITY.md scrubbed, WC key updated to key_id 34, WC localhost Host+XFP fix, all crons verified. (2) ORCH-1 deploy hardening — deploy lock, selective staging, lockfile-before-rsync, .next rollback, runtime-state exclusions. (3) SEO-ORCH-1 canonical URL merge — `/product/`→`/shop/` normalization + weighted metric merge in GSC tracker; completed-content registry wired into nightly `cmd_full()`; humanizer queue now correct (317 registry, 97 GSC-excluded, 402 remaining). **Next session: Task 4 UX-ORCH-1 trust audit.** | `673cadf` `818065b` |
 | Codex | 2026-06-25 | SEO-ORCH-1 registry leg: added durable humanizer completed-content registry from `_emart_humanized`, switched humanizer queue completion logic from inferred agentic tiers to canonical paths, and verified queue counts are no longer zero. | `818065b` |
 | Codex | 2026-06-25 | Social Engine upgrade + June 25 review pack: product picker/history hook/performance-score input/IG 4:5 variants/contact sheet/design-source QA plus 18 generated assets (10 pipeline + 8 Codex AI-background composites). No publish/deploy. | `e8dd6dd` |
@@ -87,7 +87,7 @@ apps/web/.agent-memory/MEMORY.md ← all agents read/write
 workspace/seo-review/*.json     ← gsc_tracker writes, agents read
 apps/web/src/lib/seo/product.ts ← SEO schema changes
 apps/web/src/app/shop/[slug]/page.tsx ← PDP changes
-workspace/scripts/active/meta_*  ← HOT (2026-06-24): Codex fixing WA-B/A publishers + scheduler; Claude holds WA-D archival here until done
+workspace/content-orchestrator/scripts/active/meta_*  ← HOT (2026-06-24): Codex fixing WA-B/A publishers + scheduler; Claude holds WA-D archival here until done
 ```
 
 **Before editing a conflict zone file:**

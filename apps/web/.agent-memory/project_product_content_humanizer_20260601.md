@@ -3,7 +3,7 @@
 The full-catalog product content humanizer is active but must continue in small JSONL-reviewed batches.
 
 Current state:
-- `workspace/docs/humanizer_face_cleansers.py` is the production script for face cleansers.
+- `workspace/humanizer/face-cleansers/humanizer_face_cleansers.py` is the production script for face cleansers.
 - Face cleansers: 169/218 applied as of 2026-06-03; ~36 eligible products remain (38 dry-run IDs selected), with holdout/high-sales skips protected by script rules.
 - Holdout/control: 213 products have `_emart_holdout`; do not touch until the 8-week measurement completes on 2026-07-26.
 - GSC baseline exists at `workspace/audit/active/baseline-snapshot-2026-05-31.json`.

@@ -1,6 +1,6 @@
 # R2/R3 audit state - 2026-06-11
 
-- R2/H-05 is done/live. Runtime Nginx restores Cloudflare real client IPs via `/etc/nginx/conf.d/cloudflare-real-ip.conf` (repo reference `workspace/docs/R2-cloudflare-real-ip-nginx.conf`), rate-limits checkout/admin-auth/newsletter/search/auth/general buckets, and exempts localhost/VPS IP for `emart-checkout-monitor`.
+- R2/H-05 is done/live. Runtime Nginx restores Cloudflare real client IPs via `/etc/nginx/conf.d/cloudflare-real-ip.conf` (repo reference `workspace/content-orchestrator/docs/R2-cloudflare-real-ip-nginx.conf`), rate-limits checkout/admin-auth/newsletter/search/auth/general buckets, and exempts localhost/VPS IP for `emart-checkout-monitor`.
 - R3/H-06 is still pending owner Cloudflare dashboard work. Owner first attempted setup, but live recheck still reached WordPress directly: `/wp-login.php` returned HTTP 200 and `/wp-admin/` redirected to `/wp-login.php?redirect_to=...`.
 - A second attempt using a broad/single Cloudflare Access hostname protected `/wp-login.php`, `/wp-admin/`, and also the public storefront (`/`, `/shop`, PDPs) with Cloudflare Access, which would block customers. Owner deleted the Access app/rule; live storefront recovered (`/` 200, `/shop` 200, PDP 200). `wp-login.php` is public again, so R3 is not closed.
 - Do not mark pre-freeze audit fully closed until a fresh unauthenticated live check shows Cloudflare Access challenge/redirect instead of WordPress headers/cookies on `/wp-login.php` and `/wp-admin/`, while `/`, `/shop`, and a PDP remain public 200.

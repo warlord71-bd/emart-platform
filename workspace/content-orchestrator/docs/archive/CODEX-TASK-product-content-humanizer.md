@@ -15,7 +15,7 @@
 | Holdout group (213 products) | ✅ Done | `_emart_holdout` meta written to DB |
 | GSC OAuth credentials | ✅ Done | `apps/web/gsc-oauth-token.json` |
 | GSC query map | ✅ Done | `workspace/audit/active/gsc-query-map-2026-05-31.json` |
-| Production script | ✅ Done | `workspace/docs/humanizer_face_cleansers.py` |
+| Production script | ✅ Done | `workspace/content-orchestrator/docs/humanizer_face_cleansers.py` |
 | Cloudflare cache rules | ✅ Done | `/_next/*` 7d, `/wp-content/uploads/*` 30d |
 | Attribution tracking | ✅ Done | `AttributionTracker.tsx` — order meta writes UTM source/medium |
 | Product schema GSC warning | ✅ Fixed | CollectionPage `hasPart:Product` → `ItemList:ListItem` |
@@ -23,7 +23,7 @@
 | WooCommerce API key | ✅ Fixed | key_id 36, user_id 2648 — checkout working |
 
 **Step-by-step category guide for Claude/Codex:**
-→ `workspace/docs/CLAUDE-product-humanizer-guide.md`
+→ `workspace/content-orchestrator/docs/CLAUDE-product-humanizer-guide.md`
 
 ---
 
@@ -59,14 +59,14 @@ Remaining:      3,376
 # Dry-run 20 products:
 EMART_DB_PASSWORD='...' \
 OPENROUTER_API_KEY='sk-or-v1-...' \
-python3 workspace/docs/humanizer_face_cleansers.py --dry-run --limit 20
+python3 workspace/content-orchestrator/docs/humanizer_face_cleansers.py --dry-run --limit 20
 
 # Review: workspace/audit/active/face-cleansers-YYYYMMDD.jsonl
 
 # Apply reviewed JSONL:
 EMART_DB_PASSWORD='...' \
 OPENROUTER_API_KEY='sk-or-v1-...' \
-python3 workspace/docs/humanizer_face_cleansers.py --apply
+python3 workspace/content-orchestrator/docs/humanizer_face_cleansers.py --apply
 ```
 
 ### Measurement reminders
@@ -1762,12 +1762,12 @@ print(f"\nValidation failures: {len(failures)} — see {failures_path}")
 
 ## 6. Execution plan — step by step
 
-> **For category-by-category implementation:** See `workspace/docs/CLAUDE-product-humanizer-guide.md` — it has the priority order, per-category pairing rules, verification SQL queries, and session-end checklist. Use that guide when running Codex on a new category.
+> **For category-by-category implementation:** See `workspace/content-orchestrator/docs/CLAUDE-product-humanizer-guide.md` — it has the priority order, per-category pairing rules, verification SQL queries, and session-end checklist. Use that guide when running Codex on a new category.
 
 ### Shared config — define once, import everywhere
 
 ```python
-# workspace/scripts/active/config.py
+# workspace/content-orchestrator/scripts/active/config.py
 # All scripts import from here — fixes DATE_END NameError across scripts
 
 from datetime import datetime, timedelta
@@ -1802,7 +1802,7 @@ All scripts: `from config import DATE_END, DATE_START, SITE_URL, MERCHANT_ID, KE
 ### Step 0A: GSC data pull — actual search queries per product URL
 
 ```python
-# Script: workspace/scripts/active/gsc_pull.py
+# Script: workspace/content-orchestrator/scripts/active/gsc_pull.py
 # Output: workspace/audit/active/gsc-query-map-YYYYMMDD.json
 # Run once. Reuse across all generation runs.
 ```
@@ -1953,7 +1953,7 @@ Do NOT repeat any phrase more than once.
 ### Step 0B: GMC status pull — disapproved and underperforming products
 
 ```python
-# Script: workspace/scripts/active/gmc_pull.py
+# Script: workspace/content-orchestrator/scripts/active/gmc_pull.py
 # Output: workspace/audit/active/gmc-status-YYYYMMDD.json
 # Run once. Reuse across all generation runs.
 ```
@@ -2134,7 +2134,7 @@ Print top 20 highest-priority products before starting generation so owner can s
 ### Step 0: Skinnora scrape and catalog match (run once before Step 1)
 
 ```python
-# Script: workspace/scripts/active/skinnora_scrape.py
+# Script: workspace/content-orchestrator/scripts/active/skinnora_scrape.py
 # Outputs:
 #   workspace/audit/active/skinnora-scrape-raw-YYYYMMDD.json
 #   workspace/audit/active/skinnora-catalog-matches-YYYYMMDD.csv
@@ -2152,7 +2152,7 @@ Print top 20 highest-priority products before starting generation so owner can s
 ### Step 1: Audit and score all products
 
 ```python
-# Script: workspace/scripts/active/content_humanizer_audit.py
+# Script: workspace/content-orchestrator/scripts/active/content_humanizer_audit.py
 # Output: workspace/audit/active/content-humanizer-scores-YYYYMMDD.csv
 ```
 
@@ -3411,13 +3411,13 @@ Run for every product in the apply step. Brand name comes from the `pa_brand` ta
 ## 11. Files to create
 
 ```
-workspace/scripts/active/config.py                      ← shared config (DATE_END, DB, API keys)
-workspace/scripts/active/skinnora_scrape.py             ← Step 0 scraper
-workspace/scripts/active/gsc_pull.py                    ← Step 0A GSC data
-workspace/scripts/active/gmc_pull.py                    ← Step 0B GMC status
-workspace/scripts/active/content_humanizer_audit.py     ← Step 1 audit + scoring
-workspace/scripts/active/content_humanizer_generate.py  ← Step 2 generation (DeepSeek)
-workspace/scripts/active/content_humanizer_apply.py     ← Step 5 DB write + cache flush
+workspace/content-orchestrator/scripts/active/config.py                      ← shared config (DATE_END, DB, API keys)
+workspace/content-orchestrator/scripts/active/skinnora_scrape.py             ← Step 0 scraper
+workspace/content-orchestrator/scripts/active/gsc_pull.py                    ← Step 0A GSC data
+workspace/content-orchestrator/scripts/active/gmc_pull.py                    ← Step 0B GMC status
+workspace/content-orchestrator/scripts/active/content_humanizer_audit.py     ← Step 1 audit + scoring
+workspace/content-orchestrator/scripts/active/content_humanizer_generate.py  ← Step 2 generation (DeepSeek)
+workspace/content-orchestrator/scripts/active/content_humanizer_apply.py     ← Step 5 DB write + cache flush
 workspace/audit/active/skinnora-scrape-raw-YYYYMMDD.json
 workspace/audit/active/skinnora-catalog-matches-YYYYMMDD.csv
 workspace/audit/active/gsc-query-map-YYYYMMDD.json

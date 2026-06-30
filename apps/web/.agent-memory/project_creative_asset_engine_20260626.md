@@ -7,9 +7,9 @@ Scope: read-only audit of the creative asset surface before further Claude/Codex
 Checked current code and planning across:
 
 - Creative Asset Engine: `workspace/creative-engine/**`, `workspace/workspace_creative_engine.py`
-- Static social generation: `workspace/scripts/active/social_image_gen.py`, `.pre-engine-backup`
+- Static social generation: `workspace/content-orchestrator/scripts/active/social_image_gen.py`, `.pre-engine-backup`
 - Social Engine: `workspace/social-engine/README.md`, `social_engine/engine.py`, tests, campaign/history/performance paths
-- Meta publishing path: `workspace/docs/claude-reference/social-publishing.md`, `workspace/scripts/active/meta_schedule.js`, `meta_publish.js`
+- Meta publishing path: `workspace/content-orchestrator/docs/claude-reference/social-publishing.md`, `workspace/content-orchestrator/scripts/active/meta_schedule.js`, `meta_publish.js`
 - Video Engine: `workspace/video-engine/README.md`, `worker.py`, `daily_producer.py`, `config/providers.json`
 - Reel frame stages: `product_hero_card.py`, `list_card.py`, `brand_card.py`, `caption_overlay.py`
 - HyperFrames: `workspace/video-engine/hyperframes/render.js`, package files
@@ -33,14 +33,14 @@ Owner requested full migration after the audit. Completed:
 ## Current State
 
 - A new shared engine exists at `workspace/creative-engine/`, with a public bridge at `workspace/workspace_creative_engine.py`.
-- `workspace/scripts/active/social_image_gen.py` is now a thin shim over the shared creative engine.
+- `workspace/content-orchestrator/scripts/active/social_image_gen.py` is now a thin shim over the shared creative engine.
 - `workspace/social-engine/social_engine/engine.py` can call `creative-engine.api` directly for proper IG `post_4x5` assets, with a PIL blur fallback.
 - `workspace/video-engine/worker.py` still calls legacy video frame generators:
   - `stages/product_hero_card.py`
   - `stages/list_card.py`
   - `stages/brand_card.py`
 - `workspace/video-engine/hyperframes/render.js` still contains its own brand palette, logo loader, safe zones, value-card HTML, brand-card HTML, and loudnorm filter.
-- Existing design spec: `workspace/docs/claude-reference/creative-asset-engine.md`.
+- Existing design spec: `workspace/content-orchestrator/docs/claude-reference/creative-asset-engine.md`.
 - Campaign/publishing safety is mostly mature: Social Engine review packs, approval status, result ledger idempotency, and Meta dry-run defaults exist.
 - Visual creative unification is not mature yet: the shared engine is present but not the sole renderer.
 
@@ -96,18 +96,18 @@ Owner requested full migration after the audit. Completed:
 10. Planning docs disagree on social image sizing maturity.
     - `workspace/social-engine/README.md` still says native 4:5 generation is a next build step.
     - Current code already attempts native `post_4x5` generation through Creative Engine when available, with PIL blur fallback.
-    - `workspace/docs/claude-reference/social-publishing.md` says current campaigns use single 4:5 images for both and future campaigns should separate FB/IG fields, while `TASKS.md` says separate IG 4:5 generation is complete.
+    - `workspace/content-orchestrator/docs/claude-reference/social-publishing.md` says current campaigns use single 4:5 images for both and future campaigns should separate FB/IG fields, while `TASKS.md` says separate IG 4:5 generation is complete.
 
 11. Video Engine README is stale against the current runtime.
     - README still describes `reel_ffmpeg.py` as the main proven free reel path and says voice is not installed / silent fallback.
     - Current task-board and code show HyperFrames as default renderer, `voice_gen.py`/voiceover MP3 outputs present, approval bot/orchestrator live, product hero stage present, and caption overlays in active use.
 
 12. Provider registry still points image capability at old shim, not the shared engine.
-    - `workspace/video-engine/config/providers.json` says `emart-branded` wraps `workspace/scripts/active/social_image_gen.py`.
+    - `workspace/video-engine/config/providers.json` says `emart-branded` wraps `workspace/content-orchestrator/scripts/active/social_image_gen.py`.
     - That script now wraps Creative Engine, so the registry is still operational but conceptually one layer behind.
 
 13. Blog featured image plan targets `social_image_gen.py`, not the new shared engine.
-    - `workspace/docs/blog-featured-image-spec.md` says extend `social_image_gen.py` with `--blog-hero`.
+    - `workspace/content-orchestrator/docs/blog-featured-image-spec.md` says extend `social_image_gen.py` with `--blog-hero`.
     - Given the new architecture, blog hero should be a Creative Engine format (`blog_og_1200x630`) with `social_image_gen.py` only a compatibility shim.
 
 14. Creative Engine file hygiene needs cleanup before commit.
@@ -120,7 +120,7 @@ Owner requested full migration after the audit. Completed:
 - Passed: `node --check workspace/video-engine/hyperframes/render.js`.
 - Passed: bridge import with explicit workspace path: `sys.path.insert(0, '/root/emart-platform/workspace'); import workspace_creative_engine`.
 - Passed: `python3 -m unittest workspace/social-engine/tests/test_engine.py` (12 tests).
-- Passed: JS syntax checks for `workspace/scripts/active/meta_schedule.js` and `meta_publish.js`.
+- Passed: JS syntax checks for `workspace/content-orchestrator/scripts/active/meta_schedule.js` and `meta_publish.js`.
 - Failed as expected: direct repo-root import of `workspace_creative_engine` / `creative-engine.api` without caller-specific path setup.
 
 ## Recommended Next Step

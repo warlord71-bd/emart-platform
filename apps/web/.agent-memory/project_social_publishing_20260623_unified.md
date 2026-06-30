@@ -1,6 +1,6 @@
 ---
 name: social-publishing-unified-20260623
-description: "Unified Meta FB+IG publishing — creds in apps/web/.env.local, scripts in workspace/scripts/active/meta_*.js, ref doc, permanent Page token"
+description: "Unified Meta FB+IG publishing — creds in apps/web/.env.local, scripts in workspace/content-orchestrator/scripts/active/meta_*.js, ref doc, permanent Page token"
 metadata: 
   node_type: memory
   type: project
@@ -11,10 +11,10 @@ Social publishing system unified 2026-06-23 so Claude, Codex, and any agent can 
 
 ## What changed
 - Meta credentials (`META_PAGE_ID`, `META_PAGE_ACCESS_TOKEN`, `META_APP_SECRET`, `META_IG_USER_ID`, `META_GRAPH_API_VERSION`) added to `apps/web/.env.local` on both Local and VPS
-- `post.js` and `accounts.js` copied from `/opt/fb-poster/` to `workspace/scripts/active/meta_post.js` and `meta_accounts.js`
+- `post.js` and `accounts.js` copied from `/opt/fb-poster/` to `workspace/content-orchestrator/scripts/active/meta_post.js` and `meta_accounts.js`
 - All scripts updated to read from unified env with `META_*` prefix (falls back to old `PAGE_*` names)
 - Graph API version bumped to v25.0
-- Reference doc: `workspace/docs/claude-reference/social-publishing.md`
+- Reference doc: `workspace/content-orchestrator/docs/claude-reference/social-publishing.md`
 - Shared agent memory: `apps/web/.agent-memory/project_social_publishing_20260623.md`
 
 ## Token details

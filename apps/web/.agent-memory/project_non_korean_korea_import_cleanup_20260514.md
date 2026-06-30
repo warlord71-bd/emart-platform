@@ -12,7 +12,7 @@ On 2026-05-14, Codex audited published WooCommerce products excluding `pa_origin
 
 Initial exact/variant count: 908 non-South-Korea-origin products.
 
-Fix applied with `workspace/scripts/active/fix-non-korean-korea-import-copy.php`:
+Fix applied with `workspace/content-orchestrator/scripts/active/fix-non-korean-korea-import-copy.php`:
 
 - 908 products changed.
 - 1,050 fields changed: 140 `post_content`, 905 `post_excerpt`, 5 selected SEO/public meta fields.

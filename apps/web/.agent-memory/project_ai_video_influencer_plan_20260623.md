@@ -8,7 +8,7 @@ metadata:
 ---
 
 AI influencer + video content system — PLANNING stage, not built. Full plan:
-`workspace/docs/claude-reference/ai-video-influencer-plan.md`.
+`workspace/content-orchestrator/docs/claude-reference/ai-video-influencer-plan.md`.
 
 ## Key facts that constrain it
 - VPS has NO GPU, 6 cores, 11GB RAM. Disk cleaned 2026-06-23 → ~34GB free (was 13GB); self-hosted
@@ -52,7 +52,7 @@ language; platform priority. Relates to [[feedback-social-image-sizes]] and
 - `lib/router.py` — tier-dial provider picker (falls back down tiers; free always wins last). DONE.
 - `worker.py` — drains queue/*.json; stages images→reel→store→publish; checkpoints each stage
   (resumable, never re-runs done); guardrails (max/day, budget cap, dry-run default). PROVEN end-to-end dry-run.
-- `workspace/scripts/active/meta_reel_publish.js` — FB video + IG Reels publisher (unified META_* creds). Dry-run verified.
+- `workspace/content-orchestrator/scripts/active/meta_reel_publish.js` — FB video + IG Reels publisher (unified META_* creds). Dry-run verified.
 - Storage: reels copied to apps/web/public/videos/reels/ and served via nginx `/public/` alias
   (range-capable HTTPS, HTTP 206, NO Next restart). `apps/web/.gitignore` ignores `/public/videos/`.
   IMPORTANT: Next does NOT serve runtime-added public files (only build-time); use the `/public/` nginx path.
@@ -85,5 +85,5 @@ LIVE PUBLISH still gated on owner approval (run worker with --allow-publish to a
 User will review reel output quality later before discussing changes.
 
 ## Also done 2026-06-23
-VPS cleanup reclaimed ~21GB; weekly cron `workspace/scripts/active/cleanup_chromium_profiles.sh`
+VPS cleanup reclaimed ~21GB; weekly cron `workspace/content-orchestrator/scripts/active/cleanup_chromium_profiles.sh`
 (Sun 04:00) prevents the snap-Chromium/Playwright-MCP profile leak (~96 abandoned profiles/day).

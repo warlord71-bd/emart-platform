@@ -1,7 +1,7 @@
 # Emart Archive Index
 > **For any LLM/agent:** Read this before doing any audit, fix, or research task.
 > Nothing is deleted — only filed. Search here to find what is in store.
-> Last updated: 2026-06-04
+> Last updated: 2026-06-30
 
 ---
 
@@ -18,7 +18,7 @@
 | Lighthouse/perf reports | `audit/archive/lighthouse-*` |
 | Currently active files | Bottom of this file — "Active Quick Ref" |
 
-## Current Workspace Consistency Baseline — 2026-06-04
+## Workspace Consistency Baseline — 2026-06-04 (historical snapshot)
 
 Before starting any new job, verify these five layers and do not recreate stale
 paths:
@@ -30,12 +30,12 @@ paths:
    and `emart-competitor-prices` are the expected active jobs. Old
    `emart-humanizer-rest` and `emart-humanizer-regular` jobs were removed and
    their scripts archived.
-   Note: `emart-meta-gen` is running correctly from
+   Note: `emart-meta-gen` **completed 2026-06-15** and is stopped. It ran from
    `/var/www/emart-platform/workspace/content-orchestrator/scripts/active/meta_gen_batch.sh` (confirmed
    active at cycle 42+, 2,000+ descriptions applied as of 2026-06-05).
 3. Active script/doc layout: face-cleanser humanizer source of truth is
    `workspace/humanizer/face-cleansers/`; do not use the old
-   `workspace/content-orchestrator/docs/humanizer_face_cleansers.py` path.
+   `workspace/docs/humanizer_face_cleansers.py` (pre-consolidation) path.
 4. Active face-cleanser run files live under
    `workspace/humanizer/face-cleansers/active/`; do not use old
    `workspace/audit/active/face-cleansers-*` paths for new work.
@@ -181,7 +181,7 @@ workspace/
       rollback-current.json             ← ACTIVE rollback — do not delete
       consistency-audit-final.csv/md    ← CURRENT consistency audit
 
-  docs/
+  content-orchestrator/docs/
     meta_generator.py                   ← catalog meta generation (ACTIVE)
     meta_validator.py                   ← meta validator (ACTIVE)
     baseline_snapshot.py                ← GSC snapshot tool
@@ -191,7 +191,7 @@ workspace/
     category-taxonomy-status.md         ← category decisions
     theme-contract.md                   ← UI contract
 
-  scripts/active/
+  content-orchestrator/scripts/active/
     checkout_monitor.js                 ← PM2: 15-min checkout test
     competitor_price_checker.js         ← PM2: daily competitor prices
     seo_auto_scan.sh                    ← PM2: daily blog SEO fill

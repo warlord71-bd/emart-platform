@@ -17,7 +17,7 @@ Reports and handoff:
 
 - Dry-run CSV: `workspace/audit/active/the-derma-co-origin-correction-dry-run-20260510.csv`
 - Apply CSV: `workspace/audit/active/the-derma-co-origin-correction-apply-20260510.csv`
-- Script: `workspace/scripts/active/fix-the-derma-co-origin.php`
+- Script: `workspace/content-orchestrator/scripts/active/fix-the-derma-co-origin.php`
 - Baidu Qianfan copy/meta instruction: `workspace/audit/active/baidu-qianfan-the-derma-co-meta-instructions-20260510.md`
 
 Still pending for Baidu Qianfan / content agent:

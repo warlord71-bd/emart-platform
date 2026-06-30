@@ -1,6 +1,6 @@
 # pa_concern auto-assign dry-run state — 2026-06-06
 
-Codex generated a WP-CLI helper at `workspace/scripts/active/pa-concern-auto-assign.php`.
+Codex generated a WP-CLI helper at `workspace/content-orchestrator/scripts/active/pa-concern-auto-assign.php`.
 
 Dry-run output:
 - CSV: `workspace/audit/active/pa-concern-auto-assign-20260606.csv`
@@ -31,7 +31,7 @@ Prompt alias normalization used:
 - `anti-aging` -> `anti-aging-repair`
 
 Applied after owner approval:
-- Command: `APPLY=1 wp --path=/var/www/wordpress --allow-root eval-file workspace/scripts/active/pa-concern-auto-assign.php`
+- Command: `APPLY=1 wp --path=/var/www/wordpress --allow-root eval-file workspace/content-orchestrator/scripts/active/pa-concern-auto-assign.php`
 - Result: 13 products updated, 1,147 blank rows skipped.
 - Revalidate response: `{"ok":true,"revalidated":["tag:products"],"at":"2026-06-06T12:21:37.925Z"}`
 - Post-apply verification confirmed all 13 expected product IDs have their assigned `pa_concern` slug.

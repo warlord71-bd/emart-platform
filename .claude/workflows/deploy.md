@@ -55,4 +55,4 @@ If smoke fails: roll back VPS, do NOT push, fix on Local from step 1.
 5. Push
 
 ## Reference
-Full deploy shell function: `workspace/docs/claude-reference/deploy-reference.md`
+Full deploy shell function: `workspace/content-orchestrator/docs/claude-reference/deploy-reference.md`

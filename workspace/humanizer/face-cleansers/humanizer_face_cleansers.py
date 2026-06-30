@@ -939,7 +939,7 @@ def _load_gsc_query_map() -> dict:
     """
     Load GSC query data from the most recent gsc-query-map-*.json file.
     Returns {"/shop/slug": [{"query","impressions","clicks","ctr","position"}]}
-    Run workspace/docs/baseline_snapshot.py first to generate this file.
+    Run workspace/content-orchestrator/docs/baseline_snapshot.py first to generate this file.
     """
     files = sorted(AUDIT.glob("gsc-query-map-*.json"), reverse=True)
     if not files:

@@ -32,7 +32,7 @@ curl -sI "https://e-mart.com.bd/product/test-redirect"  # legacy redirect
 
 ## Step 4: GSC/index health (if API available)
 ```bash
-python3 workspace/scripts/active/gsc_tracker.py status
+python3 workspace/content-orchestrator/scripts/active/gsc_tracker.py status
 ```
 
 ## Step 5: Report
@@ -40,5 +40,5 @@ Flag regressions, new issues, and confirm known-good state. Reference SEO_MASTER
 
 ## Reference
 - URL policy registry: `workspace/seo/url-policy-registry.json`
-- Technical control loop: `workspace/scripts/active/seo_technical_control_loop.py`
-- Category taxonomy: `workspace/docs/category-taxonomy-status.md`
+- Technical control loop: `workspace/content-orchestrator/scripts/active/seo_technical_control_loop.py`
+- Category taxonomy: `workspace/content-orchestrator/docs/category-taxonomy-status.md`
