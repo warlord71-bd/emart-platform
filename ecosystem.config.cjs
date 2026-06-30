@@ -157,7 +157,7 @@ module.exports = {
     {
       name: 'emart-meta-gen',
       script: 'meta_gen_batch.sh',
-      cwd: '/var/www/emart-platform/workspace/scripts/active',
+      cwd: '/var/www/emart-platform/workspace/content-orchestrator/scripts/active',
       interpreter: 'bash',
       autorestart: true,
       env: {
