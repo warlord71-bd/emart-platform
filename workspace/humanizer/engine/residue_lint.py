@@ -212,15 +212,32 @@ def lint(html: str, focus: str = "", brand: str = "", product_type: str = "") ->
     s = 15.0
     f = (focus or "").lower().strip()
     if f:
-        # core noun phrase (drop trailing size like "40ml") for natural matching
-        core = re.sub(r"\b\d+\s?(ml|g|gm|kg|pcs|ea)\b", "", f).strip()
+        # core noun phrase: drop size suffixes and normalize whitespace for natural matching
+        core = re.sub(r"\s+", " ", re.sub(r"\b\d+\s?(ml|g|gm|kg|pcs|ea)\b", "", f)).strip()
         n = low.count(core) if core else 0
         first100 = " ".join(low.split()[:100])
         in_first = core and core in first100
         in_head = bool(re.search(re.escape(core), " ".join(re.findall(r"<h3[^>]*>(.*?)</h3>", body, re.IGNORECASE|re.DOTALL)).lower())) if core else False
-        if n == 0: s -= 8; issues.append("focus keyword absent")
-        elif n < 2: s -= 3; issues.append("focus keyword <2x")
-        elif n > 7: s -= 4; issues.append(f"keyword stuffed ({n}x) — thin to 3-5")
+        # product identity hard gate: if the exact core is absent, check that at least
+        # 4 distinctive words (>3 chars, not common stop words) from the focus keyword
+        # appear in the content — catches wrong-product hallucinations while allowing
+        # natural reformatting (e.g. "SPF 50+" vs "spf50+" or "PA++++" spacing)
+        if n == 0 and core:
+            _stop = {"with","that","your","this","from","into","have","been","they","will","also","more","some","than","then"}
+            kw_words = [w for w in re.findall(r"[a-z]{4,}", core) if w not in _stop]
+            overlap = sum(1 for w in kw_words if w in low)
+            identity_ok = overlap >= min(4, len(kw_words))
+        else:
+            identity_ok = True
+        if not identity_ok:
+            s -= 8; issues.append("product identity HARD FAIL: focus keyword absent — model described the wrong product")
+            gates["identity_clean"] = False
+        elif n < 2:
+            gates["identity_clean"] = True; s -= 3; issues.append("focus keyword <2x")
+        elif n > 7:
+            gates["identity_clean"] = True; s -= 4; issues.append(f"keyword stuffed ({n}x) — thin to 3-5")
+        else:
+            gates["identity_clean"] = True
         if not in_first: s -= 3; issues.append("focus keyword not in first 100 words")
         if not in_head:  s -= 2; issues.append("focus keyword not in any H3")
     if brand and brand.lower() not in low: s -= 2; issues.append("brand name absent")
@@ -246,7 +263,7 @@ def lint(html: str, focus: str = "", brand: str = "", product_type: str = "") ->
     cat["snippet_aeo"] = max(0, s)
 
     total = round(sum(cat.values()), 1)
-    passed = total >= 80 and gates["gmc_clean"] and gates["residue_clean"]
+    passed = total >= 80 and gates["gmc_clean"] and gates["residue_clean"] and gates.get("identity_clean", True)
     return {
         "score": total, "pass": passed, "word_count": wc,
         "gates": gates, "categories": cat, "issues": issues,
