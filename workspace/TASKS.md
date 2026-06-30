@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-29 (Content Orchestrator no-shortcut one-roof setup verified; gated real-product model-shot pipeline committed in `1c55ecf`; Jun 30 bilingual social campaign corrected and scheduled via PM2 for 18 FB + 18 IG posts using yesterday's brand mix but new products, no Anua oil cards, no near-yesterday duplicates, combined Bangla-English engagement captions, current Woo prices/offers, FB purchase links inside captions, and first slot 08:00 BDT)
+Last updated: 2026-06-30 (Paula's Choice 2% BHA 30ml stale redirect fixed and deployed: canonical `/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml` now serves PDP 200, duplicate `-2` slug redirects to canonical PDP, live SEO/AEO gate passed)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 

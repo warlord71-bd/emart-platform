@@ -3570,3 +3570,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Did: Stopped the two pending Jun 30 FB/IG schedulers before first slot, removed the Anua oil cards and near-yesterday duplicate-feel items, rebuilt the same-brand 18-post campaign with combined Bangla-English engagement captions, regenerated proof sheets from the actual plan, and restarted both schedulers once with the corrected plan.
 - Verified: Social Engine QA pass (0 errors, 0 warnings); no yesterday product IDs in final campaign; live replacement image URLs returned HTTP 200; Meta scheduler dry-runs found 18 FB + 18 IG posts; PM2 logs showed no immediate errors after restart.
 - Guardrail: No Woo/WordPress writes, no checkout/cart/payment/order/customer/stock changes, no storefront deploy, no `emartweb` restart.
+
+## 2026-06-30 · Codex · Paula's Choice PDP redirect fix
+- Did: Investigated search result for `paulas`; confirmed live search API returned published product `26972` with slug `paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml`, while `next.config.js` still hard-redirected the canonical PDP to `/shop` as a stale trashed-product route. Removed that stale redirect and changed duplicate `30ml-2` aliases to redirect to the canonical PDP.
+- Deployed: Built locally, committed `8c0be6e`, rsynced `apps/web` to VPS, built on VPS, and restarted `emartweb`.
+- Verified: Homepage HTTP 200; origin PDP HTTP 200; public PDP HTTP 200 after Cloudflare edge TTL expired; duplicate `/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml-2` redirects to canonical PDP; live SEO/AEO gate passed 10/10 checks.
+- Guardrail: Route fix only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes.
