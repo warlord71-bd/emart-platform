@@ -32,7 +32,7 @@ curl -sI "https://e-mart.com.bd/product/test-redirect"  # legacy redirect
 
 ## Step 4: GSC/index health (if API available)
 ```bash
-python3 workspace/content-orchestrator/scripts/active/gsc_tracker.py status
+python3 workspace/seo-review/gsc_tracker.py status
 ```
 
 ## Step 5: Report

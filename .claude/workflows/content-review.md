@@ -38,9 +38,11 @@ PASS rows write `_emart_humanized=1` to Woo and revalidate `tag:products` via `/
 
 ### 1. Generate
 ```bash
-python3 blog_generator.py --draft  # or --generate-only
+python3 /root/.openclaw/workspace-emart/blog_generator.py --draft
 ```
-Never use bare `blog_generator.py` (publishes directly).
+Never call `blog_generator.py` without `--draft` (publishes directly). The repo wrapper
+`workspace/content-orchestrator/scripts/active/blog_generator_run.sh` currently calls it
+bare with no flags — do not use that wrapper until it passes `--draft`.
 
 ### 2. Review
 Drafts saved to `blog_drafts/`. Check: H1/H2 structure, internal links (must be live 200), no banned residue, no medical claims, product links to in-stock items only.

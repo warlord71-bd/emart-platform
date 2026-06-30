@@ -1,4 +1,4 @@
-# E-Mart Agent Instructions
+# Emart Agent Instructions
 
 Written for Claude, Codex, GPT-style agents, and human developers. Follow as project policy.
 
@@ -19,7 +19,7 @@ Rules are modular files in `.claude/rules/` — always loaded or glob-scoped:
 - `data-safety.md` — protected commerce data, WC keys, secrets policy
 
 ## Session Protocol (all agents)
-- **Start:** `cat apps/web/.agent-memory/AGENT_BUS.md` + `cat apps/web/.agent-memory/MEMORY.md` + `tail -50 apps/web/SESSION-LOG.md` + `cat workspace/TASKS.md` + `git log --oneline -10`
+- **Start:** `cat apps/web/.agent-memory/AGENT_BUS.md` + `cat apps/web/.agent-memory/MEMORY.md` + `tail -50 apps/web/SESSION-LOG.md` + `cat workspace/TASKS.md` + `git log --oneline -10` + `git status --short`
 - **Before work:** Check AGENT_BUS.md ACTIVE WORK — if your task overlaps, pick something else. Add your entry to ACTIVE WORK.
 - **End:** Move entry from ACTIVE to LAST COMPLETED in AGENT_BUS.md. Append block to `SESSION-LOG.md`. Update `workspace/TASKS.md`.
 - For Claude: memory also auto-syncs via `/root/.claude/projects/-root-emart-platform/memory/`
