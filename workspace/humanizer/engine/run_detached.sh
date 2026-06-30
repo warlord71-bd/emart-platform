@@ -35,6 +35,11 @@ tg() {  # one-off Telegram message (NOT polling — safe alongside OpenClaw)
 }
 
 run() {
+  exec 200>/tmp/emart-humanizer.lock
+  if ! flock -n 200; then
+    echo "[$(date)] another humanizer run is already in progress — skipping this invocation" >> "$LOG"
+    return 1
+  fi
   echo "[$(date)] humanizer detached run start (limit=$LIMIT apply=$APPLY)" | tee "$LOG"
   python3 -u "$ENGINE/humanizer_engine.py" --dry-run --limit "$LIMIT" >>"$LOG" 2>&1
 

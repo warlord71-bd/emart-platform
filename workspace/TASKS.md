@@ -108,7 +108,7 @@ Code: `workspace/content-orchestrator/`. Model: `docs/claude-reference/content-o
 | CO-4 | **Auto-ledger done.** `dispatch --ledger` writes one action-ledger entry per item with `sub_category=theme` + `related=theme`; verified `learn` groups by it ("1 themed outcome"). Weight moves only when entries reach keep/revert outcome status (by design). | [C] | ✅ 2026-06-26 |
 | CO-5 | After owner approves cadence, add a build-only gated `--tick` cron (no publish). | [O]→[C] | ✅ 2026-06-28 — `tick` subcommand added to orchestrator (plan today + dispatch, dry-run, gated). Crontab: `30 4 * * *`. First tick: 26 items (20 social, 18 video, 8 briefs) parked at gates. Never publishes. |
 | CO-8 | **One-roof engine/content workspace relocation.** Creative Engine, Social Engine, Video Engine, shared scripts/docs/generated-assets/social-calendar/design-changes now physically live under `workspace/content-orchestrator/`; root shortcut symlinks and internal `content-orchestrator/engines/*` shortcut symlinks were removed. Orchestrator/Hermes resolve canonical Content Orchestrator paths first. | [X] | ✅ 2026-06-29 local; verified py_compile, Social Engine tests, video quality-gate test, HyperFrames syntax, orchestrator `engines`/`status`, canonical `workspace/content-orchestrator/video-engine/orchestrator.py --status`, and dry-run image + reel (`orchestrator-verification-20260629`, local QA 96). Black-start/poster repaired; reel-card layout rechecked with clean real product cutout, lower first-card product panel/bottom fill, lower value-card footer block/bottom fill, no duplicated domain/footer, and brand end card with product image above name plus a QA-safe lower trust row separated from `Global Beauty. Local Trust.`. Unused generated image/video artifacts archived in `4729f55`; untracked script archive/done residue archived to `/root/.attic-2026-06-29/emart-untracked-cleanup-20260629/`; canonical active helpers are now tracked after syntax/secret checks. Gated model-shot pipe committed in `1c55ecf` with preserved source cutout, fulfilled Medicube proof asset, model-shot status 1 fulfilled/0 pending, and owner-review gate. No publish/deploy/Woo writes. |
-| CO-7 | Wire Judge.me reviews export + pa_ingredient resolver (remaining placeholder demand signals). | [C] | 🔲 open |
+| CO-7 | Wire native review signals + pa_ingredient resolver (remaining placeholder demand signals). | [C] | 🔲 pending; review signal should come from approved Woo product reviews and the future magic-link review flow, not a third-party widget. |
 
 ### Audit Remediation Priority Lane — Freeze-Safe Order (2026-06-25)
 
@@ -301,8 +301,16 @@ Reusable content-class at `workspace/humanizer/engine/` reproduces Opus-4.8 PDP 
 OpenRouter models (gemma-4-31b-it:free chain), GMC-safe + AI-residue-free, gated by `residue_lint.py`
 (PASS = ≥80 + GMC-clean + residue-clean). Owner-directed handoff target = **Hermes agent**.
 
-- **State:** 122/~1,500 target serum/sunscreen/cream/lotion products humanized (`_emart_humanized=1`).
-- **Run (safe to close laptop):** `bash workspace/humanizer/engine/run_detached.sh <LIMIT>` — detached,
+- **State (2026-06-30):** 158 humanized by this engine (344 total across all humanizer sub-projects per
+  the nightly-refreshed registry) of ~1,500 target serum/sunscreen/cream/essence/ampoule/moisturizer/toner
+  products (`_emart_humanized=1`).
+- **Now actually automated:** cron added 2026-06-30, `15 */6 * * *` — runs `run_detached.sh 15` every 6h
+  unattended (flock-guarded against overlap). Was previously manual-only despite the 🟢 label; audit found
+  no cron existed, last run had gone 2 days stale. Also fixed a real bug in `targets()`: the SQL fetch
+  buffer (`limit*2`) could be fully consumed by holdout-set exclusions before reaching `limit` results,
+  silently returning 0 targets (reproduced at `--targets 1`, masked at the usual `--targets 20` batch
+  size). Fixed by widening the buffer to `max(limit*50, 2000)`.
+- **Run manually if needed:** `bash workspace/humanizer/engine/run_detached.sh <LIMIT>` — detached,
   auto-applies PASS rows + revalidates `tag:products` + **Telegram ping on completion**.
 - **Blocker:** OpenRouter PAID credits exhausted (402) → using free models w/ rate-limit backoff;
   **owner will add funds + notify** for faster/Hermes runs. Free key auto-read from
@@ -417,7 +425,7 @@ Workarounds: (1) ✅ Meta Business Agent (no-code, owner turns on), (2) 🔲 Tel
 | O-8 | GBP: claim/verify at Dhanmondi; fix Bangla name | 🔲 |
 | O-9 | Social profile bios → link to e-mart.com.bd | 🔲 |
 | O-10 | Beauty blogger/influencer outreach (5-10 BD reviewers) | 🔲 |
-| O-11 | Structured review collection: target 100+ reviews in 60 days | 🔲 |
+| O-11 | Native magic-link review flow: target 100+ real product reviews in 60 days. Build secure post-purchase email/WhatsApp links with preselected star rating, no-login token validation, short review form, duplicate guard, Woo product review creation, moderation/approval policy, cache revalidation, and Next.js Product Review/AggregateRating schema verification. | 🔲 pending |
 | O-12 | Reddit/LinkedIn sameAs: provide real profile URLs | 🔲 |
 | O-13 | PDP 404 redirect map: 18 review-only + 52 no-match candidates | 🔲 review |
 | O-14 | Google-Extended bot policy: keep allowed or block? | 🔲 decision |

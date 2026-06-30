@@ -316,7 +316,7 @@ def targets(limit: int = 20) -> list[dict]:
         HAVING (humanized IS NULL OR humanized!='1')
         ORDER BY sales DESC
         LIMIT %s
-    """, (INCLUDE, EXCLUDE, limit * 2))
+    """, (INCLUDE, EXCLUDE, max(limit * 50, 2000)))
     rows = cur.fetchall(); conn.close()
     holdout = _holdout_slugs()
     out = []
