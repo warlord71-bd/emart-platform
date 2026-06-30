@@ -3612,3 +3612,8 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Applied: Existing completed Jun 30 and Jun 27 social campaign records plus old video rejects are present under `workspace/content-orchestrator/social-engine/history/logical-history/` with category indexes; `video-engine/jobs/published` and `video-engine/jobs/rejected` are clear.
 - Verified: `py_compile` passed for changed Python files; `node --check` passed for `meta_schedule.js`; Social Engine unittest ran 18/18 OK; incomplete/unknown ledger rows remained in the hot ledger instead of being pruned.
 - Guardrail: Runtime organization only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-30 · Codex · Coordination hash pinning
+- Did: Replaced stale `current commit` labels for the recent nested-workspace/native-review and social done-history rows with concrete commit hashes.
+- Verified: Read-only git status/log check; no code/runtime changes.
+- Guardrail: Coordination docs only; no deploy, no push, no live restart.
