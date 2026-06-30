@@ -3576,3 +3576,9 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Deployed: Built locally, committed `8c0be6e`, rsynced `apps/web` to VPS, built on VPS, and restarted `emartweb`.
 - Verified: Homepage HTTP 200; origin PDP HTTP 200; public PDP HTTP 200 after Cloudflare edge TTL expired; duplicate `/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml-2` redirects to canonical PDP; live SEO/AEO gate passed 10/10 checks.
 - Guardrail: Route fix only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes.
+
+## 2026-06-30 · Codex · Whole-catalog product-route audit
+- Did: Added repeatable read-only catalog route audit at `workspace/audit/active/catalog-route-audit-20260630.mjs`; compared 3,624 published Woo products with 374 exact Next redirects. Found and fixed stale live-product redirects for Medipeel Melanon X Dark Spot Cream and APLB Body Cleansar, plus cleaned legacy La Roche, Nature Republic, and Round Lab product aliases so product redirects no longer point to unpublished slugs.
+- Deployed: Built locally, committed `81dd4ce`, rsynced `apps/web` to VPS, built on VPS, and restarted `emartweb`.
+- Verified: Final audit report shows 0 live `/shop` slugs redirected away, 0 live legacy `/product` slugs off-canonical, and 0 missing product redirect destinations. Public URL checks returned HTTP 200 for Medipeel, APLB, La Roche old alias, Nature Republic old alias, Round Lab old alias, and homepage. Live SEO/AEO gate passed 10/10 checks.
+- Guardrail: Read-only Woo catalog inspection and frontend route config only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes.

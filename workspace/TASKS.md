@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-30 (Paula's Choice 2% BHA 30ml stale redirect fixed and deployed: canonical `/shop/paulas-choice-skin-perfecting-2-bha-liquid-exfoliant-30ml` now serves PDP 200, duplicate `-2` slug redirects to canonical PDP, live SEO/AEO gate passed)
+Last updated: 2026-06-30 (Whole-catalog product-route audit clean: 3,624 published products checked against 374 Next redirects; 0 live `/shop` slugs redirected away, 0 legacy `/product` slugs off-canonical, 0 missing product redirect targets after deployed fixes for Medipeel, APLB, La Roche, Nature Republic, and Round Lab aliases; live SEO/AEO gate passed)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
