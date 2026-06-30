@@ -16,6 +16,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
+| Codex | 2026-06-30 21:59 CEST | Fix remaining context/deploy-reference inconsistencies and commit session docs. | `AGENTS.md`, `workspace/content-orchestrator/docs/claude-reference/deploy-reference.md`, `apps/web/.agent-memory/*`, `workspace/AGENT_BRAIN.md`, `workspace/TASKS.md`, `apps/web/SESSION-LOG.md` |
 
 ---
 

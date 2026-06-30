@@ -6,7 +6,7 @@
 - [Newsletter + MailPoet subscribe stack](project_newsletter_stack.md) — Next `/api/newsletter/subscribe` → mu-plugin `/wp-json/emart/v1/subscribe` → `SubscriberActions::subscribe`; MailPoet captcha is off by design
 - [Brand audit/correction completed state](project_brand_audit_state.md) — all reviewed brand corrections were applied 2026-05-04; old active CSV shortcut archived; next manual data focus is product image issues
 - [Three-way git layout: Local + VPS + Repo](project_git_three_way.md) — Local /root, VPS /var/www, and origin all on single branch `main`; workflow Local→VPS→Repo
-- [Universal VPS deploy sequence](feedback_universal_deploy_sequence.md) — every project follows verify-then-publish; canonical rules at `/root/CLAUDE.md` + `/root/AGENTS.md`
+- [Universal VPS deploy sequence](feedback_universal_deploy_sequence.md) — every project follows verify-then-publish; for Emart use repo-local `CLAUDE.md` / `AGENTS.md` plus `deploy.sh`
 - [Product content tab extraction](project_product_content_tabs.md) — legacy Ingredients tabs may contain usage/suitable/storage sections; storefront parser splits usage into How to use across catalog
 - [Product FAQ system](project_product_faq_system.md) — canonical `_emart_product_faq` has 5 product-focused FAQs per published product; no delivery/COD in product FAQ
 - [Product meta description state](project_meta_description_state.md) — all 3,564 published products now have `_rank_math_description`; product pages prefer Rank Math descriptions; deployed in `4da64d2`

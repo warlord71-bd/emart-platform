@@ -44,7 +44,7 @@ Claude additionally reads `CLAUDE.md` for the same content plus Claude-specific 
 - Frontend HTML must not expose WordPress / backend technology headers
 
 ## Deploy Order
-Follow `/root/CLAUDE.md` sequence: Local edit → build → commit → rsync → VPS build → `pm2 restart emartweb` → smoke test → push.
+Follow repo-local `CLAUDE.md` / `deploy.sh`: Local edit → build → commit → rsync → VPS build → `pm2 restart emartweb` → smoke test → push.
 **Never push `origin/main` before smoke test passes.**
 Hotfix on VPS: reverse-sync VPS → Local before committing. Never commit from VPS directly.
 Quick reference: `workspace/content-orchestrator/docs/claude-reference/deploy-reference.md`

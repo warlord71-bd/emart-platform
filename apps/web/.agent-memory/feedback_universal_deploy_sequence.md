@@ -1,14 +1,14 @@
 ---
 name: Universal VPS deploy sequence (verify-then-publish)
-description: Every project on this VPS uses the same Local → VPS → Repo flow with smoke test before push; canonical reference at /root/CLAUDE.md and /root/AGENTS.md
+description: Every project on this VPS uses the same Local → VPS → Repo flow with smoke test before push; Emart uses repo-local CLAUDE.md/AGENTS.md plus deploy.sh
 type: feedback
 originSessionId: 897a3d49-6d5e-4da0-8802-309f793d8a47
 ---
 Every project hosted on this VPS — past, present, and future — follows one
-canonical release flow. Read it from `/root/CLAUDE.md` (also mirrored to
-`/root/AGENTS.md` for non-Claude agents). Don't re-derive the sequence per
-project, don't ask the user to confirm it, don't deviate without explicit
-opt-in.
+canonical release flow. For Emart, read repo-local `CLAUDE.md` / `AGENTS.md`
+and use `/root/emart-platform/deploy.sh`; `/root/CLAUDE.md` is only the older
+cross-project rationale. Don't re-derive the sequence per project, don't ask
+the user to confirm it, don't deviate without explicit opt-in.
 
 **The invariant:** GitHub `origin/main` only ever contains commits that
 have been verified live on the VPS. Push is the LAST step, and only after
@@ -26,20 +26,20 @@ a smoke test passes.
 shipped stale source files because I switched VPS branches without
 verifying. Live site only survived because pm2 hadn't been restarted. The
 deploy sequence formalizes the invariant — Repo never contains code that
-isn't running on the VPS — and the file at `/root/CLAUDE.md` makes it
-universal so any agent (Claude, codex, cline, etc.) working on any project
-under this VPS picks it up automatically without needing to be told.
+isn't running on the VPS. Emart's active implementation lives in repo-local
+`CLAUDE.md` / `AGENTS.md` and `deploy.sh`, so agents should prefer those over
+the older root-level generic file.
 
 **How to apply:**
-- At session start, if working with deploy-able code, read `/root/CLAUDE.md`
-  to refresh the rules.
+- At session start, if working with deploy-able Emart code, read repo-local
+  `CLAUDE.md` / `AGENTS.md` to refresh the rules.
 - For any project on this VPS, the Local tree is wherever the developer
   edits (often `/root/<project>`), the VPS runtime tree is wherever the
   process serves from (often `/var/www/<project>`), and the Repo is `origin/main`.
 - For non-web projects (Node services, Python apps, WP mu-plugins), step 5 is
   whatever the project builds with; step 7 is the appropriate health probe.
-- When the user wants a "deploy" command, give them the reference shell
-  function in `/root/CLAUDE.md` adapted to the project's paths/build/PM2 name.
+- When the user wants an Emart deploy, use `/root/emart-platform/deploy.sh`
+  rather than a hand-copied shell function.
 - The hard rules (no force push without approval, no `git checkout` on VPS
   without rev-parse check, no `pm2 restart` with dirty working tree) are
   non-negotiable. Even if the user says "just push", the smoke-test guard

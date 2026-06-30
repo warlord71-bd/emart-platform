@@ -1,12 +1,28 @@
 ---
 title: Deploy Reference — Shell Function
-updated: 2026-06-09
+updated: 2026-06-30
 ---
 
 Adapt paths/build commands per project; keep the order intact.
-See `/root/CLAUDE.md` for the canonical numbered sequence and why-order rationale.
+See repo-local `CLAUDE.md` / `AGENTS.md` for Emart's active safety rules. The older
+cross-project `/root/CLAUDE.md` explains the general VPS philosophy, but this file
+and `/root/emart-platform/deploy.sh` are the Emart implementation source.
 
-## Emart-specific deploy (actual paths)
+## Emart deploy — use the one-command wrapper
+
+```bash
+/root/emart-platform/deploy.sh "your commit message"
+```
+
+This is the current, safe entrypoint: it stages tracked changes with `git add -u` plus
+explicit paths (never blanket `-A`), builds, rsyncs, restarts `emartweb`, smoke-tests, and
+only pushes to `origin main` if the smoke test passes. Pass `--no-commit` to rerun
+idempotently without creating a new commit.
+
+### Manual fallback (only if `deploy.sh` is broken)
+
+Review `git status --short` and stage only the current job's files before this
+fallback. Do not use broad `git add -A` in a dirty shared tree.
 
 ```bash
 deploy() {
@@ -14,7 +30,9 @@ deploy() {
   cd /root/emart-platform/apps/web
   npm run build                                                        # 2. local build
   cd /root/emart-platform
-  git add -A && git commit -m "${1:-deploy}" || true                   # 3. commit
+  git status --short                                                   # 3a. review current tree
+  git add <files-for-this-job>                                         # 3b. stage exact files only
+  git commit -m "${1:-deploy}" || true                                 # 3c. commit
   rsync -av --delete \
     --exclude='.git' --exclude='node_modules' --exclude='.next' \
     --exclude='public/audit' --exclude='*.tsbuildinfo' \
@@ -30,12 +48,7 @@ deploy() {
 }
 ```
 
-Or use the one-command wrapper already in the project:
-```bash
-/root/emart-platform/deploy.sh "your commit message"
-```
-
-## Generic template
+## Generic template (other projects on this VPS)
 
 ```bash
 deploy() {
@@ -49,7 +62,9 @@ deploy() {
   cd "$LOCAL/$APP"
   npm run build
   cd "$LOCAL"
-  git add -A && git commit -m "${1:-deploy}" || true
+  git status --short                                                    # review current tree
+  git add <files-for-this-job>                                          # stage exact files only
+  git commit -m "${1:-deploy}" || true
   rsync -av --delete \
     --exclude='.git' --exclude='node_modules' --exclude='.next' \
     --exclude='public/audit' --exclude='*.tsbuildinfo' \
