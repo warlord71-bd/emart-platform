@@ -560,6 +560,262 @@ def append_rejection(path: Path, source: Path, date: str, name: str, reason: str
     return history
 
 
+def date_only(value: Any, fallback: str | None = None) -> str:
+    text = str(value or "").strip()
+    if text:
+        try:
+            return dt.datetime.fromisoformat(text.replace("Z", "+00:00")).date().isoformat()
+        except ValueError:
+            match = re.search(r"(20\d{2})-?(\d{2})-?(\d{2})", text)
+            if match:
+                return f"{match.group(1)}-{match.group(2)}-{match.group(3)}"
+    return fallback or dt.date.today().isoformat()
+
+
+def item_history_category(item: dict[str, Any]) -> str:
+    explicit = item.get("category") or item.get("theme") or item.get("sub_category")
+    if explicit:
+        return slugify(str(explicit))
+    text = " ".join(str(item.get(key, "")) for key in ("title", "product", "name", "slug", "caption", "category_hint")).lower()
+    if any(token in text for token in ("sunscreen", "spf", "sun-cream", "sunblock")):
+        return "sunscreen"
+    if any(token in text for token in ("cleanser", "cleansing", "face-wash", "foam")):
+        return "cleanser"
+    if any(token in text for token in ("serum", "ampoule", "essence", "booster")):
+        return "serum-essence"
+    if any(token in text for token in ("cream", "moistur", "lotion", "gel")):
+        return "cream-lotion"
+    if "mask" in text:
+        return "mask"
+    if any(token in text for token in ("shampoo", "conditioner", "hair", "scalp")):
+        return "haircare"
+    if any(token in text for token in ("lip", "cushion", "makeup", "matte", "tint")):
+        return "makeup"
+    return "skincare"
+
+
+def campaign_id_from(campaign: dict[str, Any], fallback: str = "campaign") -> str:
+    return slugify(str(campaign.get("id") or campaign.get("name") or campaign.get("date") or fallback))
+
+
+def write_logical_history(
+    root: Path,
+    surface: str,
+    status: str,
+    kind: str,
+    date_value: str,
+    record_id: str,
+    payload: dict[str, Any],
+    categories: dict[str, list[dict[str, Any]]] | None = None,
+) -> list[Path]:
+    written: list[Path] = []
+    clean_id = slugify(record_id)
+    full_path = root / surface / status / kind / date_value / f"{clean_id}.json"
+    write_json(full_path, payload)
+    written.append(full_path)
+    for category, rows in sorted((categories or {}).items()):
+        cat_path = root / surface / status / "by-category" / slugify(category) / date_value / f"{clean_id}.json"
+        write_json(cat_path, {
+            "schema_version": "emart.logical-history.v1",
+            "surface": surface,
+            "status": status,
+            "category": slugify(category),
+            "date": date_value,
+            "source_record": str(full_path),
+            "items": rows,
+        })
+        written.append(cat_path)
+    return written
+
+
+def archive_history_file(
+    history_path: Path,
+    logical_root: Path,
+    surface: str,
+    status: str,
+    keep_days: int,
+    apply: bool,
+) -> dict[str, Any]:
+    if not history_path.exists():
+        return {"path": str(history_path), "archived": 0, "kept": 0}
+    history = read_json(history_path)
+    today_value = dt.date.today()
+    cutoff = today_value - dt.timedelta(days=keep_days)
+    kept: list[dict[str, Any]] = []
+    archived = 0
+    for entry in history.get("campaigns", []):
+        date_value = date_only(entry.get("date"))
+        categories: dict[str, list[dict[str, Any]]] = {}
+        for item in entry.get("items", []):
+            categories.setdefault(item_history_category(item), []).append(item)
+        payload = {
+            "schema_version": "emart.logical-history.v1",
+            "surface": surface,
+            "status": status,
+            "archived_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "source": str(history_path),
+            "campaign": entry,
+        }
+        if apply:
+            write_logical_history(
+                logical_root,
+                surface,
+                status,
+                "campaigns",
+                date_value,
+                str(entry.get("id") or entry.get("name") or date_value),
+                payload,
+                categories,
+            )
+        archived += 1
+        try:
+            entry_date = dt.date.fromisoformat(date_value)
+        except ValueError:
+            entry_date = today_value
+        if entry_date >= cutoff:
+            kept.append(entry)
+    if apply:
+        write_json(history_path, {"campaigns": kept})
+    return {"path": str(history_path), "archived": archived, "kept": len(kept)}
+
+
+def archive_campaign_results(
+    campaign_path: Path,
+    result_ledger: Path | None,
+    logical_root: Path,
+    apply: bool,
+    prune_ledger: bool,
+    force_partial: bool,
+) -> dict[str, Any]:
+    if not campaign_path or not campaign_path.exists():
+        return {"campaign": str(campaign_path) if campaign_path else None, "archived": False, "reason": "missing campaign"}
+    campaign = read_json(campaign_path)
+    campaign_id = str(campaign.get("id") or campaign.get("name") or campaign_path.stem)
+    rows = read_json_or_jsonl(result_ledger) if result_ledger and result_ledger.exists() else []
+    matched = [row for row in rows if str(row.get("campaign_id")) == campaign_id]
+    expected_platforms = campaign.get("platforms") or sorted({
+        platform for item in campaign.get("items", [])
+        for platform in (item.get("platform_posts") or {}).keys()
+    })
+    expected = len(campaign.get("items", [])) * len(expected_platforms)
+    unique = {
+        (str(row.get("platform")), str(row.get("item_index")))
+        for row in matched
+        if row.get("platform") and row.get("item_index") is not None
+    }
+    complete = bool(expected) and len(unique) >= expected
+    if expected and not complete and not force_partial:
+        return {
+            "campaign": campaign_id,
+            "archived": False,
+            "reason": "campaign not complete",
+            "published_rows": len(unique),
+            "expected_rows": expected,
+        }
+    date_value = date_only(campaign.get("date") or (matched[0].get("published_at") if matched else None))
+    categories: dict[str, list[dict[str, Any]]] = {}
+    for item in campaign.get("items", []):
+        item_rows = [
+            row for row in matched
+            if str(row.get("item_index")) == str(item.get("index"))
+            or (item.get("slug") and row.get("slug") == item.get("slug"))
+        ]
+        categories.setdefault(item_history_category(item), []).append({
+            "product_id": item.get("product_id"),
+            "slug": item.get("slug"),
+            "title": item.get("title") or item.get("product"),
+            "results": item_rows,
+        })
+    payload = {
+        "schema_version": "emart.logical-history.v1",
+        "surface": "social",
+        "status": "published",
+        "archived_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "source": {
+            "campaign": str(campaign_path),
+            "result_ledger": str(result_ledger) if result_ledger else None,
+        },
+        "complete": complete,
+        "expected_rows": expected,
+        "published_rows": len(unique),
+        "campaign": campaign,
+        "results": matched,
+    }
+    written: list[Path] = []
+    if apply:
+        written = write_logical_history(
+            logical_root,
+            "social",
+            "published",
+            "campaigns",
+            date_value,
+            campaign_id,
+            payload,
+            categories,
+        )
+        if prune_ledger and result_ledger and result_ledger.exists() and (complete or force_partial):
+            remaining = [row for row in rows if str(row.get("campaign_id")) != campaign_id]
+            result_ledger.parent.mkdir(parents=True, exist_ok=True)
+            result_ledger.write_text("".join(f"{json.dumps(row, ensure_ascii=False)}\n" for row in remaining))
+    return {
+        "campaign": campaign_id,
+        "archived": bool(apply),
+        "complete": complete,
+        "published_rows": len(unique),
+        "expected_rows": expected,
+        "written": [str(path) for path in written],
+    }
+
+
+def archive_video_jobs(jobs_root: Path, logical_root: Path, apply: bool, statuses: tuple[str, ...] = ("published", "rejected")) -> dict[str, Any]:
+    summary: dict[str, Any] = {}
+    for status in statuses:
+        folder = jobs_root / status
+        files = sorted(folder.glob("*.json")) if folder.exists() else []
+        moved = 0
+        previews: list[str] = []
+        for job_path in files:
+            try:
+                job = read_json(job_path)
+            except Exception:
+                continue
+            date_value = date_only(job.get("published_at") or job.get("updated_at") or job.get("created_at") or job.get("id") or job_path.name)
+            category = item_history_category(job)
+            payload = {
+                "schema_version": "emart.logical-history.v1",
+                "surface": "video",
+                "status": status,
+                "archived_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "source": str(job_path),
+                "job": job,
+            }
+            dest = logical_root / "video" / status / "jobs" / date_value / f"{slugify(job_path.stem)}.json"
+            cat_dest = logical_root / "video" / status / "by-category" / category / date_value / f"{slugify(job_path.stem)}.json"
+            previews.append(str(dest))
+            if apply:
+                write_json(dest, payload)
+                write_json(cat_dest, {
+                    "schema_version": "emart.logical-history.v1",
+                    "surface": "video",
+                    "status": status,
+                    "category": category,
+                    "date": date_value,
+                    "source_record": str(dest),
+                    "job": {
+                        "id": job.get("id") or job_path.stem,
+                        "product_id": job.get("product_id"),
+                        "slug": job.get("slug"),
+                        "product": job.get("product"),
+                        "brand": job.get("brand"),
+                        "platforms": job.get("platforms", []),
+                    },
+                })
+                job_path.unlink()
+                moved += 1
+        summary[status] = {"found": len(files), "moved": moved, "destinations": previews[:20]}
+    return summary
+
+
 def slug_from_link(value: str) -> str:
     parsed = urllib.parse.urlparse(value or "")
     path = parsed.path.strip("/")
@@ -1356,6 +1612,48 @@ def cleanup_assets(args: argparse.Namespace) -> int:
     return 0
 
 
+def archive_done(args: argparse.Namespace) -> int:
+    logical_root = args.logical_history
+    summary: dict[str, Any] = {
+        "apply": args.apply,
+        "logical_history": str(logical_root),
+        "social_published": None,
+        "social_history": [],
+        "video_jobs": None,
+    }
+    if args.campaign:
+        summary["social_published"] = archive_campaign_results(
+            args.campaign,
+            args.result_ledger,
+            logical_root,
+            args.apply,
+            prune_ledger=not args.keep_result_ledger,
+            force_partial=args.force_partial,
+        )
+    if args.published_history:
+        summary["social_history"].append(archive_history_file(
+            args.published_history,
+            logical_root,
+            "social",
+            "published",
+            args.keep_hot_days,
+            args.apply,
+        ))
+    if args.rejected_history:
+        summary["social_history"].append(archive_history_file(
+            args.rejected_history,
+            logical_root,
+            "social",
+            "rejected",
+            args.keep_hot_days,
+            args.apply,
+        ))
+    if args.video_jobs:
+        summary["video_jobs"] = archive_video_jobs(args.video_jobs, logical_root, args.apply)
+    print(json.dumps(summary, indent=2, ensure_ascii=False))
+    return 0
+
+
 def import_performance(args: argparse.Namespace) -> int:
     campaign = read_json(args.campaign) if args.campaign else {"items": []}
     by_index = {str(item.get("index") or idx): item for idx, item in enumerate(campaign.get("items", []), 1)}
@@ -1513,6 +1811,29 @@ def main() -> int:
     cleanup_parser.add_argument("--apply", action="store_true",
                                 help="Actually move files. Omit for dry-run.")
     cleanup_parser.set_defaults(func=cleanup_assets)
+
+    done_parser = sub.add_parser("archive-done", help="Move completed social/video runtime files into logical category-wise history")
+    done_parser.add_argument("--campaign", type=Path,
+                             help="Completed social campaign-plan.json to archive")
+    done_parser.add_argument("--result-ledger", type=Path, default=ROOT / "performance" / "published-results.jsonl",
+                             help="Hot JSONL publish ledger; completed campaign rows are pruned after archive")
+    done_parser.add_argument("--published-history", type=Path, default=ROOT / "history" / "published-products.json",
+                             help="Hot recent published-product memory to archive/compact")
+    done_parser.add_argument("--rejected-history", type=Path, default=ROOT / "history" / "rejected-products.json",
+                             help="Hot recent rejected-product memory to archive/compact")
+    done_parser.add_argument("--video-jobs", type=Path, default=REPO / "workspace/content-orchestrator/video-engine/jobs",
+                             help="Video jobs root; published/rejected JSON files are moved into logical history")
+    done_parser.add_argument("--logical-history", type=Path, default=ROOT / "history" / "logical-history",
+                             help="Durable done-job archive root")
+    done_parser.add_argument("--keep-hot-days", type=int, default=14,
+                             help="Keep this many days in hot published/rejected memory for repeat avoidance")
+    done_parser.add_argument("--keep-result-ledger", action="store_true",
+                             help="Archive but do not prune matching completed rows from published-results.jsonl")
+    done_parser.add_argument("--force-partial", action="store_true",
+                             help="Archive/prune a social campaign even if not all expected platform rows are present")
+    done_parser.add_argument("--apply", action="store_true",
+                             help="Actually write archives and clear hot files. Omit for dry-run.")
+    done_parser.set_defaults(func=archive_done)
 
     perf_parser = sub.add_parser("import-performance", help="Import social/GSC/GMC/GA4 performance into picker score JSON")
     perf_parser.add_argument("--campaign", type=Path,

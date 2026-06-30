@@ -3604,3 +3604,11 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Fixed: Corrected active helper scripts where `Path(__file__).resolve().parents[3]` pointed at `/root/emart-platform/workspace` while the scripts expected repo root, preventing future `workspace/workspace/...` outputs when those helpers run directly.
 - Verified: `py_compile` passed for the six touched Python scripts; path sanity check resolves repo root as `/root/emart-platform`; repo search finds no `workspace/workspace`, `workspce`, or `wokspace` references; only the real top-level `workspace` remains.
 - Guardrail: Housekeeping/script-path fix only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.
+
+## 2026-06-30 · Codex · Social/video done-history cleanup
+- Did: Added `social_engine.py archive-done` to move completed social/video runtime records into category-wise logical history while keeping only recent hot memory for repeat avoidance.
+- Automated: `meta_schedule.js` now archives completed campaigns after all expected platform rows exist; `publish_approved.py`, `reels_bot.py`, and video `orchestrator.py` archive published/rejected job JSON out of hot folders after success/reject.
+- Cleaned: Marked `published-products.json`, `rejected-products.json`, `published-results.jsonl`, rejected-design memory, and `history/logical-history/` as runtime/ignored; removed the tracked hot history files from the git index while preserving them on disk.
+- Applied: Existing completed Jun 30 and Jun 27 social campaign records plus old video rejects are present under `workspace/content-orchestrator/social-engine/history/logical-history/` with category indexes; `video-engine/jobs/published` and `video-engine/jobs/rejected` are clear.
+- Verified: `py_compile` passed for changed Python files; `node --check` passed for `meta_schedule.js`; Social Engine unittest ran 18/18 OK; incomplete/unknown ledger rows remained in the hot ledger instead of being pruned.
+- Guardrail: Runtime organization only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no deploy, no `emartweb` restart.

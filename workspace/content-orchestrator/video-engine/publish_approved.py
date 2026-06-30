@@ -26,6 +26,7 @@ APPROVED, PUBLISHED = JOBS / "approved", JOBS / "published"
 STATE = ROOT / "state"
 CONFIG = ROOT / "config" / "providers.json"
 META_PUBLISH = ROOT.parent / "scripts" / "active" / "meta_publish.js"
+SOCIAL_ENGINE = ROOT.parent / "social-engine" / "social_engine.py"
 
 
 def today() -> str:
@@ -48,6 +49,17 @@ def ledger() -> dict:
 def save_ledger(led: dict):
     STATE.mkdir(exist_ok=True)
     (STATE / f"ledger-{today()}.json").write_text(json.dumps(led, indent=2))
+
+
+def archive_done_jobs():
+    if not SOCIAL_ENGINE.exists():
+        return
+    subprocess.run(
+        [sys.executable, str(SOCIAL_ENGINE), "archive-done", "--video-jobs", str(JOBS), "--apply"],
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
 
 
 def run(live: bool):
@@ -91,6 +103,7 @@ def run(live: bool):
             jp.rename(PUBLISHED / jp.name)
             led["videos_published"] += 1
             save_ledger(led)
+            archive_done_jobs()
             print(f"[publish] {jid} -> PUBLISHED")
 
 

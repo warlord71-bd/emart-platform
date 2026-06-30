@@ -38,6 +38,7 @@ JOBS = ROOT / "jobs"
 QUEUE, BUILDING, REVIEW = JOBS / "queue", JOBS / "building", JOBS / "review"
 APPROVED, PUBLISHED, REJECTED = JOBS / "approved", JOBS / "published", JOBS / "rejected"
 DEAD_LETTER = JOBS / "dead-letter"
+SOCIAL_ENGINE = ROOT.parent / "social-engine" / "social_engine.py"
 LANES = [QUEUE, BUILDING, REVIEW, APPROVED, PUBLISHED, REJECTED, DEAD_LETTER]
 LOCK_FILE = ROOT / ".orchestrator.lock"
 OPENCLAW_ENV = Path("/root/.openclaw/openclaw.env")
@@ -103,6 +104,17 @@ def notify(text: str):
         urllib.request.urlopen(f"https://api.telegram.org/bot{tok}/sendMessage", data=data, timeout=15)
     except Exception as e:
         sys.stderr.write(f"[orchestrator] telegram notify failed: {e}\n")
+
+
+def archive_done_jobs():
+    if not SOCIAL_ENGINE.exists():
+        return
+    subprocess.run(
+        [sys.executable, str(SOCIAL_ENGINE), "archive-done", "--video-jobs", str(JOBS), "--apply"],
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
 
 
 def integrated_lufs(mp4: str) -> float:
@@ -197,6 +209,7 @@ def tick():
             job["status"] = "failed"
             job_path.write_text(json.dumps(job, indent=2))
             job_path.rename(REJECTED / job_path.name)
+            archive_done_jobs()
             notify(f"❌ Reel auto-failed (SILENT audio {lufs:.1f} LUFS): {jid}")
             print(f"[orchestrator] {jid} -> rejected (silent audio {lufs:.1f} LUFS)")
             return
@@ -205,6 +218,7 @@ def tick():
     if job.get("status") == "failed":
         if job.get("_non_retryable_failure"):
             job_path.rename(REJECTED / job_path.name)
+            archive_done_jobs()
             reason = qa.get("status_note") or job.get("stages", {}).get("content_qa", {}).get("errors") \
                 or job.get("stages", {}).get("script_qa", {}).get("errors") or "non-retryable content failure"
             notify(f"❌ Reel rejected (content QA): {jid}\n{reason}")

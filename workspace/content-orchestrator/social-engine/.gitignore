@@ -1,7 +1,12 @@
 output/
 state/
+history/logical-history/
+history/published-products.json
+history/rejected-products.json
+history/rejected-designs.json
 performance/latest.json
 performance/ga4-product-*.jsonl
+performance/published-results.jsonl
 __pycache__/
 social_engine/__pycache__/
 tests/__pycache__/

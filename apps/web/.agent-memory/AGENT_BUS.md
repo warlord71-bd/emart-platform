@@ -23,6 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-06-30 | Added automatic social/video done-history cleanup: completed published/rejected records archive into category-wise logical history, hot job folders stay clear, and runtime history ledgers are no longer tracked. | current commit |
 | Codex | 2026-06-30 | Cleaned accidental empty `workspace/workspace` tree by moving it to the dated attic and fixed active helper scripts whose repo-root calculation could recreate nested `workspace/workspace` paths. | current commit |
 | Codex | 2026-06-30 | Dropped third-party review-collection direction and converted active review work to a pending native magic-link flow backed by Woo/Next schema. | current commit |
 | Codex | 2026-06-30 | Audited 3,624 published products against 374 Next redirects; fixed stale Medipeel/APLB live product redirects plus La Roche/Nature/Round Lab legacy product aliases; deployed and passed live SEO/AEO gate. | `81dd4ce` |

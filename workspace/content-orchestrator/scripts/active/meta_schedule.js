@@ -2,6 +2,7 @@
 /* Queue-driven campaign adapter. Reads Social Engine campaign-plan.json directly. */
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const { publish, validate } = require('./meta_publish');
 
 function arg(name, fallback) {
@@ -91,6 +92,28 @@ function recordPublishedHistory(plan) {
   console.log(`[meta-schedule] recorded published product history: ${historyPath}`);
 }
 
+function archiveDone(planPath, resultLedger, historyArg) {
+  const engine = [
+    path.resolve(process.cwd(), 'workspace/content-orchestrator/social-engine/social_engine.py'),
+    path.resolve(__dirname, '../social-engine/social_engine.py'),
+    path.resolve(__dirname, '../../social-engine/social_engine.py'),
+    '/var/www/emart-platform/workspace/content-orchestrator/social-engine/social_engine.py',
+  ].find((candidate) => fs.existsSync(candidate));
+  if (!engine) {
+    console.warn('[meta-schedule] social_engine.py not found; done-history archive skipped');
+    return;
+  }
+  const args = [engine, 'archive-done', '--campaign', path.resolve(planPath), '--apply'];
+  if (resultLedger) args.push('--result-ledger', path.resolve(resultLedger));
+  if (historyArg) args.push('--published-history', path.resolve(historyArg));
+  const result = spawnSync('python3', args, { encoding: 'utf8' });
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.status !== 0) {
+    process.stderr.write((result.stderr || '').slice(-1000));
+    console.warn('[meta-schedule] done-history archive failed; publish result remains in hot files');
+  }
+}
+
 function requests(plan, platform) {
   return plan.items.flatMap((item) => {
     const post = item.platform_posts?.[platform];
@@ -165,6 +188,7 @@ async function main() {
     }
   }
   recordPublishedHistory(plan);
+  archiveDone(planPath, resultLedger, arg('record-history'));
 }
 
 main().catch((error) => { console.error(error.message); process.exit(1); });

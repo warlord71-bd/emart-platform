@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-06-30 (Workspace housekeeping: empty accidental `workspace/workspace` tree moved to `/root/.attic-2026-06-30/emart-platform-empty-nested-workspace-20260630/`; active helper script repo-root calculations fixed to prevent nested workspace outputs. Previous live audit remains clean: 3,624 published products checked against 374 Next redirects; 0 live `/shop` slugs redirected away, 0 legacy `/product` slugs off-canonical, 0 missing product redirect targets.)
+Last updated: 2026-06-30 (Social/video cleanup: completed published/rejected jobs now auto-archive into ignored category-wise logical history under `social-engine/history/logical-history/`; hot published/rejected job folders stay clear; runtime published/rejected/product-result files are ignored and removed from git tracking while preserved on disk.)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 

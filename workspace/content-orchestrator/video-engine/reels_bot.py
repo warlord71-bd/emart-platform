@@ -33,6 +33,7 @@ JOBS = ROOT / "jobs"
 REVIEW, APPROVED, REJECTED = JOBS / "review", JOBS / "approved", JOBS / "rejected"
 STATE = JOBS / ".bot_state.json"
 PUBLISH = ROOT / "publish_approved.py"
+SOCIAL_ENGINE = ROOT.parent / "social-engine" / "social_engine.py"
 ENV_FILE = Path("/var/www/emart-platform/apps/web/.env.local")
 ENV_FILE_LOCAL = ROOT.parent.parent / "apps" / "web" / ".env.local"
 
@@ -82,6 +83,17 @@ def qa_line(job: dict) -> str:
     return f"tech:{hard} | vision:{qa.get('vision_status') or '—'} | score:{qa.get('score','—')}"
 
 
+def archive_done_jobs():
+    if not SOCIAL_ENGINE.exists():
+        return
+    subprocess.run(
+        [sys.executable, str(SOCIAL_ENGINE), "archive-done", "--video-jobs", str(JOBS), "--apply"],
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+
+
 def send_new_reviews(tok: str, st: dict):
     """post any review/ reel the owner hasn't seen yet (one video + buttons)."""
     chat = st.get("chat_id")
@@ -123,6 +135,7 @@ def handle_callback(tok: str, cq: dict):
     if action == "rj":
         REJECTED.mkdir(parents=True, exist_ok=True)
         jp.rename(REJECTED / jp.name)
+        archive_done_jobs()
         api(tok, "answerCallbackQuery", callback_query_id=cid, text="Rejected ❌")
         api(tok, "editMessageReplyMarkup", chat_id=chat, message_id=mid,
             reply_markup=json.dumps({"inline_keyboard": [[{"text": "❌ Rejected", "callback_data": "x"}]]}))

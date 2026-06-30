@@ -10,9 +10,9 @@ It does not replace human judgement; it makes the daily campaign repeatable and 
 - Imports post performance from a publish ledger, with optional explicit Meta Graph insights fetch.
 - Normalizes a campaign manifest into scheduled platform posts.
 - Applies duplicate guards against recent campaigns.
-- Can record completed campaigns back into `history/published-products.json`.
-- Records owner-rejected plans/lists into `history/rejected-products.json` so rejected products do
-  not return in the next approval pack.
+- Keeps recent published/rejected product memory in hot runtime files while archiving finished
+  social/video jobs into category-wise logical history under `history/logical-history/`.
+- Records owner-rejected plans/lists so rejected products do not return in the next approval pack.
 - Generates 1080×1350 Instagram variants. When Creative Engine is available this is a native
   `post_4x5` render; otherwise it falls back to the older blur-derived crop.
 - Emits a contact sheet in the review pack for fast visual comparison.
@@ -149,7 +149,10 @@ node workspace/content-orchestrator/scripts/active/meta_schedule.js \
 ```
 
 Dry-runs never record history. Re-running FB/IG with the same campaign ID safely replaces the same
-history row instead of duplicating it.
+history row instead of duplicating it. After a live publish loop, `meta_schedule.js` also runs
+`archive-done`: once all expected FB/IG rows exist, the campaign is copied to
+`history/logical-history/social/published/campaigns/<date>/` and category indexes are written under
+`history/logical-history/social/published/by-category/<category>/<date>/`.
 
 ## Rejection Memory
 
@@ -166,8 +169,23 @@ Both `pick` and `plan` read `history/published-products.json` and
 rejected products default to a 14-day block, adjustable with `--rejected-lookback-days`.
 When the rejected source is a campaign JSON with local assets, `reject` also stores visual image
 signatures in `history/rejected-designs.json`, so similar rejected layouts can be blocked later.
+These hot memory files are runtime state and are ignored by git; `archive-done` compacts them while
+preserving the full completed record in logical history.
 
 ## Generated Asset Cleanup
+
+Finished social/video state cleanup is automatic in the publish/reject paths, and can be run
+manually:
+
+```bash
+python3 workspace/content-orchestrator/social-engine/social_engine.py archive-done \
+  --campaign workspace/content-orchestrator/social-engine/output/YYYY-MM-DD/CAMPAIGN/campaign-plan.json \
+  --apply
+```
+
+Video jobs in `video-engine/jobs/published` and `video-engine/jobs/rejected` are moved into
+`history/logical-history/video/{published,rejected}/...`, including category indexes, so those hot
+folders stay clear.
 
 After a campaign is posted or closed, dry-run asset cleanup first:
 
