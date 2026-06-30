@@ -1,0 +1,892 @@
+{
+  "id": "2026-07-01-bilingual-18-product-posts",
+  "name": "July 1 Mixed Bangla-English 18 Product Posts",
+  "date": "2026-07-01",
+  "approval_status": "approved_for_scheduled_run",
+  "caption_link_policy": {
+    "facebook": "inline_purchase_link",
+    "instagram": "comment_if_possible"
+  },
+  "caption_logic": {
+    "style": "mixed_bangla_english_single_voice",
+    "rule": "Do not write separate Bangla and English versions of the same line.",
+    "qa": "assert_caption_quality"
+  },
+  "design_template": "brand-fresh-product-base-v6-bilingual-price",
+  "platforms": [
+    "facebook",
+    "instagram"
+  ],
+  "schedule": {
+    "start": "08:20",
+    "end": "21:40",
+    "timezone": "+06:00",
+    "strategy": "highest-demand anchors in evening"
+  },
+  "items": [
+    {
+      "product_id": 62510,
+      "title": "APLB Glutathione Niacinamide Sheet Mask 25ml",
+      "slug": "aplb-glutathione-niacinamide-sheet-mask-25ml",
+      "time": "2026-07-01T08:20:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/aplb-glutathione-niacinamide-sheet-mask-25ml",
+      "angle": "night routine-এ quick glow-feel add করতে চাইলে এই sheet mask easy pick.",
+      "hashtags": "#APLBBangladesh #SheetMask #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: APLB Glutathione Niacinamide Sheet Mask 25ml\n\nnight routine-এ quick glow-feel add করতে চাইলে এই sheet mask easy pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳178 | Regular: ৳300\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/aplb-glutathione-niacinamide-sheet-mask-25ml\n\n#APLBBangladesh #SheetMask #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: APLB Glutathione Niacinamide Sheet Mask 25ml\n\nnight routine-এ quick glow-feel add করতে চাইলে এই sheet mask easy pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳178 | Regular: ৳300\nDM to order or tap the link in bio.\n\n#APLBBangladesh #SheetMask #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/01-aplb-glutathione-niacinamide-sheet-mask-25ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/01-aplb-glutathione-niacinamide-sheet-mask-25ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/01-aplb-glutathione-niacinamide-sheet-mask-25ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/01-aplb-glutathione-niacinamide-sheet-mask-25ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/01-aplb-glutathione-niacinamide-sheet-mask-25ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "178",
+        "regular_price": "300",
+        "sale_price": "178",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/emart-aplb-glutathione-niacinamide-sheet-mask-25ml.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Beauty Supplements, Health & Wellbeing, Korean Beauty, Melasma, Sheet Masks"
+    },
+    {
+      "product_id": 63925,
+      "title": "iUNIK CENTELLA MINI SET",
+      "slug": "iunik-centella-mini-set",
+      "time": "2026-07-01T09:10:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/iunik-centella-mini-set",
+      "angle": "Centella routine try করতে চাইলে এই mini set travel-friendly option.",
+      "hashtags": "#iUNIKBangladesh #CentellaCare #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: iUNIK CENTELLA MINI SET\n\nCentella routine try করতে চাইলে এই mini set travel-friendly option.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1237 | Regular: ৳1450\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/iunik-centella-mini-set\n\n#iUNIKBangladesh #CentellaCare #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: iUNIK CENTELLA MINI SET\n\nCentella routine try করতে চাইলে এই mini set travel-friendly option.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1237 | Regular: ৳1450\nDM to order or tap the link in bio.\n\n#iUNIKBangladesh #CentellaCare #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/02-iunik-centella-mini-set-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "1237",
+        "regular_price": "1450",
+        "sale_price": "1237",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/b90feb67537bb.jpeg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Acne & Blemish Care, Korean Beauty"
+    },
+    {
+      "product_id": 74869,
+      "title": "Minimalist Oat Extract 06% Gentle Cleanser 120ml",
+      "slug": "minimalist-oat-extract-06-gentle-cleanser-120ml",
+      "time": "2026-07-01T10:00:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/minimalist-oat-extract-06-gentle-cleanser-120ml",
+      "angle": "gentle cleanser step-এ soft, non-fussy wash feel চাইলে ভালো match.",
+      "hashtags": "#MinimalistBangladesh #GentleCleanser #SkincareBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: Minimalist Oat Extract 06% Gentle Cleanser 120ml\n\ngentle cleanser step-এ soft, non-fussy wash feel চাইলে ভালো match.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1004 | Regular: ৳1210\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/minimalist-oat-extract-06-gentle-cleanser-120ml\n\n#MinimalistBangladesh #GentleCleanser #SkincareBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: Minimalist Oat Extract 06% Gentle Cleanser 120ml\n\ngentle cleanser step-এ soft, non-fussy wash feel চাইলে ভালো match.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1004 | Regular: ৳1210\nDM to order or tap the link in bio.\n\n#MinimalistBangladesh #GentleCleanser #SkincareBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/03-minimalist-oat-extract-06-gentle-cleanser-120ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/03-minimalist-oat-extract-06-gentle-cleanser-120ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/03-minimalist-oat-extract-06-gentle-cleanser-120ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/03-minimalist-oat-extract-06-gentle-cleanser-120ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/03-minimalist-oat-extract-06-gentle-cleanser-120ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "1004",
+        "regular_price": "1210",
+        "sale_price": "1004",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/03/550_Minimalist20Oat20Extract200620Gentle20Cleanse.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": ""
+    },
+    {
+      "product_id": 92932,
+      "title": "ANUA Heartleaf Quercetinol Pore Deep Cleansing Foam 25ml mini",
+      "slug": "anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini",
+      "time": "2026-07-01T10:50:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini",
+      "angle": "bag-এ রাখার মতো mini cleanser, quick fresh wash routine-এ handy.",
+      "hashtags": "#AnuaBangladesh #HeartleafCleanser #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: ANUA Heartleaf Quercetinol Pore Deep Cleansing Foam 25ml mini\n\nbag-এ রাখার মতো mini cleanser, quick fresh wash routine-এ handy.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳467 | Regular: ৳500\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini\n\n#AnuaBangladesh #HeartleafCleanser #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: ANUA Heartleaf Quercetinol Pore Deep Cleansing Foam 25ml mini\n\nbag-এ রাখার মতো mini cleanser, quick fresh wash routine-এ handy.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳467 | Regular: ৳500\nDM to order or tap the link in bio.\n\n#AnuaBangladesh #HeartleafCleanser #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/04-anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/04-anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/04-anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/04-anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/04-anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-mini-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "467",
+        "regular_price": "500",
+        "sale_price": "467",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/04/new-anua-heartleaf-quercetinol-pore-deep-cleansing-foam-25ml-min.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Face Cleansers, Korean Beauty"
+    },
+    {
+      "product_id": 62306,
+      "title": "Celimax Noni Ultimate Eye Cream 20ml",
+      "slug": "celimax-noni-ultimate-eye-cream-20ml",
+      "time": "2026-07-01T11:40:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/celimax-noni-ultimate-eye-cream-20ml",
+      "angle": "eye cream step add করতে চাইলে Noni line-এর compact pick.",
+      "hashtags": "#CelimaxBangladesh #NoniEyeCream #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: Celimax Noni Ultimate Eye Cream 20ml\n\neye cream step add করতে চাইলে Noni line-এর compact pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳1700\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/celimax-noni-ultimate-eye-cream-20ml\n\n#CelimaxBangladesh #NoniEyeCream #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: Celimax Noni Ultimate Eye Cream 20ml\n\neye cream step add করতে চাইলে Noni line-এর compact pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳1700\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #NoniEyeCream #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/05-celimax-noni-ultimate-eye-cream-20ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "1700",
+        "regular_price": "1700",
+        "sale_price": "",
+        "on_offer": false,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/emart-celimax-noni-ultimate-eye-cream-20ml.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Eye Care, Korean Beauty"
+    },
+    {
+      "product_id": 62506,
+      "title": "APLB Glutathione Niacinamide Cleansing Oil 105ml",
+      "slug": "aplb-glutathione-niacinamide-cleansing-oil-105ml",
+      "time": "2026-07-01T12:30:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/aplb-glutathione-niacinamide-cleansing-oil-105ml",
+      "angle": "double cleansing routine-এ makeup/sunscreen melt step চাইলে clean option.",
+      "hashtags": "#APLBBangladesh #CleansingOil #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: APLB Glutathione Niacinamide Cleansing Oil 105ml\n\ndouble cleansing routine-এ makeup/sunscreen melt step চাইলে clean option.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1105 | Regular: ৳1300\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/aplb-glutathione-niacinamide-cleansing-oil-105ml\n\n#APLBBangladesh #CleansingOil #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: APLB Glutathione Niacinamide Cleansing Oil 105ml\n\ndouble cleansing routine-এ makeup/sunscreen melt step চাইলে clean option.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1105 | Regular: ৳1300\nDM to order or tap the link in bio.\n\n#APLBBangladesh #CleansingOil #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/06-aplb-glutathione-niacinamide-cleansing-oil-105ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/06-aplb-glutathione-niacinamide-cleansing-oil-105ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/06-aplb-glutathione-niacinamide-cleansing-oil-105ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/06-aplb-glutathione-niacinamide-cleansing-oil-105ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/06-aplb-glutathione-niacinamide-cleansing-oil-105ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "1105",
+        "regular_price": "1300",
+        "sale_price": "1105",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/emart-aplb-glutathione-niacinamide-cleansing-oil-105ml.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Beauty Supplements, Health & Wellbeing, Korean Beauty, Makeup & Cosmetics, Makeup Remover, Melasma"
+    },
+    {
+      "product_id": 59385,
+      "title": "Iunik Centella Bubble Cleansing Foam 150ml",
+      "slug": "iunik-centella-bubble-cleansing-foam-150ml",
+      "time": "2026-07-01T13:20:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/iunik-centella-bubble-cleansing-foam-150ml",
+      "angle": "Centella bubble cleanser daily wash-এ fresh clean feel দেয় without extra fuss.",
+      "hashtags": "#iUNIKBangladesh #BubbleCleanser #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: Iunik Centella Bubble Cleansing Foam 150ml\n\nCentella bubble cleanser daily wash-এ fresh clean feel দেয় without extra fuss.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1480 | Regular: ৳1790\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/iunik-centella-bubble-cleansing-foam-150ml\n\n#iUNIKBangladesh #BubbleCleanser #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: Iunik Centella Bubble Cleansing Foam 150ml\n\nCentella bubble cleanser daily wash-এ fresh clean feel দেয় without extra fuss.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1480 | Regular: ৳1790\nDM to order or tap the link in bio.\n\n#iUNIKBangladesh #BubbleCleanser #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/07-iunik-centella-bubble-cleansing-foam-150ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/07-iunik-centella-bubble-cleansing-foam-150ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/07-iunik-centella-bubble-cleansing-foam-150ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/07-iunik-centella-bubble-cleansing-foam-150ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/07-iunik-centella-bubble-cleansing-foam-150ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "1480",
+        "regular_price": "1790",
+        "sale_price": "1480",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2025/07/emart-iunik-centella-bubble-cleansing-foam-150ml.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Acne & Blemish Care, Face Cleansers, Korean Beauty"
+    },
+    {
+      "product_id": 74863,
+      "title": "Minimalist SPF 50 Sunscreen 50g",
+      "slug": "minimalist-spf-50-sunscreen-50g",
+      "time": "2026-07-01T14:10:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/minimalist-spf-50-sunscreen-50g",
+      "angle": "day routine-এ sunscreen skip না করতে চাইলে lightweight SPF pick.",
+      "hashtags": "#MinimalistBangladesh #SunscreenBD #SkincareBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: Minimalist SPF 50 Sunscreen 50g\n\nday routine-এ sunscreen skip না করতে চাইলে lightweight SPF pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳920 | Regular: ৳1230\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/minimalist-spf-50-sunscreen-50g\n\n#MinimalistBangladesh #SunscreenBD #SkincareBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: Minimalist SPF 50 Sunscreen 50g\n\nday routine-এ sunscreen skip না করতে চাইলে lightweight SPF pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳920 | Regular: ৳1230\nDM to order or tap the link in bio.\n\n#MinimalistBangladesh #SunscreenBD #SkincareBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/08-minimalist-spf-50-sunscreen-50g-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/08-minimalist-spf-50-sunscreen-50g-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/08-minimalist-spf-50-sunscreen-50g-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/08-minimalist-spf-50-sunscreen-50g-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/08-minimalist-spf-50-sunscreen-50g-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "920",
+        "regular_price": "1230",
+        "sale_price": "920",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/03/544_Minimalist20SPF205020Sunscreen2050g.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Sunscreen"
+    },
+    {
+      "product_id": 61942,
+      "title": "ANUA PDRN 100 HYALURONIC ACID BOOSTER TONER 250ml",
+      "slug": "anua-pdrn-100-hyaluronic-acid-booster-toner-250ml",
+      "time": "2026-07-01T15:00:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/anua-pdrn-100-hyaluronic-acid-booster-toner-250ml",
+      "angle": "toner step-এ watery hydration feel চাইলে PDRN + HA routine-এ বসে যায়.",
+      "hashtags": "#AnuaBangladesh #HydratingToner #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: ANUA PDRN 100 HYALURONIC ACID BOOSTER TONER 250ml\n\ntoner step-এ watery hydration feel চাইলে PDRN + HA routine-এ বসে যায়.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2082 | Regular: ৳2200\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/anua-pdrn-100-hyaluronic-acid-booster-toner-250ml\n\n#AnuaBangladesh #HydratingToner #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: ANUA PDRN 100 HYALURONIC ACID BOOSTER TONER 250ml\n\ntoner step-এ watery hydration feel চাইলে PDRN + HA routine-এ বসে যায়.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2082 | Regular: ৳2200\nDM to order or tap the link in bio.\n\n#AnuaBangladesh #HydratingToner #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/09-anua-pdrn-100-hyaluronic-acid-booster-toner-250ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/09-anua-pdrn-100-hyaluronic-acid-booster-toner-250ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/09-anua-pdrn-100-hyaluronic-acid-booster-toner-250ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/09-anua-pdrn-100-hyaluronic-acid-booster-toner-250ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/09-anua-pdrn-100-hyaluronic-acid-booster-toner-250ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "2082",
+        "regular_price": "2200",
+        "sale_price": "2082",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/ANS10-TPDRN.jpeg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Dryness & Hydration, Korean Beauty, Serums, Ampoules & Essences, Toners & Mists"
+    },
+    {
+      "product_id": 61900,
+      "title": "celimax Pore+Dark Spot Brightening Serum 30ml",
+      "slug": "celimax-poredark-spot-brightening-serum-30ml",
+      "time": "2026-07-01T15:50:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/celimax-poredark-spot-brightening-serum-30ml",
+      "angle": "serum step-এ bright, fresh-looking routine vibe চাইলে এই Celimax pick.",
+      "hashtags": "#CelimaxBangladesh #SerumRoutine #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: celimax Pore+Dark Spot Brightening Serum 30ml\n\nserum step-এ bright, fresh-looking routine vibe চাইলে এই Celimax pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳1900\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/celimax-poredark-spot-brightening-serum-30ml\n\n#CelimaxBangladesh #SerumRoutine #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: celimax Pore+Dark Spot Brightening Serum 30ml\n\nserum step-এ bright, fresh-looking routine vibe চাইলে এই Celimax pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳1900\nDM to order or tap the link in bio.\n\n#CelimaxBangladesh #SerumRoutine #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/10-celimax-poredark-spot-brightening-serum-30ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/10-celimax-poredark-spot-brightening-serum-30ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/10-celimax-poredark-spot-brightening-serum-30ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/10-celimax-poredark-spot-brightening-serum-30ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/10-celimax-poredark-spot-brightening-serum-30ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "1900",
+        "regular_price": "1900",
+        "sale_price": "",
+        "on_offer": false,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/emart-celimax-poredark-spot-brightening-serum-30ml.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Korean Beauty, Melasma, Pores & Oil Control, Serums, Ampoules & Essences"
+    },
+    {
+      "product_id": 62500,
+      "title": "APLB Retinol Vitamin C Vitamin E Ampoule Serum 40ml",
+      "slug": "aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml",
+      "time": "2026-07-01T16:40:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml",
+      "angle": "retinol + vitamin serum routine-এ slow start করতে চাইলে smart add-on.",
+      "hashtags": "#APLBBangladesh #RetinolSerum #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: APLB Retinol Vitamin C Vitamin E Ampoule Serum 40ml\n\nretinol + vitamin serum routine-এ slow start করতে চাইলে smart add-on.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳942 | Regular: ৳1120\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml\n\n#APLBBangladesh #RetinolSerum #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: APLB Retinol Vitamin C Vitamin E Ampoule Serum 40ml\n\nretinol + vitamin serum routine-এ slow start করতে চাইলে smart add-on.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳942 | Regular: ৳1120\nDM to order or tap the link in bio.\n\n#APLBBangladesh #RetinolSerum #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/11-aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/11-aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/11-aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/11-aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/11-aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "942",
+        "regular_price": "1120",
+        "sale_price": "942",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/02/emart-aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Anti-Aging & Repair, Korean Beauty, Serums, Ampoules & Essences"
+    },
+    {
+      "product_id": 74881,
+      "title": "Minimalist Multi Peptides 10% Face Serum 30ml",
+      "slug": "minimalist-multi-peptides-10-face-serum-30ml",
+      "time": "2026-07-01T17:30:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/minimalist-multi-peptides-10-face-serum-30ml",
+      "angle": "evening routine-এ firm, smooth-feel step হিসেবে multi-peptide serum neat.",
+      "hashtags": "#MinimalistBangladesh #PeptideSerum #SkincareBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: Minimalist Multi Peptides 10% Face Serum 30ml\n\nevening routine-এ firm, smooth-feel step হিসেবে multi-peptide serum neat.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1440 | Regular: ৳1785\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/minimalist-multi-peptides-10-face-serum-30ml\n\n#MinimalistBangladesh #PeptideSerum #SkincareBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: Minimalist Multi Peptides 10% Face Serum 30ml\n\nevening routine-এ firm, smooth-feel step হিসেবে multi-peptide serum neat.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1440 | Regular: ৳1785\nDM to order or tap the link in bio.\n\n#MinimalistBangladesh #PeptideSerum #SkincareBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/12-minimalist-multi-peptides-10-face-serum-30ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/12-minimalist-multi-peptides-10-face-serum-30ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/12-minimalist-multi-peptides-10-face-serum-30ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/12-minimalist-multi-peptides-10-face-serum-30ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/12-minimalist-multi-peptides-10-face-serum-30ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "1440",
+        "regular_price": "1785",
+        "sale_price": "1440",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/03/1_4ca7bc01-cf0e-48a9-b6d6-f4d9b3ec9cf9_1024x1024.webp",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Anti-Aging & Repair, Serums, Ampoules & Essences"
+    },
+    {
+      "product_id": 93122,
+      "title": "CeraVe Daily Moisturizing Lotion 237ml (USA Version)",
+      "slug": "cerave-daily-moisturizing-lotion-237ml-usa-version",
+      "time": "2026-07-01T18:20:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/cerave-daily-moisturizing-lotion-237ml-usa-version",
+      "angle": "daily moisturising routine-এ CeraVe lotion barrier-friendly comfort feel রাখে.",
+      "hashtags": "#CeraVeBangladesh #MoisturizingLotion #SkincareBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: CeraVe Daily Moisturizing Lotion 237ml (USA Version)\n\ndaily moisturising routine-এ CeraVe lotion barrier-friendly comfort feel রাখে.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2380 | Regular: ৳2890\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/cerave-daily-moisturizing-lotion-237ml-usa-version\n\n#CeraVeBangladesh #MoisturizingLotion #SkincareBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: CeraVe Daily Moisturizing Lotion 237ml (USA Version)\n\ndaily moisturising routine-এ CeraVe lotion barrier-friendly comfort feel রাখে.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2380 | Regular: ৳2890\nDM to order or tap the link in bio.\n\n#CeraVeBangladesh #MoisturizingLotion #SkincareBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/13-cerave-daily-moisturizing-lotion-237ml-usa-version-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/13-cerave-daily-moisturizing-lotion-237ml-usa-version-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/13-cerave-daily-moisturizing-lotion-237ml-usa-version-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/13-cerave-daily-moisturizing-lotion-237ml-usa-version-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/13-cerave-daily-moisturizing-lotion-237ml-usa-version-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "2380",
+        "regular_price": "2890",
+        "sale_price": "2380",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/06/cerave-daily-moisturizing-lotion-237ml-usa-version-gmc-enhanced-93122.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Cream/Moisturizer, Moisturizers"
+    },
+    {
+      "product_id": 93000,
+      "title": "iUNIK Beta-glucan Power Moisture Serum 50ml",
+      "slug": "iunik-beta-glucan-power-moisture-serum-50ml",
+      "time": "2026-07-01T19:00:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/iunik-beta-glucan-power-moisture-serum-50ml",
+      "angle": "hydration routine-এ Beta-glucan serum light but comforting layer দেয়.",
+      "hashtags": "#iUNIKBangladesh #HydrationSerum #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: iUNIK Beta-glucan Power Moisture Serum 50ml\n\nhydration routine-এ Beta-glucan serum light but comforting layer দেয়.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳1700\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/iunik-beta-glucan-power-moisture-serum-50ml\n\n#iUNIKBangladesh #HydrationSerum #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: iUNIK Beta-glucan Power Moisture Serum 50ml\n\nhydration routine-এ Beta-glucan serum light but comforting layer দেয়.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nPrice: ৳1700\nDM to order or tap the link in bio.\n\n#iUNIKBangladesh #HydrationSerum #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/14-iunik-beta-glucan-power-moisture-serum-50ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/14-iunik-beta-glucan-power-moisture-serum-50ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/14-iunik-beta-glucan-power-moisture-serum-50ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/14-iunik-beta-glucan-power-moisture-serum-50ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/14-iunik-beta-glucan-power-moisture-serum-50ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "1700",
+        "regular_price": "1700",
+        "sale_price": "",
+        "on_offer": false,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/04/new-iunik-beta-glucan-power-moisture-serum-50ml.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Korean Beauty, Serums, Ampoules & Essences"
+    },
+    {
+      "product_id": 92854,
+      "title": "MEDICUBE Collagen Jelly Cream 110ml",
+      "slug": "medicube-collagen-jelly-cream-110ml",
+      "time": "2026-07-01T19:40:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/medicube-collagen-jelly-cream-110ml",
+      "angle": "night routine-এ bouncy moisture finish চাইলে collagen jelly cream nice pick.",
+      "hashtags": "#MedicubeBangladesh #CollagenCream #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: MEDICUBE Collagen Jelly Cream 110ml\n\nnight routine-এ bouncy moisture finish চাইলে collagen jelly cream nice pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2157 | Regular: ৳2550\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/medicube-collagen-jelly-cream-110ml\n\n#MedicubeBangladesh #CollagenCream #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: MEDICUBE Collagen Jelly Cream 110ml\n\nnight routine-এ bouncy moisture finish চাইলে collagen jelly cream nice pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2157 | Regular: ৳2550\nDM to order or tap the link in bio.\n\n#MedicubeBangladesh #CollagenCream #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/15-medicube-collagen-jelly-cream-110ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/15-medicube-collagen-jelly-cream-110ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/15-medicube-collagen-jelly-cream-110ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/15-medicube-collagen-jelly-cream-110ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/15-medicube-collagen-jelly-cream-110ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "2157",
+        "regular_price": "2550",
+        "sale_price": "2157",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/04/new-medicube-collagen-jelly-cream-110ml.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Cream/Moisturizer, Korean Beauty, Moisturizers"
+    },
+    {
+      "product_id": 93121,
+      "title": "CeraVe Resurfacing Retinol Serum 30ml (USA Version)",
+      "slug": "cerave-resurfacing-retinol-serum-30ml-usa-version",
+      "time": "2026-07-01T20:20:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/cerave-resurfacing-retinol-serum-30ml-usa-version",
+      "angle": "retinol serum start করতে চাইলে night routine-এ slow and simple রাখুন.",
+      "hashtags": "#CeraVeBangladesh #RetinolSerum #SkincareBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: CeraVe Resurfacing Retinol Serum 30ml (USA Version)\n\nretinol serum start করতে চাইলে night routine-এ slow and simple রাখুন.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2590 | Regular: ৳3000\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/cerave-resurfacing-retinol-serum-30ml-usa-version\n\n#CeraVeBangladesh #RetinolSerum #SkincareBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: CeraVe Resurfacing Retinol Serum 30ml (USA Version)\n\nretinol serum start করতে চাইলে night routine-এ slow and simple রাখুন.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2590 | Regular: ৳3000\nDM to order or tap the link in bio.\n\n#CeraVeBangladesh #RetinolSerum #SkincareBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/16-cerave-resurfacing-retinol-serum-30ml-usa-version-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/16-cerave-resurfacing-retinol-serum-30ml-usa-version-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/16-cerave-resurfacing-retinol-serum-30ml-usa-version-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/16-cerave-resurfacing-retinol-serum-30ml-usa-version-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/16-cerave-resurfacing-retinol-serum-30ml-usa-version-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "2590",
+        "regular_price": "3000",
+        "sale_price": "2590",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/05/133.webp",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Serums, Ampoules & Essences"
+    },
+    {
+      "product_id": 94593,
+      "title": "Medicube pdrn pink tone up sun cream spf50+ pa++++ 50ml",
+      "slug": "medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml",
+      "time": "2026-07-01T21:00:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml",
+      "angle": "evening scroll-এ trending Medicube SPF pick: pink tone-up finish, easy day use.",
+      "hashtags": "#MedicubeBangladesh #ToneUpSunscreen #KBeautyBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: Medicube pdrn pink tone up sun cream spf50+ pa++++ 50ml\n\nevening scroll-এ trending Medicube SPF pick: pink tone-up finish, easy day use.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1400 | Regular: ৳1500\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml\n\n#MedicubeBangladesh #ToneUpSunscreen #KBeautyBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: Medicube pdrn pink tone up sun cream spf50+ pa++++ 50ml\n\nevening scroll-এ trending Medicube SPF pick: pink tone-up finish, easy day use.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳1400 | Regular: ৳1500\nDM to order or tap the link in bio.\n\n#MedicubeBangladesh #ToneUpSunscreen #KBeautyBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/17-medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "1400",
+        "regular_price": "1500",
+        "sale_price": "1400",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/06/medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Sunscreen"
+    },
+    {
+      "product_id": 93123,
+      "title": "CeraVe Moisturizing Cream 340g UK Version (Dry To Very Dry Skin)",
+      "slug": "cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin",
+      "time": "2026-07-01T21:40:00+06:00",
+      "creative_type": "owner-approved-static-card",
+      "asset_source": "requested-brand-current-price",
+      "design_template": "brand-fresh-product-base-v6-bilingual-price",
+      "link": "https://e-mart.com.bd/shop/cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin",
+      "angle": "dry skin comfort routine-এ CeraVe cream একটা strong, dependable shelf pick.",
+      "hashtags": "#CeraVeBangladesh #MoisturizingCream #SkincareBD #EmartSkincare",
+      "captions": {
+        "facebook": "আজকের shelf pick: CeraVe Moisturizing Cream 340g UK Version (Dry To Very Dry Skin)\n\ndry skin comfort routine-এ CeraVe cream একটা strong, dependable shelf pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2690 | Regular: ৳3290\nOriginal product. COD available across Bangladesh.\n\nOrder link: https://e-mart.com.bd/shop/cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin\n\n#CeraVeBangladesh #MoisturizingCream #SkincareBD #EmartSkincare",
+        "instagram": "আজকের shelf pick: CeraVe Moisturizing Cream 340g UK Version (Dry To Very Dry Skin)\n\ndry skin comfort routine-এ CeraVe cream একটা strong, dependable shelf pick.\n\nRoutine-এ fit মনে হলে save করে রাখুন, order করতে inbox/DM করুন.\n\nOffer price: ৳2690 | Regular: ৳3290\nDM to order or tap the link in bio.\n\n#CeraVeBangladesh #MoisturizingCream #SkincareBD #EmartSkincare"
+      },
+      "images": {
+        "default": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/18-cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin-1x1.png",
+        "facebook": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/18-cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin-1x1.png",
+        "instagram": "https://e-mart.com.bd/public/images/social/2026-07-01/bilingual-18-product-posts/18-cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin-4x5.png",
+        "source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/18-cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin-1x1.png",
+        "instagram_source_asset": "apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/18-cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin-4x5.png"
+      },
+      "caption_link_policy": {
+        "facebook": "inline_purchase_link",
+        "instagram": "comment_if_possible"
+      },
+      "visual_qa": {
+        "product_match_checked": true,
+        "price_clear": true,
+        "no_dummy_product": true,
+        "real_product_image": true,
+        "current_price_verified": true,
+        "sale_strikethrough_when_on_offer": true,
+        "background_source": "codex-rendered wooden podium card",
+        "design_consistency_checked": true,
+        "caption_style_checked": "mixed_bangla_english_single_voice"
+      },
+      "price_snapshot": {
+        "price": "2690",
+        "regular_price": "3290",
+        "sale_price": "2690",
+        "on_offer": true,
+        "verified_at": "2026-07-01T04:30:00+06:00"
+      },
+      "product_image_source": "Woo featured image: https://e-mart.com.bd/wp-content/uploads/2026/05/82.jpg",
+      "background_source": "codex-rendered wooden podium card",
+      "category_hint": "Cream/Moisturizer, Moisturizers"
+    }
+  ]
+}

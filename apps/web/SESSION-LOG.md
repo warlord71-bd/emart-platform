@@ -3640,3 +3640,11 @@ git log --oneline -5 && pm2 list && python3 /root/.gmc/sync.py --status
 - Cleaned: Removed expired June 29 and June 30 one-shot social PM2 workers and ran `pm2 save`; core services stayed online.
 - Verified: `python3 -m py_compile drift_check.py`, `bash -n deploy.sh`, old reset search, and full drift check with PM2 access. Current expected remaining drift: no marker until next gated deploy, local ahead of origin, and `/var/www` source-like dirty files from already-deployed-but-not-pushed commits plus the new deploy-script change.
 - Guardrail: No storefront deploy, no `emartweb` restart, no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes.
+
+## 2026-07-01 · Codex · July 1 mixed Bangla-English social campaign
+- Did: Built and scheduled an 18-post Facebook+Instagram campaign for owner-requested brands: iUNIK, CeraVe, Medicube, Anua, Celimax, APLB, and Minimalist.
+- Updated logic: Captions now use one mixed Bangla-English voice where Bangla words stay in Bangla script and English skincare terms stay English; the builder rejects romanized Bangla tokens, old separate Bangla+English duplicate-line patterns, IG raw URLs, missing price lines, and unsafe claim terms.
+- Assets: Rendered 36 product cards (FB 1:1 + IG 4:5) from current read-only Woo product data, synced public images to `/var/www/emart-platform/apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/`, and verified a live campaign image returned HTTP 200.
+- Scheduled: Started PM2 one-shot workers `emart-social-fb-20260701-mixed` and `emart-social-ig-20260701-mixed` for 08:20→21:40 BDT, with higher-demand/trending CeraVe/iUNIK/Medicube items in evening slots; ran `pm2 save`.
+- Verified: Builder completed, `py_compile` passed, Social Engine plan QA passed 0 errors/0 warnings, scheduler dry-runs saw 18 FB + 18 IG posts, caption scan found no romanized Bangla tokens and no IG raw URLs, local/runtime image counts both 36.
+- Guardrail: Read-only Woo API only; no Woo/WordPress writes, no checkout/cart/payment/order/customer/stock/price changes, no storefront deploy, no `emartweb` restart.

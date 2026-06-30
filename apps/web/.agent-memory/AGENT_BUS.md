@@ -16,7 +16,6 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
-| Codex | 2026-07-01 | Build/schedule July 1 18-post social campaign with stricter captions and requested brands | `workspace/content-orchestrator/scripts/active/build_social_bilingual_18_20260701.py`, `workspace/content-orchestrator/social-engine/campaigns/2026-07-01-bilingual-18-product-posts.json`, `workspace/content-orchestrator/social-engine/output/2026-07-01/2026-07-01-bilingual-18-product-posts/`, `workspace/audit/active/social-bilingual-18-20260701/`, `apps/web/public/images/social/2026-07-01/bilingual-18-product-posts/`, `workspace/TASKS.md`, `apps/web/SESSION-LOG.md` |
 
 ---
 
@@ -25,6 +24,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 | Agent | When | What was done | Commit |
 |---|---|---|---|
 | Claude | 2026-07-01 | Audit + cleanup: rejected 10 stale video reels (review queue empty), archived 8 manual/preview job files to attic, deleted 5 PM2 stale-path entries (emart-seo-autoscan/meta-gen/checkout-monitor/competitor-prices/revenue-health) + pm2 save, fixed TASKS.md video orchestrator cadence (*/15 → 0 */2 * * *). | `198fdae` + this commit |
+| Codex | 2026-07-01 | Built and scheduled July 1 mixed Bangla-English 18-post FB+IG campaign for requested brands; rendered/synced 36 assets, verified live media URL, passed Social Engine QA, and started PM2 schedulers for 08:20-21:40 BDT. | `57bb013` |
 | Codex | 2026-06-30 | Implemented durable Local/VPS/origin drift controls: deploy revision marker, non-destructive deploy metadata check, read-only drift checker, PM2 expired campaign cleanup, and updated process/session/task/memory docs. | `cf993bc` |
 | Claude | 2026-06-30 | docs reorg + 360° legacy path sweep. (1) `content-orchestrator/docs/` reorganized: 34 loose files → specs/guides/owner-actions/audits/archive; all references updated; seo-migration-forensic-readonly.mjs hardcoded path fixed. (2) ecosystem.config.cjs: 6 cwd entries repointed to content-orchestrator (5× scripts/active, 1× video-engine). (3) Crontab: 5 broken entries fixed (checkout_monitor, qdrant_sync, cleanup_chromium, video orchestrator, daily_producer). VPS ecosystem synced. WA-I closed. | `d8d7d89` `471ca1c` `571ff19` |
 | Codex | 2026-06-30 | Closed remaining context/deploy-reference inconsistencies, refreshed agent brain, and updated session closeout docs. | `dc8d154` |
