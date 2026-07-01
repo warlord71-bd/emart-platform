@@ -1,0 +1,4279 @@
+[
+ {
+  "product_id": 93299,
+  "slug": "ryo-scalp-volume-selection-shampoo-400ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 3
+ },
+ {
+  "product_id": 93314,
+  "slug": "kerasys-argan-oil-shampoo-damage-repair-1000ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 2
+ },
+ {
+  "product_id": 93311,
+  "slug": "kerasys-red-propolis-root-care-shampoo-1000ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 1
+ },
+ {
+  "product_id": 93312,
+  "slug": "kerasys-argan-oil-conditioner-damage-repair-1000ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 0
+ },
+ {
+  "product_id": 93309,
+  "slug": "kerasys-damage-clinic-protein-shampoo-600ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 0
+ },
+ {
+  "product_id": 93305,
+  "slug": "ryo-damage-care-nourishing-shampoo-480ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 0
+ },
+ {
+  "product_id": 93304,
+  "slug": "ryo-deep-cleansing-cooling-shampoo-480ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 0
+ },
+ {
+  "product_id": 93302,
+  "slug": "ryo-hair-loss-care-root-strength-shampoo-490ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 0
+ },
+ {
+  "product_id": 93300,
+  "slug": "ryo-hair-loss-expert-care-jeju-breeze-shampoo-woody-musk-585ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 0
+ },
+ {
+  "product_id": 93301,
+  "slug": "ryo-hair-loss-expert-care-shampoo-seoul-sunset-585ml",
+  "tier": "THIN",
+  "score": 42,
+  "sales": 0
+ },
+ {
+  "product_id": 92916,
+  "slug": "romampnd-the-juicy-lasting-tint-17-dark-coconut",
+  "tier": "PARTIAL",
+  "score": 50,
+  "sales": 0
+ },
+ {
+  "product_id": 63827,
+  "slug": "cerave-sa-body-wash-for-rough-bumpy-skin-296-ml",
+  "tier": "PARTIAL",
+  "score": 54,
+  "sales": 1
+ },
+ {
+  "product_id": 62626,
+  "slug": "bath-body-works-confetti-daydream-body-wash-295ml",
+  "tier": "PARTIAL",
+  "score": 54,
+  "sales": 0
+ },
+ {
+  "product_id": 63253,
+  "slug": "dr-forhair-unove-deep-damage-treatment-ex-40ml",
+  "tier": "PARTIAL",
+  "score": 54,
+  "sales": 0
+ },
+ {
+  "product_id": 62668,
+  "slug": "w-dressroom-dress-living-clear-perfume-no-79-damyang-70ml",
+  "tier": "PARTIAL",
+  "score": 54,
+  "sales": 0
+ },
+ {
+  "product_id": 62680,
+  "slug": "w-dressroom-dressliving-clear-perfume-no-214-hazelnut-in-chocolate-70ml",
+  "tier": "PARTIAL",
+  "score": 54,
+  "sales": 0
+ },
+ {
+  "product_id": 74628,
+  "slug": "kiss-beauty-bling-bling-liquid-highlighter-03",
+  "tier": "PARTIAL",
+  "score": 55,
+  "sales": 1
+ },
+ {
+  "product_id": 74201,
+  "slug": "beauty-glazed-full-coverage-concealer-color-401",
+  "tier": "PARTIAL",
+  "score": 55,
+  "sales": 0
+ },
+ {
+  "product_id": 74203,
+  "slug": "beauty-glazed-softly-6-colors-concealer-palette-401",
+  "tier": "PARTIAL",
+  "score": 55,
+  "sales": 0
+ },
+ {
+  "product_id": 74567,
+  "slug": "insight-cosmetics-beauty-blender-sponge-applicator-pink",
+  "tier": "PARTIAL",
+  "score": 55,
+  "sales": 0
+ },
+ {
+  "product_id": 62731,
+  "slug": "mary-may-hyaluronic-panthenol-hydra-mask-30ea",
+  "tier": "PARTIAL",
+  "score": 58,
+  "sales": 0
+ },
+ {
+  "product_id": 74630,
+  "slug": "kiss-beauty-bling-bling-liquid-highlighter-01-40ml",
+  "tier": "PARTIAL",
+  "score": 59,
+  "sales": 0
+ },
+ {
+  "product_id": 74937,
+  "slug": "sponges-makeup-5pcs-beauty-blender-makeup-puff-set-with-bottle",
+  "tier": "PARTIAL",
+  "score": 59,
+  "sales": 0
+ },
+ {
+  "product_id": 74649,
+  "slug": "kojie-san-facial-beauty-soap-3-bars-per-pack-65gx3",
+  "tier": "PARTIAL",
+  "score": 60,
+  "sales": 2
+ },
+ {
+  "product_id": 74205,
+  "slug": "beauty-glazed-softly-6-colors-concealer-palette-402",
+  "tier": "PARTIAL",
+  "score": 60,
+  "sales": 0
+ },
+ {
+  "product_id": 62919,
+  "slug": "axis-y-biome-resetting-moringa-cleansing-oil-200ml",
+  "tier": "PARTIAL",
+  "score": 61,
+  "sales": 0
+ },
+ {
+  "product_id": 62364,
+  "slug": "medicube-pdrn-pink-collagen-gel-mask-1ea",
+  "tier": "PARTIAL",
+  "score": 61,
+  "sales": 0
+ },
+ {
+  "product_id": 63319,
+  "slug": "numbuzin-no-1-easy-peasy-cleansing-oil-200ml",
+  "tier": "PARTIAL",
+  "score": 61,
+  "sales": 0
+ },
+ {
+  "product_id": 62674,
+  "slug": "w-dressroom-dress-living-clear-perfume-no-02-coco-conut-70ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 1
+ },
+ {
+  "product_id": 62753,
+  "slug": "bath-and-body-works-in-the-stars-shower-gel-88ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 62729,
+  "slug": "be-the-skin-heartleaf-o2-bubble-wash-off-maskpack-120g",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 75839,
+  "slug": "beaute-glutathione-skin1004-centella-brightening-combo-2pcs",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 93122,
+  "slug": "cerave-daily-moisturizing-lotion-237ml-usa-version",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 93114,
+  "slug": "cerave-daily-moisturizing-lotion-473ml-normal-to-dry-skin",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 93107,
+  "slug": "cerave-hydrating-sunscreen-spf30-medium-sheer-tint-50ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 93112,
+  "slug": "cerave-moisturising-lotion-for-dry-to-very-dry-skin-473ml-uk-version",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63933,
+  "slug": "cosrx-full-fit-honey-sugar-lip-scrub-20g",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 93046,
+  "slug": "izeze-exosome-pdrn-booster-ampoule-30ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 62642,
+  "slug": "mielle-organics-rosemary-mint-light-scalp-hair-strengthening-oil-59ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63881,
+  "slug": "the-inkey-list-polyglutamic-acid-30-ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 93002,
+  "slug": "the-ordinary-multi-peptide-serum-for-hair-density-60ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 62676,
+  "slug": "w-dressroom-dress-living-clear-perfume-no-34-always-happy-70ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 62672,
+  "slug": "w-dressroom-dress-living-clear-perfume-no-45-morning-rain-70ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 62670,
+  "slug": "w-dressroom-dress-living-clear-perfume-no-49-peach-blossom-70ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 74158,
+  "slug": "beauty-glazed-soft-focus-powder-shade-102",
+  "tier": "PARTIAL",
+  "score": 63,
+  "sales": 0
+ },
+ {
+  "product_id": 60837,
+  "slug": "carenel-anti-melasma-cica-3-step-treatment-set",
+  "tier": "PARTIAL",
+  "score": 63,
+  "sales": 0
+ },
+ {
+  "product_id": 74611,
+  "slug": "j-cat-beauty-indense-mineral-compact-powder-bare-skin-103",
+  "tier": "PARTIAL",
+  "score": 63,
+  "sales": 0
+ },
+ {
+  "product_id": 74142,
+  "slug": "beauty-glazed-long-stay-automatic-lip-crayon-b103-cinnamon-1-35g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74183,
+  "slug": "beauty-glazed-matte-lipstick-101-toffee-8g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74148,
+  "slug": "beauty-glazed-matte-lipstick-112-red-wine-8g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74181,
+  "slug": "beauty-glazed-matte-lipstick-116-burgundy-8g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 37218,
+  "slug": "freeman-beauty-peel-off-mask-with-volcanic-ash-175ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 60242,
+  "slug": "green-finger-panthedin-top-to-toe-wash-230-ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74496,
+  "slug": "handaiyan-thanks-for-the-love-lip-set-12pcs",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74645,
+  "slug": "kojie-san-facial-beauty-soap-single-bar-65g-1-piece",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 61782,
+  "slug": "on-the-body-blooming-cherry-blossom-scent-body-wash-875-ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 61474,
+  "slug": "on-the-body-veilment-natural-spa-dead-sea-salt-scrub-body-wash-black-rose-scent-400-ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 60974,
+  "slug": "the-ordinary-caffeine-solution-5-egcg-30-ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 62644,
+  "slug": "tirtir-mask-fit-red-cushion-6-shade-trial-kit-33c33n33w34c34n34w",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 1
+ },
+ {
+  "product_id": 93118,
+  "slug": "cerave-eye-repair-cream-usa-version",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63471,
+  "slug": "ryo-hair-loss-expert-care-shampoo-for-dry-scalp-400ml",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 62518,
+  "slug": "some-by-mi-beta-panthenol-repair-starter-kit",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 74175,
+  "slug": "beauty-glazed-tint-blush-stick-104-7g",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 60430,
+  "slug": "dabo-rice-peeling-gel-180-ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 74349,
+  "slug": "dabo-sheet-mask-cucumber-23g",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 37487,
+  "slug": "the-body-shop-lightening-shade-adjusting-drops-15ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 63885,
+  "slug": "the-inkey-list-rosehip-oil-30-ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 59578,
+  "slug": "the-ordinary-ascorbyl-glucoside-solution-12-30ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 63719,
+  "slug": "the-ordinary-ascorbyl-tetraisopalmitate-solution-20-in-vitamin-f-30ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 75577,
+  "slug": "w7-banana-dreams-loose-powder-20g",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 74130,
+  "slug": "beauty-formulas-hair-removal-wax-strips-face-bikini-line",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74160,
+  "slug": "beauty-glazed-soft-focus-powder-shade-101",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 60087,
+  "slug": "dabo-first-solution-mask-pack-sheet-mask-hyaluronic",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 60152,
+  "slug": "dabo-first-solution-mask-pack-sheet-mask-snail-gold",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 60779,
+  "slug": "dr-gilla-revitaluxe-hydration-enhancer-egf-mask-25",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74569,
+  "slug": "insight-cosmetics-beauty-blender-sponge-applicator-orange",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74295,
+  "slug": "pookie-combo-offer-1-beauty-glazed-lively-waterproof-long-lasting-lip-liner-beauty-glazed-lip-glow-oil-beauty-glazed-matte-lipstick",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 62396,
+  "slug": "romnd-the-juicy-lasting-tint-17-dark-coconut",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75307,
+  "slug": "swiss-beauty-airbrush-finish-foundation-fair-ivory-sb-512",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75309,
+  "slug": "swiss-beauty-airbrush-finish-foundation-golden-beige-sb-512",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 63847,
+  "slug": "cerave-sa-cream-for-rough-bumpy-skin-453g",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 63945,
+  "slug": "dr-ceuracle-pro-balance-biotics-clear-up-sun-spf50-pa-50ml",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 48655,
+  "slug": "vaseline-lip-therapy-rosy-lips",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 18
+ },
+ {
+  "product_id": 62789,
+  "slug": "anua-birch-moisture-boosting-pad-160ml-70ea",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62564,
+  "slug": "anua-rice-70-intensive-moisturizing-milk-150ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63311,
+  "slug": "bioderma-sebium-hydra-ultra-moisturising-compensating-care-40ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 61916,
+  "slug": "celimax-the-real-noni-refresh-clay-mask-120g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 93115,
+  "slug": "cerave-baby-moisturizing-cream-142g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 93113,
+  "slug": "cerave-baby-wash-shampoo-237ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 93119,
+  "slug": "cerave-sa-smoothing-cream-177ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62044,
+  "slug": "cosrx-peptide-132-ultra-perfect-hair-bonding-treatment-120ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 60067,
+  "slug": "dabo-10-second-pdrn-bubble-collagen-mask-90ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 61670,
+  "slug": "dabo-first-solution-mask-pack-23-g-red-ginseng",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63941,
+  "slug": "dr-ceuracle-vegan-kombucha-tea-lip-balm-3-7g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62700,
+  "slug": "dr-forhair-folligen-scalp-pack-250ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62716,
+  "slug": "dr-forhair-folligen-silk-treatment-300ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62712,
+  "slug": "dr-forhair-folligen-treatment-200ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62710,
+  "slug": "dr-forhair-phyto-therapy-treatment-500ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63255,
+  "slug": "dr-forhair-unove-deep-damage-treatment-ex-207ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62264,
+  "slug": "dr-forhair-unove-deep-damage-treatment-ex-320ml-tender-bloom",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62290,
+  "slug": "eqqualberry-collagen-glow-up-hydrogel-mask-30g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62292,
+  "slug": "eqqualberry-collagen-pore-tight-up-hydrogel-mask-30g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63645,
+  "slug": "heimish-matcha-biome-hydrogel-eye-patch-60pcs",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 93048,
+  "slug": "izeze-soul-hna-hydro-toner-150ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62266,
+  "slug": "medicube-kojic-acid-turmeric-night-wrapping-mask-75ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63021,
+  "slug": "mielle-rosemary-mint-strengthening-hair-masque-340g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63403,
+  "slug": "numbuzin-no-3-porcelain-base-skip-tone-up-beige-50ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62312,
+  "slug": "numbuzin-no-5-vitamin-spotlight-sheet-mask-27ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62278,
+  "slug": "skin1004-madagascar-centella-travel-kit-3020303030ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62702,
+  "slug": "the-face-shop-rice-ceramide-moisturizing-emulsion-150ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63879,
+  "slug": "the-inkey-list-15-vitamin-c-and-egf-30-ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63723,
+  "slug": "the-ordinary-buffet-copper-peptides-1-30ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 92804,
+  "slug": "the-ordinary-retinol-1-in-squalane-30ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 74171,
+  "slug": "beauty-glazed-nose-pore-strips",
+  "tier": "PARTIAL",
+  "score": 71,
+  "sales": 0
+ },
+ {
+  "product_id": 75277,
+  "slug": "sweet-beauty-silicone-mask-stick-2-in-1",
+  "tier": "PARTIAL",
+  "score": 71,
+  "sales": 0
+ },
+ {
+  "product_id": 4321,
+  "slug": "beauty-of-joseon-centella-asiatica-calming-mask-1pcs",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 50515,
+  "slug": "beauty-of-joseon-hanbang-serum-discovery-kit-4-serum",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 63517,
+  "slug": "beauty-of-joseon-relief-sun-rice-probiotics-mini-10ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 74995,
+  "slug": "pastel-beauty-gold-shimmery-shield-setting-spray-sunrise-pb-mf27-80ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 3610,
+  "slug": "the-yeon-vita7-aha-bha-energy-peeling-gel-100-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 36250,
+  "slug": "athena-beaute-100-cotton-wool-cosmetic-pads-80pcs",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36265,
+  "slug": "athena-beaute-cotton-wool-balls-100pcs",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 62318,
+  "slug": "athena-beaute-cotton-wool-cosmetic-pad-80-pcs",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74177,
+  "slug": "beauty-glazed-black-kajal-liner-0-6g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74140,
+  "slug": "beauty-glazed-long-stay-automatic-lip-crayon-b102-dark-brown-1-35g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74136,
+  "slug": "beauty-glazed-long-stay-automatic-lip-crayon-b108-nude-1-35g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74144,
+  "slug": "beauty-glazed-matte-liquid-lipstick-106-plum-mauve-2-8g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74156,
+  "slug": "beauty-glazed-matte-liquid-lipstick-107-taro-rose-2-8g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74154,
+  "slug": "beauty-glazed-matte-liquid-lipstick-119-tangerine-red-2-8g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74179,
+  "slug": "beauty-glazed-nude-kajal-liner-0-6g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74134,
+  "slug": "beauty-glazed-turquoise-green-liner-0-6g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74189,
+  "slug": "beauty-glazed-velvet-soft-mist-lipstick-109",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74187,
+  "slug": "beauty-glazed-velvet-soft-mist-lipstick-110",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74185,
+  "slug": "beauty-glazed-velvet-soft-mist-lipstick-112",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 2692,
+  "slug": "cosrx-two-in-one-poreless-power-liquid-100ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60657,
+  "slug": "dabo-make-up-bb-fit-foundation-8-ml-21-vanilla-beige",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60655,
+  "slug": "dabo-make-up-bb-fit-foundation-8-ml-23-medium-beige",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60226,
+  "slug": "dabo-make-up-no-sebum-rose-pact-spf36-pa-23-medium",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60083,
+  "slug": "dabo-rice-ferment-foam-100-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60085,
+  "slug": "dabo-rice-ferment-foam-180-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 62544,
+  "slug": "dr-forhair-unove-volume-up-curling-fixer-200ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 62837,
+  "slug": "garnier-ultimate-blends-hair-food-banana-3-in-1-dry-hair-mask-treatment-400ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 37338,
+  "slug": "garnier-with-grape-extract-botanical-milk-dry-skin-200ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74632,
+  "slug": "kiss-beauty-3d-eyebrow-styling-soap-10g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60434,
+  "slug": "kolon-pharmaceutical-glutation-beauty-life-90g-3000-mg-x-30-packets",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74915,
+  "slug": "nature-beauty-fruity-shower-gel-500ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60111,
+  "slug": "nature-skin-embossing-beauty-cotton-puff-100-sheets",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36610,
+  "slug": "neutrogena-clear-soothe-micellar-jelly-makeup-remover-200ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60600,
+  "slug": "on-the-body-cashmere-perfume-happy-breeze-400-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60534,
+  "slug": "on-the-body-cashmere-perfume-sweet-love-400-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61143,
+  "slug": "on-the-body-veilment-natural-spa-dead-sea-salt-scrub-body-wash-jasmine-scent-200-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61475,
+  "slug": "on-the-body-veilment-natural-spa-dead-sea-salt-scrub-body-wash-jasmine-scent-400-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61802,
+  "slug": "on-the-body-veilment-natural-spa-dead-sea-salt-scrub-body-wash-lime-basil-scent-400-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75001,
+  "slug": "pastel-beauty-oh-so-water-proof-mascara-p009-6-5ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74997,
+  "slug": "pastel-beauty-rose-gold-shimmery-shield-setting-spray-sunset-pb-mf28-80ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75121,
+  "slug": "sadoer-aloe-vera-hydrating-rejuvenating-facial-mask-25g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75137,
+  "slug": "sadoer-hyaluronic-acid-hydration-eye-mask-7-5g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75145,
+  "slug": "sadoer-hydrocolloid-star-flower-purifying-acne-patch-8g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75281,
+  "slug": "swiss-beauty-holographic-waterproof-long-lasting-eyeliner-01-milky-way-0-2g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75279,
+  "slug": "swiss-beauty-matte-cat-lip-crayon-05-flattering-peach-1-5g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75311,
+  "slug": "swiss-beauty-natural-makeup-fixer-aloe-vera-with-vitamin-e-70ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 37381,
+  "slug": "the-body-shop-aloe-multi-use-soothing-gel-200ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 37477,
+  "slug": "the-body-shop-drops-of-light-pure-resurfacing-liquid-peel-100ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 37410,
+  "slug": "the-body-shop-japanese-matcha-tea-pollution-clearing-75ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75461,
+  "slug": "the-dermalix-rose-soothing-shower-gel-250ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75463,
+  "slug": "the-dermalix-shea-butter-brightening-shower-gel-250ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60606,
+  "slug": "the-face-shop-rich-hand-v-hand-foot-total-treatment-120ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 63891,
+  "slug": "the-inkey-list-hyaluronic-acid-30-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 63737,
+  "slug": "the-ordinary-100-organic-cold-pressed-moroccan-argan-oil-30ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 63739,
+  "slug": "the-ordinary-100-plant-derived-squalane-30ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 63751,
+  "slug": "the-ordinary-amino-acid-b5-30ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 63741,
+  "slug": "the-ordinary-resveratrol-3-ferulic-acid-3-30ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 62666,
+  "slug": "w-dressroom-dressliving-clear-perfume-gift-set-no-214-hazelnut-in-chocolate-70ml-no-314-strawberry",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 23112,
+  "slug": "the-ordinary-niacinamide-10-zinc-1-30ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 7
+ },
+ {
+  "product_id": 63003,
+  "slug": "anua-heartleaf-70-daily-lotion-20ml-mini-size",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 1
+ },
+ {
+  "product_id": 58343,
+  "slug": "purito-seoul-mighty-bamboo-panthenol-cream-100ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 1
+ },
+ {
+  "product_id": 61944,
+  "slug": "anua-azelaic-acid-3-cica-skin-clarifying-toner-250ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 58397,
+  "slug": "axis-y-dark-spot-correcting-glow-toner-125ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62929,
+  "slug": "axis-y-glow-care-set",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62062,
+  "slug": "axis-y-vita-glow-lip-oil-chilled-berry",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62060,
+  "slug": "axis-y-vita-glow-lip-oil-cozy-fig",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63353,
+  "slug": "be-the-skin-sebum-zero-aloerice-vegan-sun-cream-50ml-spf-50-pa",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63425,
+  "slug": "cerave-sunscreen-stick-broad-spectrum-spf-50-13-32gm",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 60063,
+  "slug": "dabo-cica-chilling-ampoule-pad-60-pcs-140ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 91691,
+  "slug": "dot-key-72-hr-hydrating-gel-moisturizer-probiotics-60ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62690,
+  "slug": "dr-forhair-unove-deep-damage-repair-shampoo-500ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62552,
+  "slug": "dr-forhair-unove-no-wash-water-ampoule-treatment-200ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63213,
+  "slug": "heimish-moringa-ceramide-hyaluronic-acid-hydrating-watery-sunscreen-50ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 74709,
+  "slug": "la-roche-posay-anthelios-clear-skin-dry-touch-sunscreen-spf-60-50ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62166,
+  "slug": "medicube-pdrn-pink-niacineamide-whip-cleanser-120g",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63275,
+  "slug": "numbuzin-no-1-clear-filter-sun-essence-spf50-pa50ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63283,
+  "slug": "numbuzin-no-2-deep-clean-fresh-cream-cleanser-120ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62769,
+  "slug": "numbuzin-no-3-radiance-glowing-jumbo-essence-pad-150ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63277,
+  "slug": "numbuzin-no-5-daily-multi-vitamin-cream-60ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 60057,
+  "slug": "on-the-body-rice-therapy-artemisia-ph-balance-cleanser-150ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63807,
+  "slug": "rated-green-real-shea-cold-pressed-shea-butter-anti-frizz-hydrating-hair-lotion-150ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62340,
+  "slug": "romnd-the-juicy-lasting-tint-04-fig-fig",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 60925,
+  "slug": "skin1004-madagascar-centella-tea-trica-b5-cream-1-5-ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61850,
+  "slug": "the-face-shop-the-therapy-vegan-blending-cream-30ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63911,
+  "slug": "the-inkey-list-2-tranexamic-acid-treatment-serum-30-ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63883,
+  "slug": "the-inkey-list-fulvic-acid-brightening-cleanser-150-ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 60590,
+  "slug": "double-layered-korean-comforter-soft-warm-and-elegant",
+  "tier": "PARTIAL",
+  "score": 50,
+  "sales": 0
+ },
+ {
+  "product_id": 62855,
+  "slug": "haruharu-wonder-ultra-fit-facial-pads-160ea",
+  "tier": "PARTIAL",
+  "score": 50,
+  "sales": 0
+ },
+ {
+  "product_id": 62787,
+  "slug": "romnd-juicy-lasting-tint-17-plum-coke",
+  "tier": "PARTIAL",
+  "score": 53,
+  "sales": 0
+ },
+ {
+  "product_id": 62747,
+  "slug": "bath-body-works-japanese-cherry-blossom-body-wash-295-ml",
+  "tier": "PARTIAL",
+  "score": 54,
+  "sales": 0
+ },
+ {
+  "product_id": 63547,
+  "slug": "tocobo-glass-tinted-lip-balm-012-better-pink-3-5g",
+  "tier": "PARTIAL",
+  "score": 54,
+  "sales": 0
+ },
+ {
+  "product_id": 74415,
+  "slug": "durex-extra-dots-for-extra-simulation-3-condoms",
+  "tier": "PARTIAL",
+  "score": 55,
+  "sales": 0
+ },
+ {
+  "product_id": 74413,
+  "slug": "durex-extra-thin-intense-chocolate-flavoured-10-condoms",
+  "tier": "PARTIAL",
+  "score": 55,
+  "sales": 0
+ },
+ {
+  "product_id": 74991,
+  "slug": "party-queen-conceal-and-perfect-2-in-1-liquid-full-coverage-foundation-honey-beige-04",
+  "tier": "PARTIAL",
+  "score": 55,
+  "sales": 0
+ },
+ {
+  "product_id": 62510,
+  "slug": "aplb-glutathione-niacinamide-sheet-mask-25ml",
+  "tier": "PARTIAL",
+  "score": 57,
+  "sales": 0
+ },
+ {
+  "product_id": 62334,
+  "slug": "aplb-retinol-vitamin-c-vitamin-e-sheet-mask-25ml",
+  "tier": "PARTIAL",
+  "score": 57,
+  "sales": 0
+ },
+ {
+  "product_id": 63805,
+  "slug": "rated-green-cold-brew-rosemary-balancing-scalp-pack-50ml",
+  "tier": "PARTIAL",
+  "score": 57,
+  "sales": 0
+ },
+ {
+  "product_id": 62300,
+  "slug": "cellpod-wrinkleless-perfector-galvanic-wrinkleless-device",
+  "tier": "PARTIAL",
+  "score": 58,
+  "sales": 0
+ },
+ {
+  "product_id": 92892,
+  "slug": "some-by-mi-aha-bha-pha-30-days-miracle-starter-kit",
+  "tier": "PARTIAL",
+  "score": 58,
+  "sales": 0
+ },
+ {
+  "product_id": 92954,
+  "slug": "some-by-mi-yuja-niacin-anti-blemish-starter-kit",
+  "tier": "PARTIAL",
+  "score": 58,
+  "sales": 0
+ },
+ {
+  "product_id": 74528,
+  "slug": "imagic-studio-fix-powder-plus-foundation-fa-103-15g",
+  "tier": "PARTIAL",
+  "score": 59,
+  "sales": 0
+ },
+ {
+  "product_id": 2858,
+  "slug": "innisfree-my-real-squeeze-mask-tomato-20ml",
+  "tier": "PARTIAL",
+  "score": 59,
+  "sales": 0
+ },
+ {
+  "product_id": 75353,
+  "slug": "technic-makeup-dewy-setting-spray-fixant-31ml",
+  "tier": "PARTIAL",
+  "score": 59,
+  "sales": 0
+ },
+ {
+  "product_id": 75080,
+  "slug": "rimmel-wonderink-ultimate-liquid-eyeliner-001-black",
+  "tier": "PARTIAL",
+  "score": 60,
+  "sales": 1
+ },
+ {
+  "product_id": 75066,
+  "slug": "remington-ceramic-straight-straightener-s3500",
+  "tier": "PARTIAL",
+  "score": 60,
+  "sales": 0
+ },
+ {
+  "product_id": 75485,
+  "slug": "trendy-beauties-liquid-matte-waterproof-lipstick-05",
+  "tier": "PARTIAL",
+  "score": 60,
+  "sales": 0
+ },
+ {
+  "product_id": 75579,
+  "slug": "wet-n-wild-foundation-matte-e368c-golden-beige",
+  "tier": "PARTIAL",
+  "score": 60,
+  "sales": 0
+ },
+ {
+  "product_id": 62052,
+  "slug": "healthy-place-double-toning-white-glutathione-collagen-stick-14-stick",
+  "tier": "PARTIAL",
+  "score": 61,
+  "sales": 0
+ },
+ {
+  "product_id": 92930,
+  "slug": "acwell-licorice-ph-balancing-cleansing-toner-150ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63383,
+  "slug": "banila-co-clean-it-zero-7ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 62749,
+  "slug": "bath-body-works-tropidelic-body-wash-295-ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63357,
+  "slug": "benton-goodbye-redness-centella-cica-gel-100ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63355,
+  "slug": "benton-goodbye-redness-centella-powder-wash-80g",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 92814,
+  "slug": "cos-de-baha-arbutin-5niacinamide-5-serum-30ml-an",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63393,
+  "slug": "heimish-dailism-eye-palette-nudie-coral-14g",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63047,
+  "slug": "heimish-dailism-eye-palette-nudie-rose-14g",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63207,
+  "slug": "heimish-dalism-liquid-lip-gloss-4g-01-tangerine-coral",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63209,
+  "slug": "heimish-dalism-liquid-lip-gloss-4g-02-sheer-red",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63483,
+  "slug": "isntree-hyaluronic-acid-water-sleeping-mask-100ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 62242,
+  "slug": "ksecret-extra-illuminating-eye-gel-patches-vitamin-c-102g",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63035,
+  "slug": "marymay-blackberry-complex-glow-washoff-pack-125g-2",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63855,
+  "slug": "panoxyl-acne-foaming-wash-benzoyl-peroxide-10-156-g",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63019,
+  "slug": "paulas-choice-weightless-body-treatment-with-2-bha-210ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63811,
+  "slug": "rated-green-real-shea-real-change-treatment-240ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 93006,
+  "slug": "ryo-scalp-volume-shampoo-400ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 92886,
+  "slug": "some-by-mi-aha-bha-pha-14-days-super-miracle-spot-all-kill-cream-30ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 92998,
+  "slug": "some-by-mi-aha-bha-pha-30-days-miracle-serum-light-50ml",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 63545,
+  "slug": "tocobo-glass-tlnted-lip-balm-013-tangerine-red-3-5g",
+  "tier": "PARTIAL",
+  "score": 62,
+  "sales": 0
+ },
+ {
+  "product_id": 75349,
+  "slug": "technic-blueberry-pie-pressed-pigment-palette",
+  "tier": "PARTIAL",
+  "score": 63,
+  "sales": 1
+ },
+ {
+  "product_id": 74406,
+  "slug": "durex-durex-thin-feel-12-condoms",
+  "tier": "PARTIAL",
+  "score": 63,
+  "sales": 0
+ },
+ {
+  "product_id": 74454,
+  "slug": "everly-beauties-pure-matte-full-coverage-concealer-corrector-pure-beige",
+  "tier": "PARTIAL",
+  "score": 63,
+  "sales": 0
+ },
+ {
+  "product_id": 74555,
+  "slug": "imagic-full-coverage-foundation-1212-slightly-pink",
+  "tier": "PARTIAL",
+  "score": 63,
+  "sales": 0
+ },
+ {
+  "product_id": 75022,
+  "slug": "pinkflash-lasting-matte-pressed-powder-shade-222-pf-f08",
+  "tier": "PARTIAL",
+  "score": 63,
+  "sales": 0
+ },
+ {
+  "product_id": 61878,
+  "slug": "aveeno-baby-daily-care-hair-body-wash-250ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74227,
+  "slug": "bob-super-curl-glamour-slim-longer-mascara-8g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74441,
+  "slug": "everly-matte-me-up-lip-liner-pencil-coin-colletor-1-5g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74451,
+  "slug": "everly-matte-me-up-lip-liner-pencil-dark-brown-1-5g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74443,
+  "slug": "everly-matte-me-up-lip-liner-pencil-lush-1-5g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 37242,
+  "slug": "freeman-feeling-beautiful-sugar-body-scrub-175ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 37279,
+  "slug": "hair-removal-spray-with-baby-oil-lemon-fragrance-200ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74494,
+  "slug": "handaiyan-non-sticky-matte-finish-liquid-lipstick-12pcs-set",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 63385,
+  "slug": "heimish-dalism-liquid-lip-gloss-4g-03-nudie-rose",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74544,
+  "slug": "imagic-giant-brush-perfect-mascara-ey-307-8g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74751,
+  "slug": "laxzin-deeply-nourishing-face-body-shower-gel-280ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 60372,
+  "slug": "lipvive-sugar-balm-shea-butter-intense-4-8g",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74832,
+  "slug": "maybelline-super-stay-matte-ink-liquid-lipstick-117-ground-breaker-5ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74830,
+  "slug": "maybelline-super-stay-matte-ink-liquid-lipstick-335-hustler-5ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74837,
+  "slug": "maybelline-super-stay-matte-ink-liquid-lipstick15-lover-5ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74845,
+  "slug": "maybelline-super-stay-vinyl-ink-long-wear-liquid-lipstick-15-peachy-4-2-ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 74841,
+  "slug": "maybelline-super-stay-vinyl-ink-long-wear-liquid-lipstick-160-sultry-4-2ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 37594,
+  "slug": "nivea-men-active-energy-refreshing-face-gel-50ml",
+  "tier": "PARTIAL",
+  "score": 64,
+  "sales": 0
+ },
+ {
+  "product_id": 62402,
+  "slug": "house-of-hur-weightless-sun-fluid-50ml",
+  "tier": "PARTIAL",
+  "score": 65,
+  "sales": 1
+ },
+ {
+  "product_id": 62704,
+  "slug": "bonajour-3-layer-pure-cotton-pads-80ea",
+  "tier": "PARTIAL",
+  "score": 65,
+  "sales": 0
+ },
+ {
+  "product_id": 63559,
+  "slug": "heimish-all-clean-green-pore-toner-pad-75ea",
+  "tier": "PARTIAL",
+  "score": 65,
+  "sales": 0
+ },
+ {
+  "product_id": 62686,
+  "slug": "laneige-radian-c-advanced-effector-mini-15ml",
+  "tier": "PARTIAL",
+  "score": 65,
+  "sales": 0
+ },
+ {
+  "product_id": 74622,
+  "slug": "keli-compressed-sheet-mask-chocolate-mask-01-pcs",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 1
+ },
+ {
+  "product_id": 93022,
+  "slug": "some-by-mi-retinol-intense-trial-kit",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 1
+ },
+ {
+  "product_id": 61323,
+  "slug": "banila-co-clean-it-zero-cleansing-balm-7-ml-revitalizing",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 62745,
+  "slug": "bath-body-works-fresh-cut-lilacs-fine-fragrance-mist-236ml",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 62590,
+  "slug": "bonajour-ginger-aqua-relief-foam-cleanser-150ml",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63367,
+  "slug": "etude-house-dear-darling-water-tint-02-cherry-ade",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63305,
+  "slug": "etude-house-dear-darling-water-tint-03-orange-ade",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63417,
+  "slug": "g9-skin-im-pine-pore-solution-pad-60ea",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 62048,
+  "slug": "healthy-place-low-molecular-pomegranate-collagen-14-stick",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63511,
+  "slug": "heimish-matcha-mini-kit",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63771,
+  "slug": "innisfree-bija-trouble-skin-care-set",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63951,
+  "slug": "innisfree-jeju-cherry-blossom-special-kit",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 62440,
+  "slug": "instree-onion-special-box",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63489,
+  "slug": "isntree-chestnut-lha-jelly-cleansing-oil-150ml",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63813,
+  "slug": "rated-green-real-shea-butter-nourishing-shampoo-400ml",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 62692,
+  "slug": "round-lab-birch-juice-moisturizing-pad-80ea",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 62262,
+  "slug": "simplyo-refreshing-scalp-shampoo-green-breeze-100ml",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63609,
+  "slug": "some-by-mi-miracle-hair-body-starter-kit",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 62646,
+  "slug": "tirtir-mask-fit-red-cushion-6-shade-trial-kit-33n37c40n43n51n55n",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 62184,
+  "slug": "tirtir-mask-fit-red-cushion-6-shade-trial-kit-35n-37c-40n43n-51n-55n",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 63159,
+  "slug": "tocobo-sun-care-mini-duo",
+  "tier": "PARTIAL",
+  "score": 66,
+  "sales": 0
+ },
+ {
+  "product_id": 2616,
+  "slug": "some-by-mi-yuja-niacin-brightening-sleeping-mask-60g",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 1
+ },
+ {
+  "product_id": 74215,
+  "slug": "bio-oil-specialist-skincare-oil-60ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 74396,
+  "slug": "durex-thin-feel-condoms-regular-fit-12pcs",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 74468,
+  "slug": "fenyi-milk-silky-scrub-3g",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 37230,
+  "slug": "freeman-revitalizing-pomegranate-peel-off-gel-mask-175ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 2859,
+  "slug": "innisfree-my-real-squeeze-mask-lime-20ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 61672,
+  "slug": "luzin-cell-velvet-mask-28-g-toning-velvet",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 74766,
+  "slug": "maange-12pcs-mix-makeup-brush-set-pink",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 36108,
+  "slug": "mac-prepprime-highlighter-3-6ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 60665,
+  "slug": "phytotree-twenty-four-hour-velvet-tint-5-5-g-07-fairy-lotus-signal",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 61612,
+  "slug": "plu-365-facial-scrub-honey-lemon-100-g",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 75068,
+  "slug": "revolution-glow-fix-illuminating-fixing-spray-100ml",
+  "tier": "PARTIAL",
+  "score": 67,
+  "sales": 0
+ },
+ {
+  "product_id": 74048,
+  "slug": "absolute-new-york-click-cover-concealer-mfcc14-cc-green",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74229,
+  "slug": "bob-keen-black-24h-pencil-gel-eyeliner",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74359,
+  "slug": "daiso-glucosamine-supplement-15-days-30-tablet",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 60756,
+  "slug": "dark-spot-brightening-combo-for-glowing-skin",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 60592,
+  "slug": "double-layered-korean-blanket-soft-warm-and-elegant",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74417,
+  "slug": "durex-extra-thin-strawberry-flavoured-3-condoms",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74482,
+  "slug": "gillette-venus-razor-with-aloe-extract-for-women",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 60827,
+  "slug": "hyperpigmentation-acne-scar-solution-combo",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74553,
+  "slug": "imagic-matte-finish-long-wearing-foundation-1391-cool-porcelain",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74532,
+  "slug": "imagic-professional-cosmetics-makeup-sponge-pink",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74559,
+  "slug": "insight-4x-intense-kohl-kajal",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74581,
+  "slug": "insight-all-love-eyes-on-you-eyeshadow-pallet",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74571,
+  "slug": "insight-hd-conceal-correct-contour-medium-skin",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74597,
+  "slug": "insight-intense-kohl-kajal-nude",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74599,
+  "slug": "insight-lash-extension-mascara",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74605,
+  "slug": "insight-make-up-fixer-spray",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74557,
+  "slug": "insight-super-kajal",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74565,
+  "slug": "insight-super-stay-lipstick-05-nyra",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74583,
+  "slug": "insight-ultrathin-foundation-ln13",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74679,
+  "slug": "l-a-girl-pro-matte-foundation-glm671-ivory",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74677,
+  "slug": "l-a-girl-pro-matte-foundation-nude-glm716",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 37068,
+  "slug": "maybelline-baby-skin-instant-pore-eraser-uk",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 37292,
+  "slug": "maybelline-color-elixir-lip-gloss-radiant-ruby",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 37277,
+  "slug": "maybelline-expert-wear-eyeshadow-quads-07q-luminous-lilacs",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 37147,
+  "slug": "maybelline-fit-me-concealer-10-fair",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 37301,
+  "slug": "maybelline-fit-me-dewysmooth-foundation-nude-beige-125",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 37289,
+  "slug": "maybelline-fit-me-setsmooth-pressed-powder",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 37229,
+  "slug": "maybelline-fit-me-setsmooth-pressed-powder-golden-beige-240",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 37310,
+  "slug": "maybelline-fit-me-setsmooth-pressed-powder-medium-buff-225",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 37217,
+  "slug": "maybelline-instant-age-rewind-eraser-dark-circles-treatment-concealer-100-ivory",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74893,
+  "slug": "miyako-hair-straightener-hs-916",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 36974,
+  "slug": "neutrogena-visibly-clear-pink-grapefruit-daily-scrub",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74925,
+  "slug": "nirvana-color-face-perfect-liquid-foundation-light-golden-f03",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 74993,
+  "slug": "party-queen-conceal-and-perfect-2-in-1-liquid-full-coverage-foundation-blushing-beige-05",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75011,
+  "slug": "pinkflash-waterproof-auto-eyebrow-pencil-02-chocolate-brown-pf-e09",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75009,
+  "slug": "pinkflash-waterproof-auto-eyebrow-pencil-03-gray-brown-pf-e09",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 62064,
+  "slug": "purito-seoul-wonder-releaf-centella-spot-patch-51patches",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75078,
+  "slug": "rimmel-lasting-finish-8hr-lip-liner-pencil-705-cappuccino",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75082,
+  "slug": "rimmel-london-scandaleyes-24hr-waterproof-kohl-kajal-001-black",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 63061,
+  "slug": "romnd-zero-velvet-tint-12-anne-shirley",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75117,
+  "slug": "sadoer-mens-acne-patch-waterproof-invisible-36-patches",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 38145,
+  "slug": "skin-cafe-organic-extra-virgin-olive-oil",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 36368,
+  "slug": "stives-acne-control-oil-free-apricot-scrub-170ge",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 36365,
+  "slug": "stives-avocado-and-honey-soft-skin-scrub-170ge",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 36360,
+  "slug": "stives-fresh-skin-apricot-scrub-170ge",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 31919,
+  "slug": "technic-almond-24-false-nails-with-glue-gloss-purple",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 31925,
+  "slug": "technic-squareletto-24-false-nails-with-glue-rose-gold-glitter",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 60893,
+  "slug": "tonymoly-intense-care-gold-24k-snail-skin-care-special-set",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75498,
+  "slug": "trendy-beauties-liquid-matte-waterproof-lipstick-02",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75496,
+  "slug": "trendy-beauties-liquid-matte-waterproof-lipstick-06",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75488,
+  "slug": "trendy-beauties-liquid-matte-waterproof-lipstick-07",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75500,
+  "slug": "trendy-beauties-liquid-matte-waterproof-lipstick-10",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 75581,
+  "slug": "wet-n-wild-megalast-liquid-matte-lipstick-926b-berry-recognize",
+  "tier": "PARTIAL",
+  "score": 68,
+  "sales": 0
+ },
+ {
+  "product_id": 62324,
+  "slug": "aplb-kojic-acid-vitamin-c-ampoule-serum-40ml",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 62500,
+  "slug": "aplb-retinol-vitamin-c-vitamin-e-ampoule-serum-40ml",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 63103,
+  "slug": "belif-problem-solution-toner-pad-150ml-70pcs",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 63961,
+  "slug": "bellflower-hibiscus-anti-aging-gel-cream-60ml",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 63959,
+  "slug": "bellflower-idebenone-brightening-gel-toner-120ml",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 62342,
+  "slug": "benton-pha-peeling-toner-150ml",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 63605,
+  "slug": "dear-klairs-soft-airy-uv-essence-spf-50-pa-sun-50g",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 74484,
+  "slug": "good-molecules-niacinamide-brightening-toner-30ml",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 63299,
+  "slug": "haruharu-wonder-black-rice-pure-mineral-relief-daily-sunscreen-50ml",
+  "tier": "PARTIAL",
+  "score": 69,
+  "sales": 0
+ },
+ {
+  "product_id": 93030,
+  "slug": "isntree-hyaluronic-acid-moist-cream-100ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 2
+ },
+ {
+  "product_id": 62516,
+  "slug": "aplb-glutathione-niacinamide-body-wash-300ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 92924,
+  "slug": "bonajour-green-tea-water-toner-205ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 92922,
+  "slug": "bonajour-propolis-energy-toner-205ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62298,
+  "slug": "cnp-laboratory-greenery-calming-ampule-2-step-mask-set",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63107,
+  "slug": "cnp-laboratory-propolis-energy-active-ample-15ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63105,
+  "slug": "cnp-laboratory-tone-up-protection-sun-50ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 92876,
+  "slug": "cos-de-baha-m-a-peptide-cream-45ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62442,
+  "slug": "frudia-my-orchard-peach-body-wash-30g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62727,
+  "slug": "goodal-green-tangerine-vita-c-eye-gel-patch-60ea-72g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62773,
+  "slug": "haruharu-wonder-black-bamboo-daily-soothing-sun-shield-20g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63563,
+  "slug": "heimish-all-clean-mandarin-balm-5ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63783,
+  "slug": "im-from-fig-scrub-mask-31ml-mini",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 92866,
+  "slug": "im-from-mugwort-cream-50ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 93032,
+  "slug": "im-from-mugwort-essence-30ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63521,
+  "slug": "innisfree-jeju-volcanic-pore-clay-mask-100-ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63643,
+  "slug": "innisfree-volcanic-calming-pore-clay-mask-100ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 74577,
+  "slug": "insight-cream-blusher-01",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 74579,
+  "slug": "insight-cream-blusher-04-watermelon-popsicle",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 92906,
+  "slug": "isntree-green-tea-fresh-toner-200ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62981,
+  "slug": "isntree-hyaluronic-acid-watery-sun-gel-mini-10ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 93038,
+  "slug": "izeze-black-cumin-nsa-enrich-cream-50ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62272,
+  "slug": "ksecret-advanced-regenerating-eye-gel-patches-retinol-102g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62274,
+  "slug": "ksecret-collagen-boosting-secret-sleeping-mask-60ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62094,
+  "slug": "ksecret-seoul-1988-boosting-ball-collagen-100-35mg-x-7-capsules",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62096,
+  "slug": "ksecret-seoul-1988-glow-serum-niacinamide-15-yuja",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63525,
+  "slug": "laneige-lip-sleeping-mask-apple-lime-20g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63527,
+  "slug": "laneige-lip-sleeping-mask-grapefruit-20g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63587,
+  "slug": "laneige-water-sleeping-mask-15ml-lip-sleeping-mask-mini-berry-3g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63033,
+  "slug": "marymay-calendula-peptide-ageless-sleeping-mask-110g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62194,
+  "slug": "marymay-lemon-niacinamide-glow-wash-off-pack-30g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62192,
+  "slug": "marymay-vegan-cica-teatree-soothing-wash-off-pack-30g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63711,
+  "slug": "neutrogena-body-clear-body-wash-250ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62755,
+  "slug": "panoxyl-acne-foaming-wash-28g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62638,
+  "slug": "paulas-choice-6-mandelic-acid-2-lactic-acid-liquid-exfoliant-88ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62634,
+  "slug": "paulas-choice-clinical-niacinamide-20-treatment-20ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63797,
+  "slug": "rated-green-cold-brew-hibiscus-moisturizing-scalp-pack-200ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63803,
+  "slug": "rated-green-cold-brew-hibiscus-moisturizing-scalp-pack-50ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63799,
+  "slug": "rated-green-cold-brew-rosemary-balancing-scalp-pack-200ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63795,
+  "slug": "rated-green-cold-press-tamanu-oil-soothing-scalp-pack-200ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63809,
+  "slug": "rated-green-real-shea-protein-recharging-leave-in-treatment-150ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62927,
+  "slug": "round-lab-1025-dokdo-toner-birch-juice-moisturizing-sunscreen-set",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 34080,
+  "slug": "simple-kind-to-skin-cleansing-facial-wipes-25-wipes",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62378,
+  "slug": "skin-food-carrot-carotene-calming-water-pad-60-pads-250g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63607,
+  "slug": "some-by-mi-yuja-niacin-dark-spot-correcting-stick-10g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63765,
+  "slug": "tiam-blackhead-out-sheet-55ml",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62843,
+  "slug": "tirtir-mask-fit-red-cushion-17c-porcelain-mini-4-5g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 62845,
+  "slug": "tirtir-mask-fit-red-cushion-23n-sand-18g-refill",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63549,
+  "slug": "tocobo-glass-tinted-lip-balm-011-flush-cherry-3-5g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 63543,
+  "slug": "tocobo-glow-ritual-lip-balm-001-coral-water-3-5g",
+  "tier": "PARTIAL",
+  "score": 70,
+  "sales": 0
+ },
+ {
+  "product_id": 74100,
+  "slug": "aztec-secret-indian-healing-clay",
+  "tier": "PARTIAL",
+  "score": 71,
+  "sales": 0
+ },
+ {
+  "product_id": 74589,
+  "slug": "insight-pro-concealer-palette",
+  "tier": "PARTIAL",
+  "score": 71,
+  "sales": 0
+ },
+ {
+  "product_id": 61198,
+  "slug": "korean-red-ginseng-gold-capsules-120caps-red-boxed",
+  "tier": "PARTIAL",
+  "score": 71,
+  "sales": 0
+ },
+ {
+  "product_id": 74935,
+  "slug": "multifunction-makeup-storage-bag",
+  "tier": "PARTIAL",
+  "score": 71,
+  "sales": 0
+ },
+ {
+  "product_id": 75355,
+  "slug": "technic-matte-mega-bronze-palette",
+  "tier": "PARTIAL",
+  "score": 71,
+  "sales": 0
+ },
+ {
+  "product_id": 61455,
+  "slug": "vt-cosmetics-reedle-shot-500-facial-boosting-first-ampoule-8-pcs-pack-2816-ml",
+  "tier": "PARTIAL",
+  "score": 71,
+  "sales": 0
+ },
+ {
+  "product_id": 4061,
+  "slug": "skinfood-tomato-jelly-tint-lip-3-orange-tomato",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 2
+ },
+ {
+  "product_id": 26334,
+  "slug": "confume-argan-treatment-oil-120-ml-25-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 2887,
+  "slug": "innisfree-my-real-squeeze-mask-manuka-honey-20ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 36101,
+  "slug": "m-a-c-retro-matte-lipstick-relentlessly-red-3gm",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 37253,
+  "slug": "maybelline-fit-me-dewysmooth-foundation-ivory-115",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 36695,
+  "slug": "neutrogena-oil-free-pink-grapefruit-acne-wash-scrub-198ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 38068,
+  "slug": "palmers-skin-success-medicated-complexion-bar-100ge",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 58798,
+  "slug": "shiseido-tsubaki-premium-repair-hair-mask-180g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 62815,
+  "slug": "simple-kind-to-skin-refreshing-facial-gel-wash-150ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 2731,
+  "slug": "skinfood-rice-wash-off-face-mask-100g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 75253,
+  "slug": "skino-rose-scented-shower-gel-220ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 27111,
+  "slug": "welcos-body-phren-lemon-glass-shower-gel-732g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 27112,
+  "slug": "welcos-body-phren-shower-gel-oriental-rose-732g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 1
+ },
+ {
+  "product_id": 59897,
+  "slug": "aplb-glutathione-niacinamide-body-lotion-300ml-copy",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 62628,
+  "slug": "bath-body-works-body-wash-cloud-nine-295ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 26091,
+  "slug": "benton-lets-carrot-multi-oil-30ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61713,
+  "slug": "bi-es-berry-darling-eau-de-parfum-100-ml-ship",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60931,
+  "slug": "bi-es-desperado-eau-de-toilette-90-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61711,
+  "slug": "bi-es-viva-la-dolce-eau-de-parfum-100-ml-ship",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74122,
+  "slug": "bioaqua-avocado-moisturizing-sheet-mask-25g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74102,
+  "slug": "bioaqua-blueberry-moisturizing-facial-mask-25g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74126,
+  "slug": "bioaqua-blueberry-moisturizing-sheet-mask-25g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74112,
+  "slug": "bioaqua-green-tea-moisturizing-facial-mask-25g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74225,
+  "slug": "blaze-o-skin-shower-gel-bella-ciao-250ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74221,
+  "slug": "blaze-o-skin-shower-gel-fruity-fling-250ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36277,
+  "slug": "botanics-all-bright-purifying-face-scrub-75ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36183,
+  "slug": "clean-clear-blackhead-clearing-daily-scrub-150ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36189,
+  "slug": "clean-clear-morning-energy-daily-facial-scrub-150ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61774,
+  "slug": "daily-comma-eau-de-parfum-30-ml-vanta-wood",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61756,
+  "slug": "daily-comma-most-eau-de-parfum-30-ml-cotton-white",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61757,
+  "slug": "daily-comma-most-eau-de-parfum-30-ml-muguet-vanilla",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61758,
+  "slug": "daily-comma-most-eau-de-parfum-30-ml-musk-muhwagua",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61760,
+  "slug": "daily-comma-most-eau-de-parfum-30-ml-tender-paris",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74439,
+  "slug": "everly-matte-me-up-lip-liner-pencil-bare-1-5g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74447,
+  "slug": "everly-matte-me-up-lip-liner-pencil-mocha-brown-1-5g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74449,
+  "slug": "everly-matte-me-up-lip-liner-pencil-night-walker-1-5g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 62835,
+  "slug": "garnier-papaya-hair-food-3-in-1-hair-treatment-mask-400ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60532,
+  "slug": "grincelllabs-melazero-daily-whitening-ceram-50-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74486,
+  "slug": "groome-groome-eyebrow-and-facial-razor-pack-of-2pcs",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61258,
+  "slug": "happy-bath-natural-body-wash-900-g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 63391,
+  "slug": "heimish-dailism-smudge-stop-mascara-9g-curling",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 63205,
+  "slug": "heimish-dailism-smudge-stop-mascara-9g-volume",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 63389,
+  "slug": "heimish-dalism-liquid-lipstick-4g-02-burning-rose",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 63561,
+  "slug": "heimish-moringa-ceramide-pressed-setting-powder-5g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74510,
+  "slug": "hojo-luminius-high-sparkling-highlighter-02-10g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60685,
+  "slug": "holidays-premium-quality-collagen-white-tablet-60-g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60107,
+  "slug": "illiyoon-illiyoon-cica-acne-clear-body-wash-6-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74526,
+  "slug": "imagic-liquid-waterproof-eyeliner-pen-ey-306-2-5g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74536,
+  "slug": "imagic-waterproof-matte-lipstick-802-coral-4g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74534,
+  "slug": "imagic-waterproof-matte-lipstick-804-nude-4g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74538,
+  "slug": "imagic-waterproof-matte-lipstick-806-dusty-4g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60594,
+  "slug": "innisfree-aloe-revitalizing-soothing-gel-300-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 62020,
+  "slug": "julyme-damage-care-perfume-treatment-full-bloom-500ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74681,
+  "slug": "l-a-girl-pro-matte-liquid-foundation-glm715porcelain-30ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74739,
+  "slug": "laxzin-100-pure-cold-pressed-hexane-free-castor-oil-100ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61014,
+  "slug": "lebelage-collagen-greentea-moisture-skin-30-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60480,
+  "slug": "lipvive-sugar-balm-cool-mint-fresh-4-8g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74667,
+  "slug": "loreal-elvive-colour-protect-purple-revive-oil-100ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74673,
+  "slug": "loreal-paris-elvive-colour-protect-anti-brassiness-purple-conditioner",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74665,
+  "slug": "loreal-paris-men-expert-pure-carbon-anti-blackhead-daily-face-scrub-100ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74671,
+  "slug": "loreal-serie-expert-vitamino-color-resveratrol-professional-hair-mask-250g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 58418,
+  "slug": "lucido-l-argan-rich-oil-hair-treatment-mask-220g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36092,
+  "slug": "m-a-c-amplified-creme-lipstick-girl-about-town-3gm",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36093,
+  "slug": "m-a-c-amplified-lipstick-fusion-pink-3gm",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36066,
+  "slug": "m-a-c-amplified-lipstick-vegas-volt-3gm",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36119,
+  "slug": "m-a-c-matte-lipstick-candy-yum-yum-3-0-gm",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36819,
+  "slug": "m-a-c-pro-longwear-foundation-nw-22-30ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74804,
+  "slug": "mamaearth-charcoal-face-scrub-100ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 58448,
+  "slug": "mandom-lucido-ageing-care-milk-q10-for-men-100ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36171,
+  "slug": "maybelline-master-smoky-scorching-brown-0-5gm",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74835,
+  "slug": "maybelline-super-stay-matte-ink-liquid-lipstick-340-exhilarator-5ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74843,
+  "slug": "maybelline-super-stay-vinyl-ink-long-wear-liquid-lipstick-68-hypnotic-4-2-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74839,
+  "slug": "maybelline-super-stay-vinyl-ink-long-wear-liquid-lipstick-80-eccentric-4-2ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 26904,
+  "slug": "melasma-x-moringa-brightening-cool-soothing-gel-160ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61579,
+  "slug": "milk-baobab-baby-kids-facial-foam-300-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74865,
+  "slug": "minimalist-05-maleic-bond-repair-complex-hair-mask-200g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60972,
+  "slug": "missha-premium-cica-aloe-soothing-gel-300-ml-tube",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60621,
+  "slug": "nature-republic-real-nature-mask-sheet-23-ml-chamomile",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60617,
+  "slug": "nature-republic-real-nature-mask-sheet-23-ml-rose",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60615,
+  "slug": "nature-republic-real-nature-mask-sheet-23-ml-tomato",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36670,
+  "slug": "neutrogena-blackhead-eliminating-facial-scrub-150ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36679,
+  "slug": "neutrogena-clear-defend-facial-scrub-150ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 37591,
+  "slug": "nivea-men-active-energy-morning-fix-gel-50ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74961,
+  "slug": "ombre-eau-de-parfum-bali-trip-9ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74959,
+  "slug": "ombre-eau-de-parfum-blue-pearl-9ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74977,
+  "slug": "oporajita-hair-loss-revive-tonic-100ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61272,
+  "slug": "orion-hot-break-peanut-caramel-455-g-34-pieces",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61960,
+  "slug": "p-calm-cicalacto-exosome-45-sleeping-mask-50g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61962,
+  "slug": "p-calm-holy-basil-bubble-deep-mask-90g-set-dual-pore-brush",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 38313,
+  "slug": "palmers-coconut-oil-formula-coconut-oil-body-oil-150ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 74989,
+  "slug": "panam-pulp-rain-shower-gel-250ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60675,
+  "slug": "phytotree-glossy-lip-tint-7-5-g-amber-rouge-03",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60673,
+  "slug": "phytotree-glossy-lip-tint-7-5-g-ruby-glow-02",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60671,
+  "slug": "phytotree-glossy-lip-tint-7-5-g-violet-mystique-01",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61688,
+  "slug": "phytotree-radiance-foundation-50-ml-n21-natural-beige",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61691,
+  "slug": "phytotree-radiance-foundation-50-ml-n23-medium-beige",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60669,
+  "slug": "phytotree-twenty-four-hour-velvet-tint-5-5-g-05-brick-red-singal",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75005,
+  "slug": "pinkflash-lasting-matte-foundation-pf-f03-medium-peach-04-25g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75007,
+  "slug": "pinkflash-lasting-matte-foundation-pf-f03-vanilla-01-25g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75014,
+  "slug": "pinkflash-lasting-matte-foundation-pf-f03-warm-beige-03-25g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61738,
+  "slug": "plu-365-body-scrub-100g-cotton-musk",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61735,
+  "slug": "plu-365-body-scrub-100g-raspberry",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61610,
+  "slug": "plu-365-foot-scrub-herb-mint-100-g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60492,
+  "slug": "plu365-foot-scrub-herb-mint-100-g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 61137,
+  "slug": "raip-r2-no-wash-keratin-treatment-original-250ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60574,
+  "slug": "raip-white-willow-calming-acne-body-wash-500-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60482,
+  "slug": "ryo-rootgen-for-women-hair-loss-care-treatment-root-volumizing-100-ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75127,
+  "slug": "sadoer-blueberry-smooth-and-moisturizing-eye-mask-7-5g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 60905,
+  "slug": "samyang-buldak-hot-chicken-flavor-noodles-140-g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 35942,
+  "slug": "savlon-wet-wipes-80pcs",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75195,
+  "slug": "skin-cafe-coconut-oil-250ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75255,
+  "slug": "skino-100-pure-castor-oil-100ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75251,
+  "slug": "skino-strawberry-scented-shower-gel-220ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 4179,
+  "slug": "some-by-mi-bye-bye-blemish-vita-tox-brightening-bubble-120g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 27021,
+  "slug": "some-by-mi-snail-truecica-miracle-all-in-one-set-4pcs",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 36378,
+  "slug": "stives-nourish-smooth-oatmeal-scrub-mask-150ml",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75341,
+  "slug": "technic-colour-correcting-setting-powder-20g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 59072,
+  "slug": "tocobo-apple-dewy-fit-cushion-6-shades-15g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75510,
+  "slug": "tresemme-keratin-smooth-deep-smoothing-mask",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 35980,
+  "slug": "twinkle-baby-pant-diaper-large-48pcs",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 75573,
+  "slug": "w7-prime-magic-universal-face-primer-30g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 27058,
+  "slug": "welcos-body-phren-apple-cocktail-shower-gel-732g",
+  "tier": "PARTIAL",
+  "score": 72,
+  "sales": 0
+ },
+ {
+  "product_id": 62648,
+  "slug": "vt-cosmetics-mild-reedle-shot-50-50ml",
+  "tier": "PARTIAL",
+  "score": 73,
+  "sales": 0
+ },
+ {
+  "product_id": 58444,
+  "slug": "harada-shizuoka-matcha-powder-100g",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 4
+ },
+ {
+  "product_id": 59341,
+  "slug": "christian-dean-secret-tone-up-sun-cream-70ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 2
+ },
+ {
+  "product_id": 63953,
+  "slug": "purito-seoul-oat-in-calming-gel-cream-100ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 2
+ },
+ {
+  "product_id": 62997,
+  "slug": "shiseido-fino-premium-touch-essence-hair-mask-230g",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 2
+ },
+ {
+  "product_id": 62394,
+  "slug": "romnd-juicy-lasting-tint-25-bare-grape",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 1
+ },
+ {
+  "product_id": 4089,
+  "slug": "ryo-hair-loss-care-shampoo-for-oily-scalp-400ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 1
+ },
+ {
+  "product_id": 62074,
+  "slug": "aplb-azelaic-acid-peptide-ampoule-serum-40ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62743,
+  "slug": "bath-and-body-works-tropidelic-fine-fragrance-mist-236ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62616,
+  "slug": "bath-and-body-works-waikiki-beach-coconut-fine-fragrance-mist-75ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63101,
+  "slug": "belif-witch-hazel-herbal-extract-toner-200ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62596,
+  "slug": "bellflower-alpha-arbutin-cream-for-brightening-30ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63401,
+  "slug": "benton-deluxe-skin-fit-mineral-sun-cream-12ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62220,
+  "slug": "benton-snail-bee-high-content-starter-kit",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63045,
+  "slug": "bonajour-bio-active-resurrection-plant-essence-50ml-night-cream-80ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62811,
+  "slug": "bonajour-retichinol-power-boosting-serum-30ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61932,
+  "slug": "bringgreen-tea-tree-cica-soothing-toner-250ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61906,
+  "slug": "celimax-derma-nature-fresh-blackhead-jojoba-cleansing-oil-150ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61884,
+  "slug": "celimax-derma-nature-fresh-blackhead-jojoba-cleansing-oil-20ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61888,
+  "slug": "celimax-pore-dark-spot-brightening-kit",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61836,
+  "slug": "cetaphil-gentle-exfoliating-sa-cleanser-236ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62376,
+  "slug": "cos-de-baha-vitamin-c-facial-serum-with-msm-vm-30ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62228,
+  "slug": "eqqualberry-bakuchiol-plumping-capsule-cream-50ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62138,
+  "slug": "eqqualberry-collagen-glow-up-gel-toner-pads-60pads",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61814,
+  "slug": "eqqualberry-nad-peptide-boosting-serum-30ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62763,
+  "slug": "etude-dear-darling-water-tint-05-grape-ade",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62825,
+  "slug": "farm-stay-citrus-yuja-vitalizing-ampoule-250ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62827,
+  "slug": "farm-stay-citrus-yuzu-vitalizing-foam-cleansing-100ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62781,
+  "slug": "goodal-green-tangerine-brightening-duo",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63151,
+  "slug": "goodal-vegan-rice-milk-moisturizing-cream-70ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61854,
+  "slug": "haruharu-wonder-black-bamboo-top-to-toe-spf-veil-spf50-pa-100ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63929,
+  "slug": "heimish-all-clean-low-ph-balancing-vegan-toner-30ml-mini",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63515,
+  "slug": "heimish-matcha-biome-oil-free-calming-gel-moisturizer-5ml-mini",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63503,
+  "slug": "heimish-moringa-creamide-bb-cream-30g-21c-light-nude",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63495,
+  "slug": "heimish-moringa-creamide-bb-cream-30g-23c-nude",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63499,
+  "slug": "heimish-moringa-creamide-bb-cream-30g-25n-medium",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62999,
+  "slug": "heimish-sheet-mask-buy-5-get-5-free",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63455,
+  "slug": "heimish-valentine-special-gift-set",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62154,
+  "slug": "house-of-hur-moist-ampoule-blusher-02-deep-plum-10ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62146,
+  "slug": "house-of-hur-moist-ampoule-blusher-06-cherry-blossom-10ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63667,
+  "slug": "im-from-mugwort-spot-gel-15ml-im-from-fig-boosting-essence-30ml-free",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62939,
+  "slug": "innisfree-black-tea-youth-enhancing-treatment-essence-25ml-mini",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63925,
+  "slug": "iunik-centella-mini-set",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62684,
+  "slug": "laneige-water-bank-blue-hyaluronic-cleansing-oil-mini-25ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61395,
+  "slug": "laneige-water-bank-blue-hyaluronic-serum-10-ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63093,
+  "slug": "marymay-idebenone-blackberry-complex-intensive-total-care-cream-70g-2",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63099,
+  "slug": "marymay-tranexamic-acidglutathion-eye-cream-12g-mini",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63173,
+  "slug": "mise-en-scene-perfect-super-rich-serum-conditioner-680ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62857,
+  "slug": "missha-time-revolution-night-repair-ampoule-cream-5x-50ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63699,
+  "slug": "neutrogena-oil-free-acne-wash-pink-grapefruit-facial-cleanser-269ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62308,
+  "slug": "nine-less-ever-youth-dual-effect-eye-cream-20ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62582,
+  "slug": "nineless-mela-pro-rice-txa-toner-200ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62580,
+  "slug": "nineless-mela-pro-tranexamic-acid-sun-screen-face-and-body-sun-protection-spf-50-pa-100ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61719,
+  "slug": "oriox-aroma-perfume-mist-15ml-flower-soap",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62108,
+  "slug": "purito-wonder-releaf-centella-bb-cream-spf30-pa-13-neutral-ivory-30ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63453,
+  "slug": "purito-wonder-releaf-centella-toner-unscented-30ml-mini",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62869,
+  "slug": "pyunkang-yul-low-ph-mild-body-wash-500ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62348,
+  "slug": "round-lab-birch-juice-mild-up-sunscreen-50ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63193,
+  "slug": "rovectin-clean-forever-young-biome-ampoule-50ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 61996,
+  "slug": "shiseido-fino-premium-touch-conditioner-550ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62258,
+  "slug": "simplyo-biotin-shampoo-for-hair-loss-green-breeze-500ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62260,
+  "slug": "simplyo-protein-booster-hair-treatment-green-breeze-100ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62759,
+  "slug": "some-by-mi-aha-bha-pha-30-days-miracle-toner-30-ml-mini",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63539,
+  "slug": "tocobo-powder-cream-lip-balm-032-rose-petal-3-5g",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63537,
+  "slug": "tocobo-powder-cream-lip-balm-033-carrot-cake-3-5g",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63267,
+  "slug": "torriden-dive-in-low-molecule-hyaluronic-acid-soothing-cream-100ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 62875,
+  "slug": "torriden-dive-in-watery-moisture-sun-cream-60ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ },
+ {
+  "product_id": 63091,
+  "slug": "torriden-solid-in-ceramide-lip-essence-11ml",
+  "tier": "PARTIAL",
+  "score": 74,
+  "sales": 0
+ }
+]
