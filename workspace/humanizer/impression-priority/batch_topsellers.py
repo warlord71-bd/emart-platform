@@ -38,18 +38,29 @@ REPHRASE = [
 def gmc_safe(html: str) -> str:
     for pat, rep in REPHRASE:
         html = re.sub(pat, rep, html, flags=re.I)
+    # Residue reduction: collapse spaced em/en-dashes ( — ) that trip the
+    # >2.2/100w em-dash density gate. Only spaced separators are rewritten so
+    # ranged/compound uses (e.g. "1–2 days") are preserved.
+    html = re.sub(r'\s+[—–]\s+', ', ', html)
     return html
 
+# 2026-07-01 content-standard gate (encodes the full humanizer audit standard):
+# GMC-clean · >=4 H3 · >=1 list · 500-750 words · em-dash density <=2.2/100w.
 def validate(html: str):
     text = BeautifulSoup(html, 'html.parser').get_text(' ', strip=True)
     words = len(text.split())
     h3 = html.count('<h3')
+    has_list = ('<ul' in html) or ('<ol' in html)
+    emdash = text.count('—') + text.count('–')
+    dash_density = (emdash / words * 100) if words else 0
     leftover = [b for b in BANNED if re.search(r'\b'+re.escape(b), text, re.I)]
-    if leftover:           return False, f"banned:{leftover}"
-    if h3 < 4:             return False, f"only {h3} H3"
-    if words < 450:        return False, f"short:{words}w"
-    if words > 1200:       return False, f"long:{words}w"
-    return True, f"{words}w/{h3}h3"
+    if leftover:              return False, f"banned:{leftover}"
+    if h3 < 4:                return False, f"only {h3} H3"
+    if not has_list:          return False, "no <ul>/<ol> list"
+    if words < 500:           return False, f"short:{words}w"
+    if words > 780:           return False, f"long:{words}w"
+    if dash_density > 2.2:    return False, f"emdash {dash_density:.1f}/100w"
+    return True, f"{words}w/{h3}h3/{dash_density:.1f}dash"
 
 def log(msg):
     line = f"{datetime.now().strftime('%H:%M:%S')} {msg}"

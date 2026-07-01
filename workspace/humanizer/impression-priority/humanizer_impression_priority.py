@@ -34,8 +34,22 @@ import mysql.connector
 
 # ── Config ──────────────────────────────────────────────────────────────────
 
-API_KEY = os.environ.get("OPENROUTER_API_KEY","")
-MODEL   = "deepseek/deepseek-v4-flash"
+def _load_openrouter_key() -> str:
+    # Prefer env (Hermes/OpenClaw pass it explicitly); fall back to the shared
+    # OpenClaw credentials file so batch runs work without extra setup.
+    k = os.environ.get("OPENROUTER_API_KEY", "")
+    if k:
+        return k
+    try:
+        import json
+        cred = "/root/.openclaw/credentials/openrouter_default.json"
+        return json.load(open(cred)).get("apiKey", "")
+    except Exception:
+        return ""
+
+API_KEY = _load_openrouter_key()
+# Model is env-overridable so Hermes/OpenClaw can point this at any slug.
+MODEL   = os.environ.get("OPENROUTER_MODEL", "deepseek/deepseek-v4-flash")
 DB_CFG  = dict(host="localhost", database="emart_live",
                user="emart_user", password=os.environ.get("EMART_DB_PASSWORD",""))
 PREFIX  = "wp4h_"
