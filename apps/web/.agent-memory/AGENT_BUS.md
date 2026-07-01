@@ -16,6 +16,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
+| Codex | 2026-07-01 | Clean generated model-shot/owner-quality residue and stop generated assets from recurring as git dirt | `workspace/content-orchestrator/.gitignore`, `workspace/content-orchestrator/generated-assets/`, `workspace/content-orchestrator/model_shot.py`, `workspace/ledgers/action-events.jsonl`, session/task notes |
 
 ---
 

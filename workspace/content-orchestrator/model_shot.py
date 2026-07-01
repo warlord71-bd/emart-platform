@@ -17,15 +17,18 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
+from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 WORKSPACE = ROOT.parent
 REQUESTS = ROOT / "generated-assets" / "model-shots" / "requests"
 HOLDING = ROOT / "generated-assets" / "model-shots" / "holding"
+EXTERNAL = ROOT / "generated-assets" / "model-shots" / "external"
 META = ROOT / "generated-assets" / "model-shots" / "metadata"
 DEFAULT_PERSONA_IMAGE = ROOT / "video-engine" / "personas" / "emart-model" / "clean-portrait.png"
 
@@ -150,6 +153,22 @@ def emit_request(
         request["fulfilled_at"] = datetime.now().isoformat(timespec="seconds")
         request["force_render"] = bool(force)
 
+    if getattr(emit_request, "_render_external_free", False) and ok and (force or not out_img.exists()):
+        render_external_free_composite(
+            product=product,
+            product_image=str(product_image),
+            out=str(out_img),
+            persona=persona,
+            seed=getattr(emit_request, "_external_seed", None),
+            prompt_note=getattr(emit_request, "_external_prompt_note", ""),
+        )
+        request["status"] = "fulfilled"
+        request["fulfilled_by"] = "pollinations_free_plus_exact_product_composite"
+        request["fulfilled_at"] = datetime.now().isoformat(timespec="seconds")
+        request["force_render"] = bool(force)
+        if "pollinations_free_plus_exact_product_composite" not in request["fulfillment_modes"]:
+            request["fulfillment_modes"].append("pollinations_free_plus_exact_product_composite")
+
     req_path.write_text(json.dumps(request, ensure_ascii=False, indent=2))
     meta = {
         "asset": str(out_img),
@@ -203,6 +222,134 @@ def render_system_composite(*, product: str, product_image: str, out: str, label
     return out
 
 
+def _open_image(value: str):
+    from PIL import Image
+    import io
+
+    if is_url(value):
+        req = Request(value, headers={"User-Agent": "EmartModelShot/1.0"})
+        with urlopen(req, timeout=90) as resp:
+            return Image.open(io.BytesIO(resp.read())).convert("RGBA")
+    return Image.open(value).convert("RGBA")
+
+
+def _cover(img, size: tuple[int, int]):
+    from PIL import Image
+
+    w, h = img.size
+    tw, th = size
+    scale = max(tw / w, th / h)
+    nw, nh = int(w * scale), int(h * scale)
+    img = img.resize((nw, nh), Image.Resampling.LANCZOS)
+    left = max(0, (nw - tw) // 2)
+    top = max(0, (nh - th) // 2)
+    return img.crop((left, top, left + tw, top + th))
+
+
+def _pollinations_prompt(product: str, persona: str, prompt_note: str = "") -> str:
+    look = PERSONA_LOOK.get(persona, PERSONA_LOOK["nusrat"])
+    return (
+        f"Photorealistic vertical 9:16 beauty ad portrait, {look}, clean warm studio lighting, "
+        "modest fully covered neckline and sleeves, upper body composition, one hand open near "
+        "the right side of the frame in a natural presentation pose, empty hand only, leave clean "
+        "space near the hand for the real product layer, no product, no bottle, "
+        "no text, no logo, no watermark, no poster graphics, natural fingers, elegant skincare ad. "
+        f"Product to be composited later by system: {product}. {prompt_note}".strip()
+    )
+
+
+def _fetch_pollinations_base(prompt: str, out: Path, seed: int | None = None) -> Path:
+    EXTERNAL.mkdir(parents=True, exist_ok=True)
+    qs = f"width=1080&height=1920&model=flux&nologo=true"
+    if seed is not None:
+        qs += f"&seed={int(seed)}"
+    url = f"https://image.pollinations.ai/prompt/{quote(prompt)}?{qs}"
+    try:
+        req = Request(url, headers={"User-Agent": "EmartModelShot/1.0"})
+        with urlopen(req, timeout=120) as resp:
+            data = resp.read()
+        out.write_bytes(data)
+    except Exception as exc:
+        curl = subprocess.run(
+            ["curl", "-L", "--fail", "--max-time", "180", "-A", "EmartModelShot/1.0", "-o", str(out), url],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if curl.returncode != 0 or not out.exists() or out.stat().st_size < 1024:
+            raise RuntimeError(
+                f"pollinations_fetch_failed: urllib={exc!r}; curl={curl.stderr.strip()}"
+            ) from exc
+    return out
+
+
+def render_external_free_composite(
+    *,
+    product: str,
+    product_image: str,
+    out: str,
+    persona: str = "nusrat",
+    seed: int | None = None,
+    prompt_note: str = "",
+) -> str:
+    """Free external lane: generate human/background outside, keep product identity local.
+
+    Pollinations provides a no-key model/person pose. The exact real product image is then
+    composited locally, so the outside model never invents packaging or label text.
+    """
+    from PIL import Image, ImageDraw, ImageFilter
+
+    key = key_for(product, persona)
+    raw_path = EXTERNAL / f"{key}-pollinations-base.jpg"
+    prompt = _pollinations_prompt(product, persona, prompt_note)
+    _fetch_pollinations_base(prompt, raw_path, seed=seed)
+
+    base = _cover(_open_image(str(raw_path)).convert("RGBA"), (1080, 1920))
+    prod = _open_image(product_image)
+    target_h = 650
+    target_w = round(prod.width * target_h / prod.height)
+    prod = prod.resize((target_w, target_h), Image.Resampling.LANCZOS)
+    px, py = 675, 760
+
+    veil = Image.new("RGBA", base.size, (0, 0, 0, 0))
+    vd = ImageDraw.Draw(veil)
+    vd.ellipse((595, 575, 1115, 1495), fill=(248, 228, 206, 58))
+    veil = veil.filter(ImageFilter.GaussianBlur(30))
+    base.alpha_composite(veil)
+
+    shadow_mask = prod.split()[-1].filter(ImageFilter.GaussianBlur(18))
+    shadow = Image.new("RGBA", prod.size, (0, 0, 0, 90))
+    shadow.putalpha(shadow_mask)
+    base.alpha_composite(shadow, (px + 20, py + 24))
+
+    plate = Image.new("RGBA", base.size, (0, 0, 0, 0))
+    pd = ImageDraw.Draw(plate)
+    pd.rounded_rectangle((px - 34, py + 500, px + target_w + 34, py + 618), radius=42, fill=(255, 244, 238, 118))
+    plate = plate.filter(ImageFilter.GaussianBlur(1.2))
+    base.alpha_composite(plate)
+    base.alpha_composite(prod, (px, py))
+
+    result = Path(out)
+    result.parent.mkdir(parents=True, exist_ok=True)
+    base.convert("RGB").save(result, "PNG", optimize=True)
+    sidecar = {
+        "provider": "pollinations_free_plus_exact_product_composite",
+        "composition_mode": "model_presenting_exact_product",
+        "prompt": prompt,
+        "base_image": str(raw_path),
+        "product_image_reference": product_image,
+        "product_layer_owned_by": "emart_local_compositor",
+        "checks": {
+            "outside_provider_may_generate_model_only": True,
+            "outside_provider_may_generate_product_label": False,
+            "woocommerce_write": False,
+            "meta_publish": False,
+        },
+    }
+    (result.with_suffix(".provider.json")).write_text(json.dumps(sidecar, ensure_ascii=False, indent=2))
+    return str(result)
+
+
 def list_pending() -> list[dict]:
     REQUESTS.mkdir(parents=True, exist_ok=True)
     pending = []
@@ -243,6 +390,10 @@ def main() -> None:
     ap.add_argument("--list", action="store_true", help="print pending requests")
     ap.add_argument("--status", action="store_true", help="print request counts")
     ap.add_argument("--render-composite", action="store_true", help="render system composite immediately")
+    ap.add_argument("--render-external-free", action="store_true",
+                    help="use no-key Pollinations for model/background, then locally composite exact product")
+    ap.add_argument("--external-seed", type=int, default=None)
+    ap.add_argument("--external-prompt-note", default="")
     ap.add_argument("--force", action="store_true", help="overwrite an existing output when rendering")
     ap.add_argument("--product")
     ap.add_argument("--product-id", type=int)
@@ -256,6 +407,9 @@ def main() -> None:
     if args.emit:
         if not args.product:
             ap.error("--emit needs --product")
+        emit_request._render_external_free = bool(args.render_external_free)
+        emit_request._external_seed = args.external_seed
+        emit_request._external_prompt_note = args.external_prompt_note
         result = emit_request(
             product=args.product,
             persona=args.persona,
