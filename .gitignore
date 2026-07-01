@@ -1,5 +1,7 @@
-# Web artifacts
+# Web artifacts (generated previews/reports/output) — NOT hand-authored source templates
 *.html
+!workspace/hermes/templates/*.html
+!workspace/content-orchestrator/scripts/active/social-templates/*.html
 
 # Build outputs
 dist/
@@ -22,6 +24,7 @@ node_modules/
 .env
 .env.local
 *.env.*
+!*.env.example
 .deployed-rev
 
 # OS generated files
@@ -278,7 +281,6 @@ AGENTS.*.md
 TASK_SUMMARY.md
 apps/web/MEMORY.md
 apps/web/SESSION.md
-apps/web/SESSION-LOG.md
 apps/web/DECISIONS.md
 apps/web/ENV.md
 apps/web/FILES-LOCKED.md
@@ -301,6 +303,9 @@ apps/web/public/audit/
 apps/web/public/images/payment-methods.original-black-bg.png
 # Generated social campaign media; keep source/review data in workspace, not bulky public assets.
 apps/web/public/images/social/20*/
+# Dated one-off social-calendar samples/references (not durable reusable assets —
+# those live in video-engine/personas/, which stays tracked).
+workspace/content-orchestrator/social-calendar/20*/
 apps_web_backup/
 apps/web_backup/
 .codex

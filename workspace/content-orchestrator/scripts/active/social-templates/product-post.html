@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bg {
+    position: absolute;
+    inset: 0;
+    background: {{BG_GRADIENT}};
+  }
+
+  .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.5) 100%);
+  }
+
+  .brand-logo {
+    position: absolute;
+    top: 40px;
+    left: 45px;
+    font-size: 28px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 1px 2px rgba(0,0,0,0.9);
+  }
+
+  .product-info-right {
+    position: absolute;
+    top: 40px;
+    right: 45px;
+    text-align: right;
+    max-width: 420px;
+  }
+
+  .product-brand-name {
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  .product-highlight {
+    font-size: 72px;
+    font-weight: 900;
+    color: #F5D060;
+    line-height: 1.05;
+    margin-bottom: 10px;
+    text-shadow: 0 3px 12px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.8);
+    text-transform: uppercase;
+  }
+
+  .product-sub {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  .size-badge {
+    display: inline-block;
+    border: 2px solid white;
+    padding: 4px 16px;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 1px;
+  }
+
+  .product-image-area {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -46%);
+    width: 760px;
+    height: 760px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.45)) drop-shadow(0 10px 25px rgba(0,0,0,0.25));
+  }
+
+  .product-image-area img {
+    max-width: 720px;
+    max-height: 740px;
+    object-fit: contain;
+  }
+
+  .price-area {
+    position: absolute;
+    bottom: 80px;
+    left: 45px;
+  }
+
+  .old-price {
+    font-size: 36px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.6);
+    text-decoration: line-through;
+    text-decoration-color: #e53e3e;
+    text-decoration-thickness: 3px;
+    margin-bottom: 0;
+  }
+
+  .new-price {
+    font-size: 96px;
+    font-weight: 900;
+    color: #F5D060;
+    line-height: 1;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.8);
+  }
+
+  .taka-label {
+    font-size: 40px;
+    font-weight: 800;
+    color: #F5D060;
+    letter-spacing: 2px;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  }
+
+  .save-badge {
+    display: inline-block;
+    background: #F5D060;
+    color: #1a1a2e;
+    padding: 6px 18px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-top: 8px;
+  }
+
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(6px);
+    padding: 16px 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .bottom-left {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .bottom-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .bottom-url {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+  }
+
+  .bottom-cod {
+    font-size: 14px;
+    color: #F5D060;
+    font-weight: 600;
+  }
+
+  .origin-flag {
+    position: absolute;
+    bottom: 85px;
+    right: 45px;
+    font-size: 18px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+
+  .concern-pills {
+    position: absolute;
+    bottom: 130px;
+    right: 45px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: 350px;
+  }
+
+  .concern-pill {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="bg-overlay"></div>
+
+  <div class="brand-logo">EMART</div>
+
+  <div class="product-info-right">
+    <div class="product-brand-name">{{BRAND}}</div>
+    <div class="product-highlight">{{HIGHLIGHT_TEXT}}</div>
+    <div class="product-sub">{{SUB_TEXT}}</div>
+    <div class="size-badge">{{SIZE}}</div>
+  </div>
+
+  <div class="product-image-area">
+    <img src="{{IMAGE_URL}}" alt="{{PRODUCT_NAME}}">
+  </div>
+
+  <div class="price-area">
+    {{OLD_PRICE_HTML}}
+    <div class="new-price">{{PRICE}}</div>
+    <div class="taka-label">TAKA</div>
+    {{SAVE_BADGE_HTML}}
+  </div>
+
+  <div class="concern-pills">
+    {{CONCERN_CHIPS}}
+  </div>
+
+  <div class="origin-flag">{{ORIGIN_FLAG}} {{ORIGIN}}</div>
+
+  <div class="bottom-bar">
+    <div class="bottom-left">{{BOTTOM_NOTE}}</div>
+    <div class="bottom-right">
+      <span class="bottom-url">e-mart.com.bd</span>
+      <span class="bottom-cod">COD Available</span>
+    </div>
+  </div>
+</body>
+</html>

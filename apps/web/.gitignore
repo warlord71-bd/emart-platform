@@ -6,8 +6,9 @@ gsc-oauth-token.json
 *-oauth-token.json
 *-service-account.json
 
-# Generated design system previews (DesignSync)
-design-system/
+# Generated design system previews (DesignSync) — anchored to this dir only,
+# NOT src/lib/design-system/ (real source: colors.ts, typography.ts, index.ts)
+/design-system/
 
 # Video-engine generated reels (runtime artifacts, never commit)
 /public/videos/
