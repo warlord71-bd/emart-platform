@@ -16,7 +16,6 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 <!-- Format: | Agent | Started | Task | Files touching | -->
 | Agent | Started | Task | Files |
 |---|---|---|---|
-| Codex | 2026-07-01 | Clean generated model-shot/owner-quality residue and stop generated assets from recurring as git dirt | `workspace/content-orchestrator/.gitignore`, `workspace/content-orchestrator/generated-assets/`, `workspace/content-orchestrator/model_shot.py`, `workspace/ledgers/action-events.jsonl`, session/task notes |
 
 ---
 
@@ -24,6 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-07-01 | Cleaned the generated model-shot residue that was left out of the CO commit: added model-shot/owner-quality generated-output ignores, untracked generated request/metadata/holding outputs, moved current generated artifacts to `/root/.attic-2026-07-01/emart-generated-model-shot-residue/`, committed the real `model_shot.py` source change and canonical ledger append, and verified `model_shot.py` compile/status. | `31711bd` |
 | Codex | 2026-07-01 | Committed CO-9/CO-10 after re-running the logged verification suite; confirmed generated model-shot/owner-quality assets plus `model_shot.py` and the action ledger are separate active/generated state and left them unstaged. Closed INFRA-7 in OpenClaw skills: `wp_auto_publisher.py` confirmed dead/superseded by draft-gated `blog_generator.py`, and the humanizer skill now reads `EMART_DB_PASSWORD` from env/`.env.local` instead of embedding a plaintext literal. | `dd18759`, `5e2a2f0` |
 | Claude | 2026-07-01 | **OpenClaw skill path audit** — found my earlier 360° audit missed `/root/.openclaw/skills/` entirely (outside the git repo, a third agent's own files). Fixed the same stale `/var/www/emart-platform/workspace/scripts/active/...` bug in `emart-competitor-prices`, `emart-humanizer`, `emart-meta-gen` SKILL.md files, and the matching doc in `process-manifest.md`. Logged 2 unfixed findings as `INFRA-7`: `emart-auto-publisher/SKILL.md` references a script (`wp_auto_publisher.py`) that doesn't exist anywhere, and `emart-humanizer/SKILL.md` has a plaintext DB password hardcoded — both need an owner call, not a guess. Did not touch any of Codex's in-progress CO-9/CO-10 files. | `412beac` |
 | Codex | 2026-07-01 | Audited Content Orchestrator architecture/logic tree after CO-9 and fixed remaining contract drift: true owner/content/campaign gate propagation into content-pack social/video jobs, static-only frame contracts, Hermes reel QA readback, remote product-image URL handoff, and generated Meta scheduler fallbacks away from the retired `/var/www/.../workspace` tree. Added architecture audit note and CO-10 task-board closeout. Verified py_compile, node syntax, video quality-gate tests, Social Engine tests, in-memory pack smoke, and dry-run owner-gated dispatch. No publish/deploy/Woo writes. | `dd18759` |
