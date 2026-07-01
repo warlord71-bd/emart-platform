@@ -6,7 +6,8 @@ Written for Claude, Codex, GPT-style agents, and human developers. Follow as pro
 - **Next.js 14, React 18, Tailwind 3, TypeScript** — stack frozen until 2026-07-03
 - App root: `apps/web` | Build: `cd apps/web && npm run build`
 - PM2 process: `emartweb` | Live: `https://e-mart.com.bd`
-- Local: `/root/emart-platform` | VPS runtime: `/var/www/emart-platform`
+- Local: `/root/emart-platform` (full source, git) | VPS runtime: `/var/www/emart-platform` (git-free deploy target — `apps/web` + `apps/presence-server` ONLY, since 2026-07-01)
+- **All `workspace/` automation (crons, PM2 jobs, scripts) runs exclusively from `/root/emart-platform/workspace`.** Never create or expect a `workspace/` copy on the VPS — that duplicate tree was the actual cause of recurring "VPS is behind" drift and was retired for good.
 - Repo: `origin/main` — push ONLY after live smoke test passes
 - WC API key: key_id `50` ("Emart BFF Live auto-recovered 2026-06-07 17:45") in `.env.local`
 - Currency: ৳ BDT | Payments: COD, bKash, Nagad | Market: mobile-first Bangladesh

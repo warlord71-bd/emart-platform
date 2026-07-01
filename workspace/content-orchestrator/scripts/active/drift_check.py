@@ -2,9 +2,11 @@
 """Read-only Local/VPS/origin drift report for Emart.
 
 This intentionally treats /root/emart-platform as the source repo and
-/var/www/emart-platform as the runtime deploy tree. Runtime git metadata is
-advisory only; the deploy marker written by deploy.sh is the live revision
-source after smoke tests pass.
+/var/www/emart-platform as a git-free runtime/deploy target (since
+2026-07-01) holding ONLY apps/web and apps/presence-server. VPS has no .git
+of its own; the deploy marker written by deploy.sh is the live revision
+source after smoke tests pass. Every cron job, PM2 process, and automation
+script runs from /root/emart-platform/workspace — never from a VPS copy.
 """
 
 from __future__ import annotations
@@ -20,43 +22,22 @@ from pathlib import Path
 
 GENERATED_PREFIXES = (
     "apps/web/public/images/social/",
-    "workspace/audit/archive/",
-    "workspace/content-orchestrator/social-engine/history/",
-    "workspace/content-orchestrator/social-engine/performance/",
-    "workspace/content-orchestrator/social-engine/output/",
-    "workspace/content-orchestrator/video-engine/jobs/",
-    "workspace/content-orchestrator/video-engine/output/",
-    "workspace/social-engine/history/",
 )
 
 DOC_PREFIXES = (
     "apps/web/.agent-memory/",
     "apps/web/SESSION-LOG.md",
-    "workspace/TASKS.md",
-    "workspace/audit/README.md",
-    "workspace/audit/archive/README.md",
 )
 
 SOURCE_PREFIXES = (
     "apps/web/src/",
     "apps/web/next.config.js",
-    "deploy.sh",
-    "ecosystem.config.cjs",
-    "workspace/content-orchestrator/scripts/active/",
-    "workspace/content-orchestrator/video-engine/",
-    "workspace/humanizer/engine/",
-    "services/",
 )
 
 KEY_FILES = (
     "apps/web/next.config.js",
     "apps/web/src/lib/category-navigation.ts",
     "apps/web/src/lib/sitemapEntries.ts",
-    "deploy.sh",
-    "ecosystem.config.cjs",
-    "workspace/humanizer/engine/humanizer_engine.py",
-    "workspace/humanizer/engine/residue_lint.py",
-    "workspace/humanizer/engine/run_detached.sh",
 )
 
 
@@ -107,6 +88,10 @@ def bucket(path: str) -> str:
 
 
 def print_repo(label: str, path: Path) -> None:
+    if not (path / ".git").exists():
+        print(f"{label}: {path}")
+        print("  git: none (git-free runtime tree, by design)")
+        return
     branch = git(path, "rev-parse", "--abbrev-ref", "HEAD")
     head = git(path, "rev-parse", "--short", "HEAD")
     status = git(path, "status", "--short", "--branch")
@@ -129,6 +114,9 @@ def print_deployed_rev(vps: Path) -> None:
 
 
 def print_vps_dirty(vps: Path) -> int:
+    if not (vps / ".git").exists():
+        print("runtime tree has no .git — nothing to classify (git-free by design)")
+        return 0
     raw = git(vps, "status", "--short")
     paths = parse_status(raw)
     counts: dict[str, int] = {}

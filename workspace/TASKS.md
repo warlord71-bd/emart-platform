@@ -1,5 +1,5 @@
 # Emart Task Board
-Last updated: 2026-07-01 (Scheduled revised July 1 mixed Bangla-English 18-post FB+IG campaign after owner approval. Social Engine QA passes with 0 errors/2 owner-requested Celimax repeat warnings; runtime assets synced; FB+IG PM2 workers online.)
+Last updated: 2026-07-01 (VPS runtime tree permanently fixed: `/var/www/emart-platform` is now git-free, apps/web + presence-server ONLY — the duplicate `workspace/` copy that caused every recurring "VPS is behind" drift audit is retired for good. See SESSION-LOG.md 2026-07-01 · Claude entry for full detail.)
 Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automation OK)
 **[C]** Claude · **[X]** Codex · **[O]** Owner · **[A]** Auto/OpenClaw
 
@@ -49,6 +49,7 @@ Freeze: 2026-05-22 → 2026-07-03 (structural/nav only — content, SEO, automat
 |---|---|---|---|
 | INFRA-1 | **Hermes subdomain + SSL.** Add DNS A record `hermes.e-mart.com.bd → 5.189.188.229` at your DNS provider, then run `certbot --nginx -d hermes.e-mart.com.bd`. Nginx vhost `/etc/nginx/sites-enabled/hermes-domain` is already in place and listening on port 80 — certbot just needs to issue the cert and add the SSL stanza. After this, Hermes will be at `https://hermes.e-mart.com.bd` (same as OpenClaw at `https://agent.e-mart.com.bd`). | [O]→[C] | 🔲 waiting on DNS A record |
 | INFRA-2 | **`GEMINI_API_KEY` corrupted in `/root/emart-platform/apps/web/.env.local`** (line 66): value is a 39-char key duplicated into 78 chars with no separator (`AIzaSy...q9c` + itself again) — a copy-paste bug, not a valid key. `/var/www`'s `.env.local` doesn't have this key at all. Used only by the video engine's optional Gemini fallback (`script_gen.py`, `reel_qa_gemini.py`) — not core to checkout/daily ops, so left as-is per owner instruction 2026-07-01. Owner to provide the correct single key when ready; until then the Gemini fallback path will fail closed if invoked. | [O] | 🔲 known issue, deprioritized |
+| INFRA-3 | **VPS runtime tree permanently fixed — no more duplicate `workspace/` on VPS.** Root cause of every recurring "VPS git is N commits behind" audit finding: `deploy.sh` was rsyncing `workspace/` (1.1GB) + root docs to `/var/www/emart-platform` on every deploy, even though every cron/PM2 job already ran exclusively from `/root/emart-platform/workspace`. Fixed `deploy.sh` to rsync `apps/web` only. Archived `.git`, `workspace/`, `services/`, `packages/`, `apps/mobile/`, and all root dotfiles/docs from `/var/www/emart-platform` to `/root/.attic-2026-07-01/var-www-emart-platform-retired/`. VPS is now exactly `apps/web/` + `apps/presence-server/` + `.deployed-rev` — git-free by design, nothing else. `drift_check.py` updated to match. 16 scripts fixed to resolve `.env.local`/paths dynamically instead of hardcoding either tree (2 were real latent bugs). Full detail: `apps/web/SESSION-LOG.md` 2026-07-01 · Claude entry. | [C] | ✅ 2026-07-01 |
 
 ---
 

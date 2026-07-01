@@ -30,7 +30,7 @@ const path = require('path');
 const SITE          = 'https://e-mart.com.bd';
 const TEST_PRODUCT  = '/shop/cosrx-advanced-snail-mucin-96-power-essence-100ml';
 const TEST_PRODUCT_NAME = 'COSRX Advanced Snail 96 Mucin Power Essence';
-const LOG_DIR       = '/var/www/emart-platform/workspace/audit/active';
+const LOG_DIR       = path.resolve(__dirname, '../../../audit/active');
 const TODAY         = new Date().toISOString().split('T')[0];
 const LOG_FILE      = path.join(LOG_DIR, `checkout-monitor-${TODAY}.log`);
 

@@ -117,7 +117,11 @@ else
 fi
 
 # ── Step 4: rsync Local → VPS ────────────────────────────────────────────────
-info "Step 4/8 — rsync Local → VPS"
+# VPS runtime tree is apps/web (+ presence-server) ONLY — every cron, PM2 job,
+# and automation script runs from $LOCAL/workspace, never from $VPS/workspace.
+# Do not add workspace/ or root-level docs back here; that was the actual
+# mechanism causing recurring "VPS workspace is stale" drift (fixed 2026-07-01).
+info "Step 4/8 — rsync Local → VPS (apps/web only)"
 rsync -a --delete \
   --exclude='.git' \
   --exclude='node_modules' \
@@ -126,22 +130,6 @@ rsync -a --delete \
   --exclude='public/audit' \
   --exclude='*.tsbuildinfo' \
   "$LOCAL/$APP/" "$VPS/$APP/"
-
-rsync -a --delete \
-  --exclude='.git' \
-  --exclude='jobs/' \
-  --exclude='*.state.json' \
-  --exclude='*.checkpoint.json' \
-  --exclude='__pycache__' \
-  "$LOCAL/workspace/" "$VPS/workspace/"
-
-# sync root-level scripts (deploy.sh, CLAUDE.md, etc.)
-rsync -a \
-  --exclude='.git' \
-  --exclude='node_modules' \
-  --exclude='apps' \
-  --exclude='workspace' \
-  "$LOCAL/" "$VPS/"
 
 success "rsync complete"
 
@@ -236,16 +224,14 @@ cd "$LOCAL"
 git push origin main
 success "Pushed to origin/main"
 
-# ── Non-destructive VPS metadata check ──────────────────────────────────────
-info "Checking VPS git metadata (non-destructive)"
-git -C "$VPS" fetch origin 2>/dev/null || warn "VPS git fetch failed (non-fatal — runtime files are correct via rsync)"
-VPS_SHA=$(git -C "$VPS" rev-parse HEAD 2>/dev/null || echo "unknown")
-ORIGIN_SHA=$(git -C "$LOCAL" rev-parse origin/main 2>/dev/null || echo "unknown")
-if [ "$VPS_SHA" = "$ORIGIN_SHA" ]; then
-  success "VPS git metadata matches origin/main: $VPS_SHA"
+# ── VPS runtime-tree confirmation ───────────────────────────────────────────
+# VPS is a git-free runtime/deploy target by design (since 2026-07-01) — it
+# has no .git of its own. $DEPLOY_REV_FILE is the only provenance marker that
+# matters; do not re-add a VPS git checkout.
+if [ -d "$VPS/.git" ]; then
+  warn "$VPS has a .git directory — unexpected for a runtime-only tree; leaving it alone"
 else
-  warn "VPS git metadata differs from origin/main — VPS=$VPS_SHA origin=$ORIGIN_SHA"
-  warn "Use $DEPLOY_REV_FILE and drift_check.py as runtime truth; do not run git reset --hard on VPS without a separate reviewed plan."
+  success "VPS is git-free (runtime-only tree, as designed) — $DEPLOY_REV_FILE is the source of truth"
 fi
 
 echo ""

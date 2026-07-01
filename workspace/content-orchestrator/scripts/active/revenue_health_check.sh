@@ -3,5 +3,6 @@
 
 set -euo pipefail
 
-cd /var/www/emart-platform
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+cd "$REPO_ROOT"
 node workspace/content-orchestrator/scripts/active/revenue-tracking-smoke.cjs
