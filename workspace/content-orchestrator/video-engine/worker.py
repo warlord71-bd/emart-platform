@@ -32,6 +32,7 @@ REEL = ROOT / "stages" / "reel_ffmpeg.py"
 REEL_HF = ROOT / "stages" / "reel_hyperframes.py"
 REEL_QA_LOCAL = ROOT / "stages" / "reel_qa_local.py"
 PUBLIC_REELS = ROOT.parents[2] / "apps" / "web" / "public" / "videos" / "reels"
+RUNTIME_PUBLIC_REELS = Path("/var/www/emart-platform/apps/web/public/videos/reels")
 # nginx serves the public dir directly via /public/ alias (range-request capable, no Next restart needed)
 PUBLIC_BASE = "https://e-mart.com.bd/public/videos/reels"
 META_PUBLISH = ROOT.parent / "scripts" / "active" / "meta_publish.js"
@@ -84,6 +85,27 @@ def fail_quality(job_path: Path, job: dict, stage: str, report: dict, retryable:
         job["_non_retryable_failure"] = True
     checkpoint(job_path, job)
     print(f"[worker] {stage} failed for {job.get('id')}: {report.get('errors') or report.get('issues')}")
+
+
+def store_public_reel(mp4: str, jid: str) -> Path:
+    """Copy review MP4s to every public tree needed for the returned live URL.
+
+    `/root/emart-platform` is the source tree, but Nginx serves static files from
+    `/var/www/emart-platform`. The review URL is only honest if the runtime copy exists.
+    """
+    src = Path(mp4)
+    PUBLIC_REELS.mkdir(parents=True, exist_ok=True)
+    source_dest = PUBLIC_REELS / f"{jid}.mp4"
+    shutil.copy2(src, source_dest)
+
+    if RUNTIME_PUBLIC_REELS.parent.exists():
+        RUNTIME_PUBLIC_REELS.mkdir(parents=True, exist_ok=True)
+        runtime_dest = RUNTIME_PUBLIC_REELS / f"{jid}.mp4"
+        if runtime_dest.resolve() != source_dest.resolve():
+            shutil.copy2(source_dest, runtime_dest)
+        return runtime_dest
+
+    return source_dest
 
 
 def product_snapshot(job: dict, image: str = "") -> dict:
@@ -530,9 +552,7 @@ def run_job(job_path: Path, allow_publish: bool):
 
     # 4. store (free local public dir -> public URL; swap to R2 later)
     if job.get("store", True) and not stage_done(job, "store"):
-        PUBLIC_REELS.mkdir(parents=True, exist_ok=True)
-        dest = PUBLIC_REELS / f"{jid}.mp4"
-        shutil.copy2(mp4, dest)
+        dest = store_public_reel(mp4, jid)
         # cache-bust param avoids any Cloudflare-cached 404 from a pre-stage probe reaching IG/FB
         url = f"{PUBLIC_BASE}/{jid}.mp4?v={int(dest.stat().st_mtime)}"
         set_stage(job, "store", url=url)
