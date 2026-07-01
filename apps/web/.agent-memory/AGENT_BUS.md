@@ -23,6 +23,7 @@ Every agent (Claude, Codex, OpenClaw) MUST read this before starting work and up
 
 | Agent | When | What was done | Commit |
 |---|---|---|---|
+| Codex | 2026-07-01 | Fixed reel review public URLs after the source/runtime split: `worker.py` now copies stored review MP4s to both `/root/.../apps/web/public/videos/reels` and the served `/var/www/.../apps/web/public/videos/reels` tree before returning a Telegram review URL. Synced current July 1 COSRX/BOJ review MP4s to runtime, purged the exact Cloudflare cached 404 for the owner-reported COSRX URL, and verified exact/sibling review URLs return HTTP 200 video/mp4. | `4227737` |
 | Codex | 2026-07-01 | Cleaned the generated model-shot residue that was left out of the CO commit: added model-shot/owner-quality generated-output ignores, untracked generated request/metadata/holding outputs, moved current generated artifacts to `/root/.attic-2026-07-01/emart-generated-model-shot-residue/`, committed the real `model_shot.py` source change and canonical ledger append, and verified `model_shot.py` compile/status. | `31711bd` |
 | Codex | 2026-07-01 | Committed CO-9/CO-10 after re-running the logged verification suite; confirmed generated model-shot/owner-quality assets plus `model_shot.py` and the action ledger are separate active/generated state and left them unstaged. Closed INFRA-7 in OpenClaw skills: `wp_auto_publisher.py` confirmed dead/superseded by draft-gated `blog_generator.py`, and the humanizer skill now reads `EMART_DB_PASSWORD` from env/`.env.local` instead of embedding a plaintext literal. | `dd18759`, `5e2a2f0` |
 | Claude | 2026-07-01 | **OpenClaw skill path audit** — found my earlier 360° audit missed `/root/.openclaw/skills/` entirely (outside the git repo, a third agent's own files). Fixed the same stale `/var/www/emart-platform/workspace/scripts/active/...` bug in `emart-competitor-prices`, `emart-humanizer`, `emart-meta-gen` SKILL.md files, and the matching doc in `process-manifest.md`. Logged 2 unfixed findings as `INFRA-7`: `emart-auto-publisher/SKILL.md` references a script (`wp_auto_publisher.py`) that doesn't exist anywhere, and `emart-humanizer/SKILL.md` has a plaintext DB password hardcoded — both need an owner call, not a guess. Did not touch any of Codex's in-progress CO-9/CO-10 files. | `412beac` |
@@ -104,9 +105,48 @@ workspace/content-orchestrator/scripts/active/meta_*  ← HOT (2026-06-24): Code
 ```
 
 **Before editing a conflict zone file:**
-1. `git diff HEAD -- <file>` — check if someone else changed it
-2. `tail -5 apps/web/SESSION-LOG.md` — check latest agent activity
-3. If modified since you last read it, re-read before editing
+1. `python3 workspace/agent-lock.py check <file>` — check for an active lock
+2. `git diff HEAD -- <file>` — check if someone else changed it
+3. `tail -5 apps/web/SESSION-LOG.md` — check latest agent activity
+4. If modified since you last read it, re-read before editing
+
+---
+
+## FILE-LEVEL LOCK PROTOCOL
+
+**Why:** The ACTIVE WORK table requires voluntary discipline. File locks are enforced on the filesystem and work even when an agent forgets to update the bus.
+
+**Helper:** `workspace/agent-lock.py` — shared by all agents on the same filesystem.
+Lock files live in `workspace/.locks/` (gitignored). Stale locks (>4h) are auto-expired.
+
+**Lock lifecycle:**
+```
+# Before touching a file
+python3 workspace/agent-lock.py acquire <filepath> <agent> "<task>"
+# exit 0 = granted  |  exit 1 = BLOCKED (pick something else)
+
+# After finishing
+python3 workspace/agent-lock.py release <filepath> <agent>
+
+# See what's locked right now
+python3 workspace/agent-lock.py list
+
+# Clear stale locks at session start
+python3 workspace/agent-lock.py cleanup
+```
+
+**Files that REQUIRE a lock before editing:**
+```
+workspace/TASKS.md
+workspace/SEO_MASTER.md
+apps/web/.agent-memory/AGENT_BUS.md
+apps/web/.agent-memory/MEMORY.md
+apps/web/SESSION-LOG.md
+workspace/content-orchestrator/model_shot.py
+workspace/content-orchestrator/scripts/active/meta_*
+apps/web/src/lib/seo/product.ts
+apps/web/src/app/shop/[slug]/page.tsx
+```
 
 ---
 
@@ -114,22 +154,29 @@ workspace/content-orchestrator/scripts/active/meta_*  ← HOT (2026-06-24): Code
 
 ### Claude Code (this agent)
 ```
-Session start:  cat apps/web/.agent-memory/AGENT_BUS.md
-Before work:    Edit ACTIVE WORK table with your task
-Session end:    Move to LAST COMPLETED, append SESSION-LOG.md
+Session start:  python3 workspace/agent-lock.py cleanup
+                cat apps/web/.agent-memory/AGENT_BUS.md
+Before work:    python3 workspace/agent-lock.py acquire <file> Claude "<task>"
+                Edit ACTIVE WORK table with your task
+Session end:    python3 workspace/agent-lock.py release <file> Claude
+                Move to LAST COMPLETED, append SESSION-LOG.md
 ```
 
 ### Codex
 ```
-Session start:  Read apps/web/.agent-memory/AGENT_BUS.md
-Before work:    Edit ACTIVE WORK table with your task
-Session end:    Move to LAST COMPLETED, append SESSION-LOG.md
+Session start:  python3 workspace/agent-lock.py cleanup
+                Read apps/web/.agent-memory/AGENT_BUS.md
+Before work:    python3 workspace/agent-lock.py acquire <file> Codex "<task>"
+                Edit ACTIVE WORK table with your task
+Session end:    python3 workspace/agent-lock.py release <file> Codex
+                Move to LAST COMPLETED, append SESSION-LOG.md
 ```
 
 ### OpenClaw
 ```
 Reads:          apps/web/.agent-memory/AGENT_BUS.md (via workspace)
 Cannot edit:    Limited write access — logs to SESSION-LOG.md only
+Lock check:     python3 workspace/agent-lock.py check <file> before any write
 ```
 
 ---
@@ -150,3 +197,12 @@ To prevent two agents working on the same thing:
 | Deploy (rsync/pm2/push) | Claude | Needs full deploy sequence |
 
 If you need to do something outside your default ownership, check AGENT_BUS first.
+
+---
+
+## CLEANUP / ARCHIVE CONVENTION
+
+**Official standard (INFRA-5, decided 2026-07-01):** Archive to `/root/.attic-YYYY-MM-DD/` only — outside the repo, outside `workspace/`.
+- Never use `workspace/.attic-*/` — it's inside the repo and pollutes git status
+- Any existing `workspace/.attic-*/` dirs are non-standard and must be moved to `/root/.attic-YYYY-MM-DD/` on discovery
+- Never delete files — always move to attic first
