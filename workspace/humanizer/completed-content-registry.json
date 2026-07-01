@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-30",
+  "generated": "2026-07-01",
   "source": "read-only WordPress _emart_humanized postmeta",
-  "total_completed": 344,
+  "total_completed": 359,
   "entries": [
     {
       "post_id": 2583,
@@ -1029,7 +1029,7 @@
       "post_id": 51258,
       "slug": "w-skin-laboratory-a-m-cream-anti-melasma-50ml",
       "path": "/shop/w-skin-laboratory-a-m-cream-anti-melasma-50ml",
-      "completed_marker": "1",
+      "completed_marker": "0",
       "source": "wp_postmeta:_emart_humanized"
     },
     {
@@ -1635,6 +1635,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 62150,
+      "slug": "house-of-hur-moist-ampoule-blusher-04-lavender-flush-10ml",
+      "path": "/shop/house-of-hur-moist-ampoule-blusher-04-lavender-flush-10ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 62280,
       "slug": "medicube-pdrn-pink-collagen-capsule-cream-55g",
       "path": "/shop/medicube-pdrn-pink-collagen-capsule-cream-55g",
@@ -1814,6 +1821,13 @@
       "slug": "heimish-matcha-biome-amino-acne-cleansing-foam-30ml",
       "path": "/shop/heimish-matcha-biome-amino-acne-cleansing-foam-30ml",
       "completed_marker": "2026-06-03 20:44:30",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 63497,
+      "slug": "heimish-moringa-creamide-bb-cream-30g-27n-light-tan",
+      "path": "/shop/heimish-moringa-creamide-bb-cream-30g-27n-light-tan",
+      "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
     {
@@ -2258,6 +2272,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 92834,
+      "slug": "simple-kind-to-skin-hydrating-light-moisturizer-125ml",
+      "path": "/shop/simple-kind-to-skin-hydrating-light-moisturizer-125ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 92844,
       "slug": "cerave-foaming-facial-cleanser-for-normal-to-oily-skin-355ml",
       "path": "/shop/cerave-foaming-facial-cleanser-for-normal-to-oily-skin-355ml",
@@ -2300,6 +2321,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 92910,
+      "slug": "anua-retinol-0-3-niacin-renewing-serum-30m",
+      "path": "/shop/anua-retinol-0-3-niacin-renewing-serum-30m",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 92918,
       "slug": "maryampmay-white-collagen-cleansing-foam-150ml",
       "path": "/shop/maryampmay-white-collagen-cleansing-foam-150ml",
@@ -2314,10 +2342,24 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 92944,
+      "slug": "cos-de-baha-azelaic-acid-10-serum-az-30ml",
+      "path": "/shop/cos-de-baha-azelaic-acid-10-serum-az-30ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 92958,
       "slug": "cerave-foaming-facial-cleanser-237ml",
       "path": "/shop/cerave-foaming-facial-cleanser-237ml",
       "completed_marker": "2026-05-31 19:58:28",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 92984,
+      "slug": "skin1004-madagascar-centella-tone-brightening-capsule-ampoule-50ml",
+      "path": "/shop/skin1004-madagascar-centella-tone-brightening-capsule-ampoule-50ml",
+      "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
     {
@@ -2328,10 +2370,31 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 92992,
+      "slug": "cetaphil-moisturizing-cream-dry-to-very-dry-sensitive-skin-453g",
+      "path": "/shop/cetaphil-moisturizing-cream-dry-to-very-dry-sensitive-skin-453g",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 92996,
+      "slug": "some-by-mi-super-matcha-pore-tightening-serum-50ml",
+      "path": "/shop/some-by-mi-super-matcha-pore-tightening-serum-50ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 93004,
       "slug": "izeze-soul-hca-hydro-6-5-gel-cleanser-150ml",
       "path": "/shop/izeze-soul-hca-hydro-6-5-gel-cleanser-150ml",
       "completed_marker": "2026-06-03 10:18:14",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 93020,
+      "slug": "isntree-chestnut-aha-8-clear-essence-100ml",
+      "path": "/shop/isntree-chestnut-aha-8-clear-essence-100ml",
+      "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
     {
@@ -2363,6 +2426,13 @@
       "source": "wp_postmeta:_emart_humanized"
     },
     {
+      "post_id": 93116,
+      "slug": "cerave-am-facial-moisturizing-lotion-with-sunscreen-60ml",
+      "path": "/shop/cerave-am-facial-moisturizing-lotion-with-sunscreen-60ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
       "post_id": 93117,
       "slug": "cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml",
       "path": "/shop/cerave-hydrating-cream-to-foam-cleanser-for-normal-to-dry-skin-237ml",
@@ -2380,6 +2450,34 @@
       "post_id": 93121,
       "slug": "cerave-resurfacing-retinol-serum-30ml-usa-version",
       "path": "/shop/cerave-resurfacing-retinol-serum-30ml-usa-version",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 93123,
+      "slug": "cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin",
+      "path": "/shop/cerave-moisturizing-cream-340g-uk-version-dry-to-very-dry-skin",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 93138,
+      "slug": "beauty-of-joseon-revive-eye-serum-ginseng-retinal-10ml",
+      "path": "/shop/beauty-of-joseon-revive-eye-serum-ginseng-retinal-10ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 93139,
+      "slug": "beauty-of-joseon-revive-eye-serum-ginseng-retinal-30ml",
+      "path": "/shop/beauty-of-joseon-revive-eye-serum-ginseng-retinal-30ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 93143,
+      "slug": "beauty-of-joseon-rice-probiotics-sunscreen-10ml",
+      "path": "/shop/beauty-of-joseon-rice-probiotics-sunscreen-10ml",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     },
@@ -2408,6 +2506,13 @@
       "post_id": 93315,
       "slug": "kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml",
       "path": "/shop/kerasys-black-bean-oil-shampoo-anti-hair-loss-1000ml",
+      "completed_marker": "1",
+      "source": "wp_postmeta:_emart_humanized"
+    },
+    {
+      "post_id": 94593,
+      "slug": "medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml",
+      "path": "/shop/medicube-pdrn-pink-tone-up-sun-cream-spf50-pa-50ml",
       "completed_marker": "1",
       "source": "wp_postmeta:_emart_humanized"
     }
