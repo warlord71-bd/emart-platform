@@ -9,6 +9,7 @@
 
 | What you need | Where to look |
 |---|---|
+| Fully-closed TASKS.md sections | `TASKS_ARCHIVE.md` (sibling of TASKS.md) |
 | GSC keyword/traffic data | `audit/archive/gsc-exports/` |
 | Product size/brand/SKU fixes | `audit/archive/product-audits/` |
 | Face cleanser humanizer history | `audit/archive/face-cleansers-*` |

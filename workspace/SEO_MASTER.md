@@ -1,7 +1,7 @@
 # Emart SEO Master — Source of Truth
 
-**Last verified:** 2026-06-20 (live SEO/AEO deploy gate: sitemap, robots, LLM docs/link freshness, IndexNow, representative PDP/category/concern/ingredient/blog metadata + JSON-LD)
-**Last reconciled with `workspace/TASKS.md`:** 2026-06-27 (codebase audit against task board — all claimed-complete items verified in source; deployment status noted)
+**Last verified:** 2026-07-01 (live SEO/AEO deploy gate has passed on every `deploy.sh` run since 2026-06-20, most recently during today's VPS architecture fix deploys — sitemap, robots, LLM docs/link freshness, IndexNow, representative PDP/category/concern/ingredient/blog metadata + JSON-LD all still passing)
+**Last reconciled with `workspace/TASKS.md`:** 2026-07-01 (2026-07-01 workspace audit: confirmed no SEO-fact-level changes occurred between 2026-06-27 and today — recent TASKS.md additions were infra/video/workspace items, not SEO; content below remains accurate)
 **Owner:** Claude (code) + Warlord (content/business decisions)
 **Rule:** This file is the durable SEO source of truth. `workspace/TASKS.md` is the execution board. Update both in the same commit whenever a task-board change creates, closes, reprioritizes, or materially changes an SEO fact. Do not mark live SEO complete from AI analysis alone — verify with build/test for local code completion and live/API/curl evidence for live-status claims.
 
