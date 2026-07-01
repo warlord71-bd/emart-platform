@@ -97,7 +97,7 @@ function archiveDone(planPath, resultLedger, historyArg) {
     path.resolve(process.cwd(), 'workspace/content-orchestrator/social-engine/social_engine.py'),
     path.resolve(__dirname, '../social-engine/social_engine.py'),
     path.resolve(__dirname, '../../social-engine/social_engine.py'),
-    '/var/www/emart-platform/workspace/content-orchestrator/social-engine/social_engine.py',
+    '/root/emart-platform/workspace/content-orchestrator/social-engine/social_engine.py',
   ].find((candidate) => fs.existsSync(candidate));
   if (!engine) {
     console.warn('[meta-schedule] social_engine.py not found; done-history archive skipped');

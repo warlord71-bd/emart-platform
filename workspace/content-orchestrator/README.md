@@ -65,6 +65,7 @@ Use `--product-image` for exact-product visual jobs so model-shot requests have 
 
 - `themes.json` — the 12-theme strategy taxonomy (signal → format → channel → generator → gate → metric → cadence).
 - `orchestrator.py` — planner + dispatcher + status.
+- `content_pack.py` — canonical static/reel production pack: product source, exact image source, script, voice, frames, QA, cost tier, and approval state.
 - `model_shot.py` — model-holding-real-product request/composite service; outputs stay owner-gated.
 - `plans/` , `dispatch/` — generated runtime state (gitignored).
 

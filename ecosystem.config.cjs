@@ -97,7 +97,7 @@ module.exports = {
     {
       name: 'emart-blog-generator',
       script: 'blog_generator_run.sh',
-      cwd: '/var/www/emart-platform/workspace/content-orchestrator/scripts/active',
+      cwd: '/root/emart-platform/workspace/content-orchestrator/scripts/active',
       interpreter: 'bash',
       autorestart: false,
       cron_restart: '0 2,10,18 * * *',
@@ -109,7 +109,7 @@ module.exports = {
     {
       name: 'emart-checkout-monitor',
       script: 'checkout_monitor_run.sh',
-      cwd: '/var/www/emart-platform/workspace/content-orchestrator/scripts/active',
+      cwd: '/root/emart-platform/workspace/content-orchestrator/scripts/active',
       interpreter: 'bash',
       autorestart: false,
       cron_restart: '*/15 * * * *',
@@ -121,7 +121,7 @@ module.exports = {
     {
       name: 'emart-competitor-prices',
       script: 'competitor_prices_run.sh',
-      cwd: '/var/www/emart-platform/workspace/content-orchestrator/scripts/active',
+      cwd: '/root/emart-platform/workspace/content-orchestrator/scripts/active',
       interpreter: 'bash',
       autorestart: false,
       cron_restart: '0 2 * * *',
@@ -133,7 +133,7 @@ module.exports = {
     {
       name: 'emart-revenue-health',
       script: 'revenue_health_check.sh',
-      cwd: '/var/www/emart-platform/workspace/content-orchestrator/scripts/active',
+      cwd: '/root/emart-platform/workspace/content-orchestrator/scripts/active',
       interpreter: 'bash',
       autorestart: false,
       cron_restart: '*/30 * * * *',
@@ -145,7 +145,7 @@ module.exports = {
     {
       name: 'emart-seo-autoscan',
       script: 'seo_auto_scan.sh',
-      cwd: '/var/www/emart-platform/workspace/content-orchestrator/scripts/active',
+      cwd: '/root/emart-platform/workspace/content-orchestrator/scripts/active',
       interpreter: 'bash',
       autorestart: false,
       cron_restart: '0 0 * * *',
@@ -157,7 +157,7 @@ module.exports = {
     {
       name: 'emart-meta-gen',
       script: 'meta_gen_batch.sh',
-      cwd: '/var/www/emart-platform/workspace/content-orchestrator/scripts/active',
+      cwd: '/root/emart-platform/workspace/content-orchestrator/scripts/active',
       interpreter: 'bash',
       autorestart: true,
       env: {

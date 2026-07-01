@@ -38,6 +38,9 @@ templates = Jinja2Templates(directory=str(HERMES / "templates"))
 
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(WORKSPACE))
+sys.path.insert(0, str(CONTENT_ORCHESTRATOR))
+
+import content_pack  # noqa: E402
 
 
 # ─── Database ────────────────────────────────────────────────────────────────
@@ -417,18 +420,17 @@ def _run_video_enqueue(params: dict) -> dict:
     platforms = params.get("platforms", "facebook,instagram")
     if not product_id:
         return {"error": "product_id required"}
-    spec = {
-        "product_id": int(product_id),
-        "product": name,
-        "platforms": [p.strip() for p in platforms.split(",")],
-        "language": "bn",
-        "tier_target": "free",
-        "status": "pending",
-    }
-    spec_path = VIDEO_ENGINE / "jobs" / "queue" / f"hermes-{product_id}-{int(time.time())}.json"
+    spec = _build_hermes_video_spec(product_id, name, platforms)
+    spec_path = VIDEO_ENGINE / "jobs" / "_hermes-specs" / f"{spec['id']}.json"
     spec_path.parent.mkdir(parents=True, exist_ok=True)
-    spec_path.write_text(json.dumps(spec, indent=2))
-    return {"log": f"Queued reel job: {spec_path.name}\nProduct: {name or product_id}\nPlatforms: {platforms}\n\nNext orchestrator tick will build it → Telegram approval → publish."}
+    spec_path.write_text(json.dumps(spec, ensure_ascii=False, indent=2))
+    r = subprocess.run(
+        [sys.executable, str(VIDEO_ENGINE / "enqueue.py"), str(spec_path), "--priority", "20"],
+        capture_output=True, text=True, timeout=30, cwd=str(VIDEO_ENGINE),
+    )
+    if r.returncode != 0:
+        return {"error": r.stderr[-500:] if r.stderr else "enqueue failed", "log": r.stdout[-1000:]}
+    return {"log": f"{r.stdout.strip()}\nProduct: {spec['product']}\nPlatforms: {platforms}\nSchema: {spec.get('schema_version')}\n\nNext orchestrator tick builds it → Telegram approval → publish."}
 
 
 def _run_video_status() -> dict:
@@ -602,19 +604,19 @@ def _run_reel_pipeline(params: dict) -> dict:
     vid_engine = VIDEO_ENGINE
     jobs_dir = vid_engine / "jobs"
 
-    spec = {
-        "product_id": int(product_id),
-        "product": name,
-        "platforms": [p.strip() for p in platforms.split(",")],
-        "language": "bn",
-        "tier_target": "free",
-        "status": "pending",
-    }
-    spec_path = jobs_dir / "queue" / f"hermes-{product_id}-{int(time.time())}.json"
+    spec = _build_hermes_video_spec(product_id, name, platforms)
+    spec_path = jobs_dir / "_hermes-specs" / f"{spec['id']}.json"
     spec_path.parent.mkdir(parents=True, exist_ok=True)
-    spec_path.write_text(json.dumps(spec, indent=2))
+    spec_path.write_text(json.dumps(spec, ensure_ascii=False, indent=2))
 
-    log_lines = [f"✅ Queued: {spec_path.name}"]
+    enq = subprocess.run(
+        [sys.executable, str(vid_engine / "enqueue.py"), str(spec_path), "--priority", "20"],
+        capture_output=True, text=True, timeout=30, cwd=str(vid_engine),
+    )
+    if enq.returncode != 0:
+        return {"error": enq.stderr[-500:] if enq.stderr else "enqueue failed", "log": enq.stdout[-1000:]}
+
+    log_lines = [f"✅ Queued: {enq.stdout.strip()}"]
 
     # Build immediately
     r = subprocess.run(
@@ -640,8 +642,9 @@ def _run_reel_pipeline(params: dict) -> dict:
 
     if review_job:
         video_url = review_job.get("stages", {}).get("store", {}).get("url", "")
-        qa = review_job.get("stages", {}).get("master_qa", {})
-        qa_score = qa.get("score", "?")
+        qa = review_job.get("stages", {}).get("qa", {})
+        hard = qa.get("hard") or {}
+        qa_score = qa.get("score") or hard.get("score") or "?"
         log_lines.append(f"🎬 Reel built! QA score: {qa_score}")
         return {
             "log": "\n".join(log_lines),
@@ -658,6 +661,24 @@ def _run_reel_pipeline(params: dict) -> dict:
         else:
             log_lines.append("⚠ Reel not found in review queue. Check Video Status.")
         return {"log": "\n".join(log_lines)}
+
+
+def _build_hermes_video_spec(product_id: str, name: str, platforms: str) -> dict:
+    product = {"id": int(product_id), "name": name or f"Product {product_id}"}
+    try:
+        import woo  # read-only resolver from Content Orchestrator
+        detail = woo.product_by_id(product_id)
+        if detail:
+            product.update(detail)
+    except Exception:
+        pass
+    return content_pack.build_video_job(
+        product,
+        job_id=f"hermes-{product_id}-{int(time.time())}",
+        theme="hermes_manual",
+        platforms=[p.strip() for p in platforms.split(",") if p.strip()],
+        product_source="woo_product_detail" if product.get("image") else "hermes_manual",
+    )
 
 
 def _run_openclaw_task(params: dict) -> dict:

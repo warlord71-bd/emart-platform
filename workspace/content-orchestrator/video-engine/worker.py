@@ -192,7 +192,11 @@ def holding_request_images(job) -> list[str]:
     ref = job.get("product_image") or job.get("product_image_url") or (job.get("images") or [None])[0]
     cmd = [sys.executable, str(CODEX_BRIDGE), "--emit", "--product", product, "--persona", persona]
     if ref:
-        cmd += ["--product-image", str(Path(ref).resolve())]
+        ref_s = str(ref)
+        if urlparse(ref_s).scheme in ("http", "https"):
+            cmd += ["--product-image", ref_s]
+        else:
+            cmd += ["--product-image", str(Path(ref_s).resolve())]
     out = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
     path = out.stdout.strip()
     if path and Path(path).exists():

@@ -65,6 +65,11 @@ try:
 except Exception:
     model_shot = None
 
+try:
+    import content_pack  # canonical static/reel production pack (CO-9)
+except Exception:
+    content_pack = None
+
 
 def _load_weights() -> dict:
     """Self-improving feedback: per-theme multipliers learned from outcomes (default 1.0)."""
@@ -256,31 +261,62 @@ def cmd_plan(args):
 
 def _social_job(item: dict, stamp: str) -> dict:
     cand = item["candidate"]
+    campaign_id = f"co-{item['theme']}-{stamp}"
+    platforms = [c for c in item["channels"] if c in ("facebook", "instagram")]
+    if content_pack is not None:
+        return content_pack.build_social_campaign_job(
+            cand,
+            campaign_id=campaign_id,
+            name=f"{item['label']} — {item['date']}",
+            date_value=item["date"],
+            theme=item["theme"],
+            platforms=platforms,
+            formats=[f for f in item["formats"] if f.startswith("post_")],
+            metric=item["metric"],
+            guard=item.get("guard"),
+            product_source=cand.get("source") or "",
+            make_reel=item["generator"].startswith("video") or "video" in item["generator"],
+            approval_gate=item["gate"],
+        )
     return {
-        "id": f"co-{item['theme']}-{stamp}",
+        "id": campaign_id,
         "name": f"{item['label']} — {item['date']}",
         "date": item["date"],
-        "approval_status": "draft",  # gate: campaign-orchestration-contract
-        "design_template": "emart-social-card-v1",
-        "platforms": [c for c in item["channels"] if c in ("facebook", "instagram")],
-        "items": [{
-            "product_id": cand.get("product_id"),
-            "name": cand.get("name"),
-            "theme": item["theme"],
-            "formats": [f for f in item["formats"] if f.startswith("post_")],
-            "make_reel": item["generator"].startswith("video") or "video" in item["generator"],
-        }],
-        "_orchestrator": {"theme": item["theme"], "gate": "campaign", "metric": item["metric"],
+        "approval_status": "draft",
+        "design_template": "brand-fresh-product-base-v6-bilingual-price",
+        "platforms": platforms,
+        "items": [{"product_id": cand.get("product_id"), "name": cand.get("name"), "theme": item["theme"],
+                   "formats": [f for f in item["formats"] if f.startswith("post_")],
+                   "make_reel": item["generator"].startswith("video") or "video" in item["generator"]}],
+        "_orchestrator": {"theme": item["theme"], "gate": item["gate"], "metric": item["metric"],
                           "guard": item.get("guard"), "candidate_source": cand.get("source")},
     }
 
 
 def _video_job(item: dict, stamp: str) -> dict:
     cand = item["candidate"]
-    job = {
-        "id": f"co-{item['theme']}-{stamp}-reel",
+    job_id = f"co-{item['theme']}-{stamp}-reel"
+    platforms = [c for c in item["channels"] if c in ("facebook", "instagram", "tiktok", "youtube")] or ["instagram"]
+    if content_pack is not None:
+        job = content_pack.build_video_job(
+            cand,
+            job_id=job_id,
+            theme=item["theme"],
+            platforms=platforms,
+            formats=item["formats"],
+            metric=item["metric"],
+            guard=item.get("guard"),
+            product_source=cand.get("source") or "",
+            holding_first=True,
+            approval_gate=item["gate"],
+        )
+        if "model_holding_real_product" in item.get("formats", []):
+            job["holding_persona"] = "dr-rumana" if item["theme"] == "doctor_reco" else "nusrat"
+        return job
+    return {
+        "id": job_id,
         "tier_target": "free",
-        "platforms": [c for c in item["channels"] if c in ("facebook", "instagram", "tiktok", "youtube")] or ["instagram"],
+        "platforms": platforms,
         "product": cand.get("name"),
         "product_id": cand.get("product_id"),
         "price": cand.get("price") or cand.get("sale_price") or "",
@@ -290,27 +326,11 @@ def _video_job(item: dict, stamp: str) -> dict:
         "category_slug": cand.get("category_slug") or "skincare",
         "product_image": cand.get("image") or cand.get("product_image") or "",
         "language": "bn",
-        "status": "pending",  # gate: video-engine Telegram approval (publish_approved.py only)
-        "_orchestrator": {"theme": item["theme"], "gate": "campaign", "metric": item["metric"],
+        "status": "pending",
+        "_orchestrator": {"theme": item["theme"], "gate": item["gate"], "metric": item["metric"],
                           "formats": item["formats"], "guard": item.get("guard"),
                           "candidate_source": cand.get("source")},
     }
-    if "model_holding_real_product" in item.get("formats", []):
-        persona = "dr-rumana" if item["theme"] == "doctor_reco" else "nusrat"
-        job.update({
-            "holding_request": True,
-            "holding_generation_mode": "real_product_composite",
-            "holding_first": True,
-            "holding_label": "Original product",
-            "holding_persona": persona,
-            "model_fallback": False,
-            "no_hallucination_product_layer": True,
-            "qa_block_on_vision": True,
-            "product_card": True,
-            "product_cutout": True,
-            "brand_card": True,
-        })
-    return job
 
 
 def _content_brief(item: dict, stamp: str) -> dict:

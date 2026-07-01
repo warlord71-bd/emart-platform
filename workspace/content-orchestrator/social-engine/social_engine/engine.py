@@ -1372,7 +1372,7 @@ const {{ spawnSync }} = require('child_process');
 const adapter = [
   path.resolve(process.cwd(), 'workspace/content-orchestrator/scripts/active/meta_schedule.js'),
   path.resolve(__dirname, '../../../../scripts/active/meta_schedule.js'),
-  '/var/www/emart-platform/workspace/content-orchestrator/scripts/active/meta_schedule.js',
+  '/root/emart-platform/workspace/content-orchestrator/scripts/active/meta_schedule.js',
 ].find((candidate) => fs.existsSync(candidate));
 if (!adapter) throw new Error('meta_schedule.js not found; run from the Emart repo or set the PM2 cwd to it');
 const plan = path.resolve(__dirname, 'campaign-plan.json');
